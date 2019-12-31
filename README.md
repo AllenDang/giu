@@ -11,5 +11,5 @@ Compare to other imgui golang bindings, giu has following features:
 - Redraw only when user event occurred. Costs only 0.5% CPU usage with 60FPS.
 - Declarative UI (WIP).
 
-Still in earily state, welcome to have a try and feedback your feelings.
+Still in early state, welcome to have a try and feedback your feelings.
 
