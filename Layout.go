@@ -59,3 +59,7 @@ func (l *Layout) Build() {
 		}
 	}
 }
+
+func (l *Layout) Width() float32 {
+	return 0
+}
