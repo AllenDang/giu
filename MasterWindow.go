@@ -16,6 +16,7 @@ type MasterWindow struct {
 	platform   imgui.Platform
 	renderer   imgui.Renderer
 	context    *imgui.Context
+	io         *imgui.IO
 	updateFunc func(w *MasterWindow)
 }
 
@@ -51,6 +52,7 @@ func NewMasterWindow(title string, width, height int, resizable bool, loadFontFu
 		height:     height,
 		title:      title,
 		resizable:  resizable,
+		io:         &io,
 		context:    context,
 		platform:   p,
 		renderer:   r,
@@ -169,6 +171,10 @@ func (w *MasterWindow) GetSize() (width, height int) {
 // Load a image by renderer and return the TextureID which will be used later by imgui.
 func (w *MasterWindow) LoadImage(image *image.RGBA) (imgui.TextureID, error) {
 	return w.renderer.LoadImage(image)
+}
+
+func (w *MasterWindow) Update() {
+	w.io.SetFrameCountSinceLastInput(0)
 }
 
 // Call the main loop.

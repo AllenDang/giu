@@ -5,8 +5,6 @@ import (
 	"image/draw"
 	"image/png"
 	"os"
-
-	"github.com/AllenDang/giu/imgui"
 )
 
 func LoadImage(imgPath string) (*image.RGBA, error) {
@@ -29,10 +27,4 @@ func LoadImage(imgPath string) (*image.RGBA, error) {
 		draw.Draw(rgba, trueImg.Bounds(), trueImg, image.Pt(0, 0), draw.Src)
 		return rgba, nil
 	}
-}
-
-// Force update
-func Update() {
-	io := imgui.CurrentIO()
-	io.SetFrameCountSinceLastInput(3)
 }
