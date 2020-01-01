@@ -23,6 +23,11 @@ void iggSetCurrentContext(IggContext context)
    ImGui::SetCurrentContext(reinterpret_cast<ImGuiContext *>(context));
 }
 
+void iggSetMaxWaitBeforeNextFrame(double time)
+{
+   ImGui::SetMaxWaitBeforeNextFrame(time);
+}
+
 IggIO iggGetCurrentIO()
 {
    return reinterpret_cast<IggIO>(&ImGui::GetIO());
@@ -55,7 +60,7 @@ void iggEndFrame()
 
 double iggGetEventWaitingTime()
 {
-    return ImGui::GetEventWaitingTime();
+   return ImGui::GetEventWaitingTime();
 }
 
 char const *iggGetVersion()
@@ -194,15 +199,15 @@ float iggGetFontSize()
    return ImGui::GetFontSize();
 }
 
-void iggCalcTextSize(const char* text, int length, IggBool hide_text_after_double_hash, float wrap_width, IggVec2 *value)
+void iggCalcTextSize(const char *text, int length, IggBool hide_text_after_double_hash, float wrap_width, IggVec2 *value)
 {
-    exportValue(*value, ImGui::CalcTextSize(text, text + length, hide_text_after_double_hash, wrap_width));
+   exportValue(*value, ImGui::CalcTextSize(text, text + length, hide_text_after_double_hash, wrap_width));
 }
 
-unsigned int iggGetColorU32(const IggVec4 col) 
+unsigned int iggGetColorU32(const IggVec4 col)
 {
-  Vec4Wrapper colArg(&col);
-  return ImGui::GetColorU32(*colArg);
+   Vec4Wrapper colArg(&col);
+   return ImGui::GetColorU32(*colArg);
 }
 
 void iggPushItemWidth(float width)
@@ -334,17 +339,21 @@ static int iggInputTextCallbackWrapper(ImGuiInputTextCallbackData *data)
    return iggInputTextCallback(reinterpret_cast<IggInputTextCallbackData>(data), static_cast<int>(reinterpret_cast<size_t>(data->UserData)));
 }
 
-IggBool iggInputText(char const *label, char* buf, unsigned int bufSize, int flags, int callbackKey)
+IggBool iggInputText(char const *label, char *buf, unsigned int bufSize, int flags, int callbackKey)
 {
    return ImGui::InputText(label, buf, static_cast<size_t>(bufSize), flags,
-                           iggInputTextCallbackWrapper, reinterpret_cast<void *>(callbackKey)) ? 1 : 0;
+                           iggInputTextCallbackWrapper, reinterpret_cast<void *>(callbackKey))
+              ? 1
+              : 0;
 }
 
-IggBool iggInputTextMultiline(char const *label, char* buf, unsigned int bufSize, IggVec2 const *size, int flags, int callbackKey)
+IggBool iggInputTextMultiline(char const *label, char *buf, unsigned int bufSize, IggVec2 const *size, int flags, int callbackKey)
 {
    Vec2Wrapper sizeArg(size);
    return ImGui::InputTextMultiline(label, buf, static_cast<size_t>(bufSize), *sizeArg, flags,
-                                    iggInputTextCallbackWrapper, reinterpret_cast<void *>(callbackKey)) ? 1 : 0;
+                                    iggInputTextCallbackWrapper, reinterpret_cast<void *>(callbackKey))
+              ? 1
+              : 0;
 }
 
 void iggSeparator(void)
@@ -664,23 +673,28 @@ void iggSetMouseCursor(int cursor)
    ImGui::SetMouseCursor(cursor);
 }
 
-IggBool iggBeginTabBar(char const *str_id, int flags) {
-    return ImGui::BeginTabBar(str_id, flags) ? 1 : 0;
+IggBool iggBeginTabBar(char const *str_id, int flags)
+{
+   return ImGui::BeginTabBar(str_id, flags) ? 1 : 0;
 }
 
-void iggEndTabBar() {
-    ImGui::EndTabBar();
+void iggEndTabBar()
+{
+   ImGui::EndTabBar();
 }
 
-IggBool iggBeginTabItem(char const *label, IggBool *p_open, int flags) {
-    BoolWrapper openArg(p_open);
-    return ImGui::BeginTabItem(label, openArg, flags) ? 1 : 0;
+IggBool iggBeginTabItem(char const *label, IggBool *p_open, int flags)
+{
+   BoolWrapper openArg(p_open);
+   return ImGui::BeginTabItem(label, openArg, flags) ? 1 : 0;
 }
 
-void iggEndTabItem() {
-    ImGui::EndTabItem();
+void iggEndTabItem()
+{
+   ImGui::EndTabItem();
 }
 
-void iggSetTabItemClosed(char const * tab_or_docked_window_label) {
-    ImGui::SetTabItemClosed(tab_or_docked_window_label);
+void iggSetTabItemClosed(char const *tab_or_docked_window_label)
+{
+   ImGui::SetTabItemClosed(tab_or_docked_window_label);
 }
