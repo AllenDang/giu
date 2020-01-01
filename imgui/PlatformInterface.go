@@ -17,4 +17,6 @@ type Platform interface {
 	Dispose()
 	// Set size change callback
 	SetSizeChangeCallback(func(width, height int))
+	// Force Update
+	Update()
 }

@@ -166,6 +166,10 @@ func (platform *GLFW) SetSizeChangeCallback(cb func(int, int)) {
 	platform.sizeChangeCallback = cb
 }
 
+func (platform *GLFW) Update() {
+	glfw.PostEmptyEvent()
+}
+
 func (platform *GLFW) setKeyMapping() {
 	// Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
 	platform.imguiIO.KeyMap(KeyTab, int(glfw.KeyTab))

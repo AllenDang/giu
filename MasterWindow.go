@@ -173,6 +173,10 @@ func (w *MasterWindow) LoadImage(image *image.RGBA) (imgui.TextureID, error) {
 	return w.renderer.LoadImage(image)
 }
 
+func (w *MasterWindow) Update() {
+	w.platform.Update()
+}
+
 // Call the main loop.
 // loopFunc will be used to construct the ui.
 func (w *MasterWindow) Main(loopFunc func(w *MasterWindow)) {

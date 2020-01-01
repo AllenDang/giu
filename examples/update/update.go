@@ -10,6 +10,7 @@ import (
 
 var (
 	counter int
+	wnd     *giu.MasterWindow
 )
 
 func refersh() {
@@ -17,6 +18,7 @@ func refersh() {
 
 	for {
 		counter = rand.Intn(100)
+		wnd.Update()
 
 		<-ticker.C
 	}
@@ -24,15 +26,12 @@ func refersh() {
 
 func loop(w *giu.MasterWindow) {
 	giu.SingleWindow(w, "Update", giu.Layout{
-		giu.Custom(func() {
-			giu.Update(time.Second)
-		}),
 		giu.Label(fmt.Sprintf("%d", counter)),
 	})
 }
 
 func main() {
-	wnd := giu.NewMasterWindow("Update", 400, 200, false, nil)
+	wnd = giu.NewMasterWindow("Update", 400, 200, false, nil)
 
 	go refersh()
 
