@@ -10,6 +10,8 @@ type Renderer interface {
 	Render(displaySize [2]float32, framebufferSize [2]float32, drawData DrawData)
 	// Load image and return the TextureID
 	LoadImage(image *image.RGBA) (TextureID, error)
+	// Release image
+	ReleaseImage()
 	// Dispose
 	Dispose()
 }

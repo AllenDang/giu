@@ -173,6 +173,10 @@ func (w *MasterWindow) LoadImage(image *image.RGBA) (imgui.TextureID, error) {
 	return w.renderer.LoadImage(image)
 }
 
+func (w *MasterWindow) ReleaseImage() {
+	w.renderer.ReleaseImage()
+}
+
 func (w *MasterWindow) Update() {
 	w.platform.Update()
 }
