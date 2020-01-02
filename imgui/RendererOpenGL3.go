@@ -364,6 +364,10 @@ func (renderer *OpenGL3) LoadImage(image *image.RGBA) (TextureID, error) {
 	return texture, nil
 }
 
+func (renderer *OpenGL3) ReleaseImage() {
+	gl.BindTexture(gl.TEXTURE_2D, 0)
+}
+
 func (renderer *OpenGL3) createImageTexture(img *image.RGBA) (TextureID, error) {
 	// Upload texture to graphics system
 	var lastTexture int32
