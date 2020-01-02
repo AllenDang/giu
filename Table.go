@@ -52,8 +52,8 @@ func (t *TableWidget) Build() {
 			r.Build()
 		}
 
+		imgui.Columns()
 		if t.border {
-			imgui.Columns()
 			imgui.Separator()
 		}
 	}
