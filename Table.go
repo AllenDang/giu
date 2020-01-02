@@ -42,7 +42,7 @@ func Table(label string, border bool, rows ...*RowWidget) *TableWidget {
 }
 
 func (t *TableWidget) Build() {
-	if len(t.rows) > 0 {
+	if len(t.rows) > 0 && t.rows[0].Count() > 0 {
 		imgui.ColumnsV(t.rows[0].Count(), t.label, t.border)
 
 		for _, r := range t.rows {
