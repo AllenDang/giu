@@ -2,6 +2,7 @@ package giu
 
 import (
 	"image"
+	"image/color"
 	"time"
 
 	"github.com/AllenDang/giu/imgui"
@@ -22,7 +23,10 @@ type MasterWindow struct {
 
 // Create a master window.
 func NewMasterWindow(title string, width, height int, resizable bool, loadFontFunc func()) *MasterWindow {
+	return NewMasterWindowWithBgColor(title, width, height, resizable, loadFontFunc, nil)
+}
 
+func NewMasterWindowWithBgColor(title string, width, height int, resizable bool, loadFontFunc func(), bgColor *color.RGBA) *MasterWindow {
 	context := imgui.CreateContext(nil)
 
 	io := imgui.CurrentIO()
@@ -46,8 +50,15 @@ func NewMasterWindow(title string, width, height int, resizable bool, loadFontFu
 		panic(err)
 	}
 
+	col := [4]float32{0.22, 0.26, 0.28, 1}
+
+	if bgColor != nil {
+		vec4 := ToVec4Color(*bgColor)
+		col = [4]float32{vec4.X, vec4.Y, vec4.Z, vec4.W}
+	}
+
 	mw := &MasterWindow{
-		clearColor: [4]float32{0.22, 0.26, 0.28, 1},
+		clearColor: col,
 		width:      width,
 		height:     height,
 		title:      title,
