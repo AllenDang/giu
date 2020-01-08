@@ -40,3 +40,11 @@ void iggGetVertexBufferLayout(size_t *entrySize, size_t *posOffset, size_t *uvOf
    *uvOffset = IM_OFFSETOF(ImDrawVert, uv);
    *colOffset = IM_OFFSETOF(ImDrawVert, col);
 }
+
+void iggDrawListAddLine(IggDrawList handle, IggVec2 *p1, IggVec2 *p2, unsigned int col, float thickness)
+{
+  ImDrawList *list = reinterpret_cast<ImDrawList*>(handle);
+  Vec2Wrapper p1Arg(p1);
+  Vec2Wrapper p2Arg(p2);
+  list->AddLine(*p1Arg, *p2Arg, col, thickness);
+}

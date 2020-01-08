@@ -364,8 +364,10 @@ func (renderer *OpenGL3) LoadImage(image *image.RGBA) (TextureID, error) {
 	return texture, nil
 }
 
-func (renderer *OpenGL3) ReleaseImage() {
+func (renderer *OpenGL3) ReleaseImage(textureId TextureID) {
 	gl.BindTexture(gl.TEXTURE_2D, 0)
+	handle := uint32(textureId)
+	gl.DeleteTextures(1, &handle)
 }
 
 func (renderer *OpenGL3) createImageTexture(img *image.RGBA) (TextureID, error) {

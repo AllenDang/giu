@@ -698,3 +698,9 @@ void iggSetTabItemClosed(char const *tab_or_docked_window_label)
 {
    ImGui::SetTabItemClosed(tab_or_docked_window_label);
 }
+
+IggDrawList iggGetWindowDrawList()
+{
+  ImDrawList* drawlist = ImGui::GetWindowDrawList();
+  return static_cast<IggDrawList>(drawlist);
+}

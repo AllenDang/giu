@@ -11,7 +11,7 @@ type Renderer interface {
 	// Load image and return the TextureID
 	LoadImage(image *image.RGBA) (TextureID, error)
 	// Release image
-	ReleaseImage()
+	ReleaseImage(textureId TextureID)
 	// Dispose
 	Dispose()
 }

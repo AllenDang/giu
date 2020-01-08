@@ -173,6 +173,8 @@ extern "C"
 	extern void iggEndTabItem();
 	extern void iggSetTabItemClosed(char const *tab_or_docked_window_label);
 
+  extern IggDrawList iggGetWindowDrawList();
+
 #ifdef __cplusplus
 }
 #endif

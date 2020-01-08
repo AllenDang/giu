@@ -1128,3 +1128,7 @@ func MouseCursor() int {
 func SetMouseCursor(cursor int) {
 	C.iggSetMouseCursor(C.int(cursor))
 }
+
+func GetWindowDrawList() DrawList {
+	return DrawList(C.iggGetWindowDrawList())
+}

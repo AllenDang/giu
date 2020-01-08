@@ -83,3 +83,10 @@ func (list DrawList) IndexBuffer() (unsafe.Pointer, int) {
 
 	return data, int(size)
 }
+
+func (list DrawList) AddLine(p1, p2 Vec2, col Vec4, thickness float32) {
+	c := GetColorU32(col)
+	p1Arg, _ := p1.wrapped()
+	p2Arg, _ := p2.wrapped()
+	C.iggDrawListAddLine(list.handle(), p1Arg, p2Arg, C.uint(c), C.float(thickness))
+}
