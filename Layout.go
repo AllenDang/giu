@@ -46,8 +46,8 @@ func (l *SameLineWidget) Build() {
 
 type Layout []Widget
 
-func (l *Layout) Build() {
-	for _, w := range *l {
+func (l Layout) Build() {
+	for _, w := range l {
 		if w.Width() != 0 {
 			imgui.PushItemWidth(w.Width())
 		}
@@ -60,6 +60,6 @@ func (l *Layout) Build() {
 	}
 }
 
-func (l *Layout) Width() float32 {
+func (l Layout) Width() float32 {
 	return 0
 }

@@ -340,6 +340,13 @@ func Button(id string) bool {
 	return ButtonV(id, Vec2{})
 }
 
+func InvisibleButton(id string, size Vec2) bool {
+	idArg, idFin := wrapString(id)
+	defer idFin()
+	sizeArg, _ := size.wrapped()
+	return C.iggInvisibleButton(idArg, sizeArg) != 0
+}
+
 // ImageV adds an image based on given texture ID.
 // Refer to TextureID what this represents and how it is drawn.
 func ImageV(id TextureID, size Vec2, uv0, uv1 Vec2, tintCol, borderCol Vec4) {
@@ -934,6 +941,10 @@ func IsItemHoveredV(flags int) bool {
 // IsItemHovered calls IsItemHoveredV(HoveredFlagsNone)
 func IsItemHovered() bool {
 	return IsItemHoveredV(HoveredFlagsNone)
+}
+
+func IsItemActive() bool {
+	return C.iggIsItemActive() != 0
 }
 
 // IsKeyDown returns true if the corresponding key is currently being held down.

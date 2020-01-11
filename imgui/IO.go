@@ -68,6 +68,14 @@ func (io IO) AddMouseWheelDelta(horizontal, vertical float32) {
 	C.iggIoAddMouseWheelDelta(io.handle, C.float(horizontal), C.float(vertical))
 }
 
+func (io IO) GetMouseDelta() Vec2 {
+	var delta Vec2
+	deltaArg, deltaFin := delta.wrapped()
+	C.iggIoGetMouseDelta(io.handle, deltaArg)
+	deltaFin()
+	return delta
+}
+
 // SetDeltaTime sets the time elapsed since last frame, in seconds.
 func (io IO) SetDeltaTime(value float32) {
 	C.iggIoSetDeltaTime(io.handle, C.float(value))

@@ -68,6 +68,7 @@ extern "C"
 	extern void iggLabelText(char const *label, char const *text);
 
 	extern IggBool iggButton(char const *label, IggVec2 const *size);
+  extern IggBool iggInvisibleButton(char const *label, IggVec2 const *size);
 	extern void iggImage(IggTextureID textureID,
 						 IggVec2 const *size, IggVec2 const *uv0, IggVec2 const *uv1,
 						 IggVec4 const *tintCol, IggVec4 const *borderCol);
@@ -141,6 +142,7 @@ extern "C"
 	extern void iggCloseCurrentPopup(void);
 
 	extern IggBool iggIsItemHovered(int flags);
+  extern IggBool iggIsItemActive();
 
 	extern IggBool iggIsKeyDown(int key);
 	extern IggBool iggIsKeyPressed(int key, IggBool repeat);
