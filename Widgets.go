@@ -335,3 +335,9 @@ func TreeNode(label string, flags int, widgets ...Widget) Widget {
 		}
 	}
 }
+
+func Spacing() Widget {
+	return func() {
+		imgui.Spacing()
+	}
+}
