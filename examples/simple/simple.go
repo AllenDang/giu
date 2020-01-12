@@ -38,123 +38,102 @@ func contextMenu2Clicked() {
 }
 
 func btnPopupCLicked() {
-	g.OpenPopup("Confirm")
+	imgui.OpenPopup("Confirm")
 }
 
 func loop(w *g.MasterWindow) {
 	// Create main menu bar for master window.
 	g.MainMenuBar(
-		g.Layout{
-			g.Menu("File", g.Layout{
-				g.MenuItem("Open", nil),
-				g.MenuItem("Save", nil),
-				// You could add any kind of widget here, not just menu item.
-				g.Menu("Save as ...", g.Layout{
-					g.MenuItem("Excel file", nil),
-					g.MenuItem("CSV file", nil),
-					g.Button("Button inside menu", nil),
-				}),
-			}),
-		},
-	)
+		g.Menu("File",
+			g.MenuItem("Open"),
+			g.MenuItem("Save"),
+			// You could add any kind of widget here, not just menu item.
+			g.Menu("Save as ...",
+				g.MenuItem("Excel file"),
+				g.MenuItem("CSV file"),
+				g.Button("Button inside menu", nil),
+			),
+		),
+	)()
 
 	// Build a new window
 	width, height := w.GetSize()
 	g.Window("Overview", 0, 20, float32(width), float32(height)-20,
-		g.Layout{
-			g.Label("One line label"),
+		g.Label("One line label"),
+		g.SameLine(
+			g.InputText("##name", &name),
+			g.Button("Click Me", btnClickMeClicked),
+		),
+		g.Tooltip("I'm a tooltip"),
+		g.SameLine(
+			g.Checkbox("Checkbox", &checked, func() {
+				fmt.Println(checked)
+			}),
+			g.Checkbox("Checkbox 2", &checked2, func() {
+				fmt.Println(checked2)
+			}),
+		),
+		g.ProgressBar(0.8, -1, 0, "Progress"),
+		g.DragInt("DragInt", &dragInt),
+		g.SliderInt("Slider", &dragInt, 0, 100, ""),
+		g.SameLine(
+			g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, comboChanged),
+			g.Label("Right click me"),
+		),
+		g.ContextMenu(
+			g.Selectable("Context menu 1", contextMenu1Clicked),
+			g.Selectable("Context menu 2", contextMenu2Clicked),
+		),
+		g.ListBox("ListBox", &itemSelected, items, 5, -1, listboxChanged),
+		g.SameLine(
+			g.Button("Popup Modal", btnPopupCLicked),
+		),
+		g.Popup("Confirm",
+			g.Label("Confirm to close me?"),
 			g.SameLine(
-				g.InputTextV("##name", &name, -80, 0, nil, nil),
-				g.Button("Click Me", btnClickMeClicked),
-				g.Tooltip("I'm a tooltip"),
+				g.Button("Yes", func() { imgui.CloseCurrentPopup() }),
+				g.Button("No", nil)),
+		),
+		g.TabBar("Tabbar Input",
+			g.TabItem("Multiline Input",
+				g.Label("This is first tab with a multiline input text field"),
+				g.InputTextMultiline("##multiline", &multiline),
 			),
-			g.SameLine(
-				g.Checkbox("Checkbox", &checked, func() {
-					fmt.Println(checked)
-				}),
-				g.Checkbox("Checkbox 2", &checked2, func() {
-					fmt.Println(checked2)
-				}),
-			),
-			g.ProgressBarV(0.8, -1, 0, "Progress"),
-			g.DragIntV("DragInt", &dragInt, 1.0, 0, 100, "%d", 0),
-			g.SliderInt("Slider", &dragInt, 0, 100),
-			g.SameLine(
-				g.ComboV("Combo", items[itemSelected], items, &itemSelected, 100, comboChanged),
-				g.Label("Right click me"),
-				g.ContextMenu(
-					g.Layout{
-						g.Selectable("Context menu 1", contextMenu1Clicked),
-						g.Selectable("Context menu 2", contextMenu2Clicked),
-					},
+			g.TabItem("Tree",
+				g.TreeNode("TreeNode1", imgui.TreeNodeFlagsCollapsingHeader|imgui.TreeNodeFlagsDefaultOpen,
+					g.Label("Tree node 1"),
+					g.Label("Tree node 1"),
+					g.Label("Tree node 1"),
+					g.Button("Button inside tree", nil),
+				),
+				g.TreeNode("TreeNode2", 0,
+					g.Label("Tree node 2"),
+					g.Label("Tree node 2"),
+					g.Label("Tree node 2"),
+					g.Button("Button inside tree", nil),
 				),
 			),
-			g.ListBoxV("ListBox", &itemSelected, items, 5, -1, listboxChanged),
-			g.SameLine(
-				g.Button("Popup Modal", btnPopupCLicked),
-				g.Popup("Confirm",
-					g.Layout{
-						g.Label("Confirm to close me?"),
-						g.SameLine(
-							g.Button("Yes", func() { g.CloseCurrentPopup() }),
-							g.Button("No", nil)),
-					},
+			g.TabItem("Table",
+				g.Table("Table", true, 3,
+					g.Row(g.Label("Name"), g.Label("Age"), g.Label("Location")),
+					g.Row(g.Label("Allen"), g.Label("33"), g.Label("China")),
+					g.Row(g.Label("Allen"), g.Label("33"), g.Label("China")),
+					g.Row(g.Label("Allen"), g.Label("33"), g.Label("China")),
+					g.Row(g.Checkbox("check me", &checked, nil), g.Button("click me", nil), g.Label("...")),
+					g.Row(g.Label("Allen"), g.Label("33"), g.Label("China")),
 				),
 			),
-			g.TabBar("Tabbar Input",
-				[]*g.TabItemWidget{
-					g.TabItem("Multiline Input",
-						g.Layout{
-							g.Label("This is first tab with a multiline input text field"),
-							g.InputTextMultilineV("##multiline", &multiline, -1, 0, 0, nil),
-						},
+			g.TabItem("Group",
+				g.SameLine(
+					g.Group(
+						g.Label("I'm inside group 1"),
 					),
-					g.TabItem("Tree",
-						g.Layout{
-							g.TreeNodeV("TreeNode1", imgui.TreeNodeFlagsCollapsingHeader|imgui.TreeNodeFlagsDefaultOpen,
-								g.Layout{
-									g.Label("Tree node 1"),
-									g.Label("Tree node 1"),
-									g.Label("Tree node 1"),
-									g.Button("Button inside tree", nil),
-								},
-							),
-							g.TreeNode("TreeNode2",
-								g.Layout{
-									g.Label("Tree node 2"),
-									g.Label("Tree node 2"),
-									g.Label("Tree node 2"),
-									g.Button("Button inside tree", nil),
-								}),
-						},
+					g.Group(
+						g.Label("I'm inside group 2"),
 					),
-					g.TabItem("Table",
-						g.Layout{
-							g.Table("Table", true,
-								g.Row(g.Label("Name"), g.Label("Age"), g.Label("Location")),
-								g.Row(g.Label("Allen"), g.Label("33"), g.Label("China")),
-								g.Row(g.Label("Allen"), g.Label("33"), g.Label("China")),
-								g.Row(g.Label("Allen"), g.Label("33"), g.Label("China")),
-								g.Row(g.Checkbox("check me", &checked, nil), g.Button("click me", nil), g.Label("...")),
-								g.Row(g.Label("Allen"), g.Label("33"), g.Label("China")),
-							),
-						},
-					),
-					g.TabItem("Group",
-						g.Layout{
-							g.SameLine(
-								g.Group(g.Layout{
-									g.Label("I'm inside group 1"),
-								}),
-								g.Group(g.Layout{
-									g.Label("I'm inside group 2"),
-								}),
-							),
-						},
-					),
-				},
+				),
 			),
-		},
+		),
 	)
 }
 

@@ -4,7 +4,7 @@ import (
 	"github.com/AllenDang/giu/imgui"
 )
 
-func Window(title string, x, y, width, height float32, layout Layout) {
+func Window(title string, x, y, width, height float32, widgets ...Widget) {
 	WindowV(
 		title,
 		nil,
@@ -13,11 +13,11 @@ func Window(title string, x, y, width, height float32, layout Layout) {
 			imgui.WindowFlagsNoResize,
 		x, y,
 		width, height,
-		layout,
+		widgets...,
 	)
 }
 
-func SingleWindow(w *MasterWindow, title string, layout Layout) {
+func SingleWindow(w *MasterWindow, title string, widgets ...Widget) {
 	width, height := w.GetSize()
 	WindowV(
 		title,
@@ -30,15 +30,15 @@ func SingleWindow(w *MasterWindow, title string, layout Layout) {
 			imgui.WindowFlagsNoResize,
 		0, 0,
 		float32(width), float32(height),
-		layout,
+		widgets...,
 	)
 }
 
-func WindowV(title string, open *bool, flags int, x, y, width, height float32, layout Layout) {
+func WindowV(title string, open *bool, flags int, x, y, width, height float32, widgets ...Widget) {
 	imgui.SetNextWindowPos(imgui.Vec2{X: x, Y: y})
 	imgui.SetNextWindowSize(imgui.Vec2{X: width, Y: height})
 
 	imgui.BeginV(title, open, flags)
-	layout.Build()
+	Layout(widgets...)()
 	imgui.End()
 }

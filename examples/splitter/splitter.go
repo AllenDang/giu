@@ -13,23 +13,25 @@ var (
 )
 
 func loop(w *g.MasterWindow) {
-	g.SingleWindow(w, "splitter", g.Layout{
-		g.Custom(func() {
+	g.SingleWindow(w, "splitter",
+		func() {
 			width += deltaX
 			height += deltaY
 			imgui.PushStyleVarVec2(imgui.StyleVarItemSpacing, imgui.Vec2{X: 0, Y: 0})
-		}),
+		},
 		g.SameLine(
-			g.Child("left", width, height, true, 0, g.Layout{}),
+			g.ChildV("left", true, width, height, 0),
 			g.VSplitter("vsplitter", 8, height, &deltaX),
-			g.Child("rightUp", 0, height, true, 0, g.Layout{}),
+			g.ChildV("rightUp", true, 0, height, 0,
+				g.Label("Drag splitter between panels to resize them"),
+			),
 		),
 		g.HSplitter("hsplitter", -1, 8, &deltaY),
-		g.Child("rightDown", 0, 0, true, 0, g.Layout{}),
-		g.Custom(func() {
+		g.ChildV("rightDown", true, 0, 0, 0),
+		func() {
 			imgui.PopStyleVar()
-		}),
-	})
+		},
+	)
 }
 
 func main() {

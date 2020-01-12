@@ -8,18 +8,18 @@ import (
 )
 
 func loop(w *giu.MasterWindow) {
-	giu.SingleWindow(w, "set style", giu.Layout{
-		giu.Custom(func() {
+	giu.SingleWindow(w, "set style",
+		func() {
 			// #3674D5
 			col := color.RGBA{0x36, 0x74, 0xD5, 255}
 			imgui.PushStyleColor(imgui.StyleColorText, giu.ToVec4Color(col))
-		}),
+		},
 		giu.Label("I'm a styled label setting by imgui.PushStyleColor"),
-		giu.Custom(func() {
+		func() {
 			imgui.PopStyleColor()
-		}),
+		},
 		giu.Label("I'm a normal label"),
-	})
+	)
 }
 
 func main() {
