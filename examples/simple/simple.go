@@ -60,40 +60,35 @@ func loop(w *g.MasterWindow) {
 	width, height := w.GetSize()
 	g.Window("Overview", 0, 20, float32(width), float32(height)-20,
 		g.Label("One line label"),
-		g.SameLine(
-			g.InputText("##name", &name),
-			g.Button("Click Me", btnClickMeClicked),
-		),
+		g.InputText("##name", &name),
+		g.SameLine(),
+		g.Button("Click Me", btnClickMeClicked),
 		g.Tooltip("I'm a tooltip"),
-		g.SameLine(
-			g.Checkbox("Checkbox", &checked, func() {
-				fmt.Println(checked)
-			}),
-			g.Checkbox("Checkbox 2", &checked2, func() {
-				fmt.Println(checked2)
-			}),
-		),
+		g.Checkbox("Checkbox", &checked, func() {
+			fmt.Println(checked)
+		}),
+		g.SameLine(),
+		g.Checkbox("Checkbox 2", &checked2, func() {
+			fmt.Println(checked2)
+		}),
 		g.ProgressBar(0.8, -1, 0, "Progress"),
 		g.DragInt("DragInt", &dragInt),
 		g.SliderInt("Slider", &dragInt, 0, 100, ""),
-		g.SameLine(
-			g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, comboChanged),
-			g.Label("Right click me"),
-		),
+
+		g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, comboChanged),
+		g.SameLine(),
+		g.Label("Right click me"),
 		g.ContextMenu(
 			g.Selectable("Context menu 1", contextMenu1Clicked),
 			g.Selectable("Context menu 2", contextMenu2Clicked),
 		),
 		g.ListBox("ListBox", &itemSelected, items, 5, -1, listboxChanged),
-		g.SameLine(
-			g.Button("Popup Modal", btnPopupCLicked),
-		),
+		g.Button("Popup Modal", btnPopupCLicked),
 		g.Popup("Confirm",
 			g.Label("Confirm to close me?"),
-			g.SameLine(
-				g.Button("Yes", func() { imgui.CloseCurrentPopup() }),
-				g.Button("No", nil)),
-		),
+			g.Button("Yes", func() { imgui.CloseCurrentPopup() }),
+			g.SameLine(),
+			g.Button("No", nil)),
 		g.TabBar("Tabbar Input",
 			g.TabItem("Multiline Input",
 				g.Label("This is first tab with a multiline input text field"),
@@ -124,13 +119,12 @@ func loop(w *g.MasterWindow) {
 				),
 			),
 			g.TabItem("Group",
-				g.SameLine(
-					g.Group(
-						g.Label("I'm inside group 1"),
-					),
-					g.Group(
-						g.Label("I'm inside group 2"),
-					),
+				g.Group(
+					g.Label("I'm inside group 1"),
+				),
+				g.SameLine(),
+				g.Group(
+					g.Label("I'm inside group 2"),
 				),
 			),
 		),

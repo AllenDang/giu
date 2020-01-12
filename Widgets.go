@@ -2,14 +2,9 @@ package giu
 
 import "github.com/AllenDang/giu/imgui"
 
-func SameLine(widgets ...Widget) Widget {
+func SameLine() Widget {
 	return func() {
-		for i, w := range widgets {
-			if i > 0 {
-				imgui.SameLine()
-			}
-			w()
-		}
+		imgui.SameLine()
 	}
 }
 
