@@ -50,6 +50,10 @@ func NewMasterWindowWithBgColor(title string, width, height int, resizable bool,
 		panic(err)
 	}
 
+	// Create context
+	Context.renderer = r
+	Context.platform = p
+
 	col := [4]float32{0.22, 0.26, 0.28, 1}
 
 	if bgColor != nil {

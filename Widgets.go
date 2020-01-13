@@ -106,10 +106,10 @@ func Group(widgets ...Widget) Widget {
 	}
 }
 
-func Image(id imgui.TextureID, width, height float32) Widget {
+func Image(texture *Texture, width, height float32) Widget {
 	size := imgui.Vec2{X: width, Y: height}
 	return func() {
-		if id != 0 {
+		if texture != nil && texture.id != 0 {
 			rect := imgui.ContentRegionAvail()
 			if size.X == -1 {
 				size.X = rect.X
@@ -117,7 +117,7 @@ func Image(id imgui.TextureID, width, height float32) Widget {
 			if size.Y == -1 {
 				size.Y = rect.Y
 			}
-			imgui.Image(id, size)
+			imgui.Image(texture.id, size)
 		}
 	}
 }
