@@ -47,17 +47,15 @@ func btnLoadClicked() {
 }
 
 func loop(w *g.MasterWindow) {
-	g.SingleWindow(w, "load image",
-		g.InputText("Url", &url),
-		g.Button("btnLoad", btnLoadClicked),
-		func() {
-			if loading {
-				g.Label("Downloadig image ...")()
-			} else {
-				g.Image(texture, -1, -1)()
-			}
-		},
-	)
+	g.SingleWindow(w, "load image", func() {
+		g.InputText("Url", &url)
+		g.Button("btnLoad", btnLoadClicked)
+		if loading {
+			g.Label("Downloadig image ...")
+		} else {
+			g.Image(texture, -1, -1)
+		}
+	})
 }
 
 func main() {

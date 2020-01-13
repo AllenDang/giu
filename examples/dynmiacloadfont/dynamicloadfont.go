@@ -20,9 +20,9 @@ func loadFont() {
 }
 
 func loop(w *g.MasterWindow) {
-	g.SingleWindow(w, "dynamic load font",
-		g.Label("你好啊世界！铁憨憨"),
-	)
+	g.SingleWindow(w, "dynamic load font", func() {
+		g.Label("你好啊世界！铁憨憨")
+	})
 }
 
 func main() {

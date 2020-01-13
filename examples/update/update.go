@@ -24,9 +24,9 @@ func refersh() {
 }
 
 func loop(w *giu.MasterWindow) {
-	giu.SingleWindow(w, "Update",
-		giu.Label(fmt.Sprintf("%d", counter)),
-	)
+	giu.SingleWindow(w, "Update", func() {
+		giu.Label(fmt.Sprintf("%d", counter))
+	})
 }
 
 func main() {
