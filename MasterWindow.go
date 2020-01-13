@@ -165,11 +165,11 @@ func (w *MasterWindow) run() {
 
 	ticker := time.NewTicker(time.Second / 60)
 	for !p.ShouldStop() {
-		p.ProcessEvents()
-
-		w.render()
-
-		<-ticker.C
+		Call(func() {
+			p.ProcessEvents()
+			w.render()
+			<-ticker.C
+		})
 	}
 }
 
@@ -200,11 +200,15 @@ func (w *MasterWindow) Update() {
 // Call the main loop.
 // loopFunc will be used to construct the ui.
 func (w *MasterWindow) Main(loopFunc func(w *MasterWindow)) {
-	w.updateFunc = loopFunc
+	Run(func() {
+		w.updateFunc = loopFunc
 
-	w.run()
+		w.run()
 
-	w.renderer.Dispose()
-	w.platform.Dispose()
-	w.context.Destroy()
+		Call(func() {
+			w.renderer.Dispose()
+			w.platform.Dispose()
+			w.context.Destroy()
+		})
+	})
 }
