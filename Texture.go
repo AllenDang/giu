@@ -2,7 +2,6 @@ package giu
 
 import (
 	"errors"
-	"fmt"
 	"image"
 	"runtime"
 
@@ -19,6 +18,7 @@ type loadImageResult struct {
 }
 
 func NewTextureFromRgba(rgba *image.RGBA) (*Texture, error) {
+	Update()
 	result := CallVal(func() interface{} {
 		texId, err := Context.renderer.LoadImage(rgba)
 		return &loadImageResult{id: texId, err: err}
@@ -36,8 +36,8 @@ func NewTextureFromRgba(rgba *image.RGBA) (*Texture, error) {
 }
 
 func (t *Texture) release() {
+	Update()
 	Call(func() {
 		Context.renderer.ReleaseImage(t.id)
-		fmt.Printf("Texture %v is released", t.id)
 	})
 }

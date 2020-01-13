@@ -10,7 +10,6 @@ import (
 
 var (
 	counter int
-	wnd     *giu.MasterWindow
 )
 
 func refersh() {
@@ -18,7 +17,7 @@ func refersh() {
 
 	for {
 		counter = rand.Intn(100)
-		wnd.Update()
+		giu.Update()
 
 		<-ticker.C
 	}
@@ -31,7 +30,7 @@ func loop(w *giu.MasterWindow) {
 }
 
 func main() {
-	wnd = giu.NewMasterWindow("Update", 400, 200, false, nil)
+	wnd := giu.NewMasterWindow("Update", 400, 200, false, nil)
 
 	go refersh()
 

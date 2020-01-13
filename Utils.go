@@ -40,3 +40,7 @@ func ToVec4Color(col color.RGBA) imgui.Vec4 {
 		W: float32(col.A) / 255,
 	}
 }
+
+func Update() {
+	Context.platform.Update()
+}

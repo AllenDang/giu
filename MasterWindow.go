@@ -1,7 +1,6 @@
 package giu
 
 import (
-	"image"
 	"image/color"
 	"time"
 
@@ -168,12 +167,16 @@ func (w *MasterWindow) run() {
 	p := w.platform
 
 	ticker := time.NewTicker(time.Second / 60)
-	for !p.ShouldStop() {
+	shouldQuit := false
+	for !shouldQuit {
 		Call(func() {
 			p.ProcessEvents()
 			w.render()
-			<-ticker.C
+
+			shouldQuit = p.ShouldStop()
 		})
+
+		<-ticker.C
 	}
 }
 
@@ -186,19 +189,6 @@ func (w *MasterWindow) GetSize() (width, height int) {
 	}
 
 	return w.width, w.height
-}
-
-// Load a image by renderer and return the TextureID which will be used later by imgui.
-func (w *MasterWindow) LoadImage(image *image.RGBA) (imgui.TextureID, error) {
-	return w.renderer.LoadImage(image)
-}
-
-func (w *MasterWindow) ReleaseImage(textureId imgui.TextureID) {
-	w.renderer.ReleaseImage(textureId)
-}
-
-func (w *MasterWindow) Update() {
-	w.platform.Update()
 }
 
 // Call the main loop.

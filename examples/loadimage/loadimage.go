@@ -2,8 +2,10 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"image"
 	"image/draw"
+	_ "image/jpeg"
 	_ "image/png"
 	"time"
 
@@ -15,9 +17,13 @@ var (
 	texture *g.Texture
 	url     string
 	client  *resty.Client
+	loading bool
 )
 
 func loadImage(imageUrl string) {
+	loading = true
+	g.Update()
+
 	resp, err := client.R().Get(imageUrl)
 	if err == nil {
 		img, _, err := image.Decode(bytes.NewReader(resp.Body()))
@@ -25,8 +31,15 @@ func loadImage(imageUrl string) {
 			rgba := image.NewRGBA(img.Bounds())
 			draw.Draw(rgba, img.Bounds(), img, image.Point{}, draw.Src)
 			texture, _ = g.NewTextureFromRgba(rgba)
+		} else {
+			fmt.Println(err)
 		}
+	} else {
+		fmt.Println(err)
 	}
+
+	loading = false
+	g.Update()
 }
 
 func btnLoadClicked() {
@@ -37,7 +50,13 @@ func loop(w *g.MasterWindow) {
 	g.SingleWindow(w, "load image",
 		g.InputText("Url", &url),
 		g.Button("btnLoad", btnLoadClicked),
-		g.Image(texture, -1, -1),
+		func() {
+			if loading {
+				g.Label("Downloadig image ...")()
+			} else {
+				g.Image(texture, -1, -1)()
+			}
+		},
 	)
 }
 
