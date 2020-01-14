@@ -295,3 +295,12 @@ func TreeNode(label string, flags int, builder Builder) {
 func Spacing() {
 	imgui.Spacing()
 }
+
+// Creates a widget block with given ID. IDs are hash of the entire stack!
+func ID(id string, builder Builder) {
+	imgui.PushID(id)
+	if builder != nil {
+		builder()
+	}
+	imgui.PopID()
+}
