@@ -22,6 +22,22 @@ func PushColorWindowBg(col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorWindowBg, ToVec4Color(col))
 }
 
+func PushColorFrameBg(col color.RGBA) {
+	imgui.PushStyleColor(imgui.StyleColorFrameBg, ToVec4Color(col))
+}
+
+func PushColorButton(col color.RGBA) {
+	imgui.PushStyleColor(imgui.StyleColorButton, ToVec4Color(col))
+}
+
+func PushColorButtonHovered(col color.RGBA) {
+	imgui.PushStyleColor(imgui.StyleColorButtonHovered, ToVec4Color(col))
+}
+
+func PushColorButtonActive(col color.RGBA) {
+	imgui.PushStyleColor(imgui.StyleColorButtonActive, ToVec4Color(col))
+}
+
 func PushWindowPadding(width, height float32) {
 	imgui.PushStyleVarVec2(imgui.StyleVarWindowPadding, imgui.Vec2{X: width, Y: height})
 }
