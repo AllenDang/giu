@@ -18,3 +18,7 @@ func (c context) GetRenderer() imgui.Renderer {
 func (c context) GetPlatform() imgui.Platform {
 	return c.platform
 }
+
+func (c context) IO() imgui.IO {
+	return imgui.CurrentIO()
+}
