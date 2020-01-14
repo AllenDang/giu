@@ -38,6 +38,12 @@ func Checkbox(text string, selected *bool, changed func()) {
 	}
 }
 
+func RadioButton(text string, active bool, changed func()) {
+	if imgui.RadioButton(text, active) && changed != nil {
+		changed()
+	}
+}
+
 func Child(id string, border bool, builder Builder) {
 	ChildV(id, border, 0, 0, 0, builder)
 }

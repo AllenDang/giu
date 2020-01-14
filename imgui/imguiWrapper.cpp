@@ -297,6 +297,11 @@ IggBool iggCheckbox(char const *label, IggBool *selected)
    return ImGui::Checkbox(label, selectedArg) ? 1 : 0;
 }
 
+IggBool iggRadioButton(char const *label, IggBool active)
+{
+  return ImGui::RadioButton(label, active != 0) ? 1 : 0;
+}
+
 void iggProgressBar(float fraction, IggVec2 const *size, char const *overlay)
 {
    Vec2Wrapper sizeArg(size);

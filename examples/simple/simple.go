@@ -15,6 +15,7 @@ var (
 	checked2     bool
 	dragInt      int32
 	multiline    string
+	radioOp      int
 )
 
 func btnClickMeClicked() {
@@ -76,17 +77,22 @@ func loop(w *g.MasterWindow) {
 			g.Checkbox("Checkbox 2", &checked2, func() {
 				fmt.Println(checked2)
 			})
+
+			g.SameLine()
+			g.Dummy(30, 0)
+			g.SameLine()
+			g.RadioButton("Radio 1", radioOp == 0, func() { radioOp = 0 })
+			g.SameLine()
+			g.RadioButton("Radio 2", radioOp == 1, func() { radioOp = 1 })
+			g.SameLine()
+			g.RadioButton("Radio 3", radioOp == 2, func() { radioOp = 2 })
+
 			g.ProgressBar(0.8, -1, 0, "Progress")
 			g.DragInt("DragInt", &dragInt)
 			g.SliderInt("Slider", &dragInt, 0, 100, "")
 
 			g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, comboChanged)
-			g.SameLine()
-			g.Label("Right click me")
-			g.ContextMenu(func() {
-				g.Selectable("Context menu 1", contextMenu1Clicked)
-				g.Selectable("Context menu 2", contextMenu2Clicked)
-			})
+
 			g.ListBox("ListBox", &itemSelected, items, 5, -1, listboxChanged)
 			g.Button("Popup Modal", btnPopupCLicked)
 			g.Popup("Confirm", func() {
@@ -95,6 +101,14 @@ func loop(w *g.MasterWindow) {
 				g.SameLine()
 				g.Button("No", nil)
 			})
+
+			g.SameLine()
+			g.Label("Right click me to see the context menu")
+			g.ContextMenu(func() {
+				g.Selectable("Context menu 1", contextMenu1Clicked)
+				g.Selectable("Context menu 2", contextMenu2Clicked)
+			})
+
 			g.TabBar("Tabbar Input", func() {
 				g.TabItem("Multiline Input", func() {
 					g.Label("This is first tab with a multiline input text field")
