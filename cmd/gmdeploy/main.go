@@ -41,8 +41,12 @@ func main() {
 	switch targetOS {
 	case "darwin":
 		// Compile
-		cmd := exec.Command("go", "build", "-ldflags=\"-s -w\"", ".")
+		cmd := exec.Command("bash", "-c", "go build -ldflags='-s -w' .")
 		cmd.Dir = projectPath
+		RunCmd(cmd)
+
+		// Upx
+		cmd = exec.Command("upx", appName)
 		RunCmd(cmd)
 
 		// Bundle
