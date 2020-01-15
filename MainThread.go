@@ -2,7 +2,6 @@ package giu
 
 import (
 	"errors"
-	"runtime"
 )
 
 // CallQueueCap is the capacity of the call queue. This means how many calls to CallNonBlock will not
@@ -14,10 +13,6 @@ var CallQueueCap = 16
 var (
 	callQueue chan func()
 )
-
-func init() {
-	runtime.LockOSThread()
-}
 
 func checkRun() {
 	if callQueue == nil {
