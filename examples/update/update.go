@@ -24,8 +24,16 @@ func refersh() {
 }
 
 func loop(w *giu.MasterWindow) {
-	giu.SingleWindow(w, "Update", func() {
-		giu.Label(fmt.Sprintf("%d", counter))
+	giu.SingleWindow(w, "Update", giu.Layout{
+		giu.Label(fmt.Sprintf("%d", counter)),
+		giu.Line(giu.Button("Button 1", nil), giu.Button("Button 2", nil)),
+		giu.Table("table", true, giu.Rows{
+			giu.Row(giu.Label("Column1"), giu.Label("Column2")),
+			giu.Row(giu.Label("Column1"), giu.Label("Column2")),
+			giu.Row(giu.Label("Column1"), giu.Label("Column2")),
+			giu.Row(giu.Label("Column1"), giu.Label("Column2")),
+			giu.Row(giu.Label("Column1"), giu.Label("Column2")),
+		}),
 	})
 }
 

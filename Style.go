@@ -10,6 +10,10 @@ func PushFont(font imgui.Font) {
 	imgui.PushFont(font)
 }
 
+func PopFont() {
+	imgui.PopFont()
+}
+
 func PushColorText(col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorText, ToVec4Color(col))
 }

@@ -26,10 +26,6 @@ func comboChanged() {
 	fmt.Println(items[itemSelected])
 }
 
-func listboxChanged() {
-	fmt.Println(items[itemSelected])
-}
-
 func contextMenu1Clicked() {
 	fmt.Println("Context menu 1 is clicked")
 }
@@ -45,126 +41,107 @@ func btnPopupCLicked() {
 func loop(w *g.MasterWindow) {
 	// Create main menu bar for master window.
 	g.MainMenuBar(
-		func() {
-			g.Menu("File", func() {
-				g.MenuItem("Open")
-				g.MenuItem("Save")
+		g.Layout{
+			g.Menu("File", g.Layout{
+				g.MenuItem("Open"),
+				g.MenuItem("Save"),
 				// You could add any kind of widget here, not just menu item.
-				g.Menu("Save as ...", func() {
-					g.MenuItem("Excel file")
-					g.MenuItem("CSV file")
-					g.Button("Button inside menu", nil)
+				g.Menu("Save as ...", g.Layout{
+					g.MenuItem("Excel file"),
+					g.MenuItem("CSV file"),
+					g.Button("Button inside menu", nil),
 				},
-				)
+				),
 			},
-			)
+			),
 		},
-	)
+	).Build()
 
 	// Build a new window
 	width, height := w.GetSize()
-	g.Window("Overview", 0, 20, float32(width), float32(height)-20,
-		func() {
-			g.Label("One line label")
-			g.InputText("##name", &name)
-			g.SameLine()
-			g.Button("Click Me", btnClickMeClicked)
-			g.Tooltip("I'm a tooltip")
+	g.Window("Overview", 0, 20, float32(width), float32(height)-20, g.Layout{
+		g.Label("One line label"),
+		g.Line(
+			g.InputText("##name", &name),
+			g.Button("Click Me", btnClickMeClicked),
+			g.Tooltip("I'm a tooltip"),
+		),
+
+		g.Line(
 			g.Checkbox("Checkbox", &checked, func() {
 				fmt.Println(checked)
-			})
-			g.SameLine()
+			}),
 			g.Checkbox("Checkbox 2", &checked2, func() {
 				fmt.Println(checked2)
-			})
+			}),
+			g.Dummy(30, 0),
+			g.RadioButton("Radio 1", radioOp == 0, func() { radioOp = 0 }),
+			g.RadioButton("Radio 2", radioOp == 1, func() { radioOp = 1 }),
+			g.RadioButton("Radio 3", radioOp == 2, func() { radioOp = 2 }),
+		),
 
-			g.SameLine()
-			g.Dummy(30, 0)
-			g.SameLine()
-			g.RadioButton("Radio 1", radioOp == 0, func() { radioOp = 0 })
-			g.SameLine()
-			g.RadioButton("Radio 2", radioOp == 1, func() { radioOp = 1 })
-			g.SameLine()
-			g.RadioButton("Radio 3", radioOp == 2, func() { radioOp = 2 })
+		g.ProgressBar(0.8, -1, 0, "Progress"),
+		g.DragInt("DragInt", &dragInt),
+		g.SliderInt("Slider", &dragInt, 0, 100, ""),
 
-			g.ProgressBar(0.8, -1, 0, "Progress")
-			g.DragInt("DragInt", &dragInt)
-			g.SliderInt("Slider", &dragInt, 0, 100, "")
+		g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, comboChanged),
 
-			g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, comboChanged)
+		g.Line(
+			g.Button("Popup Modal", btnPopupCLicked),
+			g.Popup("Confirm", g.Layout{
+				g.Label("Confirm to close me?"),
+				g.Line(
+					g.Button("Yes", func() { imgui.CloseCurrentPopup() }),
+					g.Button("No", nil),
+				),
+			}),
+			g.Label("Right click me to see the context menu"),
+			g.ContextMenu(g.Layout{
+				g.Selectable("Context menu 1", contextMenu1Clicked),
+				g.Selectable("Context menu 2", contextMenu2Clicked),
+			}),
+		),
 
-			g.ListBox("ListBox", &itemSelected, items, 5, -1, listboxChanged)
-			g.Button("Popup Modal", btnPopupCLicked)
-			g.Popup("Confirm", func() {
-				g.Label("Confirm to close me?")
-				g.Button("Yes", func() { imgui.CloseCurrentPopup() })
-				g.SameLine()
-				g.Button("No", nil)
-			})
+		g.TabBar("Tabbar Input", g.Layout{
+			g.TabItem("Multiline Input", g.Layout{
+				g.Label("This is first tab with a multiline input text field"),
+				g.InputTextMultiline("##multiline", &multiline, 0, 0, 0, nil),
+			}),
+			g.TabItem("Tree", g.Layout{
+				g.TreeNode("TreeNode1", imgui.TreeNodeFlagsCollapsingHeader|imgui.TreeNodeFlagsDefaultOpen, g.Layout{
+					g.Label("Tree node 1"),
+					g.Label("Tree node 1"),
+					g.Label("Tree node 1"),
+					g.Button("Button inside tree", nil),
+				}),
+				g.TreeNode("TreeNode2", 0, g.Layout{
+					g.Label("Tree node 2"),
+					g.Label("Tree node 2"),
+					g.Label("Tree node 2"),
+					g.Button("Button inside tree", nil),
+				}),
+			}),
+			g.TabItem("Table", g.Layout{
+				g.Table("Table", true, g.Rows{
+					g.Row(g.Label("Name"), g.Label("Age"), g.Label("Location")),
+					g.Row(g.Label("Allen"), g.Label("33"), g.Label("Shanghai/China")),
+					g.Row(g.Checkbox("check me", &checked, nil), g.Button("click me", nil), g.Label("Anything")),
+				}),
+			}),
+			g.TabItem("Group", g.Layout{
+				g.Line(
 
-			g.SameLine()
-			g.Label("Right click me to see the context menu")
-			g.ContextMenu(func() {
-				g.Selectable("Context menu 1", contextMenu1Clicked)
-				g.Selectable("Context menu 2", contextMenu2Clicked)
-			})
+					g.Group(g.Layout{
+						g.Label("I'm inside group 1"),
+					}),
 
-			g.TabBar("Tabbar Input", func() {
-				g.TabItem("Multiline Input", func() {
-					g.Label("This is first tab with a multiline input text field")
-					g.InputTextMultiline("##multiline", &multiline)
-				})
-				g.TabItem("Tree", func() {
-					g.TreeNode("TreeNode1", imgui.TreeNodeFlagsCollapsingHeader|imgui.TreeNodeFlagsDefaultOpen, func() {
-						g.Label("Tree node 1")
-						g.Label("Tree node 1")
-						g.Label("Tree node 1")
-						g.Button("Button inside tree", nil)
-					})
-					g.TreeNode("TreeNode2", 0, func() {
-						g.Label("Tree node 2")
-						g.Label("Tree node 2")
-						g.Label("Tree node 2")
-						g.Button("Button inside tree", nil)
-					})
-				})
-				g.TabItem("Table", func() {
-					g.Table("Table", true, 3, func() {
-						g.Separator()
-						g.Label("Name")
-						g.NextColumn()
-						g.Label("Age")
-						g.NextColumn()
-						g.Label("Location")
-						g.Separator()
-
-						g.NextColumn()
-						g.Label("Allen")
-						g.NextColumn()
-						g.Label("33")
-						g.NextColumn()
-						g.Label("China")
-						g.Separator()
-
-						g.NextColumn()
-						g.Checkbox("check me", &checked, nil)
-						g.NextColumn()
-						g.Button("click me", nil)
-						g.NextColumn()
-						g.Label("...")
-					})
-				})
-				g.TabItem("Group", func() {
-					g.Group(func() {
-						g.Label("I'm inside group 1")
-					})
-					g.SameLine()
-					g.Group(func() {
-						g.Label("I'm inside group 2")
-					})
-				})
-			})
-		})
+					g.Group(g.Layout{
+						g.Label("I'm inside group 2"),
+					}),
+				),
+			}),
+		}),
+	})
 }
 
 func main() {

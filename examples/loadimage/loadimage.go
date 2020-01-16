@@ -43,18 +43,23 @@ func loadImage(imageUrl string) {
 }
 
 func btnLoadClicked() {
-	go loadImage(url)
+	if len(url) > 0 {
+		go loadImage(url)
+	}
 }
 
 func loop(w *g.MasterWindow) {
-	g.SingleWindow(w, "load image", func() {
-		g.InputText("Url", &url)
-		g.Button("btnLoad", btnLoadClicked)
-		if loading {
-			g.Label("Downloadig image ...")
-		} else {
-			g.Image(texture, -1, -1)
-		}
+	g.SingleWindow(w, "load image", g.Layout{
+		g.Label("Paste image url and click download"),
+		g.InputText("Url", &url),
+		g.Button("btnLoad", btnLoadClicked),
+		g.Custom(func() {
+			if loading {
+				g.Label("Downloadig image ...").Build()
+			} else {
+				g.Image(texture, -1, -1).Build()
+			}
+		}),
 	})
 }
 

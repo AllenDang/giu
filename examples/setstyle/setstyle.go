@@ -7,12 +7,9 @@ import (
 )
 
 func loop(w *giu.MasterWindow) {
-	giu.SingleWindow(w, "set style", func() {
-		// #3674D5
-		giu.PushColorText(color.RGBA{0x36, 0x74, 0xD5, 255})
-		giu.Label("I'm a styled label setting by imgui.PushStyleColor")
-		giu.PopStyleColor()
-		giu.Label("I'm a normal label")
+	giu.SingleWindow(w, "set style", giu.Layout{
+		giu.LabelV("I'm a styled label", &color.RGBA{0x36, 0x74, 0xD5, 255}, nil),
+		giu.Label("I'm a normal label"),
 	})
 }
 
