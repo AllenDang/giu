@@ -90,3 +90,11 @@ func AlignTextToFramePadding() {
 func PushItemWidth(width float32) {
 	imgui.PushItemWidth(width)
 }
+
+func PushTextWrapPos() {
+	imgui.PushTextWrapPos()
+}
+
+func PopTextWrapPos() {
+	imgui.PopTextWrapPos()
+}
