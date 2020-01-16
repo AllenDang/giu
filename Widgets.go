@@ -825,3 +825,21 @@ func Custom(builder func()) *CustomWidget {
 		builder: builder,
 	}
 }
+
+type ConditionWidget struct {
+	cond   bool
+	layout Layout
+}
+
+func (c *ConditionWidget) Build() {
+	if c.cond {
+		c.layout.Build()
+	}
+}
+
+func Condition(cond bool, layout Layout) *ConditionWidget {
+	return &ConditionWidget{
+		cond:   cond,
+		layout: layout,
+	}
+}
