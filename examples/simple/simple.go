@@ -62,7 +62,7 @@ func loop(w *g.MasterWindow) {
 	g.Window("Overview", 0, 20, float32(width), float32(height)-20, g.Layout{
 		g.Label("One line label"),
 		g.Line(
-			g.InputText("##name", &name),
+			g.InputText("##name", 0, &name),
 			g.Button("Click Me", btnClickMeClicked),
 			g.Tooltip("I'm a tooltip"),
 		),
@@ -130,11 +130,9 @@ func loop(w *g.MasterWindow) {
 			}),
 			g.TabItem("Group", g.Layout{
 				g.Line(
-
 					g.Group(g.Layout{
 						g.Label("I'm inside group 1"),
 					}),
-
 					g.Group(g.Layout{
 						g.Label("I'm inside group 2"),
 					}),

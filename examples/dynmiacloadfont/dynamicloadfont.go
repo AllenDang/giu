@@ -6,7 +6,7 @@ import (
 )
 
 func loadFont() {
-	fonts := imgui.CurrentIO().Fonts()
+	fonts := g.Context.IO().Fonts()
 
 	ranges := imgui.NewGlyphRanges()
 

@@ -51,8 +51,8 @@ func btnLoadClicked() {
 func loop(w *g.MasterWindow) {
 	g.SingleWindow(w, "load image", g.Layout{
 		g.Label("Paste image url and click download"),
-		g.InputText("Url", &url),
-		g.Button("btnLoad", btnLoadClicked),
+		g.InputText("##Url", -1, &url),
+		g.Button("Download and display", btnLoadClicked),
 		g.Custom(func() {
 			if loading {
 				g.Label("Downloadig image ...").Build()

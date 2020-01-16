@@ -309,25 +309,30 @@ func Image(texture *Texture, width, height float32) *ImageWidget {
 type InputTextWidget struct {
 	label   string
 	value   *string
+	width   float32
 	flags   int
 	cb      imgui.InputTextCallback
 	changed func()
 }
 
 func (i *InputTextWidget) Build() {
+	if i.width != 0 {
+		PushItemWidth(i.width)
+	}
 	if imgui.InputTextV(i.label, i.value, i.flags, i.cb) && i.changed != nil {
 		i.changed()
 	}
 }
 
-func InputText(label string, value *string) *InputTextWidget {
-	return InputTextV(label, value, 0, nil, nil)
+func InputText(label string, width float32, value *string) *InputTextWidget {
+	return InputTextV(label, width, value, 0, nil, nil)
 }
 
-func InputTextV(label string, value *string, flags int, cb imgui.InputTextCallback, changed func()) *InputTextWidget {
+func InputTextV(label string, width float32, value *string, flags int, cb imgui.InputTextCallback, changed func()) *InputTextWidget {
 	return &InputTextWidget{
 		label:   label,
 		value:   value,
+		width:   width,
 		flags:   flags,
 		cb:      cb,
 		changed: changed,
