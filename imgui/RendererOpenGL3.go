@@ -296,7 +296,13 @@ void main()
 func (renderer *OpenGL3) createFontsTexture() {
 	// Build texture atlas
 	io := CurrentIO()
-	image := io.Fonts().TextureDataAlpha8()
+	fonts := io.Fonts()
+	fonts.AddFontDefault()
+	err := fonts.BuildWithFreeType()
+	if err != nil {
+		panic(err)
+	}
+	image := fonts.TextureDataAlpha8()
 
 	// Upload texture to graphics system
 	var lastTexture int32

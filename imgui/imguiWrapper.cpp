@@ -362,9 +362,27 @@ IggBool iggInputTextMultiline(char const *label, char *buf, unsigned int bufSize
 {
    Vec2Wrapper sizeArg(size);
    return ImGui::InputTextMultiline(label, buf, static_cast<size_t>(bufSize), *sizeArg, flags,
-                                    iggInputTextCallbackWrapper, reinterpret_cast<void *>(callbackKey))
-              ? 1
-              : 0;
+                                    iggInputTextCallbackWrapper, reinterpret_cast<void *>(callbackKey)) ? 1 : 0;
+}
+
+IggBool iggColorEdit3(char const *label, float *col, int flags)
+{
+   return ImGui::ColorEdit3(label, col, flags) ? 1 : 0;
+}
+
+IggBool iggColorEdit4(char const *label, float *col, int flags)
+{
+   return ImGui::ColorEdit4(label, col, flags) ? 1 : 0;
+}
+
+IggBool iggColorPicker3(char const *label, float *col, int flags)
+{
+   return ImGui::ColorPicker3(label, col, flags) ? 1 : 0;
+}
+
+IggBool iggColorPicker4(char const *label, float *col, int flags)
+{
+   return ImGui::ColorPicker4(label, col, flags) ? 1 : 0;
 }
 
 void iggSeparator(void)

@@ -569,6 +569,58 @@ func InputTextMultiline(label string, text *string) bool {
 	return InputTextMultilineV(label, text, Vec2{}, 0, nil)
 }
 
+// ColorEdit3 calls ColorEdit3V(label, col, 0)
+func ColorEdit3(label string, col *[3]float32) bool {
+	return ColorEdit3V(label, col, 0)
+}
+
+// ColorEdit3V will show a clickable little square which will open a color picker window for 3D vector (rgb format).
+func ColorEdit3V(label string, col *[3]float32, flags int) bool {
+	labelArg, labelFin := wrapString(label)
+	defer labelFin()
+	ccol := (*C.float)(&col[0])
+	return C.iggColorEdit3(labelArg, ccol, C.int(flags)) != 0
+}
+
+// ColorEdit4 calls ColorEdit4V(label, col, 0)
+func ColorEdit4(label string, col *[4]float32) bool {
+	return ColorEdit4V(label, col, 0)
+}
+
+// ColorEdit4V will show a clickable little square which will open a color picker window for 4D vector (rgba format).
+func ColorEdit4V(label string, col *[4]float32, flags int) bool {
+	labelArg, labelFin := wrapString(label)
+	defer labelFin()
+	ccol := (*C.float)(&col[0])
+	return C.iggColorEdit4(labelArg, ccol, C.int(flags)) != 0
+}
+
+// ColorPicker3 calls ColorPicker3(label, col, 0)
+func ColorPicker3(label string, col *[3]float32, flags int) bool {
+	return ColorPicker3V(label, col, 0)
+}
+
+// ColorPicker3V will show directly a color picker control for editing a color in 3D vector (rgb format).
+func ColorPicker3V(label string, col *[3]float32, flags int) bool {
+	labelArg, labelFin := wrapString(label)
+	defer labelFin()
+	ccol := (*C.float)(&col[0])
+	return C.iggColorPicker3(labelArg, ccol, C.int(flags)) != 0
+}
+
+// ColorPicker4 calls ColorPicker4(label, col, 0)
+func ColorPicker4(label string, col *[4]float32, flags int) bool {
+	return ColorPicker4(label, col, 0)
+}
+
+// ColorPicker4V will show directly a color picker control for editing a color in 4D vector (rgba format).
+func ColorPicker4V(label string, col *[4]float32, flags int) bool {
+	labelArg, labelFin := wrapString(label)
+	defer labelFin()
+	ccol := (*C.float)(&col[0])
+	return C.iggColorPicker4(labelArg, ccol, C.int(flags)) != 0
+}
+
 // Separator is generally horizontal. Inside a menu bar or in horizontal layout mode, this becomes a vertical separator.
 func Separator() {
 	C.iggSeparator()
