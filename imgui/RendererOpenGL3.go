@@ -297,10 +297,12 @@ func (renderer *OpenGL3) createFontsTexture() {
 	// Build texture atlas
 	io := CurrentIO()
 	fonts := io.Fonts()
-	fonts.AddFontDefault()
-	err := fonts.BuildWithFreeType()
-	if err != nil {
-		panic(err)
+	if EnableFreeType {
+		fonts.AddFontDefault()
+		err := fonts.BuildWithFreeType()
+		if err != nil {
+			panic(err)
+		}
 	}
 	image := fonts.TextureDataAlpha8()
 

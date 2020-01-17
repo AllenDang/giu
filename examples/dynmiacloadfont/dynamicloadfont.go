@@ -12,7 +12,7 @@ func loadFont() {
 
 	builder := imgui.NewFontGlyphRangesBuilder()
 	builder.AddText("铁憨憨你好！")
-	// builder.AddRanges(fonts.GlyphRangesChineseSimplifiedCommon())
+	// builder.AddRanges(fonts.GlyphRangesChineseFull())
 	builder.BuildRanges(ranges)
 
 	fontPath := "/System/Library/Fonts/STHeiti Light.ttc"

@@ -25,6 +25,10 @@ const (
 	FreeTypeRasterizerFlagsMonochrome = 1 << 7
 )
 
+var (
+	EnableFreeType = false
+)
+
 // BuildWithFreeTypeV builds the FontAtlas using FreeType instead of the default rasterizer.
 // FreeType renders small fonts better.
 // Call this function instead of FontAtlas.Build() . As with FontAtlas.Build(), this function
