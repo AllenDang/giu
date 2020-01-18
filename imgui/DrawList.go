@@ -2,7 +2,9 @@ package imgui
 
 // #include "DrawListWrapper.h"
 import "C"
-import "unsafe"
+import (
+	"unsafe"
+)
 
 // DrawList is a draw-command list.
 // This is the low-level list of polygons that ImGui functions are filling.
@@ -89,4 +91,121 @@ func (list DrawList) AddLine(p1, p2 Vec2, col Vec4, thickness float32) {
 	p1Arg, _ := p1.wrapped()
 	p2Arg, _ := p2.wrapped()
 	C.iggDrawListAddLine(list.handle(), p1Arg, p2Arg, C.uint(c), C.float(thickness))
+}
+
+func (list DrawList) AddRect(pMin, pMax Vec2, col Vec4, rounding float32, rounding_corners int, thickness float32) {
+	c := GetColorU32(col)
+	pMinArg, _ := pMin.wrapped()
+	pMaxArg, _ := pMax.wrapped()
+	C.iggDrawListAddRect(list.handle(), pMinArg, pMaxArg, C.uint(c), C.float(rounding), C.int(rounding_corners), C.float(thickness))
+}
+
+func (list DrawList) AddRectFilled(pMin, pMax Vec2, col Vec4, rounding float32, rounding_corners int) {
+	c := GetColorU32(col)
+	pMinArg, _ := pMin.wrapped()
+	pMaxArg, _ := pMax.wrapped()
+	C.iggDrawListAddRectFilled(list.handle(), pMinArg, pMaxArg, C.uint(c), C.float(rounding), C.int(rounding_corners))
+}
+
+func (list DrawList) AddText(pos Vec2, col Vec4, text string) {
+	c := GetColorU32(col)
+	posArg, _ := pos.wrapped()
+	textArg, textFin := wrapString(text)
+	defer textFin()
+	C.iggDrawListAddText(list.handle(), posArg, C.uint(c), textArg)
+}
+
+func (list DrawList) AddBezierCurve(pos0, cp0, cp1, pos1 Vec2, col Vec4, thickness float32, num_segments int) {
+	c := GetColorU32(col)
+	pos0Arg, _ := pos0.wrapped()
+	cp0Arg, _ := cp0.wrapped()
+	cp1Arg, _ := cp1.wrapped()
+	pos1Arg, _ := pos1.wrapped()
+	C.iggDrawListAddBezierCurve(list.handle(), pos0Arg, cp0Arg, cp1Arg, pos1Arg, C.uint(c), C.float(thickness), C.int(num_segments))
+}
+
+func (list DrawList) AddTriangle(p1, p2, p3 Vec2, col Vec4, thickness float32) {
+	c := GetColorU32(col)
+	p1Arg, _ := p1.wrapped()
+	p2Arg, _ := p2.wrapped()
+	p3Arg, _ := p3.wrapped()
+	C.iggDrawListAddTriangle(list.handle(), p1Arg, p2Arg, p3Arg, C.uint(c), C.float(thickness))
+}
+
+func (list DrawList) AddTriangleFilled(p1, p2, p3 Vec2, col Vec4) {
+	c := GetColorU32(col)
+	p1Arg, _ := p1.wrapped()
+	p2Arg, _ := p2.wrapped()
+	p3Arg, _ := p3.wrapped()
+	C.iggDrawListAddTriangleFilled(list.handle(), p1Arg, p2Arg, p3Arg, C.uint(c))
+}
+
+func (list DrawList) AddCircle(center Vec2, radius float32, col Vec4, num_segments int, thickness float32) {
+	c := GetColorU32(col)
+	centerArg, _ := center.wrapped()
+	C.iggDrawListAddCircle(list.handle(), centerArg, C.float(radius), C.uint(c), C.int(num_segments), C.float(thickness))
+}
+
+func (list DrawList) AddCircleFilled(center Vec2, radius float32, col Vec4, num_segments int) {
+	c := GetColorU32(col)
+	centerArg, _ := center.wrapped()
+	C.iggDrawListAddCircleFilled(list.handle(), centerArg, C.float(radius), C.uint(c), C.int(num_segments))
+}
+
+func (list DrawList) AddQuad(p1, p2, p3, p4 Vec2, col Vec4, thickness float32) {
+	c := GetColorU32(col)
+	p1Arg, _ := p1.wrapped()
+	p2Arg, _ := p2.wrapped()
+	p3Arg, _ := p3.wrapped()
+	p4Arg, _ := p4.wrapped()
+	C.iggDrawListAddQuad(list.handle(), p1Arg, p2Arg, p3Arg, p4Arg, C.uint(c), C.float(thickness))
+}
+
+func (list DrawList) AddQuadFilled(p1, p2, p3, p4 Vec2, col Vec4) {
+	c := GetColorU32(col)
+	p1Arg, _ := p1.wrapped()
+	p2Arg, _ := p2.wrapped()
+	p3Arg, _ := p3.wrapped()
+	p4Arg, _ := p4.wrapped()
+	C.iggDrawListAddQuadFilled(list.handle(), p1Arg, p2Arg, p3Arg, p4Arg, C.uint(c))
+}
+
+// Stateful path API, add points then finish with PathFillConvex() or PathStroke()
+func (list DrawList) PathClear() {
+	C.iggDrawListPathClear(list.handle())
+}
+
+func (list DrawList) PathLineTo(pos Vec2) {
+	posArg, _ := pos.wrapped()
+	C.iggDrawListPathLineTo(list.handle(), posArg)
+}
+
+func (list DrawList) PathLineToMergeDuplicate(pos Vec2) {
+	posArg, _ := pos.wrapped()
+	C.iggDrawListPathLineToMergeDuplicate(list.handle(), posArg)
+}
+
+func (list DrawList) PathFillConvex(col Vec4) {
+	C.iggDrawListPathFillConvex(list.handle(), C.uint(GetColorU32(col)))
+}
+
+func (list DrawList) PathStroke(col Vec4, closed bool, thickness float32) {
+	C.iggDrawListPathStroke(list.handle(), C.uint(GetColorU32(col)), castBool(closed), C.float(thickness))
+}
+
+func (list DrawList) PathArcTo(center Vec2, radius, a_min, a_max float32, num_segments int) {
+	centerArg, _ := center.wrapped()
+	C.iggDrawListPathArcTo(list.handle(), centerArg, C.float(radius), C.float(a_min), C.float(a_max), C.int(num_segments))
+}
+
+func (list DrawList) PathArcToFast(center Vec2, radius float32, a_min_of_12, a_max_of_12 int) {
+	centerArg, _ := center.wrapped()
+	C.iggDrawListPathArcToFast(list.handle(), centerArg, C.float(radius), C.int(a_min_of_12), C.int(a_max_of_12))
+}
+
+func (list DrawList) PathBezierCurveTo(p1, p2, p3 Vec2, num_segments int) {
+	p1Arg, _ := p1.wrapped()
+	p2Arg, _ := p2.wrapped()
+	p3Arg, _ := p3.wrapped()
+	C.iggDrawListPathBezierCurveTo(list.handle(), p1Arg, p2Arg, p3Arg, C.int(num_segments))
 }

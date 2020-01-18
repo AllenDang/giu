@@ -41,6 +41,18 @@ func ToVec4Color(col color.RGBA) imgui.Vec4 {
 	}
 }
 
+func ToVec2(pt image.Point) imgui.Vec2 {
+	return imgui.Vec2{
+		X: float32(pt.X),
+		Y: float32(pt.Y),
+	}
+}
+
 func Update() {
 	Context.platform.Update()
+}
+
+func GetCursorScreenPos() image.Point {
+	pos := imgui.CursorScreenPos()
+	return image.Pt(int(pos.X), int(pos.Y))
 }
