@@ -35,22 +35,26 @@ type InputTextMultilineWidget struct {
 	label         string
 	text          *string
 	width, height float32
-	flags         int
+	flags         InputTextFlags
 	cb            imgui.InputTextCallback
+	changed       func()
 }
 
 func (i *InputTextMultilineWidget) Build() {
-	imgui.InputTextMultilineV(i.label, i.text, imgui.Vec2{X: i.width, Y: i.height}, i.flags, i.cb)
+	if imgui.InputTextMultilineV(i.label, i.text, imgui.Vec2{X: i.width, Y: i.height}, int(i.flags), i.cb) && i.changed != nil {
+		i.changed()
+	}
 }
 
-func InputTextMultiline(label string, text *string, width, height float32, flags int, cb imgui.InputTextCallback) *InputTextMultilineWidget {
+func InputTextMultiline(label string, text *string, width, height float32, flags InputTextFlags, cb imgui.InputTextCallback, changed func()) *InputTextMultilineWidget {
 	return &InputTextMultilineWidget{
-		label:  label,
-		text:   text,
-		width:  width,
-		height: height,
-		flags:  flags,
-		cb:     cb,
+		label:   label,
+		text:    text,
+		width:   width,
+		height:  height,
+		flags:   flags,
+		cb:      cb,
+		changed: changed,
 	}
 }
 
@@ -310,7 +314,7 @@ type InputTextWidget struct {
 	label   string
 	value   *string
 	width   float32
-	flags   int
+	flags   InputTextFlags
 	cb      imgui.InputTextCallback
 	changed func()
 }
@@ -319,7 +323,7 @@ func (i *InputTextWidget) Build() {
 	if i.width != 0 {
 		PushItemWidth(i.width)
 	}
-	if imgui.InputTextV(i.label, i.value, i.flags, i.cb) && i.changed != nil {
+	if imgui.InputTextV(i.label, i.value, int(i.flags), i.cb) && i.changed != nil {
 		i.changed()
 	}
 }
@@ -328,7 +332,7 @@ func InputText(label string, width float32, value *string) *InputTextWidget {
 	return InputTextV(label, width, value, 0, nil, nil)
 }
 
-func InputTextV(label string, width float32, value *string, flags int, cb imgui.InputTextCallback, changed func()) *InputTextWidget {
+func InputTextV(label string, width float32, value *string, flags InputTextFlags, cb imgui.InputTextCallback, changed func()) *InputTextWidget {
 	return &InputTextWidget{
 		label:   label,
 		value:   value,

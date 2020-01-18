@@ -105,7 +105,7 @@ func loop(w *g.MasterWindow) {
 		g.TabBar("Tabbar Input", g.Layout{
 			g.TabItem("Multiline Input", g.Layout{
 				g.Label("This is first tab with a multiline input text field"),
-				g.InputTextMultiline("##multiline", &multiline, 0, 0, 0, nil),
+				g.InputTextMultiline("##multiline", &multiline, 0, 0, 0, nil, nil),
 			}),
 			g.TabItem("Tree", g.Layout{
 				g.TreeNode("TreeNode1", imgui.TreeNodeFlagsCollapsingHeader|imgui.TreeNodeFlagsDefaultOpen, g.Layout{
