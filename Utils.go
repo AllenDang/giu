@@ -56,3 +56,8 @@ func GetCursorScreenPos() image.Point {
 	pos := imgui.CursorScreenPos()
 	return image.Pt(int(pos.X), int(pos.Y))
 }
+
+func GetAvaiableRegion() (width, height float32) {
+	region := imgui.ContentRegionAvail()
+	return region.X, region.Y
+}
