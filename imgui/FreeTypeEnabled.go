@@ -1,3 +1,5 @@
+// +build imguifreetype
+
 package imgui
 
 // #cgo pkg-config: freetype2
