@@ -12,7 +12,7 @@ The supported platforms depends on GLFW v3.3, so idealy giu could support all pl
 
 ## Features
 
-Compare to other imgui golang bindings, giu has following features:
+Compare to other Dear ImGui golang bindings, giu has following features:
 
 - Live-update during the resizing of OS window (implemented on GLFW 3.3 and OpenGL 3.2).
 - Redraw only when user event occurred. Costs only 0.5% CPU usage with 60FPS.
