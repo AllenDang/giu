@@ -33,8 +33,8 @@ func onImSoCute() {
     fmt.Println("Im sooooooo cute!!")
 }
 
-func loop(w *g.MasterWindow) {
-    g.SingleWindow(w, "hello world", g.Layout{
+func loop() {
+    g.SingleWindow("hello world", g.Layout{
         g.Label("Hello world from giu"),
         g.Line(
             g.Button("Click Me", onClickMe),
