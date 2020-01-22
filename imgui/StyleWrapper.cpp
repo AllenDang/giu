@@ -23,6 +23,15 @@ void iggStyleSetColor(IggGuiStyle handle, int colorID, IggVec4 const *value)
    }
 }
 
+void iggStyleGetColor(IggGuiStyle handle, int index, IggVec4 *value)
+{
+  ImGuiStyle *style = reinterpret_cast<ImGuiStyle*>(handle);
+  if ((index >= 0) && (index < ImGuiCol_COUNT))
+  {
+    exportValue(*value, style->Colors[index]);
+  }
+}
+
 void iggStyleScaleAllSizes(IggGuiStyle handle, float scale)
 {
    ImGuiStyle *style = reinterpret_cast<ImGuiStyle *>(handle);
