@@ -26,7 +26,6 @@ func (c *CircleButtonWidget) Build() {
 
 	pos := g.GetCursorPos()
 
-	canvas := g.GetCanvas()
 	// Calcuate the center point
 	radius := int(width/2 + padding)
 
@@ -39,6 +38,8 @@ func (c *CircleButtonWidget) Build() {
 
 	// Draw circle
 	center := pos.Add(image.Pt(radius, radius))
+
+	canvas := g.GetCanvas()
 	if drawActive {
 		canvas.AddCircleFilled(center, float32(radius), color.RGBA{12, 12, 200, 255}, 24)
 	}
