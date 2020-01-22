@@ -1,5 +1,5 @@
 # giu
-Cross platform rapid GUI framework for golang based on [imgui](https://github.com/ocornut/imgui) and the great golang binding [imgui-go](https://github.com/inkyblackness/imgui-go).
+Cross platform rapid GUI framework for golang based on [Dear ImGui](https://github.com/ocornut/imgui) and the great golang binding [imgui-go](https://github.com/inkyblackness/imgui-go).
 
 ## Features
 
