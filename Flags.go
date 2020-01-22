@@ -45,5 +45,5 @@ const (
 	// InputTextFlagsCharsScientific allows 0123456789.+-*/eE (Scientific notation input).
 	InputTextFlagsCharsScientific InputTextFlags = 1 << 17
 	// inputTextFlagsCallbackResize for callback on buffer capacity change requests.
-	inputTextFlagsCallbackResize InputTextFlags = 1 << 18
+	// inputTextFlagsCallbackResize InputTextFlags = 1 << 18
 )
