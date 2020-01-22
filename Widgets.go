@@ -84,6 +84,28 @@ func ButtonV(id string, width, height float32, clicked func()) *ButtonWidget {
 	}
 }
 
+type InvisibleButtonWidget struct {
+	id      string
+	width   float32
+	height  float32
+	clicked func()
+}
+
+func InvisibleButton(id string, width, height float32, clicked func()) *InvisibleButtonWidget {
+	return &InvisibleButtonWidget{
+		id:      id,
+		width:   width,
+		height:  height,
+		clicked: clicked,
+	}
+}
+
+func (ib *InvisibleButtonWidget) Build() {
+	if imgui.InvisibleButton(ib.id, imgui.Vec2{X: ib.width, Y: ib.height}) && ib.clicked != nil {
+		ib.clicked()
+	}
+}
+
 type ImageButtonWidget struct {
 	texture *Texture
 	width   float32

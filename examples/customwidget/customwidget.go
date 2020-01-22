@@ -1,0 +1,74 @@
+package main
+
+import (
+	"fmt"
+	"image"
+	"image/color"
+
+	g "github.com/AllenDang/giu"
+)
+
+type CircleButtonWidget struct {
+	id      string
+	clicked func()
+}
+
+func CircleButton(id string, clicked func()) *CircleButtonWidget {
+	return &CircleButtonWidget{
+		id:      id,
+		clicked: clicked,
+	}
+}
+
+func (c *CircleButtonWidget) Build() {
+	width, height := g.CalcTextSize(c.id)
+	var padding float32 = 8.0
+
+	pos := g.GetCursorPos()
+
+	canvas := g.GetCanvas()
+	// Calcuate the center point
+	radius := int(width/2 + padding)
+
+	// Place a invisible button to be a placeholder for events
+	buttonWidth := float32(radius) * 2
+	g.InvisibleButton(c.id, buttonWidth, buttonWidth, c.clicked).Build()
+
+	// If button is hovered
+	drawActive := g.IsItemHovered()
+
+	// Draw circle
+	center := pos.Add(image.Pt(radius, radius))
+	if drawActive {
+		canvas.AddCircleFilled(center, float32(radius), color.RGBA{12, 12, 200, 255}, 24)
+	}
+	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, 24, 2)
+
+	// Draw text
+	canvas.AddText(center.Sub(image.Pt(int((width-padding)/2), int(height/2))), color.RGBA{255, 255, 255, 255}, c.id)
+
+}
+
+func onHello() {
+	fmt.Println("Hello")
+}
+
+func onWorld() {
+	fmt.Println("World")
+}
+
+func onCircleButton() {
+	fmt.Println("Circle Button")
+}
+
+func loop() {
+	g.SingleWindow("custom widget", g.Layout{
+		g.Line(CircleButton("Hello", onHello), CircleButton("World", onWorld)),
+		CircleButton("Circle Button", onCircleButton),
+	})
+}
+
+func main() {
+	wnd := g.NewMasterWindow("Custom Widget", 400, 200, false, nil)
+	wnd.Main(loop)
+}

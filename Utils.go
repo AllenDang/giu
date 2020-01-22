@@ -57,7 +57,17 @@ func GetCursorScreenPos() image.Point {
 	return image.Pt(int(pos.X), int(pos.Y))
 }
 
+func GetCursorPos() image.Point {
+	pos := imgui.CursorPos()
+	return image.Pt(int(pos.X), int(pos.Y))
+}
+
 func GetAvaiableRegion() (width, height float32) {
 	region := imgui.ContentRegionAvail()
 	return region.X, region.Y
+}
+
+func CalcTextSize(text string) (width, height float32) {
+	size := imgui.CalcTextSize(text, false, 0)
+	return size.X, size.Y
 }
