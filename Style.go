@@ -98,3 +98,31 @@ func PushTextWrapPos() {
 func PopTextWrapPos() {
 	imgui.PopTextWrapPos()
 }
+
+type MouseCursorType int
+
+const (
+	// MouseCursorNone no mouse cursor
+	MouseCursorNone MouseCursorType = -1
+	// MouseCursorArrow standard arrow mouse cursor
+	MouseCursorArrow MouseCursorType = 0
+	// MouseCursorTextInput when hovering over InputText, etc.
+	MouseCursorTextInput MouseCursorType = 1
+	// MouseCursorResizeAll (Unused by imgui functions)
+	MouseCursorResizeAll MouseCursorType = 2
+	// MouseCursorResizeNS when hovering over an horizontal border
+	MouseCursorResizeNS MouseCursorType = 3
+	// MouseCursorResizeEW when hovering over a vertical border or a column
+	MouseCursorResizeEW MouseCursorType = 4
+	// MouseCursorResizeNESW when hovering over the bottom-left corner of a window
+	MouseCursorResizeNESW MouseCursorType = 5
+	// MouseCursorResizeNWSE when hovering over the bottom-right corner of a window
+	MouseCursorResizeNWSE MouseCursorType = 6
+	// MouseCursorHand (Unused by imgui functions. Use for e.g. hyperlinks)
+	MouseCursorHand  MouseCursorType = 7
+	MouseCursorCount MouseCursorType = 8
+)
+
+func SetMouseCursor(cursor MouseCursorType) {
+	imgui.SetMouseCursor(int(cursor))
+}

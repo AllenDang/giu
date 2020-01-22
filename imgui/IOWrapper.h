@@ -21,6 +21,9 @@ extern "C"
     extern void iggIoSetDeltaTime(IggIO handle, float value);
     extern void iggIoSetFontGlobalScale(IggIO handle, float value);
 
+    extern IggBool iggIoGetMouseDrawCursor(IggIO handle);
+    extern void iggIoSetMouseDrawCursor(IggIO handle, IggBool value);
+
     extern void iggIoKeyPress(IggIO handle, int key);
     extern void iggIoKeyRelease(IggIO handle, int key);
     extern void iggIoKeyMap(IggIO handle, int imguiKey, int nativeKey);

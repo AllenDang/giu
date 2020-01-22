@@ -650,6 +650,9 @@ func (h *HSplitterWidget) Build() {
 	} else {
 		*(h.delta) = 0
 	}
+	if imgui.IsItemHovered() {
+		imgui.SetMouseCursor(imgui.MouseCursorResizeNS)
+	}
 }
 
 func HSplitter(id string, width, height float32, delta *float32) *HSplitterWidget {
@@ -674,6 +677,9 @@ func (v *VSplitterWidget) Build() {
 		*(v.delta) = imgui.CurrentIO().GetMouseDelta().X
 	} else {
 		*(v.delta) = 0
+	}
+	if imgui.IsItemHovered() {
+		imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
 	}
 }
 

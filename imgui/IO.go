@@ -36,6 +36,14 @@ func (io IO) SetDisplaySize(value Vec2) {
 	C.iggIoSetDisplaySize(io.handle, out)
 }
 
+func (io IO) GetMouseDrawCursor() bool {
+	return C.iggIoGetMouseDrawCursor(io.handle) != 0
+}
+
+func (io IO) SetMouseDrawCursor(b bool) {
+	C.iggIoSetMouseDrawCursor(io.handle, castBool(b))
+}
+
 // Fonts returns the font atlas to load and assemble one or more fonts into a single tightly packed texture.
 func (io IO) Fonts() FontAtlas {
 	return FontAtlas(C.iggIoGetFonts(io.handle))

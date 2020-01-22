@@ -71,6 +71,19 @@ void iggIoSetFontGlobalScale(IggIO handle, float value)
    io->FontGlobalScale = value;
 }
 
+
+IggBool iggIoGetMouseDrawCursor(IggIO handle)
+{
+   ImGuiIO *io = reinterpret_cast<ImGuiIO *>(handle);
+   return io->MouseDrawCursor ? 1 : 0;
+}
+
+void iggIoSetMouseDrawCursor(IggIO handle, IggBool value)
+{
+   ImGuiIO *io = reinterpret_cast<ImGuiIO *>(handle);
+   io->MouseDrawCursor = value != 0;
+}
+
 void iggIoKeyPress(IggIO handle, int key)
 {
    ImGuiIO &io = *reinterpret_cast<ImGuiIO *>(handle);

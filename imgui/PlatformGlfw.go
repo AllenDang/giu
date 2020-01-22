@@ -33,6 +33,8 @@ type GLFW struct {
 	time             float64
 	mouseJustPressed [3]bool
 
+	mouseCursors map[int]*glfw.Cursor
+
 	sizeChangeCallback func(int, int)
 }
 
@@ -68,6 +70,15 @@ func NewGLFW(io IO, title string, width, height int, resizable bool) (*GLFW, err
 	}
 	platform.setKeyMapping()
 	platform.installCallbacks()
+
+	// Create mosue cursors
+	platform.mouseCursors = make(map[int]*glfw.Cursor)
+	platform.mouseCursors[MouseCursorArrow] = glfw.CreateStandardCursor(glfw.ArrowCursor)
+	platform.mouseCursors[MouseCursorTextInput] = glfw.CreateStandardCursor(glfw.IBeamCursor)
+	platform.mouseCursors[MouseCursorResizeAll] = glfw.CreateStandardCursor(glfw.CrosshairCursor)
+	platform.mouseCursors[MouseCursorHand] = glfw.CreateStandardCursor(glfw.HandCursor)
+	platform.mouseCursors[MouseCursorResizeEW] = glfw.CreateStandardCursor(glfw.HResizeCursor)
+	platform.mouseCursors[MouseCursorResizeNS] = glfw.CreateStandardCursor(glfw.VResizeCursor)
 
 	io.SetClipboard(NewGLFWClipboard(window))
 
@@ -155,6 +166,8 @@ func (platform *GLFW) NewFrame() {
 		platform.imguiIO.SetMouseButtonDown(i, down)
 		platform.mouseJustPressed[i] = false
 	}
+
+	platform.updateMouseCursor()
 }
 
 // PostRender performs a buffer swap.
@@ -168,6 +181,25 @@ func (platform *GLFW) SetSizeChangeCallback(cb func(int, int)) {
 
 func (platform *GLFW) Update() {
 	glfw.PostEmptyEvent()
+}
+
+func (platform *GLFW) updateMouseCursor() {
+	io := platform.imguiIO
+	if (io.GetConfigFlags()&ConfigFlagNoMouseCursorChange) == 1 || platform.window.GetInputMode(glfw.CursorMode) == glfw.CursorDisabled {
+		return
+	}
+
+	cursor := MouseCursor()
+	if cursor == MouseCursorNone || io.GetMouseDrawCursor() {
+		platform.window.SetInputMode(glfw.CursorMode, glfw.CursorHidden)
+	} else {
+		gCursor := platform.mouseCursors[MouseCursorArrow]
+		if c, ok := platform.mouseCursors[cursor]; ok {
+			gCursor = c
+		}
+		platform.window.SetCursor(gCursor)
+		platform.window.SetInputMode(glfw.CursorMode, glfw.CursorNormal)
+	}
 }
 
 func (platform *GLFW) setKeyMapping() {
