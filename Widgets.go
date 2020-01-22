@@ -562,11 +562,26 @@ func Selectable(label string, clicked func()) *SelectableWidget {
 	return SelectableV(label, false, 0, 0, 0, clicked)
 }
 
-func SelectableV(label string, selected bool, flags int, width, height float32, clicked func()) *SelectableWidget {
+type SelectableFlags int
+
+const (
+	// SelectableFlagsNone default = 0
+	SelectableFlagsNone SelectableFlags = 0
+	// SelectableFlagsDontClosePopups makes clicking the selectable not close any parent popup windows.
+	SelectableFlagsDontClosePopups SelectableFlags = 1 << 0
+	// SelectableFlagsSpanAllColumns allows the selectable frame to span all columns (text will still fit in current column).
+	SelectableFlagsSpanAllColumns SelectableFlags = 1 << 1
+	// SelectableFlagsAllowDoubleClick generates press events on double clicks too.
+	SelectableFlagsAllowDoubleClick SelectableFlags = 1 << 2
+	// SelectableFlagsDisabled disallows selection and displays text in a greyed out color.
+	SelectableFlagsDisabled SelectableFlags = 1 << 3
+)
+
+func SelectableV(label string, selected bool, flags SelectableFlags, width, height float32, clicked func()) *SelectableWidget {
 	return &SelectableWidget{
 		label:    label,
 		selected: selected,
-		flags:    flags,
+		flags:    int(flags),
 		width:    width,
 		height:   height,
 		clicked:  clicked,
