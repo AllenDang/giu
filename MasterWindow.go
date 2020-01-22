@@ -17,7 +17,7 @@ type MasterWindow struct {
 	renderer   imgui.Renderer
 	context    *imgui.Context
 	io         *imgui.IO
-	updateFunc func(w *MasterWindow)
+	updateFunc func()
 }
 
 // Create a master window.
@@ -153,7 +153,7 @@ func (w *MasterWindow) render() {
 	p.NewFrame()
 	imgui.NewFrame()
 
-	w.updateFunc(w)
+	w.updateFunc()
 
 	imgui.Render()
 	r.PreRender(w.clearColor)
@@ -193,7 +193,7 @@ func (w *MasterWindow) GetSize() (width, height int) {
 
 // Call the main loop.
 // loopFunc will be used to construct the ui.
-func (w *MasterWindow) Main(loopFunc func(w *MasterWindow)) {
+func (w *MasterWindow) Main(loopFunc func()) {
 	Run(func() {
 		w.updateFunc = loopFunc
 

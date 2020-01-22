@@ -38,7 +38,7 @@ func btnPopupCLicked() {
 	imgui.OpenPopup("Confirm")
 }
 
-func loop(w *g.MasterWindow) {
+func loop() {
 	// Create main menu bar for master window.
 	g.MainMenuBar(
 		g.Layout{
@@ -58,8 +58,8 @@ func loop(w *g.MasterWindow) {
 	).Build()
 
 	// Build a new window
-	width, height := w.GetSize()
-	g.Window("Overview", 0, 20, float32(width), float32(height)-20, g.Layout{
+	size := g.Context.GetPlatform().DisplaySize()
+	g.Window("Overview", 0, 20, size[0], size[1], g.Layout{
 		g.Label("One line label"),
 		g.Line(
 			g.InputText("##name", 0, &name),

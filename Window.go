@@ -17,8 +17,8 @@ func Window(title string, x, y, width, height float32, layout Layout) {
 	)
 }
 
-func SingleWindow(w *MasterWindow, title string, layout Layout) {
-	width, height := w.GetSize()
+func SingleWindow(title string, layout Layout) {
+	size := Context.platform.DisplaySize()
 	WindowV(
 		title,
 		nil,
@@ -29,7 +29,7 @@ func SingleWindow(w *MasterWindow, title string, layout Layout) {
 			imgui.WindowFlagsNoMove|
 			imgui.WindowFlagsNoResize,
 		0, 0,
-		float32(width), float32(height),
+		size[0], size[1],
 		layout,
 	)
 }

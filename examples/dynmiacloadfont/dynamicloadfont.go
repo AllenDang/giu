@@ -19,8 +19,8 @@ func loadFont() {
 	fonts.AddFontFromFileTTFV(fontPath, 12, imgui.DefaultFontConfig, ranges.Data())
 }
 
-func loop(w *g.MasterWindow) {
-	g.SingleWindow(w, "dynamic load font", g.Layout{
+func loop() {
+	g.SingleWindow("dynamic load font", g.Layout{
 		g.Label("你好啊世界！铁憨憨"),
 	})
 }

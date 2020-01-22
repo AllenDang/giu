@@ -48,8 +48,8 @@ func btnLoadClicked() {
 	}
 }
 
-func loop(w *g.MasterWindow) {
-	g.SingleWindow(w, "load image", g.Layout{
+func loop() {
+	g.SingleWindow("load image", g.Layout{
 		g.Label("Paste image url and click download"),
 		g.InputText("##Url", -1, &url),
 		g.Button("Download and display", btnLoadClicked),

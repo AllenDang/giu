@@ -7,8 +7,8 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
-func loop(w *g.MasterWindow) {
-	g.SingleWindow(w, "canvas", g.Layout{
+func loop() {
+	g.SingleWindow("canvas", g.Layout{
 		g.Label("Canvas demo"),
 		g.Custom(func() {
 			canvas := g.GetCanvas()

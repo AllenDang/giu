@@ -23,8 +23,8 @@ func refersh() {
 	}
 }
 
-func loop(w *giu.MasterWindow) {
-	giu.SingleWindow(w, "Update", giu.Layout{
+func loop() {
+	giu.SingleWindow("Update", giu.Layout{
 		giu.Label("Below number is updated by a goroutine"),
 		giu.Label(fmt.Sprintf("%d", counter)),
 	})

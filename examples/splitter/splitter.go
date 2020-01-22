@@ -12,8 +12,8 @@ var (
 	deltaY float32
 )
 
-func loop(w *g.MasterWindow) {
-	g.SingleWindow(w, "splitter", g.Layout{
+func loop() {
+	g.SingleWindow("splitter", g.Layout{
 		g.Custom(func() {
 			width += deltaX
 			height += deltaY

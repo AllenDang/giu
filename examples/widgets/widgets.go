@@ -5,7 +5,7 @@ import (
 	"github.com/AllenDang/giu/imgui"
 )
 
-func loop(w *g.MasterWindow) {
+func loop() {
 	imgui.ShowDemoWindow(nil)
 }
 
