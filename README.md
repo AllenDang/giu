@@ -8,6 +8,7 @@ The supported platforms are depend on GLFW v3.3, so idealy giu could support all
 - Windows (only tested on Windows 10 x64)
 - MacOS (only tested on MacOS v10.15)
 - Linux (not tested, many thanks if anyone could help to test...)
+- Raspberry pi 3b (thanks sndvaps to test it)
 
 ## Features
 
