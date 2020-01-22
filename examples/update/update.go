@@ -12,7 +12,7 @@ var (
 	counter int
 )
 
-func refersh() {
+func refresh() {
 	ticker := time.NewTicker(time.Second * 1)
 
 	for {
@@ -33,7 +33,7 @@ func loop() {
 func main() {
 	wnd := giu.NewMasterWindow("Update", 400, 200, false, nil)
 
-	go refersh()
+	go refresh()
 
 	wnd.Main(loop)
 }

@@ -1,5 +1,5 @@
 # giu
-Cross platform rapid GUI framework for golang based on [imgui](https://github.com/ocornut/imgui) and the great golang binding [imgui-go](https://github.com/inkyblackness/imgui-go).
+Cross platform rapid GUI framework for golang based on [Dear ImGui](https://github.com/ocornut/imgui) and the great golang binding [imgui-go](https://github.com/inkyblackness/imgui-go).
 
 ## Features
 
@@ -20,31 +20,31 @@ Compare to other imgui golang bindings, giu has following features:
 package main
 
 import (
-	"fmt"
+    "fmt"
 
-	g "github.com/AllenDang/giu"
+    g "github.com/AllenDang/giu"
 )
 
 func onClickMe() {
-	fmt.Println("Hello world!")
+    fmt.Println("Hello world!")
 }
 
 func onImSoCute() {
-	fmt.Println("Im sooooooo cute!!")
+    fmt.Println("Im sooooooo cute!!")
 }
 
-func loop(w *g.MasterWindow) {
-	g.SingleWindow(w, "hello world", g.Layout{
-		g.Label("Hello world from giu"),
-		g.Line(
-			g.Button("Click Me", onClickMe),
-			g.Button("I'm so cute", onImSoCute)),
-	})
+func loop() {
+    g.SingleWindow("hello world", g.Layout{
+        g.Label("Hello world from giu"),
+        g.Line(
+            g.Button("Click Me", onClickMe),
+            g.Button("I'm so cute", onImSoCute)),
+        })
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Hello world", 400, 200, false, nil)
-	wnd.Main(loop)
+    wnd := g.NewMasterWindow("Hello world", 400, 200, false, nil)
+    wnd.Main(loop)
 }
 ```
 
