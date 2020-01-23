@@ -17,6 +17,9 @@ type loadImageResult struct {
 	err error
 }
 
+// Create new texture from rgba.
+// Note: this function has to be invokded in a go routine.
+// If call this in mainthread will result in stuck.
 func NewTextureFromRgba(rgba *image.RGBA) (*Texture, error) {
 	Update()
 	result := CallVal(func() interface{} {
