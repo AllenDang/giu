@@ -70,3 +70,5 @@ PipeIt is a text transformation, conversion, cleansing and extraction tool.
 ![PipeIt Demo](https://github.com/AllenDang/PipeIt/raw/master/screenshot/findimageurl.gif)
 
 ### [EbookDonwloader](https://github.com/sndnvaps/ebookdownloader)
+
+Ebook downloader supports novel downloading from various web sites.
