@@ -61,6 +61,10 @@ Here is result.
 
 ![Helloworld](https://github.com/AllenDang/giu/raw/master/examples/helloworld/helloworld.png)
 
+## Document
+
+Check [Wiki](https://github.com/AllenDang/giu/wiki)
+
 ## Projects using giu
 
 ### [PipeIt](https://github.com/AllenDang/PipeIt)
