@@ -19,4 +19,6 @@ type Platform interface {
 	SetSizeChangeCallback(func(width, height int))
 	// Force Update
 	Update()
+	// GetContentScale function retrieves the content scale for the specified monitor.
+	GetContentScale() float32
 }

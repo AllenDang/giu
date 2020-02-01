@@ -44,7 +44,9 @@ func NewMasterWindowWithBgColor(title string, width, height int, resizable bool,
 		panic(err)
 	}
 
-	r, err := imgui.NewOpenGL3(io)
+	scale := p.GetContentScale()
+
+	r, err := imgui.NewOpenGL3(io, scale)
 	if err != nil {
 		panic(err)
 	}
@@ -135,6 +137,8 @@ func (w *MasterWindow) setTheme() {
 	// style.SetColor(imgui.StyleColorNavWindowingDarkening, imgui.Vec4{})
 	// style.SetColor(imgui.StyleColorModalWindowDarkening, imgui.Vec4{})
 
+	scale := w.platform.GetContentScale()
+	style.ScaleAllSizes(scale)
 }
 
 // Set background color of master window.

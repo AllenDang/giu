@@ -51,6 +51,7 @@ func NewGLFW(io IO, title string, width, height int, resizable bool) (*GLFW, err
 	glfw.WindowHint(glfw.ContextVersionMinor, 3)
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, 1)
+	glfw.WindowHint(glfw.ScaleToMonitor, glfw.True)
 
 	if !resizable {
 		glfw.WindowHint(glfw.Resizable, glfw.False)
@@ -89,6 +90,13 @@ func NewGLFW(io IO, title string, width, height int, resizable bool) (*GLFW, err
 func (platform *GLFW) Dispose() {
 	platform.window.Destroy()
 	glfw.Terminate()
+}
+
+func (platform *GLFW) GetContentScale() float32 {
+	// Get primary monitor size
+	monitor := glfw.GetPrimaryMonitor()
+	x, _ := monitor.GetContentScale()
+	return x
 }
 
 func (platform *GLFW) GetWindow() *glfw.Window {

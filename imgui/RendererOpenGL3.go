@@ -3,6 +3,7 @@ package imgui
 import (
 	"fmt"
 	"image"
+	"math"
 	"unsafe"
 
 	"github.com/go-gl/gl/v3.2-core/gl"
@@ -25,19 +26,22 @@ type OpenGL3 struct {
 	attribLocationImageType int32
 	vboHandle               uint32
 	elementsHandle          uint32
+
+	contentScale float32
 }
 
 // NewOpenGL3 attempts to initialize a renderer.
 // An OpenGL context has to be established before calling this function.
-func NewOpenGL3(io IO) (*OpenGL3, error) {
+func NewOpenGL3(io IO, contentScale float32) (*OpenGL3, error) {
 	err := gl.Init()
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize OpenGL: %v", err)
 	}
 
 	renderer := &OpenGL3{
-		imguiIO:     io,
-		glslVersion: "#version 150",
+		imguiIO:      io,
+		glslVersion:  "#version 150",
+		contentScale: contentScale,
 	}
 	renderer.createDeviceObjects()
 	return renderer, nil
@@ -297,13 +301,26 @@ func (renderer *OpenGL3) createFontsTexture() {
 	// Build texture atlas
 	io := CurrentIO()
 	fonts := io.Fonts()
+
+	// Zoom font size using dpi scale factor.
+	fontConfig := NewFontConfig()
+	fontConfig.SetSize(13 * renderer.contentScale)
+
+	if renderer.contentScale > 1 {
+		scale := int(math.Round(float64(renderer.contentScale)))
+		fontConfig.SetOversampleH(scale)
+		fontConfig.SetOversampleV(scale)
+	}
+
+	fonts.AddFontDefaultV(fontConfig)
+
 	if EnableFreeType {
-		fonts.AddFontDefault()
 		err := fonts.BuildWithFreeType()
 		if err != nil {
 			panic(err)
 		}
 	}
+
 	image := fonts.TextureDataAlpha8()
 
 	// Upload texture to graphics system

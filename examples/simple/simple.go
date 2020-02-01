@@ -39,27 +39,23 @@ func btnPopupCLicked() {
 }
 
 func loop() {
-	// Create main menu bar for master window.
-	g.MainMenuBar(
-		g.Layout{
-			g.Menu("File", g.Layout{
-				g.MenuItem("Open"),
-				g.MenuItem("Save"),
-				// You could add any kind of widget here, not just menu item.
-				g.Menu("Save as ...", g.Layout{
-					g.MenuItem("Excel file"),
-					g.MenuItem("CSV file"),
-					g.Button("Button inside menu", nil),
+	g.SingleWindowWithMenuBar("Overview", g.Layout{
+		g.MenuBar(
+			g.Layout{
+				g.Menu("File", g.Layout{
+					g.MenuItem("Open"),
+					g.MenuItem("Save"),
+					// You could add any kind of widget here, not just menu item.
+					g.Menu("Save as ...", g.Layout{
+						g.MenuItem("Excel file"),
+						g.MenuItem("CSV file"),
+						g.Button("Button inside menu", nil),
+					},
+					),
 				},
 				),
 			},
-			),
-		},
-	).Build()
-
-	// Build a new window
-	size := g.Context.GetPlatform().DisplaySize()
-	g.Window("Overview", 0, 20, size[0], size[1], g.Layout{
+		),
 		g.Label("One line label"),
 		g.Line(
 			g.InputText("##name", 0, &name),
