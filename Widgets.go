@@ -50,8 +50,8 @@ func InputTextMultiline(label string, text *string, width, height float32, flags
 	return &InputTextMultilineWidget{
 		label:   label,
 		text:    text,
-		width:   width,
-		height:  height,
+		width:   width * Context.platform.GetContentScale(),
+		height:  height * Context.platform.GetContentScale(),
 		flags:   flags,
 		cb:      cb,
 		changed: changed,
@@ -78,8 +78,8 @@ func Button(id string, clicked func()) *ButtonWidget {
 func ButtonV(id string, width, height float32, clicked func()) *ButtonWidget {
 	return &ButtonWidget{
 		id:      id,
-		width:   width,
-		height:  height,
+		width:   width * Context.platform.GetContentScale(),
+		height:  height * Context.platform.GetContentScale(),
 		clicked: clicked,
 	}
 }
@@ -94,8 +94,8 @@ type InvisibleButtonWidget struct {
 func InvisibleButton(id string, width, height float32, clicked func()) *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
 		id:      id,
-		width:   width,
-		height:  height,
+		width:   width * Context.platform.GetContentScale(),
+		height:  height * Context.platform.GetContentScale(),
 		clicked: clicked,
 	}
 }
@@ -122,8 +122,8 @@ func (i *ImageButtonWidget) Build() {
 func ImageButton(texture *Texture, width, height float32, clicked func()) *ImageButtonWidget {
 	return &ImageButtonWidget{
 		texture: texture,
-		width:   width,
-		height:  height,
+		width:   width * Context.platform.GetContentScale(),
+		height:  height * Context.platform.GetContentScale(),
 		clicked: clicked,
 	}
 }
@@ -188,8 +188,8 @@ func (c *ChildWidget) Build() {
 func Child(id string, border bool, width, height float32, flags int, layout Layout) *ChildWidget {
 	return &ChildWidget{
 		id:     id,
-		width:  width,
-		height: height,
+		width:  width * Context.platform.GetContentScale(),
+		height: height * Context.platform.GetContentScale(),
 		border: border,
 		flags:  flags,
 		layout: layout,
@@ -327,8 +327,8 @@ func (i *ImageWidget) Build() {
 func Image(texture *Texture, width, height float32) *ImageWidget {
 	return &ImageWidget{
 		texture: texture,
-		width:   width,
-		height:  height,
+		width:   width * Context.platform.GetContentScale(),
+		height:  height * Context.platform.GetContentScale(),
 	}
 }
 
@@ -358,7 +358,7 @@ func InputTextV(label string, width float32, value *string, flags InputTextFlags
 	return &InputTextWidget{
 		label:   label,
 		value:   value,
-		width:   width,
+		width:   width * Context.platform.GetContentScale(),
 		flags:   flags,
 		cb:      cb,
 		changed: changed,
@@ -537,8 +537,8 @@ func (p *ProgressBarWidget) Build() {
 func ProgressBar(fraction float32, width, height float32, overlay string) *ProgressBarWidget {
 	return &ProgressBarWidget{
 		fraction: fraction,
-		width:    width,
-		height:   height,
+		width:    width * Context.platform.GetContentScale(),
+		height:   height * Context.platform.GetContentScale(),
 		overlay:  overlay,
 	}
 }
@@ -582,8 +582,8 @@ func SelectableV(label string, selected bool, flags SelectableFlags, width, heig
 		label:    label,
 		selected: selected,
 		flags:    int(flags),
-		width:    width,
-		height:   height,
+		width:    width * Context.platform.GetContentScale(),
+		height:   height * Context.platform.GetContentScale(),
 		clicked:  clicked,
 	}
 }
@@ -631,8 +631,8 @@ func (d *DummyWidget) Build() {
 
 func Dummy(width, height float32) *DummyWidget {
 	return &DummyWidget{
-		width:  width,
-		height: height,
+		width:  width * Context.platform.GetContentScale(),
+		height: height * Context.platform.GetContentScale(),
 	}
 }
 
@@ -646,7 +646,7 @@ type HSplitterWidget struct {
 func (h *HSplitterWidget) Build() {
 	imgui.InvisibleButton(h.id, imgui.Vec2{X: h.width, Y: h.height})
 	if imgui.IsItemActive() {
-		*(h.delta) = imgui.CurrentIO().GetMouseDelta().Y
+		*(h.delta) = imgui.CurrentIO().GetMouseDelta().Y / Context.platform.GetContentScale()
 	} else {
 		*(h.delta) = 0
 	}
@@ -658,8 +658,8 @@ func (h *HSplitterWidget) Build() {
 func HSplitter(id string, width, height float32, delta *float32) *HSplitterWidget {
 	return &HSplitterWidget{
 		id:     id,
-		width:  width,
-		height: height,
+		width:  width * Context.platform.GetContentScale(),
+		height: height * Context.platform.GetContentScale(),
 		delta:  delta,
 	}
 }
@@ -674,7 +674,7 @@ type VSplitterWidget struct {
 func (v *VSplitterWidget) Build() {
 	imgui.InvisibleButton(v.id, imgui.Vec2{X: v.width, Y: v.height})
 	if imgui.IsItemActive() {
-		*(v.delta) = imgui.CurrentIO().GetMouseDelta().X
+		*(v.delta) = imgui.CurrentIO().GetMouseDelta().X / Context.platform.GetContentScale()
 	} else {
 		*(v.delta) = 0
 	}
@@ -686,8 +686,8 @@ func (v *VSplitterWidget) Build() {
 func VSplitter(id string, width, height float32, delta *float32) *VSplitterWidget {
 	return &VSplitterWidget{
 		id:     id,
-		width:  width,
-		height: height,
+		width:  width * Context.platform.GetContentScale(),
+		height: height * Context.platform.GetContentScale(),
 		delta:  delta,
 	}
 }

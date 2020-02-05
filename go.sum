@@ -1,3 +1,6 @@
+github.com/AllenDang/PipeIt v0.0.0-20200122112206-7f4fb0d3f7d7 h1:eq6VSAlUdY8pn38oYgqAGzPsHDnPU9oprCYn621Y3cQ=
+github.com/AllenDang/PipeIt v0.0.0-20200122112206-7f4fb0d3f7d7/go.mod h1:EJwe8FOkGQH/67H8vpOH3McArMB/GV+Q09CWhl8IRG8=
+github.com/AllenDang/giu v0.0.0-20200122111721-4cd00e14fdd7/go.mod h1:lu2fKnnr8aTY7/P+mrgpN0IJH3RsI7vT6g5dal2/vr4=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
