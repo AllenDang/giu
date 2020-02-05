@@ -80,7 +80,7 @@ func loop() {
 		g.DragInt("DragInt", &dragInt),
 		g.SliderInt("Slider", &dragInt, 0, 100, ""),
 
-		g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, comboChanged),
+		g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, 0, comboChanged),
 
 		g.Line(
 			g.Button("Popup Modal", btnPopupCLicked),

@@ -201,11 +201,16 @@ type ComboWidget struct {
 	previewValue string
 	items        []string
 	selected     *int32
+	width        float32
 	flags        int
 	changed      func()
 }
 
 func (c *ComboWidget) Build() {
+	if c.width > 0 {
+		imgui.PushItemWidth(c.width)
+	}
+
 	if imgui.BeginComboV(c.label, c.previewValue, c.flags) {
 		for i, item := range c.items {
 			if imgui.Selectable(item) {
@@ -218,15 +223,20 @@ func (c *ComboWidget) Build() {
 
 		imgui.EndCombo()
 	}
+
+	if c.width > 0 {
+		imgui.PopItemWidth()
+	}
 }
 
-func Combo(label, previewValue string, items []string, selected *int32, flags int, changed func()) *ComboWidget {
+func Combo(label, previewValue string, items []string, selected *int32, width float32, flags int, changed func()) *ComboWidget {
 	return &ComboWidget{
 		label:        label,
 		previewValue: previewValue,
 		items:        items,
 		selected:     selected,
 		flags:        flags,
+		width:        width,
 		changed:      changed,
 	}
 }
