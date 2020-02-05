@@ -236,7 +236,7 @@ func Combo(label, previewValue string, items []string, selected *int32, width fl
 		items:        items,
 		selected:     selected,
 		flags:        flags,
-		width:        width,
+		width:        width * Context.platform.GetContentScale(),
 		changed:      changed,
 	}
 }
