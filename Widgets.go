@@ -533,6 +533,14 @@ func PopupV(name string, open *bool, flags int, layout Layout) *PopupWidget {
 	}
 }
 
+func OpenPopup(name string) {
+	imgui.OpenPopup(name)
+}
+
+func CloseCurrentPopup() {
+	imgui.CloseCurrentPopup()
+}
+
 type ProgressBarWidget struct {
 	fraction float32
 	width    float32
