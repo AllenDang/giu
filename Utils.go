@@ -71,3 +71,7 @@ func CalcTextSize(text string) (width, height float32) {
 	size := imgui.CalcTextSize(text, false, 0)
 	return size.X, size.Y
 }
+
+func SetNextWindowSize(width, height float32) {
+	imgui.SetNextWindowSize(imgui.Vec2{X: width * Context.platform.GetContentScale(), Y: height * Context.platform.GetContentScale()})
+}
