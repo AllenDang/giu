@@ -173,19 +173,19 @@ type ChildWidget struct {
 	width  float32
 	height float32
 	border bool
-	flags  int
+	flags  WindowFlags
 	layout Layout
 }
 
 func (c *ChildWidget) Build() {
-	imgui.BeginChildV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, c.flags)
+	imgui.BeginChildV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, int(c.flags))
 	if c.layout != nil {
 		c.layout.Build()
 	}
 	imgui.EndChild()
 }
 
-func Child(id string, border bool, width, height float32, flags int, layout Layout) *ChildWidget {
+func Child(id string, border bool, width, height float32, flags WindowFlags, layout Layout) *ChildWidget {
 	return &ChildWidget{
 		id:     id,
 		width:  width * Context.platform.GetContentScale(),
@@ -202,7 +202,7 @@ type ComboWidget struct {
 	items        []string
 	selected     *int32
 	width        float32
-	flags        int
+	flags        ComboFlags
 	changed      func()
 }
 
@@ -211,7 +211,7 @@ func (c *ComboWidget) Build() {
 		imgui.PushItemWidth(c.width)
 	}
 
-	if imgui.BeginComboV(c.label, c.previewValue, c.flags) {
+	if imgui.BeginComboV(c.label, c.previewValue, int(c.flags)) {
 		for i, item := range c.items {
 			if imgui.Selectable(item) {
 				*c.selected = int32(i)
@@ -229,7 +229,7 @@ func (c *ComboWidget) Build() {
 	}
 }
 
-func Combo(label, previewValue string, items []string, selected *int32, width float32, flags int, changed func()) *ComboWidget {
+func Combo(label, previewValue string, items []string, selected *int32, width float32, flags ComboFlags, changed func()) *ComboWidget {
 	return &ComboWidget{
 		label:        label,
 		previewValue: previewValue,
@@ -507,12 +507,12 @@ func MenuV(label string, enabled bool, layout Layout) *MenuWidget {
 type PopupWidget struct {
 	name   string
 	open   *bool
-	flags  int
+	flags  WindowFlags
 	layout Layout
 }
 
 func (p *PopupWidget) Build() {
-	if imgui.BeginPopupModalV(p.name, p.open, p.flags) {
+	if imgui.BeginPopupModalV(p.name, p.open, int(p.flags)) {
 		if p.layout != nil {
 			p.layout.Build()
 		}
@@ -524,7 +524,7 @@ func Popup(name string, layout Layout) *PopupWidget {
 	return PopupV(name, nil, 0, layout)
 }
 
-func PopupV(name string, open *bool, flags int, layout Layout) *PopupWidget {
+func PopupV(name string, open *bool, flags WindowFlags, layout Layout) *PopupWidget {
 	return &PopupWidget{
 		name:   name,
 		open:   open,
@@ -564,14 +564,14 @@ func ProgressBar(fraction float32, width, height float32, overlay string) *Progr
 type SelectableWidget struct {
 	label    string
 	selected bool
-	flags    int
+	flags    SelectableFlags
 	width    float32
 	height   float32
 	clicked  func()
 }
 
 func (s *SelectableWidget) Build() {
-	if imgui.SelectableV(s.label, s.selected, s.flags, imgui.Vec2{X: s.width, Y: s.height}) && s.clicked != nil {
+	if imgui.SelectableV(s.label, s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.clicked != nil {
 		s.clicked()
 	}
 }
@@ -580,26 +580,11 @@ func Selectable(label string, clicked func()) *SelectableWidget {
 	return SelectableV(label, false, 0, 0, 0, clicked)
 }
 
-type SelectableFlags int
-
-const (
-	// SelectableFlagsNone default = 0
-	SelectableFlagsNone SelectableFlags = 0
-	// SelectableFlagsDontClosePopups makes clicking the selectable not close any parent popup windows.
-	SelectableFlagsDontClosePopups SelectableFlags = 1 << 0
-	// SelectableFlagsSpanAllColumns allows the selectable frame to span all columns (text will still fit in current column).
-	SelectableFlagsSpanAllColumns SelectableFlags = 1 << 1
-	// SelectableFlagsAllowDoubleClick generates press events on double clicks too.
-	SelectableFlagsAllowDoubleClick SelectableFlags = 1 << 2
-	// SelectableFlagsDisabled disallows selection and displays text in a greyed out color.
-	SelectableFlagsDisabled SelectableFlags = 1 << 3
-)
-
 func SelectableV(label string, selected bool, flags SelectableFlags, width, height float32, clicked func()) *SelectableWidget {
 	return &SelectableWidget{
 		label:    label,
 		selected: selected,
-		flags:    int(flags),
+		flags:    flags,
 		width:    width * Context.platform.GetContentScale(),
 		height:   height * Context.platform.GetContentScale(),
 		clicked:  clicked,
@@ -713,12 +698,12 @@ func VSplitter(id string, width, height float32, delta *float32) *VSplitterWidge
 type TabItemWidget struct {
 	label  string
 	open   *bool
-	flags  int
+	flags  TabItemFlags
 	layout Layout
 }
 
 func (t *TabItemWidget) Build() {
-	if imgui.BeginTabItemV(t.label, t.open, t.flags) {
+	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
 		if t.layout != nil {
 			t.layout.Build()
 		}
@@ -730,7 +715,7 @@ func TabItem(label string, layout Layout) *TabItemWidget {
 	return TabItemV(label, nil, 0, layout)
 }
 
-func TabItemV(label string, open *bool, flags int, layout Layout) *TabItemWidget {
+func TabItemV(label string, open *bool, flags TabItemFlags, layout Layout) *TabItemWidget {
 	return &TabItemWidget{
 		label:  label,
 		open:   open,
@@ -741,12 +726,12 @@ func TabItemV(label string, open *bool, flags int, layout Layout) *TabItemWidget
 
 type TabBarWidget struct {
 	id     string
-	flags  int
+	flags  TabBarFlags
 	layout Layout
 }
 
 func (t *TabBarWidget) Build() {
-	if imgui.BeginTabBarV(t.id, t.flags) {
+	if imgui.BeginTabBarV(t.id, int(t.flags)) {
 		if t.layout != nil {
 			t.layout.Build()
 		}
@@ -758,7 +743,7 @@ func TabBar(id string, layout Layout) *TabBarWidget {
 	return TabBarV(id, 0, layout)
 }
 
-func TabBarV(id string, flags int, layout Layout) *TabBarWidget {
+func TabBarV(id string, flags TabBarFlags, layout Layout) *TabBarWidget {
 	return &TabBarWidget{
 		id:     id,
 		flags:  flags,
@@ -842,12 +827,12 @@ func Tooltip(tip string) *TooltipWidget {
 
 type TreeNodeWidget struct {
 	label  string
-	flags  int
+	flags  TreeNodeFlags
 	layout Layout
 }
 
 func (t *TreeNodeWidget) Build() {
-	if imgui.TreeNodeV(t.label, t.flags) {
+	if imgui.TreeNodeV(t.label, int(t.flags)) {
 		if t.layout != nil {
 			t.layout.Build()
 		}
@@ -857,7 +842,7 @@ func (t *TreeNodeWidget) Build() {
 	}
 }
 
-func TreeNode(label string, flags int, layout Layout) *TreeNodeWidget {
+func TreeNode(label string, flags TreeNodeFlags, layout Layout) *TreeNodeWidget {
 	return &TreeNodeWidget{
 		label:  label,
 		flags:  flags,
