@@ -376,9 +376,10 @@ func InputTextV(label string, width float32, value *string, flags InputTextFlags
 }
 
 type LabelWidget struct {
-	label string
-	color *color.RGBA
-	font  *imgui.Font
+	label   string
+	wrapped bool
+	color   *color.RGBA
+	font    *imgui.Font
 }
 
 func (l *LabelWidget) Build() {
@@ -390,7 +391,15 @@ func (l *LabelWidget) Build() {
 		PushFont(*l.font)
 	}
 
+	if l.wrapped {
+		PushTextWrapPos()
+	}
+
 	imgui.Text(l.label)
+
+	if l.wrapped {
+		PopTextWrapPos()
+	}
 
 	if l.font != nil {
 		PopFont()
@@ -402,14 +411,19 @@ func (l *LabelWidget) Build() {
 }
 
 func Label(label string) *LabelWidget {
-	return LabelV(label, nil, nil)
+	return LabelV(label, false, nil, nil)
 }
 
-func LabelV(label string, color *color.RGBA, font *imgui.Font) *LabelWidget {
+func LabelWrapped(label string) *LabelWidget {
+	return LabelV(label, true, nil, nil)
+}
+
+func LabelV(label string, wrapped bool, color *color.RGBA, font *imgui.Font) *LabelWidget {
 	return &LabelWidget{
-		label: label,
-		color: color,
-		font:  font,
+		label:   label,
+		wrapped: wrapped,
+		color:   color,
+		font:    font,
 	}
 }
 

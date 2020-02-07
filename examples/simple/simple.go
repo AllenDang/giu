@@ -57,6 +57,7 @@ func loop() {
 			},
 		),
 		g.Label("One line label"),
+		g.LabelWrapped("Auto wrapped label with very long line...............................................this line should be wrapped."),
 		g.Line(
 			g.InputText("##name", 0, &name),
 			g.Button("Click Me", btnClickMeClicked),
