@@ -40,14 +40,16 @@ func NewMasterWindowWithBgColor(title string, width, height int, resizable bool,
 		panic(err)
 	}
 
+	scale := p.GetContentScale()
+
+	imgui.DPIScale = scale
+
 	// Assign platform to contex
 	Context.platform = p
 
 	if loadFontFunc != nil {
 		loadFontFunc()
 	}
-
-	scale := p.GetContentScale()
 
 	r, err := imgui.NewOpenGL3(io, scale)
 	if err != nil {

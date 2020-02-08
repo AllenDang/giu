@@ -16,7 +16,7 @@ func loadFont() {
 	builder.BuildRanges(ranges)
 
 	fontPath := "c:/Windows/Fonts/MSYHL.TTC"
-	fonts.AddFontFromFileTTFV(fontPath, 12*g.Context.GetPlatform().GetContentScale(), imgui.DefaultFontConfig, ranges.Data())
+	fonts.AddFontFromFileTTFV(fontPath, 12, imgui.DefaultFontConfig, ranges.Data())
 }
 
 func loop() {
