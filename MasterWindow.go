@@ -35,13 +35,16 @@ func NewMasterWindowWithBgColor(title string, width, height int, resizable bool,
 	// Disable imgui.ini
 	io.SetIniFilename("")
 
-	if loadFontFunc != nil {
-		loadFontFunc()
-	}
-
 	p, err := imgui.NewGLFW(io, title, width, height, resizable)
 	if err != nil {
 		panic(err)
+	}
+
+	// Assign platform to contex
+	Context.platform = p
+
+	if loadFontFunc != nil {
+		loadFontFunc()
 	}
 
 	scale := p.GetContentScale()
@@ -53,7 +56,6 @@ func NewMasterWindowWithBgColor(title string, width, height int, resizable bool,
 
 	// Create context
 	Context.renderer = r
-	Context.platform = p
 
 	col := [4]float32{0.22, 0.26, 0.28, 1}
 

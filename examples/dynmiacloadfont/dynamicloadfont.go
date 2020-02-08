@@ -15,8 +15,8 @@ func loadFont() {
 	// builder.AddRanges(fonts.GlyphRangesChineseFull())
 	builder.BuildRanges(ranges)
 
-	fontPath := "/System/Library/Fonts/STHeiti Light.ttc"
-	fonts.AddFontFromFileTTFV(fontPath, 12, imgui.DefaultFontConfig, ranges.Data())
+	fontPath := "c:/Windows/Fonts/MSYHL.TTC"
+	fonts.AddFontFromFileTTFV(fontPath, 12*g.Context.GetPlatform().GetContentScale(), imgui.DefaultFontConfig, ranges.Data())
 }
 
 func loop() {
