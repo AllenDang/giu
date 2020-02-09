@@ -17,6 +17,8 @@ type Platform interface {
 	Dispose()
 	// Set size change callback
 	SetSizeChangeCallback(func(width, height int))
+	// Set drop callback
+	SetDropCallback(func(names []string))
 	// Force Update
 	Update()
 	// GetContentScale function retrieves the content scale for the specified monitor.

@@ -199,6 +199,10 @@ func (w *MasterWindow) GetSize() (width, height int) {
 	return w.width, w.height
 }
 
+func (w *MasterWindow) SetDropCallback(cb func([]string)) {
+	w.platform.SetDropCallback(cb)
+}
+
 // Call the main loop.
 // loopFunc will be used to construct the ui.
 func (w *MasterWindow) Main(loopFunc func()) {
