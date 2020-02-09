@@ -22,6 +22,11 @@ func (l *LineWidget) Build() {
 		_, isContextMenu := w.(*ContextMenuWidget)
 		_, isPopup := w.(*PopupWidget)
 		_, isTabItem := w.(*TabItemWidget)
+		_, isLabel := w.(*LabelWidget)
+
+		if isLabel {
+			AlignTextToFramePadding()
+		}
 
 		if i > 0 && !isTooltip && !isContextMenu && !isPopup && !isTabItem {
 			imgui.SameLine()
