@@ -802,18 +802,19 @@ func (t *TabelWidget) Build() {
 		imgui.ColumnsV(len(t.rows[0].layout), t.label, t.border)
 
 		for i, r := range t.rows {
-			if t.border {
-				imgui.Separator()
-			}
-
 			if i > 0 {
 				imgui.NextColumn()
+			}
+
+			if t.border {
+				imgui.Separator()
 			}
 
 			r.Build()
 		}
 
 		imgui.Columns()
+
 		if t.border {
 			imgui.Separator()
 		}

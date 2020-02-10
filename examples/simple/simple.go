@@ -120,6 +120,8 @@ func loop() {
 			}),
 			g.TabItem("Table", g.Layout{
 				g.Table("Table", true, g.Rows{
+					g.Row(g.LabelWrapped("Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog"), g.Label("Age"), g.Label("Loc")),
+					g.Row(g.LabelWrapped("Second Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog"), g.Label("Age"), g.Label("Loc")),
 					g.Row(g.Label("Name"), g.Label("Age"), g.Label("Location")),
 					g.Row(g.Label("Allen"), g.Label("33"), g.Label("Shanghai/China")),
 					g.Row(g.Checkbox("check me", &checked, nil), g.Button("click me", nil), g.Label("Anything")),
