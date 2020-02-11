@@ -9,6 +9,9 @@ var (
 type context struct {
 	renderer imgui.Renderer
 	platform imgui.Platform
+
+	// Indicate whether current application is running
+	isAlive bool
 }
 
 func (c context) GetRenderer() imgui.Renderer {

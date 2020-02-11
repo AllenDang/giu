@@ -209,7 +209,11 @@ func (w *MasterWindow) Main(loopFunc func()) {
 	Run(func() {
 		w.updateFunc = loopFunc
 
+		Context.isAlive = true
+
 		w.run()
+
+		Context.isAlive = false
 
 		Call(func() {
 			w.renderer.Dispose()

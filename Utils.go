@@ -49,8 +49,9 @@ func ToVec2(pt image.Point) imgui.Vec2 {
 }
 
 func Update() {
-	imgui.SetMaxWaitBeforeNextFrame(1.0 / 60.0)
-	Context.platform.Update()
+	if Context.isAlive {
+		Context.platform.Update()
+	}
 }
 
 func GetCursorScreenPos() image.Point {
