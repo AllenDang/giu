@@ -1,6 +1,8 @@
 # giu
 Cross platform rapid GUI framework for golang based on [Dear ImGui](https://github.com/ocornut/imgui) and the great golang binding [imgui-go](https://github.com/inkyblackness/imgui-go).
 
+[Document](https://github.com/AllenDang/giu/wiki) | [Chat](https://gitter.im/AllenDang-giu/community)
+
 ## Supported Platforms
 
 The supported platforms depends on GLFW v3.3, so idealy giu could support all platforms that GLFW v3.3 supports.
@@ -61,10 +63,6 @@ func main() {
 Here is result.
 
 ![Helloworld](https://github.com/AllenDang/giu/raw/master/examples/helloworld/helloworld.png)
-
-## Document
-
-Check [Wiki](https://github.com/AllenDang/giu/wiki)
 
 ## Projects using giu
 
