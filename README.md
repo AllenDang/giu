@@ -4,7 +4,7 @@
 
 Cross platform rapid GUI framework for golang based on [Dear ImGui](https://github.com/ocornut/imgui) and the great golang binding [imgui-go](https://github.com/inkyblackness/imgui-go).
 
-[Document](https://github.com/AllenDang/giu/wiki) | [Chat](https://gitter.im/AllenDang-giu/community)
+[Document](https://github.com/AllenDang/giu/wiki)
 
 ## Supported Platforms
 
