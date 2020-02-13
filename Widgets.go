@@ -642,6 +642,28 @@ func SliderInt(label string, value *int32, min, max int32, format string) *Slide
 	}
 }
 
+type SliderFloatWidget struct {
+	label  string
+	value  *float32
+	min    float32
+	max    float32
+	format string
+}
+
+func SliderFloat(label string, value *float32, min, max float32, format string) *SliderFloatWidget {
+	return &SliderFloatWidget{
+		label:  label,
+		value:  value,
+		min:    min,
+		max:    max,
+		format: format,
+	}
+}
+
+func (sf *SliderFloatWidget) Build() {
+	imgui.SliderFloatV(sf.label, sf.value, sf.min, sf.max, sf.format, 1.0)
+}
+
 type DummyWidget struct {
 	width  float32
 	height float32
