@@ -36,9 +36,9 @@ type ProgressIndicatorWidget struct {
 	radius float32
 }
 
-func ProgressIndicator(id string, radius float32) *ProgressIndicatorWidget {
+func ProgressIndicator(radius float32) *ProgressIndicatorWidget {
 	return &ProgressIndicatorWidget{
-		id:     id,
+		id:     "giu-progress-indicator",
 		radius: radius * Context.GetPlatform().GetContentScale(),
 	}
 }
