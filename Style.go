@@ -126,3 +126,13 @@ const (
 func SetMouseCursor(cursor MouseCursorType) {
 	imgui.SetMouseCursor(int(cursor))
 }
+
+func GetWindowPadding() (float32, float32) {
+	vec2 := imgui.CurrentStyle().WindowPadding()
+	return vec2.X, vec2.Y
+}
+
+func GetItemInnerSpacing() (float32, float32) {
+	vec2 := imgui.CurrentStyle().ItemInnerSpacing()
+	return vec2.X, vec2.Y
+}
