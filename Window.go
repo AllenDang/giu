@@ -52,11 +52,19 @@ func SingleWindowWithMenuBar(title string, layout Layout) {
 	)
 }
 
-func WindowV(title string, open *bool, flags int, x, y, width, height float32, layout Layout) {
+func WindowV(title string, open *bool, flags WindowFlags, x, y, width, height float32, layout Layout) {
 	imgui.SetNextWindowPos(imgui.Vec2{X: x, Y: y})
 	imgui.SetNextWindowSize(imgui.Vec2{X: width, Y: height})
 
-	imgui.BeginV(title, open, flags)
+	imgui.BeginV(title, open, int(flags))
+
+	// Mark all state as invalid.
+	Context.invalidAllState()
+
 	layout.Build()
+
+	// Clean remaining invalid states
+	Context.cleanState()
+
 	imgui.End()
 }
