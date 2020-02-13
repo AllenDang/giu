@@ -1,5 +1,10 @@
 # giu
+
+[![Join the chat at https://gitter.im/AllenDang-giu/community](https://badges.gitter.im/AllenDang-giu/community.svg)](https://gitter.im/AllenDang-giu/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Cross platform rapid GUI framework for golang based on [Dear ImGui](https://github.com/ocornut/imgui) and the great golang binding [imgui-go](https://github.com/inkyblackness/imgui-go).
+
+[Document](https://github.com/AllenDang/giu/wiki)
 
 ## Supported Platforms
 
@@ -61,10 +66,6 @@ func main() {
 Here is result.
 
 ![Helloworld](https://github.com/AllenDang/giu/raw/master/examples/helloworld/helloworld.png)
-
-## Document
-
-Check [Wiki](https://github.com/AllenDang/giu/wiki)
 
 ## Projects using giu
 
