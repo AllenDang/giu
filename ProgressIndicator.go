@@ -15,7 +15,7 @@ type ProgressIndicatorState struct {
 func (ps *ProgressIndicatorState) Update() {
 	ticker := time.NewTicker(time.Second / 60)
 	for !ps.stop {
-		if ps.angle > 360 {
+		if ps.angle > 6.2 {
 			ps.angle = 0
 		}
 		ps.angle += 0.1
