@@ -262,6 +262,8 @@ var glfwButtonIDByIndex = map[int]glfw.MouseButton{
 }
 
 func (platform *GLFW) onDrop(window *glfw.Window, names []string) {
+	window.Focus()
+
 	if platform.dropCallback != nil {
 		platform.dropCallback(names)
 	}
