@@ -63,8 +63,8 @@ func (p *ProgressIndicatorWidget) Build() {
 			int(float64(p.radius)*math.Cos(state.angle)+float64(centerPt.Y)),
 		)
 
-		canvas.AddCircle(centerPt, float32(p.radius), color.RGBA{255, 255, 255, 255}, int(p.radius), float32(p.radius/20.0))
-		canvas.AddCircleFilled(centerPt2, float32(p.radius/5), color.RGBA{255, 255, 255, 255}, int(p.radius/5))
+		canvas.AddCircle(centerPt, float32(p.radius), color.RGBA{255, 255, 255, 255}, float32(p.radius/20.0))
+		canvas.AddCircleFilled(centerPt2, float32(p.radius/5), color.RGBA{255, 255, 255, 255})
 
 		width := float32(p.radius + p.radius/5)
 		InvisibleButton("pd", width, width, nil).Build()

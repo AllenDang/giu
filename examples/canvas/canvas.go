@@ -32,7 +32,7 @@ func loop() {
 			canvas.AddQuad(p1, p2, p3, p4, color, 1)
 
 			p1 = p1.Add(image.Pt(120, 60))
-			canvas.AddCircleFilled(p1, 50, color, 20)
+			canvas.AddCircleFilled(p1, 50, color)
 
 			p1 = pos.Add(image.Pt(10, 400))
 			p2 = pos.Add(image.Pt(50, 440))

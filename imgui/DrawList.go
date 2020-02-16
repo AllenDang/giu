@@ -140,16 +140,16 @@ func (list DrawList) AddTriangleFilled(p1, p2, p3 Vec2, col Vec4) {
 	C.iggDrawListAddTriangleFilled(list.handle(), p1Arg, p2Arg, p3Arg, C.uint(c))
 }
 
-func (list DrawList) AddCircle(center Vec2, radius float32, col Vec4, num_segments int, thickness float32) {
+func (list DrawList) AddCircle(center Vec2, radius float32, col Vec4, thickness float32) {
 	c := GetColorU32(col)
 	centerArg, _ := center.wrapped()
-	C.iggDrawListAddCircle(list.handle(), centerArg, C.float(radius), C.uint(c), C.int(num_segments), C.float(thickness))
+	C.iggDrawListAddCircle(list.handle(), centerArg, C.float(radius), C.uint(c), 0, C.float(thickness))
 }
 
-func (list DrawList) AddCircleFilled(center Vec2, radius float32, col Vec4, num_segments int) {
+func (list DrawList) AddCircleFilled(center Vec2, radius float32, col Vec4) {
 	c := GetColorU32(col)
 	centerArg, _ := center.wrapped()
-	C.iggDrawListAddCircleFilled(list.handle(), centerArg, C.float(radius), C.uint(c), C.int(num_segments))
+	C.iggDrawListAddCircleFilled(list.handle(), centerArg, C.float(radius), C.uint(c), 0)
 }
 
 func (list DrawList) AddQuad(p1, p2, p3, p4 Vec2, col Vec4, thickness float32) {
