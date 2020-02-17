@@ -27,7 +27,7 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 - Freetype font rendering support.
 - OS clipboard support.
 
-![Screenshot](https://github.com/AllenDang/giu/raw/master/examples/widgets/screenshot.png)
+![Screenshot](https://github.com/AllenDang/giu/raw/master/examples/imguidemo/screenshot.png)
 
 ## Hello world
 
