@@ -94,9 +94,7 @@ func (platform *GLFW) Dispose() {
 }
 
 func (platform *GLFW) GetContentScale() float32 {
-	// Get primary monitor size
-	monitor := glfw.GetPrimaryMonitor()
-	x, _ := monitor.GetContentScale()
+	x, _ := platform.window.GetContentScale()
 	return x
 }
 
