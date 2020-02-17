@@ -119,8 +119,10 @@ type ImageButtonWidget struct {
 }
 
 func (i *ImageButtonWidget) Build() {
-	if imgui.ImageButton(i.texture.id, imgui.Vec2{}) && i.clicked != nil {
-		i.clicked()
+	if i.texture != nil && i.texture.id != 0 {
+		if imgui.ImageButton(i.texture.id, imgui.Vec2{X: i.width, Y: i.height}) && i.clicked != nil {
+			i.clicked()
+		}
 	}
 }
 
@@ -329,10 +331,10 @@ func (i *ImageWidget) Build() {
 	size := imgui.Vec2{X: i.width, Y: i.height}
 	if i.texture != nil && i.texture.id != 0 {
 		rect := imgui.ContentRegionAvail()
-		if size.X == -1 {
+		if size.X == (-1 * Context.GetPlatform().GetContentScale()) {
 			size.X = rect.X
 		}
-		if size.Y == -1 {
+		if size.Y == (-1 * Context.GetPlatform().GetContentScale()) {
 			size.Y = rect.Y
 		}
 		imgui.Image(i.texture.id, size)
