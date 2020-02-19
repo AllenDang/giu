@@ -1005,6 +1005,11 @@ func IsItemActive() bool {
 	return C.iggIsItemActive() != 0
 }
 
+// IsAnyItemActive returns true if the any item is active.
+func IsAnyItemActive() bool {
+	return C.iggIsAnyItemActive() != 0
+}
+
 // IsKeyDown returns true if the corresponding key is currently being held down.
 func IsKeyDown(key int) bool {
 	return C.iggIsKeyDown(C.int(key)) != 0
@@ -1196,6 +1201,16 @@ func MouseCursor() int {
 // SetMouseCursor sets desired cursor type.
 func SetMouseCursor(cursor int) {
 	C.iggSetMouseCursor(C.int(cursor))
+}
+
+// SetKeyboardFocusHere calls SetKeyboardFocusHereV(0)
+func SetKeyboardFocusHere() {
+	C.iggSetKeyboardFocusHere(0)
+}
+
+// SetKeyboardFocusHereV gives keyboard focus to next item
+func SetKeyboardFocusHereV(offset int) {
+	C.iggSetKeyboardFocusHere(C.int(offset))
 }
 
 func GetWindowDrawList() DrawList {

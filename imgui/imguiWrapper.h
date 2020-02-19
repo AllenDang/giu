@@ -149,6 +149,7 @@ extern "C"
 
 	extern IggBool iggIsItemHovered(int flags);
   extern IggBool iggIsItemActive();
+  extern IggBool iggIsAnyItemActive();
 
 	extern IggBool iggIsKeyDown(int key);
 	extern IggBool iggIsKeyPressed(int key, IggBool repeat);
@@ -174,6 +175,7 @@ extern "C"
 	extern IggBool iggIsAnyItemFocused();
 	extern int iggGetMouseCursor();
 	extern void iggSetMouseCursor(int cursor);
+  extern void iggSetKeyboardFocusHere(int offset);
 
 	extern IggBool iggBeginTabBar(char const *str_id, int flags);
 	extern void iggEndTabBar();
