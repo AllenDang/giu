@@ -1,9 +1,17 @@
+sudo: false
+
 addons:
   apt_packages:
-    - libgles2-mesa-dev
+    - libgl1-mesa-dev
+    - xorg-dev
 
 language: go
 
 go:
   - 1.13.x
-  - master
+  - tip
+
+matrix:
+  allow_failures:
+    - go: tip
+  fast_finish: true 
