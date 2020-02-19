@@ -8,7 +8,7 @@ Any contribution (features, widgets, tutorials, documents and etc...) is appreci
 
 ## Supported Platforms
 
-The supported platforms depends on GLFW v3.3, so idealy giu could support all platforms that GLFW v3.3 supports.
+giu is built upon GLFW v3.3, so idealy giu could support all platforms that GLFW v3.3 supports.
 
 - Windows (only tested on Windows 10 x64)
 - MacOS (only tested on MacOS v10.15)
