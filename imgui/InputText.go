@@ -232,8 +232,8 @@ func (data InputTextCallbackData) InsertBytes(offset int, bytes []byte) {
 	byteCount := len(bytes)
 	if byteCount > 0 {
 		bytesPtr = (*C.char)(unsafe.Pointer(&bytes[0]))
+		C.iggInputTextCallbackDataInsertBytes(data.handle, C.int(offset), bytesPtr, C.int(byteCount))
 	}
-	C.iggInputTextCallbackDataInsertBytes(data.handle, C.int(offset), bytesPtr, C.int(byteCount))
 }
 
 // CursorPos returns the byte-offset of the cursor within the buffer.
