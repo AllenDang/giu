@@ -53,6 +53,7 @@ func NewGLFW(io IO, title string, width, height int, resizable bool) (*GLFW, err
 	glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
 	glfw.WindowHint(glfw.OpenGLForwardCompatible, 1)
 	glfw.WindowHint(glfw.ScaleToMonitor, glfw.True)
+	glfw.WindowHint(glfw.Visible, glfw.False)
 
 	if !resizable {
 		glfw.WindowHint(glfw.Resizable, glfw.False)
@@ -84,6 +85,11 @@ func NewGLFW(io IO, title string, width, height int, resizable bool) (*GLFW, err
 
 	io.SetClipboard(NewGLFWClipboard(window))
 
+	// Center window to monitor
+	platform.centerWindow()
+
+	platform.window.Show()
+
 	return platform, nil
 }
 
@@ -100,6 +106,65 @@ func (platform *GLFW) GetContentScale() float32 {
 
 func (platform *GLFW) GetWindow() *glfw.Window {
 	return platform.window
+}
+
+func (platform *GLFW) centerWindow() {
+	monitor := platform.getBestMonitor()
+	if monitor == nil {
+		return
+	}
+
+	mode := monitor.GetVideoMode()
+	if mode == nil {
+		return
+	}
+
+	monitorX, monitorY := monitor.GetPos()
+	windowWidth, windowHeight := platform.window.GetSize()
+
+	platform.window.SetPos(monitorX+(mode.Width-windowWidth)/2, monitorY+(mode.Height-windowHeight)/2)
+}
+
+func (platform *GLFW) getBestMonitor() *glfw.Monitor {
+	monitors := glfw.GetMonitors()
+
+	if len(monitors) == 0 {
+		return nil
+	}
+
+	width, height := platform.window.GetSize()
+	x, y := platform.window.GetPos()
+
+	var bestMonitor *glfw.Monitor
+	var bestArea int
+
+	for _, m := range monitors {
+		monitorX, monitorY := m.GetPos()
+		mode := m.GetVideoMode()
+		if mode == nil {
+			continue
+		}
+
+		areaMinX := int(math.Max(float64(x), float64(monitorX)))
+		areaMinY := int(math.Max(float64(y), float64(monitorY)))
+
+		areaMaxX := int(math.Min(float64(x+width), float64(monitorX+mode.Width)))
+		areaMaxY := int(math.Min(float64(y+height), float64(monitorY+mode.Height)))
+
+		area := (areaMaxX - areaMinX) * (areaMaxY - areaMinY)
+
+		if area > bestArea {
+			bestArea = area
+			bestMonitor = m
+		}
+	}
+
+	return bestMonitor
+}
+
+// Set current window in the center of monitor
+func (platform *GLFW) Center() {
+
 }
 
 // ShouldStop returns true if the window is to be closed.
