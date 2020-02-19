@@ -4,9 +4,11 @@
 
 Cross platform rapid GUI framework for golang based on [Dear ImGui](https://github.com/ocornut/imgui) and the great golang binding [imgui-go](https://github.com/inkyblackness/imgui-go).
 
+Any contribution (features, widgets, tutorials, documents and etc...) is appreciated!
+
 ## Supported Platforms
 
-The supported platforms depends on GLFW v3.3, so idealy giu could support all platforms that GLFW v3.3 supports.
+giu is built upon GLFW v3.3, so idealy giu could support all platforms that GLFW v3.3 supports.
 
 - Windows (only tested on Windows 10 x64)
 - MacOS (only tested on MacOS v10.15)
