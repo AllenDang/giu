@@ -65,5 +65,4 @@ func WindowV(title string, open *bool, flags WindowFlags, x, y, width, height fl
 	Context.cleanState()
 
 	imgui.End()
-
 }
