@@ -7,12 +7,22 @@ import (
 	"github.com/AllenDang/giu/imgui"
 )
 
+type MasterWindowFlags imgui.GLFWWindowFlags
+
+const (
+	// Specifies the window will be fixed size.
+	MasterWindowFlagsNotResizable MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsNotResizable)
+	// Specifies whether the window is maximized.
+	MasterWindwoFlagsMaximized MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsMaximized)
+	// Specifies whether the window will be always-on-top.
+	MasterWindowFlagsFloating MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsFloating)
+)
+
 type MasterWindow struct {
 	width      int
 	height     int
 	clearColor [4]float32
 	title      string
-	resizable  bool
 	platform   imgui.Platform
 	renderer   imgui.Renderer
 	context    *imgui.Context
@@ -20,12 +30,7 @@ type MasterWindow struct {
 	updateFunc func()
 }
 
-// Create a master window.
-func NewMasterWindow(title string, width, height int, resizable bool, loadFontFunc func()) *MasterWindow {
-	return NewMasterWindowWithBgColor(title, width, height, resizable, loadFontFunc, nil)
-}
-
-func NewMasterWindowWithBgColor(title string, width, height int, resizable bool, loadFontFunc func(), bgColor *color.RGBA) *MasterWindow {
+func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, loadFontFunc func()) *MasterWindow {
 	context := imgui.CreateContext(nil)
 
 	io := imgui.CurrentIO()
@@ -35,7 +40,7 @@ func NewMasterWindowWithBgColor(title string, width, height int, resizable bool,
 	// Disable imgui.ini
 	io.SetIniFilename("")
 
-	p, err := imgui.NewGLFW(io, title, width, height, resizable)
+	p, err := imgui.NewGLFW(io, title, width, height, imgui.GLFWWindowFlags(flags))
 	if err != nil {
 		panic(err)
 	}
@@ -61,19 +66,11 @@ func NewMasterWindowWithBgColor(title string, width, height int, resizable bool,
 	// Create context
 	Context.renderer = r
 
-	col := [4]float32{0.22, 0.26, 0.28, 1}
-
-	if bgColor != nil {
-		vec4 := ToVec4Color(*bgColor)
-		col = [4]float32{vec4.X, vec4.Y, vec4.Z, vec4.W}
-	}
-
 	mw := &MasterWindow{
-		clearColor: col,
+		clearColor: [4]float32{0.22, 0.26, 0.28, 1},
 		width:      width,
 		height:     height,
 		title:      title,
-		resizable:  resizable,
 		io:         &io,
 		context:    context,
 		platform:   p,

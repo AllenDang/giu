@@ -67,6 +67,6 @@ func main() {
 	client = resty.New()
 	client.SetTimeout(10 * time.Second)
 
-	wnd := g.NewMasterWindow("Load Image", 600, 400, false, nil)
+	wnd := g.NewMasterWindow("Load Image", 600, 400, g.MasterWindowFlagsNotResizable, nil)
 	wnd.Main(loop)
 }

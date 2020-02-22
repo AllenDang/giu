@@ -46,6 +46,6 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Canvas", 600, 600, false, nil)
+	wnd := g.NewMasterWindow("Canvas", 600, 600, g.MasterWindowFlagsNotResizable, nil)
 	wnd.Main(loop)
 }

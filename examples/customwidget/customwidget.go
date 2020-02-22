@@ -70,6 +70,6 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Custom Widget", 400, 200, false, nil)
+	wnd := g.NewMasterWindow("Custom Widget", 400, 300, g.MasterWindowFlagsNotResizable, nil)
 	wnd.Main(loop)
 }

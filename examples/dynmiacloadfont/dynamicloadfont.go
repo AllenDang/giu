@@ -26,6 +26,6 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Dynamic load font", 400, 200, false, loadFont)
+	wnd := g.NewMasterWindow("Dynamic load font", 400, 200, g.MasterWindowFlagsNotResizable, loadFont)
 	wnd.Main(loop)
 }

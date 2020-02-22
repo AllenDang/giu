@@ -24,6 +24,14 @@ func (c *GLFWClipboard) SetText(text string) {
 	c.window.SetClipboardString(text)
 }
 
+type GLFWWindowFlags uint8
+
+const (
+	GLFWWindowFlagsNotResizable GLFWWindowFlags = 1 << iota
+	GLFWWindowFlagsMaximized
+	GLFWWindowFlagsFloating
+)
+
 // GLFW implements a platform based on github.com/go-gl/glfw (v3.2).
 type GLFW struct {
 	imguiIO IO
@@ -40,7 +48,7 @@ type GLFW struct {
 }
 
 // NewGLFW attempts to initialize a GLFW context.
-func NewGLFW(io IO, title string, width, height int, resizable bool) (*GLFW, error) {
+func NewGLFW(io IO, title string, width, height int, flags GLFWWindowFlags) (*GLFW, error) {
 	runtime.LockOSThread()
 
 	err := glfw.Init()
@@ -55,8 +63,16 @@ func NewGLFW(io IO, title string, width, height int, resizable bool) (*GLFW, err
 	glfw.WindowHint(glfw.ScaleToMonitor, glfw.True)
 	glfw.WindowHint(glfw.Visible, glfw.False)
 
-	if !resizable {
+	if flags&GLFWWindowFlagsNotResizable != 0 {
 		glfw.WindowHint(glfw.Resizable, glfw.False)
+	}
+
+	if flags&GLFWWindowFlagsMaximized != 0 {
+		glfw.WindowHint(glfw.Maximized, glfw.True)
+	}
+
+	if flags&GLFWWindowFlagsFloating != 0 {
+		glfw.WindowHint(glfw.Floating, glfw.True)
 	}
 
 	window, err := glfw.CreateWindow(width, height, title, nil, nil)
@@ -85,8 +101,10 @@ func NewGLFW(io IO, title string, width, height int, resizable bool) (*GLFW, err
 
 	io.SetClipboard(NewGLFWClipboard(window))
 
-	// Center window to monitor
-	platform.centerWindow()
+	if flags&GLFWWindowFlagsMaximized == 0 {
+		// Center window to monitor
+		platform.centerWindow()
+	}
 
 	platform.window.Show()
 
@@ -160,11 +178,6 @@ func (platform *GLFW) getBestMonitor() *glfw.Monitor {
 	}
 
 	return bestMonitor
-}
-
-// Set current window in the center of monitor
-func (platform *GLFW) Center() {
-
 }
 
 // ShouldStop returns true if the window is to be closed.

@@ -36,6 +36,6 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Splitter", 800, 600, true, nil)
+	wnd := g.NewMasterWindow("Splitter", 800, 600, 0, nil)
 	wnd.Main(loop)
 }
