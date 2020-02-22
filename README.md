@@ -58,7 +58,7 @@ func loop() {
 }
 
 func main() {
-    wnd := g.NewMasterWindow("Hello world", 400, 200, false, nil)
+    wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable, nil)
     wnd.Main(loop)
 }
 ```
