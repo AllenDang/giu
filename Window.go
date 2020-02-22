@@ -8,9 +8,7 @@ func Window(title string, x, y, width, height float32, layout Layout) {
 	WindowV(
 		title,
 		nil,
-		imgui.WindowFlagsNoCollapse|
-			imgui.WindowFlagsNoMove|
-			imgui.WindowFlagsNoResize,
+		0,
 		x, y,
 		width, height,
 		layout,
@@ -53,8 +51,8 @@ func SingleWindowWithMenuBar(title string, layout Layout) {
 }
 
 func WindowV(title string, open *bool, flags WindowFlags, x, y, width, height float32, layout Layout) {
-	imgui.SetNextWindowPos(imgui.Vec2{X: x, Y: y})
-	imgui.SetNextWindowSize(imgui.Vec2{X: width, Y: height})
+	imgui.SetNextWindowPosV(imgui.Vec2{X: x, Y: y}, imgui.ConditionFirstUseEver, imgui.Vec2{X: 0, Y: 0})
+	imgui.SetNextWindowSizeV(imgui.Vec2{X: width, Y: height}, imgui.ConditionFirstUseEver)
 
 	imgui.BeginV(title, open, int(flags))
 
@@ -67,4 +65,5 @@ func WindowV(title string, open *bool, flags WindowFlags, x, y, width, height fl
 	Context.cleanState()
 
 	imgui.End()
+
 }
