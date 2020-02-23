@@ -35,7 +35,7 @@ func contextMenu2Clicked() {
 }
 
 func btnPopupCLicked() {
-	imgui.OpenPopup("Confirm")
+	g.OpenPopup("Confirm")
 }
 
 func loop() {
@@ -85,7 +85,7 @@ func loop() {
 
 		g.Line(
 			g.Button("Popup Modal", btnPopupCLicked),
-			g.Popup("Confirm", g.Layout{
+			g.PopupModal("Confirm", g.Layout{
 				g.Label("Confirm to close me?"),
 				g.Line(
 					g.Button("Yes", func() { imgui.CloseCurrentPopup() }),
