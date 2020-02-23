@@ -203,6 +203,41 @@ func Child(id string, border bool, width, height float32, flags WindowFlags, lay
 	}
 }
 
+type ComboCustomWidget struct {
+	label        string
+	previewValue string
+	width        float32
+	flags        ComboFlags
+	layout       Layout
+}
+
+func ComboCustom(label, previewValue string, width float32, flags ComboFlags, layout Layout) *ComboCustomWidget {
+	return &ComboCustomWidget{
+		label:        label,
+		previewValue: previewValue,
+		width:        width * Context.GetPlatform().GetContentScale(),
+		flags:        flags,
+		layout:       layout,
+	}
+}
+
+func (cc *ComboCustomWidget) Build() {
+	if cc.width > 0 {
+		imgui.PushItemWidth(cc.width)
+	}
+
+	if imgui.BeginComboV(cc.label, cc.previewValue, int(cc.flags)) {
+		if cc.layout != nil {
+			cc.layout.Build()
+		}
+		imgui.EndCombo()
+	}
+
+	if cc.width > 0 {
+		imgui.PopItemWidth()
+	}
+}
+
 type ComboWidget struct {
 	label        string
 	previewValue string
@@ -541,11 +576,11 @@ func (p *PopupWidget) Build() {
 	}
 }
 
-func Popup(name string, layout Layout) *PopupWidget {
-	return PopupV(name, nil, 0, layout)
+func PopupModal(name string, layout Layout) *PopupWidget {
+	return PopupModalV(name, nil, 0, layout)
 }
 
-func PopupV(name string, open *bool, flags WindowFlags, layout Layout) *PopupWidget {
+func PopupModalV(name string, open *bool, flags WindowFlags, layout Layout) *PopupWidget {
 	return &PopupWidget{
 		name:   name,
 		open:   open,

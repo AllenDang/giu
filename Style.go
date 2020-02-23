@@ -102,6 +102,10 @@ func PushItemWidth(width float32) {
 	imgui.PushItemWidth(width)
 }
 
+func PopItemWidth() {
+	imgui.PopItemWidth()
+}
+
 func PushTextWrapPos() {
 	imgui.PushTextWrapPos()
 }
