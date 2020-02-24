@@ -1,6 +1,7 @@
 package giu
 
 import (
+	"image"
 	"image/color"
 
 	"github.com/AllenDang/giu/imgui"
@@ -724,18 +725,6 @@ type HSplitterWidget struct {
 	delta  *float32
 }
 
-func (h *HSplitterWidget) Build() {
-	imgui.InvisibleButton(h.id, imgui.Vec2{X: h.width, Y: h.height})
-	if imgui.IsItemActive() {
-		*(h.delta) = imgui.CurrentIO().GetMouseDelta().Y / Context.platform.GetContentScale()
-	} else {
-		*(h.delta) = 0
-	}
-	if imgui.IsItemHovered() {
-		imgui.SetMouseCursor(imgui.MouseCursorResizeNS)
-	}
-}
-
 func HSplitter(id string, width, height float32, delta *float32) *HSplitterWidget {
 	aw, ah := GetAvaiableRegion()
 	if width == 0 {
@@ -745,6 +734,7 @@ func HSplitter(id string, width, height float32, delta *float32) *HSplitterWidge
 	if height == 0 {
 		height = ah / Context.GetPlatform().GetContentScale()
 	}
+
 	return &HSplitterWidget{
 		id:     id,
 		width:  width * Context.platform.GetContentScale(),
@@ -753,23 +743,44 @@ func HSplitter(id string, width, height float32, delta *float32) *HSplitterWidge
 	}
 }
 
+func (h *HSplitterWidget) Build() {
+	// Calc line position.
+	width := int(40 * Context.GetPlatform().GetContentScale())
+	height := int(2 * Context.GetPlatform().GetContentScale())
+
+	pt := GetCursorScreenPos()
+
+	centerX := int(h.width / 2)
+	centerY := int(h.height / 2)
+
+	ptMin := image.Pt(centerX-width/2, centerY-height/2)
+	ptMax := image.Pt(centerX+width/2, centerY+height/2)
+
+	style := imgui.CurrentStyle()
+	color := Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrab))
+
+	// Place a invisible button to capture event.
+	imgui.InvisibleButton(h.id, imgui.Vec2{X: h.width, Y: h.height})
+	if imgui.IsItemActive() {
+		*(h.delta) = imgui.CurrentIO().GetMouseDelta().Y / Context.platform.GetContentScale()
+	} else {
+		*(h.delta) = 0
+	}
+	if imgui.IsItemHovered() {
+		imgui.SetMouseCursor(imgui.MouseCursorResizeNS)
+		color = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
+	}
+
+	// Draw a line in the very center
+	canvas := GetCanvas()
+	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), color, 0, 0)
+}
+
 type VSplitterWidget struct {
 	id     string
 	width  float32
 	height float32
 	delta  *float32
-}
-
-func (v *VSplitterWidget) Build() {
-	imgui.InvisibleButton(v.id, imgui.Vec2{X: v.width, Y: v.height})
-	if imgui.IsItemActive() {
-		*(v.delta) = imgui.CurrentIO().GetMouseDelta().X / Context.platform.GetContentScale()
-	} else {
-		*(v.delta) = 0
-	}
-	if imgui.IsItemHovered() {
-		imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
-	}
 }
 
 func VSplitter(id string, width, height float32, delta *float32) *VSplitterWidget {
@@ -786,6 +797,39 @@ func VSplitter(id string, width, height float32, delta *float32) *VSplitterWidge
 		height: height * Context.platform.GetContentScale(),
 		delta:  delta,
 	}
+}
+
+func (v *VSplitterWidget) Build() {
+	// Calc line position.
+	width := int(2 * Context.GetPlatform().GetContentScale())
+	height := int(40 * Context.GetPlatform().GetContentScale())
+
+	pt := GetCursorScreenPos()
+
+	centerX := int(v.width / 2)
+	centerY := int(v.height / 2)
+
+	ptMin := image.Pt(centerX-width/2, centerY-height/2)
+	ptMax := image.Pt(centerX+width/2, centerY+height/2)
+
+	style := imgui.CurrentStyle()
+	color := Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrab))
+
+	// Place a invisible button to capture event.
+	imgui.InvisibleButton(v.id, imgui.Vec2{X: v.width, Y: v.height})
+	if imgui.IsItemActive() {
+		*(v.delta) = imgui.CurrentIO().GetMouseDelta().X / Context.platform.GetContentScale()
+	} else {
+		*(v.delta) = 0
+	}
+	if imgui.IsItemHovered() {
+		imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
+		color = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
+	}
+
+	// Draw a line in the very center
+	canvas := GetCanvas()
+	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), color, 0, 0)
 }
 
 type TabItemWidget struct {
