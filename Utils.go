@@ -48,6 +48,15 @@ func ToVec2(pt image.Point) imgui.Vec2 {
 	}
 }
 
+func Vec4ToRGBA(vec4 imgui.Vec4) color.RGBA {
+	return color.RGBA{
+		R: uint8(vec4.X * 255),
+		G: uint8(vec4.Y * 255),
+		B: uint8(vec4.Z * 255),
+		A: uint8(vec4.W * 255),
+	}
+}
+
 func Update() {
 	if Context.isAlive {
 		Context.platform.Update()
