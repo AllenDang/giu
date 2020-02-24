@@ -51,7 +51,7 @@ func SingleWindowWithMenuBar(title string, layout Layout) {
 }
 
 func WindowV(title string, open *bool, flags WindowFlags, x, y, width, height float32, layout Layout) {
-	if flags|imgui.WindowFlagsNoMove != 0 {
+	if flags&imgui.WindowFlagsNoMove != 0 && flags&imgui.WindowFlagsNoResize != 0 {
 		imgui.SetNextWindowPos(imgui.Vec2{X: x, Y: y})
 		imgui.SetNextWindowSize(imgui.Vec2{X: width, Y: height})
 	} else {
