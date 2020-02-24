@@ -739,11 +739,11 @@ func (h *HSplitterWidget) Build() {
 func HSplitter(id string, width, height float32, delta *float32) *HSplitterWidget {
 	aw, ah := GetAvaiableRegion()
 	if width == 0 {
-		width = aw
+		width = aw / Context.GetPlatform().GetContentScale()
 	}
 
 	if height == 0 {
-		height = ah
+		height = ah / Context.GetPlatform().GetContentScale()
 	}
 	return &HSplitterWidget{
 		id:     id,
@@ -775,10 +775,10 @@ func (v *VSplitterWidget) Build() {
 func VSplitter(id string, width, height float32, delta *float32) *VSplitterWidget {
 	aw, ah := GetAvaiableRegion()
 	if width == 0 {
-		width = aw
+		width = aw / Context.GetPlatform().GetContentScale()
 	}
 	if height == 0 {
-		height = ah
+		height = ah / Context.GetPlatform().GetContentScale()
 	}
 	return &VSplitterWidget{
 		id:     id,
