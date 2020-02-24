@@ -51,8 +51,13 @@ func SingleWindowWithMenuBar(title string, layout Layout) {
 }
 
 func WindowV(title string, open *bool, flags WindowFlags, x, y, width, height float32, layout Layout) {
-	imgui.SetNextWindowPosV(imgui.Vec2{X: x, Y: y}, imgui.ConditionFirstUseEver, imgui.Vec2{X: 0, Y: 0})
-	imgui.SetNextWindowSizeV(imgui.Vec2{X: width, Y: height}, imgui.ConditionFirstUseEver)
+	if flags|imgui.WindowFlagsNoMove != 0 {
+		imgui.SetNextWindowPos(imgui.Vec2{X: x, Y: y})
+		imgui.SetNextWindowSize(imgui.Vec2{X: width, Y: height})
+	} else {
+		imgui.SetNextWindowPosV(imgui.Vec2{X: x, Y: y}, imgui.ConditionFirstUseEver, imgui.Vec2{X: 0, Y: 0})
+		imgui.SetNextWindowSizeV(imgui.Vec2{X: width, Y: height}, imgui.ConditionFirstUseEver)
+	}
 
 	imgui.BeginV(title, open, int(flags))
 
