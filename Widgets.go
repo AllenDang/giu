@@ -1,7 +1,6 @@
 package giu
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 
@@ -83,11 +82,6 @@ func Button(id string, clicked func()) *ButtonWidget {
 }
 
 func ButtonV(id string, width, height float32, clicked func()) *ButtonWidget {
-	// Add space to id if the id is too short.
-	if len(id) < 5 {
-		id = fmt.Sprintf(" %s ", id)
-	}
-
 	return &ButtonWidget{
 		id:      id,
 		width:   width * Context.platform.GetContentScale(),
