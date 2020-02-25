@@ -26,15 +26,17 @@ type SplitLayoutWidget struct {
 	originItemSpacingX float32
 	originItemSpacingY float32
 	sashPos            float32
+	border             bool
 }
 
-func SplitLayout(id string, direction Direction, sashPos float32, layout1, layout2 Widget) *SplitLayoutWidget {
+func SplitLayout(id string, direction Direction, border bool, sashPos float32, layout1, layout2 Widget) *SplitLayoutWidget {
 	return &SplitLayoutWidget{
 		id:        id,
 		direction: direction,
 		sashPos:   sashPos,
 		layout1:   layout1,
 		layout2:   layout2,
+		border:    border,
 	}
 }
 
@@ -56,13 +58,13 @@ func (s *SplitLayoutWidget) buildChild(id string, width, height float32, layout 
 
 	return Layout{
 		Custom(func() {
-			if isSplitLayoutWidget {
+			if isSplitLayoutWidget || !s.border {
 				PushFramePadding(0, 0)
 			}
 		}),
-		Child(id, !isSplitLayoutWidget, width, height, 0, s.restoreItemSpacing(layout)),
+		Child(id, !isSplitLayoutWidget && s.border, width, height, 0, s.restoreItemSpacing(layout)),
 		Custom(func() {
-			if isSplitLayoutWidget {
+			if isSplitLayoutWidget || !s.border {
 				PopStyle()
 			}
 		}),
