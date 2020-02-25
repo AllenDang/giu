@@ -50,7 +50,7 @@ func buildMsgboxButtons(buttons MsgboxButtons, callback DialogResultCallback) La
 	case MsgboxButtonsOkCancel:
 		return Layout{
 			Line(
-				Button("Ok", func() {
+				Button("  Ok  ", func() {
 					msgboxInvokeCallback(DialogResultOK, callback)
 				}),
 				Button("Cancel", func() {
@@ -61,17 +61,17 @@ func buildMsgboxButtons(buttons MsgboxButtons, callback DialogResultCallback) La
 	case MsgboxButtonsYesNo:
 		return Layout{
 			Line(
-				Button("Yes", func() {
+				Button(" Yes ", func() {
 					msgboxInvokeCallback(DialogResultYes, callback)
 				}),
-				Button("No", func() {
+				Button("  No  ", func() {
 					msgboxInvokeCallback(DialogResultNo, callback)
 				}),
 			),
 		}
 	default:
 		return Layout{
-			Button("Ok", func() {
+			Button("  Ok  ", func() {
 				msgboxInvokeCallback(DialogResultOK, callback)
 			}),
 		}
