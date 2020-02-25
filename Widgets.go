@@ -1,6 +1,7 @@
 package giu
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 
@@ -82,6 +83,11 @@ func Button(id string, clicked func()) *ButtonWidget {
 }
 
 func ButtonV(id string, width, height float32, clicked func()) *ButtonWidget {
+	// Add space to id if the id is too short.
+	if len(id) < 5 {
+		id = fmt.Sprintf(" %s ", id)
+	}
+
 	return &ButtonWidget{
 		id:      id,
 		width:   width * Context.platform.GetContentScale(),
@@ -568,17 +574,8 @@ type PopupWidget struct {
 	layout Layout
 }
 
-func (p *PopupWidget) Build() {
-	if imgui.BeginPopupModalV(p.name, p.open, int(p.flags)) {
-		if p.layout != nil {
-			p.layout.Build()
-		}
-		imgui.EndPopup()
-	}
-}
-
 func PopupModal(name string, layout Layout) *PopupWidget {
-	return PopupModalV(name, nil, 0, layout)
+	return PopupModalV(name, nil, WindowFlagsNoResize, layout)
 }
 
 func PopupModalV(name string, open *bool, flags WindowFlags, layout Layout) *PopupWidget {
@@ -587,6 +584,16 @@ func PopupModalV(name string, open *bool, flags WindowFlags, layout Layout) *Pop
 		open:   open,
 		flags:  flags,
 		layout: layout,
+	}
+}
+
+func (p *PopupWidget) Build() {
+	if imgui.BeginPopupModalV(p.name, p.open, int(p.flags)) {
+		if p.layout != nil {
+			Update()
+			p.layout.Build()
+		}
+		imgui.EndPopup()
 	}
 }
 
