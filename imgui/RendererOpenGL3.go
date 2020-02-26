@@ -303,11 +303,11 @@ func (renderer *OpenGL3) createFontsTexture() {
 	io := CurrentIO()
 	fonts := io.Fonts()
 
-	// Zoom font size using dpi scale factor.
-	// Fix: MacOS doesn't need to scale font.
-	fontConfig := NewFontConfig()
-
 	if runtime.GOOS != "darwin" {
+		// Zoom font size using dpi scale factor.
+		// Fix: MacOS doesn't need to scale font.
+		fontConfig := NewFontConfig()
+
 		fontConfig.SetSize(13 * renderer.contentScale)
 
 		if renderer.contentScale > 1 {
@@ -315,9 +315,9 @@ func (renderer *OpenGL3) createFontsTexture() {
 			fontConfig.SetOversampleH(scale)
 			fontConfig.SetOversampleV(scale)
 		}
-	}
 
-	fonts.AddFontDefaultV(fontConfig)
+		fonts.AddFontDefaultV(fontConfig)
+	}
 
 	if EnableFreeType {
 		err := fonts.BuildWithFreeType()
