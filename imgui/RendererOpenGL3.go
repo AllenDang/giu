@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"runtime"
 	"unsafe"
 
 	"github.com/go-gl/gl/v3.2-core/gl"
@@ -303,13 +304,17 @@ func (renderer *OpenGL3) createFontsTexture() {
 	fonts := io.Fonts()
 
 	// Zoom font size using dpi scale factor.
+	// Fix: MacOS doesn't need to scale font.
 	fontConfig := NewFontConfig()
-	fontConfig.SetSize(13 * renderer.contentScale)
 
-	if renderer.contentScale > 1 {
-		scale := int(math.Round(float64(renderer.contentScale)))
-		fontConfig.SetOversampleH(scale)
-		fontConfig.SetOversampleV(scale)
+	if runtime.GOOS != "darwin" {
+		fontConfig.SetSize(13 * renderer.contentScale)
+
+		if renderer.contentScale > 1 {
+			scale := int(math.Round(float64(renderer.contentScale)))
+			fontConfig.SetOversampleH(scale)
+			fontConfig.SetOversampleV(scale)
+		}
 	}
 
 	fonts.AddFontDefaultV(fontConfig)
