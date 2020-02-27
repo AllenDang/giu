@@ -135,6 +135,14 @@ func (style Style) WindowPadding() Vec2 {
 	return value
 }
 
+func (style Style) FramePadding() Vec2 {
+	var value Vec2
+	valueArg, valueFin := value.wrapped()
+	C.iggStyleGetFramePadding(style.handle(), valueArg)
+	valueFin()
+	return value
+}
+
 // SetColor sets a color value of the UI style.
 func (style Style) SetColor(id StyleColorID, value Vec4) {
 	valueArg, _ := value.wrapped()

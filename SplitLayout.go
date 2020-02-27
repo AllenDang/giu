@@ -19,14 +19,16 @@ func (s *SplitLayoutState) Dispose() {
 }
 
 type SplitLayoutWidget struct {
-	id                 string
-	direction          Direction
-	layout1            Widget
-	layout2            Widget
-	originItemSpacingX float32
-	originItemSpacingY float32
-	sashPos            float32
-	border             bool
+	id                  string
+	direction           Direction
+	layout1             Widget
+	layout2             Widget
+	originItemSpacingX  float32
+	originItemSpacingY  float32
+	originFramePaddingX float32
+	originFramePaddingY float32
+	sashPos             float32
+	border              bool
 }
 
 func SplitLayout(id string, direction Direction, border bool, sashPos float32, layout1, layout2 Widget) *SplitLayoutWidget {
@@ -44,10 +46,11 @@ func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 	return Layout{
 		Custom(func() {
 			PushItemSpacing(s.originItemSpacingX, s.originItemSpacingY)
+			PushFramePadding(s.originFramePaddingX, s.originFramePaddingY)
 		}),
 		layout,
 		Custom(func() {
-			PopStyle()
+			PopStyleV(2)
 		}),
 	}
 }
@@ -84,6 +87,10 @@ func (s *SplitLayoutWidget) Build() {
 
 	itemSpacingX, itemSpacingY := GetItemInnerSpacing()
 	s.originItemSpacingX, s.originItemSpacingY = itemSpacingX, itemSpacingY
+
+	s.originFramePaddingX, s.originFramePaddingY = GetFramePadding()
+	s.originFramePaddingX /= Context.GetPlatform().GetContentScale()
+	s.originFramePaddingY /= Context.GetPlatform().GetContentScale()
 
 	var layout Layout
 

@@ -151,3 +151,8 @@ func GetItemInnerSpacing() (float32, float32) {
 	vec2 := imgui.CurrentStyle().ItemInnerSpacing()
 	return vec2.X, vec2.Y
 }
+
+func GetFramePadding() (float32, float32) {
+	vec2 := imgui.CurrentStyle().FramePadding()
+	return vec2.X, vec2.Y
+}
