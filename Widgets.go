@@ -18,19 +18,26 @@ func Line(widgets ...Widget) *LineWidget {
 }
 
 func (l *LineWidget) Build() {
-	for i, w := range l.widgets {
+	index := 0
+
+	for _, w := range l.widgets {
 		_, isTooltip := w.(*TooltipWidget)
 		_, isContextMenu := w.(*ContextMenuWidget)
 		_, isPopup := w.(*PopupWidget)
 		_, isTabItem := w.(*TabItemWidget)
 		_, isLabel := w.(*LabelWidget)
+		_, isCustom := w.(*CustomWidget)
 
 		if isLabel {
 			AlignTextToFramePadding()
 		}
 
-		if i > 0 && !isTooltip && !isContextMenu && !isPopup && !isTabItem {
+		if index > 0 && !isTooltip && !isContextMenu && !isPopup && !isTabItem && !isCustom {
 			imgui.SameLine()
+		}
+
+		if !isCustom {
+			index += 1
 		}
 
 		w.Build()
@@ -1039,4 +1046,22 @@ func (c *ConditionWidget) Build() {
 			c.layoutElse.Build()
 		}
 	}
+}
+
+func RangeBuilder(id string, values []interface{}, builder func(int, interface{}) Widget) Layout {
+	var layout Layout
+
+	layout = append(layout, Custom(func() { imgui.PushID(id) }))
+
+	if len(values) > 0 && builder != nil {
+		for i, v := range values {
+			valueRef := v
+			widget := builder(i, valueRef)
+			layout = append(layout, widget)
+		}
+	}
+
+	layout = append(layout, Custom(func() { imgui.PopID() }))
+
+	return layout
 }
