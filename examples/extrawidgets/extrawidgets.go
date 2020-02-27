@@ -19,7 +19,7 @@ func loop() {
 				g.ProgressIndicator(radius),
 				g.ProgressIndicator(20),
 			),
-		}),
+		}, nil),
 	})
 }
 
