@@ -44,6 +44,10 @@ func (l *LineWidget) Build() {
 	}
 }
 
+func SameLine() {
+	imgui.SameLine()
+}
+
 type InputTextMultilineWidget struct {
 	label         string
 	text          *string
