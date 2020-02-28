@@ -927,6 +927,14 @@ type TabelWidget struct {
 	rows   Rows
 }
 
+func Table(label string, border bool, rows Rows) *TabelWidget {
+	return &TabelWidget{
+		label:  label,
+		border: border,
+		rows:   rows,
+	}
+}
+
 func (t *TabelWidget) Build() {
 	if len(t.rows) > 0 && len(t.rows[0].layout) > 0 {
 		imgui.ColumnsV(len(t.rows[0].layout), t.label, t.border)
@@ -951,11 +959,52 @@ func (t *TabelWidget) Build() {
 	}
 }
 
-func Table(label string, border bool, rows Rows) *TabelWidget {
-	return &TabelWidget{
+type FastTabelWidget struct {
+	label  string
+	border bool
+	rows   Rows
+}
+
+// Create a fast table which only render visible rows.
+// Note this only works with all rows have same height.
+func FastTable(label string, border bool, rows Rows) *FastTabelWidget {
+	return &FastTabelWidget{
 		label:  label,
 		border: border,
 		rows:   rows,
+	}
+}
+
+func (t *FastTabelWidget) Build() {
+	if len(t.rows) > 0 && len(t.rows[0].layout) > 0 {
+		imgui.ColumnsV(len(t.rows[0].layout), t.label, t.border)
+
+		var clipper imgui.ListClipper
+		clipper.Begin(len(t.rows))
+
+		for clipper.Step() {
+			for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
+				r := t.rows[i]
+
+				if i > 0 {
+					imgui.NextColumn()
+				}
+
+				if t.border {
+					imgui.Separator()
+				}
+
+				r.Build()
+			}
+		}
+
+		clipper.End()
+
+		imgui.Columns()
+
+		if t.border {
+			imgui.Separator()
+		}
 	}
 }
 
