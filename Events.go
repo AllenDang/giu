@@ -45,3 +45,7 @@ func IsMouseReleased(button MouseButton) bool {
 func IsMouseDoubleClicked(button MouseButton) bool {
 	return imgui.IsMouseDoubleClicked(int(button))
 }
+
+func IsWindowAppearing() bool {
+	return imgui.IsWindowAppearing()
+}

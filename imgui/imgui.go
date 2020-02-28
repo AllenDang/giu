@@ -146,6 +146,10 @@ func ContentRegionAvail() Vec2 {
 	return value
 }
 
+func IsWindowAppearing() bool {
+	return C.iggIsWindowAppearing() != 0
+}
+
 // SetNextWindowPosV sets next window position.
 // Call before Begin(). Use pivot=(0.5,0.5) to center on given point, etc.
 func SetNextWindowPosV(pos Vec2, cond Condition, pivot Vec2) {

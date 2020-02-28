@@ -127,6 +127,11 @@ void iggContentRegionAvail(IggVec2 *size)
    exportValue(*size, ImGui::GetContentRegionAvail());
 }
 
+IggBool iggIsWindowAppearing()
+{
+  return ImGui::IsWindowAppearing() ? 1: 0;
+}
+
 void iggSetNextWindowPos(IggVec2 const *pos, int cond, IggVec2 const *pivot)
 {
    Vec2Wrapper posArg(pos);
