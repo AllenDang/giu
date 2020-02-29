@@ -54,24 +54,24 @@ type InputTextMultilineWidget struct {
 	width, height float32
 	flags         InputTextFlags
 	cb            imgui.InputTextCallback
-	changed       func()
+	onChange      func()
 }
 
 func (i *InputTextMultilineWidget) Build() {
-	if imgui.InputTextMultilineV(i.label, i.text, imgui.Vec2{X: i.width, Y: i.height}, int(i.flags), i.cb) && i.changed != nil {
-		i.changed()
+	if imgui.InputTextMultilineV(i.label, i.text, imgui.Vec2{X: i.width, Y: i.height}, int(i.flags), i.cb) && i.onChange != nil {
+		i.onChange()
 	}
 }
 
-func InputTextMultiline(label string, text *string, width, height float32, flags InputTextFlags, cb imgui.InputTextCallback, changed func()) *InputTextMultilineWidget {
+func InputTextMultiline(label string, text *string, width, height float32, flags InputTextFlags, cb imgui.InputTextCallback, onChange func()) *InputTextMultilineWidget {
 	return &InputTextMultilineWidget{
-		label:   label,
-		text:    text,
-		width:   width * Context.platform.GetContentScale(),
-		height:  height * Context.platform.GetContentScale(),
-		flags:   flags,
-		cb:      cb,
-		changed: changed,
+		label:    label,
+		text:     text,
+		width:    width * Context.platform.GetContentScale(),
+		height:   height * Context.platform.GetContentScale(),
+		flags:    flags,
+		cb:       cb,
+		onChange: onChange,
 	}
 }
 
@@ -79,25 +79,25 @@ type ButtonWidget struct {
 	id      string
 	width   float32
 	height  float32
-	clicked func()
+	onClick func()
 }
 
 func (b *ButtonWidget) Build() {
-	if imgui.ButtonV(b.id, imgui.Vec2{X: b.width, Y: b.height}) && b.clicked != nil {
-		b.clicked()
+	if imgui.ButtonV(b.id, imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+		b.onClick()
 	}
 }
 
-func Button(id string, clicked func()) *ButtonWidget {
-	return ButtonV(id, 0, 0, clicked)
+func Button(id string, onClick func()) *ButtonWidget {
+	return ButtonV(id, 0, 0, onClick)
 }
 
-func ButtonV(id string, width, height float32, clicked func()) *ButtonWidget {
+func ButtonV(id string, width, height float32, onClick func()) *ButtonWidget {
 	return &ButtonWidget{
 		id:      id,
 		width:   width * Context.platform.GetContentScale(),
 		height:  height * Context.platform.GetContentScale(),
-		clicked: clicked,
+		onClick: onClick,
 	}
 }
 
@@ -105,21 +105,21 @@ type InvisibleButtonWidget struct {
 	id      string
 	width   float32
 	height  float32
-	clicked func()
+	onClick func()
 }
 
-func InvisibleButton(id string, width, height float32, clicked func()) *InvisibleButtonWidget {
+func InvisibleButton(id string, width, height float32, onClick func()) *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
 		id:      id,
 		width:   width * Context.platform.GetContentScale(),
 		height:  height * Context.platform.GetContentScale(),
-		clicked: clicked,
+		onClick: onClick,
 	}
 }
 
 func (ib *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(ib.id, imgui.Vec2{X: ib.width, Y: ib.height}) && ib.clicked != nil {
-		ib.clicked()
+	if imgui.InvisibleButton(ib.id, imgui.Vec2{X: ib.width, Y: ib.height}) && ib.onClick != nil {
+		ib.onClick()
 	}
 }
 
@@ -127,63 +127,63 @@ type ImageButtonWidget struct {
 	texture *Texture
 	width   float32
 	height  float32
-	clicked func()
+	onClick func()
 }
 
 func (i *ImageButtonWidget) Build() {
 	if i.texture != nil && i.texture.id != 0 {
-		if imgui.ImageButton(i.texture.id, imgui.Vec2{X: i.width, Y: i.height}) && i.clicked != nil {
-			i.clicked()
+		if imgui.ImageButton(i.texture.id, imgui.Vec2{X: i.width, Y: i.height}) && i.onClick != nil {
+			i.onClick()
 		}
 	}
 }
 
-func ImageButton(texture *Texture, width, height float32, clicked func()) *ImageButtonWidget {
+func ImageButton(texture *Texture, width, height float32, onClick func()) *ImageButtonWidget {
 	return &ImageButtonWidget{
 		texture: texture,
 		width:   width * Context.platform.GetContentScale(),
 		height:  height * Context.platform.GetContentScale(),
-		clicked: clicked,
+		onClick: onClick,
 	}
 }
 
 type CheckboxWidget struct {
 	text     string
 	selected *bool
-	changed  func()
+	onChange func()
 }
 
 func (c *CheckboxWidget) Build() {
-	if imgui.Checkbox(c.text, c.selected) && c.changed != nil {
-		c.changed()
+	if imgui.Checkbox(c.text, c.selected) && c.onChange != nil {
+		c.onChange()
 	}
 }
 
-func Checkbox(text string, selected *bool, changed func()) *CheckboxWidget {
+func Checkbox(text string, selected *bool, onChange func()) *CheckboxWidget {
 	return &CheckboxWidget{
 		text:     text,
 		selected: selected,
-		changed:  changed,
+		onChange: onChange,
 	}
 }
 
 type RadioButtonWidget struct {
-	text    string
-	active  bool
-	changed func()
+	text     string
+	active   bool
+	onChange func()
 }
 
 func (r *RadioButtonWidget) Build() {
-	if imgui.RadioButton(r.text, r.active) && r.changed != nil {
-		r.changed()
+	if imgui.RadioButton(r.text, r.active) && r.onChange != nil {
+		r.onChange()
 	}
 }
 
-func RadioButton(text string, active bool, changed func()) *RadioButtonWidget {
+func RadioButton(text string, active bool, onChange func()) *RadioButtonWidget {
 	return &RadioButtonWidget{
-		text:    text,
-		active:  active,
-		changed: changed,
+		text:     text,
+		active:   active,
+		onChange: onChange,
 	}
 }
 
@@ -257,7 +257,7 @@ type ComboWidget struct {
 	selected     *int32
 	width        float32
 	flags        ComboFlags
-	changed      func()
+	onChange     func()
 }
 
 func (c *ComboWidget) Build() {
@@ -269,8 +269,8 @@ func (c *ComboWidget) Build() {
 		for i, item := range c.items {
 			if imgui.Selectable(item) {
 				*c.selected = int32(i)
-				if c.changed != nil {
-					c.changed()
+				if c.onChange != nil {
+					c.onChange()
 				}
 			}
 		}
@@ -283,7 +283,7 @@ func (c *ComboWidget) Build() {
 	}
 }
 
-func Combo(label, previewValue string, items []string, selected *int32, width float32, flags ComboFlags, changed func()) *ComboWidget {
+func Combo(label, previewValue string, items []string, selected *int32, width float32, flags ComboFlags, onChange func()) *ComboWidget {
 	return &ComboWidget{
 		label:        label,
 		previewValue: previewValue,
@@ -291,7 +291,7 @@ func Combo(label, previewValue string, items []string, selected *int32, width fl
 		selected:     selected,
 		flags:        flags,
 		width:        width * Context.platform.GetContentScale(),
-		changed:      changed,
+		onChange:     onChange,
 	}
 }
 
@@ -397,20 +397,20 @@ func Image(texture *Texture, width, height float32) *ImageWidget {
 }
 
 type InputTextWidget struct {
-	label   string
-	value   *string
-	width   float32
-	flags   InputTextFlags
-	cb      imgui.InputTextCallback
-	changed func()
+	label    string
+	value    *string
+	width    float32
+	flags    InputTextFlags
+	cb       imgui.InputTextCallback
+	onChange func()
 }
 
 func (i *InputTextWidget) Build() {
 	if i.width != 0 {
 		PushItemWidth(i.width)
 	}
-	if imgui.InputTextV(i.label, i.value, int(i.flags), i.cb) && i.changed != nil {
-		i.changed()
+	if imgui.InputTextV(i.label, i.value, int(i.flags), i.cb) && i.onChange != nil {
+		i.onChange()
 	}
 }
 
@@ -418,14 +418,14 @@ func InputText(label string, width float32, value *string) *InputTextWidget {
 	return InputTextV(label, width, value, 0, nil, nil)
 }
 
-func InputTextV(label string, width float32, value *string, flags InputTextFlags, cb imgui.InputTextCallback, changed func()) *InputTextWidget {
+func InputTextV(label string, width float32, value *string, flags InputTextFlags, cb imgui.InputTextCallback, onChange func()) *InputTextWidget {
 	return &InputTextWidget{
-		label:   label,
-		value:   value,
-		width:   width * Context.platform.GetContentScale(),
-		flags:   flags,
-		cb:      cb,
-		changed: changed,
+		label:    label,
+		value:    value,
+		width:    width * Context.platform.GetContentScale(),
+		flags:    flags,
+		cb:       cb,
+		onChange: onChange,
 	}
 }
 
@@ -523,12 +523,12 @@ type MenuItemWidget struct {
 	label    string
 	selected bool
 	enabled  bool
-	clicked  func()
+	onClick  func()
 }
 
 func (m *MenuItemWidget) Build() {
-	if imgui.MenuItemV(m.label, "", m.selected, m.enabled) && m.clicked != nil {
-		m.clicked()
+	if imgui.MenuItemV(m.label, "", m.selected, m.enabled) && m.onClick != nil {
+		m.onClick()
 	}
 }
 
@@ -536,12 +536,12 @@ func MenuItem(label string) *MenuItemWidget {
 	return MenuItemV(label, false, true, nil)
 }
 
-func MenuItemV(label string, selected, enabled bool, clicked func()) *MenuItemWidget {
+func MenuItemV(label string, selected, enabled bool, onClick func()) *MenuItemWidget {
 	return &MenuItemWidget{
 		label:    label,
 		selected: selected,
 		enabled:  enabled,
-		clicked:  clicked,
+		onClick:  onClick,
 	}
 }
 
@@ -636,27 +636,27 @@ type SelectableWidget struct {
 	flags    SelectableFlags
 	width    float32
 	height   float32
-	clicked  func()
+	onClick  func()
 }
 
 func (s *SelectableWidget) Build() {
-	if imgui.SelectableV(s.label, s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.clicked != nil {
-		s.clicked()
+	if imgui.SelectableV(s.label, s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+		s.onClick()
 	}
 }
 
-func Selectable(label string, clicked func()) *SelectableWidget {
-	return SelectableV(label, false, 0, 0, 0, clicked)
+func Selectable(label string, onClick func()) *SelectableWidget {
+	return SelectableV(label, false, 0, 0, 0, onClick)
 }
 
-func SelectableV(label string, selected bool, flags SelectableFlags, width, height float32, clicked func()) *SelectableWidget {
+func SelectableV(label string, selected bool, flags SelectableFlags, width, height float32, onClick func()) *SelectableWidget {
 	return &SelectableWidget{
 		label:    label,
 		selected: selected,
 		flags:    flags,
 		width:    width * Context.platform.GetContentScale(),
 		height:   height * Context.platform.GetContentScale(),
-		clicked:  clicked,
+		onClick:  onClick,
 	}
 }
 
@@ -1101,6 +1101,7 @@ func (c *ConditionWidget) Build() {
 	}
 }
 
+// Batch create widgets and render only which is visible.
 func RangeBuilder(id string, values []interface{}, builder func(int, interface{}) Widget) Layout {
 	var layout Layout
 
@@ -1117,4 +1118,72 @@ func RangeBuilder(id string, values []interface{}, builder func(int, interface{}
 	layout = append(layout, Custom(func() { imgui.PopID() }))
 
 	return layout
+}
+
+type ListBoxState struct {
+	selectedIndex int
+}
+
+func (s *ListBoxState) Dispose() {
+	// Nothing to do here.
+}
+
+type ListBoxWidget struct {
+	id       string
+	width    float32
+	height   float32
+	items    []string
+	onChange func(selectedIndex int)
+	onDClick func(selectedIndex int)
+}
+
+func ListBox(id string, width, height float32, items []string, onChange func(selectedIndex int), onDClick func(selectedIndex int)) *ListBoxWidget {
+	return &ListBoxWidget{
+		id:       id,
+		width:    width,
+		height:   height,
+		items:    items,
+		onChange: onChange,
+		onDClick: onDClick,
+	}
+}
+
+func (l *ListBoxWidget) Build() {
+	var state *ListBoxState
+	if s := Context.GetState(l.id); s == nil {
+		state = &ListBoxState{selectedIndex: 0}
+		Context.SetState(l.id, state)
+	} else {
+		state = s.(*ListBoxState)
+	}
+
+	child := Child(l.id, true, l.width, l.height, 0, Layout{
+		Custom(func() {
+			var clipper imgui.ListClipper
+			clipper.Begin(len(l.items))
+
+			for clipper.Step() {
+				for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
+					selected := i == state.selectedIndex
+					item := l.items[i]
+					SelectableV(item, selected, SelectableFlagsAllowDoubleClick, 0, 0, func() {
+						if state.selectedIndex != i {
+							state.selectedIndex = i
+							if l.onChange != nil {
+								l.onChange(i)
+							}
+						}
+					}).Build()
+
+					if IsItemHovered() && IsMouseDoubleClicked(MouseButtonLeft) && l.onDClick != nil {
+						l.onDClick(state.selectedIndex)
+					}
+				}
+			}
+
+			clipper.End()
+		}),
+	})
+
+	child.Build()
 }

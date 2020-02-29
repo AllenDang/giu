@@ -102,7 +102,7 @@ func loop() {
 		g.TabBar("Tabbar Input", g.Layout{
 			g.TabItem("Multiline Input", g.Layout{
 				g.Label("This is first tab with a multiline input text field"),
-				g.InputTextMultiline("##multiline", &multiline, 0, 0, 0, nil, nil),
+				g.InputTextMultiline("##multiline", &multiline, -1, -1, 0, nil, nil),
 			}),
 			g.TabItem("Tree", g.Layout{
 				g.TreeNode("TreeNode1", imgui.TreeNodeFlagsCollapsingHeader|imgui.TreeNodeFlagsDefaultOpen, g.Layout{
@@ -117,6 +117,9 @@ func loop() {
 					g.Label("Tree node 2"),
 					g.Button("Button inside tree", nil),
 				}),
+			}),
+			g.TabItem("ListBox", g.Layout{
+				g.ListBox("ListBox1", 0, 0, []string{"List item 1", "List item 2", "List item 3"}, nil, nil),
 			}),
 			g.TabItem("Table", g.Layout{
 				g.Table("Table", true, g.Rows{
