@@ -80,7 +80,7 @@ func buildMsgboxButtons(buttons MsgboxButtons, callback DialogResultCallback) La
 
 const msgboxId string = "###Msgbox"
 
-// Embed various Msgboxs to layout. Invoke this function in the very end of the layout.
+// Embed various Msgboxs to layout. Invoke this function in the same layout level where you call g.Msgbox.
 func PrepareMsgbox() Layout {
 	var state *MsgboxState
 	// Register state.
