@@ -409,8 +409,13 @@ func (i *InputTextWidget) Build() {
 	if i.width != 0 {
 		PushItemWidth(i.width)
 	}
+
 	if imgui.InputTextV(i.label, i.value, int(i.flags), i.cb) && i.onChange != nil {
 		i.onChange()
+	}
+
+	if i.width != 0 {
+		PopItemWidth()
 	}
 }
 
@@ -426,6 +431,80 @@ func InputTextV(label string, width float32, value *string, flags InputTextFlags
 		flags:    flags,
 		cb:       cb,
 		onChange: onChange,
+	}
+}
+
+type InputIntWidget struct {
+	label    string
+	value    *int32
+	width    float32
+	flags    InputTextFlags
+	onChange func()
+}
+
+func InputInt(label string, width float32, value *int32) *InputIntWidget {
+	return InputIntV(label, width, value, 0, nil)
+}
+
+func InputIntV(label string, width float32, value *int32, flags InputTextFlags, onChange func()) *InputIntWidget {
+	return &InputIntWidget{
+		label:    label,
+		value:    value,
+		width:    width,
+		flags:    flags,
+		onChange: onChange,
+	}
+}
+
+func (i *InputIntWidget) Build() {
+	if i.width != 0 {
+		PushItemWidth(i.width)
+	}
+
+	if imgui.InputIntV(i.label, i.value, 0, 100, int(i.flags)) && i.onChange != nil {
+		i.onChange()
+	}
+
+	if i.width != 0 {
+		PopItemWidth()
+	}
+}
+
+type InputFloatWidget struct {
+	label    string
+	value    *float32
+	width    float32
+	flags    InputTextFlags
+	format   string
+	onChange func()
+}
+
+func InputFloat(label string, width float32, value *float32) *InputFloatWidget {
+	return InputFloatV(label, width, value, "%.3f", 0, nil)
+}
+
+func InputFloatV(label string, width float32, value *float32, format string, flags InputTextFlags, onChange func()) *InputFloatWidget {
+	return &InputFloatWidget{
+		label:    label,
+		width:    width,
+		value:    value,
+		format:   format,
+		flags:    flags,
+		onChange: onChange,
+	}
+}
+
+func (i *InputFloatWidget) Build() {
+	if i.width != 0 {
+		PushItemWidth(i.width)
+	}
+
+	if imgui.InputFloatV(i.label, i.value, 0, 0, i.format, int(i.flags)) && i.onChange != nil {
+		i.onChange()
+	}
+
+	if i.width != 0 {
+		PopItemWidth()
 	}
 }
 
