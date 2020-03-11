@@ -573,6 +573,35 @@ func InputTextMultiline(label string, text *string) bool {
 	return InputTextMultilineV(label, text, Vec2{}, 0, nil)
 }
 
+func InputInt(label string, value *int32) bool {
+	return InputIntV(label, value, 0, 100, 0)
+}
+
+func InputIntV(label string, value *int32, step, step_fast int, flags int) bool {
+	labelArg, labelFin := wrapString(label)
+	defer labelFin()
+
+	valueArg, valueFin := wrapInt32(value)
+	defer valueFin()
+
+	return C.iggInputInt(labelArg, valueArg, C.int(0), C.int(100), C.int(flags)) != 0
+}
+
+func InputFloat(label string, value *float32) bool {
+	return InputFloatV(label, value, 0.0, 0.0, "%.3f", 0)
+}
+
+func InputFloatV(label string, value *float32, step, step_fast float32, format string, flags int) bool {
+	labelArg, labelFin := wrapString(label)
+	defer labelFin()
+	valueArg, valueFin := wrapFloat(value)
+	defer valueFin()
+	formatArg, formatFin := wrapString(format)
+	defer formatFin()
+
+	return C.iggInputFloat(labelArg, valueArg, C.float(step), C.float(step_fast), formatArg, C.int(flags)) != 0
+}
+
 // ColorEdit3 calls ColorEdit3V(label, col, 0)
 func ColorEdit3(label string, col *[3]float32) bool {
 	return ColorEdit3V(label, col, 0)

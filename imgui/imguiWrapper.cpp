@@ -370,6 +370,16 @@ IggBool iggInputTextMultiline(char const *label, char *buf, unsigned int bufSize
                                     iggInputTextCallbackWrapper, reinterpret_cast<void *>(callbackKey)) ? 1 : 0;
 }
 
+IggBool iggInputInt(char const *label, int* v, int step, int step_fast, int flags)
+{
+  return ImGui::InputInt(label, v, step, step_fast, flags) ? 1 : 0;
+}
+
+IggBool iggInputFloat(char const *label, float* v, float step, float step_fast, const char* format, int flags)
+{
+  return ImGui::InputFloat(label, v, step, step_fast, format, flags) ? 1 : 0;
+}
+
 IggBool iggColorEdit3(char const *label, float *col, int flags)
 {
    return ImGui::ColorEdit3(label, col, flags) ? 1 : 0;

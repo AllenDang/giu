@@ -95,6 +95,9 @@ extern "C"
 
   extern IggBool iggInputText(char const* label, char* buf, unsigned int bufSize, int flags, int callbackKey);
   extern IggBool iggInputTextMultiline(char const* label, char* buf, unsigned int bufSize, IggVec2 const *size, int flags, int callbackKey);
+  
+  extern IggBool iggInputInt(char const* label, int* v, int step, int step_fast, int flags);
+  extern IggBool iggInputFloat(char const* label, float* v, float step, float step_fast, const char* format, int flats);
 
   extern IggBool iggColorEdit3(char const *label, float *col, int flags);
   extern IggBool iggColorEdit4(char const *label, float *col, int flags);
