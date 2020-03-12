@@ -2,7 +2,6 @@ package giu
 
 import (
 	"image/color"
-	"runtime"
 	"time"
 
 	"github.com/AllenDang/giu/imgui"
@@ -143,10 +142,7 @@ func (w *MasterWindow) setTheme() {
 
 	scale := w.platform.GetContentScale()
 
-	// Do not scale anything on MacOS
-	if runtime.GOOS != "darwin" {
-		style.ScaleAllSizes(scale)
-	}
+	style.ScaleAllSizes(scale)
 }
 
 // Set background color of master window.

@@ -119,6 +119,12 @@ func (platform *GLFW) Dispose() {
 
 func (platform *GLFW) GetContentScale() float32 {
 	x, _ := platform.window.GetContentScale()
+
+	// Do not scale on MacOS
+	if runtime.GOOS == "darwin" {
+		x = 1
+	}
+
 	return x
 }
 
