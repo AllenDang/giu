@@ -2,6 +2,7 @@ package giu
 
 import (
 	"image/color"
+	"runtime"
 	"time"
 
 	"github.com/AllenDang/giu/imgui"
@@ -141,7 +142,11 @@ func (w *MasterWindow) setTheme() {
 	// style.SetColor(imgui.StyleColorModalWindowDarkening, imgui.Vec4{})
 
 	scale := w.platform.GetContentScale()
-	style.ScaleAllSizes(scale)
+
+	// Do not scale anything on MacOS
+	if runtime.GOOS != "darwin" {
+		style.ScaleAllSizes(scale)
+	}
 }
 
 // Set background color of master window.

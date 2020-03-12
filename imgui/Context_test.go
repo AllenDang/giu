@@ -35,7 +35,7 @@ func TestCurrentContextCanBeChanged(t *testing.T) {
 	defer context1.Destroy()
 
 	first, _ := CurrentContext()
-	assert.True(t, context1.handle == first.handle, fmt.Sprintf("First context expected"))
+	assert.True(t, context1.handle == first.handle, "First context expected")
 
 	context2 := CreateContext(nil)
 	require.NotNil(t, context2, "Context expected")
