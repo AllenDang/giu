@@ -119,7 +119,7 @@ func loop() {
 				}),
 			}),
 			g.TabItem("ListBox", g.Layout{
-				g.ListBox("ListBox1", 0, 0, []string{"List item 1", "List item 2", "List item 3"}, nil, nil),
+				g.ListBox("ListBox1", []string{"List item 1", "List item 2", "List item 3"}, nil, nil),
 			}),
 			g.TabItem("Table", g.Layout{
 				g.Table("Table", true, g.Rows{
