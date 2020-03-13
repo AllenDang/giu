@@ -1211,16 +1211,22 @@ type ListBoxWidget struct {
 	id       string
 	width    float32
 	height   float32
+	flags    WindowFlags
 	items    []string
 	onChange func(selectedIndex int)
 	onDClick func(selectedIndex int)
 }
 
-func ListBox(id string, width, height float32, items []string, onChange func(selectedIndex int), onDClick func(selectedIndex int)) *ListBoxWidget {
+func ListBox(id string, items []string, onChange func(selectedIndex int), onDClick func(selectedIndex int)) *ListBoxWidget {
+	return ListBoxV(id, 0, 0, 0, items, onChange, onDClick)
+}
+
+func ListBoxV(id string, width, height float32, flags WindowFlags, items []string, onChange func(selectedIndex int), onDClick func(selectedIndex int)) *ListBoxWidget {
 	return &ListBoxWidget{
 		id:       id,
 		width:    width,
 		height:   height,
+		flags:    flags,
 		items:    items,
 		onChange: onChange,
 		onDClick: onDClick,
@@ -1236,7 +1242,7 @@ func (l *ListBoxWidget) Build() {
 		state = s.(*ListBoxState)
 	}
 
-	child := Child(l.id, true, l.width, l.height, 0, Layout{
+	child := Child(l.id, true, l.width, l.height, l.flags, Layout{
 		Custom(func() {
 			var clipper imgui.ListClipper
 			clipper.Begin(len(l.items))
