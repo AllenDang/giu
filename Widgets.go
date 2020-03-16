@@ -1289,6 +1289,7 @@ func (l *ListBoxWidget) Build() {
 
 			clipper.End()
 		}),
+		PrepareMsgbox(),
 	})
 
 	child.Build()
