@@ -1,6 +1,7 @@
 package giu
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 
@@ -297,12 +298,12 @@ func Combo(label, previewValue string, items []string, selected *int32, width fl
 
 type ContextMenuWidget struct {
 	label       string
-	mouseButton int
+	mouseButton MouseButton
 	layout      Layout
 }
 
 func (c *ContextMenuWidget) Build() {
-	if imgui.BeginPopupContextItemV(c.label, c.mouseButton) {
+	if imgui.BeginPopupContextItemV(c.label, int(c.mouseButton)) {
 		if c.layout != nil {
 			c.layout.Build()
 		}
@@ -311,10 +312,10 @@ func (c *ContextMenuWidget) Build() {
 }
 
 func ContextMenu(layout Layout) *ContextMenuWidget {
-	return ContextMenuV("", 1, layout)
+	return ContextMenuV("", MouseButtonRight, layout)
 }
 
-func ContextMenuV(label string, mouseButton int, layout Layout) *ContextMenuWidget {
+func ContextMenuV(label string, mouseButton MouseButton, layout Layout) *ContextMenuWidget {
 	return &ContextMenuWidget{
 		label:       label,
 		mouseButton: mouseButton,
@@ -1213,23 +1214,27 @@ type ListBoxWidget struct {
 	height   float32
 	flags    WindowFlags
 	items    []string
+	menus    []string
 	onChange func(selectedIndex int)
 	onDClick func(selectedIndex int)
+	onMenu   func(selectedIndex int, menu string)
 }
 
 func ListBox(id string, items []string, onChange func(selectedIndex int), onDClick func(selectedIndex int)) *ListBoxWidget {
-	return ListBoxV(id, 0, 0, 0, items, onChange, onDClick)
+	return ListBoxV(id, 0, 0, 0, items, nil, onChange, onDClick, nil)
 }
 
-func ListBoxV(id string, width, height float32, flags WindowFlags, items []string, onChange func(selectedIndex int), onDClick func(selectedIndex int)) *ListBoxWidget {
+func ListBoxV(id string, width, height float32, flags WindowFlags, items []string, menus []string, onChange func(selectedIndex int), onDClick func(selectedIndex int), onMenu func(selectedIndex int, menu string)) *ListBoxWidget {
 	return &ListBoxWidget{
 		id:       id,
 		width:    width,
 		height:   height,
 		flags:    flags,
 		items:    items,
+		menus:    menus,
 		onChange: onChange,
 		onDClick: onDClick,
+		onMenu:   onMenu,
 	}
 }
 
@@ -1262,6 +1267,22 @@ func (l *ListBoxWidget) Build() {
 
 					if IsItemHovered() && IsMouseDoubleClicked(MouseButtonLeft) && l.onDClick != nil {
 						l.onDClick(state.selectedIndex)
+					}
+
+					// Build context menus
+					var menus Layout
+					for _, m := range l.menus {
+						index := i
+						menu := m
+						menus = append(menus, Selectable(fmt.Sprintf("%s##%d", menu, index), func() {
+							if l.onMenu != nil {
+								l.onMenu(index, menu)
+							}
+						}))
+					}
+
+					if len(menus) > 0 {
+						ContextMenuV(fmt.Sprintf("%d_contextmenu", i), MouseButtonRight, menus).Build()
 					}
 				}
 			}
