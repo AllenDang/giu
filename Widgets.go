@@ -612,8 +612,8 @@ func (m *MenuItemWidget) Build() {
 	}
 }
 
-func MenuItem(label string) *MenuItemWidget {
-	return MenuItemV(label, false, true, nil)
+func MenuItem(label string, onClick func()) *MenuItemWidget {
+	return MenuItemV(label, false, true, onClick)
 }
 
 func MenuItemV(label string, selected, enabled bool, onClick func()) *MenuItemWidget {
@@ -1274,7 +1274,7 @@ func (l *ListBoxWidget) Build() {
 					for _, m := range l.menus {
 						index := i
 						menu := m
-						menus = append(menus, Selectable(fmt.Sprintf("%s##%d", menu, index), func() {
+						menus = append(menus, MenuItem(fmt.Sprintf("%s##%d", menu, index), func() {
 							if l.onMenu != nil {
 								l.onMenu(index, menu)
 							}
@@ -1289,7 +1289,6 @@ func (l *ListBoxWidget) Build() {
 
 			clipper.End()
 		}),
-		PrepareMsgbox(),
 	})
 
 	child.Build()

@@ -43,12 +43,12 @@ func loop() {
 		g.MenuBar(
 			g.Layout{
 				g.Menu("File", g.Layout{
-					g.MenuItem("Open"),
-					g.MenuItem("Save"),
+					g.MenuItem("Open", nil),
+					g.MenuItem("Save", nil),
 					// You could add any kind of widget here, not just menu item.
 					g.Menu("Save as ...", g.Layout{
-						g.MenuItem("Excel file"),
-						g.MenuItem("CSV file"),
+						g.MenuItem("Excel file", nil),
+						g.MenuItem("CSV file", nil),
 						g.Button("Button inside menu", nil),
 					},
 					),
