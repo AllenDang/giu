@@ -1212,7 +1212,7 @@ type ListBoxWidget struct {
 	id       string
 	width    float32
 	height   float32
-	flags    WindowFlags
+	border   bool
 	items    []string
 	menus    []string
 	onChange func(selectedIndex int)
@@ -1221,15 +1221,15 @@ type ListBoxWidget struct {
 }
 
 func ListBox(id string, items []string, onChange func(selectedIndex int), onDClick func(selectedIndex int)) *ListBoxWidget {
-	return ListBoxV(id, 0, 0, 0, items, nil, onChange, onDClick, nil)
+	return ListBoxV(id, 0, 0, true, items, nil, onChange, onDClick, nil)
 }
 
-func ListBoxV(id string, width, height float32, flags WindowFlags, items []string, menus []string, onChange func(selectedIndex int), onDClick func(selectedIndex int), onMenu func(selectedIndex int, menu string)) *ListBoxWidget {
+func ListBoxV(id string, width, height float32, border bool, items []string, menus []string, onChange func(selectedIndex int), onDClick func(selectedIndex int), onMenu func(selectedIndex int, menu string)) *ListBoxWidget {
 	return &ListBoxWidget{
 		id:       id,
 		width:    width,
 		height:   height,
-		flags:    flags,
+		border:   border,
 		items:    items,
 		menus:    menus,
 		onChange: onChange,
@@ -1247,7 +1247,7 @@ func (l *ListBoxWidget) Build() {
 		state = s.(*ListBoxState)
 	}
 
-	child := Child(l.id, true, l.width, l.height, l.flags, Layout{
+	child := Child(l.id, l.border, l.width, l.height, 0, Layout{
 		Custom(func() {
 			var clipper imgui.ListClipper
 			clipper.Begin(len(l.items))
