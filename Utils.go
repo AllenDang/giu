@@ -87,3 +87,15 @@ func CalcTextSize(text string) (width, height float32) {
 func SetNextWindowSize(width, height float32) {
 	imgui.SetNextWindowSize(imgui.Vec2{X: width * Context.platform.GetContentScale(), Y: height * Context.platform.GetContentScale()})
 }
+
+func SetItemDefaultFocus() {
+	imgui.SetItemDefaultFocus()
+}
+
+func SetKeyboardFocusHere() {
+	SetKeyboardFocusHereV(0)
+}
+
+func SetKeyboardFocusHereV(i int) {
+	imgui.SetKeyboardFocusHereV(i)
+}
