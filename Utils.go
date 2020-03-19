@@ -88,6 +88,19 @@ func SetNextWindowSize(width, height float32) {
 	imgui.SetNextWindowSize(imgui.Vec2{X: width * Context.platform.GetContentScale(), Y: height * Context.platform.GetContentScale()})
 }
 
+type ExecCondition imgui.Condition
+
+const (
+	ConditionAlways       ExecCondition = ExecCondition(imgui.ConditionAlways)
+	ConditionOnce         ExecCondition = ExecCondition(imgui.ConditionOnce)
+	ConditionFirstUseEver ExecCondition = ExecCondition(imgui.ConditionFirstUseEver)
+	ConditionAppearing    ExecCondition = ExecCondition(imgui.ConditionAppearing)
+)
+
+func SetNextWindowSizeV(width, height float32, condition ExecCondition) {
+	imgui.SetNextWindowSizeV(imgui.Vec2{X: width * Context.platform.GetContentScale(), Y: height * Context.platform.GetContentScale()}, imgui.Condition(condition))
+}
+
 func SetItemDefaultFocus() {
 	imgui.SetItemDefaultFocus()
 }
