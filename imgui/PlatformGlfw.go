@@ -43,6 +43,7 @@ type GLFW struct {
 
 	mouseCursors map[int]*glfw.Cursor
 
+	posChangeCallback  func(int, int)
 	sizeChangeCallback func(int, int)
 	dropCallback       func([]string)
 }
@@ -266,6 +267,10 @@ func (platform *GLFW) PostRender() {
 	platform.window.SwapBuffers()
 }
 
+func (platform *GLFW) SetPosChangeCallback(cb func(int, int)) {
+	platform.posChangeCallback = cb
+}
+
 func (platform *GLFW) SetSizeChangeCallback(cb func(int, int)) {
 	platform.sizeChangeCallback = cb
 }
@@ -329,6 +334,7 @@ func (platform *GLFW) installCallbacks() {
 	platform.window.SetCharCallback(platform.charChange)
 	platform.window.SetSizeCallback(platform.sizeChange)
 	platform.window.SetDropCallback(platform.onDrop)
+	platform.window.SetPosCallback(platform.posChange)
 }
 
 var glfwButtonIndexByID = map[glfw.MouseButton]int{
@@ -348,6 +354,15 @@ func (platform *GLFW) onDrop(window *glfw.Window, names []string) {
 
 	if platform.dropCallback != nil {
 		platform.dropCallback(names)
+	}
+}
+
+func (platform *GLFW) posChange(window *glfw.Window, x, y int) {
+	platform.imguiIO.SetFrameCountSinceLastInput(0)
+
+	// Notfy pos changed and redraw.
+	if platform.posChangeCallback != nil {
+		platform.posChangeCallback(x, y)
 	}
 }
 

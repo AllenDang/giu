@@ -17,6 +17,8 @@ type Platform interface {
 	Dispose()
 	// Set size change callback
 	SetSizeChangeCallback(func(width, height int))
+	// Set pos change callback
+	SetPosChangeCallback(func(x, y int))
 	// Set drop callback
 	SetDropCallback(func(names []string))
 	// Force Update
