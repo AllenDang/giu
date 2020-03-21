@@ -800,6 +800,16 @@ type DummyWidget struct {
 }
 
 func (d *DummyWidget) Build() {
+	w, h := GetAvaiableRegion()
+
+	if d.width < 0 {
+		d.width = w + d.width
+	}
+
+	if d.height < 0 {
+		d.height = h + d.height
+	}
+
 	imgui.Dummy(imgui.Vec2{X: d.width, Y: d.height})
 }
 
