@@ -21,7 +21,6 @@ func SingleWindow(title string, layout Layout) {
 		title,
 		nil,
 		imgui.WindowFlagsNoTitleBar|
-			imgui.WindowFlagsNoBackground|
 			imgui.WindowFlagsNoCollapse|
 			imgui.WindowFlagsNoScrollbar|
 			imgui.WindowFlagsNoMove|
@@ -38,7 +37,6 @@ func SingleWindowWithMenuBar(title string, layout Layout) {
 		title,
 		nil,
 		imgui.WindowFlagsNoTitleBar|
-			imgui.WindowFlagsNoBackground|
 			imgui.WindowFlagsNoCollapse|
 			imgui.WindowFlagsNoScrollbar|
 			imgui.WindowFlagsNoMove|
