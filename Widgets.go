@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"time"
 
 	"github.com/AllenDang/giu/imgui"
 )
@@ -1302,4 +1303,164 @@ func (l *ListBoxWidget) Build() {
 	})
 
 	child.Build()
+}
+
+type DatePickerWidget struct {
+	id       string
+	date     *time.Time
+	width    float32
+	onChange func()
+}
+
+func DatePicker(id string, date *time.Time, width float32, onChange func()) *DatePickerWidget {
+	return &DatePickerWidget{
+		id:       id,
+		date:     date,
+		width:    width * Context.GetPlatform().GetContentScale(),
+		onChange: onChange,
+	}
+}
+
+func (d *DatePickerWidget) Build() {
+	if d.date != nil {
+		imgui.PushID(d.id)
+
+		if d.width > 0 {
+			PushItemWidth(d.width)
+		}
+
+		evtTrigger := func() {
+			if d.onChange != nil {
+				d.onChange()
+			}
+		}
+
+		if imgui.BeginComboV(d.id, d.date.Format("2006-01-02"), imgui.ComboFlagHeightLarge) {
+			// Build year widget
+			imgui.AlignTextToFramePadding()
+			imgui.Text(" Year")
+			imgui.SameLine()
+			imgui.Text(fmt.Sprintf("%14d", d.date.Year()))
+			imgui.SameLine()
+			if imgui.Button("-##year") {
+				*d.date = d.date.AddDate(-1, 0, 0)
+				evtTrigger()
+			}
+			imgui.SameLine()
+			if imgui.Button("+##year") {
+				*d.date = d.date.AddDate(1, 0, 0)
+				evtTrigger()
+			}
+
+			// Build month widgets
+			imgui.Text("Month")
+			imgui.SameLine()
+			imgui.Text(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month()))
+			imgui.SameLine()
+			if imgui.Button("-##month") {
+				*d.date = d.date.AddDate(0, -1, 0)
+				evtTrigger()
+			}
+			imgui.SameLine()
+			if imgui.Button("+##month") {
+				*d.date = d.date.AddDate(0, 1, 0)
+				evtTrigger()
+			}
+
+			// Build day widgets
+			firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
+			lastDay := firstDay.AddDate(0, 1, 0).Add(time.Nanosecond * -1)
+
+			var days [][]int
+
+			// Build first row
+			days = append(days, []int{})
+			j := 1
+			for i := 0; i < 7; i++ {
+				if i < int(firstDay.Weekday()) {
+					days[0] = append(days[0], 0)
+				} else {
+					days[0] = append(days[0], j)
+					j += 1
+				}
+			}
+
+			// Build rest rows
+			for ; j <= lastDay.Day(); j++ {
+				if len(days[len(days)-1]) == 7 {
+					days = append(days, []int{})
+				}
+
+				days[len(days)-1] = append(days[len(days)-1], j)
+			}
+
+			// Pad last row
+			lastRowLen := len(days[len(days)-1])
+			if lastRowLen < 7 {
+				for i := lastRowLen; i < 7; i++ {
+					days[len(days)-1] = append(days[len(days)-1], 0)
+				}
+			}
+
+			// Build day widgets
+			dayWidth, _ := CalcTextSize("1234")
+
+			// Build week names
+			Line(
+				Label(" Sun "),
+				Label(" Mon "),
+				Label(" Tue "),
+				Label(" Wed "),
+				Label(" Thu "),
+				Label(" Fri "),
+				Label(" Sat "),
+			).Build()
+
+			today := time.Now()
+			style := imgui.CurrentStyle()
+			highlightColor := style.GetColor(imgui.StyleColorPlotHistogram)
+			for r := 0; r < len(days); r++ {
+				for c := 0; c < 7; c++ {
+					day := days[r][c]
+					if day == 0 {
+						imgui.Text("     ")
+					} else {
+						if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
+							imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
+						}
+
+						if imgui.SelectableV(fmt.Sprintf(" %02d ", day), day == int(d.date.Day()), 0, imgui.Vec2{X: dayWidth, Y: 0}) {
+							*d.date, _ = time.ParseInLocation(
+								"2006-01-02",
+								fmt.Sprintf("%d-%02d-%02d",
+									d.date.Year(),
+									d.date.Month(),
+									day,
+								),
+								time.Local,
+							)
+
+							evtTrigger()
+						}
+
+						if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
+							imgui.PopStyleColor()
+						}
+					}
+
+					if c < 6 {
+						imgui.SameLine()
+					}
+				}
+			}
+
+			imgui.EndCombo()
+		}
+
+		if d.width > 0 {
+			PopItemWidth()
+		}
+
+		imgui.PopID()
+	}
 }

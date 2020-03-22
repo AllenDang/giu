@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/giu/imgui"
@@ -16,6 +17,7 @@ var (
 	dragInt      int32
 	multiline    string
 	radioOp      int
+	date         time.Time = time.Now()
 )
 
 func btnClickMeClicked() {
@@ -63,7 +65,9 @@ func loop() {
 			g.Button("Click Me", btnClickMeClicked),
 			g.Tooltip("I'm a tooltip"),
 		),
-
+		g.DatePicker("Date Picker", &date, 100, func() {
+			fmt.Println(date)
+		}),
 		g.Line(
 			g.Checkbox("Checkbox", &checked, func() {
 				fmt.Println(checked)
