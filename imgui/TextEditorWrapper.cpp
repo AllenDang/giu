@@ -42,19 +42,25 @@ IggBool IggTextEditorHasSelection(IggTextEditor handle)
 char const *IggTextEditorGetText(IggTextEditor handle)
 {
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
-  return editor->GetText().c_str();
+  std::string str = editor->GetText();
+  char* c = strcpy(new char[str.length() + 1], str.c_str());
+  return c;
 }
 
 char const *IggTextEditorGetSelectedText(IggTextEditor handle)
 {
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
-  return editor->GetSelectedText().c_str();
+  std::string str = editor->GetSelectedText();
+  char* c = strcpy(new char[str.length() + 1], str.c_str());
+  return c;
 }
 
 char const *IggTextEditorGetCurrentLineText(IggTextEditor handle)
 {
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
-  return editor->GetCurrentLineText().c_str();
+  std::string str = editor->GetCurrentLineText();
+  char* c = strcpy(new char[str.length() + 1], str.c_str());
+  return c;
 }
 
 IggBool IggTextEditorIsTextChanged(IggTextEditor handle)

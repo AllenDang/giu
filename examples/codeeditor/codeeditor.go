@@ -13,15 +13,20 @@ var (
 
 func loop() {
 	g.SingleWindow("Code Editor", g.Layout{
-		g.Button("Get Text", func() {
-			if editor.HasSelection() {
-				fmt.Println(editor.GetSelectedText())
-			} else {
-				fmt.Println(editor.GetText())
-			}
+		g.Line(
+			g.Button("Get Text", func() {
+				if editor.HasSelection() {
+					fmt.Println(editor.GetSelectedText())
+				} else {
+					fmt.Println(editor.GetText())
+				}
 
-			fmt.Println("Current line is", editor.GetCurrentLineText())
-		}),
+				fmt.Println("Current line is", editor.GetCurrentLineText())
+			}),
+			g.Button("Set Text", func() {
+				editor.SetText("Set text")
+			}),
+		),
 		g.Custom(func() {
 			editor.Render("Hello", imgui.Vec2{X: 0, Y: 0}, true)
 		}),

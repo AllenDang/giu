@@ -1,7 +1,9 @@
 package imgui
 
+// #include "stdlib.h"
 // #include "TextEditorWrapper.h"
 import "C"
+import "unsafe"
 
 type TextEditor uintptr
 
@@ -39,7 +41,10 @@ func (t TextEditor) SetText(text string) {
 }
 
 func (t TextEditor) GetText() string {
-	return C.GoString(C.IggTextEditorGetText(t.handle()))
+	str := C.IggTextEditorGetText(t.handle())
+	defer C.free(unsafe.Pointer(str))
+
+	return C.GoString(str)
 }
 
 func (t TextEditor) HasSelection() bool {
@@ -47,11 +52,17 @@ func (t TextEditor) HasSelection() bool {
 }
 
 func (t TextEditor) GetSelectedText() string {
-	return C.GoString(C.IggTextEditorGetSelectedText(t.handle()))
+	str := C.IggTextEditorGetSelectedText(t.handle())
+	defer C.free(unsafe.Pointer(str))
+
+	return C.GoString(str)
 }
 
 func (t TextEditor) GetCurrentLineText() string {
-	return C.GoString(C.IggTextEditorGetCurrentLineText(t.handle()))
+	str := C.IggTextEditorGetCurrentLineText(t.handle())
+	defer C.free(unsafe.Pointer(str))
+
+	return C.GoString(str)
 }
 
 func (t TextEditor) IsTextChanged() bool {
