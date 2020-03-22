@@ -2018,7 +2018,7 @@ const TextEditor::Palette & TextEditor::GetDarkPalette()
 			0xffc040a0, // Preproc identifier
 			0xff206020, // Comment (single line)
 			0xff406020, // Comment (multi line)
-			0xff101010, // Background
+			0xFF474238, // Background
 			0xffe0e0e0, // Cursor
 			0x80a06020, // Selection
 			0x800020ff, // ErrorMarker
