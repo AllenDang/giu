@@ -1335,7 +1335,7 @@ func (d *DatePickerWidget) Build() {
 			}
 		}
 
-		if imgui.BeginComboV(d.id, d.date.Format("2006-01-02"), imgui.ComboFlagHeightLarge) {
+		if imgui.BeginComboV(d.id, d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
 			// Build year widget
 			imgui.AlignTextToFramePadding()
 			imgui.Text(" Year")
@@ -1403,56 +1403,62 @@ func (d *DatePickerWidget) Build() {
 			}
 
 			// Build day widgets
-			dayWidth, _ := CalcTextSize("1234")
+			var rows Rows
 
 			// Build week names
-			Line(
-				Label(" Sun "),
-				Label(" Mon "),
-				Label(" Tue "),
-				Label(" Wed "),
-				Label(" Thu "),
-				Label(" Fri "),
-				Label(" Sat "),
-			).Build()
+			rows = append(rows, Row(
+				Label("S"),
+				Label("M"),
+				Label("T"),
+				Label("W"),
+				Label("T"),
+				Label("F"),
+				Label("S"),
+			))
 
 			today := time.Now()
 			style := imgui.CurrentStyle()
 			highlightColor := style.GetColor(imgui.StyleColorPlotHistogram)
 			for r := 0; r < len(days); r++ {
+				var row []Widget
+
 				for c := 0; c < 7; c++ {
 					day := days[r][c]
 					if day == 0 {
-						imgui.Text("     ")
+						row = append(row, Label(" "))
 					} else {
-						if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
-							imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
-						}
 
-						if imgui.SelectableV(fmt.Sprintf(" %02d ", day), day == int(d.date.Day()), 0, imgui.Vec2{X: dayWidth, Y: 0}) {
-							*d.date, _ = time.ParseInLocation(
-								"2006-01-02",
-								fmt.Sprintf("%d-%02d-%02d",
-									d.date.Year(),
-									d.date.Month(),
-									day,
-								),
-								time.Local,
-							)
+						row = append(row, Custom(func() {
+							if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
+								imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
+							}
 
-							evtTrigger()
-						}
+							SelectableV(fmt.Sprintf("%02d", day), day == int(d.date.Day()), 0, 0, 0, func() {
+								*d.date, _ = time.ParseInLocation(
+									"2006-01-02",
+									fmt.Sprintf("%d-%02d-%02d",
+										d.date.Year(),
+										d.date.Month(),
+										day,
+									),
+									time.Local,
+								)
 
-						if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
-							imgui.PopStyleColor()
-						}
-					}
+								evtTrigger()
+							}).Build()
 
-					if c < 6 {
-						imgui.SameLine()
+							if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
+								imgui.PopStyleColor()
+							}
+						}))
+
 					}
 				}
+
+				rows = append(rows, Row(row...))
 			}
+
+			Table("DayTable", true, rows).Build()
 
 			imgui.EndCombo()
 		}
