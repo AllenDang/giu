@@ -974,8 +974,8 @@ void TextEditor::Render()
 				}
 
 				// Render the cursor
-				// if (focused)
-				// {
+        if (focused)
+        {
 					// auto timeEnd = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 					// auto elapsed = timeEnd - mStartTime;
 					// if (elapsed > 400)
@@ -1006,7 +1006,7 @@ void TextEditor::Render()
 						// if (elapsed > 800)
 							// mStartTime = timeEnd;
 					// }
-				// }
+        }
 			}
 
 			// Render colorized text
