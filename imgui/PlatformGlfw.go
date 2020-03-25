@@ -411,3 +411,11 @@ func (platform *GLFW) charChange(window *glfw.Window, char rune) {
 	platform.imguiIO.SetFrameCountSinceLastInput(0)
 	platform.imguiIO.AddInputCharacters(string(char))
 }
+
+func (platform *GLFW) GetClipboard() string {
+	return platform.window.GetClipboardString()
+}
+
+func (platform *GLFW) SetClipboard(content string) {
+	platform.window.SetClipboardString(content)
+}
