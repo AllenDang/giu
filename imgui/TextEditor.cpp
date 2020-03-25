@@ -974,12 +974,12 @@ void TextEditor::Render()
 				}
 
 				// Render the cursor
-				if (focused)
-				{
-					auto timeEnd = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-					auto elapsed = timeEnd - mStartTime;
-					if (elapsed > 400)
-					{
+				// if (focused)
+				// {
+					// auto timeEnd = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+					// auto elapsed = timeEnd - mStartTime;
+					// if (elapsed > 400)
+					// {
 						float width = 1.0f;
 						auto cindex = GetCharacterIndex(mState.mCursorPosition);
 						float cx = TextDistanceToLineStart(mState.mCursorPosition);
@@ -1003,10 +1003,10 @@ void TextEditor::Render()
 						ImVec2 cstart(textScreenPos.x + cx, lineStartScreenPos.y);
 						ImVec2 cend(textScreenPos.x + cx + width, lineStartScreenPos.y + mCharAdvance.y);
 						drawList->AddRectFilled(cstart, cend, mPalette[(int)PaletteIndex::Cursor]);
-						if (elapsed > 800)
-							mStartTime = timeEnd;
-					}
-				}
+						// if (elapsed > 800)
+							// mStartTime = timeEnd;
+					// }
+				// }
 			}
 
 			// Render colorized text
