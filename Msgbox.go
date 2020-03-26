@@ -113,7 +113,11 @@ func PrepareMsgbox() Layout {
 	}
 }
 
-func Msgbox(title, content string, buttons MsgboxButtons, resultCallback func(DialogResult)) {
+func Msgbox(title, content string) {
+	MsgboxV(title, content, MsgboxButtonsOk, nil)
+}
+
+func MsgboxV(title, content string, buttons MsgboxButtons, resultCallback func(DialogResult)) {
 	stateRaw := Context.GetState(msgboxId)
 	if stateRaw == nil {
 		fmt.Println("Msgbox is not prepared. Invoke giu.PrepareMsgbox in the end of the layout.")
