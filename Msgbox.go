@@ -26,6 +26,7 @@ type MsgboxState struct {
 	content        string
 	resultCallback DialogResultCallback
 	buttons        MsgboxButtons
+	open           bool
 }
 
 func (ms *MsgboxState) Dispose() {
@@ -87,7 +88,7 @@ func PrepareMsgbox() Layout {
 	stateRaw := Context.GetState(msgboxId)
 
 	if stateRaw == nil {
-		state = &MsgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil}
+		state = &MsgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
 		Context.SetState(msgboxId, state)
 	} else {
 		state = stateRaw.(*MsgboxState)
@@ -95,6 +96,10 @@ func PrepareMsgbox() Layout {
 
 	return Layout{
 		Custom(func() {
+			if state.open {
+				OpenPopup(msgboxId)
+				state.open = false
+			}
 			SetNextWindowSize(300, 0)
 		}),
 		PopupModal(fmt.Sprintf("%s%s", state.title, msgboxId), Layout{
@@ -121,5 +126,5 @@ func Msgbox(title, content string, buttons MsgboxButtons, resultCallback func(Di
 	state.buttons = buttons
 	state.resultCallback = resultCallback
 
-	OpenPopup(msgboxId)
+	state.open = true
 }
