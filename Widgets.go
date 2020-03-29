@@ -995,18 +995,23 @@ type RowWidget struct {
 	layout Layout
 }
 
-func (r *RowWidget) Build() {
-	for i, w := range r.layout {
-		if i > 0 {
-			imgui.NextColumn()
-		}
-		w.Build()
-	}
-}
-
 func Row(widgets ...Widget) *RowWidget {
 	return &RowWidget{
 		layout: widgets,
+	}
+}
+
+func (r *RowWidget) Build() {
+	for i, w := range r.layout {
+		_, isTooltip := w.(*TooltipWidget)
+		_, isContextMenu := w.(*ContextMenuWidget)
+		_, isPopup := w.(*PopupWidget)
+		_, isCustom := w.(*CustomWidget)
+
+		if i > 0 && !isTooltip && !isContextMenu && !isPopup && !isCustom {
+			imgui.NextColumn()
+		}
+		w.Build()
 	}
 }
 
