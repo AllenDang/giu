@@ -69,6 +69,15 @@ func (t TextEditor) IsTextChanged() bool {
 	return C.IggTextEditorIsTextChanged(t.handle()) != 0
 }
 
+func (t TextEditor) GetCursorPos() (int, int) {
+	var column int
+	var line int
+
+	C.IggTextEditorGetCursorPos(t.handle(), (*C.int)(unsafe.Pointer(&column)), (*C.int)(unsafe.Pointer(&line)))
+
+	return column, line
+}
+
 func (t TextEditor) SetLanguageDefinitionSQL() {
 	C.IggTextEditorSetLanguageDefinitionSQL(t.handle())
 }

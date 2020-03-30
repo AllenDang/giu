@@ -19,6 +19,7 @@ extern IggBool IggTextEditorHasSelection(IggTextEditor handle);
 extern char const *IggTextEditorGetSelectedText(IggTextEditor handle);
 extern char const *IggTextEditorGetCurrentLineText(IggTextEditor handle);
 extern IggBool IggTextEditorIsTextChanged(IggTextEditor handle);
+extern void IggTextEditorGetCursorPos(IggTextEditor handle, int* column, int* line);
 
 extern void IggTextEditorSetLanguageDefinitionSQL(IggTextEditor handle);
 extern void IggTextEditorSetLanguageDefinitionCPP(IggTextEditor handle);

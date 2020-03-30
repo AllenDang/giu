@@ -22,6 +22,9 @@ func loop() {
 					fmt.Println(editor.GetText())
 				}
 
+				column, line := editor.GetCursorPos()
+				fmt.Println("Cursor pos:", column, line)
+
 				fmt.Println("Current line is", editor.GetCurrentLineText())
 			}),
 			g.Button("Set Text", func() {
