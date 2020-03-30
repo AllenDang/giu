@@ -84,3 +84,29 @@ func (t TextEditor) SetLanguageDefinitionC() {
 func (t TextEditor) SetLanguageDefinitionLua() {
 	C.IggTextEditorSetLanguageDefinitionLua(t.handle())
 }
+
+type ErrorMarkers uintptr
+
+func NewErrorMarkers() ErrorMarkers {
+	handle := C.IggTextEditorNewErrorMarkers()
+	return ErrorMarkers(handle)
+}
+
+func (e ErrorMarkers) handle() C.IggTextEditorErrorMarkers {
+	return C.IggTextEditorErrorMarkers(e)
+}
+
+func (e ErrorMarkers) Insert(pos int, errMsg string) {
+	errMsgArg, errMsgFn := wrapString(errMsg)
+	defer errMsgFn()
+
+	C.IggTextEditorErrorMarkersInsert(e.handle(), C.int(pos), errMsgArg)
+}
+
+func (e ErrorMarkers) Clear() {
+	C.IggTextEditorErrorMarkersClear(e.handle())
+}
+
+func (t TextEditor) SetErrorMarkers(markers ErrorMarkers) {
+	C.IggTextEditorSetErrorMarkers(t.handle(), markers.handle())
+}

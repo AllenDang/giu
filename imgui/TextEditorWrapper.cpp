@@ -93,3 +93,30 @@ void IggTextEditorSetLanguageDefinitionLua(IggTextEditor handle)
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
   editor->SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
 }
+
+IggTextEditorErrorMarkers IggTextEditorNewErrorMarkers() 
+{
+  TextEditor::ErrorMarkers *markers = new TextEditor::ErrorMarkers();
+  return static_cast<IggTextEditorErrorMarkers>(markers);
+}
+
+void IggTextEditorErrorMarkersInsert(IggTextEditorErrorMarkers handle, int pos, const char* errMsg)
+{
+  TextEditor::ErrorMarkers *markers = reinterpret_cast<TextEditor::ErrorMarkers*>(handle);
+  markers->insert(std::pair<int, std::string>(pos, errMsg));
+}
+
+void IggTextEditorErrorMarkersClear(IggTextEditorErrorMarkers marker)
+{
+  TextEditor::ErrorMarkers *markers = reinterpret_cast<TextEditor::ErrorMarkers*>(marker);
+  markers->clear();
+}
+
+void IggTextEditorSetErrorMarkers(IggTextEditor handle, IggTextEditorErrorMarkers marker)
+{
+  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
+  TextEditor::ErrorMarkers *markers = reinterpret_cast<TextEditor::ErrorMarkers*>(marker);
+
+  editor->SetErrorMarkers(*markers);
+}
+

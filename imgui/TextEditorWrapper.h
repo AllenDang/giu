@@ -7,6 +7,7 @@ extern "C"
 #endif
 
 typedef void *IggTextEditor;
+typedef void *IggTextEditorErrorMarkers;
 
 extern IggTextEditor IggNewTextEditor();
 extern void IggTextEditorRender(IggTextEditor handle, const char* aTitle, IggVec2 const *size, int aBorder);
@@ -23,6 +24,12 @@ extern void IggTextEditorSetLanguageDefinitionSQL(IggTextEditor handle);
 extern void IggTextEditorSetLanguageDefinitionCPP(IggTextEditor handle);
 extern void IggTextEditorSetLanguageDefinitionC(IggTextEditor handle);
 extern void IggTextEditorSetLanguageDefinitionLua(IggTextEditor handle);
+
+extern IggTextEditorErrorMarkers IggTextEditorNewErrorMarkers();
+extern void IggTextEditorErrorMarkersInsert(IggTextEditorErrorMarkers handle, int pos, const char* errMsg);
+extern void IggTextEditorErrorMarkersClear(IggTextEditorErrorMarkers handle);
+
+extern void IggTextEditorSetErrorMarkers(IggTextEditor handle, IggTextEditorErrorMarkers marker);
 
 #ifdef __cplusplus
 }

@@ -8,7 +8,8 @@ import (
 )
 
 var (
-	editor imgui.TextEditor
+	editor     imgui.TextEditor
+	errMarkers imgui.ErrorMarkers
 )
 
 func loop() {
@@ -26,6 +27,12 @@ func loop() {
 			g.Button("Set Text", func() {
 				editor.SetText("Set text")
 			}),
+			g.Button("Set Error Marker", func() {
+				errMarkers.Clear()
+				errMarkers.Insert(1, "Error message")
+
+				editor.SetErrorMarkers(errMarkers)
+			}),
 		),
 		g.Custom(func() {
 			editor.Render("Hello", imgui.Vec2{X: 0, Y: 0}, true)
@@ -34,6 +41,8 @@ func loop() {
 }
 
 func main() {
+	errMarkers = imgui.NewErrorMarkers()
+
 	editor = imgui.NewTextEditor()
 	editor.SetShowWhitespaces(false)
 	editor.SetTabSize(2)
