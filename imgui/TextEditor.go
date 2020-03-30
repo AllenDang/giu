@@ -78,6 +78,15 @@ func (t TextEditor) GetCursorPos() (int, int) {
 	return column, line
 }
 
+func (t TextEditor) GetSelectionStart() (int, int) {
+	var column int
+	var line int
+
+	C.IggTextEditorGetSelectionStart(t.handle(), (*C.int)(unsafe.Pointer(&column)), (*C.int)(unsafe.Pointer(&line)))
+
+	return column, line
+}
+
 func (t TextEditor) SetLanguageDefinitionSQL() {
 	C.IggTextEditorSetLanguageDefinitionSQL(t.handle())
 }

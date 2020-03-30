@@ -25,6 +25,9 @@ func loop() {
 				column, line := editor.GetCursorPos()
 				fmt.Println("Cursor pos:", column, line)
 
+				column, line = editor.GetSelectionStart()
+				fmt.Println("Selection start:", column, line)
+
 				fmt.Println("Current line is", editor.GetCurrentLineText())
 			}),
 			g.Button("Set Text", func() {

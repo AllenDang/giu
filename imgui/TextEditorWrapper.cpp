@@ -77,6 +77,14 @@ void IggTextEditorGetCursorPos(IggTextEditor handle, int* column, int* line)
   *line = (float)col.mLine;
 }
 
+void IggTextEditorGetSelectionStart(IggTextEditor handle, int* column, int* line)
+{
+  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
+  TextEditor::Coordinates col = editor->GetSelectionStart();
+  *column = (float)col.mColumn;
+  *line = (float)col.mLine;
+}
+
 void IggTextEditorSetLanguageDefinitionSQL(IggTextEditor handle)
 {
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);

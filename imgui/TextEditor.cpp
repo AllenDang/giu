@@ -1404,6 +1404,11 @@ void TextEditor::SetCursorPosition(const Coordinates & aPosition)
 	}
 }
 
+TextEditor::Coordinates TextEditor::GetSelectionStart()
+{
+  return mState.mSelectionStart;
+}
+
 void TextEditor::SetSelectionStart(const Coordinates & aPosition)
 {
 	mState.mSelectionStart = SanitizeCoordinates(aPosition);
