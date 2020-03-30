@@ -1006,9 +1006,8 @@ func (r *RowWidget) Build() {
 		_, isTooltip := w.(*TooltipWidget)
 		_, isContextMenu := w.(*ContextMenuWidget)
 		_, isPopup := w.(*PopupWidget)
-		_, isCustom := w.(*CustomWidget)
 
-		if i > 0 && !isTooltip && !isContextMenu && !isPopup && !isCustom {
+		if i > 0 && !isTooltip && !isContextMenu && !isPopup {
 			imgui.NextColumn()
 		}
 		w.Build()
@@ -1432,31 +1431,31 @@ func (d *DatePickerWidget) Build() {
 					if day == 0 {
 						row = append(row, Label(" "))
 					} else {
+						row = append(row,
+							Custom(func() {
+								if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
+									imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
+								}
 
-						row = append(row, Custom(func() {
-							if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
-								imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
-							}
+								SelectableV(fmt.Sprintf("%02d", day), day == int(d.date.Day()), 0, 0, 0, func() {
+									*d.date, _ = time.ParseInLocation(
+										"2006-01-02",
+										fmt.Sprintf("%d-%02d-%02d",
+											d.date.Year(),
+											d.date.Month(),
+											day,
+										),
+										time.Local,
+									)
 
-							SelectableV(fmt.Sprintf("%02d", day), day == int(d.date.Day()), 0, 0, 0, func() {
-								*d.date, _ = time.ParseInLocation(
-									"2006-01-02",
-									fmt.Sprintf("%d-%02d-%02d",
-										d.date.Year(),
-										d.date.Month(),
-										day,
-									),
-									time.Local,
-								)
+									evtTrigger()
+								}).Build()
 
-								evtTrigger()
-							}).Build()
-
-							if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
-								imgui.PopStyleColor()
-							}
-						}))
-
+								if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
+									imgui.PopStyleColor()
+								}
+							}),
+						)
 					}
 				}
 
