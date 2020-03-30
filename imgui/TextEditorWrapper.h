@@ -29,6 +29,7 @@ extern void IggTextEditorSetLanguageDefinitionLua(IggTextEditor handle);
 extern IggTextEditorErrorMarkers IggTextEditorNewErrorMarkers();
 extern void IggTextEditorErrorMarkersInsert(IggTextEditorErrorMarkers handle, int pos, const char* errMsg);
 extern void IggTextEditorErrorMarkersClear(IggTextEditorErrorMarkers handle);
+extern unsigned int IggTextEditorErrorMarkersSize(IggTextEditorErrorMarkers handle);
 
 extern void IggTextEditorSetErrorMarkers(IggTextEditor handle, IggTextEditorErrorMarkers marker);
 

@@ -116,6 +116,10 @@ func (e ErrorMarkers) Clear() {
 	C.IggTextEditorErrorMarkersClear(e.handle())
 }
 
+func (e ErrorMarkers) Size() uint {
+	return uint(C.IggTextEditorErrorMarkersSize(e.handle()))
+}
+
 func (t TextEditor) SetErrorMarkers(markers ErrorMarkers) {
 	C.IggTextEditorSetErrorMarkers(t.handle(), markers.handle())
 }

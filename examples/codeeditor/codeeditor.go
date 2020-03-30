@@ -33,6 +33,7 @@ func loop() {
 			g.Button("Set Error Marker", func() {
 				errMarkers.Clear()
 				errMarkers.Insert(1, "Error message")
+				fmt.Println("ErrMarkers Size:", errMarkers.Size())
 
 				editor.SetErrorMarkers(errMarkers)
 			}),

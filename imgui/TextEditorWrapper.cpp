@@ -120,6 +120,13 @@ void IggTextEditorErrorMarkersClear(IggTextEditorErrorMarkers marker)
   markers->clear();
 }
 
+
+unsigned int IggTextEditorErrorMarkersSize(IggTextEditorErrorMarkers handle)
+{
+  TextEditor::ErrorMarkers *markers = reinterpret_cast<TextEditor::ErrorMarkers*>(handle);
+  return markers->size();
+}
+
 void IggTextEditorSetErrorMarkers(IggTextEditor handle, IggTextEditorErrorMarkers marker)
 {
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
