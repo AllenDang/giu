@@ -28,6 +28,8 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 - OS clipboard support.
 
 ![Screenshot](https://github.com/AllenDang/giu/raw/master/examples/imguidemo/screenshot.png)
+![Screenshot1](https://github.com/AllenDang/giu/blob/master/screenshots/SqlPower.png)
+![Screenshot2](https://github.com/AllenDang/giu/blob/master/screenshots/Chart.png)
 
 ## Hello world
 
