@@ -73,6 +73,10 @@ Here is result.
 
 Check [Wiki](https://github.com/AllenDang/giu/wiki)
 
+## Contribution
+
+All kinds of pull request (document, demo, screenshots, code, etc...) are more then welcome!
+
 ## Projects using giu
 
 ### [PipeIt](https://github.com/AllenDang/PipeIt)
