@@ -267,6 +267,18 @@ func GetColorU32(col Vec4) uint {
 	return uint(C.iggGetColorU32(*valueArg))
 }
 
+func StyleColorsDark() {
+	C.iggStyleColorsDark()
+}
+
+func StyleColorsClassic() {
+	C.iggStyleColorsClassic()
+}
+
+func StyleColorsLight() {
+	C.iggStyleColorsLight()
+}
+
 // PushItemWidth sets width of items for the common item+label case, in pixels.
 // 0.0f = default to ~2/3 of windows width, >0.0f: width in pixels,
 // <0.0f align xx pixels to the right of window (so -1.0f always align width to the right side).

@@ -215,6 +215,21 @@ unsigned int iggGetColorU32(const IggVec4 col)
    return ImGui::GetColorU32(*colArg);
 }
 
+void iggStyleColorsDark()
+{
+  ImGui::StyleColorsDark();
+}
+
+void iggStyleColorsClassic()
+{
+  ImGui::StyleColorsClassic();
+}
+
+void iggStyleColorsLight()
+{
+  ImGui::StyleColorsLight();
+}
+
 void iggPushItemWidth(float width)
 {
    ImGui::PushItemWidth(width);

@@ -55,6 +55,10 @@ extern "C"
 	extern void iggCalcTextSize(const char *text, int length, IggBool hide_text_after_double_hash, float wrap_width, IggVec2 *value);
 	extern unsigned int iggGetColorU32(const IggVec4 col);
 
+  extern void iggStyleColorsDark();
+  extern void iggStyleColorsClassic();
+  extern void iggStyleColorsLight();
+
 	extern float iggGetFontSize();
 
 	extern void iggPushItemWidth(float width);
