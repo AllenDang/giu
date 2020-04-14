@@ -92,6 +92,7 @@ func (w *MasterWindow) setTheme() {
 	style := imgui.CurrentStyle()
 
 	imgui.PushStyleVarFloat(imgui.StyleVarWindowRounding, 2)
+	imgui.PushStyleVarFloat(imgui.StyleVarWindowBorderSize, 0)
 	imgui.PushStyleVarFloat(imgui.StyleVarFrameRounding, 2)
 	imgui.PushStyleVarFloat(imgui.StyleVarFrameBorderSize, 1)
 
