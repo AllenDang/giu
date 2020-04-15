@@ -5,9 +5,11 @@ import (
 	"image/color"
 
 	g "github.com/AllenDang/giu"
+	"github.com/AllenDang/giu/imgui"
 )
 
 func loop() {
+	imgui.PushStyleVarFloat(imgui.StyleVarWindowBorderSize, 0)
 	g.PushColorWindowBg(color.RGBA{50, 50, 50, 0})
 	g.PushColorFrameBg(color.RGBA{10, 10, 10, 0})
 	g.SingleWindow("transparent", g.Layout{
@@ -38,6 +40,7 @@ func loop() {
 	})
 	g.PopStyleColor()
 	g.PopStyleColor()
+	imgui.PopStyleVar()
 }
 
 func main() {
