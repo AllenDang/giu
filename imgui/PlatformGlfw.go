@@ -30,6 +30,8 @@ const (
 	GLFWWindowFlagsNotResizable GLFWWindowFlags = 1 << iota
 	GLFWWindowFlagsMaximized
 	GLFWWindowFlagsFloating
+	GLFWWindowFlagsFrameless
+	GLFWWindowFlagsTransparent
 )
 
 // GLFW implements a platform based on github.com/go-gl/glfw (v3.2).
@@ -74,6 +76,14 @@ func NewGLFW(io IO, title string, width, height int, flags GLFWWindowFlags) (*GL
 
 	if flags&GLFWWindowFlagsFloating != 0 {
 		glfw.WindowHint(glfw.Floating, glfw.True)
+	}
+
+	if flags&GLFWWindowFlagsFrameless != 0 {
+		glfw.WindowHint(glfw.Decorated, glfw.False)
+	}
+
+	if flags&GLFWWindowFlagsTransparent != 0 {
+		glfw.WindowHint(glfw.TransparentFramebuffer, glfw.True)
 	}
 
 	window, err := glfw.CreateWindow(width, height, title, nil, nil)
