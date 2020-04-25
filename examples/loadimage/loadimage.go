@@ -1,72 +1,23 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
-	"image"
-	"image/draw"
 	_ "image/jpeg"
 	_ "image/png"
 	"time"
 
 	g "github.com/AllenDang/giu"
-	resty "github.com/go-resty/resty/v2"
 )
-
-var (
-	texture *g.Texture
-	url     string
-	client  *resty.Client
-	loading bool
-)
-
-func loadImage(imageUrl string) {
-	loading = true
-	g.Update()
-
-	resp, err := client.R().Get(imageUrl)
-	if err == nil {
-		img, _, err := image.Decode(bytes.NewReader(resp.Body()))
-		if err == nil {
-			rgba := image.NewRGBA(img.Bounds())
-			draw.Draw(rgba, img.Bounds(), img, image.Point{}, draw.Src)
-			texture, _ = g.NewTextureFromRgba(rgba)
-		} else {
-			fmt.Println(err)
-		}
-	} else {
-		fmt.Println(err)
-	}
-
-	loading = false
-	g.Update()
-}
-
-func btnLoadClicked() {
-	if len(url) > 0 {
-		go loadImage(url)
-	}
-}
 
 func loop() {
 	g.SingleWindow("load image", g.Layout{
-		g.Label("Paste image url and click download"),
-		g.InputText("##Url", -1, &url),
-		g.Button("Download and display", btnLoadClicked),
-		g.Custom(func() {
-			if loading {
-				g.Label("Downloadig image ...").Build()
-			} else {
-				g.Image(texture, -1, -1).Build()
-			}
-		}),
+		g.Label("Display image from file"),
+		g.ImageWithFile("gopher.png", 300, 200),
+		g.Label("Display image from url (wait few seconds to download)"),
+		g.ImageWithUrl("https://www.pngitem.com/pimgs/m/424-4242405_go-lang-gopher-clipart-png-download-golang-gopher.png", 10*time.Second, 300, 200),
 	})
 }
 
 func main() {
-	client = resty.New()
-	client.SetTimeout(10 * time.Second)
-
-	wnd := g.NewMasterWindow("Load Image", 600, 400, g.MasterWindowFlagsNotResizable, nil)
+	wnd := g.NewMasterWindow("Load Image", 600, 500, g.MasterWindowFlagsNotResizable, nil)
 	wnd.Main(loop)
 }

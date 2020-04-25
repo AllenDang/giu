@@ -1,12 +1,15 @@
 package giu
 
 import (
+	"bytes"
 	"fmt"
 	"image"
 	"image/color"
+	"image/draw"
 	"time"
 
 	"github.com/AllenDang/giu/imgui"
+	resty "github.com/go-resty/resty/v2"
 )
 
 type LineWidget struct {
@@ -396,6 +399,107 @@ func Image(texture *Texture, width, height float32) *ImageWidget {
 		width:   width * Context.platform.GetContentScale(),
 		height:  height * Context.platform.GetContentScale(),
 	}
+}
+
+type ImageState struct {
+	texture *Texture
+}
+
+func (is *ImageState) Dispose() {
+	is.texture = nil
+}
+
+type ImageWithFileWidget struct {
+	imgPath string
+	width   float32
+	height  float32
+}
+
+func ImageWithFile(imgPath string, width, height float32) *ImageWithFileWidget {
+	return &ImageWithFileWidget{
+		imgPath: imgPath,
+		width:   width * Context.platform.GetContentScale(),
+		height:  height * Context.platform.GetContentScale(),
+	}
+}
+
+func (i *ImageWithFileWidget) Build() {
+	stateId := fmt.Sprintf("ImageWithFile_%s", i.imgPath)
+	state := Context.GetState(stateId)
+
+	var widget *ImageWidget
+
+	if state == nil {
+		widget = Image(nil, i.width, i.height)
+
+		img, err := LoadImage(i.imgPath)
+		if err == nil {
+			go func() {
+				texture, err := NewTextureFromRgba(img)
+				if err == nil {
+					Context.SetState(stateId, &ImageState{texture: texture})
+				}
+			}()
+		}
+	} else {
+		imgState := state.(*ImageState)
+		widget = Image(imgState.texture, i.width, i.height)
+	}
+
+	widget.Build()
+}
+
+type ImageWithUrlWidget struct {
+	imgUrl          string
+	downloadTimeout time.Duration
+	width           float32
+	height          float32
+}
+
+func ImageWithUrl(url string, downloadTimeout time.Duration, width, height float32) *ImageWithUrlWidget {
+	return &ImageWithUrlWidget{
+		imgUrl:          url,
+		downloadTimeout: downloadTimeout,
+		width:           width * Context.platform.GetContentScale(),
+		height:          height * Context.platform.GetContentScale(),
+	}
+}
+
+func (i *ImageWithUrlWidget) Build() {
+	stateId := fmt.Sprintf("ImageWithUrl_%s", i.imgUrl)
+	state := Context.GetState(stateId)
+
+	var widget *ImageWidget
+
+	if state == nil {
+		widget = Image(nil, i.width, i.height)
+
+		go func() {
+			// Load image from url
+			client := resty.New()
+			client.SetTimeout(i.downloadTimeout)
+
+			resp, err := client.R().Get(i.imgUrl)
+			if err == nil {
+				img, _, err := image.Decode(bytes.NewReader(resp.Body()))
+				if err == nil {
+					rgba := image.NewRGBA(img.Bounds())
+					draw.Draw(rgba, img.Bounds(), img, image.Point{}, draw.Src)
+
+					texture, err := NewTextureFromRgba(rgba)
+					if err == nil {
+						Context.SetState(stateId, &ImageState{texture: texture})
+					}
+				}
+			}
+
+		}()
+	} else {
+		imgState := state.(*ImageState)
+		widget = Image(imgState.texture, i.width, i.height)
+	}
+
+	widget.Build()
 }
 
 type InputTextWidget struct {
