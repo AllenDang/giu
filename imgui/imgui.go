@@ -1261,3 +1261,27 @@ func SetKeyboardFocusHereV(offset int) {
 func GetWindowDrawList() DrawList {
 	return DrawList(C.iggGetWindowDrawList())
 }
+
+func GetItemRectMin() Vec2 {
+	var value Vec2
+	valueArg, valueFin := value.wrapped()
+	C.iggGetItemRectMin(valueArg)
+	valueFin()
+	return value
+}
+
+func GetItemRectMax() Vec2 {
+	var value Vec2
+	valueArg, valueFin := value.wrapped()
+	C.iggGetItemRectMax(valueArg)
+	valueFin()
+	return value
+}
+
+func GetItemRectSize() Vec2 {
+	var value Vec2
+	valueArg, valueFin := value.wrapped()
+	C.iggGetItemRectSize(valueArg)
+	valueFin()
+	return value
+}

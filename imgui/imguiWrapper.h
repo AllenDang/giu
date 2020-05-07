@@ -194,6 +194,11 @@ extern "C"
 
   extern IggDrawList iggGetWindowDrawList();
 
+  extern void iggGetItemRectMin(IggVec2 *size);
+  extern void iggGetItemRectMax(IggVec2 *size);
+  extern void iggGetItemRectSize(IggVec2 *size);
+
+
 #ifdef __cplusplus
 }
 #endif

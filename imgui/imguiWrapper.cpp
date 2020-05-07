@@ -778,3 +778,18 @@ IggDrawList iggGetWindowDrawList()
   ImDrawList* drawlist = ImGui::GetWindowDrawList();
   return static_cast<IggDrawList>(drawlist);
 }
+
+void iggGetItemRectMin(IggVec2 *size)
+{
+  exportValue(*size, ImGui::GetItemRectMin());
+}
+
+void iggGetItemRectMax(IggVec2 *size)
+{
+  exportValue(*size, ImGui::GetItemRectMax());
+}
+
+void iggGetItemRectSize(IggVec2 *size)
+{
+  exportValue(*size, ImGui::GetItemRectSize());
+}
