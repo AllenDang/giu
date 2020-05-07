@@ -6,6 +6,7 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"math"
 	"time"
 
 	"github.com/AllenDang/giu/imgui"
@@ -103,6 +104,36 @@ func ButtonV(id string, width, height float32, onClick func()) *ButtonWidget {
 		width:   width * Context.platform.GetContentScale(),
 		height:  height * Context.platform.GetContentScale(),
 		onClick: onClick,
+	}
+}
+
+type PlotLinesWidget struct {
+	label        string
+	values       []float32
+	valuesOffset int
+	overlayText  string
+	scaleMin     float32
+	scaleMax     float32
+	graphSize    imgui.Vec2
+}
+
+func (p *PlotLinesWidget) Build() {
+	imgui.PlotLinesV(p.label, p.values, p.valuesOffset, p.overlayText, p.scaleMin, p.scaleMax, p.graphSize)
+}
+
+func PlotLines(label string, values []float32) *PlotLinesWidget {
+	return PlotLinesV(label, values, 0, "", math.MaxFloat32, math.MaxFloat32, imgui.Vec2{})
+}
+
+func PlotLinesV(label string, values []float32, valuesOffset int, overlayText string, scaleMin float32, scaleMax float32, graphSize imgui.Vec2) *PlotLinesWidget {
+	return &PlotLinesWidget{
+		label:        label,
+		values:       values,
+		valuesOffset: valuesOffset,
+		overlayText:  overlayText,
+		scaleMin:     scaleMin,
+		scaleMax:     scaleMax,
+		graphSize:    graphSize,
 	}
 }
 
