@@ -463,6 +463,9 @@ func (i *ImageWithFileWidget) Build() {
 	if state == nil {
 		widget = Image(nil, i.width, i.height)
 
+		//Prevent multiple invocation to LoadImage.
+		Context.SetState(stateId, &ImageState{})
+
 		img, err := LoadImage(i.imgPath)
 		if err == nil {
 			go func() {
@@ -505,6 +508,9 @@ func (i *ImageWithUrlWidget) Build() {
 	if state == nil {
 		widget = Image(nil, i.width, i.height)
 
+		//Prevent multiple invocation to download image.
+		Context.SetState(stateId, &ImageState{})
+
 		go func() {
 			// Load image from url
 			client := resty.New()
@@ -523,7 +529,6 @@ func (i *ImageWithUrlWidget) Build() {
 					}
 				}
 			}
-
 		}()
 	} else {
 		imgState := state.(*ImageState)
