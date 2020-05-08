@@ -83,32 +83,33 @@ const msgboxId string = "###Msgbox"
 
 // Embed various Msgboxs to layout. Invoke this function in the same layout level where you call g.Msgbox.
 func PrepareMsgbox() Layout {
-	var state *MsgboxState
-	// Register state.
-	stateRaw := Context.GetState(msgboxId)
-
-	if stateRaw == nil {
-		state = &MsgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
-		Context.SetState(msgboxId, state)
-	} else {
-		state = stateRaw.(*MsgboxState)
-	}
-
 	return Layout{
 		Custom(func() {
+			var state *MsgboxState
+
+			// Register state.
+			stateRaw := Context.GetState(msgboxId)
+
+			if stateRaw == nil {
+				state = &MsgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
+				Context.SetState(msgboxId, state)
+			} else {
+				state = stateRaw.(*MsgboxState)
+			}
+
 			if state.open {
 				OpenPopup(msgboxId)
 				state.open = false
 			}
 			SetNextWindowSize(300, 0)
-		}),
-		PopupModal(fmt.Sprintf("%s%s", state.title, msgboxId), Layout{
-			Custom(func() {
-				// Ensure the state is valid.
-				Context.GetState(msgboxId)
-			}),
-			LabelWrapped(state.content),
-			buildMsgboxButtons(state.buttons, state.resultCallback),
+			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxId), Layout{
+				Custom(func() {
+					// Ensure the state is valid.
+					Context.GetState(msgboxId)
+				}),
+				LabelWrapped(state.content),
+				buildMsgboxButtons(state.buttons, state.resultCallback),
+			}).Build()
 		}),
 	}
 }
