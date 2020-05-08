@@ -122,10 +122,10 @@ func (p *PlotLinesWidget) Build() {
 }
 
 func PlotLines(label string, values []float32) *PlotLinesWidget {
-	return PlotLinesV(label, values, 0, "", math.MaxFloat32, math.MaxFloat32, imgui.Vec2{})
+	return PlotLinesV(label, values, 0, "", math.MaxFloat32, math.MaxFloat32, 0, 0)
 }
 
-func PlotLinesV(label string, values []float32, valuesOffset int, overlayText string, scaleMin float32, scaleMax float32, graphSize imgui.Vec2) *PlotLinesWidget {
+func PlotLinesV(label string, values []float32, valuesOffset int, overlayText string, scaleMin, scaleMax, width, height float32) *PlotLinesWidget {
 	return &PlotLinesWidget{
 		label:        label,
 		values:       values,
@@ -133,7 +133,7 @@ func PlotLinesV(label string, values []float32, valuesOffset int, overlayText st
 		overlayText:  overlayText,
 		scaleMin:     scaleMin,
 		scaleMax:     scaleMax,
-		graphSize:    graphSize,
+		graphSize:    imgui.Vec2{X: width, Y: height},
 	}
 }
 
