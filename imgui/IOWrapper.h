@@ -19,7 +19,6 @@ extern "C"
     extern void iggIoAddMouseWheelDelta(IggIO handle, float x, float y);
     extern void iggIoGetMouseDelta(IggIO handle, IggVec2 *delta);
     extern void iggIoSetDeltaTime(IggIO handle, float value);
-    extern void iggIoGetMousePos(IggIO handle, IggVec2 *pos);
     extern void iggIoSetFontGlobalScale(IggIO handle, float value);
 
     extern IggBool iggIoGetMouseDrawCursor(IggIO handle);

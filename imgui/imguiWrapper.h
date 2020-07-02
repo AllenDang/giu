@@ -123,6 +123,8 @@ extern "C"
 
 	extern void iggSetCursorPos(IggVec2 const *localPos);
 	extern void iggSetCursorScreenPos(IggVec2 const *absPos);
+	extern void iggMousePos(IggVec2 *pos);
+
 	extern void iggAlignTextToFramePadding();
 	extern float iggGetTextLineHeight(void);
 	extern float iggGetTextLineHeightWithSpacing(void);

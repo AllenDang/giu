@@ -752,6 +752,15 @@ func SetCursorScreenPos(absPos Vec2) {
 	C.iggSetCursorScreenPos(absPosArg)
 }
 
+// MousePos returns the mouse position in absolute screen coordinates.
+func MousePos() Vec2 {
+	var value Vec2
+	valueArg, valueFin := value.wrapped()
+	C.iggMousePos(valueArg)
+	valueFin()
+	return value
+}
+
 // AlignTextToFramePadding vertically aligns upcoming text baseline to
 // FramePadding.y so that it will align properly to regularly framed
 // items. Call if you have text on a line before a framed item.
