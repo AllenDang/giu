@@ -65,6 +65,12 @@ void iggIoSetDeltaTime(IggIO handle, float value)
    io->DeltaTime = value;
 }
 
+void iggIoGetMousePos(IggIO handle, IggVec2 *value)
+{
+  ImGuiIO *io = reinterpret_cast<ImGuiIO *>(handle);
+  exportValue(*value, io->MousePos);
+}
+
 void iggIoSetFontGlobalScale(IggIO handle, float value)
 {
    ImGuiIO *io = reinterpret_cast<ImGuiIO *>(handle);

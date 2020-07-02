@@ -84,6 +84,14 @@ func (io IO) GetMouseDelta() Vec2 {
 	return delta
 }
 
+func (io IO) GetMousePos() Vec2 {
+	var pos Vec2
+	posArg, posFin := pos.wrapped()
+	C.iggIoGetMousePos(io.handle, posArg)
+	posFin()
+	return pos
+}
+
 // SetDeltaTime sets the time elapsed since last frame, in seconds.
 func (io IO) SetDeltaTime(value float32) {
 	C.iggIoSetDeltaTime(io.handle, C.float(value))
