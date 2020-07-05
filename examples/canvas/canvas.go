@@ -7,6 +7,10 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
+var (
+	texture *g.Texture
+)
+
 func loop() {
 	g.SingleWindow("canvas", g.Layout{
 		g.Label("Canvas demo"),
@@ -41,11 +45,21 @@ func loop() {
 			canvas.PathLineTo(p2)
 			canvas.PathBezierCurveTo(p2.Add(image.Pt(40, 0)), p3.Add(image.Pt(-50, 0)), p3, 0)
 			canvas.PathStroke(color, false, 1)
+
+			if texture != nil {
+				canvas.AddImage(texture, image.Pt(350, 25), image.Pt(500, 125))
+			}
 		}),
 	})
 }
 
 func main() {
 	wnd := g.NewMasterWindow("Canvas", 600, 600, g.MasterWindowFlagsNotResizable, nil)
+
+	img, _ := g.LoadImage("gopher.png")
+	go func() {
+		texture, _ = g.NewTextureFromRgba(img)
+	}()
+
 	wnd.Main(loop)
 }

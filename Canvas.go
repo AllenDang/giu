@@ -110,3 +110,7 @@ func (c *Canvas) PathArcToFast(center image.Point, radius float32, a_min_of_12, 
 func (c *Canvas) PathBezierCurveTo(p1, p2, p3 image.Point, num_segments int) {
 	c.drawlist.PathBezierCurveTo(ToVec2(p1), ToVec2(p2), ToVec2(p3), num_segments)
 }
+
+func (c *Canvas) AddImage(texture *Texture, pMin, pMax image.Point) {
+	c.drawlist.AddImage(texture.id, ToVec2(pMin), ToVec2(pMax))
+}

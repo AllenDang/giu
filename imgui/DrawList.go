@@ -209,3 +209,9 @@ func (list DrawList) PathBezierCurveTo(p1, p2, p3 Vec2, num_segments int) {
 	p3Arg, _ := p3.wrapped()
 	C.iggDrawListPathBezierCurveTo(list.handle(), p1Arg, p2Arg, p3Arg, C.int(num_segments))
 }
+
+func (list DrawList) AddImage(textureId TextureID, pMin, pMax Vec2) {
+	pMinArg, _ := pMin.wrapped()
+	pMaxArg, _ := pMax.wrapped()
+	C.iggDrawListAddImage(list.handle(), C.IggTextureID(textureId), pMinArg, pMaxArg)
+}
