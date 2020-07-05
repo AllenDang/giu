@@ -74,6 +74,11 @@ func GetCursorPos() image.Point {
 	return image.Pt(int(pos.X), int(pos.Y))
 }
 
+func GetMousePos() image.Point {
+	pos := imgui.MousePos()
+	return image.Pt(int(pos.X), int(pos.Y))
+}
+
 func GetAvaiableRegion() (width, height float32) {
 	region := imgui.ContentRegionAvail()
 	return region.X, region.Y

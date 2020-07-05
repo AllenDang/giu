@@ -483,6 +483,11 @@ void iggSetCursorScreenPos(IggVec2 const *absPos)
    ImGui::SetCursorScreenPos(*absPosArg);
 }
 
+void iggMousePos(IggVec2 *pos)
+{
+   exportValue(*pos, ImGui::GetMousePos());
+}
+
 void iggAlignTextToFramePadding()
 {
    ImGui::AlignTextToFramePadding();
