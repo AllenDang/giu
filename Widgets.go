@@ -183,6 +183,40 @@ func ImageButton(texture *Texture, width, height float32, onClick func()) *Image
 	}
 }
 
+type ImageButtonVWidget struct {
+	texture      *Texture
+	width        float32
+	height       float32
+	uv0          image.Point
+	uv1          image.Point
+	framePadding int
+	bgColor      color.RGBA
+	tintColor    color.RGBA
+	onClick      func()
+}
+
+func (i *ImageButtonWidgetV) Build() {
+	if i.texture != nil && i.texture.id != 0 {
+		if imgui.ImageButtonV(i.texture.id, imgui.Vec2{X: i.width, Y: i.height}, ToVec2(i.uv0), ToVec2(i.uv1), i.framePadding, ToVec4Color(i.bgColor), ToVec4Color(i.tintColor)) && i.onClick != nil {
+			i.onClick()
+		}
+	}
+}
+
+func ImageButtonV(texture *Texture, width, height float32, uv0, uv1 image.Point, framePadding int, bgColor, tintColor color.RGBA, onClick func()) *ImageButtonVWidget {
+	return &ImageButtonVWidget{
+		texture:      texture,
+		width:        width * Context.platform.GetContentScale(),
+		height:       height * Context.platform.GetContentScale(),
+		uv0:          uv0,
+		uv1:          uv1,
+		framePadding: framePadding,
+		bgColor:      bgColor,
+		tintColor:    tintColor,
+		onClick:      onClick,
+	}
+}
+
 type CheckboxWidget struct {
 	text     string
 	selected *bool
