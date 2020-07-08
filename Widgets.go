@@ -195,7 +195,7 @@ type ImageButtonVWidget struct {
 	onClick      func()
 }
 
-func (i *ImageButtonWidgetV) Build() {
+func (i *ImageButtonVWidget) Build() {
 	if i.texture != nil && i.texture.id != 0 {
 		if imgui.ImageButtonV(i.texture.id, imgui.Vec2{X: i.width, Y: i.height}, ToVec2(i.uv0), ToVec2(i.uv1), i.framePadding, ToVec4Color(i.bgColor), ToVec4Color(i.tintColor)) && i.onClick != nil {
 			i.onClick()
