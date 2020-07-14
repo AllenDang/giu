@@ -3,6 +3,9 @@
 extern void importValue(bool &out, IggBool const &in);
 extern void exportValue(IggBool &out, bool const &in);
 
+extern void importValue(float &out, IggFloat const &in);
+extern void exportValue(IggFloat &out, float const &in);
+
 extern void importValue(ImVec2 &out, IggVec2 const &in);
 extern void exportValue(IggVec2 &out, ImVec2 const &in);
 
@@ -52,6 +55,7 @@ private:
    ImGuiType imguiBuffer;
 };
 
+typedef TypeWrapper<float, IggFloat> FloatWrapper;
 typedef TypeWrapper<bool, IggBool> BoolWrapper;
 typedef TypeWrapper<ImVec2, IggVec2> Vec2Wrapper;
 typedef TypeWrapper<ImVec4, IggVec4> Vec4Wrapper;
