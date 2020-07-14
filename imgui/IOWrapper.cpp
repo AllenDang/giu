@@ -53,6 +53,18 @@ void iggIoAddMouseWheelDelta(IggIO handle, float horizontal, float vertical)
    io->MouseWheel += vertical;
 }
 
+void iggIoGetMouseWheelDelta(IggIO handle, IggFloat *value)
+{
+  ImGuiIO *io = reinterpret_cast<ImGuiIO *>(handle);
+  exportValue(*value, io->MouseWheel);
+}
+
+void iggIoGetMouseWheelHDelta(IggIO handle, IggFloat *value)
+{
+  ImGuiIO *io = reinterpret_cast<ImGuiIO *>(handle);
+  exportValue(*value, io->MouseWheelH);
+}
+
 void iggIoGetMouseDelta(IggIO handle, IggVec2 *value)
 {
   ImGuiIO *io = reinterpret_cast<ImGuiIO *>(handle);
