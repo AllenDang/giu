@@ -76,6 +76,24 @@ func (io IO) AddMouseWheelDelta(horizontal, vertical float32) {
 	C.iggIoAddMouseWheelDelta(io.handle, C.float(horizontal), C.float(vertical))
 }
 
+// GetMouseWheelDelta returns the vertical delta of the mouse wheel.
+func (io IO) GetMouseWheelDelta() float32 {
+	var delta float32
+	deltaArg, deltaFin := wrapFloat(&delta)
+	C.iggIoGetMouseWheelDelta(io.handle, deltaArg)
+	deltaFin()
+	return delta
+}
+
+// GetMouseWheelHDelta returns the horizontal delta of the mouse wheel.
+func (io IO) GetMouseWheelHDelta() float32 {
+	var delta float32
+	deltaArg, deltaFin := wrapFloat(&delta)
+	C.iggIoGetMouseWheelHDelta(io.handle, deltaArg)
+	deltaFin()
+	return delta
+}
+
 func (io IO) GetMouseDelta() Vec2 {
 	var delta Vec2
 	deltaArg, deltaFin := delta.wrapped()

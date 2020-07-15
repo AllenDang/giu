@@ -12,6 +12,16 @@ void exportValue(IggBool &out, bool const &in)
    out = in ? 1 : 0;
 }
 
+void importValue(float &out, IggFloat const &in)
+{
+  out = in;
+}
+
+void exportValue(IggFloat &out, float const &in)
+{
+  out = in;
+}
+
 void importValue(ImVec2 &out, IggVec2 const &in)
 {
    out.x = in.x;
