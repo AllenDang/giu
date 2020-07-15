@@ -215,3 +215,12 @@ func (list DrawList) AddImage(textureId TextureID, pMin, pMax Vec2) {
 	pMaxArg, _ := pMax.wrapped()
 	C.iggDrawListAddImage(list.handle(), C.IggTextureID(textureId), pMinArg, pMaxArg)
 }
+
+func (list DrawList) AddImageV(textureId TextureID, pMin, pMax Vec2, uvMin, uvMax Vec2, col Vec4) {
+	c := GetColorU32(col)
+	pMinArg, _ := pMin.wrapped()
+	pMaxArg, _ := pMax.wrapped()
+	uvMinArg, _ := uvMin.wrapped()
+	uvMaxArg, _ := uvMax.wrapped()
+	C.iggDrawListAddImageV(list.handle(), C.IggTextureID(textureId), pMinArg, pMaxArg, uvMinArg, uvMaxArg, C.uint(c))
+}
