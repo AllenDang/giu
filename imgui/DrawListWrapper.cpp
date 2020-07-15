@@ -195,3 +195,12 @@ void iggDrawListAddImage(IggDrawList handle, IggTextureID id, IggVec2 *p_min,
   Vec2Wrapper pMaxArg(p_max);
   list->AddImage(ImTextureID(id), *pMinArg, *pMaxArg);
 }
+void iggDrawListAddImageV(IggDrawList handle, IggTextureID id, IggVec2 *p_min,
+                         IggVec2 *p_max, IggVec2 *uv_min, IggVec2 *uv_max, unsigned int color) {
+  ImDrawList *list = reinterpret_cast<ImDrawList *>(handle);
+  Vec2Wrapper pMinArg(p_min);
+  Vec2Wrapper pMaxArg(p_max);
+  Vec2Wrapper uvMinArg(uv_min);
+  Vec2Wrapper uvMaxArg(uv_max);
+  list->AddImage(ImTextureID(id), *pMinArg, *pMaxArg, *uvMinArg, *uvMaxArg, color);
+}

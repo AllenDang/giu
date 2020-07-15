@@ -68,6 +68,10 @@ extern void iggDrawListPathBezierCurveTo(IggDrawList handle, IggVec2 *p1,
                                          int num_segments);
 extern void iggDrawListAddImage(IggDrawList handle, IggTextureID id,
                                 IggVec2 *p_min, IggVec2 *p_max);
+extern void iggDrawListAddImageV(IggDrawList handle, IggTextureID id,
+                                IggVec2 *p_min, IggVec2 *p_max,
+                                IggVec2 *uv_min, IggVec2 *uv_max,
+                                unsigned int color);
 
 #ifdef __cplusplus
 }
