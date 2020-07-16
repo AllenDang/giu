@@ -38,6 +38,9 @@ extern "C"
 	extern void iggContentRegionAvail(IggVec2 *size);
 
   extern IggBool iggIsWindowAppearing();
+  extern IggBool iggIsWindowCollapsed();
+  extern IggBool iggIsWindowFocused(int flags);
+  extern IggBool iggIsWindowHovered(int flags);
 
 	extern void iggSetNextWindowPos(IggVec2 const *pos, int cond, IggVec2 const *pivot);
 	extern void iggSetNextWindowSize(IggVec2 const *size, int cond);
