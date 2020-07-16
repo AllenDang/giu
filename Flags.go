@@ -243,3 +243,45 @@ const (
 	// TreeNodeFlagsCollapsingHeader combines TreeNodeFlagsFramed and TreeNodeFlagsNoAutoOpenOnLog.
 	TreeNodeFlagsCollapsingHeader TreeNodeFlags = TreeNodeFlagsFramed | TreeNodeFlagsNoTreePushOnOpen | TreeNodeFlagsNoAutoOpenOnLog
 )
+
+type FocusedFlags int
+
+const (
+	// FocusedFlagsNone default FocusedFlags = 0
+	FocusedFlagsNone FocusedFlags = 0
+	// FocusedFlagsChildWindows matches if any children of the window is focused
+	FocusedFlagsChildWindows FocusedFlags = 1 << 0
+	// FocusedFlagsRootWindow tests from root window (top most parent of the current hierarchy)
+	FocusedFlagsRootWindow FocusedFlags = 1 << 1
+	// FocusedFlagsAnyWindow matches if any window is focused.
+	FocusedFlagsAnyWindow FocusedFlags = 1 << 2
+	// FocusedFlagsRootAndChildWindows combines FocusedFlagsRootWindow and FocusedFlagsChildWindows.
+	FocusedFlagsRootAndChildWindows = FocusedFlagsRootWindow | FocusedFlagsChildWindows
+)
+
+type HoveredFlags int
+
+const (
+	// HoveredFlagsNone is the default and matches if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
+	HoveredFlagsNone HoveredFlags = 0
+	// HoveredFlagsChildWindows is for IsWindowHovered() and matches if any children of the window is hovered
+	HoveredFlagsChildWindows HoveredFlags = 1 << 0
+	// HoveredFlagsRootWindow is for IsWindowHovered() and tests from root window (top most parent of the current hierarchy)
+	HoveredFlagsRootWindow HoveredFlags = 1 << 1
+	// HoveredFlagsAnyWindow is for IsWindowHovered() and matches if any window is hovered
+	HoveredFlagsAnyWindow HoveredFlags = 1 << 2
+	// HoveredFlagsAllowWhenBlockedByPopup matches even if a popup window is normally blocking access to this item/window
+	HoveredFlagsAllowWhenBlockedByPopup HoveredFlags = 1 << 3
+	// HoveredFlagsAllowWhenBlockedByModal matches even if a modal popup window is normally blocking access to this item/window. UNIMPLEMENTED in imgui.
+	//HoveredFlagsAllowWhenBlockedByModal  HoveredFlags   = 1 << 4
+	// HoveredFlagsAllowWhenBlockedByActiveItem matches true even if an active item is blocking access to this item/window. Useful for Drag and Drop patterns.
+	HoveredFlagsAllowWhenBlockedByActiveItem HoveredFlags = 1 << 5
+	// HoveredFlagsAllowWhenOverlapped matches even if the position is obstructed or overlapped by another window
+	HoveredFlagsAllowWhenOverlapped HoveredFlags = 1 << 6
+	// HoveredFlagsAllowWhenDisabled matches even if the item is disabled
+	HoveredFlagsAllowWhenDisabled HoveredFlags = 1 << 7
+	// HoveredFlagsRectOnly combines HoveredFlagsAllowWhenBlockedByPopup, HoveredFlagsAllowWhenBlockedByActiveItem, and HoveredFlagsAllowWhenOverlapped.
+	HoveredFlagsRectOnly HoveredFlags = HoveredFlagsAllowWhenBlockedByPopup | HoveredFlagsAllowWhenBlockedByActiveItem | HoveredFlagsAllowWhenOverlapped
+	// HoveredFlagsRootAndChildWindows combines HoveredFlagsRootWindow and HoveredFlagsChildWindows.
+	HoveredFlagsRootAndChildWindows HoveredFlags = HoveredFlagsRootWindow | HoveredFlagsChildWindows
+)
