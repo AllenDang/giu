@@ -150,6 +150,18 @@ func IsWindowAppearing() bool {
 	return C.iggIsWindowAppearing() != 0
 }
 
+func IsWindowCollapsed() bool {
+	return C.iggIsWindowCollapsed() != 0
+}
+
+func IsWindowFocused(flags int) bool {
+	return C.iggIsWindowFocused(C.int(flags)) != 0
+}
+
+func IsWindowHovered(flags int) bool {
+	return C.iggIsWindowHovered(C.int(flags)) != 0
+}
+
 // SetNextWindowPosV sets next window position.
 // Call before Begin(). Use pivot=(0.5,0.5) to center on given point, etc.
 func SetNextWindowPosV(pos Vec2, cond Condition, pivot Vec2) {

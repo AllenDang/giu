@@ -132,6 +132,21 @@ IggBool iggIsWindowAppearing()
   return ImGui::IsWindowAppearing() ? 1: 0;
 }
 
+IggBool iggIsWindowCollapsed()
+{
+  return ImGui::IsWindowCollapsed() ? 1: 0;
+}
+
+IggBool iggIsWindowFocused(int flags)
+{
+  return ImGui::IsWindowFocused(flags) ? 1: 0;
+}
+
+IggBool iggIsWindowHovered(int flags)
+{
+  return ImGui::IsWindowHovered(flags) ? 1: 0;
+}
+
 void iggSetNextWindowPos(IggVec2 const *pos, int cond, IggVec2 const *pivot)
 {
    Vec2Wrapper posArg(pos);
