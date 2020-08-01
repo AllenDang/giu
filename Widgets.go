@@ -160,15 +160,20 @@ func (ib *InvisibleButtonWidget) Build() {
 }
 
 type ImageButtonWidget struct {
-	texture *Texture
-	width   float32
-	height  float32
-	onClick func()
+	texture      *Texture
+	width        float32
+	height       float32
+	uv0          image.Point
+	uv1          image.Point
+	framePadding int
+	bgColor      color.RGBA
+	tintColor    color.RGBA
+	onClick      func()
 }
 
 func (i *ImageButtonWidget) Build() {
 	if i.texture != nil && i.texture.id != 0 {
-		if imgui.ImageButton(i.texture.id, imgui.Vec2{X: i.width, Y: i.height}) && i.onClick != nil {
+		if imgui.ImageButtonV(i.texture.id, imgui.Vec2{X: i.width, Y: i.height}, ToVec2(i.uv0), ToVec2(i.uv1), i.framePadding, ToVec4Color(i.bgColor), ToVec4Color(i.tintColor)) && i.onClick != nil {
 			i.onClick()
 		}
 	}
@@ -176,10 +181,29 @@ func (i *ImageButtonWidget) Build() {
 
 func ImageButton(texture *Texture, width, height float32, onClick func()) *ImageButtonWidget {
 	return &ImageButtonWidget{
-		texture: texture,
-		width:   width * Context.platform.GetContentScale(),
-		height:  height * Context.platform.GetContentScale(),
-		onClick: onClick,
+		texture:      texture,
+		width:        width * Context.platform.GetContentScale(),
+		height:       height * Context.platform.GetContentScale(),
+		uv0:          image.Point{X: 0, Y: 0},
+		uv1:          image.Point{X: 1, Y: 1},
+		framePadding: -1,
+		bgColor:      color.RGBA{0, 0, 0, 0},
+		tintColor:    color.RGBA{255, 255, 255, 255},
+		onClick:      onClick,
+	}
+}
+
+func ImageButtonV(texture *Texture, width, height float32, uv0, uv1 image.Point, framePadding int, bgColor, tintColor color.RGBA, onClick func()) *ImageButtonWidget {
+	return &ImageButtonWidget{
+		texture:      texture,
+		width:        width * Context.platform.GetContentScale(),
+		height:       height * Context.platform.GetContentScale(),
+		uv0:          uv0,
+		uv1:          uv1,
+		framePadding: framePadding,
+		bgColor:      bgColor,
+		tintColor:    tintColor,
+		onClick:      onClick,
 	}
 }
 

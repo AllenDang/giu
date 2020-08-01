@@ -6,6 +6,7 @@ extern "C"
 #endif
 
 typedef int IggBool;
+typedef float IggFloat;
 typedef void *IggTextureID;
 
 typedef void *IggContext;

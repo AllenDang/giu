@@ -49,3 +49,15 @@ func IsMouseDoubleClicked(button MouseButton) bool {
 func IsWindowAppearing() bool {
 	return imgui.IsWindowAppearing()
 }
+
+func IsWindowCollapsed() bool {
+	return imgui.IsWindowCollapsed()
+}
+
+func IsWindowFocused(flags FocusedFlags) bool {
+	return imgui.IsWindowFocused(int(flags))
+}
+
+func IsWindowHovered(flags HoveredFlags) bool {
+	return imgui.IsWindowHovered(int(flags))
+}
