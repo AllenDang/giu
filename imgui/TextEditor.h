@@ -219,6 +219,8 @@ public:
 	Coordinates GetCursorPosition() const { return GetActualCursorCoordinates(); }
 	void SetCursorPosition(const Coordinates& aPosition);
 
+	Coordinates GetScreenCursorPosition();
+
 	inline void SetHandleMouseInputs    (bool aValue){ mHandleMouseInputs    = aValue;}
 	inline bool IsHandleMouseInputsEnabled() const { return mHandleKeyboardInputs; }
 
@@ -373,6 +375,10 @@ private:
 	bool mHandleMouseInputs;
 	bool mIgnoreImGuiChild;
 	bool mShowWhitespaces;
+
+	// screen cursor position
+	float mCursorScreenX;
+	float mCursorScreenY;
 
 	Palette mPaletteBase;
 	Palette mPalette;

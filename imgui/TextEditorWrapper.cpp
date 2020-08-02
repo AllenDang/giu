@@ -69,6 +69,14 @@ IggBool IggTextEditorIsTextChanged(IggTextEditor handle)
   return editor->IsTextChanged() ? 1 : 0;
 }
 
+void IggTextEditorGetScreenCursorPos(IggTextEditor handle, int *x, int* y)
+{
+  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
+  TextEditor::Coordinates col = editor->GetScreenCursorPosition();
+  *x = (float)col.mColumn;
+  *y = (float)col.mLine;
+}
+
 void IggTextEditorGetCursorPos(IggTextEditor handle, int* column, int* line)
 {
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
