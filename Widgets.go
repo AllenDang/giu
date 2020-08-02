@@ -29,6 +29,7 @@ func (l *LineWidget) Build() {
 	for _, w := range l.widgets {
 		_, isTooltip := w.(*TooltipWidget)
 		_, isContextMenu := w.(*ContextMenuWidget)
+		_, isPopupModal := w.(*PopupModalWidget)
 		_, isPopup := w.(*PopupWidget)
 		_, isTabItem := w.(*TabItemWidget)
 		_, isLabel := w.(*LabelWidget)
@@ -38,7 +39,7 @@ func (l *LineWidget) Build() {
 			AlignTextToFramePadding()
 		}
 
-		if index > 0 && !isTooltip && !isContextMenu && !isPopup && !isTabItem && !isCustom {
+		if index > 0 && !isTooltip && !isContextMenu && !isPopupModal && !isPopup && !isTabItem && !isCustom {
 			imgui.SameLine()
 		}
 
@@ -819,17 +820,41 @@ func MenuV(label string, enabled bool, layout Layout) *MenuWidget {
 
 type PopupWidget struct {
 	name   string
+	flags  WindowFlags
+	layout Layout
+}
+
+func (p *PopupWidget) Build() {
+	if imgui.BeginPopup(p.name, int(p.flags)) {
+		if p.layout != nil {
+			Update()
+			p.layout.Build()
+		}
+		imgui.EndPopup()
+	}
+}
+
+func Popup(name string, flags WindowFlags, layout Layout) *PopupWidget {
+	return &PopupWidget{
+		name:   name,
+		flags:  flags,
+		layout: layout,
+	}
+}
+
+type PopupModalWidget struct {
+	name   string
 	open   *bool
 	flags  WindowFlags
 	layout Layout
 }
 
-func PopupModal(name string, layout Layout) *PopupWidget {
+func PopupModal(name string, layout Layout) *PopupModalWidget {
 	return PopupModalV(name, nil, WindowFlagsNoResize, layout)
 }
 
-func PopupModalV(name string, open *bool, flags WindowFlags, layout Layout) *PopupWidget {
-	return &PopupWidget{
+func PopupModalV(name string, open *bool, flags WindowFlags, layout Layout) *PopupModalWidget {
+	return &PopupModalWidget{
 		name:   name,
 		open:   open,
 		flags:  flags,
@@ -837,7 +862,7 @@ func PopupModalV(name string, open *bool, flags WindowFlags, layout Layout) *Pop
 	}
 }
 
-func (p *PopupWidget) Build() {
+func (p *PopupModalWidget) Build() {
 	if imgui.BeginPopupModalV(p.name, p.open, int(p.flags)) {
 		if p.layout != nil {
 			Update()
@@ -1169,7 +1194,7 @@ func (r *RowWidget) Build() {
 	for i, w := range r.layout {
 		_, isTooltip := w.(*TooltipWidget)
 		_, isContextMenu := w.(*ContextMenuWidget)
-		_, isPopup := w.(*PopupWidget)
+		_, isPopup := w.(*PopupModalWidget)
 
 		if i > 0 && !isTooltip && !isContextMenu && !isPopup {
 			imgui.NextColumn()
