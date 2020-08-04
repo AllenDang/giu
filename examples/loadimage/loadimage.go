@@ -14,6 +14,7 @@ func loop() {
 		g.ImageWithFile("gopher.png", 300, 200),
 		g.Label("Display image from url (wait few seconds to download)"),
 		g.ImageWithUrl("https://www.pngitem.com/pimgs/m/424-4242405_go-lang-gopher-clipart-png-download-golang-gopher.png", 10*time.Second, 300, 200),
+		g.Label("Footer"),
 	})
 }
 

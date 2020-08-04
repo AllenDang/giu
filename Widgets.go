@@ -437,15 +437,17 @@ type ImageWidget struct {
 
 func (i *ImageWidget) Build() {
 	size := imgui.Vec2{X: i.width, Y: i.height}
+	rect := imgui.ContentRegionAvail()
+	if size.X == (-1 * Context.GetPlatform().GetContentScale()) {
+		size.X = rect.X
+	}
+	if size.Y == (-1 * Context.GetPlatform().GetContentScale()) {
+		size.Y = rect.Y
+	}
 	if i.texture != nil && i.texture.id != 0 {
-		rect := imgui.ContentRegionAvail()
-		if size.X == (-1 * Context.GetPlatform().GetContentScale()) {
-			size.X = rect.X
-		}
-		if size.Y == (-1 * Context.GetPlatform().GetContentScale()) {
-			size.Y = rect.Y
-		}
 		imgui.Image(i.texture.id, size)
+	} else {
+		Dummy(i.width, i.height).Build()
 	}
 }
 
