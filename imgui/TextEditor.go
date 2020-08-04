@@ -33,6 +33,13 @@ func (t TextEditor) SetTabSize(size int) {
 	C.IggTextEditorSetTabSize(t.handle(), C.int(size))
 }
 
+func (t TextEditor) InsertText(text string) {
+	textArg, textFn := wrapString(text)
+	defer textFn()
+
+	C.IggTextEditorInsertText(t.handle(), textArg)
+}
+
 func (t TextEditor) SetText(text string) {
 	textArg, textFn := wrapString(text)
 	defer textFn()
@@ -140,4 +147,16 @@ func (e ErrorMarkers) Size() uint {
 
 func (t TextEditor) SetErrorMarkers(markers ErrorMarkers) {
 	C.IggTextEditorSetErrorMarkers(t.handle(), markers.handle())
+}
+
+func (t TextEditor) Delete() {
+	C.IggTextEditorDelete(t.handle())
+}
+
+func (t TextEditor) SetHandleKeyboardInputs(b bool) {
+	val := 0
+	if b {
+		val = 1
+	}
+	C.IggTextEditorSetHandleKeyboardInputs(t.handle(), C.int(val))
 }

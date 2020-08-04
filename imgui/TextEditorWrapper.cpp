@@ -33,6 +33,12 @@ void IggTextEditorSetText(IggTextEditor handle, const char* text)
   editor->SetText(text);
 }
 
+void IggTextEditorInsertText(IggTextEditor handle, const char *text)
+{
+  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
+  editor->InsertText(text);
+}
+
 IggBool IggTextEditorHasSelection(IggTextEditor handle)
 {
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
@@ -151,3 +157,14 @@ void IggTextEditorSetErrorMarkers(IggTextEditor handle, IggTextEditorErrorMarker
   editor->SetErrorMarkers(*markers);
 }
 
+void IggTextEditorDelete(IggTextEditor handle)
+{
+  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
+  editor->Delete();
+}
+
+void IggTextEditorSetHandleKeyboardInputs(IggTextEditor handle, int aValue)
+{
+  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
+  editor->SetHandleKeyboardInputs(aValue);
+}

@@ -14,6 +14,7 @@ extern void IggTextEditorRender(IggTextEditor handle, const char *aTitle,
 extern void IggTextEditorSetShowWhitespaces(IggTextEditor handle, int aValue);
 extern void IggTextEditorSetTabSize(IggTextEditor handle, int size);
 extern void IggTextEditorSetText(IggTextEditor handle, const char *text);
+extern void IggTextEditorInsertText(IggTextEditor handle, const char *text);
 extern char const *IggTextEditorGetText(IggTextEditor handle);
 extern IggBool IggTextEditorHasSelection(IggTextEditor handle);
 extern char const *IggTextEditorGetSelectedText(IggTextEditor handle);
@@ -25,6 +26,8 @@ extern void IggTextEditorGetCursorPos(IggTextEditor handle, int *column,
                                       int *line);
 extern void IggTextEditorGetSelectionStart(IggTextEditor handle, int *column,
                                            int *line);
+
+extern void IggTextEditorDelete(IggTextEditor handle);
 
 extern void IggTextEditorSetLanguageDefinitionSQL(IggTextEditor handle);
 extern void IggTextEditorSetLanguageDefinitionCPP(IggTextEditor handle);
@@ -40,6 +43,8 @@ IggTextEditorErrorMarkersSize(IggTextEditorErrorMarkers handle);
 
 extern void IggTextEditorSetErrorMarkers(IggTextEditor handle,
                                          IggTextEditorErrorMarkers marker);
+
+extern void IggTextEditorSetHandleKeyboardInputs(IggTextEditor handle, int aValue);
 
 #ifdef __cplusplus
 }
