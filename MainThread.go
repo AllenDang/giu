@@ -8,17 +8,21 @@ func checkRun() {
 	}
 }
 
-// transferTasks transfers tasks from global to `Run` -specific task queue.
+// transferTasks transfers tasks from global `callQueue` to `Run` -specific task queue.
+// The function ends on readable event on `done` e.g. the channel is closed.
 func transferTasks(to chan<- func(), done <-chan struct{}) {
 	var (
-		tasks   []func()
-		t       func()
+		task  func()   // Current task to transfer or `nil`.
+		tasks []func() // A local queue of tasks to transfer.
+		// tasksCh is going to be assigned either `nil` or `to`. Here we use the fact
+		// that `select` ignores `nil` channels. So we will assign `nil` here if there
+		// is nothing to send, or `to` in case there's a task to be sent out.
 		tasksCh chan<- func()
 	)
 	for {
-		if t == nil && len(tasks) > 0 {
+		if task == nil && len(tasks) > 0 {
 			// Pop next task from the task queue.
-			t = tasks[0]
+			task = tasks[0]
 			copy(tasks[:], tasks[1:])
 			tasks = tasks[:len(tasks)-1]
 			// And setup the task channel for select.
@@ -27,8 +31,8 @@ func transferTasks(to chan<- func(), done <-chan struct{}) {
 		select {
 		case f := <-callQueue:
 			tasks = append(tasks, f)
-		case tasksCh <- t: // nil-channels are ignored by select.
-			t, tasksCh = nil, nil
+		case tasksCh <- task: // nil-channels are ignored by select.
+			task, tasksCh = nil, nil
 		case <-done:
 			return
 		}
