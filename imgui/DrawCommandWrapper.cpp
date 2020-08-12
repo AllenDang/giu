@@ -17,7 +17,7 @@ void iggDrawCommandGetClipRect(IggDrawCmd handle, IggVec4 *rect)
 void iggDrawCommandGetTextureID(IggDrawCmd handle, IggTextureID *id)
 {
    ImDrawCmd *cmd = reinterpret_cast<ImDrawCmd *>(handle);
-   *id = (uintptr_t)cmd->TextureId;
+   *id = cmd->TextureId;
 }
 
 IggBool iggDrawCommandHasUserCallback(IggDrawCmd handle)
