@@ -14,9 +14,9 @@ func transferTasks(to chan<- func(), done <-chan struct{}) {
 	var (
 		task  func()   // Current task to transfer or `nil`.
 		tasks []func() // A local queue of tasks to transfer.
-		// tasksCh is going to be assigned either `nil` or `to`. Here we use the fact
-		// that `select` ignores `nil` channels. So we will assign `nil` here if there
-		// is nothing to send, or `to` in case there's a task to be sent out.
+		// tasksCh is going to be assigned either `nil` or `to`. We use the fact that
+		// `select` ignores `nil` channels. So we will assign `nil` here if there is
+		// nothing to send, or `to` in case there's a task to be sent out.
 		tasksCh chan<- func()
 	)
 	for {
