@@ -103,5 +103,5 @@ void iggFontAtlasGetTexDataAsRGBA32(IggFontAtlas handle, unsigned char **pixels,
 void iggFontAtlasSetTextureID(IggFontAtlas handle, IggTextureID id)
 {
    ImFontAtlas *fontAtlas = reinterpret_cast<ImFontAtlas *>(handle);
-   fontAtlas->SetTexID(id);
+   fontAtlas->SetTexID((void*)id);
 }
