@@ -7,12 +7,10 @@ import (
 )
 
 func loop() {
-	plotdata := make([]float32, 0)
-	x := float32(0)
-	delta := float32(0.01)
-	for len(plotdata) < 1000 {
-		plotdata = append(plotdata, float32(math.Sin(float64(x))))
-		x += delta
+	var plotdata []float32
+	const delta = 0.01
+	for x := 0.0; len(plotdata) < 1000; x += delta {
+		plotdata = append(plotdata, float32(math.Sin(x)))
 	}
 	g.SingleWindow("hello world", g.Layout{
 		g.Label("Hello world from giu"),
