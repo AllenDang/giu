@@ -47,16 +47,11 @@ func (c context) invalidAllState() {
 }
 
 func (c context) cleanState() {
-	var invalidIds []string
 	for id, s := range c.state {
 		if !s.valid {
-			invalidIds = append(invalidIds, id)
+			delete(c.state, id)
 			s.data.Dispose()
 		}
-	}
-
-	for _, id := range invalidIds {
-		delete(c.state, id)
 	}
 }
 
