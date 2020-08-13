@@ -1,22 +1,41 @@
 package giu
 
-import (
-	"errors"
-)
-
-// CallQueueCap is the capacity of the call queue. This means how many calls to CallNonBlock will not
-// block until some call finishes.
-//
-// The default value is 16 and should be good for 99% usecases.
-var CallQueueCap = 16
-
-var (
-	callQueue chan func()
-)
+var callQueue chan func()
 
 func checkRun() {
 	if callQueue == nil {
-		panic(errors.New("mainthread: did not call Run"))
+		panic("mainthread: did not call Run")
+	}
+}
+
+// transferTasks transfers tasks from global `callQueue` to `Run` -specific task queue.
+// The function ends on readable event on `done` e.g. the channel is closed.
+func transferTasks(to chan<- func(), done <-chan struct{}) {
+	var (
+		task  func()   // Current task to transfer or `nil`.
+		tasks []func() // A local queue of tasks to transfer.
+		// tasksCh is going to be assigned either `nil` or `to`. We use the fact that
+		// `select` ignores `nil` channels. So we will assign `nil` here if there is
+		// nothing to send, or `to` in case there's a task to be sent out.
+		tasksCh chan<- func()
+	)
+	for {
+		if task == nil && len(tasks) > 0 {
+			// Pop next task from the task queue.
+			task = tasks[0]
+			copy(tasks[:], tasks[1:])
+			tasks = tasks[:len(tasks)-1]
+			// And setup the task channel for select.
+			tasksCh = to
+		}
+		select {
+		case f := <-callQueue:
+			tasks = append(tasks, f)
+		case tasksCh <- task: // nil-channels are ignored by select.
+			task, tasksCh = nil, nil
+		case <-done:
+			return
+		}
 	}
 }
 
@@ -25,17 +44,23 @@ func checkRun() {
 //
 // Run returns when run (argument) function finishes.
 func Run(run func()) {
-	callQueue = make(chan func(), CallQueueCap)
+	// Note: Initializing global `callQueue`. This is potentially unsafe, as `callQueue` might
+	// have been already initialized.
+	// TODO(yarcat): Decide whether we should panic at this point or do something else.
+	callQueue = make(chan func())
 
+	tasks := make(chan func())
 	done := make(chan struct{})
+	go transferTasks(tasks, done)
+
 	go func() {
 		run()
-		done <- struct{}{}
+		close(done) // `close` broadcasts it to all receivers.
 	}()
 
 	for {
 		select {
-		case f := <-callQueue:
+		case f := <-tasks:
 			f()
 		case <-done:
 			return
