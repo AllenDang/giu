@@ -19,6 +19,7 @@ giu is built upon GLFW v3.3, so idealy giu could support all platforms that GLFW
 
 Compare to other Dear ImGui golang bindings, giu has following features:
 
+- Small executable file size (<3mb after upx compression for the example/helloworld demo).
 - Live-update during the resizing of OS window (implemented on GLFW 3.3 and OpenGL 3.2).
 - Redraw only when user event occurred. Costs only 0.5% CPU usage with 60FPS.
 - Declarative UI (see examples for more detail).
