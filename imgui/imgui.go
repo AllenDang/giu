@@ -1334,3 +1334,13 @@ func GetItemRectSize() Vec2 {
 	valueFin()
 	return value
 }
+
+func PushClipRect(clipRectMin, clipRectMax Vec2, intersectWithClipRect bool) {
+	clipMin, _ := clipRectMin.wrapped()
+	clipMax, _ := clipRectMax.wrapped()
+	C.iggPushClipRect(clipMin, clipMax, castBool(intersectWithClipRect))
+}
+
+func PopClipRect() {
+	C.iggPopClipRect()
+}

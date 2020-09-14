@@ -231,6 +231,9 @@ extern void iggGetItemRectMin(IggVec2 *size);
 extern void iggGetItemRectMax(IggVec2 *size);
 extern void iggGetItemRectSize(IggVec2 *size);
 
+extern void iggPushClipRect(const IggVec2 *clip_rect_min, const IggVec2 *clip_rect_max, IggBool intersect_with_clip_rect);
+extern void iggPopClipRect();
+
 #ifdef __cplusplus
 }
 #endif

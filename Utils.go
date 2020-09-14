@@ -117,3 +117,11 @@ func SetKeyboardFocusHere() {
 func SetKeyboardFocusHereV(i int) {
 	imgui.SetKeyboardFocusHereV(i)
 }
+
+func PushClipRect(clipRectMin, clipRectMax image.Point, intersectWithClipRect bool) {
+	imgui.PushClipRect(ToVec2(clipRectMin), ToVec2(clipRectMax), intersectWithClipRect)
+}
+
+func PopClipRect() {
+	imgui.PopClipRect()
+}
