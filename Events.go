@@ -10,16 +10,16 @@ func IsItemActive() bool {
 	return imgui.IsItemActive()
 }
 
-func IsKeyDown(key int) bool {
-	return imgui.IsKeyDown(key)
+func IsKeyDown(key Key) bool {
+	return imgui.IsKeyDown(int(key))
 }
 
-func IsKeyPressed(key int) bool {
-	return imgui.IsKeyPressed(key)
+func IsKeyPressed(key Key) bool {
+	return imgui.IsKeyPressed(int(key))
 }
 
-func IsKeyReleased(key int) bool {
-	return imgui.IsKeyReleased(key)
+func IsKeyReleased(key Key) bool {
+	return imgui.IsKeyReleased(int(key))
 }
 
 type MouseButton int
