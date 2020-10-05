@@ -159,6 +159,8 @@ func (w *MasterWindow) sizeChange(width, height int) {
 }
 
 func (w *MasterWindow) render() {
+	Context.invalidAllState()
+
 	p := w.platform
 	r := w.renderer
 
@@ -171,6 +173,8 @@ func (w *MasterWindow) render() {
 	r.PreRender(w.clearColor)
 	r.Render(p.DisplaySize(), p.FramebufferSize(), imgui.RenderedDrawData())
 	p.PostRender()
+
+	Context.cleanState()
 }
 
 // Run the main loop to create new frame, process events and call update ui func.

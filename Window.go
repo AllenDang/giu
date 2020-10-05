@@ -59,13 +59,7 @@ func WindowV(title string, open *bool, flags WindowFlags, x, y, width, height fl
 
 	imgui.BeginV(title, open, int(flags))
 
-	// Mark all state as invalid.
-	Context.invalidAllState()
-
 	layout.Build()
-
-	// Clean remaining invalid states
-	Context.cleanState()
 
 	imgui.End()
 }
