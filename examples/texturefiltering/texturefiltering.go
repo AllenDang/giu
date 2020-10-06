@@ -50,10 +50,10 @@ func loop() {
 		}),
 		g.Line(
 			g.Button("Minify Filter Nearest", func() {
-				g.Context.GetRenderer().SetTextureMinFilter(g.TextureFilterNearest)
+				_ = g.Context.GetRenderer().SetTextureMinFilter(g.TextureFilterNearest)
 			}),
 			g.Button("Minify Filter Linear", func() {
-				g.Context.GetRenderer().SetTextureMinFilter(g.TextureFilterLinear)
+				_ = g.Context.GetRenderer().SetTextureMinFilter(g.TextureFilterLinear)
 			}),
 			/*g.Button("Nearest Mipmap Nearest", func() {
 				g.Context.GetRenderer().SetTextureMinFilter(g.TextureFilterNearestMipmapNearest)
@@ -70,10 +70,10 @@ func loop() {
 		),
 		g.Line(
 			g.Button("Magnify Filter Nearest", func() {
-				g.Context.GetRenderer().SetTextureMagFilter(g.TextureFilterNearest)
+				_ = g.Context.GetRenderer().SetTextureMagFilter(g.TextureFilterNearest)
 			}),
 			g.Button("Magnify Filter Linear", func() {
-				g.Context.GetRenderer().SetTextureMagFilter(g.TextureFilterLinear)
+				_ = g.Context.GetRenderer().SetTextureMagFilter(g.TextureFilterLinear)
 			}),
 		),
 	})
