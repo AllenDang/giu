@@ -210,26 +210,6 @@ func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
 }
 
-// SetTextureMinFilter sets the minifying function for texture rendering.
-func (w *MasterWindow) SetTextureMinFilter(min uint) error {
-	if w.renderer != nil {
-		if err := w.renderer.SetTextureMinFilter(min); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-// SetTextureMagFilter sets the magnifying function for texture rendering.
-func (w *MasterWindow) SetTextureMagFilter(mag uint) error {
-	if w.renderer != nil {
-		if err := w.renderer.SetTextureMagFilter(mag); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Call the main loop.
 // loopFunc will be used to construct the ui.
 func (w *MasterWindow) Main(loopFunc func()) {
