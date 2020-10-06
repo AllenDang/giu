@@ -28,8 +28,20 @@ type OpenGL3 struct {
 	vboHandle               uint32
 	elementsHandle          uint32
 
-	contentScale float32
+	contentScale     float32
+	textureMinFilter int32
+	textureMagFilter int32
 }
+
+// Texture filtering types.
+const (
+	textureFilterNearest = iota
+	textureFilterLinear
+	textureFilterNearestMipmapNearest
+	textureFilterLinearMipmapNearest
+	textureFilterNearestMipmapLinear
+	textureFilterLinearMipmapLinear
+)
 
 // NewOpenGL3 attempts to initialize a renderer.
 // An OpenGL context has to be established before calling this function.
@@ -40,9 +52,11 @@ func NewOpenGL3(io IO, contentScale float32) (*OpenGL3, error) {
 	}
 
 	renderer := &OpenGL3{
-		imguiIO:      io,
-		glslVersion:  "#version 150",
-		contentScale: contentScale,
+		imguiIO:          io,
+		glslVersion:      "#version 150",
+		contentScale:     contentScale,
+		textureMinFilter: gl.LINEAR,
+		textureMagFilter: gl.LINEAR,
 	}
 	renderer.createDeviceObjects()
 	return renderer, nil
@@ -176,6 +190,8 @@ func (renderer *OpenGL3) Render(displaySize [2]float32, framebufferSize [2]float
 				gl.Uniform1i(renderer.attribLocationImageType, int32(imageType))
 
 				gl.BindTexture(gl.TEXTURE_2D, uint32(cmd.TextureID()))
+				gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, renderer.textureMinFilter) // minification filter
+				gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, renderer.textureMagFilter) // magnification filter
 				clipRect := cmd.ClipRect()
 				gl.Scissor(int32(clipRect.X), int32(fbHeight)-int32(clipRect.W), int32(clipRect.Z-clipRect.X), int32(clipRect.W-clipRect.Y))
 				gl.DrawElements(gl.TRIANGLES, int32(cmd.ElementCount()), uint32(drawType), unsafe.Pointer(indexBufferOffset))
@@ -382,6 +398,40 @@ func (renderer *OpenGL3) invalidateDeviceObjects() {
 		CurrentIO().Fonts().SetTextureID(0)
 		renderer.fontTexture = 0
 	}
+}
+
+// SetTextureMinFilter sets the minifying function for texture filtering.
+func (renderer *OpenGL3) SetTextureMinFilter(min uint) error {
+	switch min {
+	case textureFilterNearest:
+		renderer.textureMinFilter = gl.NEAREST
+	case textureFilterLinear:
+		renderer.textureMinFilter = gl.LINEAR
+	case textureFilterNearestMipmapNearest:
+		renderer.textureMinFilter = gl.NEAREST_MIPMAP_NEAREST
+	case textureFilterLinearMipmapNearest:
+		renderer.textureMinFilter = gl.LINEAR_MIPMAP_NEAREST
+	case textureFilterNearestMipmapLinear:
+		renderer.textureMinFilter = gl.NEAREST_MIPMAP_LINEAR
+	case textureFilterLinearMipmapLinear:
+		renderer.textureMinFilter = gl.LINEAR_MIPMAP_LINEAR
+	default:
+		return fmt.Errorf("invalid minifying filter")
+	}
+	return nil
+}
+
+// SetTextureMagFilter sets the magnifying function for texture filtering.
+func (renderer *OpenGL3) SetTextureMagFilter(mag uint) error {
+	switch mag {
+	case textureFilterNearest:
+		renderer.textureMagFilter = gl.NEAREST
+	case textureFilterLinear:
+		renderer.textureMagFilter = gl.LINEAR
+	default:
+		return fmt.Errorf("invalid magnifying filter")
+	}
+	return nil
 }
 
 // Load image and return the TextureID
