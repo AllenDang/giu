@@ -206,6 +206,26 @@ func (w *MasterWindow) GetSize() (width, height int) {
 	return w.width, w.height
 }
 
+// Return position of master window.
+func (w *MasterWindow) GetPos() (x, y int) {
+	if w.platform != nil {
+		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
+			x, y = glfwPlatform.GetWindow().GetPos()
+		}
+	}
+
+	return
+}
+
+// Set position of master window.
+func (w *MasterWindow) SetPos(x, y int) {
+	if w.platform != nil {
+		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
+			glfwPlatform.GetWindow().SetPos(x, y)
+		}
+	}
+}
+
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
 }
