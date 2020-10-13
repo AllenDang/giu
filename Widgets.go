@@ -460,6 +460,8 @@ func Image(texture *Texture, width, height float32) *ImageWidget {
 }
 
 type ImageState struct {
+	loading bool
+	failure bool
 	texture *Texture
 }
 
@@ -515,15 +517,29 @@ type ImageWithUrlWidget struct {
 	downloadTimeout time.Duration
 	width           float32
 	height          float32
+	whenLoading     Layout
+	whenFailure     Layout
 }
 
-func ImageWithUrl(url string, downloadTimeout time.Duration, width, height float32) *ImageWithUrlWidget {
+func ImageWithUrlV(url string, downloadTimeout time.Duration, width, height float32, whenLoading Layout, whenFailure Layout) *ImageWithUrlWidget {
 	return &ImageWithUrlWidget{
 		imgUrl:          url,
 		downloadTimeout: downloadTimeout,
 		width:           width * Context.platform.GetContentScale(),
 		height:          height * Context.platform.GetContentScale(),
+		whenLoading:     whenLoading,
+		whenFailure:     whenFailure,
 	}
+}
+
+func ImageWithUrl(url string, downloadTimeout time.Duration, width, height float32) *ImageWithUrlWidget {
+	return ImageWithUrlV(url, downloadTimeout, width, height,
+		Layout{
+			Dummy(width, height),
+		},
+		Layout{
+			Dummy(width, height),
+		})
 }
 
 func (i *ImageWithUrlWidget) Build() {
@@ -536,7 +552,7 @@ func (i *ImageWithUrlWidget) Build() {
 		widget = Image(nil, i.width, i.height)
 
 		//Prevent multiple invocation to download image.
-		Context.SetState(stateId, &ImageState{})
+		Context.SetState(stateId, &ImageState{loading: true})
 
 		go func() {
 			// Load image from url
@@ -544,21 +560,40 @@ func (i *ImageWithUrlWidget) Build() {
 			client.SetTimeout(i.downloadTimeout)
 
 			resp, err := client.R().Get(i.imgUrl)
-			if err == nil {
-				img, _, err := image.Decode(bytes.NewReader(resp.Body()))
-				if err == nil {
-					rgba := image.NewRGBA(img.Bounds())
-					draw.Draw(rgba, img.Bounds(), img, image.Point{}, draw.Src)
-
-					texture, err := NewTextureFromRgba(rgba)
-					if err == nil {
-						Context.SetState(stateId, &ImageState{texture: texture})
-					}
-				}
+			Context.SetState(stateId, &ImageState{loading: false})
+			if err != nil {
+				Context.SetState(stateId, &ImageState{failure: true})
+				return
 			}
+
+			img, _, err := image.Decode(bytes.NewReader(resp.Body()))
+			if err != nil {
+				Context.SetState(stateId, &ImageState{failure: true})
+				return
+			}
+
+			rgba := image.NewRGBA(img.Bounds())
+			draw.Draw(rgba, img.Bounds(), img, image.Point{}, draw.Src)
+
+			texture, err := NewTextureFromRgba(rgba)
+			if err != nil {
+				Context.SetState(stateId, &ImageState{failure: true})
+				return
+			}
+			Context.SetState(stateId, &ImageState{loading: false, texture: texture})
 		}()
 	} else {
 		imgState := state.(*ImageState)
+		if imgState.failure {
+			i.whenFailure.Build()
+			return
+		}
+
+		if imgState.loading {
+			i.whenLoading.Build()
+			return
+		}
+
 		widget = Image(imgState.texture, i.width, i.height)
 	}
 
