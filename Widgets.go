@@ -521,7 +521,7 @@ type ImageWithUrlWidget struct {
 	whenFailure     Layout
 }
 
-func ImageWithUrl(url string, downloadTimeout time.Duration, width, height float32, whenLoading Layout, whenFailure Layout) *ImageWithUrlWidget {
+func ImageWithUrlV(url string, downloadTimeout time.Duration, width, height float32, whenLoading Layout, whenFailure Layout) *ImageWithUrlWidget {
 	return &ImageWithUrlWidget{
 		imgUrl:          url,
 		downloadTimeout: downloadTimeout,
@@ -530,6 +530,16 @@ func ImageWithUrl(url string, downloadTimeout time.Duration, width, height float
 		whenLoading:     whenLoading,
 		whenFailure:     whenFailure,
 	}
+}
+
+func ImageWithUrl(url string, downloadTimeout time.Duration, width, height float32) *ImageWithUrlWidget {
+	return ImageWithUrlV(url, downloadTimeout, width, height,
+		Layout{
+			Dummy(width, height),
+		},
+		Layout{
+			Dummy(width, height),
+		})
 }
 
 func (i *ImageWithUrlWidget) Build() {
