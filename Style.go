@@ -147,6 +147,11 @@ func GetWindowPadding() (float32, float32) {
 	return vec2.X, vec2.Y
 }
 
+func GetItemSpacing() (float32, float32) {
+	vec2 := imgui.CurrentStyle().ItemSpacing()
+	return vec2.X, vec2.Y
+}
+
 func GetItemInnerSpacing() (float32, float32) {
 	vec2 := imgui.CurrentStyle().ItemInnerSpacing()
 	return vec2.X, vec2.Y
