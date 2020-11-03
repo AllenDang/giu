@@ -790,6 +790,11 @@ func TextLineHeightWithSpacing() float32 {
 	return float32(C.iggGetTextLineHeightWithSpacing())
 }
 
+// FrameHeightWithSpacing return ~ FontSize + style.FramePadding.y * 2.0f + style.ItemSpacing.y;
+func FrameHeightWithSpacing() float32 {
+	return float32(C.iggFrameHeightWithSpacing())
+}
+
 // TreeNodeV returns true if the tree branch is to be rendered. Call TreePop() in this case.
 func TreeNodeV(label string, flags int) bool {
 	labelArg, labelFin := wrapString(label)

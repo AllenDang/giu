@@ -518,6 +518,11 @@ float iggGetTextLineHeightWithSpacing(void)
    return ImGui::GetTextLineHeightWithSpacing();
 }
 
+float iggFrameHeightWithSpacing(void)
+{
+   return ImGui::GetFrameHeightWithSpacing();
+}
+
 IggBool iggTreeNode(char const *label, int flags)
 {
    return ImGui::TreeNodeEx(label, flags) ? 1 : 0;

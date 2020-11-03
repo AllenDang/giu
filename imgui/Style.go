@@ -117,6 +117,15 @@ func (style Style) handle() C.IggGuiStyle {
 	return C.IggGuiStyle(style)
 }
 
+// ItemSpacing is the horizontal and vertical spacing between widgets/lines.
+func (style Style) ItemSpacing() Vec2 {
+	var value Vec2
+	valueArg, valueFin := value.wrapped()
+	C.iggStyleGetItemSpacing(style.handle(), valueArg)
+	valueFin()
+	return value
+}
+
 // ItemInnerSpacing is the horizontal and vertical spacing between elements of
 // a composed widget (e.g. a slider and its label).
 func (style Style) ItemInnerSpacing() Vec2 {
