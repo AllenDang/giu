@@ -270,10 +270,21 @@ void iggPopTextWrapPos(void)
    ImGui::PopTextWrapPos();
 }
 
+void iggPushAllowKeyboardFocus(IggBool allow_keyboard_focus)
+{
+   ImGui::PushAllowKeyboardFocus(allow_keyboard_focus);
+}
+
+void iggPopAllowKeyboardFocus(void)
+{
+   ImGui::PopAllowKeyboardFocus();
+}
+
 void iggPushID(char const *id)
 {
    ImGui::PushID(id);
 }
+
 void iggPopID(void)
 {
    ImGui::PopID();

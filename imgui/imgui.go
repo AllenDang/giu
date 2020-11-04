@@ -1373,3 +1373,11 @@ func PushClipRect(clipRectMin, clipRectMax Vec2, intersectWithClipRect bool) {
 func PopClipRect() {
 	C.iggPopClipRect()
 }
+
+func PushAllowKeyboardFocus(allowKeyboardFocus bool) {
+	C.iggPushAllowKeyboardFocus(castBool(allowKeyboardFocus))
+}
+
+func PopAllowKeyboardFocus() {
+	C.iggPopAllowKeyboardFocus()
+}

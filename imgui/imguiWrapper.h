@@ -73,6 +73,9 @@ extern float iggCalcItemWidth(void);
 extern void iggPushTextWrapPos(float wrapPosX);
 extern void iggPopTextWrapPos(void);
 
+extern void iggPushAllowKeyboardFocus(IggBool allow_keyboard_focus);
+extern void iggPopAllowKeyboardFocus(void);
+
 extern void iggPushID(char const *id);
 extern void iggPopID(void);
 
