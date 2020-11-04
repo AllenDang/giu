@@ -148,6 +148,7 @@ extern void iggMousePos(IggVec2 *pos);
 extern void iggAlignTextToFramePadding();
 extern float iggGetTextLineHeight(void);
 extern float iggGetTextLineHeightWithSpacing(void);
+extern float iggFrameHeightWithSpacing(void);
 
 extern IggBool iggTreeNode(char const *label, int flags);
 extern void iggTreePop(void);
