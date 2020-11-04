@@ -92,6 +92,19 @@ func loop() {
 			g.SmallButton("SmallButton", nil),
 		),
 
+		g.BulletText("Bullet1"),
+		g.BulletText("Bullet2"),
+		g.BulletText("Bullet3"),
+
+		g.Line(
+			g.Label("Arrow buttons: "),
+
+			g.ArrowButton("arrow left", g.DirectionLeft, nil),
+			g.ArrowButton("arrow right", g.DirectionRight, nil),
+			g.ArrowButton("arrow up", g.DirectionUp, nil),
+			g.ArrowButton("arrow down", g.DirectionDown, nil),
+		),
+
 		g.Line(
 			g.Button("Popup Modal", btnPopupCLicked),
 			g.PopupModal("Confirm", g.Layout{
