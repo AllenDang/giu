@@ -94,6 +94,9 @@ extern IggBool iggRadioButton(char const *label, IggBool active);
 extern void iggProgressBar(float fraction, IggVec2 const *size,
                            char const *overlay);
 
+extern void iggBullet(void);
+extern void iggBulletText(const char* text);
+
 extern IggBool iggBeginCombo(char const *label, char const *previewValue,
                              int flags);
 extern void iggEndCombo(void);

@@ -348,6 +348,16 @@ void iggProgressBar(float fraction, IggVec2 const *size, char const *overlay)
    ImGui::ProgressBar(fraction, *sizeArg, overlay);
 }
 
+void iggBullet(void)
+{
+   ImGui::Bullet();
+}
+
+void iggBulletText(const char* text)
+{
+   ImGui::BulletText("%s", text);
+}
+
 IggBool iggBeginCombo(char const *label, char const *previewValue, int flags)
 {
    return ImGui::BeginCombo(label, previewValue, flags) ? 1 : 0;

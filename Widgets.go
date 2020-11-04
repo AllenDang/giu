@@ -138,6 +138,30 @@ func PlotLinesV(label string, values []float32, valuesOffset int, overlayText st
 	}
 }
 
+type BulletWidget struct{}
+
+func Bullet() *BulletWidget {
+	return &BulletWidget{}
+}
+
+func (b *BulletWidget) Build() {
+	imgui.Bullet()
+}
+
+type BulletTextWidget struct {
+	text string
+}
+
+func BulletText(text string) *BulletTextWidget {
+	return &BulletTextWidget{
+		text: text,
+	}
+}
+
+func (bt *BulletTextWidget) Build() {
+	imgui.BulletText(bt.text)
+}
+
 type SmallButtonWidget struct {
 	id      string
 	onClick func()

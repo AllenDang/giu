@@ -381,6 +381,18 @@ func InvisibleButton(id string, size Vec2) bool {
 	return C.iggInvisibleButton(idArg, sizeArg) != 0
 }
 
+func Bullet() {
+	C.iggBullet()
+}
+
+// BulletText.
+// Text with a little bullet aligned to the typical tree node.
+func BulletText(text string) {
+	textArg, textFin := wrapString(text)
+	defer textFin()
+	C.iggBulletText(textArg)
+}
+
 // ImageV adds an image based on given texture ID.
 // Refer to TextureID what this represents and how it is drawn.
 func ImageV(id TextureID, size Vec2, uv0, uv1 Vec2, tintCol, borderCol Vec4) {
