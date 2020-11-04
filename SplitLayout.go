@@ -2,10 +2,10 @@ package giu
 
 import "fmt"
 
-type Direction uint8
+type SplitDirection uint8
 
 const (
-	DirectionHorizontal Direction = 1 << iota
+	DirectionHorizontal SplitDirection = 1 << iota
 	DirectionVertical
 )
 
@@ -20,7 +20,7 @@ func (s *SplitLayoutState) Dispose() {
 
 type SplitLayoutWidget struct {
 	id                  string
-	direction           Direction
+	direction           SplitDirection
 	layout1             Widget
 	layout2             Widget
 	originItemSpacingX  float32
@@ -31,7 +31,7 @@ type SplitLayoutWidget struct {
 	border              bool
 }
 
-func SplitLayout(id string, direction Direction, border bool, sashPos float32, layout1, layout2 Widget) *SplitLayoutWidget {
+func SplitLayout(id string, direction SplitDirection, border bool, sashPos float32, layout1, layout2 Widget) *SplitLayoutWidget {
 	return &SplitLayoutWidget{
 		id:        id,
 		direction: direction,

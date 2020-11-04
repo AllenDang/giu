@@ -381,6 +381,12 @@ func InvisibleButton(id string, size Vec2) bool {
 	return C.iggInvisibleButton(idArg, sizeArg) != 0
 }
 
+func ArrowButton(id string, dir uint8) bool {
+	idArg, idFin := wrapString(id)
+	defer idFin()
+	return C.iggArrowButton(idArg, C.uchar(dir)) != 0
+}
+
 func Bullet() {
 	C.iggBullet()
 }

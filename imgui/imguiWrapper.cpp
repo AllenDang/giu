@@ -300,6 +300,11 @@ IggBool iggSmallButton(char const *label)
    return ImGui::SmallButton(label) ? 1 : 0;
 }
 
+IggBool iggArrowButton(const char* id, unsigned char dir)
+{
+   return ImGui::ArrowButton(id, dir) ? 1 : 0;
+}
+
 IggBool iggInvisibleButton(char const *label, IggVec2 const *size)
 {
   Vec2Wrapper sizeArg(size);

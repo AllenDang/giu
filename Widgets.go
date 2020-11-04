@@ -162,6 +162,26 @@ func (bt *BulletTextWidget) Build() {
 	imgui.BulletText(bt.text)
 }
 
+type ArrowButtonWidget struct {
+	id      string
+	dir     Direction
+	onClick func()
+}
+
+func ArrowButton(id string, dir Direction, onClick func()) *ArrowButtonWidget {
+	return &ArrowButtonWidget{
+		id:      id,
+		dir:     dir,
+		onClick: onClick,
+	}
+}
+
+func (ab *ArrowButtonWidget) Build() {
+	if imgui.ArrowButton(ab.id, uint8(ab.dir)) && ab.onClick != nil {
+		ab.onClick()
+	}
+}
+
 type SmallButtonWidget struct {
 	id      string
 	onClick func()
