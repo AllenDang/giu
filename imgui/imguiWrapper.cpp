@@ -297,7 +297,7 @@ IggBool iggButton(char const *label, IggVec2 const *size)
 
 IggBool iggSmallButton(char const *label)
 {
-   return ImGui::SmallButton(label) ? 1: 0;
+   return ImGui::SmallButton(label) ? 1 : 0;
 }
 
 IggBool iggInvisibleButton(char const *label, IggVec2 const *size)
