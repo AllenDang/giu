@@ -80,6 +80,7 @@ extern void iggTextUnformatted(char const *text);
 extern void iggLabelText(char const *label, char const *text);
 
 extern IggBool iggButton(char const *label, IggVec2 const *size);
+extern IggBool iggSmallButton(char const *label);
 extern IggBool iggInvisibleButton(char const *label, IggVec2 const *size);
 extern void iggImage(IggTextureID textureID, IggVec2 const *size,
                      IggVec2 const *uv0, IggVec2 const *uv1,

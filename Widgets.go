@@ -138,6 +138,24 @@ func PlotLinesV(label string, values []float32, valuesOffset int, overlayText st
 	}
 }
 
+type SmallButtonWidget struct {
+	id      string
+	onClick func()
+}
+
+func SmallButton(id string, onClick func()) *SmallButtonWidget {
+	return &SmallButtonWidget{
+		id:      id,
+		onClick: onClick,
+	}
+}
+
+func (sb *SmallButtonWidget) Build() {
+	if imgui.SmallButton(sb.id) && sb.onClick != nil {
+		sb.onClick()
+	}
+}
+
 type InvisibleButtonWidget struct {
 	id      string
 	width   float32

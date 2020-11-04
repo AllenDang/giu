@@ -295,6 +295,11 @@ IggBool iggButton(char const *label, IggVec2 const *size)
    return ImGui::Button(label, *sizeArg) ? 1 : 0;
 }
 
+IggBool iggSmallButton(char const *label)
+{
+   return ImGui::SmallButton(label) ? 1: 0;
+}
+
 IggBool iggInvisibleButton(char const *label, IggVec2 const *size)
 {
   Vec2Wrapper sizeArg(size);

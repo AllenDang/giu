@@ -88,6 +88,11 @@ func loop() {
 		g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, 0, comboChanged),
 
 		g.Line(
+			g.Button("Button", nil),
+			g.SmallButton("SmallButton", nil),
+		),
+
+		g.Line(
 			g.Button("Popup Modal", btnPopupCLicked),
 			g.PopupModal("Confirm", g.Layout{
 				g.Label("Confirm to close me?"),

@@ -368,6 +368,12 @@ func Button(id string) bool {
 	return ButtonV(id, Vec2{})
 }
 
+func SmallButton(id string) bool {
+	idArg, idFin := wrapString(id)
+	defer idFin()
+	return C.iggSmallButton(idArg) != 0
+}
+
 func InvisibleButton(id string, size Vec2) bool {
 	idArg, idFin := wrapString(id)
 	defer idFin()
