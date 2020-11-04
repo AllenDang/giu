@@ -198,3 +198,15 @@ void iggIoClearClipboardFunctions(IggIO handle)
    io.SetClipboardTextFn = nullptr;
    io.ClipboardUserData = nullptr;
 }
+
+int iggGetFrameCountSinceLastInput(IggIO handle)
+{
+   ImGuiIO &io = *reinterpret_cast<ImGuiIO *>(handle);
+   return io.FrameCountSinceLastInput;
+}
+
+void iggSetFrameCountSinceLastInput(IggIO handle, int count)
+{
+   ImGuiIO &io = *reinterpret_cast<ImGuiIO *>(handle);
+   io.FrameCountSinceLastInput = count;
+}

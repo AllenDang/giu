@@ -23,6 +23,11 @@ void iggSetCurrentContext(IggContext context)
    ImGui::SetCurrentContext(reinterpret_cast<ImGuiContext *>(context));
 }
 
+void iggSetMaxWaitBeforeNextFrame(double time)
+{
+   ImGui::SetMaxWaitBeforeNextFrame(time);
+}
+
 IggIO iggGetCurrentIO()
 {
    return reinterpret_cast<IggIO>(&ImGui::GetIO());
@@ -51,6 +56,11 @@ IggDrawData iggGetDrawData()
 void iggEndFrame()
 {
    ImGui::EndFrame();
+}
+
+double iggGetEventWaitingTime()
+{
+   return ImGui::GetEventWaitingTime();
 }
 
 char const *iggGetVersion()

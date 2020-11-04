@@ -42,6 +42,9 @@ extern "C"
     extern void iggIoRegisterClipboardFunctions(IggIO handle);
     extern void iggIoClearClipboardFunctions(IggIO handle);
 
+    extern int iggGetFrameCountSinceLastInput(IggIO handle);
+    extern void iggSetFrameCountSinceLastInput(IggIO handle, int count);
+
 #ifdef __cplusplus
 }
 #endif
