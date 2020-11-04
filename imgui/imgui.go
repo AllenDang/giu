@@ -40,10 +40,6 @@ func EndFrame() {
 	C.iggEndFrame()
 }
 
-func GetEventWaitingTime() float64 {
-	return float64(C.iggGetEventWaitingTime())
-}
-
 // RenderedDrawData returns the created draw commands, which are valid after Render() and
 // until the next call to NewFrame(). This is what you have to render.
 func RenderedDrawData() DrawData {

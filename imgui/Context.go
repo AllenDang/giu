@@ -58,7 +58,3 @@ func (context Context) SetCurrent() error {
 	C.iggSetCurrentContext(context.handle)
 	return nil
 }
-
-func SetMaxWaitBeforeNextFrame(time float32) {
-	C.iggSetMaxWaitBeforeNextFrame(C.double(time))
-}

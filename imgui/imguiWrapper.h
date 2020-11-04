@@ -10,7 +10,6 @@ extern IggContext iggCreateContext(IggFontAtlas sharedFontAtlas);
 extern void iggDestroyContext(IggContext context);
 extern IggContext iggGetCurrentContext();
 extern void iggSetCurrentContext(IggContext context);
-extern void iggSetMaxWaitBeforeNextFrame(double time);
 
 extern IggIO iggGetCurrentIO(void);
 extern IggGuiStyle iggGetCurrentStyle(void);
@@ -18,8 +17,6 @@ extern void iggNewFrame(void);
 extern void iggRender(void);
 extern IggDrawData iggGetDrawData(void);
 extern void iggEndFrame(void);
-
-extern double iggGetEventWaitingTime(void);
 
 extern char const *iggGetVersion(void);
 extern void iggShowDemoWindow(IggBool *open);
