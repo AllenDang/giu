@@ -73,6 +73,9 @@ extern float iggCalcItemWidth(void);
 extern void iggPushTextWrapPos(float wrapPosX);
 extern void iggPopTextWrapPos(void);
 
+extern void iggPushAllowKeyboardFocus(IggBool allow_keyboard_focus);
+extern void iggPopAllowKeyboardFocus(void);
+
 extern void iggPushID(char const *id);
 extern void iggPopID(void);
 
@@ -80,6 +83,8 @@ extern void iggTextUnformatted(char const *text);
 extern void iggLabelText(char const *label, char const *text);
 
 extern IggBool iggButton(char const *label, IggVec2 const *size);
+extern IggBool iggSmallButton(char const *label);
+extern IggBool iggArrowButton(const char* id, unsigned char dir);
 extern IggBool iggInvisibleButton(char const *label, IggVec2 const *size);
 extern void iggImage(IggTextureID textureID, IggVec2 const *size,
                      IggVec2 const *uv0, IggVec2 const *uv1,
@@ -92,6 +97,9 @@ extern IggBool iggCheckbox(char const *label, IggBool *selected);
 extern IggBool iggRadioButton(char const *label, IggBool active);
 extern void iggProgressBar(float fraction, IggVec2 const *size,
                            char const *overlay);
+
+extern void iggBullet(void);
+extern void iggBulletText(const char* text);
 
 extern IggBool iggBeginCombo(char const *label, char const *previewValue,
                              int flags);

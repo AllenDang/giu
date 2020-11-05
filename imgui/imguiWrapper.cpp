@@ -270,10 +270,21 @@ void iggPopTextWrapPos(void)
    ImGui::PopTextWrapPos();
 }
 
+void iggPushAllowKeyboardFocus(IggBool allow_keyboard_focus)
+{
+   ImGui::PushAllowKeyboardFocus(allow_keyboard_focus);
+}
+
+void iggPopAllowKeyboardFocus(void)
+{
+   ImGui::PopAllowKeyboardFocus();
+}
+
 void iggPushID(char const *id)
 {
    ImGui::PushID(id);
 }
+
 void iggPopID(void)
 {
    ImGui::PopID();
@@ -293,6 +304,16 @@ IggBool iggButton(char const *label, IggVec2 const *size)
 {
    Vec2Wrapper sizeArg(size);
    return ImGui::Button(label, *sizeArg) ? 1 : 0;
+}
+
+IggBool iggSmallButton(char const *label)
+{
+   return ImGui::SmallButton(label) ? 1 : 0;
+}
+
+IggBool iggArrowButton(const char* id, unsigned char dir)
+{
+   return ImGui::ArrowButton(id, dir) ? 1 : 0;
 }
 
 IggBool iggInvisibleButton(char const *label, IggVec2 const *size)
@@ -341,6 +362,16 @@ void iggProgressBar(float fraction, IggVec2 const *size, char const *overlay)
 {
    Vec2Wrapper sizeArg(size);
    ImGui::ProgressBar(fraction, *sizeArg, overlay);
+}
+
+void iggBullet(void)
+{
+   ImGui::Bullet();
+}
+
+void iggBulletText(const char* text)
+{
+   ImGui::BulletText("%s", text);
 }
 
 IggBool iggBeginCombo(char const *label, char const *previewValue, int flags)

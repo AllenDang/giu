@@ -368,11 +368,35 @@ func Button(id string) bool {
 	return ButtonV(id, Vec2{})
 }
 
+func SmallButton(id string) bool {
+	idArg, idFin := wrapString(id)
+	defer idFin()
+	return C.iggSmallButton(idArg) != 0
+}
+
 func InvisibleButton(id string, size Vec2) bool {
 	idArg, idFin := wrapString(id)
 	defer idFin()
 	sizeArg, _ := size.wrapped()
 	return C.iggInvisibleButton(idArg, sizeArg) != 0
+}
+
+func ArrowButton(id string, dir uint8) bool {
+	idArg, idFin := wrapString(id)
+	defer idFin()
+	return C.iggArrowButton(idArg, C.uchar(dir)) != 0
+}
+
+func Bullet() {
+	C.iggBullet()
+}
+
+// BulletText.
+// Text with a little bullet aligned to the typical tree node.
+func BulletText(text string) {
+	textArg, textFin := wrapString(text)
+	defer textFin()
+	C.iggBulletText(textArg)
 }
 
 // ImageV adds an image based on given texture ID.
@@ -1348,4 +1372,12 @@ func PushClipRect(clipRectMin, clipRectMax Vec2, intersectWithClipRect bool) {
 
 func PopClipRect() {
 	C.iggPopClipRect()
+}
+
+func PushAllowKeyboardFocus(allowKeyboardFocus bool) {
+	C.iggPushAllowKeyboardFocus(castBool(allowKeyboardFocus))
+}
+
+func PopAllowKeyboardFocus() {
+	C.iggPopAllowKeyboardFocus()
 }
