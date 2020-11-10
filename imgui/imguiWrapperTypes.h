@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -9,7 +7,7 @@ extern "C"
 
 typedef int IggBool;
 typedef float IggFloat;
-typedef uint64_t IggTextureID;
+typedef void *IggTextureID;
 
 typedef void *IggContext;
 typedef void *IggDrawCmd;
