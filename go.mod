@@ -4,11 +4,11 @@ go 1.13
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/go-gl/gl v0.0.0-20190320180904-bf2b1f2f34d7
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20201101223321-f087fae2c024
 	github.com/go-resty/resty/v2 v2.3.0
 	github.com/kr/pretty v0.2.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
+	github.com/neclepsio/gl v0.0.0-20200622061412-49996e615224
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/net v0.0.0-20201031054903-ff519b6c9102 // indirect

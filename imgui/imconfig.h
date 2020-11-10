@@ -107,3 +107,5 @@ namespace ImGui
     void MyFunction(const char* name, const MyMatrix44& v);
 }
 */
+#include <stdint.h>
+#define ImTextureID uint64_t
