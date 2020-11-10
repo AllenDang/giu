@@ -5,9 +5,8 @@ import (
 	"image"
 	"math"
 	"runtime"
-	"unsafe"
 
-	"github.com/go-gl/gl/v3.2-core/gl"
+	"github.com/neclepsio/gl/v3.2-core/gl"
 )
 
 // OpenGL3 implements a renderer based on github.com/go-gl/gl (v3.2-core).
@@ -160,9 +159,9 @@ func (renderer *OpenGL3) Render(displaySize [2]float32, framebufferSize [2]float
 	gl.EnableVertexAttribArray(uint32(renderer.attribLocationUV))
 	gl.EnableVertexAttribArray(uint32(renderer.attribLocationColor))
 	vertexSize, vertexOffsetPos, vertexOffsetUv, vertexOffsetCol := VertexBufferLayout()
-	gl.VertexAttribPointer(uint32(renderer.attribLocationPosition), 2, gl.FLOAT, false, int32(vertexSize), unsafe.Pointer(uintptr(vertexOffsetPos)))
-	gl.VertexAttribPointer(uint32(renderer.attribLocationUV), 2, gl.FLOAT, false, int32(vertexSize), unsafe.Pointer(uintptr(vertexOffsetUv)))
-	gl.VertexAttribPointer(uint32(renderer.attribLocationColor), 4, gl.UNSIGNED_BYTE, true, int32(vertexSize), unsafe.Pointer(uintptr(vertexOffsetCol)))
+	gl.VertexAttribPointerWithOffset(uint32(renderer.attribLocationPosition), 2, gl.FLOAT, false, int32(vertexSize), uintptr(vertexOffsetPos))
+	gl.VertexAttribPointerWithOffset(uint32(renderer.attribLocationUV), 2, gl.FLOAT, false, int32(vertexSize), uintptr(vertexOffsetUv))
+	gl.VertexAttribPointerWithOffset(uint32(renderer.attribLocationColor), 4, gl.UNSIGNED_BYTE, true, int32(vertexSize), uintptr(vertexOffsetCol))
 	indexSize := IndexBufferLayout()
 	drawType := gl.UNSIGNED_SHORT
 	if indexSize == 4 {
@@ -194,7 +193,7 @@ func (renderer *OpenGL3) Render(displaySize [2]float32, framebufferSize [2]float
 				gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, renderer.textureMagFilter) // magnification filter
 				clipRect := cmd.ClipRect()
 				gl.Scissor(int32(clipRect.X), int32(fbHeight)-int32(clipRect.W), int32(clipRect.Z-clipRect.X), int32(clipRect.W-clipRect.Y))
-				gl.DrawElements(gl.TRIANGLES, int32(cmd.ElementCount()), uint32(drawType), unsafe.Pointer(indexBufferOffset))
+				gl.DrawElementsWithOffset(gl.TRIANGLES, int32(cmd.ElementCount()), uint32(drawType), uintptr(indexBufferOffset))
 			}
 			indexBufferOffset += uintptr(cmd.ElementCount() * indexSize)
 		}
