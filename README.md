@@ -173,3 +173,9 @@ All kinds of pull request (document, demo, screenshots, code, etc...) are more t
 PipeIt is a text transformation, conversion, cleansing and extraction tool.
 
 ![PipeIt Demo](https://github.com/AllenDang/PipeIt/raw/master/screenshot/findimageurl.gif)
+
+### [NVTool](https://github.com/Nicify/nvtool)
+
+NVTool is a video encoding tool based on NVEncC.
+
+![NVTool Screenshots](https://images-cdn.shimo.im/dLiWypVO9fbgAXPb__original.png)
