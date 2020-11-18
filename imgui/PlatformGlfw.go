@@ -40,6 +40,7 @@ type GLFW struct {
 
 	window *glfw.Window
 
+	tps              int
 	time             float64
 	mouseJustPressed [3]bool
 
@@ -97,6 +98,8 @@ func NewGLFW(io IO, title string, width, height int, flags GLFWWindowFlags) (*GL
 	platform := &GLFW{
 		imguiIO: io,
 		window:  window,
+
+		tps: 60,
 	}
 	platform.setKeyMapping()
 	platform.installCallbacks()
@@ -428,4 +431,12 @@ func (platform *GLFW) GetClipboard() string {
 
 func (platform *GLFW) SetClipboard(content string) {
 	platform.window.SetClipboardString(content)
+}
+
+func (platform *GLFW) GetTPS() int {
+	return platform.tps
+}
+
+func (platform *GLFW) SetTPS(tps int) {
+	platform.tps = tps
 }

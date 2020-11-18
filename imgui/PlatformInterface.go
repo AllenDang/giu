@@ -29,4 +29,8 @@ type Platform interface {
 	GetClipboard() string
 	// Set content to system clipboard
 	SetClipboard(content string)
+	// Get the event pulling ticks per second
+	GetTPS() int
+	// Set the event pulling ticks per second
+	SetTPS(tps int)
 }
