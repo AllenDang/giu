@@ -368,11 +368,35 @@ func Button(id string) bool {
 	return ButtonV(id, Vec2{})
 }
 
+func SmallButton(id string) bool {
+	idArg, idFin := wrapString(id)
+	defer idFin()
+	return C.iggSmallButton(idArg) != 0
+}
+
 func InvisibleButton(id string, size Vec2) bool {
 	idArg, idFin := wrapString(id)
 	defer idFin()
 	sizeArg, _ := size.wrapped()
 	return C.iggInvisibleButton(idArg, sizeArg) != 0
+}
+
+func ArrowButton(id string, dir uint8) bool {
+	idArg, idFin := wrapString(id)
+	defer idFin()
+	return C.iggArrowButton(idArg, C.uchar(dir)) != 0
+}
+
+func Bullet() {
+	C.iggBullet()
+}
+
+// BulletText.
+// Text with a little bullet aligned to the typical tree node.
+func BulletText(text string) {
+	textArg, textFin := wrapString(text)
+	defer textFin()
+	C.iggBulletText(textArg)
 }
 
 // ImageV adds an image based on given texture ID.
@@ -788,6 +812,11 @@ func TextLineHeight() float32 {
 // TextLineHeightWithSpacing returns ~ FontSize + style.ItemSpacing.y (distance in pixels between 2 consecutive lines of text).
 func TextLineHeightWithSpacing() float32 {
 	return float32(C.iggGetTextLineHeightWithSpacing())
+}
+
+// FrameHeightWithSpacing return ~ FontSize + style.FramePadding.y * 2.0f + style.ItemSpacing.y;
+func FrameHeightWithSpacing() float32 {
+	return float32(C.iggFrameHeightWithSpacing())
 }
 
 // TreeNodeV returns true if the tree branch is to be rendered. Call TreePop() in this case.
@@ -1343,4 +1372,12 @@ func PushClipRect(clipRectMin, clipRectMax Vec2, intersectWithClipRect bool) {
 
 func PopClipRect() {
 	C.iggPopClipRect()
+}
+
+func PushAllowKeyboardFocus(allowKeyboardFocus bool) {
+	C.iggPushAllowKeyboardFocus(castBool(allowKeyboardFocus))
+}
+
+func PopAllowKeyboardFocus() {
+	C.iggPopAllowKeyboardFocus()
 }

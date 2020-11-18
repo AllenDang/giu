@@ -138,6 +138,68 @@ func PlotLinesV(label string, values []float32, valuesOffset int, overlayText st
 	}
 }
 
+type BulletWidget struct{}
+
+func Bullet() *BulletWidget {
+	return &BulletWidget{}
+}
+
+func (b *BulletWidget) Build() {
+	imgui.Bullet()
+}
+
+type BulletTextWidget struct {
+	text string
+}
+
+func BulletText(text string) *BulletTextWidget {
+	return &BulletTextWidget{
+		text: text,
+	}
+}
+
+func (bt *BulletTextWidget) Build() {
+	imgui.BulletText(bt.text)
+}
+
+type ArrowButtonWidget struct {
+	id      string
+	dir     Direction
+	onClick func()
+}
+
+func ArrowButton(id string, dir Direction, onClick func()) *ArrowButtonWidget {
+	return &ArrowButtonWidget{
+		id:      id,
+		dir:     dir,
+		onClick: onClick,
+	}
+}
+
+func (ab *ArrowButtonWidget) Build() {
+	if imgui.ArrowButton(ab.id, uint8(ab.dir)) && ab.onClick != nil {
+		ab.onClick()
+	}
+}
+
+type SmallButtonWidget struct {
+	id      string
+	onClick func()
+}
+
+func SmallButton(id string, onClick func()) *SmallButtonWidget {
+	return &SmallButtonWidget{
+		id:      id,
+		onClick: onClick,
+	}
+}
+
+func (sb *SmallButtonWidget) Build() {
+	if imgui.SmallButton(sb.id) && sb.onClick != nil {
+		sb.onClick()
+	}
+}
+
 type InvisibleButtonWidget struct {
 	id      string
 	width   float32

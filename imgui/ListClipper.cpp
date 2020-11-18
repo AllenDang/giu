@@ -20,7 +20,9 @@ IggBool iggListClipperStep(IggListClipper *clipper)
 
 void iggListClipperBegin(IggListClipper *clipper, int items_count, float items_height)
 {
-    ImGuiListClipper imguiClipper(items_count, items_height);
+    ImGuiListClipper imguiClipper;
+    importValue(imguiClipper, *clipper);
+    imguiClipper.Begin(items_count, items_height);
     exportValue(*clipper, imguiClipper);
     // needs to be done to prevent assert fail, we don't call end because the cursor will move.
     imguiClipper.ItemsCount = -1;
