@@ -181,7 +181,7 @@ func (w *MasterWindow) render() {
 func (w *MasterWindow) run() {
 	p := w.platform
 
-	ticker := time.NewTicker(time.Second / 60)
+	ticker := time.NewTicker(time.Second / time.Duration(p.GetTPS()))
 	shouldQuit := false
 	for !shouldQuit {
 		Call(func() {
