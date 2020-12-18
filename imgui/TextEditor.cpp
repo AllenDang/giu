@@ -736,7 +736,7 @@ void TextEditor::HandleMouseInputs() {
   auto ctrl = io.ConfigMacOSXBehaviors ? io.KeySuper : io.KeyCtrl;
   auto alt = io.ConfigMacOSXBehaviors ? io.KeyCtrl : io.KeyAlt;
 
-  if (ImGui::IsWindowHovered()) {
+  if (ImGui::IsWindowFocused()) {
     if (!shift && !alt) {
       auto click = ImGui::IsMouseClicked(0);
       auto doubleClick = ImGui::IsMouseDoubleClicked(0);
