@@ -14,19 +14,18 @@ import (
 type OpenGL3 struct {
 	imguiIO IO
 
-	glslVersion             string
-	fontTexture             uint32
-	shaderHandle            uint32
-	vertHandle              uint32
-	fragHandle              uint32
-	attribLocationTex       int32
-	attribLocationProjMtx   int32
-	attribLocationPosition  int32
-	attribLocationUV        int32
-	attribLocationColor     int32
-	attribLocationImageType int32
-	vboHandle               uint32
-	elementsHandle          uint32
+	glslVersion            string
+	fontTexture            uint32
+	shaderHandle           uint32
+	vertHandle             uint32
+	fragHandle             uint32
+	attribLocationTex      int32
+	attribLocationProjMtx  int32
+	attribLocationPosition int32
+	attribLocationUV       int32
+	attribLocationColor    int32
+	vboHandle              uint32
+	elementsHandle         uint32
 
 	contentScale     float32
 	textureMinFilter int32
@@ -185,10 +184,6 @@ func (renderer *OpenGL3) Render(displaySize [2]float32, framebufferSize [2]float
 			if cmd.HasUserCallback() {
 				cmd.CallUserCallback(list)
 			} else {
-				// Check last 8 bit for image type
-				imageType := cmd.TextureID() >> 56
-				gl.Uniform1i(renderer.attribLocationImageType, int32(imageType))
-
 				gl.BindTexture(gl.TEXTURE_2D, uint32(cmd.TextureID()))
 				gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, renderer.textureMinFilter) // minification filter
 				gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, renderer.textureMagFilter) // magnification filter
@@ -260,21 +255,13 @@ void main()
 }
 `
 	fragmentShader := renderer.glslVersion + `
-uniform int ImageType;
 uniform sampler2D Texture;
 in vec2 Frag_UV;
 in vec4 Frag_Color;
 out vec4 Out_Color;
 void main()
 {
-	if (ImageType == 1)
-	{
-		 Out_Color = Frag_Color * texture(Texture, Frag_UV.st);
-	}
-	else
-	{
-		 Out_Color = vec4(Frag_Color.rgb, Frag_Color.a * texture(Texture, Frag_UV.st).r);
-	}
+	Out_Color = Frag_Color * texture(Texture, Frag_UV);
 }
 `
 	renderer.shaderHandle = gl.CreateProgram()
@@ -296,7 +283,6 @@ void main()
 	gl.AttachShader(renderer.shaderHandle, renderer.fragHandle)
 	gl.LinkProgram(renderer.shaderHandle)
 
-	renderer.attribLocationImageType = gl.GetUniformLocation(renderer.shaderHandle, gl.Str("ImageType"+"\x00"))
 	renderer.attribLocationTex = gl.GetUniformLocation(renderer.shaderHandle, gl.Str("Texture"+"\x00"))
 	renderer.attribLocationProjMtx = gl.GetUniformLocation(renderer.shaderHandle, gl.Str("ProjMtx"+"\x00"))
 	renderer.attribLocationPosition = gl.GetAttribLocation(renderer.shaderHandle, gl.Str("Position"+"\x00"))
@@ -342,7 +328,7 @@ func (renderer *OpenGL3) createFontsTexture() {
 		}
 	}
 
-	image := fonts.TextureDataAlpha8()
+	image := fonts.TextureDataRGBA32()
 
 	// Upload texture to graphics system
 	var lastTexture int32
@@ -352,8 +338,7 @@ func (renderer *OpenGL3) createFontsTexture() {
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
 	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
 	gl.PixelStorei(gl.UNPACK_ROW_LENGTH, 0)
-	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RED, int32(image.Width), int32(image.Height),
-		0, gl.RED, gl.UNSIGNED_BYTE, image.Pixels)
+	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, int32(image.Width), int32(image.Height), 0, gl.RGBA, gl.UNSIGNED_BYTE, image.Pixels)
 
 	// Store our identifier
 	io.Fonts().SetTextureID(TextureID(renderer.fontTexture))
@@ -465,10 +450,5 @@ func (renderer *OpenGL3) createImageTexture(img *image.RGBA) (TextureID, error) 
 	// Restore state
 	gl.BindTexture(gl.TEXTURE_2D, uint32(lastTexture))
 
-	// Add Image Type to last 8 bit of the texture id to use different shader to render bitmap correctly.
-	textureId := TextureID(handle)
-	imageType := TextureID(1)
-
-	textureId |= imageType << 56
-	return textureId, nil
+	return TextureID(handle), nil
 }
