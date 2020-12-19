@@ -492,9 +492,31 @@ func Group(layout Layout) *GroupWidget {
 }
 
 type ImageWidget struct {
-	texture *Texture
-	width   float32
-	height  float32
+	texture            *Texture
+	width              float32
+	height             float32
+	uv0, uv1           imgui.Vec2
+	tintCol, borderCol imgui.Vec4
+}
+
+func (i *ImageWidget) Uv0(x, y float32) *ImageWidget {
+	i.uv0.Set(x, y)
+	return i
+}
+
+func (i *ImageWidget) Uv1(x, y float32) *ImageWidget {
+	i.uv1.Set(x, y)
+	return i
+}
+
+func (i *ImageWidget) TintCol(x, y, z, w float32) *ImageWidget {
+	i.tintCol.Set(x, y, z, w)
+	return i
+}
+
+func (i *ImageWidget) BorderCol(x, y, z, w float32) *ImageWidget {
+	i.borderCol.Set(x, y, z, w)
+	return i
 }
 
 func (i *ImageWidget) Build() {
@@ -507,7 +529,7 @@ func (i *ImageWidget) Build() {
 		size.Y = rect.Y
 	}
 	if i.texture != nil && i.texture.id != 0 {
-		imgui.Image(i.texture.id, size)
+		imgui.ImageV(i.texture.id, size, i.uv0, i.uv1, i.tintCol, i.borderCol)
 	} else {
 		Dummy(i.width, i.height).Build()
 	}
@@ -515,9 +537,13 @@ func (i *ImageWidget) Build() {
 
 func Image(texture *Texture, width, height float32) *ImageWidget {
 	return &ImageWidget{
-		texture: texture,
-		width:   width * Context.platform.GetContentScale(),
-		height:  height * Context.platform.GetContentScale(),
+		texture:   texture,
+		width:     width * Context.platform.GetContentScale(),
+		height:    height * Context.platform.GetContentScale(),
+		uv0:       imgui.Vec2{X: 0, Y: 0},
+		uv1:       imgui.Vec2{X: 1, Y: 1},
+		tintCol:   imgui.Vec4{X: 1, Y: 1, Z: 1, W: 1},
+		borderCol: imgui.Vec4{X: 0, Y: 0, Z: 0, W: 0},
 	}
 }
 
