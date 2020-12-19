@@ -38,6 +38,11 @@ func NewTextureFromRgba(rgba *image.RGBA) (*Texture, error) {
 	return nil, errors.New("Unknown error occurred")
 }
 
+// ToTexture converts imgui.TextureID to Texture.
+func ToTexture(textureID imgui.TextureID) *Texture {
+	return &Texture{id: textureID}
+}
+
 func (t *Texture) release() {
 	Update()
 	Call(func() {
