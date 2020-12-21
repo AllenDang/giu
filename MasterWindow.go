@@ -165,12 +165,12 @@ func (w *MasterWindow) render() {
 	r := w.renderer
 
 	p.NewFrame()
-	imgui.NewFrame()
-
-	w.updateFunc()
-
-	imgui.Render()
 	r.PreRender(w.clearColor)
+
+	imgui.NewFrame()
+	w.updateFunc()
+	imgui.Render()
+
 	r.Render(p.DisplaySize(), p.FramebufferSize(), imgui.RenderedDrawData())
 	p.PostRender()
 
