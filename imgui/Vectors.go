@@ -25,6 +25,12 @@ func (vec *Vec2) wrapped() (out *C.IggVec2, finisher func()) {
 	return
 }
 
+// Set sets values of the vec with args.
+func (vec *Vec2) Set(x, y float32) {
+	vec.X = x
+	vec.Y = y
+}
+
 // Plus returns vec + other.
 func (vec Vec2) Plus(other Vec2) Vec2 {
 	return Vec2{
@@ -75,6 +81,14 @@ func (vec *Vec4) wrapped() (out *C.IggVec4, finisher func()) {
 		finisher = func() {}
 	}
 	return
+}
+
+// Set sets values of the vec with args.
+func (vec *Vec4) Set(x, y, z, w float32) {
+	vec.X = x
+	vec.Y = y
+	vec.Z = z
+	vec.W = w
 }
 
 // Plus returns vec + other.
