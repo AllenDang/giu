@@ -200,6 +200,7 @@ extern void iggCloseCurrentPopup(void);
 
 extern IggBool iggIsItemHovered(int flags);
 extern IggBool iggIsItemActive();
+extern IggBool iggIsItemClicked(int mouseButton);
 extern IggBool iggIsAnyItemActive();
 
 extern IggBool iggIsKeyDown(int key);

@@ -1124,6 +1124,11 @@ func IsItemHovered() bool {
 	return IsItemHoveredV(HoveredFlagsNone)
 }
 
+// Is the last item clicked? (e.g. button/node just clicked on) == IsMouseClicked(mouse_button) && IsItemHovered()
+func IsItemClicked(mouseButton int) bool {
+	return C.iggIsItemClicked(C.int(mouseButton)) != 0
+}
+
 func IsItemActive() bool {
 	return C.iggIsItemActive() != 0
 }

@@ -684,6 +684,12 @@ IggBool iggIsItemHovered(int flags)
    return ImGui::IsItemHovered(flags) ? 1 : 0;
 }
 
+
+IggBool iggIsItemClicked(int mouseButton)
+{
+   return ImGui::IsItemClicked(mouseButton) ? 1 : 0;
+}
+
 IggBool iggIsItemActive()
 {
   return ImGui::IsItemActive() ? 1 : 0;
