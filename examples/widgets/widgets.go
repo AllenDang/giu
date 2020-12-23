@@ -128,6 +128,12 @@ func loop() {
 			g.TabItem("Tree", g.Layout{
 				g.TreeNode("TreeNode1", g.TreeNodeFlagsCollapsingHeader|g.TreeNodeFlagsDefaultOpen, g.Layout{
 					g.Label("Tree node 1"),
+					g.Custom(func() {
+						// Add event detector below any widget to catch it.
+						if g.IsMouseDoubleClicked(g.MouseButtonLeft) {
+							fmt.Println("Double click")
+						}
+					}),
 					g.Label("Tree node 1"),
 					g.Label("Tree node 1"),
 					g.Button("Button inside tree", nil),
