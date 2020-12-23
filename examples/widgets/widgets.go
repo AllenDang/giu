@@ -127,15 +127,16 @@ func loop() {
 			}),
 			g.TabItem("Tree", g.Layout{
 				g.TreeNode("TreeNode1", g.TreeNodeFlagsCollapsingHeader|g.TreeNodeFlagsDefaultOpen, g.Layout{
-					g.Label("Tree node 1"),
 					g.Custom(func() {
-						// Add event detector below any widget to catch it.
-						if g.IsMouseDoubleClicked(g.MouseButtonLeft) {
-							fmt.Println("Double click")
+						if g.IsItemActive() && g.IsMouseClicked(g.MouseButtonLeft) {
+							fmt.Println("Tree node clicked")
 						}
 					}),
-					g.Label("Tree node 1"),
-					g.Label("Tree node 1"),
+					g.Selectable("Tree node 1", func() {
+						fmt.Println("Click tree node 1")
+					}),
+					g.Label("Tree node 2"),
+					g.Label("Tree node 3"),
 					g.Button("Button inside tree", nil),
 				}),
 				g.TreeNode("TreeNode2", 0, g.Layout{
