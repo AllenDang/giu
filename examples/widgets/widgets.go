@@ -139,12 +139,16 @@ func loop() {
 					g.Label("Tree node 3"),
 					g.Button("Button inside tree", nil),
 				}),
-				g.TreeNode("TreeNode2", 0, g.Layout{
-					g.Label("Tree node 2"),
-					g.Label("Tree node 2"),
-					g.Label("Tree node 2"),
-					g.Button("Button inside tree", nil),
-				}),
+				g.TreeNodeV("TreeNode with event handler", 0,
+					func() {
+						if g.IsItemClicked(g.MouseButtonLeft) {
+							fmt.Println("Clicked")
+						}
+					},
+					g.Layout{
+						g.Selectable("Selectable 1", func() { fmt.Println(1) }),
+						g.Selectable("Selectable 2", func() { fmt.Println(2) }),
+					}),
 			}),
 			g.TabItem("ListBox", g.Layout{
 				g.ListBox("ListBox1", []string{"List item 1", "List item 2", "List item 3"}, nil, nil),
