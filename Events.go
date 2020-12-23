@@ -2,8 +2,20 @@ package giu
 
 import "github.com/AllenDang/giu/imgui"
 
+type MouseButton int
+
+const (
+	MouseButtonLeft   MouseButton = 0
+	MouseButtonRight  MouseButton = 1
+	MouseButtonMiddle MouseButton = 2
+)
+
 func IsItemHovered() bool {
 	return imgui.IsItemHovered()
+}
+
+func IsItemClicked(mouseButton MouseButton) bool {
+	return imgui.IsItemClicked(int(mouseButton))
 }
 
 func IsItemActive() bool {
@@ -21,14 +33,6 @@ func IsKeyPressed(key Key) bool {
 func IsKeyReleased(key Key) bool {
 	return imgui.IsKeyReleased(int(key))
 }
-
-type MouseButton int
-
-const (
-	MouseButtonLeft   MouseButton = 0
-	MouseButtonRight  MouseButton = 1
-	MouseButtonMiddle MouseButton = 2
-)
 
 func IsMouseDown(button MouseButton) bool {
 	return imgui.IsMouseDown(int(button))
