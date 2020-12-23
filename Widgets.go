@@ -1434,13 +1434,20 @@ func Tooltip(tip string) *TooltipWidget {
 }
 
 type TreeNodeWidget struct {
-	label  string
-	flags  TreeNodeFlags
-	layout Layout
+	label        string
+	flags        TreeNodeFlags
+	layout       Layout
+	eventHandler func()
 }
 
 func (t *TreeNodeWidget) Build() {
-	if imgui.TreeNodeV(t.label, int(t.flags)) {
+	open := imgui.TreeNodeV(t.label, int(t.flags))
+
+	if t.eventHandler != nil {
+		t.eventHandler()
+	}
+
+	if open {
 		if t.layout != nil {
 			t.layout.Build()
 		}
@@ -1451,10 +1458,17 @@ func (t *TreeNodeWidget) Build() {
 }
 
 func TreeNode(label string, flags TreeNodeFlags, layout Layout) *TreeNodeWidget {
+	return TreeNodeV(label, flags, nil, layout)
+}
+
+// Create TreeNode with eventHandler
+// You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler
+func TreeNodeV(label string, flags TreeNodeFlags, eventHandler func(), layout Layout) *TreeNodeWidget {
 	return &TreeNodeWidget{
-		label:  label,
-		flags:  flags,
-		layout: layout,
+		label:        label,
+		flags:        flags,
+		layout:       layout,
+		eventHandler: eventHandler,
 	}
 }
 
