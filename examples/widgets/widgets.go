@@ -5,7 +5,6 @@ import (
 	"time"
 
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/giu/imgui"
 )
 
 var (
@@ -110,7 +109,7 @@ func loop() {
 			g.PopupModal("Confirm", g.Layout{
 				g.Label("Confirm to close me?"),
 				g.Line(
-					g.Button("Yes", func() { imgui.CloseCurrentPopup() }),
+					g.Button("Yes", func() { g.CloseCurrentPopup() }),
 					g.Button("No", nil),
 				),
 			}),
@@ -127,7 +126,7 @@ func loop() {
 				g.InputTextMultiline("##multiline", &multiline, -1, -1, 0, nil, nil),
 			}),
 			g.TabItem("Tree", g.Layout{
-				g.TreeNode("TreeNode1", imgui.TreeNodeFlagsCollapsingHeader|imgui.TreeNodeFlagsDefaultOpen, g.Layout{
+				g.TreeNode("TreeNode1", g.TreeNodeFlagsCollapsingHeader|g.TreeNodeFlagsDefaultOpen, g.Layout{
 					g.Label("Tree node 1"),
 					g.Label("Tree node 1"),
 					g.Label("Tree node 1"),
