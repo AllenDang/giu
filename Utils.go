@@ -102,6 +102,10 @@ const (
 	ConditionAppearing    ExecCondition = ExecCondition(imgui.ConditionAppearing)
 )
 
+func SetNextWindowPos(x, y float32) {
+	imgui.SetNextWindowPos(imgui.Vec2{X: x, Y: y})
+}
+
 func SetNextWindowSizeV(width, height float32, condition ExecCondition) {
 	imgui.SetNextWindowSizeV(imgui.Vec2{X: width * Context.platform.GetContentScale(), Y: height * Context.platform.GetContentScale()}, imgui.Condition(condition))
 }
