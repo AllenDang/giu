@@ -1788,7 +1788,6 @@ void TextEditor::Backspace() {
 
 void TextEditor::SelectWordUnderCursor() {
   auto c = GetCursorPosition();
-  c.mColumn = std::max(c.mColumn - 1, 0);
   SetSelection(FindWordStart(c), FindWordEnd(c));
 }
 
