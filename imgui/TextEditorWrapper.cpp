@@ -172,6 +172,13 @@ void IggTextEditorDelete(IggTextEditor handle)
   editor->Delete();
 }
 
+
+void IggTextEditorSelectWordUnderCursor(IggTextEditor handle)
+{
+  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
+  editor->SelectWordUnderCursor();
+}
+
 void IggTextEditorSetHandleKeyboardInputs(IggTextEditor handle, int aValue)
 {
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);

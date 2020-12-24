@@ -29,6 +29,7 @@ extern void IggTextEditorGetSelectionStart(IggTextEditor handle, int *column,
                                            int *line);
 
 extern void IggTextEditorDelete(IggTextEditor handle);
+extern void IggTextEditorSelectWordUnderCursor(IggTextEditor handle);
 
 extern void IggTextEditorSetLanguageDefinitionSQL(IggTextEditor handle);
 extern void IggTextEditorSetLanguageDefinitionCPP(IggTextEditor handle);

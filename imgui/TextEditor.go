@@ -160,6 +160,10 @@ func (t TextEditor) Delete() {
 	C.IggTextEditorDelete(t.handle())
 }
 
+func (t TextEditor) SelectWordUnderCursor() {
+	C.IggTextEditorSelectWordUnderCursor(t.handle())
+}
+
 func (t TextEditor) SetHandleKeyboardInputs(b bool) {
 	val := 0
 	if b {
