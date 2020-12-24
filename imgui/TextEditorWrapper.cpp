@@ -62,15 +62,6 @@ char const *IggTextEditorGetWordUnderCursor(IggTextEditor handle)
   return c;
 }
 
-
-char const *IggTextEditorGetWordAroundCursor(IggTextEditor handle)
-{
-  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
-  std::string str = editor->GetWordAroundCursor();
-  char* c = strcpy(new char[str.length() + 1], str.c_str());
-  return c;
-}
-
 char const *IggTextEditorGetSelectedText(IggTextEditor handle)
 {
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);

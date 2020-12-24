@@ -199,7 +199,6 @@ public:
 	void SetText(const std::string& aText);
 	std::string GetText() const;
 	std::string GetWordUnderCursor() const;
-	std::string GetWordAroundCursor() const;
 
 	void SetTextLines(const std::vector<std::string>& aLines);
 	std::vector<std::string> GetTextLines() const;
