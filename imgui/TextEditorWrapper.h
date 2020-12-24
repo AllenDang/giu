@@ -16,6 +16,8 @@ extern void IggTextEditorSetTabSize(IggTextEditor handle, int size);
 extern void IggTextEditorSetText(IggTextEditor handle, const char *text);
 extern void IggTextEditorInsertText(IggTextEditor handle, const char *text);
 extern char const *IggTextEditorGetText(IggTextEditor handle);
+extern char const *IggTextEditorGetWordUnderCursor(IggTextEditor handle);
+extern char const *IggTextEditorGetWordAroundCursor(IggTextEditor handle);
 extern IggBool IggTextEditorHasSelection(IggTextEditor handle);
 extern char const *IggTextEditorGetSelectedText(IggTextEditor handle);
 extern char const *IggTextEditorGetCurrentLineText(IggTextEditor handle);

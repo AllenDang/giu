@@ -592,6 +592,11 @@ TextEditor::Line &TextEditor::InsertLine(int aIndex) {
   return result;
 }
 
+std::string TextEditor::GetWordAroundCursor() const {
+  auto c = GetCursorPosition();
+  return GetText(FindWordStart(c), FindWordEnd(c));
+}
+
 std::string TextEditor::GetWordUnderCursor() const {
   auto c = GetCursorPosition();
   return GetWordAt(c);

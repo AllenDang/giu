@@ -54,6 +54,20 @@ func (t TextEditor) GetText() string {
 	return C.GoString(str)
 }
 
+func (t TextEditor) GetWordUnderCursor() string {
+	str := C.IggTextEditorGetWordUnderCursor(t.handle())
+	defer C.free(unsafe.Pointer(str))
+
+	return C.GoString(str)
+}
+
+func (t TextEditor) GetWordAroundCursor() string {
+	str := C.IggTextEditorGetWordAroundCursor(t.handle())
+	defer C.free(unsafe.Pointer(str))
+
+	return C.GoString(str)
+}
+
 func (t TextEditor) HasSelection() bool {
 	return C.IggTextEditorHasSelection(t.handle()) != 0
 }
