@@ -63,6 +63,13 @@ func loop() {
 			g.InputText("##name", 0, &name),
 			g.Button("Click Me", btnClickMeClicked),
 			g.Tooltip("I'm a tooltip"),
+			g.Button("More tooltip", nil),
+			g.TooltipAdvance(g.Layout{
+				g.Label("I'm a label"),
+				g.Selectable("I'm a selectable", nil),
+				g.Button("I'm a button", nil),
+				g.BulletText("I could be any widgets"),
+			}),
 		),
 		g.DatePicker("Date Picker", &date, 100, func() {
 			fmt.Println(date)

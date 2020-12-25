@@ -28,6 +28,7 @@ func (l *LineWidget) Build() {
 
 	for _, w := range l.widgets {
 		_, isTooltip := w.(*TooltipWidget)
+		_, isTooltipAdvance := w.(*TooltipAdvanceWidget)
 		_, isContextMenu := w.(*ContextMenuWidget)
 		_, isPopupModal := w.(*PopupModalWidget)
 		_, isPopup := w.(*PopupWidget)
@@ -39,7 +40,7 @@ func (l *LineWidget) Build() {
 			AlignTextToFramePadding()
 		}
 
-		if index > 0 && !isTooltip && !isContextMenu && !isPopupModal && !isPopup && !isTabItem && !isCustom {
+		if index > 0 && !isTooltip && !isTooltipAdvance && !isContextMenu && !isPopupModal && !isPopup && !isTabItem && !isCustom {
 			imgui.SameLine()
 		}
 
@@ -1430,6 +1431,24 @@ func (t *TooltipWidget) Build() {
 func Tooltip(tip string) *TooltipWidget {
 	return &TooltipWidget{
 		tip: tip,
+	}
+}
+
+type TooltipAdvanceWidget struct {
+	layout Layout
+}
+
+func TooltipAdvance(layout Layout) *TooltipAdvanceWidget {
+	return &TooltipAdvanceWidget{
+		layout: layout,
+	}
+}
+
+func (t *TooltipAdvanceWidget) Build() {
+	if imgui.IsItemHovered() && t.layout != nil {
+		imgui.BeginTooltip()
+		t.layout.Build()
+		imgui.EndTooltip()
 	}
 }
 
