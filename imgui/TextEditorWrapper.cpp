@@ -166,6 +166,24 @@ void IggTextEditorSetErrorMarkers(IggTextEditor handle, IggTextEditorErrorMarker
   editor->SetErrorMarkers(*markers);
 }
 
+void IggTextEditorCopy(IggTextEditor handle)
+{
+  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
+  editor->Copy();
+}
+
+void IggTextEditorCut(IggTextEditor handle)
+{
+  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
+  editor->Cut();
+}
+
+void IggTextEditorPaste(IggTextEditor handle)
+{
+  TextEditor *editor = reinterpret_cast<TextEditor*>(handle);
+  editor->Paste();
+}
+
 void IggTextEditorDelete(IggTextEditor handle)
 {
   TextEditor *editor = reinterpret_cast<TextEditor*>(handle);

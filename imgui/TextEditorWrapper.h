@@ -28,7 +28,11 @@ extern void IggTextEditorGetCursorPos(IggTextEditor handle, int *column,
 extern void IggTextEditorGetSelectionStart(IggTextEditor handle, int *column,
                                            int *line);
 
+extern void IggTextEditorCopy(IggTextEditor handle);
+extern void IggTextEditorCut(IggTextEditor handle);
+extern void IggTextEditorPaste(IggTextEditor handle);
 extern void IggTextEditorDelete(IggTextEditor handle);
+
 extern void IggTextEditorSelectWordUnderCursor(IggTextEditor handle);
 
 extern void IggTextEditorSetLanguageDefinitionSQL(IggTextEditor handle);

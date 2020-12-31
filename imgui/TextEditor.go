@@ -156,6 +156,18 @@ func (t TextEditor) SetErrorMarkers(markers ErrorMarkers) {
 	C.IggTextEditorSetErrorMarkers(t.handle(), markers.handle())
 }
 
+func (t TextEditor) Copy() {
+	C.IggTextEditorCopy(t.handle())
+}
+
+func (t TextEditor) Cut() {
+	C.IggTextEditorCut(t.handle())
+}
+
+func (t TextEditor) Paste() {
+	C.IggTextEditorPaste(t.handle())
+}
+
 func (t TextEditor) Delete() {
 	C.IggTextEditorDelete(t.handle())
 }
