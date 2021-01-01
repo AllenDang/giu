@@ -233,7 +233,7 @@ func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 
 // Call the main loop.
 // loopFunc will be used to construct the ui.
-func (w *MasterWindow) Main(loopFunc func()) {
+func (w *MasterWindow) Run(loopFunc func()) {
 	Run(func() {
 		w.updateFunc = loopFunc
 
