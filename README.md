@@ -52,17 +52,17 @@ func onImSoCute() {
 }
 
 func loop() {
-    g.SingleWindow("hello world", g.Layout{
+    g.SingleWindow("hello world").Layout(g.Layout{
         g.Label("Hello world from giu"),
         g.Line(
-            g.Button("Click Me", onClickMe),
-            g.Button("I'm so cute", onImSoCute)),
+            g.Button("Click Me").OnClick(onClickMe),
+            g.Button("I'm so cute").OnClick(onImSoCute)),
         })
 }
 
 func main() {
     wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable, nil)
-    wnd.Main(loop)
+    wnd.Run(loop)
 }
 ```
 
@@ -137,7 +137,7 @@ func onRunScript() {
     luaPlugin.Layout = {
       Label("Label from lua, tell me your name"),
       InputText("##name", 200, name),
-      Button("Greeting", onGreeting),
+      Button("Greeting"):OnClick(onGreeting),
     }
   `
 
@@ -149,14 +149,14 @@ func onRunScript() {
 
 func loop() {
 	g.SingleWindow("Lua test", g.Layout{
-		g.Button("Load from lua", onRunScript),
+		g.Button("Load from lua").OnClick(onRunScript),
 		luaPlugin.Layout,
 	})
 }
 
 func main() {
 	wnd := g.NewMasterWindow("Lua test", 400, 300, 0, nil)
-	wnd.Main(loop)
+	wnd.Run(loop)
 }
 
 
