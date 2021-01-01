@@ -44,17 +44,17 @@ func buildMsgboxButtons(buttons MsgboxButtons, callback DialogResultCallback) La
 	switch buttons {
 	case MsgboxButtonsOk:
 		return Layout{
-			Button(" Ok ", func() {
+			Button(" Ok ").OnClick(func() {
 				msgboxInvokeCallback(DialogResultOK, callback)
 			}),
 		}
 	case MsgboxButtonsOkCancel:
 		return Layout{
 			Line(
-				Button("  Ok  ", func() {
+				Button("  Ok  ").OnClick(func() {
 					msgboxInvokeCallback(DialogResultOK, callback)
 				}),
-				Button("Cancel", func() {
+				Button("Cancel").OnClick(func() {
 					msgboxInvokeCallback(DialogResultCancel, callback)
 				}),
 			),
@@ -62,17 +62,17 @@ func buildMsgboxButtons(buttons MsgboxButtons, callback DialogResultCallback) La
 	case MsgboxButtonsYesNo:
 		return Layout{
 			Line(
-				Button(" Yes ", func() {
+				Button(" Yes ").OnClick(func() {
 					msgboxInvokeCallback(DialogResultYes, callback)
 				}),
-				Button("  No  ", func() {
+				Button("  No  ").OnClick(func() {
 					msgboxInvokeCallback(DialogResultNo, callback)
 				}),
 			),
 		}
 	default:
 		return Layout{
-			Button("  Ok  ", func() {
+			Button("  Ok  ").OnClick(func() {
 				msgboxInvokeCallback(DialogResultOK, callback)
 			}),
 		}
@@ -102,12 +102,12 @@ func PrepareMsgbox() Layout {
 				state.open = false
 			}
 			SetNextWindowSize(300, 0)
-			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxId), Layout{
+			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxId)).Layout(Layout{
 				Custom(func() {
 					// Ensure the state is valid.
 					Context.GetState(msgboxId)
 				}),
-				LabelWrapped(state.content),
+				Label(state.content).Wrapped(true),
 				buildMsgboxButtons(state.buttons, state.resultCallback),
 			}).Build()
 		}),

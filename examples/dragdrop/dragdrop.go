@@ -12,9 +12,9 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("Drag and Drop", g.Layout{
+	g.SingleWindow("Drag and Drop").Layout(g.Layout{
 		g.Line(
-			g.Button("Drag me: 9", nil),
+			g.Button("Drag me: 9"),
 			g.Custom(func() {
 				if imgui.BeginDragDropSource() {
 					imgui.SetDragDropPayload("DND_DEMO", 9)
@@ -22,7 +22,7 @@ func loop() {
 					imgui.EndDragDropSource()
 				}
 			}),
-			g.Button("Drag me: 10", nil),
+			g.Button("Drag me: 10"),
 			g.Custom(func() {
 				if imgui.BeginDragDropSource() {
 					imgui.SetDragDropPayload("DND_DEMO", 10)
@@ -31,7 +31,7 @@ func loop() {
 				}
 			}),
 		),
-		g.InputTextMultiline("##DropTarget", &dropTarget, -1, -1, g.InputTextFlagsReadOnly, nil, nil),
+		g.InputTextMultiline("##DropTarget", &dropTarget).Size(-1, -1).Flags(g.InputTextFlagsReadOnly),
 		g.Custom(func() {
 			if imgui.BeginDragDropTarget() {
 				payload := imgui.AcceptDragDropPayload("DND_DEMO")
@@ -46,5 +46,5 @@ func loop() {
 
 func main() {
 	wnd := g.NewMasterWindow("Drag and Drop", 600, 400, g.MasterWindowFlagsNotResizable, nil)
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

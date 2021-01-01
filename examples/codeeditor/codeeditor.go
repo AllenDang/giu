@@ -13,9 +13,9 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("Code Editor", g.Layout{
+	g.SingleWindow("Code Editor").Layout(g.Layout{
 		g.Line(
-			g.Button("Get Text", func() {
+			g.Button("Get Text").OnClick(func() {
 				if editor.HasSelection() {
 					fmt.Println(editor.GetSelectedText())
 				} else {
@@ -30,10 +30,10 @@ func loop() {
 
 				fmt.Println("Current line is", editor.GetCurrentLineText())
 			}),
-			g.Button("Set Text", func() {
+			g.Button("Set Text").OnClick(func() {
 				editor.SetText("Set text")
 			}),
-			g.Button("Set Error Marker", func() {
+			g.Button("Set Error Marker").OnClick(func() {
 				errMarkers.Clear()
 				errMarkers.Insert(1, "Error message")
 				fmt.Println("ErrMarkers Size:", errMarkers.Size())
@@ -57,5 +57,5 @@ func main() {
 	editor.SetLanguageDefinitionSQL()
 
 	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0, nil)
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

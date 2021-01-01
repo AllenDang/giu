@@ -20,17 +20,17 @@ func onQuit() {
 }
 
 func loop() {
-	g.SingleWindow("hello world", g.Layout{
+	g.SingleWindow("hello world").Layout(g.Layout{
 		g.Label("Hello world from giu"),
 		g.Line(
-			g.Button("Click Me", onClickMe),
-			g.Button("I'm so cute", onImSoCute),
-			g.Button("Quit", onQuit),
+			g.Button("Click Me").OnClick(onClickMe),
+			g.Button("I'm so cute").OnClick(onImSoCute),
+			g.Button("Quit").OnClick(onQuit),
 		),
 	})
 }
 
 func main() {
 	wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable, nil)
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

@@ -12,7 +12,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("canvas", g.Layout{
+	g.SingleWindow("canvas").Layout(g.Layout{
 		g.Label("Canvas demo"),
 		g.Custom(func() {
 			canvas := g.GetCanvas()
@@ -61,5 +61,5 @@ func main() {
 		texture, _ = g.NewTextureFromRgba(img)
 	}()
 
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

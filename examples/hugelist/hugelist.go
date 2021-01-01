@@ -24,11 +24,11 @@ func buildRows() []*g.RowWidget {
 }
 
 func loop() {
-	g.SingleWindow("Huge list demo", g.Layout{
+	g.SingleWindow("Huge list demo").Layout(g.Layout{
 		g.Label("Use FastTable to display huge amount of rows"),
 		g.Label("Note: FastTable only works if all rows have same height"),
-		g.Child("Container", true, 0, 0, 0, g.Layout{
-			g.FastTable("Fast table", true, buildRows()),
+		g.Child("Container").Layout(g.Layout{
+			g.FastTable("Fast table").Rows(buildRows()),
 		}),
 	})
 }
@@ -40,5 +40,5 @@ func main() {
 	}
 
 	wnd := g.NewMasterWindow("Huge list demo", 800, 600, 0, nil)
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

@@ -40,17 +40,17 @@ func btnPopupCLicked() {
 }
 
 func loop() {
-	g.SingleWindowWithMenuBar("Overview", g.Layout{
-		g.MenuBar(
+	g.SingleWindowWithMenuBar("Overview").Layout(g.Layout{
+		g.MenuBar().Layout(
 			g.Layout{
-				g.Menu("File", g.Layout{
-					g.MenuItem("Open", nil),
-					g.MenuItem("Save", nil),
+				g.Menu("File").Layout(g.Layout{
+					g.MenuItem("Open"),
+					g.MenuItem("Save"),
 					// You could add any kind of widget here, not just menu item.
-					g.Menu("Save as ...", g.Layout{
-						g.MenuItem("Excel file", nil),
-						g.MenuItem("CSV file", nil),
-						g.Button("Button inside menu", nil),
+					g.Menu("Save as ...").Layout(g.Layout{
+						g.MenuItem("Excel file"),
+						g.MenuItem("CSV file"),
+						g.Button("Button inside menu"),
 					},
 					),
 				},
@@ -58,44 +58,44 @@ func loop() {
 			},
 		),
 		g.Label("One line label"),
-		g.LabelWrapped("Auto wrapped label with very long line...............................................this line should be wrapped."),
+		g.Label("Auto wrapped label with very long line...............................................this line should be wrapped.").Wrapped(true),
 		g.Line(
-			g.InputText("##name", 0, &name),
-			g.Button("Click Me", btnClickMeClicked),
+			g.InputText("##name", &name),
+			g.Button("Click Me").OnClick(btnClickMeClicked),
 			g.Tooltip("I'm a tooltip"),
-			g.Button("More tooltip", nil),
-			g.TooltipAdvance(g.Layout{
+			g.Button("More tooltip"),
+			g.Tooltip("Advance Tooltip").Layout(g.Layout{
 				g.Label("I'm a label"),
-				g.Selectable("I'm a selectable", nil),
-				g.Button("I'm a button", nil),
+				g.Selectable("I'm a selectable"),
+				g.Button("I'm a button"),
 				g.BulletText("I could be any widgets"),
 			}),
 		),
-		g.DatePicker("Date Picker", &date, 100, func() {
+		g.DatePicker("Date Picker", &date).OnChange(func() {
 			fmt.Println(date)
 		}),
 		g.Line(
-			g.Checkbox("Checkbox", &checked, func() {
+			g.Checkbox("Checkbox", &checked).OnChange(func() {
 				fmt.Println(checked)
 			}),
-			g.Checkbox("Checkbox 2", &checked2, func() {
+			g.Checkbox("Checkbox 2", &checked2).OnChange(func() {
 				fmt.Println(checked2)
 			}),
 			g.Dummy(30, 0),
-			g.RadioButton("Radio 1", radioOp == 0, func() { radioOp = 0 }),
-			g.RadioButton("Radio 2", radioOp == 1, func() { radioOp = 1 }),
-			g.RadioButton("Radio 3", radioOp == 2, func() { radioOp = 2 }),
+			g.RadioButton("Radio 1", radioOp == 0).OnChange(func() { radioOp = 0 }),
+			g.RadioButton("Radio 2", radioOp == 1).OnChange(func() { radioOp = 1 }),
+			g.RadioButton("Radio 3", radioOp == 2).OnChange(func() { radioOp = 2 }),
 		),
 
-		g.ProgressBar(0.8, -1, 0, "Progress"),
-		g.DragInt("DragInt", &dragInt),
-		g.SliderInt("Slider", &dragInt, 0, 100, ""),
+		g.ProgressBar(0.8).Size(-1, 0).Overlay("Progress"),
+		g.DragInt("DragInt", &dragInt, 0, 100),
+		g.SliderInt("Slider", &dragInt, 0, 100),
 
-		g.Combo("Combo", items[itemSelected], items, &itemSelected, 0, 0, comboChanged),
+		g.Combo("Combo", items[itemSelected], items, &itemSelected).OnChange(comboChanged),
 
 		g.Line(
-			g.Button("Button", nil),
-			g.SmallButton("SmallButton", nil),
+			g.Button("Button"),
+			g.SmallButton("SmallButton"),
 		),
 
 		g.BulletText("Bullet1"),
@@ -105,76 +105,76 @@ func loop() {
 		g.Line(
 			g.Label("Arrow buttons: "),
 
-			g.ArrowButton("arrow left", g.DirectionLeft, nil),
-			g.ArrowButton("arrow right", g.DirectionRight, nil),
-			g.ArrowButton("arrow up", g.DirectionUp, nil),
-			g.ArrowButton("arrow down", g.DirectionDown, nil),
+			g.ArrowButton("arrow left", g.DirectionLeft),
+			g.ArrowButton("arrow right", g.DirectionRight),
+			g.ArrowButton("arrow up", g.DirectionUp),
+			g.ArrowButton("arrow down", g.DirectionDown),
 		),
 
 		g.Line(
-			g.Button("Popup Modal", btnPopupCLicked),
-			g.PopupModal("Confirm", g.Layout{
+			g.Button("Popup Modal").OnClick(btnPopupCLicked),
+			g.PopupModal("Confirm").Layout(g.Layout{
 				g.Label("Confirm to close me?"),
 				g.Line(
-					g.Button("Yes", func() { g.CloseCurrentPopup() }),
-					g.Button("No", nil),
+					g.Button("Yes").OnClick(func() { g.CloseCurrentPopup() }),
+					g.Button("No"),
 				),
 			}),
 			g.Label("Right click me to see the context menu"),
-			g.ContextMenu(g.Layout{
-				g.Selectable("Context menu 1", contextMenu1Clicked),
-				g.Selectable("Context menu 2", contextMenu2Clicked),
+			g.ContextMenu("Context menu").Layout(g.Layout{
+				g.Selectable("Context menu 1").OnClick(contextMenu1Clicked),
+				g.Selectable("Context menu 2").OnClick(contextMenu2Clicked),
 			}),
 		),
 
-		g.TabBar("Tabbar Input", g.Layout{
-			g.TabItem("Multiline Input", g.Layout{
+		g.TabBar("Tabbar Input").Layout(g.Layout{
+			g.TabItem("Multiline Input").Layout(g.Layout{
 				g.Label("This is first tab with a multiline input text field"),
-				g.InputTextMultiline("##multiline", &multiline, -1, -1, 0, nil, nil),
+				g.InputTextMultiline("##multiline", &multiline).Size(-1, -1),
 			}),
-			g.TabItem("Tree", g.Layout{
-				g.TreeNode("TreeNode1", g.TreeNodeFlagsCollapsingHeader|g.TreeNodeFlagsDefaultOpen, g.Layout{
+			g.TabItem("Tree").Layout(g.Layout{
+				g.TreeNode("TreeNode1").Flags(g.TreeNodeFlagsCollapsingHeader | g.TreeNodeFlagsDefaultOpen).Layout(g.Layout{
 					g.Custom(func() {
 						if g.IsItemActive() && g.IsMouseClicked(g.MouseButtonLeft) {
 							fmt.Println("Tree node clicked")
 						}
 					}),
-					g.Selectable("Tree node 1", func() {
+					g.Selectable("Tree node 1").OnClick(func() {
 						fmt.Println("Click tree node 1")
 					}),
 					g.Label("Tree node 2"),
 					g.Label("Tree node 3"),
-					g.Button("Button inside tree", nil),
+					g.Button("Button inside tree"),
 				}),
-				g.TreeNodeV("TreeNode with event handler", 0,
-					func() {
-						if g.IsItemClicked(g.MouseButtonLeft) {
-							fmt.Println("Clicked")
-						}
-					},
+				g.TreeNode("TreeNode with event handler").Layout(
 					g.Layout{
-						g.Selectable("Selectable 1", func() { fmt.Println(1) }),
-						g.Selectable("Selectable 2", func() { fmt.Println(2) }),
-					}),
+						g.Selectable("Selectable 1").OnClick(func() { fmt.Println(1) }),
+						g.Selectable("Selectable 2").OnClick(func() { fmt.Println(2) }),
+					},
+				).Event(func() {
+					if g.IsItemClicked(g.MouseButtonLeft) {
+						fmt.Println("Clicked")
+					}
+				}),
 			}),
-			g.TabItem("ListBox", g.Layout{
-				g.ListBox("ListBox1", []string{"List item 1", "List item 2", "List item 3"}, nil, nil),
+			g.TabItem("ListBox").Layout(g.Layout{
+				g.ListBox("ListBox1", []string{"List item 1", "List item 2", "List item 3"}),
 			}),
-			g.TabItem("Table", g.Layout{
-				g.Table("Table", true, g.Rows{
-					g.Row(g.LabelWrapped("Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog"), g.Label("Age"), g.Label("Loc")),
-					g.Row(g.LabelWrapped("Second Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog"), g.Label("Age"), g.Label("Loc")),
+			g.TabItem("Table").Layout(g.Layout{
+				g.Table("Table").Rows(g.Rows{
+					g.Row(g.Label("Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog").Wrapped(true), g.Label("Age"), g.Label("Loc")),
+					g.Row(g.Label("Second Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog").Wrapped(true), g.Label("Age"), g.Label("Loc")),
 					g.Row(g.Label("Name"), g.Label("Age"), g.Label("Location")),
 					g.Row(g.Label("Allen"), g.Label("33"), g.Label("Shanghai/China")),
-					g.Row(g.Checkbox("check me", &checked, nil), g.Button("click me", nil), g.Label("Anything")),
+					g.Row(g.Checkbox("check me", &checked), g.Button("click me"), g.Label("Anything")),
 				}),
 			}),
-			g.TabItem("Group", g.Layout{
+			g.TabItem("Group").Layout(g.Layout{
 				g.Line(
-					g.Group(g.Layout{
+					g.Group().Layout(g.Layout{
 						g.Label("I'm inside group 1"),
 					}),
-					g.Group(g.Layout{
+					g.Group().Layout(g.Layout{
 						g.Label("I'm inside group 2"),
 					}),
 				),
@@ -190,5 +190,5 @@ func main() {
 	}
 
 	w := g.NewMasterWindow("Overview", 800, 600, 0, nil)
-	w.Main(loop)
+	w.Run(loop)
 }

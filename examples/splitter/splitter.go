@@ -5,11 +5,11 @@ import (
 )
 
 func loop() {
-	g.SingleWindow("splitter", g.Layout{
+	g.SingleWindow("splitter").Layout(g.Layout{
 		g.SplitLayout("Split", g.DirectionHorizontal, true, 200,
 			g.Layout{
 				g.Label("Left panel"),
-				g.Line(g.Button("Button1", nil), g.Button("Button2", nil)),
+				g.Line(g.Button("Button1"), g.Button("Button2")),
 			},
 			g.SplitLayout("Right panel", g.DirectionVertical, true, 200,
 				g.Layout{},
@@ -27,5 +27,5 @@ func loop() {
 
 func main() {
 	wnd := g.NewMasterWindow("Splitter", 800, 600, 0, nil)
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

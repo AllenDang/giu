@@ -11,5 +11,5 @@ func loop() {
 
 func main() {
 	wnd := g.NewMasterWindow("Widgets", 1024, 768, 0, nil)
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

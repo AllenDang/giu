@@ -7,13 +7,13 @@ import (
 )
 
 func loop() {
-	giu.SingleWindow("set style", giu.Layout{
-		giu.LabelV("I'm a styled label", false, &color.RGBA{0x36, 0x74, 0xD5, 255}, nil),
+	giu.SingleWindow("set style").Layout(giu.Layout{
+		giu.Label("I'm a styled label").Color(&color.RGBA{0x36, 0x74, 0xD5, 255}),
 		giu.Label("I'm a normal label"),
 	})
 }
 
 func main() {
 	wnd := giu.NewMasterWindow("Set Style", 400, 200, giu.MasterWindowFlagsNotResizable, nil)
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

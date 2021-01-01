@@ -12,7 +12,7 @@ func loop() {
 	for x := 0.0; len(plotdata) < 1000; x += delta {
 		plotdata = append(plotdata, float32(math.Sin(x)))
 	}
-	g.SingleWindow("hello world", g.Layout{
+	g.SingleWindow("hello world").Layout(g.Layout{
 		g.Label("Hello world from giu"),
 		g.Label("Simple sin(x) plot:"),
 		g.PlotLines("testplot", plotdata),
@@ -23,5 +23,5 @@ func loop() {
 
 func main() {
 	wnd := g.NewMasterWindow("Hello world", 600, 400, g.MasterWindowFlagsNotResizable, nil)
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

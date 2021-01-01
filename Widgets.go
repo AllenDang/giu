@@ -28,7 +28,6 @@ func (l *LineWidget) Build() {
 
 	for _, w := range l.widgets {
 		_, isTooltip := w.(*TooltipWidget)
-		_, isTooltipAdvance := w.(*TooltipAdvanceWidget)
 		_, isContextMenu := w.(*ContextMenuWidget)
 		_, isPopupModal := w.(*PopupModalWidget)
 		_, isPopup := w.(*PopupWidget)
@@ -40,7 +39,7 @@ func (l *LineWidget) Build() {
 			AlignTextToFramePadding()
 		}
 
-		if index > 0 && !isTooltip && !isTooltipAdvance && !isContextMenu && !isPopupModal && !isPopup && !isTabItem && !isCustom {
+		if index > 0 && !isTooltip && !isContextMenu && !isPopupModal && !isPopup && !isTabItem && !isCustom {
 			imgui.SameLine()
 		}
 
@@ -71,15 +70,36 @@ func (i *InputTextMultilineWidget) Build() {
 	}
 }
 
-func InputTextMultiline(label string, text *string, width, height float32, flags InputTextFlags, cb imgui.InputTextCallback, onChange func()) *InputTextMultilineWidget {
+func (i *InputTextMultilineWidget) Flags(flags InputTextFlags) *InputTextMultilineWidget {
+	i.flags = flags
+	return i
+}
+
+func (i *InputTextMultilineWidget) Callback(cb imgui.InputTextCallback) *InputTextMultilineWidget {
+	i.cb = cb
+	return i
+}
+
+func (i *InputTextMultilineWidget) OnChange(onChange func()) *InputTextMultilineWidget {
+	i.onChange = onChange
+	return i
+}
+
+func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultilineWidget {
+	scale := Context.platform.GetContentScale()
+	i.width, i.height = width*scale, height*scale
+	return i
+}
+
+func InputTextMultiline(label string, text *string) *InputTextMultilineWidget {
 	return &InputTextMultilineWidget{
 		label:    label,
 		text:     text,
-		width:    width * Context.platform.GetContentScale(),
-		height:   height * Context.platform.GetContentScale(),
-		flags:    flags,
-		cb:       cb,
-		onChange: onChange,
+		width:    0,
+		height:   0,
+		flags:    0,
+		cb:       nil,
+		onChange: nil,
 	}
 }
 
@@ -96,16 +116,23 @@ func (b *ButtonWidget) Build() {
 	}
 }
 
-func Button(id string, onClick func()) *ButtonWidget {
-	return ButtonV(id, 0, 0, onClick)
+func (b *ButtonWidget) OnClick(onClick func()) *ButtonWidget {
+	b.onClick = onClick
+	return b
 }
 
-func ButtonV(id string, width, height float32, onClick func()) *ButtonWidget {
+func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
+	scale := Context.platform.GetContentScale()
+	b.width, b.height = width*scale, height*scale
+	return b
+}
+
+func Button(id string) *ButtonWidget {
 	return &ButtonWidget{
 		id:      id,
-		width:   width * Context.platform.GetContentScale(),
-		height:  height * Context.platform.GetContentScale(),
-		onClick: onClick,
+		width:   0,
+		height:  0,
+		onClick: nil,
 	}
 }
 
@@ -169,11 +196,16 @@ type ArrowButtonWidget struct {
 	onClick func()
 }
 
-func ArrowButton(id string, dir Direction, onClick func()) *ArrowButtonWidget {
+func (b *ArrowButtonWidget) OnClick(onClick func()) *ArrowButtonWidget {
+	b.onClick = onClick
+	return b
+}
+
+func ArrowButton(id string, dir Direction) *ArrowButtonWidget {
 	return &ArrowButtonWidget{
 		id:      id,
 		dir:     dir,
-		onClick: onClick,
+		onClick: nil,
 	}
 }
 
@@ -188,10 +220,15 @@ type SmallButtonWidget struct {
 	onClick func()
 }
 
-func SmallButton(id string, onClick func()) *SmallButtonWidget {
+func (b *SmallButtonWidget) OnClick(onClick func()) *SmallButtonWidget {
+	b.onClick = onClick
+	return b
+}
+
+func SmallButton(id string) *SmallButtonWidget {
 	return &SmallButtonWidget{
 		id:      id,
-		onClick: onClick,
+		onClick: nil,
 	}
 }
 
@@ -208,12 +245,23 @@ type InvisibleButtonWidget struct {
 	onClick func()
 }
 
-func InvisibleButton(id string, width, height float32, onClick func()) *InvisibleButtonWidget {
+func (b *InvisibleButtonWidget) Size(width, height float32) *InvisibleButtonWidget {
+	scale := Context.platform.GetContentScale()
+	b.width, b.height = width*scale, height*scale
+	return b
+}
+
+func (b *InvisibleButtonWidget) OnClick(onClick func()) *InvisibleButtonWidget {
+	b.onClick = onClick
+	return b
+}
+
+func InvisibleButton(id string) *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
 		id:      id,
-		width:   width * Context.platform.GetContentScale(),
-		height:  height * Context.platform.GetContentScale(),
-		onClick: onClick,
+		width:   0,
+		height:  0,
+		onClick: nil,
 	}
 }
 
@@ -243,31 +291,48 @@ func (i *ImageButtonWidget) Build() {
 	}
 }
 
-func ImageButton(texture *Texture, width, height float32, onClick func()) *ImageButtonWidget {
+func (b *ImageButtonWidget) Size(width, height float32) *ImageButtonWidget {
+	scale := Context.platform.GetContentScale()
+	b.width, b.height = width*scale, height*scale
+	return b
+}
+
+func (b *ImageButtonWidget) OnClick(onClick func()) *ImageButtonWidget {
+	b.onClick = onClick
+	return b
+}
+
+func (b *ImageButtonWidget) UV(uv0, uv1 image.Point) *ImageButtonWidget {
+	b.uv0, b.uv1 = uv0, uv1
+	return b
+}
+
+func (b *ImageButtonWidget) BgColor(bgColor color.RGBA) *ImageButtonWidget {
+	b.bgColor = bgColor
+	return b
+}
+
+func (b *ImageButtonWidget) TintColor(tintColor color.RGBA) *ImageButtonWidget {
+	b.tintColor = tintColor
+	return b
+}
+
+func (b *ImageButtonWidget) FramePadding(padding int) *ImageButtonWidget {
+	b.framePadding = padding
+	return b
+}
+
+func ImageButton(texture *Texture) *ImageButtonWidget {
 	return &ImageButtonWidget{
 		texture:      texture,
-		width:        width * Context.platform.GetContentScale(),
-		height:       height * Context.platform.GetContentScale(),
+		width:        50 * Context.platform.GetContentScale(),
+		height:       50 * Context.platform.GetContentScale(),
 		uv0:          image.Point{X: 0, Y: 0},
 		uv1:          image.Point{X: 1, Y: 1},
 		framePadding: -1,
 		bgColor:      color.RGBA{0, 0, 0, 0},
 		tintColor:    color.RGBA{255, 255, 255, 255},
-		onClick:      onClick,
-	}
-}
-
-func ImageButtonV(texture *Texture, width, height float32, uv0, uv1 image.Point, framePadding int, bgColor, tintColor color.RGBA, onClick func()) *ImageButtonWidget {
-	return &ImageButtonWidget{
-		texture:      texture,
-		width:        width * Context.platform.GetContentScale(),
-		height:       height * Context.platform.GetContentScale(),
-		uv0:          uv0,
-		uv1:          uv1,
-		framePadding: framePadding,
-		bgColor:      bgColor,
-		tintColor:    tintColor,
-		onClick:      onClick,
+		onClick:      nil,
 	}
 }
 
@@ -283,11 +348,16 @@ func (c *CheckboxWidget) Build() {
 	}
 }
 
-func Checkbox(text string, selected *bool, onChange func()) *CheckboxWidget {
+func (c *CheckboxWidget) OnChange(onChange func()) *CheckboxWidget {
+	c.onChange = onChange
+	return c
+}
+
+func Checkbox(text string, selected *bool) *CheckboxWidget {
 	return &CheckboxWidget{
 		text:     text,
 		selected: selected,
-		onChange: onChange,
+		onChange: nil,
 	}
 }
 
@@ -303,11 +373,16 @@ func (r *RadioButtonWidget) Build() {
 	}
 }
 
-func RadioButton(text string, active bool, onChange func()) *RadioButtonWidget {
+func (r *RadioButtonWidget) OnChange(onChange func()) *RadioButtonWidget {
+	r.onChange = onChange
+	return r
+}
+
+func RadioButton(text string, active bool) *RadioButtonWidget {
 	return &RadioButtonWidget{
 		text:     text,
 		active:   active,
-		onChange: onChange,
+		onChange: nil,
 	}
 }
 
@@ -328,14 +403,35 @@ func (c *ChildWidget) Build() {
 	imgui.EndChild()
 }
 
-func Child(id string, border bool, width, height float32, flags WindowFlags, layout Layout) *ChildWidget {
+func (c *ChildWidget) Border(border bool) *ChildWidget {
+	c.border = border
+	return c
+}
+
+func (c *ChildWidget) Size(width, height float32) *ChildWidget {
+	scale := Context.platform.GetContentScale()
+	c.width, c.height = width*scale, height*scale
+	return c
+}
+
+func (c *ChildWidget) Flags(flags WindowFlags) *ChildWidget {
+	c.flags = flags
+	return c
+}
+
+func (c *ChildWidget) Layout(layout Layout) *ChildWidget {
+	c.layout = layout
+	return c
+}
+
+func Child(id string) *ChildWidget {
 	return &ChildWidget{
 		id:     id,
-		width:  width * Context.platform.GetContentScale(),
-		height: height * Context.platform.GetContentScale(),
-		border: border,
-		flags:  flags,
-		layout: layout,
+		width:  0,
+		height: 0,
+		border: true,
+		flags:  0,
+		layout: nil,
 	}
 }
 
@@ -347,14 +443,29 @@ type ComboCustomWidget struct {
 	layout       Layout
 }
 
-func ComboCustom(label, previewValue string, width float32, flags ComboFlags, layout Layout) *ComboCustomWidget {
+func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	return &ComboCustomWidget{
 		label:        label,
 		previewValue: previewValue,
-		width:        width * Context.GetPlatform().GetContentScale(),
-		flags:        flags,
-		layout:       layout,
+		width:        0,
+		flags:        0,
+		layout:       nil,
 	}
+}
+
+func (cc *ComboCustomWidget) Layout(layout Layout) *ComboCustomWidget {
+	cc.layout = layout
+	return cc
+}
+
+func (cc *ComboCustomWidget) Flags(flags ComboFlags) *ComboCustomWidget {
+	cc.flags = flags
+	return cc
+}
+
+func (cc *ComboCustomWidget) Size(width float32) *ComboCustomWidget {
+	cc.width = width * Context.platform.GetContentScale()
+	return cc
 }
 
 func (cc *ComboCustomWidget) Build() {
@@ -384,6 +495,23 @@ type ComboWidget struct {
 	onChange     func()
 }
 
+func Combo(label, previewValue string, items []string, selected *int32) *ComboWidget {
+	return &ComboWidget{
+		label:        label,
+		previewValue: previewValue,
+		items:        items,
+		selected:     selected,
+		flags:        0,
+		width:        0,
+		onChange:     nil,
+	}
+}
+
+func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
+	c.flags = flags
+	return c
+}
+
 func (c *ComboWidget) Build() {
 	if c.width > 0 {
 		imgui.PushItemWidth(c.width)
@@ -407,16 +535,14 @@ func (c *ComboWidget) Build() {
 	}
 }
 
-func Combo(label, previewValue string, items []string, selected *int32, width float32, flags ComboFlags, onChange func()) *ComboWidget {
-	return &ComboWidget{
-		label:        label,
-		previewValue: previewValue,
-		items:        items,
-		selected:     selected,
-		flags:        flags,
-		width:        width * Context.platform.GetContentScale(),
-		onChange:     onChange,
-	}
+func (c *ComboWidget) Size(width float32) *ComboWidget {
+	c.width = width * Context.platform.GetContentScale()
+	return c
+}
+
+func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
+	c.onChange = onChange
+	return c
 }
 
 type ContextMenuWidget struct {
@@ -425,24 +551,30 @@ type ContextMenuWidget struct {
 	layout      Layout
 }
 
+func ContextMenu(label string) *ContextMenuWidget {
+	return &ContextMenuWidget{
+		label:       label,
+		mouseButton: MouseButtonRight,
+		layout:      nil,
+	}
+}
+
+func (c *ContextMenuWidget) Layout(layout Layout) *ContextMenuWidget {
+	c.layout = layout
+	return c
+}
+
+func (c *ContextMenuWidget) MouseButton(mouseButton MouseButton) *ContextMenuWidget {
+	c.mouseButton = mouseButton
+	return c
+}
+
 func (c *ContextMenuWidget) Build() {
 	if imgui.BeginPopupContextItemV(c.label, int(c.mouseButton)) {
 		if c.layout != nil {
 			c.layout.Build()
 		}
 		imgui.EndPopup()
-	}
-}
-
-func ContextMenu(layout Layout) *ContextMenuWidget {
-	return ContextMenuV("", MouseButtonRight, layout)
-}
-
-func ContextMenuV(label string, mouseButton MouseButton, layout Layout) *ContextMenuWidget {
-	return &ContextMenuWidget{
-		label:       label,
-		mouseButton: mouseButton,
-		layout:      layout,
 	}
 }
 
@@ -455,27 +587,44 @@ type DragIntWidget struct {
 	format string
 }
 
+func DragInt(label string, value *int32, min, max int32) *DragIntWidget {
+	return &DragIntWidget{
+		label:  label,
+		value:  value,
+		speed:  1.0,
+		min:    min,
+		max:    max,
+		format: "%d",
+	}
+}
+
+func (d *DragIntWidget) Speed(speed float32) *DragIntWidget {
+	d.speed = speed
+	return d
+}
+
+func (d *DragIntWidget) Format(format string) *DragIntWidget {
+	d.format = format
+	return d
+}
+
 func (d *DragIntWidget) Build() {
 	imgui.DragIntV(d.label, d.value, d.speed, d.min, d.max, d.format)
 }
 
-func DragInt(label string, value *int32) *DragIntWidget {
-	return DragIntV(label, value, 1.0, 0, 0, "%d")
+type GroupWidget struct {
+	layout Layout
 }
 
-func DragIntV(label string, value *int32, speed float32, min, max int32, format string) *DragIntWidget {
-	return &DragIntWidget{
-		label:  label,
-		value:  value,
-		speed:  speed,
-		min:    min,
-		max:    max,
-		format: format,
+func Group() *GroupWidget {
+	return &GroupWidget{
+		layout: nil,
 	}
 }
 
-type GroupWidget struct {
-	layout Layout
+func (g *GroupWidget) Layout(layout Layout) *GroupWidget {
+	g.layout = layout
+	return g
 }
 
 func (g *GroupWidget) Build() {
@@ -486,37 +635,44 @@ func (g *GroupWidget) Build() {
 	imgui.EndGroup()
 }
 
-func Group(layout Layout) *GroupWidget {
-	return &GroupWidget{
-		layout: layout,
+type ImageWidget struct {
+	texture                *Texture
+	width                  float32
+	height                 float32
+	uv0, uv1               image.Point
+	tintColor, borderColor color.RGBA
+}
+
+func Image(texture *Texture) *ImageWidget {
+	return &ImageWidget{
+		texture:     texture,
+		width:       100 * Context.platform.GetContentScale(),
+		height:      100 * Context.platform.GetContentScale(),
+		uv0:         image.Point{X: 0, Y: 0},
+		uv1:         image.Point{X: 1, Y: 1},
+		tintColor:   color.RGBA{255, 255, 255, 255},
+		borderColor: color.RGBA{0, 0, 0, 0},
 	}
 }
 
-type ImageWidget struct {
-	texture            *Texture
-	width              float32
-	height             float32
-	uv0, uv1           imgui.Vec2
-	tintCol, borderCol imgui.Vec4
-}
-
-func (i *ImageWidget) Uv0(x, y float32) *ImageWidget {
-	i.uv0.Set(x, y)
+func (i *ImageWidget) Uv(uv0, uv1 image.Point) *ImageWidget {
+	i.uv0, i.uv1 = uv0, uv1
 	return i
 }
 
-func (i *ImageWidget) Uv1(x, y float32) *ImageWidget {
-	i.uv1.Set(x, y)
+func (i *ImageWidget) TintColor(tintColor color.RGBA) *ImageWidget {
+	i.tintColor = tintColor
 	return i
 }
 
-func (i *ImageWidget) TintCol(x, y, z, w float32) *ImageWidget {
-	i.tintCol.Set(x, y, z, w)
+func (i *ImageWidget) BorderCol(borderColor color.RGBA) *ImageWidget {
+	i.borderColor = borderColor
 	return i
 }
 
-func (i *ImageWidget) BorderCol(x, y, z, w float32) *ImageWidget {
-	i.borderCol.Set(x, y, z, w)
+func (i *ImageWidget) Size(width, height float32) *ImageWidget {
+	scale := Context.platform.GetContentScale()
+	i.width, i.height = width*scale, height*scale
 	return i
 }
 
@@ -530,21 +686,9 @@ func (i *ImageWidget) Build() {
 		size.Y = rect.Y
 	}
 	if i.texture != nil && i.texture.id != 0 {
-		imgui.ImageV(i.texture.id, size, i.uv0, i.uv1, i.tintCol, i.borderCol)
+		imgui.ImageV(i.texture.id, size, ToVec2(i.uv0), ToVec2(i.uv1), ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
 	} else {
 		Dummy(i.width, i.height).Build()
-	}
-}
-
-func Image(texture *Texture, width, height float32) *ImageWidget {
-	return &ImageWidget{
-		texture:   texture,
-		width:     width * Context.platform.GetContentScale(),
-		height:    height * Context.platform.GetContentScale(),
-		uv0:       imgui.Vec2{X: 0, Y: 0},
-		uv1:       imgui.Vec2{X: 1, Y: 1},
-		tintCol:   imgui.Vec4{X: 1, Y: 1, Z: 1, W: 1},
-		borderCol: imgui.Vec4{X: 0, Y: 0, Z: 0, W: 0},
 	}
 }
 
@@ -564,12 +708,17 @@ type ImageWithFileWidget struct {
 	height  float32
 }
 
-func ImageWithFile(imgPath string, width, height float32) *ImageWithFileWidget {
+func ImageWithFile(imgPath string) *ImageWithFileWidget {
 	return &ImageWithFileWidget{
 		imgPath: imgPath,
-		width:   width * Context.platform.GetContentScale(),
-		height:  height * Context.platform.GetContentScale(),
+		width:   100,
+		height:  100,
 	}
+}
+
+func (i *ImageWithFileWidget) Size(width, height float32) *ImageWithFileWidget {
+	i.width, i.height = width, height
+	return i
 }
 
 func (i *ImageWithFileWidget) Build() {
@@ -579,7 +728,7 @@ func (i *ImageWithFileWidget) Build() {
 	var widget *ImageWidget
 
 	if state == nil {
-		widget = Image(nil, i.width, i.height)
+		widget = Image(nil).Size(i.width, i.height)
 
 		//Prevent multiple invocation to LoadImage.
 		Context.SetState(stateId, &ImageState{})
@@ -595,7 +744,7 @@ func (i *ImageWithFileWidget) Build() {
 		}
 	} else {
 		imgState := state.(*ImageState)
-		widget = Image(imgState.texture, i.width, i.height)
+		widget = Image(imgState.texture).Size(i.width, i.height)
 	}
 
 	widget.Build()
@@ -610,25 +759,35 @@ type ImageWithUrlWidget struct {
 	whenFailure     Layout
 }
 
-func ImageWithUrlV(url string, downloadTimeout time.Duration, width, height float32, whenLoading Layout, whenFailure Layout) *ImageWithUrlWidget {
+func ImageWithUrl(url string) *ImageWithUrlWidget {
 	return &ImageWithUrlWidget{
 		imgUrl:          url,
-		downloadTimeout: downloadTimeout,
-		width:           width * Context.platform.GetContentScale(),
-		height:          height * Context.platform.GetContentScale(),
-		whenLoading:     whenLoading,
-		whenFailure:     whenFailure,
+		downloadTimeout: 10 * time.Second,
+		width:           100,
+		height:          100,
+		whenLoading:     Layout{Dummy(100, 100)},
+		whenFailure:     Layout{Dummy(100, 100)},
 	}
 }
 
-func ImageWithUrl(url string, downloadTimeout time.Duration, width, height float32) *ImageWithUrlWidget {
-	return ImageWithUrlV(url, downloadTimeout, width, height,
-		Layout{
-			Dummy(width, height),
-		},
-		Layout{
-			Dummy(width, height),
-		})
+func (i *ImageWithUrlWidget) Timeout(downloadTimeout time.Duration) *ImageWithUrlWidget {
+	i.downloadTimeout = downloadTimeout
+	return i
+}
+
+func (i *ImageWithUrlWidget) Size(width, height float32) *ImageWithUrlWidget {
+	i.width, i.height = width, height
+	return i
+}
+
+func (i *ImageWithUrlWidget) LayoutForLoading(layout Layout) *ImageWithUrlWidget {
+	i.whenLoading = layout
+	return i
+}
+
+func (i *ImageWithUrlWidget) LayoutForFailure(layout Layout) *ImageWithUrlWidget {
+	i.whenFailure = layout
+	return i
 }
 
 func (i *ImageWithUrlWidget) Build() {
@@ -638,7 +797,7 @@ func (i *ImageWithUrlWidget) Build() {
 	var widget *ImageWidget
 
 	if state == nil {
-		widget = Image(nil, i.width, i.height)
+		widget = Image(nil).Size(i.width, i.height)
 
 		//Prevent multiple invocation to download image.
 		Context.SetState(stateId, &ImageState{loading: true})
@@ -683,7 +842,7 @@ func (i *ImageWithUrlWidget) Build() {
 			return
 		}
 
-		widget = Image(imgState.texture, i.width, i.height)
+		widget = Image(imgState.texture).Size(i.width, i.height)
 	}
 
 	widget.Build()
@@ -696,6 +855,37 @@ type InputTextWidget struct {
 	flags    InputTextFlags
 	cb       imgui.InputTextCallback
 	onChange func()
+}
+
+func InputText(label string, value *string) *InputTextWidget {
+	return &InputTextWidget{
+		label:    label,
+		value:    value,
+		width:    0,
+		flags:    0,
+		cb:       nil,
+		onChange: nil,
+	}
+}
+
+func (i *InputTextWidget) Size(width float32) *InputTextWidget {
+	i.width = width * Context.platform.GetContentScale()
+	return i
+}
+
+func (i *InputTextWidget) Flags(flags InputTextFlags) *InputTextWidget {
+	i.flags = flags
+	return i
+}
+
+func (i *InputTextWidget) Callback(cb imgui.InputTextCallback) *InputTextWidget {
+	i.cb = cb
+	return i
+}
+
+func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
+	i.onChange = onChange
+	return i
 }
 
 func (i *InputTextWidget) Build() {
@@ -712,21 +902,6 @@ func (i *InputTextWidget) Build() {
 	}
 }
 
-func InputText(label string, width float32, value *string) *InputTextWidget {
-	return InputTextV(label, width, value, 0, nil, nil)
-}
-
-func InputTextV(label string, width float32, value *string, flags InputTextFlags, cb imgui.InputTextCallback, onChange func()) *InputTextWidget {
-	return &InputTextWidget{
-		label:    label,
-		value:    value,
-		width:    width * Context.platform.GetContentScale(),
-		flags:    flags,
-		cb:       cb,
-		onChange: onChange,
-	}
-}
-
 type InputIntWidget struct {
 	label    string
 	value    *int32
@@ -735,18 +910,29 @@ type InputIntWidget struct {
 	onChange func()
 }
 
-func InputInt(label string, width float32, value *int32) *InputIntWidget {
-	return InputIntV(label, width, value, 0, nil)
-}
-
-func InputIntV(label string, width float32, value *int32, flags InputTextFlags, onChange func()) *InputIntWidget {
+func InputIntV(label string, value *int32) *InputIntWidget {
 	return &InputIntWidget{
 		label:    label,
 		value:    value,
-		width:    width,
-		flags:    flags,
-		onChange: onChange,
+		width:    0,
+		flags:    0,
+		onChange: nil,
 	}
+}
+
+func (i *InputIntWidget) Size(width float32) *InputIntWidget {
+	i.width = width * Context.platform.GetContentScale()
+	return i
+}
+
+func (i *InputIntWidget) Flags(flags InputTextFlags) *InputIntWidget {
+	i.flags = flags
+	return i
+}
+
+func (i *InputIntWidget) OnChange(onChange func()) *InputIntWidget {
+	i.onChange = onChange
+	return i
 }
 
 func (i *InputIntWidget) Build() {
@@ -772,19 +958,30 @@ type InputFloatWidget struct {
 	onChange func()
 }
 
-func InputFloat(label string, width float32, value *float32) *InputFloatWidget {
-	return InputFloatV(label, width, value, "%.3f", 0, nil)
-}
-
-func InputFloatV(label string, width float32, value *float32, format string, flags InputTextFlags, onChange func()) *InputFloatWidget {
+func InputFloatV(label string, value *float32) *InputFloatWidget {
 	return &InputFloatWidget{
 		label:    label,
-		width:    width,
+		width:    0,
 		value:    value,
-		format:   format,
-		flags:    flags,
-		onChange: onChange,
+		format:   "%.3f",
+		flags:    0,
+		onChange: nil,
 	}
+}
+
+func (i *InputFloatWidget) Size(width float32) *InputFloatWidget {
+	i.width = width * Context.platform.GetContentScale()
+	return i
+}
+
+func (i *InputFloatWidget) Flags(flags InputTextFlags) *InputFloatWidget {
+	i.flags = flags
+	return i
+}
+
+func (i *InputFloatWidget) Format(format string) *InputFloatWidget {
+	i.format = format
+	return i
 }
 
 func (i *InputFloatWidget) Build() {
@@ -806,6 +1003,30 @@ type LabelWidget struct {
 	wrapped bool
 	color   *color.RGBA
 	font    *imgui.Font
+}
+
+func Label(label string) *LabelWidget {
+	return &LabelWidget{
+		label:   label,
+		wrapped: false,
+		color:   nil,
+		font:    nil,
+	}
+}
+
+func (l *LabelWidget) Wrapped(wrapped bool) *LabelWidget {
+	l.wrapped = wrapped
+	return l
+}
+
+func (l *LabelWidget) Color(color *color.RGBA) *LabelWidget {
+	l.color = color
+	return l
+}
+
+func (l *LabelWidget) Font(font *imgui.Font) *LabelWidget {
+	l.font = font
+	return l
 }
 
 func (l *LabelWidget) Build() {
@@ -836,25 +1057,19 @@ func (l *LabelWidget) Build() {
 	}
 }
 
-func Label(label string) *LabelWidget {
-	return LabelV(label, false, nil, nil)
+type MainMenuBarWidget struct {
+	layout Layout
 }
 
-func LabelWrapped(label string) *LabelWidget {
-	return LabelV(label, true, nil, nil)
-}
-
-func LabelV(label string, wrapped bool, color *color.RGBA, font *imgui.Font) *LabelWidget {
-	return &LabelWidget{
-		label:   label,
-		wrapped: wrapped,
-		color:   color,
-		font:    font,
+func MainMenuBar() *MainMenuBarWidget {
+	return &MainMenuBarWidget{
+		layout: nil,
 	}
 }
 
-type MainMenuBarWidget struct {
-	layout Layout
+func (m *MainMenuBarWidget) Layout(layout Layout) *MainMenuBarWidget {
+	m.layout = layout
+	return m
 }
 
 func (m *MainMenuBarWidget) Build() {
@@ -866,14 +1081,19 @@ func (m *MainMenuBarWidget) Build() {
 	}
 }
 
-func MainMenuBar(layout Layout) *MainMenuBarWidget {
-	return &MainMenuBarWidget{
-		layout: layout,
+type MenuBarWidget struct {
+	layout Layout
+}
+
+func MenuBar() *MenuBarWidget {
+	return &MenuBarWidget{
+		layout: nil,
 	}
 }
 
-type MenuBarWidget struct {
-	layout Layout
+func (m *MenuBarWidget) Layout(layout Layout) *MenuBarWidget {
+	m.layout = layout
+	return m
 }
 
 func (m *MenuBarWidget) Build() {
@@ -885,17 +1105,35 @@ func (m *MenuBarWidget) Build() {
 	}
 }
 
-func MenuBar(layout Layout) *MenuBarWidget {
-	return &MenuBarWidget{
-		layout: layout,
-	}
-}
-
 type MenuItemWidget struct {
 	label    string
 	selected bool
 	enabled  bool
 	onClick  func()
+}
+
+func MenuItem(label string) *MenuItemWidget {
+	return &MenuItemWidget{
+		label:    label,
+		selected: false,
+		enabled:  true,
+		onClick:  nil,
+	}
+}
+
+func (m *MenuItemWidget) Selected(s bool) *MenuItemWidget {
+	m.selected = s
+	return m
+}
+
+func (m *MenuItemWidget) Enabled(e bool) *MenuItemWidget {
+	m.enabled = e
+	return m
+}
+
+func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
+	m.onClick = onClick
+	return m
 }
 
 func (m *MenuItemWidget) Build() {
@@ -904,23 +1142,28 @@ func (m *MenuItemWidget) Build() {
 	}
 }
 
-func MenuItem(label string, onClick func()) *MenuItemWidget {
-	return MenuItemV(label, false, true, onClick)
-}
-
-func MenuItemV(label string, selected, enabled bool, onClick func()) *MenuItemWidget {
-	return &MenuItemWidget{
-		label:    label,
-		selected: selected,
-		enabled:  enabled,
-		onClick:  onClick,
-	}
-}
-
 type MenuWidget struct {
 	label   string
 	enabled bool
 	layout  Layout
+}
+
+func Menu(label string) *MenuWidget {
+	return &MenuWidget{
+		label:   label,
+		enabled: true,
+		layout:  nil,
+	}
+}
+
+func (m *MenuWidget) Enabled(e bool) *MenuWidget {
+	m.enabled = e
+	return m
+}
+
+func (m *MenuWidget) Layout(layout Layout) *MenuWidget {
+	m.layout = layout
+	return m
 }
 
 func (m *MenuWidget) Build() {
@@ -932,22 +1175,28 @@ func (m *MenuWidget) Build() {
 	}
 }
 
-func Menu(label string, layout Layout) *MenuWidget {
-	return MenuV(label, true, layout)
-}
-
-func MenuV(label string, enabled bool, layout Layout) *MenuWidget {
-	return &MenuWidget{
-		label:   label,
-		enabled: enabled,
-		layout:  layout,
-	}
-}
-
 type PopupWidget struct {
 	name   string
 	flags  WindowFlags
 	layout Layout
+}
+
+func Popup(name string) *PopupWidget {
+	return &PopupWidget{
+		name:   name,
+		flags:  0,
+		layout: nil,
+	}
+}
+
+func (p *PopupWidget) Flags(flags WindowFlags) *PopupWidget {
+	p.flags = flags
+	return p
+}
+
+func (p *PopupWidget) Layout(layout Layout) *PopupWidget {
+	p.layout = layout
+	return p
 }
 
 func (p *PopupWidget) Build() {
@@ -960,14 +1209,6 @@ func (p *PopupWidget) Build() {
 	}
 }
 
-func Popup(name string, flags WindowFlags, layout Layout) *PopupWidget {
-	return &PopupWidget{
-		name:   name,
-		flags:  flags,
-		layout: layout,
-	}
-}
-
 type PopupModalWidget struct {
 	name   string
 	open   *bool
@@ -975,17 +1216,28 @@ type PopupModalWidget struct {
 	layout Layout
 }
 
-func PopupModal(name string, layout Layout) *PopupModalWidget {
-	return PopupModalV(name, nil, WindowFlagsNoResize, layout)
-}
-
-func PopupModalV(name string, open *bool, flags WindowFlags, layout Layout) *PopupModalWidget {
+func PopupModal(name string) *PopupModalWidget {
 	return &PopupModalWidget{
 		name:   name,
-		open:   open,
-		flags:  flags,
-		layout: layout,
+		open:   nil,
+		flags:  WindowFlagsNoResize,
+		layout: nil,
 	}
+}
+
+func (p *PopupModalWidget) IsOpen(open *bool) *PopupModalWidget {
+	p.open = open
+	return p
+}
+
+func (p *PopupModalWidget) Flags(flags WindowFlags) *PopupModalWidget {
+	p.flags = flags
+	return p
+}
+
+func (p *PopupModalWidget) Layout(layout Layout) *PopupModalWidget {
+	p.layout = layout
+	return p
 }
 
 func (p *PopupModalWidget) Build() {
@@ -1013,17 +1265,28 @@ type ProgressBarWidget struct {
 	overlay  string
 }
 
-func (p *ProgressBarWidget) Build() {
-	imgui.ProgressBarV(p.fraction, imgui.Vec2{X: p.width, Y: p.height}, p.overlay)
-}
-
-func ProgressBar(fraction float32, width, height float32, overlay string) *ProgressBarWidget {
+func ProgressBar(fraction float32) *ProgressBarWidget {
 	return &ProgressBarWidget{
 		fraction: fraction,
-		width:    width * Context.platform.GetContentScale(),
-		height:   height * Context.platform.GetContentScale(),
-		overlay:  overlay,
+		width:    0,
+		height:   0,
+		overlay:  "",
 	}
+}
+
+func (p *ProgressBarWidget) Size(width, height float32) *ProgressBarWidget {
+	scale := Context.platform.GetContentScale()
+	p.width, p.height = width*scale, height*scale
+	return p
+}
+
+func (p *ProgressBarWidget) Overlay(overlay string) *ProgressBarWidget {
+	p.overlay = overlay
+	return p
+}
+
+func (p *ProgressBarWidget) Build() {
+	imgui.ProgressBarV(p.fraction, imgui.Vec2{X: p.width, Y: p.height}, p.overlay)
 }
 
 type SelectableWidget struct {
@@ -1035,24 +1298,41 @@ type SelectableWidget struct {
 	onClick  func()
 }
 
-func (s *SelectableWidget) Build() {
-	if imgui.SelectableV(s.label, s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
-		s.onClick()
+func Selectable(label string) *SelectableWidget {
+	return &SelectableWidget{
+		label:    label,
+		selected: false,
+		flags:    0,
+		width:    0,
+		height:   0,
+		onClick:  nil,
 	}
 }
 
-func Selectable(label string, onClick func()) *SelectableWidget {
-	return SelectableV(label, false, 0, 0, 0, onClick)
+func (s *SelectableWidget) Selected(selected bool) *SelectableWidget {
+	s.selected = selected
+	return s
 }
 
-func SelectableV(label string, selected bool, flags SelectableFlags, width, height float32, onClick func()) *SelectableWidget {
-	return &SelectableWidget{
-		label:    label,
-		selected: selected,
-		flags:    flags,
-		width:    width * Context.platform.GetContentScale(),
-		height:   height * Context.platform.GetContentScale(),
-		onClick:  onClick,
+func (s *SelectableWidget) Flags(flags SelectableFlags) *SelectableWidget {
+	s.flags = flags
+	return s
+}
+
+func (s *SelectableWidget) Size(width, height float32) *SelectableWidget {
+	scale := Context.platform.GetContentScale()
+	s.width, s.height = width*scale, height*scale
+	return s
+}
+
+func (s *SelectableWidget) OnClick(onClick func()) *SelectableWidget {
+	s.onClick = onClick
+	return s
+}
+
+func (s *SelectableWidget) Build() {
+	if imgui.SelectableV(s.label, s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+		s.onClick()
 	}
 }
 
@@ -1074,18 +1354,23 @@ type SliderIntWidget struct {
 	format string
 }
 
-func (s *SliderIntWidget) Build() {
-	imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format)
-}
-
-func SliderInt(label string, value *int32, min, max int32, format string) *SliderIntWidget {
+func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 	return &SliderIntWidget{
 		label:  label,
 		value:  value,
 		min:    min,
 		max:    max,
-		format: format,
+		format: "%d",
 	}
+}
+
+func (s *SliderIntWidget) Format(format string) *SliderIntWidget {
+	s.format = format
+	return s
+}
+
+func (s *SliderIntWidget) Build() {
+	imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format)
 }
 
 type SliderFloatWidget struct {
@@ -1096,14 +1381,19 @@ type SliderFloatWidget struct {
 	format string
 }
 
-func SliderFloat(label string, value *float32, min, max float32, format string) *SliderFloatWidget {
+func SliderFloat(label string, value *float32, min, max float32) *SliderFloatWidget {
 	return &SliderFloatWidget{
 		label:  label,
 		value:  value,
 		min:    min,
 		max:    max,
-		format: format,
+		format: "%.3f",
 	}
+}
+
+func (s *SliderFloatWidget) Format(format string) *SliderFloatWidget {
+	s.format = format
+	return s
 }
 
 func (sf *SliderFloatWidget) Build() {
@@ -1143,22 +1433,33 @@ type HSplitterWidget struct {
 	delta  *float32
 }
 
-func HSplitter(id string, width, height float32, delta *float32) *HSplitterWidget {
-	aw, ah := GetAvaiableRegion()
-	if width == 0 {
-		width = aw / Context.GetPlatform().GetContentScale()
-	}
-
-	if height == 0 {
-		height = ah / Context.GetPlatform().GetContentScale()
-	}
+func HSplitter(id string, delta *float32) *HSplitterWidget {
 
 	return &HSplitterWidget{
 		id:     id,
-		width:  width * Context.platform.GetContentScale(),
-		height: height * Context.platform.GetContentScale(),
+		width:  0,
+		height: 0,
 		delta:  delta,
 	}
+}
+
+func (h *HSplitterWidget) Size(width, height float32) *HSplitterWidget {
+	scale := Context.platform.GetContentScale()
+	aw, ah := GetAvaiableRegion()
+
+	if width == 0 {
+		h.width = aw / scale
+	} else {
+		h.width = width * scale
+	}
+
+	if height == 0 {
+		h.height = ah / scale
+	} else {
+		h.height = height * scale
+	}
+
+	return h
 }
 
 func (h *HSplitterWidget) Build() {
@@ -1201,20 +1502,32 @@ type VSplitterWidget struct {
 	delta  *float32
 }
 
-func VSplitter(id string, width, height float32, delta *float32) *VSplitterWidget {
-	aw, ah := GetAvaiableRegion()
-	if width == 0 {
-		width = aw / Context.GetPlatform().GetContentScale()
-	}
-	if height == 0 {
-		height = ah / Context.GetPlatform().GetContentScale()
-	}
+func VSplitter(id string, delta *float32) *VSplitterWidget {
 	return &VSplitterWidget{
 		id:     id,
-		width:  width * Context.platform.GetContentScale(),
-		height: height * Context.platform.GetContentScale(),
+		width:  0,
+		height: 0,
 		delta:  delta,
 	}
+}
+
+func (v *VSplitterWidget) Size(width, height float32) *VSplitterWidget {
+	aw, ah := GetAvaiableRegion()
+	scale := Context.platform.GetContentScale()
+
+	if width == 0 {
+		v.width = aw / scale
+	} else {
+		v.width = width * scale
+	}
+
+	if height == 0 {
+		v.height = ah / scale
+	} else {
+		v.height = height * scale
+	}
+
+	return v
 }
 
 func (v *VSplitterWidget) Build() {
@@ -1257,6 +1570,30 @@ type TabItemWidget struct {
 	layout Layout
 }
 
+func TabItem(label string) *TabItemWidget {
+	return &TabItemWidget{
+		label:  label,
+		open:   nil,
+		flags:  0,
+		layout: nil,
+	}
+}
+
+func (t *TabItemWidget) IsOpen(open *bool) *TabItemWidget {
+	t.open = open
+	return t
+}
+
+func (t *TabItemWidget) Flags(flags TabItemFlags) *TabItemWidget {
+	t.flags = flags
+	return t
+}
+
+func (t *TabItemWidget) Layout(layout Layout) *TabItemWidget {
+	t.layout = layout
+	return t
+}
+
 func (t *TabItemWidget) Build() {
 	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
 		if t.layout != nil {
@@ -1266,23 +1603,28 @@ func (t *TabItemWidget) Build() {
 	}
 }
 
-func TabItem(label string, layout Layout) *TabItemWidget {
-	return TabItemV(label, nil, 0, layout)
-}
-
-func TabItemV(label string, open *bool, flags TabItemFlags, layout Layout) *TabItemWidget {
-	return &TabItemWidget{
-		label:  label,
-		open:   open,
-		flags:  flags,
-		layout: layout,
-	}
-}
-
 type TabBarWidget struct {
 	id     string
 	flags  TabBarFlags
 	layout Layout
+}
+
+func TabBar(id string) *TabBarWidget {
+	return &TabBarWidget{
+		id:     id,
+		flags:  0,
+		layout: nil,
+	}
+}
+
+func (t *TabBarWidget) Flags(flags TabBarFlags) *TabBarWidget {
+	t.flags = flags
+	return t
+}
+
+func (t *TabBarWidget) Layout(layout Layout) *TabBarWidget {
+	t.layout = layout
+	return t
 }
 
 func (t *TabBarWidget) Build() {
@@ -1291,18 +1633,6 @@ func (t *TabBarWidget) Build() {
 			t.layout.Build()
 		}
 		imgui.EndTabBar()
-	}
-}
-
-func TabBar(id string, layout Layout) *TabBarWidget {
-	return TabBarV(id, 0, layout)
-}
-
-func TabBarV(id string, flags TabBarFlags, layout Layout) *TabBarWidget {
-	return &TabBarWidget{
-		id:     id,
-		flags:  flags,
-		layout: layout,
 	}
 }
 
@@ -1337,12 +1667,22 @@ type TabelWidget struct {
 	rows   Rows
 }
 
-func Table(label string, border bool, rows Rows) *TabelWidget {
+func Table(label string) *TabelWidget {
 	return &TabelWidget{
 		label:  label,
-		border: border,
-		rows:   rows,
+		border: true,
+		rows:   nil,
 	}
+}
+
+func (t *TabelWidget) Border(b bool) *TabelWidget {
+	t.border = b
+	return t
+}
+
+func (t *TabelWidget) Rows(rows Rows) *TabelWidget {
+	t.rows = rows
+	return t
 }
 
 func (t *TabelWidget) Build() {
@@ -1377,12 +1717,22 @@ type FastTabelWidget struct {
 
 // Create a fast table which only render visible rows.
 // Note this only works with all rows have same height.
-func FastTable(label string, border bool, rows Rows) *FastTabelWidget {
+func FastTable(label string) *FastTabelWidget {
 	return &FastTabelWidget{
 		label:  label,
-		border: border,
-		rows:   rows,
+		border: true,
+		rows:   nil,
 	}
+}
+
+func (t *FastTabelWidget) Border(b bool) *FastTabelWidget {
+	t.border = b
+	return t
+}
+
+func (t *FastTabelWidget) Rows(rows Rows) *FastTabelWidget {
+	t.rows = rows
+	return t
 }
 
 func (t *FastTabelWidget) Build() {
@@ -1419,37 +1769,32 @@ func (t *FastTabelWidget) Build() {
 }
 
 type TooltipWidget struct {
-	tip string
+	tip    string
+	layout Layout
 }
 
 func (t *TooltipWidget) Build() {
 	if imgui.IsItemHovered() {
-		imgui.SetTooltip(t.tip)
+		if t.layout != nil {
+			imgui.BeginTooltip()
+			t.layout.Build()
+			imgui.EndTooltip()
+		} else {
+			imgui.SetTooltip(t.tip)
+		}
 	}
 }
 
 func Tooltip(tip string) *TooltipWidget {
 	return &TooltipWidget{
-		tip: tip,
+		tip:    tip,
+		layout: nil,
 	}
 }
 
-type TooltipAdvanceWidget struct {
-	layout Layout
-}
-
-func TooltipAdvance(layout Layout) *TooltipAdvanceWidget {
-	return &TooltipAdvanceWidget{
-		layout: layout,
-	}
-}
-
-func (t *TooltipAdvanceWidget) Build() {
-	if imgui.IsItemHovered() && t.layout != nil {
-		imgui.BeginTooltip()
-		t.layout.Build()
-		imgui.EndTooltip()
-	}
+func (t *TooltipWidget) Layout(layout Layout) *TooltipWidget {
+	t.layout = layout
+	return t
 }
 
 type TreeNodeWidget struct {
@@ -1457,6 +1802,32 @@ type TreeNodeWidget struct {
 	flags        TreeNodeFlags
 	layout       Layout
 	eventHandler func()
+}
+
+func TreeNode(label string) *TreeNodeWidget {
+	return &TreeNodeWidget{
+		label:        label,
+		flags:        0,
+		layout:       nil,
+		eventHandler: nil,
+	}
+}
+
+func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
+	t.flags = flags
+	return t
+}
+
+// Create TreeNode with eventHandler
+// You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler
+func (t *TreeNodeWidget) Event(handler func()) *TreeNodeWidget {
+	t.eventHandler = handler
+	return t
+}
+
+func (t *TreeNodeWidget) Layout(layout Layout) *TreeNodeWidget {
+	t.layout = layout
+	return t
 }
 
 func (t *TreeNodeWidget) Build() {
@@ -1473,21 +1844,6 @@ func (t *TreeNodeWidget) Build() {
 		if (t.flags & imgui.TreeNodeFlagsNoTreePushOnOpen) == 0 {
 			imgui.TreePop()
 		}
-	}
-}
-
-func TreeNode(label string, flags TreeNodeFlags, layout Layout) *TreeNodeWidget {
-	return TreeNodeV(label, flags, nil, layout)
-}
-
-// Create TreeNode with eventHandler
-// You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler
-func TreeNodeV(label string, flags TreeNodeFlags, eventHandler func(), layout Layout) *TreeNodeWidget {
-	return &TreeNodeWidget{
-		label:        label,
-		flags:        flags,
-		layout:       layout,
-		eventHandler: eventHandler,
 	}
 }
 
@@ -1582,22 +1938,49 @@ type ListBoxWidget struct {
 	onMenu   func(selectedIndex int, menu string)
 }
 
-func ListBox(id string, items []string, onChange func(selectedIndex int), onDClick func(selectedIndex int)) *ListBoxWidget {
-	return ListBoxV(id, 0, 0, true, items, nil, onChange, onDClick, nil)
-}
-
-func ListBoxV(id string, width, height float32, border bool, items []string, menus []string, onChange func(selectedIndex int), onDClick func(selectedIndex int), onMenu func(selectedIndex int, menu string)) *ListBoxWidget {
+func ListBox(id string, items []string) *ListBoxWidget {
 	return &ListBoxWidget{
 		id:       id,
-		width:    width,
-		height:   height,
-		border:   border,
+		width:    0,
+		height:   0,
+		border:   true,
 		items:    items,
-		menus:    menus,
-		onChange: onChange,
-		onDClick: onDClick,
-		onMenu:   onMenu,
+		menus:    nil,
+		onChange: nil,
+		onDClick: nil,
+		onMenu:   nil,
 	}
+}
+
+func (l *ListBoxWidget) Size(width, height float32) *ListBoxWidget {
+	scale := Context.platform.GetContentScale()
+	l.width, l.height = width*scale, height*scale
+	return l
+}
+
+func (l *ListBoxWidget) Border(b bool) *ListBoxWidget {
+	l.border = b
+	return l
+}
+
+func (l *ListBoxWidget) ContextMenu(menuItems []string) *ListBoxWidget {
+	l.menus = menuItems
+	return l
+}
+
+func (l *ListBoxWidget) OnChange(onChange func(selectedIndex int)) *ListBoxWidget {
+	l.onChange = onChange
+	return l
+}
+
+func (l *ListBoxWidget) OnDClick(onDClick func(selectedIndex int)) *ListBoxWidget {
+	l.onDClick = onDClick
+	return l
+}
+
+func (l *ListBoxWidget) OnMenu(onMenu func(selectedIndex int, menu string)) *ListBoxWidget {
+	l.onMenu = onMenu
+	return l
 }
 
 func (l *ListBoxWidget) Build() {
@@ -1609,7 +1992,7 @@ func (l *ListBoxWidget) Build() {
 		state = s.(*ListBoxState)
 	}
 
-	child := Child(l.id, l.border, l.width, l.height, 0, Layout{
+	child := Child(l.id).Border(l.border).Size(l.width, l.height).Layout(Layout{
 		Custom(func() {
 			var clipper imgui.ListClipper
 			clipper.Begin(len(l.items))
@@ -1618,7 +2001,7 @@ func (l *ListBoxWidget) Build() {
 				for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
 					selected := i == state.selectedIndex
 					item := l.items[i]
-					SelectableV(item, selected, SelectableFlagsAllowDoubleClick, 0, 0, func() {
+					Selectable(item).Selected(selected).Flags(SelectableFlagsAllowDoubleClick).OnClick(func() {
 						if state.selectedIndex != i {
 							state.selectedIndex = i
 							if l.onChange != nil {
@@ -1636,7 +2019,7 @@ func (l *ListBoxWidget) Build() {
 					for _, m := range l.menus {
 						index := i
 						menu := m
-						menus = append(menus, MenuItem(fmt.Sprintf("%s##%d", menu, index), func() {
+						menus = append(menus, MenuItem(fmt.Sprintf("%s##%d", menu, index)).OnClick(func() {
 							if l.onMenu != nil {
 								l.onMenu(index, menu)
 							}
@@ -1644,7 +2027,7 @@ func (l *ListBoxWidget) Build() {
 					}
 
 					if len(menus) > 0 {
-						ContextMenuV(fmt.Sprintf("%d_contextmenu", i), MouseButtonRight, menus).Build()
+						ContextMenu(fmt.Sprintf("%d_contextmenu", i)).Layout(menus).Build()
 					}
 				}
 			}
@@ -1663,13 +2046,23 @@ type DatePickerWidget struct {
 	onChange func()
 }
 
-func DatePicker(id string, date *time.Time, width float32, onChange func()) *DatePickerWidget {
+func DatePicker(id string, date *time.Time) *DatePickerWidget {
 	return &DatePickerWidget{
 		id:       id,
 		date:     date,
-		width:    width * Context.GetPlatform().GetContentScale(),
-		onChange: onChange,
+		width:    100 * Context.GetPlatform().GetContentScale(),
+		onChange: nil,
 	}
+}
+
+func (d *DatePickerWidget) Size(width float32) *DatePickerWidget {
+	d.width = width * Context.platform.GetContentScale()
+	return d
+}
+
+func (d *DatePickerWidget) OnChange(onChange func()) *DatePickerWidget {
+	d.onChange = onChange
+	return d
 }
 
 func (d *DatePickerWidget) Build() {
@@ -1784,7 +2177,7 @@ func (d *DatePickerWidget) Build() {
 									imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
 								}
 
-								SelectableV(fmt.Sprintf("%02d", day), day == int(d.date.Day()), 0, 0, 0, func() {
+								Selectable(fmt.Sprintf("%02d", day)).Selected(day == int(d.date.Day())).OnClick(func() {
 									*d.date, _ = time.ParseInLocation(
 										"2006-01-02",
 										fmt.Sprintf("%d-%02d-%02d",
@@ -1809,7 +2202,7 @@ func (d *DatePickerWidget) Build() {
 				rows = append(rows, Row(row...))
 			}
 
-			Table("DayTable", true, rows).Build()
+			Table("DayTable").Rows(rows).Build()
 
 			imgui.EndCombo()
 		}

@@ -31,7 +31,7 @@ func (c *CircleButtonWidget) Build() {
 
 	// Place a invisible button to be a placeholder for events
 	buttonWidth := float32(radius) * 2
-	g.InvisibleButton(c.id, buttonWidth, buttonWidth, c.clicked).Build()
+	g.InvisibleButton(c.id).Size(buttonWidth, buttonWidth).OnClick(c.clicked).Build()
 
 	// If button is hovered
 	drawActive := g.IsItemHovered()
@@ -62,7 +62,7 @@ func onCircleButton() {
 }
 
 func loop() {
-	g.SingleWindow("custom widget", g.Layout{
+	g.SingleWindow("custom widget").Layout(g.Layout{
 		g.Line(CircleButton("Hello", onHello), CircleButton("World", onWorld)),
 		CircleButton("Circle Button", onCircleButton),
 	})
@@ -70,5 +70,5 @@ func loop() {
 
 func main() {
 	wnd := g.NewMasterWindow("Custom Widget", 400, 300, g.MasterWindowFlagsNotResizable, nil)
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

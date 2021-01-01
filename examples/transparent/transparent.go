@@ -12,7 +12,7 @@ func loop() {
 	imgui.PushStyleVarFloat(imgui.StyleVarWindowBorderSize, 0)
 	g.PushColorWindowBg(color.RGBA{50, 50, 50, 0})
 	g.PushColorFrameBg(color.RGBA{10, 10, 10, 0})
-	g.SingleWindow("transparent", g.Layout{
+	g.SingleWindow("transparent").Layout(g.Layout{
 		g.Custom(func() {
 			canvas := g.GetCanvas()
 			pos := g.GetCursorScreenPos()
@@ -46,5 +46,5 @@ func loop() {
 func main() {
 	wnd := g.NewMasterWindow("transparent", 300, 200, g.MasterWindowFlagsNotResizable|g.MasterWindowFlagsFloating|g.MasterWindowFlagsFrameless|g.MasterWindowFlagsTransparent, nil)
 	wnd.SetBgColor(color.RGBA{0, 0, 0, 0})
-	wnd.Main(loop)
+	wnd.Run(loop)
 }

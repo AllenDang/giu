@@ -65,7 +65,7 @@ func (s *SplitLayoutWidget) buildChild(id string, width, height float32, layout 
 				PushFramePadding(0, 0)
 			}
 		}),
-		Child(id, !isSplitLayoutWidget && s.border, width, height, 0, s.restoreItemSpacing(layout)),
+		Child(id).Border(!isSplitLayoutWidget && s.border).Size(width, height).Layout(s.restoreItemSpacing(layout)),
 		Custom(func() {
 			if isSplitLayoutWidget || !s.border {
 				PopStyle()
@@ -100,14 +100,14 @@ func (s *SplitLayoutWidget) Build() {
 		layout = Layout{
 			Line(
 				s.buildChild(fmt.Sprintf("%s_layout1", stateId), splitLayoutState.sashPos, 0, s.layout1),
-				VSplitter(fmt.Sprintf("%s_vsplitter", stateId), itemSpacingX, 0, &(splitLayoutState.delta)),
+				VSplitter(fmt.Sprintf("%s_vsplitter", stateId), &(splitLayoutState.delta)).Size(itemSpacingX, 0),
 				s.buildChild(fmt.Sprintf("%s_layout2", stateId), 0, 0, s.layout2),
 			),
 		}
 	} else {
 		layout = Layout{
 			s.buildChild(fmt.Sprintf("%s_layout1", stateId), 0, splitLayoutState.sashPos, s.layout1),
-			HSplitter(fmt.Sprintf("%s_hsplitter", stateId), 0, itemSpacingY, &(splitLayoutState.delta)),
+			HSplitter(fmt.Sprintf("%s_hsplitter", stateId), &(splitLayoutState.delta)).Size(0, itemSpacingY),
 			s.buildChild(fmt.Sprintf("%s_layout2", stateId), 0, 0, s.layout2),
 		}
 	}
