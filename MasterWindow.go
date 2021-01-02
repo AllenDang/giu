@@ -1,6 +1,7 @@
 package giu
 
 import (
+	"github.com/faiface/mainthread"
 	"image/color"
 	"time"
 
@@ -185,7 +186,7 @@ func (w *MasterWindow) run() {
 	ticker := time.NewTicker(time.Second / time.Duration(p.GetTPS()))
 	shouldQuit := false
 	for !shouldQuit {
-		Call(func() {
+		mainthread.Call(func() {
 			p.ProcessEvents()
 			w.render()
 
@@ -234,7 +235,7 @@ func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 // Call the main loop.
 // loopFunc will be used to construct the ui.
 func (w *MasterWindow) Run(loopFunc func()) {
-	Run(func() {
+	mainthread.Run(func() {
 		w.updateFunc = loopFunc
 
 		Context.isAlive = true
@@ -243,7 +244,7 @@ func (w *MasterWindow) Run(loopFunc func()) {
 
 		Context.isAlive = false
 
-		Call(func() {
+		mainthread.Call(func() {
 			w.renderer.Dispose()
 			w.platform.Dispose()
 			w.context.Destroy()
