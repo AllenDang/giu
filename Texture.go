@@ -2,6 +2,7 @@ package giu
 
 import (
 	"errors"
+	"github.com/faiface/mainthread"
 	"image"
 	"runtime"
 
@@ -22,7 +23,7 @@ type loadImageResult struct {
 // If call this in mainthread will result in stuck.
 func NewTextureFromRgba(rgba *image.RGBA) (*Texture, error) {
 	Update()
-	result := CallVal(func() interface{} {
+	result := mainthread.CallVal(func() interface{} {
 		texId, err := Context.renderer.LoadImage(rgba)
 		return &loadImageResult{id: texId, err: err}
 	})
@@ -45,7 +46,7 @@ func ToTexture(textureID imgui.TextureID) *Texture {
 
 func (t *Texture) release() {
 	Update()
-	Call(func() {
+	mainthread.Call(func() {
 		Context.renderer.ReleaseImage(t.id)
 	})
 }
