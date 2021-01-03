@@ -910,7 +910,7 @@ type InputIntWidget struct {
 	onChange func()
 }
 
-func InputIntV(label string, value *int32) *InputIntWidget {
+func InputInt(label string, value *int32) *InputIntWidget {
 	return &InputIntWidget{
 		label:    label,
 		value:    value,
