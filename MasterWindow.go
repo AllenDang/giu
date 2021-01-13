@@ -1,9 +1,10 @@
 package giu
 
 import (
-	"github.com/faiface/mainthread"
 	"image/color"
 	"time"
+
+	"github.com/faiface/mainthread"
 
 	"github.com/AllenDang/giu/imgui"
 )
