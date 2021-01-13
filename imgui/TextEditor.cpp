@@ -1305,6 +1305,12 @@ void TextEditor::EnterCharacter(ImWchar aChar, bool aShift) {
     char buf[7];
     int e = ImTextCharToUtf8(buf, 7, aChar);
     if (e > 0) {
+      if (e == 1 && buf[0] == '\t') {
+        for (int i = 0; i < mTabSize; i++)
+          buf[i] = ' ';
+        e = mTabSize;
+      }
+
       buf[e] = '\0';
       auto &line = mLines[coord.mLine];
       auto cindex = GetCharacterIndex(coord);
@@ -1766,31 +1772,13 @@ void TextEditor::Backspace() {
       // if (cindex > 0 && UTF8CharLength(line[cindex].mChar) > 1)
       //	--cindex;
 
-      int actualLoc = pos.mColumn;
-      for (int i = 0; i < line.size(); i++) {
-        if (line[i].mChar == '\t')
-          actualLoc -= GetTabSize() - 1;
-      }
-
-      if (actualLoc > 0 && actualLoc < line.size()) {
-        if ((line[actualLoc - 1].mChar == '(' &&
-             line[actualLoc].mChar == ')') ||
-            (line[actualLoc - 1].mChar == '{' &&
-             line[actualLoc].mChar == '}') ||
-            (line[actualLoc - 1].mChar == '[' && line[actualLoc].mChar == ']'))
-          Delete();
-      }
-
       u.mRemovedStart = u.mRemovedEnd = GetActualCursorCoordinates();
+      --u.mRemovedStart.mColumn;
+      --mState.mCursorPosition.mColumn;
 
       while (cindex < line.size() && cend-- > cindex) {
-        uint8_t chVal = line[cindex].mChar;
-
         u.mRemoved += line[cindex].mChar;
         line.erase(line.begin() + cindex);
-
-        u.mRemovedStart.mColumn -= (chVal == '\t') ? mTabSize : 1;
-        mState.mCursorPosition.mColumn -= (chVal == '\t') ? mTabSize : 1;
       }
     }
 
