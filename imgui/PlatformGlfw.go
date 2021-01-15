@@ -5,7 +5,7 @@ import (
 	"math"
 	"runtime"
 
-	. "github.com/inkyblackness/imgui-go/v3"
+	. "github.com/ianling/imgui-go"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
