@@ -8,6 +8,10 @@ github.com/go-gl/glfw/v3.3/glfw v0.0.0-20201108214237-06ea97f0c265 h1:BcbKYUZo/T
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20201108214237-06ea97f0c265/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-resty/resty/v2 v2.3.0 h1:JOOeAvjSlapTT92p8xiS19Zxev1neGikoHsXJeOq8So=
 github.com/go-resty/resty/v2 v2.3.0/go.mod h1:UpN9CgLZNsv4e9XG50UU8xdI0F43UQ4HmxLBDwaroHU=
+github.com/ianling/imgui-go v1.12.1-0.20210115050016-0f4b0f04e75b h1:3wMc6HICAtTHfIHuHUM186taV7SWSoe0ihgXZND/GSA=
+github.com/ianling/imgui-go v1.12.1-0.20210115050016-0f4b0f04e75b/go.mod h1:yFLUkH/g8eMfNx16GrLoCGUDjTjjHAQjrg5EMdspDUY=
+github.com/ianling/imgui-go v1.12.1-0.20210115050955-434395a2da82 h1:0MOR+YCbB8lqENL09KZzWMGiCCc3gnVfo4OLS1UWL4s=
+github.com/ianling/imgui-go v1.12.1-0.20210115050955-434395a2da82/go.mod h1:yFLUkH/g8eMfNx16GrLoCGUDjTjjHAQjrg5EMdspDUY=
 github.com/inkyblackness/imgui-go/v3 v3.0.0 h1:+gOBA/xlr528SOGDteKQS+q7QkyBcOi+znhn18BMs/8=
 github.com/inkyblackness/imgui-go/v3 v3.0.0/go.mod h1:WdM5LZHuTrjd1d+yd2fA19t3mG538kJ6zOLB2sAXF6U=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

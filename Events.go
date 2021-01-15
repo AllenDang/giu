@@ -1,6 +1,6 @@
 package giu
 
-import "github.com/inkyblackness/imgui-go/v3"
+import "github.com/ianling/imgui-go"
 
 type MouseButton int
 

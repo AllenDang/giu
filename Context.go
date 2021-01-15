@@ -2,7 +2,7 @@ package giu
 
 import (
 	imguiLocal "github.com/AllenDang/giu/imgui"
-	"github.com/inkyblackness/imgui-go/v3"
+	"github.com/ianling/imgui-go"
 )
 
 var (
