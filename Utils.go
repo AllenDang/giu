@@ -7,7 +7,7 @@ import (
 	"image/png"
 	"os"
 
-	"github.com/AllenDang/giu/imgui"
+	"github.com/inkyblackness/imgui-go/v3"
 )
 
 func LoadImage(imgPath string) (*image.RGBA, error) {

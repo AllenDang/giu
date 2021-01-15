@@ -43,7 +43,7 @@ func (c *CircleButtonWidget) Build() {
 	if drawActive {
 		canvas.AddCircleFilled(center, float32(radius), color.RGBA{12, 12, 200, 255})
 	}
-	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, 2)
+	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, 2, 0)
 
 	// Draw text
 	canvas.AddText(center.Sub(image.Pt(int((width-padding)/2), int(height/2))), color.RGBA{255, 255, 255, 255}, c.id)

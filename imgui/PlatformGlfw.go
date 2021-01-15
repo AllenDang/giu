@@ -5,6 +5,8 @@ import (
 	"math"
 	"runtime"
 
+	. "github.com/inkyblackness/imgui-go/v3"
+
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
@@ -206,17 +208,7 @@ func (platform *GLFW) ShouldStop() bool {
 }
 
 func (platform *GLFW) WaitForEvent() {
-	if platform.imguiIO.GetConfigFlags()&ConfigFlagEnablePowerSavingMode == 0 {
-		return
-	}
-
-	windowIsHidden := platform.window.GetAttrib(glfw.Visible) == glfw.False || platform.window.GetAttrib(glfw.Iconified) == glfw.True
-
 	waitingTime := math.Inf(0)
-
-	if !windowIsHidden {
-		waitingTime = GetEventWaitingTime()
-	}
 
 	if waitingTime > 0 {
 		if math.IsInf(waitingTime, 0) {
@@ -298,12 +290,12 @@ func (platform *GLFW) SetDropCallback(cb func(names []string)) {
 
 func (platform *GLFW) updateMouseCursor() {
 	io := platform.imguiIO
-	if (io.GetConfigFlags()&ConfigFlagNoMouseCursorChange) == 1 || platform.window.GetInputMode(glfw.CursorMode) == glfw.CursorDisabled {
+	if (io.ConfigFlags()&ConfigFlagNoMouseCursorChange) == 1 || platform.window.GetInputMode(glfw.CursorMode) == glfw.CursorDisabled {
 		return
 	}
 
 	cursor := MouseCursor()
-	if cursor == MouseCursorNone || io.GetMouseDrawCursor() {
+	if cursor == MouseCursorNone || io.MouseDrawCursor() {
 		platform.window.SetInputMode(glfw.CursorMode, glfw.CursorHidden)
 	} else {
 		gCursor := platform.mouseCursors[MouseCursorArrow]

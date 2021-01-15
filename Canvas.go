@@ -4,7 +4,7 @@ import (
 	"image"
 	"image/color"
 
-	"github.com/AllenDang/giu/imgui"
+	"github.com/inkyblackness/imgui-go/v3"
 )
 
 type Canvas struct {
@@ -13,12 +13,12 @@ type Canvas struct {
 
 func GetCanvas() *Canvas {
 	return &Canvas{
-		drawlist: imgui.GetWindowDrawList(),
+		drawlist: imgui.WindowDrawList(),
 	}
 }
 
 func (c *Canvas) AddLine(p1, p2 image.Point, color color.RGBA, thickness float32) {
-	c.drawlist.AddLine(ToVec2(p1), ToVec2(p2), ToVec4Color(color), thickness)
+	c.drawlist.AddLineV(ToVec2(p1), ToVec2(p2), imgui.Packed(color), thickness)
 }
 
 type CornerFlags int
@@ -37,44 +37,44 @@ const (
 
 )
 
-func (c *Canvas) AddRect(pMin, pMax image.Point, color color.RGBA, rounding float32, rounding_corners CornerFlags, thickness float32) {
-	c.drawlist.AddRect(ToVec2(pMin), ToVec2(pMax), ToVec4Color(color), rounding, int(rounding_corners), thickness)
+func (c *Canvas) AddRect(pMin, pMax image.Point, color color.RGBA, rounding float32, roundingCorners CornerFlags, thickness float32) {
+	c.drawlist.AddRectV(ToVec2(pMin), ToVec2(pMax), imgui.Packed(color), rounding, int(roundingCorners), thickness)
 }
 
-func (c *Canvas) AddRectFilled(pMin, pMax image.Point, color color.RGBA, rounding float32, rounding_corners CornerFlags) {
-	c.drawlist.AddRectFilled(ToVec2(pMin), ToVec2(pMax), ToVec4Color(color), rounding, int(rounding_corners))
+func (c *Canvas) AddRectFilled(pMin, pMax image.Point, color color.RGBA, rounding float32, roundingCorners CornerFlags) {
+	c.drawlist.AddRectFilledV(ToVec2(pMin), ToVec2(pMax), imgui.Packed(color), rounding, int(roundingCorners))
 }
 
 func (c *Canvas) AddText(pos image.Point, color color.RGBA, text string) {
-	c.drawlist.AddText(ToVec2(pos), ToVec4Color(color), text)
+	c.drawlist.AddText(ToVec2(pos), imgui.Packed(color), text)
 }
 
-func (c *Canvas) AddBezierCurve(pos0, cp0, cp1, pos1 image.Point, color color.RGBA, thickness float32, num_segments int) {
-	c.drawlist.AddBezierCurve(ToVec2(pos0), ToVec2(cp0), ToVec2(cp1), ToVec2(pos1), ToVec4Color(color), thickness, num_segments)
+func (c *Canvas) AddBezierCurve(pos0, cp0, cp1, pos1 image.Point, color color.RGBA, thickness float32, numSegments int) {
+	c.drawlist.AddBezierCurve(ToVec2(pos0), ToVec2(cp0), ToVec2(cp1), ToVec2(pos1), imgui.Packed(color), thickness, numSegments)
 }
 
 func (c *Canvas) AddTriangle(p1, p2, p3 image.Point, color color.RGBA, thickness float32) {
-	c.drawlist.AddTriangle(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec4Color(color), thickness)
+	c.drawlist.AddTriangleV(ToVec2(p1), ToVec2(p2), ToVec2(p3), imgui.Packed(color), thickness)
 }
 
 func (c *Canvas) AddTriangleFilled(p1, p2, p3 image.Point, color color.RGBA) {
-	c.drawlist.AddTriangleFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec4Color(color))
+	c.drawlist.AddTriangleFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), imgui.Packed(color))
 }
 
-func (c *Canvas) AddCircle(center image.Point, radius float32, color color.RGBA, thickness float32) {
-	c.drawlist.AddCircle(ToVec2(center), radius, ToVec4Color(color), thickness)
+func (c *Canvas) AddCircle(center image.Point, radius float32, color color.RGBA, thickness float32, numSegments int) {
+	c.drawlist.AddCircleV(ToVec2(center), radius, imgui.Packed(color), numSegments, thickness)
 }
 
 func (c *Canvas) AddCircleFilled(center image.Point, radius float32, color color.RGBA) {
-	c.drawlist.AddCircleFilled(ToVec2(center), radius, ToVec4Color(color))
+	c.drawlist.AddCircleFilled(ToVec2(center), radius, imgui.Packed(color))
 }
 
 func (c *Canvas) AddQuad(p1, p2, p3, p4 image.Point, color color.RGBA, thickness float32) {
-	c.drawlist.AddQuad(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec4Color(color), thickness)
+	c.drawlist.AddQuad(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), imgui.Packed(color), thickness)
 }
 
 func (c *Canvas) AddQuadFilled(p1, p2, p3, p4 image.Point, color color.RGBA) {
-	c.drawlist.AddQuadFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec4Color(color))
+	c.drawlist.AddQuadFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), imgui.Packed(color))
 }
 
 // Stateful path API, add points then finish with PathFillConvex() or PathStroke()
@@ -92,23 +92,23 @@ func (c *Canvas) PathLineToMergeDuplicate(pos image.Point) {
 }
 
 func (c *Canvas) PathFillConvex(color color.RGBA) {
-	c.drawlist.PathFillConvex(ToVec4Color(color))
+	c.drawlist.PathFillConvex(imgui.Packed(color))
 }
 
 func (c *Canvas) PathStroke(color color.RGBA, closed bool, thickness float32) {
-	c.drawlist.PathStroke(ToVec4Color(color), closed, thickness)
+	c.drawlist.PathStroke(imgui.Packed(color), closed, thickness)
 }
 
-func (c *Canvas) PathArcTo(center image.Point, radius, a_min, a_max float32, num_segments int) {
-	c.drawlist.PathArcTo(ToVec2(center), radius, a_min, a_max, num_segments)
+func (c *Canvas) PathArcTo(center image.Point, radius, aMin, aMax float32, numSegments int) {
+	c.drawlist.PathArcTo(ToVec2(center), radius, aMin, aMax, numSegments)
 }
 
-func (c *Canvas) PathArcToFast(center image.Point, radius float32, a_min_of_12, a_max_of_12 int) {
-	c.drawlist.PathArcToFast(ToVec2(center), radius, a_min_of_12, a_max_of_12)
+func (c *Canvas) PathArcToFast(center image.Point, radius float32, aMinOf12, aMaxOf12 int) {
+	c.drawlist.PathArcToFast(ToVec2(center), radius, aMinOf12, aMaxOf12)
 }
 
-func (c *Canvas) PathBezierCurveTo(p1, p2, p3 image.Point, num_segments int) {
-	c.drawlist.PathBezierCurveTo(ToVec2(p1), ToVec2(p2), ToVec2(p3), num_segments)
+func (c *Canvas) PathBezierCurveTo(p1, p2, p3 image.Point, numSegments int) {
+	c.drawlist.PathBezierCurveTo(ToVec2(p1), ToVec2(p2), ToVec2(p3), numSegments)
 }
 
 func (c *Canvas) AddImage(texture *Texture, pMin, pMax image.Point) {
@@ -116,5 +116,5 @@ func (c *Canvas) AddImage(texture *Texture, pMin, pMax image.Point) {
 }
 
 func (c *Canvas) AddImageV(texture *Texture, pMin, pMax image.Point, uvMin, uvMax image.Point, color color.RGBA) {
-	c.drawlist.AddImageV(texture.id, ToVec2(pMin), ToVec2(pMax), ToVec2(uvMin), ToVec2(uvMax), ToVec4Color(color))
+	c.drawlist.AddImageV(texture.id, ToVec2(pMin), ToVec2(pMax), ToVec2(uvMin), ToVec2(uvMax), imgui.Packed(color))
 }

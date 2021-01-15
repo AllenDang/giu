@@ -1,7 +1,8 @@
 package giu
 
 import (
-	"github.com/AllenDang/giu/imgui"
+	imguiLocal "github.com/AllenDang/giu/imgui"
+	"github.com/inkyblackness/imgui-go/v3"
 )
 
 var (
@@ -18,8 +19,8 @@ type state struct {
 }
 
 type context struct {
-	renderer imgui.Renderer
-	platform imgui.Platform
+	renderer imguiLocal.Renderer
+	platform imguiLocal.Platform
 
 	// Indicate whether current application is running
 	isAlive bool
@@ -28,11 +29,11 @@ type context struct {
 	state map[string]*state
 }
 
-func (c context) GetRenderer() imgui.Renderer {
+func (c context) GetRenderer() imguiLocal.Renderer {
 	return c.renderer
 }
 
-func (c context) GetPlatform() imgui.Platform {
+func (c context) GetPlatform() imguiLocal.Platform {
 	return c.platform
 }
 
