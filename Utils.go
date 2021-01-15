@@ -60,7 +60,6 @@ func Vec4ToRGBA(vec4 imgui.Vec4) color.RGBA {
 func Update() {
 	if Context.isAlive {
 		Context.platform.Update()
-		Context.IO().SetFrameCountSinceLastInput(0)
 	}
 }
 
