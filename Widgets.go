@@ -146,24 +146,40 @@ type PlotLinesWidget struct {
 	graphSize    imgui.Vec2
 }
 
-func (p *PlotLinesWidget) Build() {
-	imgui.PlotLinesV(p.label, p.values, p.valuesOffset, p.overlayText, p.scaleMin, p.scaleMax, p.graphSize)
-}
-
 func PlotLines(label string, values []float32) *PlotLinesWidget {
-	return PlotLinesV(label, values, 0, "", math.MaxFloat32, math.MaxFloat32, 0, 0)
-}
-
-func PlotLinesV(label string, values []float32, valuesOffset int, overlayText string, scaleMin, scaleMax, width, height float32) *PlotLinesWidget {
 	return &PlotLinesWidget{
 		label:        label,
 		values:       values,
-		valuesOffset: valuesOffset,
-		overlayText:  overlayText,
-		scaleMin:     scaleMin,
-		scaleMax:     scaleMax,
-		graphSize:    imgui.Vec2{X: width, Y: height},
+		valuesOffset: 0,
+		overlayText:  "",
+		scaleMin:     math.MaxFloat32,
+		scaleMax:     math.MaxFloat32,
+		graphSize:    imgui.Vec2{X: 0, Y: 0},
 	}
+}
+
+func (p *PlotLinesWidget) Offset(valuesOffset int) *PlotLinesWidget {
+	p.valuesOffset = valuesOffset
+	return p
+}
+
+func (p *PlotLinesWidget) OverlayText(text string) *PlotLinesWidget {
+	p.overlayText = text
+	return p
+}
+
+func (p *PlotLinesWidget) Size(width, height float32) *PlotLinesWidget {
+	p.graphSize = imgui.Vec2{X: width, Y: height}
+	return p
+}
+
+func (p *PlotLinesWidget) Scale(min, max float32) *PlotLinesWidget {
+	p.scaleMin, p.scaleMax = min, max
+	return p
+}
+
+func (p *PlotLinesWidget) Build() {
+	imgui.PlotLinesV(p.label, p.values, p.valuesOffset, p.overlayText, p.scaleMin, p.scaleMax, p.graphSize)
 }
 
 type BulletWidget struct{}
@@ -958,7 +974,7 @@ type InputFloatWidget struct {
 	onChange func()
 }
 
-func InputFloatV(label string, value *float32) *InputFloatWidget {
+func InputFloat(label string, value *float32) *InputFloatWidget {
 	return &InputFloatWidget{
 		label:    label,
 		width:    0,
