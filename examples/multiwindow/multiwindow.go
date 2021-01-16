@@ -33,13 +33,13 @@ func loop() {
 	g.Window("Window 1").Pos(10, 30).Size(200, 100).Layout(g.Layout{
 		g.Label("I'm a label in window 1"),
 		g.Button("Show Window 2").OnClick(onShowWindow2),
-	})
+	}).Build()
 
 	if showWindow2 {
 		g.Window("Window 2").IsOpen(&showWindow2).Flags(g.WindowFlagsNone).Pos(250, 30).Size(200, 100).Layout(g.Layout{
 			g.Label("I'm a label in window 2"),
 			g.Button("Hide me").OnClick(onHideWindow2),
-		})
+		}).Build()
 	}
 }
 

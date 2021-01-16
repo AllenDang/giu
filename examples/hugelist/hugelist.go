@@ -30,7 +30,7 @@ func loop() {
 		g.Child("Container").Layout(g.Layout{
 			g.FastTable("Fast table").Rows(buildRows()),
 		}),
-	})
+	}).Build()
 }
 
 func main() {

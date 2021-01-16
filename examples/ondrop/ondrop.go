@@ -15,7 +15,7 @@ func loop() {
 	g.SingleWindow("On Drop Demo").Layout(g.Layout{
 		g.Label("Drop file to this window"),
 		g.InputTextMultiline("#DroppedFiles", &dropInFiles).Size(-1, -1).Flags(g.InputTextFlagsReadOnly),
-	})
+	}).Build()
 }
 
 func onDrop(names []string) {

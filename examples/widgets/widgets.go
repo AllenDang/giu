@@ -152,7 +152,7 @@ func loop() {
 						g.Selectable("Selectable 2").OnClick(func() { fmt.Println(2) }),
 					},
 				).Event(func() {
-					if g.IsItemClicked(g.MouseButtonLeft) {
+					if g.IsItemClicked() {
 						fmt.Println("Clicked")
 					}
 				}),
@@ -180,7 +180,7 @@ func loop() {
 				),
 			}),
 		}),
-	})
+	}).Build()
 }
 
 func main() {

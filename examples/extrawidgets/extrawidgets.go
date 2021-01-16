@@ -20,7 +20,7 @@ func loop() {
 			),
 			g.ProgressIndicator("pd3", "Loading...", 0, 0, radius),
 		}, nil),
-	})
+	}).Build()
 }
 
 func main() {

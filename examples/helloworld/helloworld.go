@@ -27,7 +27,7 @@ func loop() {
 			g.Button("I'm so cute").OnClick(onImSoCute),
 			g.Button("Quit").OnClick(onQuit),
 		),
-	})
+	}).Build()
 }
 
 func main() {

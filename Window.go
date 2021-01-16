@@ -40,8 +40,11 @@ type WindowWidget struct {
 }
 
 func Window(title string) *WindowWidget {
+	open := true
+
 	return &WindowWidget{
 		title: title,
+		open:  &open,
 	}
 }
 

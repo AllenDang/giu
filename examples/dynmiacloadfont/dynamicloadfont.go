@@ -22,7 +22,7 @@ func loadFont() {
 func loop() {
 	g.SingleWindow("dynamic load font").Layout(g.Layout{
 		g.Label("你好啊世界！铁憨憨"),
-	})
+	}).Build()
 }
 
 func main() {
