@@ -1241,6 +1241,10 @@ func (p *PopupModalWidget) Layout(layout Layout) *PopupModalWidget {
 }
 
 func (p *PopupModalWidget) Build() {
+	if *p.open {
+		imgui.OpenPopup(p.name)
+	}
+
 	if imgui.BeginPopupModalV(p.name, p.open, p.flags) {
 		if p.layout != nil {
 			Update()
