@@ -24,6 +24,10 @@ func (atlas FontAtlas) handle() C.IggFontAtlas {
 	return C.IggFontAtlas(atlas)
 }
 
+func GlyphRangesAll() GlyphRanges {
+	return GlyphRanges(C.iggGetGlyphRangesAll())
+}
+
 // GlyphRangesDefault describes Basic Latin, Extended Latin.
 func (atlas FontAtlas) GlyphRangesDefault() GlyphRanges {
 	return GlyphRanges(C.iggGetGlyphRangesDefault(atlas.handle()))

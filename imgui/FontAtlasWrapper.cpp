@@ -2,6 +2,16 @@
 #include "FontAtlasWrapper.h"
 #include "WrapperConverter.h"
 
+
+IggGlyphRanges iggGetGlyphRangesAll()
+{
+   static const ImWchar ranges[] = {
+      0x0001, 0xFFFF,
+      0,
+   };
+   return static_cast<IggGlyphRanges>(const_cast<ImWchar *>(&ranges[0]));
+}
+
 IggGlyphRanges iggGetGlyphRangesDefault(IggFontAtlas handle)
 {
    ImFontAtlas *fontAtlas = reinterpret_cast<ImFontAtlas *>(handle);

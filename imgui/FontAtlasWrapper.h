@@ -7,6 +7,7 @@ extern "C"
 {
 #endif
 
+extern IggGlyphRanges iggGetGlyphRangesAll();
 extern IggGlyphRanges iggGetGlyphRangesDefault(IggFontAtlas handle);
 extern IggGlyphRanges iggGetGlyphRangesKorean(IggFontAtlas handle);
 extern IggGlyphRanges iggGetGlyphRangesJapanese(IggFontAtlas handle);
