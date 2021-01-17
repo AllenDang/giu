@@ -1,6 +1,7 @@
 package giu
 
 import (
+	"github.com/go-gl/glfw/v3.3/glfw"
 	"image/color"
 	"time"
 
@@ -14,15 +15,15 @@ type MasterWindowFlags imguiLocal.GLFWWindowFlags
 
 const (
 	// Specifies the window will be fixed size.
-	MasterWindowFlagsNotResizable MasterWindowFlags = MasterWindowFlags(imguiLocal.GLFWWindowFlagsNotResizable)
+	MasterWindowFlagsNotResizable = MasterWindowFlags(imguiLocal.GLFWWindowFlagsNotResizable)
 	// Specifies whether the window is maximized.
-	MasterWindowFlagsMaximized MasterWindowFlags = MasterWindowFlags(imguiLocal.GLFWWindowFlagsMaximized)
+	MasterWindowFlagsMaximized = MasterWindowFlags(imguiLocal.GLFWWindowFlagsMaximized)
 	// Specifies whether the window will be always-on-top.
-	MasterWindowFlagsFloating MasterWindowFlags = MasterWindowFlags(imguiLocal.GLFWWindowFlagsFloating)
+	MasterWindowFlagsFloating = MasterWindowFlags(imguiLocal.GLFWWindowFlagsFloating)
 	// Specifies whether the window will be frameless.
-	MasterWindowFlagsFrameless MasterWindowFlags = MasterWindowFlags(imguiLocal.GLFWWindowFlagsFrameless)
+	MasterWindowFlagsFrameless = MasterWindowFlags(imguiLocal.GLFWWindowFlagsFrameless)
 	// Specifies whether the window will be transparent.
-	MasterWindowFlagsTransparent MasterWindowFlags = MasterWindowFlags(imguiLocal.GLFWWindowFlagsTransparent)
+	MasterWindowFlagsTransparent = MasterWindowFlags(imguiLocal.GLFWWindowFlagsTransparent)
 )
 
 type MasterWindow struct {
@@ -230,6 +231,10 @@ func (w *MasterWindow) SetPos(x, y int) {
 
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
+}
+
+func (w *MasterWindow) SetInputCallback(cb func(key glfw.Key, mods glfw.ModifierKey, action glfw.Action)) {
+	w.platform.SetInputCallback(cb)
 }
 
 // Call the main loop.
