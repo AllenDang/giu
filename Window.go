@@ -93,6 +93,10 @@ func (w *WindowWidget) Layout(layout Layout) *WindowWidget {
 }
 
 func (w *WindowWidget) Build() {
+	if w.layout == nil {
+		return
+	}
+
 	if w.bringToFront {
 		w.bringToFront = false
 		imgui.SetNextWindowFocus()
