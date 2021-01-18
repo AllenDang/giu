@@ -101,7 +101,7 @@ func (w *MasterWindow) setTheme() {
 	style.SetColor(imgui.StyleColorText, imgui.Vec4{X: 0.95, Y: 0.96, Z: 0.98, W: 1.00})
 	style.SetColor(imgui.StyleColorTextDisabled, imgui.Vec4{X: 0.36, Y: 0.42, Z: 0.47, W: 1.00})
 	style.SetColor(imgui.StyleColorWindowBg, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
-	style.SetColor(imgui.StyleColorChildBg, imgui.Vec4{X: 0.15, Y: 0.18, Z: 0.22, W: 1.00})
+	style.SetColor(imgui.StyleColorChildBg, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
 	style.SetColor(imgui.StyleColorPopupBg, imgui.Vec4{X: 0.08, Y: 0.08, Z: 0.08, W: 0.94})
 	style.SetColor(imgui.StyleColorBorder, imgui.Vec4{X: 0.08, Y: 0.10, Z: 0.12, W: 1.00})
 	style.SetColor(imgui.StyleColorBorderShadow, imgui.Vec4{X: 0.00, Y: 0.00, Z: 0.00, W: 0.00})
