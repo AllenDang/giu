@@ -6,7 +6,6 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
-	"math"
 	"time"
 
 	"github.com/AllenDang/giu/imgui"
@@ -134,52 +133,6 @@ func Button(id string) *ButtonWidget {
 		height:  0,
 		onClick: nil,
 	}
-}
-
-type PlotLinesWidget struct {
-	label        string
-	values       []float32
-	valuesOffset int
-	overlayText  string
-	scaleMin     float32
-	scaleMax     float32
-	graphSize    imgui.Vec2
-}
-
-func PlotLines(label string, values []float32) *PlotLinesWidget {
-	return &PlotLinesWidget{
-		label:        label,
-		values:       values,
-		valuesOffset: 0,
-		overlayText:  "",
-		scaleMin:     math.MaxFloat32,
-		scaleMax:     math.MaxFloat32,
-		graphSize:    imgui.Vec2{X: 0, Y: 0},
-	}
-}
-
-func (p *PlotLinesWidget) Offset(valuesOffset int) *PlotLinesWidget {
-	p.valuesOffset = valuesOffset
-	return p
-}
-
-func (p *PlotLinesWidget) OverlayText(text string) *PlotLinesWidget {
-	p.overlayText = text
-	return p
-}
-
-func (p *PlotLinesWidget) Size(width, height float32) *PlotLinesWidget {
-	p.graphSize = imgui.Vec2{X: width, Y: height}
-	return p
-}
-
-func (p *PlotLinesWidget) Scale(min, max float32) *PlotLinesWidget {
-	p.scaleMin, p.scaleMax = min, max
-	return p
-}
-
-func (p *PlotLinesWidget) Build() {
-	imgui.PlotLinesV(p.label, p.values, p.valuesOffset, p.overlayText, p.scaleMin, p.scaleMax, p.graphSize)
 }
 
 type BulletWidget struct{}

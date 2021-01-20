@@ -38,6 +38,7 @@ type MasterWindow struct {
 
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, loadFontFunc func()) *MasterWindow {
 	context := imgui.CreateContext(nil)
+	imgui.ImPlotCreateContext()
 
 	io := imgui.CurrentIO()
 
@@ -248,6 +249,7 @@ func (w *MasterWindow) Run(loopFunc func()) {
 		mainthread.Call(func() {
 			w.renderer.Dispose()
 			w.platform.Dispose()
+			imgui.ImPlotDestroyContext()
 			w.context.Destroy()
 		})
 	})
