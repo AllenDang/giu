@@ -126,6 +126,18 @@ func (p *PlotCanvasWidget) Flags(flags imgui.ImPlotFlags) *PlotCanvasWidget {
 	return p
 }
 
+func (p *PlotCanvasWidget) XAxeFlags(flags imgui.ImPlotAxisFlags) *PlotCanvasWidget {
+	p.xFlags = flags
+	return p
+}
+
+func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags imgui.ImPlotAxisFlags) *PlotCanvasWidget {
+	p.yFlags = yFlags
+	p.y2Flags = y2Flags
+	p.y3Flags = y3Flags
+	return p
+}
+
 func (p *PlotCanvasWidget) Plots(plots Plots) *PlotCanvasWidget {
 	p.plots = plots
 	return p
