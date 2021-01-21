@@ -131,6 +131,12 @@ func (p *PlotCanvasWidget) Plots(plots Plots) *PlotCanvasWidget {
 	return p
 }
 
+func (p *PlotCanvasWidget) Size(width, height int) *PlotCanvasWidget {
+	p.width = width
+	p.height = height
+	return p
+}
+
 func (p *PlotCanvasWidget) Build() {
 	if len(p.plots) > 0 {
 		imgui.ImPlotSetNextPlotLimits(p.xMin, p.xMax, p.yMin, p.yMax, imgui.Condition(p.axisLimitCondition))
