@@ -246,15 +246,15 @@ func (p *PlotBarHWidget) Plot() {
 
 type PlotLineWidget struct {
 	title      string
-	data       []float64
+	values     []float64
 	xScale, x0 float64
 	offset     int
 }
 
-func PlotLine(title string, data []float64) *PlotLineWidget {
+func PlotLine(title string, values []float64) *PlotLineWidget {
 	return &PlotLineWidget{
 		title:  title,
-		data:   data,
+		values: values,
 		xScale: 1,
 		x0:     0,
 		offset: 0,
@@ -277,5 +277,29 @@ func (p *PlotLineWidget) Offset(offset int) *PlotLineWidget {
 }
 
 func (p *PlotLineWidget) Plot() {
-	imgui.ImPlotLine(p.title, p.data, p.xScale, p.x0, p.offset)
+	imgui.ImPlotLine(p.title, p.values, p.xScale, p.x0, p.offset)
+}
+
+type PlotLineXYWidget struct {
+	title  string
+	xs, ys []float64
+	offset int
+}
+
+func PlotLineXY(title string, xvalues, yvalues []float64) *PlotLineXYWidget {
+	return &PlotLineXYWidget{
+		title:  title,
+		xs:     xvalues,
+		ys:     yvalues,
+		offset: 0,
+	}
+}
+
+func (p *PlotLineXYWidget) Offset(offset int) *PlotLineXYWidget {
+	p.offset = offset
+	return p
+}
+
+func (p *PlotLineXYWidget) Plot() {
+	imgui.ImPlotLineXY(p.title, p.xs, p.ys, p.offset)
 }

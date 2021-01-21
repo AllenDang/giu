@@ -192,3 +192,21 @@ func ImPlotLine(label string, values []float64, xscale, x0 float64, offset int) 
 
 	C.iggImPlotLine(labelArg, (*C.double)(unsafe.Pointer(&values[0])), C.int(len(values)), C.double(xscale), C.double(x0), C.int(offset))
 }
+
+func ImPlotLineXY(label string, xs, ys []float64, offset int) {
+	if len(xs) == 0 || len(ys) == 0 || (len(xs) != len(ys)) {
+		return
+	}
+
+	labelArg, labelFin := wrapString(label)
+	defer labelFin()
+
+	C.iggImPlotLineXY(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&xs[0])),
+		(*C.double)(unsafe.Pointer(&ys[0])),
+		C.int(len(xs)),
+		C.int(offset),
+	)
+
+}

@@ -37,6 +37,8 @@ extern void iggImPlotBarsH(const char* label_id, const double* values, int count
 
 extern void iggImPlotLine(const char* label_id, const double* values, int count, double xscale, double x0, int offset);
 
+extern void iggImPlotLineXY(const char* label_id, const double* xs, const double* ys, int count, int offset);
+
 #ifdef __cplusplus
 }
 #endif

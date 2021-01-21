@@ -69,3 +69,9 @@ void iggImPlotLine(const char* label_id, const double* values, int count, double
 {
   ImPlot::PlotLine(label_id, values, count, xscale, x0, offset);
 }
+
+
+void iggImPlotLineXY(const char* label_id, const double* xs, const double* ys, int count, int offset)
+{
+  ImPlot::PlotLine(label_id, xs, ys, count, offset);
+}
