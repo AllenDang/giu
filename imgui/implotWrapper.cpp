@@ -17,6 +17,11 @@ void iggImPlotSetNextPlotTicksY(const double* values, int n_ticks, const char* c
   ImPlot::SetNextPlotTicksY(values, n_ticks, labels, show_default, y_axis);
 }
 
+void iggImPlotFitNextPlotAxes(IggBool x, IggBool y, IggBool y2, IggBool y3)
+{
+  ImPlot::FitNextPlotAxes(x, y, y2, y3);
+}
+
 IggImPlotContext iggImPlotCreateContext()
 {
   ImPlotContext *context = ImPlot::CreateContext();

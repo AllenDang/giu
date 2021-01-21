@@ -52,6 +52,15 @@ func ImPlotSetNextPlotTicksY(values []float64, labels []string, showDefault bool
 	)
 }
 
+func ImPlotFitNextPlotAxis(x, y, y2, y3 bool) {
+	C.iggImPlotFitNextPlotAxes(
+		castBool(x),
+		castBool(y),
+		castBool(y2),
+		castBool(y3),
+	)
+}
+
 type ImPlotContext struct {
 	handle C.IggImPlotContext
 }

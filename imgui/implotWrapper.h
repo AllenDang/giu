@@ -13,6 +13,8 @@ extern void iggImPlotSetNextPlotTicksX(const double* values, int n_ticks, const 
 
 extern void iggImPlotSetNextPlotTicksY(const double* values, int n_ticks, const char* const labels[], IggBool show_default, int y_axis);
 
+extern void iggImPlotFitNextPlotAxes(IggBool x, IggBool y, IggBool y2, IggBool y3);
+
 extern IggImPlotContext iggImPlotCreateContext();
 extern void iggImPlotDestroyContext();
 
