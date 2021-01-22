@@ -230,6 +230,16 @@ func (w *MasterWindow) SetPos(x, y int) {
 	}
 }
 
+func (w *MasterWindow) SetSize(x, y int) {
+	if w.platform != nil {
+		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
+			mainthread.CallNonBlock(func() {
+				glfwPlatform.GetWindow().SetSize(x, y)
+			})
+		}
+	}
+}
+
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
 }
