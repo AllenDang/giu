@@ -55,8 +55,6 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, l
 
 	imguiLocal.DPIScale = scale
 
-	// Init Context.state
-	Context.state = make(map[string]*state)
 	// Assign platform to contex
 	Context.platform = p
 
