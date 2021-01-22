@@ -177,3 +177,11 @@ func (atlas FontAtlas) TextureDataRGBA32() *RGBA32Image {
 func (atlas FontAtlas) SetTextureID(id TextureID) {
 	C.iggFontAtlasSetTextureID(atlas.handle(), id.handle())
 }
+
+func (atlas FontAtlas) Clear() {
+	C.iggFontAtlasClear(atlas.handle())
+}
+
+func (atlas FontAtlas) Build() {
+	C.iggFontAtlasBuild(atlas.handle())
+}
