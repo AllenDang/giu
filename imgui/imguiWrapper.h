@@ -220,7 +220,15 @@ extern void iggSetColumnWidth(int index, float width);
 extern float iggGetColumnOffset(int index);
 extern void iggSetColumnOffset(int index, float offsetX);
 extern int iggGetColumnsCount();
+
+extern float iggGetScrollX();
+extern float iggGetScrollY();
+extern float iggGetScrollMaxX();
+extern float iggGetScrollMaxY();
+extern void iggSetScrollHereX(float centerXRatio);
 extern void iggSetScrollHereY(float centerYRatio);
+extern void iggSetScrollX(float scrollX);
+extern void iggSetScrollY(float scrollY);
 
 extern void iggSetItemDefaultFocus();
 extern IggBool iggIsItemFocused();
