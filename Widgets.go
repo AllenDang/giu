@@ -1609,6 +1609,7 @@ type RowWidget struct {
 	flags        imgui.TableRowFlags
 	minRowHeight float64
 	layout       Layout
+	bgColor      *color.RGBA
 }
 
 func Row(widgets ...Widget) *RowWidget {
@@ -1616,7 +1617,13 @@ func Row(widgets ...Widget) *RowWidget {
 		flags:        0,
 		minRowHeight: 0,
 		layout:       widgets,
+		bgColor:      nil,
 	}
+}
+
+func (r *RowWidget) BgColor(c *color.RGBA) *RowWidget {
+	r.bgColor = c
+	return r
 }
 
 func (r *RowWidget) Flags(flags imgui.TableRowFlags) *RowWidget {
@@ -1641,6 +1648,10 @@ func (r *RowWidget) Build() {
 			imgui.TableNextColumn()
 		}
 		w.Build()
+	}
+
+	if r.bgColor != nil {
+		imgui.TableSetBgColor(imgui.TableBgTarget_RowBg0, uint32(imgui.GetColorU32(ToVec4Color(*(r.bgColor)))), -1)
 	}
 }
 
