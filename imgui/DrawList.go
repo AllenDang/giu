@@ -115,13 +115,13 @@ func (list DrawList) AddText(pos Vec2, col Vec4, text string) {
 	C.iggDrawListAddText(list.handle(), posArg, C.uint(c), textArg)
 }
 
-func (list DrawList) AddBezierCurve(pos0, cp0, cp1, pos1 Vec2, col Vec4, thickness float32, num_segments int) {
+func (list DrawList) AddBezierCubic(pos0, cp0, cp1, pos1 Vec2, col Vec4, thickness float32, num_segments int) {
 	c := GetColorU32(col)
 	pos0Arg, _ := pos0.wrapped()
 	cp0Arg, _ := cp0.wrapped()
 	cp1Arg, _ := cp1.wrapped()
 	pos1Arg, _ := pos1.wrapped()
-	C.iggDrawListAddBezierCurve(list.handle(), pos0Arg, cp0Arg, cp1Arg, pos1Arg, C.uint(c), C.float(thickness), C.int(num_segments))
+	C.iggDrawListAddBezierCubic(list.handle(), pos0Arg, cp0Arg, cp1Arg, pos1Arg, C.uint(c), C.float(thickness), C.int(num_segments))
 }
 
 func (list DrawList) AddTriangle(p1, p2, p3 Vec2, col Vec4, thickness float32) {
@@ -203,11 +203,11 @@ func (list DrawList) PathArcToFast(center Vec2, radius float32, a_min_of_12, a_m
 	C.iggDrawListPathArcToFast(list.handle(), centerArg, C.float(radius), C.int(a_min_of_12), C.int(a_max_of_12))
 }
 
-func (list DrawList) PathBezierCurveTo(p1, p2, p3 Vec2, num_segments int) {
+func (list DrawList) PathBezierCubicCurveTo(p1, p2, p3 Vec2, num_segments int) {
 	p1Arg, _ := p1.wrapped()
 	p2Arg, _ := p2.wrapped()
 	p3Arg, _ := p3.wrapped()
-	C.iggDrawListPathBezierCurveTo(list.handle(), p1Arg, p2Arg, p3Arg, C.int(num_segments))
+	C.iggDrawListPathBezierCubicCurveTo(list.handle(), p1Arg, p2Arg, p3Arg, C.int(num_segments))
 }
 
 func (list DrawList) AddImage(textureId TextureID, pMin, pMax Vec2) {

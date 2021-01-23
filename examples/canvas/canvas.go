@@ -26,7 +26,7 @@ func loop() {
 			cp0 := pos.Add(image.Pt(80, 110))
 			cp1 := pos.Add(image.Pt(50, 210))
 			pos1 := pos.Add(image.Pt(120, 210))
-			canvas.AddBezierCurve(pos0, cp0, cp1, pos1, color, 1, 0)
+			canvas.AddBezierCubic(pos0, cp0, cp1, pos1, color, 1, 0)
 
 			p1 := pos.Add(image.Pt(160, 110))
 			p2 := pos.Add(image.Pt(120, 210))
@@ -43,7 +43,7 @@ func loop() {
 			p3 = pos.Add(image.Pt(200, 500))
 			canvas.PathLineTo(p1)
 			canvas.PathLineTo(p2)
-			canvas.PathBezierCurveTo(p2.Add(image.Pt(40, 0)), p3.Add(image.Pt(-50, 0)), p3, 0)
+			canvas.PathBezierCubicCurveTo(p2.Add(image.Pt(40, 0)), p3.Add(image.Pt(-50, 0)), p3, 0)
 			canvas.PathStroke(color, false, 1)
 
 			if texture != nil {

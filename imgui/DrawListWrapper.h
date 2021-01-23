@@ -27,7 +27,7 @@ extern void iggDrawListAddRectFilled(IggDrawList handle, IggVec2 *p_min,
                                      float rounding, int rounding_corners);
 extern void iggDrawListAddText(IggDrawList handle, IggVec2 *pos,
                                unsigned int col, const char *text);
-extern void iggDrawListAddBezierCurve(IggDrawList handle, IggVec2 *pos0,
+extern void iggDrawListAddBezierCubic(IggDrawList handle, IggVec2 *pos0,
                                       IggVec2 *cp0, IggVec2 *cp1, IggVec2 *pos1,
                                       unsigned int col, float thickness,
                                       int num_segments);
@@ -63,7 +63,7 @@ extern void iggDrawListPathArcTo(IggDrawList handle, IggVec2 *center,
 extern void iggDrawListPathArcToFast(IggDrawList handle, IggVec2 *center,
                                      float radius, int a_min_of_12,
                                      int a_max_of_12);
-extern void iggDrawListPathBezierCurveTo(IggDrawList handle, IggVec2 *p1,
+extern void iggDrawListPathBezierCubicCurveTo(IggDrawList handle, IggVec2 *p1,
                                          IggVec2 *p2, IggVec2 *p3,
                                          int num_segments);
 extern void iggDrawListAddImage(IggDrawList handle, IggTextureID id,

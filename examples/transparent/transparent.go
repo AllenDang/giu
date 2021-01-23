@@ -25,7 +25,7 @@ func loop() {
 			cp0 := pos.Add(image.Pt(80, 110))
 			cp1 := pos.Add(image.Pt(50, 210))
 			pos1 := pos.Add(image.Pt(120, 210))
-			canvas.AddBezierCurve(pos0, cp0, cp1, pos1, color, 1, 0)
+			canvas.AddBezierCubic(pos0, cp0, cp1, pos1, color, 1, 0)
 
 			p1 := pos.Add(image.Pt(160, 110))
 			p2 := pos.Add(image.Pt(120, 210))

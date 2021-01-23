@@ -71,7 +71,7 @@ void iggDrawListAddText(IggDrawList handle, IggVec2 *pos, unsigned int col,
   list->AddText(*posArg, col, text);
 }
 
-void iggDrawListAddBezierCurve(IggDrawList handle, IggVec2 *pos0, IggVec2 *cp0,
+void iggDrawListAddBezierCubic(IggDrawList handle, IggVec2 *pos0, IggVec2 *cp0,
                                IggVec2 *cp1, IggVec2 *pos1, unsigned int col,
                                float thickness, int num_segments) {
   ImDrawList *list = reinterpret_cast<ImDrawList *>(handle);
@@ -79,7 +79,7 @@ void iggDrawListAddBezierCurve(IggDrawList handle, IggVec2 *pos0, IggVec2 *cp0,
   Vec2Wrapper pos1Arg(pos1);
   Vec2Wrapper cp0Arg(cp0);
   Vec2Wrapper cp1Arg(cp1);
-  list->AddBezierCurve(*pos0Arg, *cp0Arg, *cp1Arg, *pos1Arg, col, thickness,
+  list->AddBezierCubic(*pos0Arg, *cp0Arg, *cp1Arg, *pos1Arg, col, thickness,
                        num_segments);
 }
 
@@ -179,13 +179,13 @@ void iggDrawListPathArcToFast(IggDrawList handle, IggVec2 *center, float radius,
   list->PathArcToFast(*centerArg, radius, a_min_of_12, a_max_of_12);
 }
 
-void iggDrawListPathBezierCurveTo(IggDrawList handle, IggVec2 *p1, IggVec2 *p2,
+void iggDrawListPathBezierCubicCurveTo(IggDrawList handle, IggVec2 *p1, IggVec2 *p2,
                                   IggVec2 *p3, int num_segments) {
   ImDrawList *list = reinterpret_cast<ImDrawList *>(handle);
   Vec2Wrapper p1Arg(p1);
   Vec2Wrapper p2Arg(p2);
   Vec2Wrapper p3Arg(p3);
-  list->PathBezierCurveTo(*p1Arg, *p2Arg, *p3Arg, num_segments);
+  list->PathBezierCubicCurveTo(*p1Arg, *p2Arg, *p3Arg, num_segments);
 }
 
 void iggDrawListAddImage(IggDrawList handle, IggTextureID id, IggVec2 *p_min,
