@@ -1684,28 +1684,39 @@ func (c *ColumnWidget) Build() {
 type Columns []*ColumnWidget
 
 type TableWidget struct {
-	label      string
-	flags      imgui.TableFlags
-	size       imgui.Vec2
-	innerWidth float64
-	rows       Rows
-	columns    Columns
-	fastMode   bool
+	label        string
+	flags        imgui.TableFlags
+	size         imgui.Vec2
+	innerWidth   float64
+	rows         Rows
+	columns      Columns
+	fastMode     bool
+	freezeRow    int
+	freezeColumn int
 }
 
 func Table(label string) *TableWidget {
 	return &TableWidget{
-		label:    label,
-		flags:    imgui.TableFlags_Resizable | imgui.TableFlags_Borders | imgui.TableFlags_ScrollY,
-		rows:     nil,
-		columns:  nil,
-		fastMode: false,
+		label:        label,
+		flags:        imgui.TableFlags_Resizable | imgui.TableFlags_Borders | imgui.TableFlags_ScrollY,
+		rows:         nil,
+		columns:      nil,
+		fastMode:     false,
+		freezeRow:    -1,
+		freezeColumn: -1,
 	}
 }
 
 // Display visible rows only to boost performance.
 func (t *TableWidget) FastMode(b bool) *TableWidget {
 	t.fastMode = b
+	return t
+}
+
+// Freeze columns/rows so they stay visible when scrolled.
+func (t *TableWidget) Freeze(col, row int) *TableWidget {
+	t.freezeColumn = col
+	t.freezeRow = row
 	return t
 }
 
@@ -1745,8 +1756,11 @@ func (t *TableWidget) Build() {
 	}
 
 	if imgui.BeginTable(t.label, colCount, t.flags, t.size, t.innerWidth) {
+		if t.freezeColumn >= 0 && t.freezeRow >= 0 {
+			imgui.TableSetupScrollFreeze(t.freezeColumn, t.freezeRow)
+		}
+
 		if len(t.columns) > 0 {
-			imgui.TableSetupScrollFreeze(0, 1)
 			for _, col := range t.columns {
 				imgui.TableSetupColumn(col.label, col.flags, col.innerWidthOrWeight, col.userId)
 			}
@@ -1759,7 +1773,8 @@ func (t *TableWidget) Build() {
 
 			for clipper.Step() {
 				for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
-					t.rows[i].Build()
+					row := t.rows[i]
+					row.Build()
 				}
 			}
 
