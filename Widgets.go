@@ -1606,23 +1606,39 @@ func (t *TabBarWidget) Build() {
 }
 
 type RowWidget struct {
-	layout Layout
+	flags        imgui.TableRowFlags
+	minRowHeight float64
+	layout       Layout
 }
 
 func Row(widgets ...Widget) *RowWidget {
 	return &RowWidget{
-		layout: widgets,
+		flags:        0,
+		minRowHeight: 0,
+		layout:       widgets,
 	}
 }
 
+func (r *RowWidget) Flags(flags imgui.TableRowFlags) *RowWidget {
+	r.flags = flags
+	return r
+}
+
+func (r *RowWidget) MinHeight(height float64) *RowWidget {
+	r.minRowHeight = height
+	return r
+}
+
 func (r *RowWidget) Build() {
-	for i, w := range r.layout {
+	imgui.TableNextRow(r.flags, r.minRowHeight)
+
+	for _, w := range r.layout {
 		_, isTooltip := w.(*TooltipWidget)
 		_, isContextMenu := w.(*ContextMenuWidget)
 		_, isPopup := w.(*PopupModalWidget)
 
-		if i > 0 && !isTooltip && !isContextMenu && !isPopup {
-			imgui.NextColumn()
+		if !isTooltip && !isContextMenu && !isPopup {
+			imgui.TableNextColumn()
 		}
 		w.Build()
 	}
@@ -1630,110 +1646,131 @@ func (r *RowWidget) Build() {
 
 type Rows []*RowWidget
 
-type TabelWidget struct {
-	label  string
-	border bool
-	rows   Rows
+type ColumnWidget struct {
+	label              string
+	flags              imgui.TableColumnFlags
+	innerWidthOrWeight float32
+	userId             uint32
 }
 
-func Table(label string) *TabelWidget {
-	return &TabelWidget{
-		label:  label,
-		border: true,
-		rows:   nil,
+func Column(label string) *ColumnWidget {
+	return &ColumnWidget{
+		label:              label,
+		flags:              0,
+		innerWidthOrWeight: 0,
+		userId:             0,
 	}
 }
 
-func (t *TabelWidget) Border(b bool) *TabelWidget {
-	t.border = b
+func (c *ColumnWidget) Flags(flags imgui.TableColumnFlags) *ColumnWidget {
+	c.flags = flags
+	return c
+}
+
+func (c *ColumnWidget) InnerWidthOrWeight(w float32) *ColumnWidget {
+	c.innerWidthOrWeight = w
+	return c
+}
+
+func (c *ColumnWidget) UserId(id uint32) *ColumnWidget {
+	c.userId = id
+	return c
+}
+
+func (c *ColumnWidget) Build() {
+	imgui.TableSetupColumn(c.label, c.flags, c.innerWidthOrWeight, c.userId)
+}
+
+type Columns []*ColumnWidget
+
+type TableWidget struct {
+	label      string
+	flags      imgui.TableFlags
+	size       imgui.Vec2
+	innerWidth float64
+	rows       Rows
+	columns    Columns
+	fastMode   bool
+}
+
+func Table(label string) *TableWidget {
+	return &TableWidget{
+		label:    label,
+		flags:    imgui.TableFlags_Resizable | imgui.TableFlags_Borders | imgui.TableFlags_ScrollY,
+		rows:     nil,
+		columns:  nil,
+		fastMode: false,
+	}
+}
+
+// Display visible rows only to boost performance.
+func (t *TableWidget) FastMode(b bool) *TableWidget {
+	t.fastMode = b
 	return t
 }
 
-func (t *TabelWidget) Rows(rows Rows) *TabelWidget {
+func (t *TableWidget) Columns(cols Columns) *TableWidget {
+	t.columns = cols
+	return t
+}
+
+func (t *TableWidget) Rows(rows Rows) *TableWidget {
 	t.rows = rows
 	return t
 }
 
-func (t *TabelWidget) Build() {
-	if len(t.rows) > 0 && len(t.rows[0].layout) > 0 {
-		imgui.ColumnsV(len(t.rows[0].layout), t.label, t.border)
-
-		for i, r := range t.rows {
-			if i > 0 {
-				imgui.NextColumn()
-			}
-
-			if t.border {
-				imgui.Separator()
-			}
-
-			r.Build()
-		}
-
-		imgui.Columns()
-
-		if t.border {
-			imgui.Separator()
-		}
-	}
-}
-
-type FastTabelWidget struct {
-	label  string
-	border bool
-	rows   Rows
-}
-
-// Create a fast table which only render visible rows.
-// Note this only works with all rows have same height.
-func FastTable(label string) *FastTabelWidget {
-	return &FastTabelWidget{
-		label:  label,
-		border: true,
-		rows:   nil,
-	}
-}
-
-func (t *FastTabelWidget) Border(b bool) *FastTabelWidget {
-	t.border = b
+func (t *TableWidget) Size(width, height float32) *TableWidget {
+	t.size = imgui.Vec2{X: width, Y: height}
 	return t
 }
 
-func (t *FastTabelWidget) Rows(rows Rows) *FastTabelWidget {
-	t.rows = rows
+func (t *TableWidget) InnerWidth(width float64) *TableWidget {
+	t.innerWidth = width
 	return t
 }
 
-func (t *FastTabelWidget) Build() {
-	if len(t.rows) > 0 && len(t.rows[0].layout) > 0 {
-		imgui.ColumnsV(len(t.rows[0].layout), t.label, t.border)
+func (t *TableWidget) Flags(flags imgui.TableFlags) *TableWidget {
+	t.flags = flags
+	return t
+}
 
-		var clipper imgui.ListClipper
-		clipper.Begin(len(t.rows))
+func (t *TableWidget) Build() {
+	if len(t.columns) == 0 && len(t.rows) == 0 {
+		return
+	}
 
-		for clipper.Step() {
-			for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
-				r := t.rows[i]
+	colCount := len(t.columns)
+	if colCount == 0 {
+		colCount = len(t.rows[0].layout)
+	}
 
-				if i > 0 {
-					imgui.NextColumn()
+	if imgui.BeginTable(t.label, colCount, t.flags, t.size, t.innerWidth) {
+		if len(t.columns) > 0 {
+			imgui.TableSetupScrollFreeze(0, 1)
+			for _, col := range t.columns {
+				imgui.TableSetupColumn(col.label, col.flags, col.innerWidthOrWeight, col.userId)
+			}
+			imgui.TableHeadersRow()
+		}
+
+		if t.fastMode {
+			var clipper imgui.ListClipper
+			clipper.Begin(len(t.rows))
+
+			for clipper.Step() {
+				for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
+					t.rows[i].Build()
 				}
+			}
 
-				if t.border {
-					imgui.Separator()
-				}
-
-				r.Build()
+			clipper.End()
+		} else {
+			for _, row := range t.rows {
+				row.Build()
 			}
 		}
 
-		clipper.End()
-
-		imgui.Columns()
-
-		if t.border {
-			imgui.Separator()
-		}
+		imgui.EndTable()
 	}
 }
 

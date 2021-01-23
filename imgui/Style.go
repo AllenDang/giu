@@ -102,12 +102,17 @@ const (
 	StyleColorPlotLinesHovered      StyleColorID = 39
 	StyleColorPlotHistogram         StyleColorID = 40
 	StyleColorPlotHistogramHovered  StyleColorID = 41
-	StyleColorTextSelectedBg        StyleColorID = 42
-	StyleColorDragDropTarget        StyleColorID = 43
-	StyleColorNavHighlight          StyleColorID = 44 // Gamepad/keyboard: current highlighted item
-	StyleColorNavWindowingHighlight StyleColorID = 45 // Highlight window when using CTRL+TAB
-	StyleColorNavWindowingDarkening StyleColorID = 46 // Darken/colorize entire screen behind the CTRL+TAB window list, when active
-	StyleColorModalWindowDarkening  StyleColorID = 47 // Darken/colorize entire screen behind a modal window, when one is active
+	StyleColorTableHeaderBg         StyleColorID = 42
+	StyleColorTableBorderStrong     StyleColorID = 43
+	StyleColorTableBorderLight      StyleColorID = 44
+	StyleColorTableRowBg            StyleColorID = 45
+	StyleColorTableRowBgAlt         StyleColorID = 46
+	StyleColorTextSelectedBg        StyleColorID = 47
+	StyleColorDragDropTarget        StyleColorID = 48
+	StyleColorNavHighlight          StyleColorID = 49
+	StyleColorNavWindowingHighlight StyleColorID = 50
+	StyleColorNavWindowingDimBg     StyleColorID = 51
+	StyleColorModalWindowDimBg      StyleColorID = 52
 )
 
 // Style describes the overall graphical representation of the user interface.

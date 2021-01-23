@@ -25,11 +25,13 @@ func buildRows() []*g.RowWidget {
 
 func loop() {
 	g.SingleWindow("Huge list demo").Layout(g.Layout{
-		g.Label("Use FastTable to display huge amount of rows"),
 		g.Label("Note: FastTable only works if all rows have same height"),
-		g.Child("Container").Layout(g.Layout{
-			g.FastTable("Fast table").Rows(buildRows()),
-		}),
+		g.Table("Fast table").FastMode(true).
+			Columns(g.Columns{
+				g.Column("Index"),
+				g.Column("Content"),
+			}).
+			Rows(buildRows()),
 	})
 }
 
