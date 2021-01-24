@@ -31,13 +31,37 @@ extern IggBool iggImPlotBeginPlot(const char* title_id,
                                   const char* y3_label);
 extern void iggImPlotEndPlot();
 
+extern void iggImPlotLine(const char* label_id, const double* values, int count, double xscale, double x0, int offset);
+extern void iggImPlotLineXY(const char* label_id, const double* xs, const double* ys, int count, int offset);
+
+extern void iggImPlotScatter(const char* label_id, const double* values, int count, double xscale, double x0, int offset);
+extern void iggImPlotScatterXY(const char* label_id, const double* xs, const double* ys, int count, int offset);
+
 extern void iggImPlotBars(const char* label_id, const double* values, int count, double width, double shift, int offset);
+extern void iggImPlotBarsXY(const char* label_id, const double* xs, const double* ys, int count, double width, int offset);
 
 extern void iggImPlotBarsH(const char* label_id, const double* values, int count, double height, double shift, int offset);
+extern void iggImPlotBarsHXY(const char* label_id, const double* xs, const double* ys, int count, double height, int offset);
 
-extern void iggImPlotLine(const char* label_id, const double* values, int count, double xscale, double x0, int offset);
+extern void iggImPlotStairs(const char* label_id, const double* values, int count, double xscale, double x0, int offset);
+extern void iggImPlotStairsXY(const char* label_id, const double* xs, const double* ys, int count, int offset);
 
-extern void iggImPlotLineXY(const char* label_id, const double* xs, const double* ys, int count, int offset);
+extern void iggImPlotErrorBars(const char* label_id, const double* xs, const double* ys, const double* err, int count, int offset);
+extern void iggImPlotErrorBarsH(const char* label_id, const double* xs, const double* ys, const double* err, int count, int offset);
+
+extern void iggImPlotStems(const char* label_id, const double* values, int count, double y_ref, double xscale, double x0, int offset);
+extern void iggImPlotStemsXY(const char* label_id, const double* xs, const double* ys, int count, double y_ref, int offset);
+
+extern void iggImPlotVLines(const char* label_id, const double* xs, int count, int offset);
+extern void iggImPlotHLines(const char* label_id, const double* ys, int count, int offset);
+
+extern void iggImPlotPieChart(const char* const label_ids[], const double* values, int count, double x, double y, double radius, IggBool normalize, const char* label_fmt, double angle0);
+
+extern void iggImPlotGetPlotPos(IggVec2 *pos);
+extern void iggImPlotGetPlotSize(IggVec2 *size);
+extern IggBool iggImPlotIsPlotHovered();
+extern IggBool iggImPlotIsPlotXAxisHovered();
+extern IggBool iggImPlotIsPlotYAxisHovered(int y_axis);
 
 #ifdef __cplusplus
 }

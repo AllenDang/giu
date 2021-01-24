@@ -303,3 +303,104 @@ func (p *PlotLineXYWidget) Offset(offset int) *PlotLineXYWidget {
 func (p *PlotLineXYWidget) Plot() {
 	imgui.ImPlotLineXY(p.title, p.xs, p.ys, p.offset)
 }
+
+type PlotPieChartWidget struct {
+	labels       []string
+	values       []float64
+	x, y, radius float64
+	normalize    bool
+	labelFormat  string
+	angle0       float64
+}
+
+func PlotPieChart(labels []string, values []float64, x, y, radius float64) *PlotPieChartWidget {
+	return &PlotPieChartWidget{
+		labels:      labels,
+		values:      values,
+		x:           x,
+		y:           y,
+		radius:      radius,
+		normalize:   false,
+		labelFormat: "%.1f",
+		angle0:      90,
+	}
+}
+
+func (p *PlotPieChartWidget) Normalize(n bool) *PlotPieChartWidget {
+	p.normalize = n
+	return p
+}
+
+func (p *PlotPieChartWidget) LabelFormat(fmtStr string) *PlotPieChartWidget {
+	p.labelFormat = fmtStr
+	return p
+}
+
+func (p *PlotPieChartWidget) Angle0(a float64) *PlotPieChartWidget {
+	p.angle0 = a
+	return p
+}
+
+func (p *PlotPieChartWidget) Plot() {
+	imgui.ImPlotPieChart(p.labels, p.values, p.x, p.y, p.radius, p.normalize, p.labelFormat, p.angle0)
+}
+
+type PlotScatterWidget struct {
+	label      string
+	values     []float64
+	xscale, x0 float64
+	offset     int
+}
+
+func PlotScatter(label string, values []float64) *PlotScatterWidget {
+	return &PlotScatterWidget{
+		label:  label,
+		values: values,
+		xscale: 1,
+		x0:     0,
+		offset: 0,
+	}
+}
+
+func (p *PlotScatterWidget) XScale(s float64) *PlotScatterWidget {
+	p.xscale = s
+	return p
+}
+
+func (p *PlotScatterWidget) X0(x float64) *PlotScatterWidget {
+	p.x0 = x
+	return p
+}
+
+func (p *PlotScatterWidget) Offset(offset int) *PlotScatterWidget {
+	p.offset = offset
+	return p
+}
+
+func (p *PlotScatterWidget) Plot() {
+	imgui.ImPlotScatter(p.label, p.values, p.xscale, p.x0, p.offset)
+}
+
+type PlotScatterXYWidget struct {
+	label  string
+	xs, ys []float64
+	offset int
+}
+
+func PlotScatterXY(label string, xs, ys []float64) *PlotScatterXYWidget {
+	return &PlotScatterXYWidget{
+		label:  label,
+		xs:     xs,
+		ys:     ys,
+		offset: 0,
+	}
+}
+
+func (p *PlotScatterXYWidget) Offset(offset int) *PlotScatterXYWidget {
+	p.offset = offset
+	return p
+}
+
+func (p *PlotScatterXYWidget) Plot() {
+	imgui.ImPlotScatterXY(p.label, p.xs, p.ys, p.offset)
+}

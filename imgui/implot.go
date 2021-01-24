@@ -171,6 +171,25 @@ func ImPlotBars(label string, values []float64, width, shift float64, offset int
 	C.iggImPlotBars(labelArg, (*C.double)(unsafe.Pointer(&values[0])), C.int(len(values)), C.double(width), C.double(shift), C.int(offset))
 }
 
+// Plots a vertical bar graph. #width and #shift are in X units.
+func ImPlotBarsXY(label string, xs, ys []float64, width float64, offset int) {
+	if len(xs) == 0 || len(ys) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotBarsXY(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&xs[0])),
+		(*C.double)(unsafe.Pointer(&ys[0])),
+		C.int(len(xs)),
+		C.double(width),
+		C.int(offset))
+}
+
+// Plots a horizontal bar graph. #height and #shift are in Y units.
 func ImPlotBarsH(label string, values []float64, height, shift float64, offset int) {
 	if len(values) == 0 {
 		return
@@ -182,6 +201,26 @@ func ImPlotBarsH(label string, values []float64, height, shift float64, offset i
 	C.iggImPlotBarsH(labelArg, (*C.double)(unsafe.Pointer(&values[0])), C.int(len(values)), C.double(height), C.double(shift), C.int(offset))
 }
 
+// Plots a horizontal bar graph. #height and #shift are in Y units.
+func ImPlotBarsHXY(label string, xs, ys []float64, height float64, offset int) {
+	if len(xs) == 0 || len(ys) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotBarsHXY(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&xs[0])),
+		(*C.double)(unsafe.Pointer(&ys[0])),
+		C.int(len(xs)),
+		C.double(height),
+		C.int(offset),
+	)
+}
+
+// Plots a standard 2D line plot.
 func ImPlotLine(label string, values []float64, xscale, x0 float64, offset int) {
 	if len(values) == 0 {
 		return
@@ -190,9 +229,17 @@ func ImPlotLine(label string, values []float64, xscale, x0 float64, offset int) 
 	labelArg, labelFin := wrapString(label)
 	defer labelFin()
 
-	C.iggImPlotLine(labelArg, (*C.double)(unsafe.Pointer(&values[0])), C.int(len(values)), C.double(xscale), C.double(x0), C.int(offset))
+	C.iggImPlotLine(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&values[0])),
+		C.int(len(values)),
+		C.double(xscale),
+		C.double(x0),
+		C.int(offset),
+	)
 }
 
+// Plots a standard 2D line plot.
 func ImPlotLineXY(label string, xs, ys []float64, offset int) {
 	if len(xs) == 0 || len(ys) == 0 || (len(xs) != len(ys)) {
 		return
@@ -208,5 +255,244 @@ func ImPlotLineXY(label string, xs, ys []float64, offset int) {
 		C.int(len(xs)),
 		C.int(offset),
 	)
+}
 
+// Plots a standard 2D scatter plot. Default marker is ImPlotMarker_Circle.
+func ImPlotScatter(label string, values []float64, xscale, x0 float64, offset int) {
+	if len(values) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotScatter(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&values[0])),
+		C.int(len(values)),
+		C.double(xscale),
+		C.double(x0),
+		C.int(offset),
+	)
+}
+
+// Plots a standard 2D scatter plot. Default marker is ImPlotMarker_Circle.
+func ImPlotScatterXY(label string, xs, ys []float64, offset int) {
+	if len(xs) == 0 || len(ys) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotScatterXY(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&xs[0])),
+		(*C.double)(unsafe.Pointer(&ys[0])),
+		C.int(len(xs)),
+		C.int(offset),
+	)
+}
+
+// Plots a a stairstep graph. The y value is continued constantly from every x position, i.e. the interval [x[i], x[i+1]) has the value y[i].
+func ImPlotStairs(label string, values []float64, xscale, x0 float64, offset int) {
+	if len(values) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotStairs(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&values[0])),
+		C.int(len(values)),
+		C.double(xscale),
+		C.double(x0),
+		C.int(offset),
+	)
+}
+
+// Plots a a stairstep graph. The y value is continued constantly from every x position, i.e. the interval [x[i], x[i+1]) has the value y[i].
+func ImPlotStairsXY(label string, xs, ys []float64, offset int) {
+	if len(xs) == 0 || len(ys) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotStairsXY(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&xs[0])),
+		(*C.double)(unsafe.Pointer(&ys[0])),
+		C.int(len(xs)),
+		C.int(offset),
+	)
+}
+
+// Plots vertical error bar. The label_id should be the same as the label_id of the associated line or bar plot.
+func ImPlotErrorBars(label string, xs, ys, err []float64, offset int) {
+	if len(xs) == 0 || len(ys) == 0 || len(err) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotErrorBars(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&xs)),
+		(*C.double)(unsafe.Pointer(&ys)),
+		(*C.double)(unsafe.Pointer(&err)),
+		C.int(len(xs)),
+		C.int(offset),
+	)
+}
+
+// Plots horizontal error bars. The label_id should be the same as the label_id of the associated line or bar plot.
+func ImPlotErrorBarsH(label string, xs, ys, err []float64, offset int) {
+	if len(xs) == 0 || len(ys) == 0 || len(err) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotErrorBarsH(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&xs)),
+		(*C.double)(unsafe.Pointer(&ys)),
+		(*C.double)(unsafe.Pointer(&err)),
+		C.int(len(xs)),
+		C.int(offset),
+	)
+}
+
+/// Plots vertical stems.
+func ImPlotStems(label string, values []float64, yRef, xscale, x0 float64, offset int) {
+	if len(values) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotStems(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&values[0])),
+		C.int(len(values)),
+		C.double(yRef),
+		C.double(xscale),
+		C.double(x0),
+		C.int(offset),
+	)
+}
+
+/// Plots vertical stems.
+func ImPlotStemsXY(label string, xs, ys []float64, yRef float64, offset int) {
+	if len(xs) == 0 || len(ys) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotStemsXY(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&xs[0])),
+		(*C.double)(unsafe.Pointer(&ys[0])),
+		C.int(len(xs)),
+		C.double(yRef),
+		C.int(offset),
+	)
+}
+
+/// Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
+func ImPlotVLines(label string, xs []float64, offset int) {
+	if len(xs) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotVLines(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&xs[0])),
+		C.int(len(xs)),
+		C.int(offset),
+	)
+}
+
+/// Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
+func ImPlotHLines(label string, ys []float64, offset int) {
+	if len(ys) == 0 {
+		return
+	}
+
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	C.iggImPlotHLines(
+		labelArg,
+		(*C.double)(unsafe.Pointer(&ys[0])),
+		C.int(len(ys)),
+		C.int(offset),
+	)
+}
+
+// Plots a pie chart. If the sum of values > 1 or normalize is true, each value will be normalized. Center and radius are in plot units. #label_fmt can be set to NULL for no labels.
+func ImPlotPieChart(labelIds []string, values []float64, x, y, radius float64, normalize bool, labelFmt string, angle0 float64) {
+	if len(labelIds) == 0 || len(values) == 0 {
+		return
+	}
+
+	labelIdsArg := make([]*C.char, len(labelIds))
+	for i, l := range labelIds {
+		la, lf := wrapString(l)
+		defer lf()
+		labelIdsArg[i] = la
+	}
+
+	labelFmtArg, labelFmtDeleter := wrapString(labelFmt)
+	defer labelFmtDeleter()
+
+	C.iggImPlotPieChart(
+		&labelIdsArg[0],
+		(*C.double)(unsafe.Pointer(&values[0])),
+		C.int(len(values)),
+		C.double(x),
+		C.double(y),
+		C.double(radius),
+		castBool(normalize),
+		labelFmtArg,
+		C.double(angle0),
+	)
+}
+
+func ImPlotGetPlotPos() Vec2 {
+	var pos Vec2
+	posArg, _ := pos.wrapped()
+	C.iggImPlotGetPlotPos(posArg)
+	return pos
+}
+
+func ImPlotGetPlotSize() Vec2 {
+	var size Vec2
+	sizeArg, _ := size.wrapped()
+	C.iggImPlotGetPlotSize(sizeArg)
+	return size
+}
+
+func ImPlotIsPlotHovered() bool {
+	return C.iggImPlotIsPlotHovered() != 0
+}
+
+func ImPlotIsPlotXAxisHovered() bool {
+	return C.iggImPlotIsPlotXAxisHovered() != 0
+}
+
+func ImPlotIsPlotYAxisHovered(yAxis int) bool {
+	return C.iggImPlotIsPlotYAxisHovered(C.int(yAxis)) != -0
 }
