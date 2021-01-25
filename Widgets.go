@@ -388,8 +388,8 @@ func (c *ChildWidget) Flags(flags WindowFlags) *ChildWidget {
 	return c
 }
 
-func (c *ChildWidget) Layout(layout Layout) *ChildWidget {
-	c.layout = layout
+func (c *ChildWidget) Layout(widgets ...Widget) *ChildWidget {
+	c.layout = Layout(widgets)
 	return c
 }
 
@@ -422,8 +422,8 @@ func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	}
 }
 
-func (cc *ComboCustomWidget) Layout(layout Layout) *ComboCustomWidget {
-	cc.layout = layout
+func (cc *ComboCustomWidget) Layout(widgets ...Widget) *ComboCustomWidget {
+	cc.layout = Layout(widgets)
 	return cc
 }
 
@@ -528,8 +528,8 @@ func ContextMenu(label string) *ContextMenuWidget {
 	}
 }
 
-func (c *ContextMenuWidget) Layout(layout Layout) *ContextMenuWidget {
-	c.layout = layout
+func (c *ContextMenuWidget) Layout(widgets ...Widget) *ContextMenuWidget {
+	c.layout = Layout(widgets)
 	return c
 }
 
@@ -591,8 +591,8 @@ func Group() *GroupWidget {
 	}
 }
 
-func (g *GroupWidget) Layout(layout Layout) *GroupWidget {
-	g.layout = layout
+func (g *GroupWidget) Layout(widgets ...Widget) *GroupWidget {
+	g.layout = Layout(widgets)
 	return g
 }
 
@@ -749,13 +749,13 @@ func (i *ImageWithUrlWidget) Size(width, height float32) *ImageWithUrlWidget {
 	return i
 }
 
-func (i *ImageWithUrlWidget) LayoutForLoading(layout Layout) *ImageWithUrlWidget {
-	i.whenLoading = layout
+func (i *ImageWithUrlWidget) LayoutForLoading(widgets ...Widget) *ImageWithUrlWidget {
+	i.whenLoading = Layout(widgets)
 	return i
 }
 
-func (i *ImageWithUrlWidget) LayoutForFailure(layout Layout) *ImageWithUrlWidget {
-	i.whenFailure = layout
+func (i *ImageWithUrlWidget) LayoutForFailure(widgets ...Widget) *ImageWithUrlWidget {
+	i.whenFailure = Layout(widgets)
 	return i
 }
 
@@ -1036,8 +1036,8 @@ func MainMenuBar() *MainMenuBarWidget {
 	}
 }
 
-func (m *MainMenuBarWidget) Layout(layout Layout) *MainMenuBarWidget {
-	m.layout = layout
+func (m *MainMenuBarWidget) Layout(widgets ...Widget) *MainMenuBarWidget {
+	m.layout = Layout(widgets)
 	return m
 }
 
@@ -1060,8 +1060,8 @@ func MenuBar() *MenuBarWidget {
 	}
 }
 
-func (m *MenuBarWidget) Layout(layout Layout) *MenuBarWidget {
-	m.layout = layout
+func (m *MenuBarWidget) Layout(widgets ...Widget) *MenuBarWidget {
+	m.layout = Layout(widgets)
 	return m
 }
 
@@ -1130,8 +1130,8 @@ func (m *MenuWidget) Enabled(e bool) *MenuWidget {
 	return m
 }
 
-func (m *MenuWidget) Layout(layout Layout) *MenuWidget {
-	m.layout = layout
+func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
+	m.layout = Layout(widgets)
 	return m
 }
 
@@ -1163,8 +1163,8 @@ func (p *PopupWidget) Flags(flags WindowFlags) *PopupWidget {
 	return p
 }
 
-func (p *PopupWidget) Layout(layout Layout) *PopupWidget {
-	p.layout = layout
+func (p *PopupWidget) Layout(widgets ...Widget) *PopupWidget {
+	p.layout = Layout(widgets)
 	return p
 }
 
@@ -1204,8 +1204,8 @@ func (p *PopupModalWidget) Flags(flags WindowFlags) *PopupModalWidget {
 	return p
 }
 
-func (p *PopupModalWidget) Layout(layout Layout) *PopupModalWidget {
-	p.layout = layout
+func (p *PopupModalWidget) Layout(widgets ...Widget) *PopupModalWidget {
+	p.layout = Layout(widgets)
 	return p
 }
 
@@ -1558,8 +1558,8 @@ func (t *TabItemWidget) Flags(flags TabItemFlags) *TabItemWidget {
 	return t
 }
 
-func (t *TabItemWidget) Layout(layout Layout) *TabItemWidget {
-	t.layout = layout
+func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
+	t.layout = Layout(widgets)
 	return t
 }
 
@@ -1591,8 +1591,8 @@ func (t *TabBarWidget) Flags(flags TabBarFlags) *TabBarWidget {
 	return t
 }
 
-func (t *TabBarWidget) Layout(layout Layout) *TabBarWidget {
-	t.layout = layout
+func (t *TabBarWidget) Layout(widgets ...Widget) *TabBarWidget {
+	t.layout = Layout(widgets)
 	return t
 }
 
@@ -1824,8 +1824,8 @@ func Tooltip(tip string) *TooltipWidget {
 	}
 }
 
-func (t *TooltipWidget) Layout(layout Layout) *TooltipWidget {
-	t.layout = layout
+func (t *TooltipWidget) Layout(widgets ...Widget) *TooltipWidget {
+	t.layout = Layout(widgets)
 	return t
 }
 
@@ -1857,8 +1857,8 @@ func (t *TreeNodeWidget) Event(handler func()) *TreeNodeWidget {
 	return t
 }
 
-func (t *TreeNodeWidget) Layout(layout Layout) *TreeNodeWidget {
-	t.layout = layout
+func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
+	t.layout = Layout(widgets)
 	return t
 }
 

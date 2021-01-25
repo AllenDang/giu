@@ -10,8 +10,6 @@ type PlotWidget interface {
 	Plot()
 }
 
-type Plots []PlotWidget
-
 type ImPlotYAxis int
 
 const (
@@ -42,7 +40,7 @@ type PlotCanvasWidget struct {
 	xTicksShowDefault                bool
 	yTicksShowDefault                bool
 	yTicksYAxis                      ImPlotYAxis
-	plots                            Plots
+	plots                            []PlotWidget
 }
 
 func Plot(title string) *PlotCanvasWidget {
@@ -138,7 +136,7 @@ func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags imgui.ImPlotAxisFl
 	return p
 }
 
-func (p *PlotCanvasWidget) Plots(plots Plots) *PlotCanvasWidget {
+func (p *PlotCanvasWidget) Plots(plots ...PlotWidget) *PlotCanvasWidget {
 	p.plots = plots
 	return p
 }

@@ -24,10 +24,10 @@ func refresh() {
 }
 
 func loop() {
-	giu.SingleWindow("Update").Layout(giu.Layout{
+	giu.SingleWindow("Update").Layout(
 		giu.Label("Below number is updated by a goroutine"),
 		giu.Label(fmt.Sprintf("%d", counter)),
-	})
+	)
 }
 
 func main() {

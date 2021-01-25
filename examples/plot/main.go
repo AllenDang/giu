@@ -26,36 +26,36 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("Plot Demo").Layout(g.Layout{
-		g.Plot("Plot").AxisLimits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(g.Plots{
+	g.SingleWindow("Plot Demo").Layout(
+		g.Plot("Plot").AxisLimits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(
 			g.PlotLine("Plot Line", linedata),
 			g.PlotLine("Plot Line2", linedata2),
 			g.PlotScatter("Scatter", scatterdata),
-		}),
-		g.Plot("Plot Time Axe").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).XAxeFlags(imgui.ImPlotAxisFlags_Time).Plots(g.Plots{
+		),
+		g.Plot("Plot Time Axe").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).XAxeFlags(imgui.ImPlotAxisFlags_Time).Plots(
 			g.PlotLineXY("Time Line", timeDataX, timeDataY),
 			g.PlotScatterXY("Time Scatter", timeDataX, timeScatterY),
-		}),
+		),
 		g.Line(
 			g.Plot("Plot Bars").
 				Size(500, 250).
 				AxisLimits(0, 10, -1.2, 1.2, g.ConditionOnce).
-				Plots(g.Plots{
+				Plots(
 					g.PlotBar("Plot Bar", bardata),
 					g.PlotBar("Plot Bar2", bardata2).Shift(0.2),
 					g.PlotBarH("Plot Bar H", bardata3),
-				}),
+				),
 			g.Plot("Pie Chart").
 				Flags(imgui.ImPlotFlags_Equal|imgui.ImPlotFlags_NoMousePos).
 				Size(250, 250).
 				XAxeFlags(imgui.ImPlotAxisFlags_NoDecorations).
 				YAxeFlags(imgui.ImPlotAxisFlags_NoDecorations, 0, 0).
 				AxisLimits(0, 1, 0, 1, g.ConditionAlways).
-				Plots(g.Plots{
+				Plots(
 					g.PlotPieChart([]string{"Part 1", "Part 2", "Part 3"}, []float64{0.22, 0.38, 0.4}, 0.5, 0.5, 0.45),
-				}),
+				),
 		),
-	})
+	)
 }
 
 func main() {

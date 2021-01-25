@@ -62,8 +62,8 @@ func (w *WindowWidget) Pos(x, y float32) *WindowWidget {
 	return w
 }
 
-func (w *WindowWidget) Layout(layout Layout) {
-	if layout == nil {
+func (w *WindowWidget) Layout(widgets ...Widget) {
+	if widgets == nil {
 		return
 	}
 
@@ -77,7 +77,7 @@ func (w *WindowWidget) Layout(layout Layout) {
 
 	imgui.BeginV(w.title, w.open, int(w.flags))
 
-	layout.Build()
+	Layout(widgets).Build()
 
 	imgui.End()
 }
