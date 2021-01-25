@@ -156,18 +156,18 @@ func loop() {
 			),
 			g.TabItem("Table").Layout(
 				g.Table("Table").
-					Columns(g.Columns{
+					Columns(
 						g.Column("Column 1"),
 						g.Column("Column 2"),
 						g.Column("Column 3"),
-					}).
-					Rows(g.Rows{
+					).
+					Rows(
 						g.Row(g.Label("Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog").Wrapped(true), g.Label("Age"), g.Label("Loc")),
 						g.Row(g.Label("Second Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog").Wrapped(true), g.Label("Age"), g.Label("Loc")),
 						g.Row(g.Label("Name"), g.Label("Age"), g.Label("Location")),
 						g.Row(g.Label("Allen"), g.Label("33"), g.Label("Shanghai/China")),
 						g.Row(g.Checkbox("check me", &checked), g.Button("click me"), g.Label("Anything")),
-					}),
+					),
 			),
 			g.TabItem("Group").Layout(
 				g.Line(

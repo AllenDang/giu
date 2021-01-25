@@ -1655,8 +1655,6 @@ func (r *RowWidget) Build() {
 	}
 }
 
-type Rows []*RowWidget
-
 type ColumnWidget struct {
 	label              string
 	flags              imgui.TableColumnFlags
@@ -1692,15 +1690,13 @@ func (c *ColumnWidget) Build() {
 	imgui.TableSetupColumn(c.label, c.flags, c.innerWidthOrWeight, c.userId)
 }
 
-type Columns []*ColumnWidget
-
 type TableWidget struct {
 	label        string
 	flags        imgui.TableFlags
 	size         imgui.Vec2
 	innerWidth   float64
-	rows         Rows
-	columns      Columns
+	rows         []*RowWidget
+	columns      []*ColumnWidget
 	fastMode     bool
 	freezeRow    int
 	freezeColumn int
@@ -1731,12 +1727,12 @@ func (t *TableWidget) Freeze(col, row int) *TableWidget {
 	return t
 }
 
-func (t *TableWidget) Columns(cols Columns) *TableWidget {
+func (t *TableWidget) Columns(cols ...*ColumnWidget) *TableWidget {
 	t.columns = cols
 	return t
 }
 
-func (t *TableWidget) Rows(rows Rows) *TableWidget {
+func (t *TableWidget) Rows(rows ...*RowWidget) *TableWidget {
 	t.rows = rows
 	return t
 }
@@ -2178,19 +2174,18 @@ func (d *DatePickerWidget) Build() {
 				}
 			}
 
-			// Build day widgets
-			var rows Rows
+			columns := []*ColumnWidget{
+				Column("S"),
+				Column("M"),
+				Column("T"),
+				Column("W"),
+				Column("T"),
+				Column("F"),
+				Column("S"),
+			}
 
-			// Build week names
-			rows = append(rows, Row(
-				Label("S"),
-				Label("M"),
-				Label("T"),
-				Label("W"),
-				Label("T"),
-				Label("F"),
-				Label("S"),
-			))
+			// Build day widgets
+			var rows []*RowWidget
 
 			today := time.Now()
 			style := imgui.CurrentStyle()
@@ -2234,7 +2229,7 @@ func (d *DatePickerWidget) Build() {
 				rows = append(rows, Row(row...))
 			}
 
-			Table("DayTable").Rows(rows).Build()
+			Table("DayTable").Flags(imgui.TableFlags_Borders | imgui.TableFlags_SizingStretchSame).Columns(columns...).Rows(rows...).Build()
 
 			imgui.EndCombo()
 		}
