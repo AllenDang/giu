@@ -26,7 +26,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("Plot Demo").Layout(g.Layout{
+	g.SingleWindow("Plot Demo").Layout(
 		g.Plot("Plot").AxisLimits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(g.Plots{
 			g.PlotLine("Plot Line", linedata),
 			g.PlotLine("Plot Line2", linedata2),
@@ -55,7 +55,7 @@ func loop() {
 					g.PlotPieChart([]string{"Part 1", "Part 2", "Part 3"}, []float64{0.22, 0.38, 0.4}, 0.5, 0.5, 0.45),
 				}),
 		),
-	})
+	)
 }
 
 func main() {

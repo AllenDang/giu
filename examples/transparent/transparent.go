@@ -12,7 +12,7 @@ func loop() {
 	imgui.PushStyleVarFloat(imgui.StyleVarWindowBorderSize, 0)
 	g.PushColorWindowBg(color.RGBA{50, 50, 50, 0})
 	g.PushColorFrameBg(color.RGBA{10, 10, 10, 0})
-	g.SingleWindow("transparent").Layout(g.Layout{
+	g.SingleWindow("transparent").Layout(
 		g.Custom(func() {
 			canvas := g.GetCanvas()
 			pos := g.GetCursorScreenPos()
@@ -37,7 +37,7 @@ func loop() {
 			p1 = p1.Add(image.Pt(120, 60))
 			canvas.AddCircleFilled(p1, 50, color)
 		}),
-	})
+	)
 	g.PopStyleColor()
 	g.PopStyleColor()
 	imgui.PopStyleVar()

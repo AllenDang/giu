@@ -12,7 +12,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("canvas").Layout(g.Layout{
+	g.SingleWindow("canvas").Layout(
 		g.Label("Canvas demo"),
 		g.Custom(func() {
 			canvas := g.GetCanvas()
@@ -50,7 +50,7 @@ func loop() {
 				canvas.AddImage(texture, image.Pt(350, 25), image.Pt(500, 125))
 			}
 		}),
-	})
+	)
 }
 
 func main() {

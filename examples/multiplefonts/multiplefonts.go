@@ -31,7 +31,7 @@ func loadFont() {
 }
 
 func loop() {
-	g.SingleWindow("Multiple fonts").Layout(g.Layout{
+	g.SingleWindow("Multiple fonts").Layout(
 		g.Label("Title line").Font(&h2Font),
 		g.Label("Content line"),
 
@@ -53,7 +53,7 @@ func loop() {
 		g.Custom(func() { g.PushFont(chineseFont) }),
 		g.InputTextMultiline("##content", &content).Size(-1, -1),
 		g.Custom(func() { g.PopFont() }),
-	})
+	)
 }
 
 func main() {
