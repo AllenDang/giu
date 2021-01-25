@@ -52,12 +52,13 @@ func onImSoCute() {
 }
 
 func loop() {
-    g.SingleWindow("hello world").Layout(g.Layout{
+    g.SingleWindow("hello world").Layout(
         g.Label("Hello world from giu"),
         g.Line(
             g.Button("Click Me").OnClick(onClickMe),
             g.Button("I'm so cute").OnClick(onImSoCute)),
-        })
+        )
+    )
 }
 
 func main() {
@@ -148,10 +149,10 @@ func onRunScript() {
 }
 
 func loop() {
-	g.SingleWindow("Lua test", g.Layout{
+	g.SingleWindow("Lua test").Layout(
 		g.Button("Load from lua").OnClick(onRunScript),
 		luaPlugin.Layout,
-	})
+	)
 }
 
 func main() {
