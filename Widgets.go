@@ -1753,7 +1753,7 @@ func (t *TableWidget) Flags(flags imgui.TableFlags) *TableWidget {
 }
 
 func (t *TableWidget) Build() {
-	if len(t.columns) == 0 && len(t.rows) == 0 {
+	if len(t.rows) == 0 {
 		return
 	}
 
