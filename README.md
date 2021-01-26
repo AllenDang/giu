@@ -38,32 +38,32 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 package main
 
 import (
-    "fmt"
+	"fmt"
 
-    g "github.com/AllenDang/giu"
+	g "github.com/AllenDang/giu"
 )
 
 func onClickMe() {
-    fmt.Println("Hello world!")
+	fmt.Println("Hello world!")
 }
 
 func onImSoCute() {
-    fmt.Println("Im sooooooo cute!!")
+	fmt.Println("Im sooooooo cute!!")
 }
 
 func loop() {
-    g.SingleWindow("hello world").Layout(
-        g.Label("Hello world from giu"),
-        g.Line(
-            g.Button("Click Me").OnClick(onClickMe),
-            g.Button("I'm so cute").OnClick(onImSoCute)),
-        )
-    )
+	g.SingleWindow("hello world").Layout(
+		g.Label("Hello world from giu"),
+		g.Line(
+			g.Button("Click Me").OnClick(onClickMe),
+			g.Button("I'm so cute").OnClick(onImSoCute),
+		),
+	)
 }
 
 func main() {
-    wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable, nil)
-    wnd.Run(loop)
+	wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable, nil)
+	wnd.Run(loop)
 }
 ```
 
