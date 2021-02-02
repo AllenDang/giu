@@ -75,9 +75,11 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 		imgui.SetNextWindowSizeV(imgui.Vec2{X: w.width, Y: w.height}, imgui.ConditionFirstUseEver)
 	}
 
-	imgui.BeginV(w.title, w.open, int(w.flags))
+	showed := imgui.BeginV(w.title, w.open, int(w.flags))
 
-	Layout(widgets).Build()
+	if showed {
+		Layout(widgets).Build()
+	}
 
 	imgui.End()
 }

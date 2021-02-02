@@ -365,8 +365,8 @@ type ChildWidget struct {
 }
 
 func (c *ChildWidget) Build() {
-	imgui.BeginChildV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, int(c.flags))
-	if c.layout != nil {
+	showed := imgui.BeginChildV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, int(c.flags))
+	if showed && c.layout != nil {
 		c.layout.Build()
 	}
 	imgui.EndChild()
