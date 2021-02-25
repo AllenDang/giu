@@ -1,5 +1,6 @@
 package imgui
 
+// #cgo pkg-config: freetype2
 // #cgo CXXFLAGS: -std=c++11
 // #include "imguiWrapper.h"
 import "C"
