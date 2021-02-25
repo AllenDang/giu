@@ -25,7 +25,6 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 - Declarative UI (see examples for more detail).
 - DPI awareness (auto scale font and UI to adapte high DPI monitor).
 - Drop in usage, no need to implement render and platform.
-- Freetype font rendering support.
 - OS clipboard support.
 
 ![Screenshot](https://github.com/AllenDang/giu/raw/master/examples/imguidemo/screenshot.png)
