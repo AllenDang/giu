@@ -1351,20 +1351,22 @@ func Separator() *SeparatorWidget {
 }
 
 type SliderIntWidget struct {
-	label  string
-	value  *int32
-	min    int32
-	max    int32
-	format string
+	label    string
+	value    *int32
+	min      int32
+	max      int32
+	format   string
+	onChange func()
 }
 
 func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 	return &SliderIntWidget{
-		label:  label,
-		value:  value,
-		min:    min,
-		max:    max,
-		format: "%d",
+		label:    label,
+		value:    value,
+		min:      min,
+		max:      max,
+		format:   "%d",
+		onChange: nil,
 	}
 }
 
@@ -1373,8 +1375,15 @@ func (s *SliderIntWidget) Format(format string) *SliderIntWidget {
 	return s
 }
 
+func (s *SliderIntWidget) OnChange(onChange func()) *SliderIntWidget {
+	s.onChange = onChange
+	return s
+}
+
 func (s *SliderIntWidget) Build() {
-	imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format, imgui.SlidersFlagsNone)
+	if imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format, imgui.SlidersFlagsNone) && s.onChange != nil {
+		s.onChange()
+	}
 }
 
 type SliderFloatWidget struct {

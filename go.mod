@@ -8,4 +8,5 @@ require (
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20201108214237-06ea97f0c265
 	github.com/go-resty/resty/v2 v2.3.0
 	github.com/ianling/imgui-go v1.12.1-0.20210115050955-434395a2da82
+	github.com/stretchr/testify v1.3.0
 )
