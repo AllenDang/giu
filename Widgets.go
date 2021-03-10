@@ -1316,20 +1316,22 @@ func Separator() *SeparatorWidget {
 }
 
 type SliderIntWidget struct {
-	label  string
-	value  *int32
-	min    int32
-	max    int32
-	format string
+	label    string
+	value    *int32
+	min      int32
+	max      int32
+	format   string
+	onChange func()
 }
 
 func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 	return &SliderIntWidget{
-		label:  label,
-		value:  value,
-		min:    min,
-		max:    max,
-		format: "%d",
+		label:    label,
+		value:    value,
+		min:      min,
+		max:      max,
+		format:   "%d",
+		onChange: nil,
 	}
 }
 
@@ -1338,25 +1340,35 @@ func (s *SliderIntWidget) Format(format string) *SliderIntWidget {
 	return s
 }
 
+func (s *SliderIntWidget) OnChange(onChange func()) *SliderIntWidget {
+	s.onChange = onChange
+
+	return s
+}
+
 func (s *SliderIntWidget) Build() {
-	imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format)
+	if imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format) && s.onChange != nil {
+		s.onChange()
+	}
 }
 
 type SliderFloatWidget struct {
-	label  string
-	value  *float32
-	min    float32
-	max    float32
-	format string
+	label    string
+	value    *float32
+	min      float32
+	max      float32
+	format   string
+	onChange func()
 }
 
 func SliderFloat(label string, value *float32, min, max float32) *SliderFloatWidget {
 	return &SliderFloatWidget{
-		label:  label,
-		value:  value,
-		min:    min,
-		max:    max,
-		format: "%.3f",
+		label:    label,
+		value:    value,
+		min:      min,
+		max:      max,
+		format:   "%.3f",
+		onChange: nil,
 	}
 }
 
@@ -1365,8 +1377,16 @@ func (s *SliderFloatWidget) Format(format string) *SliderFloatWidget {
 	return s
 }
 
+func (sf *SliderFloatWidget) OnChange(onChange func()) *SliderFloatWidget {
+	sf.onChange = onChange
+
+	return sf
+}
+
 func (sf *SliderFloatWidget) Build() {
-	imgui.SliderFloatV(sf.label, sf.value, sf.min, sf.max, sf.format, 1.0)
+	if imgui.SliderFloatV(sf.label, sf.value, sf.min, sf.max, sf.format, 1.0) && sf.onChange != nil {
+		sf.onChange()
+	}
 }
 
 type DummyWidget struct {
