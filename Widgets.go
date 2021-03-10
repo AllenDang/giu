@@ -1321,6 +1321,7 @@ type SliderIntWidget struct {
 	min      int32
 	max      int32
 	format   string
+	width    float32
 	onChange func()
 }
 
@@ -1331,12 +1332,18 @@ func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 		min:      min,
 		max:      max,
 		format:   "%d",
+		width:    0,
 		onChange: nil,
 	}
 }
 
 func (s *SliderIntWidget) Format(format string) *SliderIntWidget {
 	s.format = format
+	return s
+}
+
+func (s *SliderIntWidget) Size(width float32) *SliderIntWidget {
+	s.width = width * Context.platform.GetContentScale()
 	return s
 }
 
@@ -1347,8 +1354,16 @@ func (s *SliderIntWidget) OnChange(onChange func()) *SliderIntWidget {
 }
 
 func (s *SliderIntWidget) Build() {
+	if s.width != 0 {
+		PushItemWidth(s.width)
+	}
+
 	if imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format) && s.onChange != nil {
 		s.onChange()
+	}
+
+	if s.width != 0 {
+		PopItemWidth()
 	}
 }
 
@@ -1358,6 +1373,7 @@ type SliderFloatWidget struct {
 	min      float32
 	max      float32
 	format   string
+	width    float32
 	onChange func()
 }
 
@@ -1368,6 +1384,7 @@ func SliderFloat(label string, value *float32, min, max float32) *SliderFloatWid
 		min:      min,
 		max:      max,
 		format:   "%.3f",
+		width:    0,
 		onChange: nil,
 	}
 }
@@ -1383,9 +1400,22 @@ func (sf *SliderFloatWidget) OnChange(onChange func()) *SliderFloatWidget {
 	return sf
 }
 
+func (sf *SliderFloatWidget) Size(width float32) *SliderFloatWidget {
+	sf.width = width * Context.platform.GetContentScale()
+	return sf
+}
+
 func (sf *SliderFloatWidget) Build() {
+	if sf.width != 0 {
+		PushItemWidth(sf.width)
+	}
+
 	if imgui.SliderFloatV(sf.label, sf.value, sf.min, sf.max, sf.format, 1.0) && sf.onChange != nil {
 		sf.onChange()
+	}
+
+	if sf.width != 0 {
+		PopItemWidth()
 	}
 }
 
