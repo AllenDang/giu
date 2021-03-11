@@ -1356,6 +1356,7 @@ type SliderIntWidget struct {
 	min      int32
 	max      int32
 	format   string
+	width    float32
 	onChange func()
 }
 
@@ -1365,6 +1366,7 @@ func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 		value:    value,
 		min:      min,
 		max:      max,
+		width:    0,
 		format:   "%d",
 		onChange: nil,
 	}
@@ -1375,32 +1377,49 @@ func (s *SliderIntWidget) Format(format string) *SliderIntWidget {
 	return s
 }
 
+func (s *SliderIntWidget) Size(width float32) *SliderIntWidget {
+	s.width = width * Context.platform.GetContentScale()
+	return s
+}
+
 func (s *SliderIntWidget) OnChange(onChange func()) *SliderIntWidget {
 	s.onChange = onChange
 	return s
 }
 
 func (s *SliderIntWidget) Build() {
+	if s.width != 0 {
+		PushItemWidth(s.width)
+	}
+
 	if imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format, imgui.SlidersFlagsNone) && s.onChange != nil {
 		s.onChange()
+	}
+
+	if s.width != 0 {
+		PopItemWidth()
 	}
 }
 
 type SliderFloatWidget struct {
-	label  string
-	value  *float32
-	min    float32
-	max    float32
-	format string
+	label    string
+	value    *float32
+	min      float32
+	max      float32
+	width    float32
+	format   string
+	onChange func()
 }
 
 func SliderFloat(label string, value *float32, min, max float32) *SliderFloatWidget {
 	return &SliderFloatWidget{
-		label:  label,
-		value:  value,
-		min:    min,
-		max:    max,
-		format: "%.3f",
+		label:    label,
+		value:    value,
+		min:      min,
+		max:      max,
+		format:   "%.3f",
+		width:    0,
+		onChange: nil,
 	}
 }
 
@@ -1409,8 +1428,28 @@ func (s *SliderFloatWidget) Format(format string) *SliderFloatWidget {
 	return s
 }
 
+func (s *SliderFloatWidget) OnChange(onChange func()) *SliderFloatWidget {
+	s.onChange = onChange
+	return s
+}
+
+func (s *SliderFloatWidget) Size(width float32) *SliderFloatWidget {
+	s.width = width * Context.platform.GetContentScale()
+	return s
+}
+
 func (s *SliderFloatWidget) Build() {
-	imgui.SliderFloatV(s.label, s.value, s.min, s.max, s.format, 1.0)
+	if s.width != 0 {
+		PushItemWidth(s.width)
+	}
+
+	if imgui.SliderFloatV(s.label, s.value, s.min, s.max, s.format, 1.0) && s.onChange != nil {
+		s.onChange()
+	}
+
+	if s.width != 0 {
+		PopItemWidth()
+	}
 }
 
 type DummyWidget struct {
