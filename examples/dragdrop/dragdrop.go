@@ -31,7 +31,7 @@ func loop() {
 				}
 			}),
 		),
-		g.InputTextMultiline("##DropTarget", &dropTarget).Size(-1, -1).Flags(g.InputTextFlagsReadOnly),
+		g.InputTextMultiline("##DropTarget", &dropTarget).Size(-1, -1).Flags(g.InputTextFlags_ReadOnly),
 		g.Custom(func() {
 			if imgui.BeginDragDropTarget() {
 				payload := imgui.AcceptDragDropPayload("DND_DEMO")

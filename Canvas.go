@@ -21,27 +21,30 @@ func (c *Canvas) AddLine(p1, p2 image.Point, color color.RGBA, thickness float32
 	c.drawlist.AddLine(ToVec2(p1), ToVec2(p2), ToVec4Color(color), thickness)
 }
 
-type CornerFlags int
+type DrawFlags int
 
 const (
-	CornerFlags_None     CornerFlags = 0
-	CornerFlags_TopLeft  CornerFlags = 1 << 0                                      // 0x1
-	CornerFlags_TopRight CornerFlags = 1 << 1                                      // 0x2
-	CornerFlags_BotLeft  CornerFlags = 1 << 2                                      // 0x4
-	CornerFlags_BotRight CornerFlags = 1 << 3                                      // 0x8
-	CornerFlags_Top      CornerFlags = CornerFlags_TopLeft | CornerFlags_TopRight  // 0x3
-	CornerFlags_Bot      CornerFlags = CornerFlags_BotLeft | CornerFlags_BotRight  // 0xC
-	CornerFlags_Left     CornerFlags = CornerFlags_TopLeft | CornerFlags_BotLeft   // 0x5
-	CornerFlags_Right    CornerFlags = CornerFlags_TopRight | CornerFlags_BotRight // 0xA
-	CornerFlags_All      CornerFlags = 0xF                                         // In your function calls you may use ~0 (= all bits sets) instead of ImDrawCornerFlags_All, as a convenience
-
+	DrawFlags_None                    DrawFlags = 0
+	DrawFlags_Closed                  DrawFlags = 1 << 0 // PathStroke(), AddPolyline(): specify that shape should be closed (portant: this is always == 1 for legacy reason)
+	DrawFlags_RoundCornersTopLeft     DrawFlags = 1 << 4 // AddRect(), AddRectFilled(), PathRect(): enable rounding top-left corner only (when rounding > 0.0f, we default to all corners). Was 0x01.
+	DrawFlags_RoundCornersTopRight    DrawFlags = 1 << 5 // AddRect(), AddRectFilled(), PathRect(): enable rounding top-right corner only (when rounding > 0.0f, we default to all corners). Was 0x02.
+	DrawFlags_RoundCornersBottomLeft  DrawFlags = 1 << 6 // AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-left corner only (when rounding > 0.0f, we default to all corners). Was 0x04.
+	DrawFlags_RoundCornersBottomRight DrawFlags = 1 << 7 // AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-right corner only (when rounding > 0.0f, we default to all corners). Wax 0x08.
+	DrawFlags_RoundCornersNone        DrawFlags = 1 << 8 // AddRect(), AddRectFilled(), PathRect(): disable rounding on all corners (when rounding > 0.0f). This is NOT zero, NOT an implicit flag!
+	DrawFlags_RoundCornersTop         DrawFlags = DrawFlags_RoundCornersTopLeft | DrawFlags_RoundCornersTopRight
+	DrawFlags_RoundCornersBottom      DrawFlags = DrawFlags_RoundCornersBottomLeft | DrawFlags_RoundCornersBottomRight
+	DrawFlags_RoundCornersLeft        DrawFlags = DrawFlags_RoundCornersBottomLeft | DrawFlags_RoundCornersTopLeft
+	DrawFlags_RoundCornersRight       DrawFlags = DrawFlags_RoundCornersBottomRight | DrawFlags_RoundCornersTopRight
+	DrawFlags_RoundCornersAll         DrawFlags = DrawFlags_RoundCornersTopLeft | DrawFlags_RoundCornersTopRight | DrawFlags_RoundCornersBottomLeft | DrawFlags_RoundCornersBottomRight
+	DrawFlags_RoundCornersDefault_    DrawFlags = DrawFlags_RoundCornersAll // Default to ALL corners if none of the _RoundCornersXX flags are specified.
+	DrawFlags_RoundCornersMask_       DrawFlags = DrawFlags_RoundCornersAll | DrawFlags_RoundCornersNone
 )
 
-func (c *Canvas) AddRect(pMin, pMax image.Point, color color.RGBA, rounding float32, rounding_corners CornerFlags, thickness float32) {
+func (c *Canvas) AddRect(pMin, pMax image.Point, color color.RGBA, rounding float32, rounding_corners DrawFlags, thickness float32) {
 	c.drawlist.AddRect(ToVec2(pMin), ToVec2(pMax), ToVec4Color(color), rounding, int(rounding_corners), thickness)
 }
 
-func (c *Canvas) AddRectFilled(pMin, pMax image.Point, color color.RGBA, rounding float32, rounding_corners CornerFlags) {
+func (c *Canvas) AddRectFilled(pMin, pMax image.Point, color color.RGBA, rounding float32, rounding_corners DrawFlags) {
 	c.drawlist.AddRectFilled(ToVec2(pMin), ToVec2(pMax), ToVec4Color(color), rounding, int(rounding_corners))
 }
 
