@@ -1,6 +1,7 @@
 package imgui
 
 // #cgo CXXFLAGS: -std=c++11
+// #cgo windows LDFLAGS: -limm32
 // #include "imguiWrapper.h"
 import "C"
 import (
