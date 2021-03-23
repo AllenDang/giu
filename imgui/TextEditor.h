@@ -9,7 +9,6 @@
 #include <map>
 #include <regex>
 #include <cassert>
-#include <ctype.h>
 #include "imgui.h"
 
 class TextEditor
