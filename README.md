@@ -70,6 +70,63 @@ Here is result.
 
 ![Helloworld](https://github.com/AllenDang/giu/raw/master/examples/helloworld/helloworld.png)
 
+## Install
+
+The backend of giu depends on OpenGL 3.3, make sure your environment supports it (so far as I known some Virual Machine like VirualBox doesn't support it).
+
+### MacOS
+
+``` sh
+xcode-select --install
+go get github.com/AllenDang/giu@master
+```
+
+### Windows
+
+1. Install TDM-GCC [download here](https://jmeubank.github.io/tdm-gcc/download/).
+2. Add gcc to your path (most likely you could find it at C:\TDM-GCC-64\bin).
+3. go get github.com/AllenDang/giu@master.
+
+### Linux
+
+*Need help* here cause I don't have any linux experience.
+
+## Deploy
+
+### Build MacOS version on MacOS.
+
+``` sh
+go build -ldflags "-s -w" .
+```
+
+### Build Windows version on Windows.
+
+``` sh
+go build -ldflags "-s -w -H=windowsgui -extldflags=-static" .
+```
+
+### Build Windows version on MacOS.
+
+1. Install mingw-64.
+``` sh
+brew install mingw-w64
+```
+
+2. Prepare and embed application icon to executable and build.
+
+``` sh
+cat > YourExeName.rc << EOL
+id ICON "./res/app_win.ico"
+GLFW_ICON ICON "./res/app_win.ico"
+EOL
+
+x86_64-w64-mingw32-windres YourExeName.rc -O coff -o YourExeName.syso
+GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ HOST=x86_64-w64-mingw32 go build -ldflags "-s -w -H=windowsgui -extldflags=-static" -p 4 -v -o YourExeName.exe
+
+rm YourExeName.syso
+rm YourExeName.rc
+```
+
 ## Document
 
 Check [Wiki](https://github.com/AllenDang/giu/wiki)
