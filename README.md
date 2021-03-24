@@ -83,9 +83,8 @@ go get github.com/AllenDang/giu@master
 
 ### Windows
 
-1. Install TDM-GCC [download here](https://jmeubank.github.io/tdm-gcc/download/).
-2. Add gcc to your path (most likely you could find it at C:\TDM-GCC-64\bin).
-3. go get github.com/AllenDang/giu@master.
+1. Install mingw [download here](https://github.com/brechtsanders/winlibs_mingw/releases/tag/10.2.0-11.0.0-8.0.0-r8). Thanks @alchem1ster!
+2. go get github.com/AllenDang/giu@master.
 
 ### Linux
 
