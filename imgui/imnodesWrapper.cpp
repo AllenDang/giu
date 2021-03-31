@@ -117,3 +117,18 @@ void iggImNodesSetNodeGridSpacePos(int node_id, const IggVec2 *grid_pos)
   Vec2Wrapper posArg(grid_pos);
   imnodes::SetNodeGridSpacePos(node_id, *posArg);
 }
+
+void iggImNodesGetNodeScreenSpacePos(const int node_id, IggVec2 *pos)
+{
+  exportValue(*pos, imnodes::GetNodeScreenSpacePos(node_id));
+}
+
+void iggImNodesGetNodeEditorSpacePos(const int node_id, IggVec2 *pos)
+{
+  exportValue(*pos, imnodes::GetNodeEditorSpacePos(node_id));
+}
+
+void iggImNodesGetNodeGridSpacePos(const int node_id, IggVec2 *pos)
+{
+  exportValue(*pos, imnodes::GetNodeGridSpacePos(node_id));
+}

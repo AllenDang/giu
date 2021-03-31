@@ -128,3 +128,30 @@ func ImNodesSetNodeGridSpacePos(nodeId int, pos Vec2) {
 	posArg, _ := pos.wrapped()
 	C.iggImNodesSetNodeGridSpacePos(C.int(nodeId), posArg)
 }
+
+func ImNodesGetNodeScreenSpacePos(nodeId int) *Vec2 {
+	var pos Vec2
+	valueArg, valueDeleter := pos.wrapped()
+	defer valueDeleter()
+
+	C.iggImNodesGetNodeScreenSpacePos(C.int(nodeId), valueArg)
+	return &pos
+}
+
+func ImNodesGetNodeEditorSpacePos(nodeId int) *Vec2 {
+	var pos Vec2
+	valueArg, valueDeleter := pos.wrapped()
+	defer valueDeleter()
+
+	C.iggImNodesGetNodeEditorSpacePos(C.int(nodeId), valueArg)
+	return &pos
+}
+
+func ImNodesGetNodeGridSpacePos(nodeId int) *Vec2 {
+	var pos Vec2
+	valueArg, valueDeleter := pos.wrapped()
+	defer valueDeleter()
+
+	C.iggImNodesGetNodeGridSpacePos(C.int(nodeId), valueArg)
+	return &pos
+}

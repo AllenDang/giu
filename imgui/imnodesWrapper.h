@@ -44,6 +44,10 @@ extern void iggImNodesSetNodeScreenSpacePos(int node_id, const IggVec2 *screen_s
 extern void iggImNodesSetNodeEditorSpacePos(int node_id, const IggVec2 *editor_space_pos);
 extern void iggImNodesSetNodeGridSpacePos(int node_id, const IggVec2 *grid_pos);
 
+extern void iggImNodesGetNodeScreenSpacePos(const int node_id, IggVec2 *pos);
+extern void iggImNodesGetNodeEditorSpacePos(const int node_id, IggVec2 *pos);
+extern void iggImNodesGetNodeGridSpacePos(const int node_id, IggVec2 *pos);
+
 #ifdef __cplusplus
 }
 #endif
