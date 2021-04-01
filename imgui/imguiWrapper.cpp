@@ -409,6 +409,12 @@ IggBool iggSliderInt(char const *label, int *value, int minValue, int maxValue, 
    return ImGui::SliderInt(label, value, minValue, maxValue, format) ? 1 : 0;
 }
 
+IggBool iggVSliderInt(const char* label, const IggVec2 *size, int* v, int v_min, int v_max, const char* format, int flags)
+{
+   Vec2Wrapper sizeArg(size);
+   return ImGui::VSliderInt(label, *sizeArg, v, v_min, v_max, format, flags) ? 1 : 0;
+}
+
 extern "C" int iggInputTextCallback(IggInputTextCallbackData data, int key);
 
 static int iggInputTextCallbackWrapper(ImGuiInputTextCallbackData *data)

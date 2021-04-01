@@ -120,6 +120,8 @@ extern IggBool iggSliderFloatN(char const *label, float *value, int n,
 extern IggBool iggSliderInt(char const *label, int *value, int minValue,
                             int maxValue, char const *format);
 
+extern IggBool iggVSliderInt(const char* label, const IggVec2 *size, int* v, int v_min, int v_max, const char* format, int flags);
+
 extern IggBool iggInputText(char const *label, char *buf, unsigned int bufSize,
                             int flags, int callbackKey);
 extern IggBool iggInputTextMultiline(char const *label, char *buf,

@@ -87,6 +87,13 @@ func loop() {
 		g.DragInt("DragInt", &dragInt, 0, 100),
 		g.SliderInt("Slider", &dragInt, 0, 100),
 
+		g.Label("Vertical sliders"),
+		g.Line(
+			g.VSliderInt("##VSlider1", &dragInt, 0, 100).OnChange(func() { fmt.Println(dragInt) }),
+			g.VSliderInt("##VSlider2", &dragInt, 0, 100),
+			g.VSliderInt("##VSlider3", &dragInt, 0, 100),
+		),
+
 		g.Combo("Combo", items[itemSelected], items, &itemSelected).OnChange(comboChanged),
 
 		g.Line(

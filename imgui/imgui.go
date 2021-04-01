@@ -563,6 +563,21 @@ func SliderInt(label string, value *int32, min, max int32) bool {
 	return SliderIntV(label, value, min, max, "%d")
 }
 
+func VSliderIntV(label string, size Vec2, value *int32, min, max int32, format string, flags int) bool {
+	labelArg, labelDeleter := wrapString(label)
+	defer labelDeleter()
+
+	sizeArg, _ := size.wrapped()
+
+	valueArg, valueDeleter := wrapInt32(value)
+	defer valueDeleter()
+
+	formatArg, formatDeleter := wrapString(format)
+	defer formatDeleter()
+
+	return C.iggVSliderInt(labelArg, sizeArg, valueArg, C.int(min), C.int(max), formatArg, C.int(flags)) != 0
+}
+
 // InputTextV creates a text field for dynamic text input.
 //
 // Contrary to the original library, this wrapper does not limit the maximum number of possible characters.

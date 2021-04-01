@@ -1325,6 +1325,17 @@ type SliderIntWidget struct {
 	onChange func()
 }
 
+type SliderFlags int
+
+const (
+	SliderFlags_None            SliderFlags = 0
+	SliderFlags_AlwaysClamp     SliderFlags = 1 << 4     // Clamp value to min/max bounds when input manually with CTRL+Click. By default CTRL+Click allows going out of bounds.
+	SliderFlags_Logarithmic     SliderFlags = 1 << 5     // Make the widget logarithmic (linear otherwise). Consider using ImGuiSliderFlags_NoRoundToFormat with this if using a format-string with small amount of digits.
+	SliderFlags_NoRoundToFormat SliderFlags = 1 << 6     // Disable rounding underlying value to match precision of the display format string (e.g. %.3f values are rounded to those 3 digits)
+	SliderFlags_NoInput         SliderFlags = 1 << 7     // Disable CTRL+Click or Enter key allowing to input text directly into the widget
+	SliderFlags_InvalidMask_    SliderFlags = 0x7000000F // [Internal] We treat using those bits as being potentially a 'float power' argument from the previous API that has got miscast to this enum, and will trigger an assert if needed.
+)
+
 func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 	return &SliderIntWidget{
 		label:    label,
@@ -1364,6 +1375,65 @@ func (s *SliderIntWidget) Build() {
 
 	if s.width != 0 {
 		PopItemWidth()
+	}
+}
+
+type VSliderIntWidget struct {
+	label    string
+	width    float32
+	height   float32
+	value    *int32
+	min      int32
+	max      int32
+	format   string
+	flags    SliderFlags
+	onChange func()
+}
+
+func VSliderInt(label string, value *int32, min, max int32) *VSliderIntWidget {
+	return &VSliderIntWidget{
+		label:  label,
+		width:  18,
+		height: 60,
+		value:  value,
+		min:    min,
+		max:    max,
+		format: "%d",
+		flags:  SliderFlags_None,
+	}
+}
+
+func (vs *VSliderIntWidget) Size(width, height float32) *VSliderIntWidget {
+	vs.width, vs.height = width, height
+	return vs
+}
+
+func (vs *VSliderIntWidget) Flags(flags SliderFlags) *VSliderIntWidget {
+	vs.flags = flags
+	return vs
+}
+
+func (vs *VSliderIntWidget) Format(format string) *VSliderIntWidget {
+	vs.format = format
+	return vs
+}
+
+func (vs *VSliderIntWidget) OnChange(onChange func()) *VSliderIntWidget {
+	vs.onChange = onChange
+	return vs
+}
+
+func (vs *VSliderIntWidget) Build() {
+	if imgui.VSliderIntV(
+		vs.label,
+		imgui.Vec2{X: vs.width, Y: vs.height},
+		vs.value,
+		vs.min,
+		vs.max,
+		vs.format,
+		int(vs.flags),
+	) && vs.onChange != nil {
+		vs.onChange()
 	}
 }
 
