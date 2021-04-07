@@ -4,12 +4,23 @@ import (
 	"image/color"
 
 	"github.com/AllenDang/giu"
+	"github.com/AllenDang/giu/imgui"
 )
 
 func loop() {
 	giu.SingleWindow("set style").Layout(
-		giu.Label("I'm a styled label").Color(&color.RGBA{0x36, 0x74, 0xD5, 255}),
-		giu.Label("I'm a normal label"),
+		giu.Style().
+			SetColor(imgui.StyleColorText, color.RGBA{0x36, 0x74, 0xD5, 255}).
+			To(
+				giu.Label("I'm a styled label"),
+			),
+		giu.Style().
+			SetColor(imgui.StyleColorBorder, color.RGBA{0x36, 0x74, 0xD5, 255}).
+			SetStyle(imgui.StyleVarFramePadding, 10, 10).
+			To(
+				giu.Button("I'm a styled button"),
+			),
+		giu.Button("I'm a normal button"),
 	)
 }
 

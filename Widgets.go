@@ -970,7 +970,6 @@ func (i *InputFloatWidget) Build() {
 type LabelWidget struct {
 	label   string
 	wrapped bool
-	color   *color.RGBA
 	font    *imgui.Font
 }
 
@@ -978,7 +977,6 @@ func Label(label string) *LabelWidget {
 	return &LabelWidget{
 		label:   label,
 		wrapped: false,
-		color:   nil,
 		font:    nil,
 	}
 }
@@ -988,21 +986,12 @@ func (l *LabelWidget) Wrapped(wrapped bool) *LabelWidget {
 	return l
 }
 
-func (l *LabelWidget) Color(color *color.RGBA) *LabelWidget {
-	l.color = color
-	return l
-}
-
 func (l *LabelWidget) Font(font *imgui.Font) *LabelWidget {
 	l.font = font
 	return l
 }
 
 func (l *LabelWidget) Build() {
-	if l.color != nil {
-		PushColorText(*l.color)
-	}
-
 	if l.font != nil {
 		PushFont(*l.font)
 	}
@@ -1019,10 +1008,6 @@ func (l *LabelWidget) Build() {
 
 	if l.font != nil {
 		PopFont()
-	}
-
-	if l.color != nil {
-		PopStyleColor()
 	}
 }
 

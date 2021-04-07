@@ -24,6 +24,6 @@ func MkdirAll(name string) {
 func RunCmd(cmd *exec.Cmd) {
 	err := cmd.Run()
 	if err != nil {
-		log.Fatalf("Failed to execute command:%v\n", err)
+		log.Fatalf("Failed to execute command:%s with error %v\n", cmd.String(), err)
 	}
 }
