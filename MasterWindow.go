@@ -2,28 +2,29 @@ package giu
 
 import (
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/ianling/giu/platform"
 	"image/color"
 	"time"
 
 	"github.com/faiface/mainthread"
 
-	imguiLocal "github.com/ianling/giu/imgui"
+	"github.com/ianling/giu/renderer"
 	"github.com/ianling/imgui-go"
 )
 
-type MasterWindowFlags imguiLocal.GLFWWindowFlags
+type MasterWindowFlags platform.GLFWWindowFlags
 
 const (
 	// Specifies the window will be fixed size.
-	MasterWindowFlagsNotResizable = MasterWindowFlags(imguiLocal.GLFWWindowFlagsNotResizable)
+	MasterWindowFlagsNotResizable = MasterWindowFlags(platform.GLFWWindowFlagsNotResizable)
 	// Specifies whether the window is maximized.
-	MasterWindowFlagsMaximized = MasterWindowFlags(imguiLocal.GLFWWindowFlagsMaximized)
+	MasterWindowFlagsMaximized = MasterWindowFlags(platform.GLFWWindowFlagsMaximized)
 	// Specifies whether the window will be always-on-top.
-	MasterWindowFlagsFloating = MasterWindowFlags(imguiLocal.GLFWWindowFlagsFloating)
+	MasterWindowFlagsFloating = MasterWindowFlags(platform.GLFWWindowFlagsFloating)
 	// Specifies whether the window will be frameless.
-	MasterWindowFlagsFrameless = MasterWindowFlags(imguiLocal.GLFWWindowFlagsFrameless)
+	MasterWindowFlagsFrameless = MasterWindowFlags(platform.GLFWWindowFlagsFrameless)
 	// Specifies whether the window will be transparent.
-	MasterWindowFlagsTransparent = MasterWindowFlags(imguiLocal.GLFWWindowFlagsTransparent)
+	MasterWindowFlagsTransparent = MasterWindowFlags(platform.GLFWWindowFlagsTransparent)
 )
 
 type MasterWindow struct {
@@ -31,8 +32,8 @@ type MasterWindow struct {
 	height     int
 	clearColor [4]float32
 	title      string
-	platform   imguiLocal.Platform
-	renderer   imguiLocal.Renderer
+	platform   platform.Platform
+	renderer   renderer.Renderer
 	context    *imgui.Context
 	io         *imgui.IO
 	updateFunc func()
@@ -48,7 +49,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, l
 	// Disable imgui.ini
 	io.SetIniFilename("")
 
-	p, err := imguiLocal.NewGLFW(io, title, width, height, imguiLocal.GLFWWindowFlags(flags))
+	p, err := platform.NewGLFW(io, title, width, height, platform.GLFWWindowFlags(flags))
 	if err != nil {
 		panic(err)
 	}
@@ -64,7 +65,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, l
 		loadFontFunc()
 	}
 
-	r, err := imguiLocal.NewOpenGL3(io, scale)
+	r, err := renderer.NewOpenGL3(io, scale)
 	if err != nil {
 		panic(err)
 	}
@@ -202,7 +203,7 @@ func (w *MasterWindow) run() {
 // Return size of master window.
 func (w *MasterWindow) GetSize() (width, height int) {
 	if w.platform != nil {
-		if glfwPlatform, ok := w.platform.(*imguiLocal.GLFW); ok {
+		if glfwPlatform, ok := w.platform.(*platform.GLFW); ok {
 			return glfwPlatform.GetWindow().GetSize()
 		}
 	}
@@ -213,7 +214,7 @@ func (w *MasterWindow) GetSize() (width, height int) {
 // Return position of master window.
 func (w *MasterWindow) GetPos() (x, y int) {
 	if w.platform != nil {
-		if glfwPlatform, ok := w.platform.(*imguiLocal.GLFW); ok {
+		if glfwPlatform, ok := w.platform.(*platform.GLFW); ok {
 			x, y = glfwPlatform.GetWindow().GetPos()
 		}
 	}
@@ -224,7 +225,7 @@ func (w *MasterWindow) GetPos() (x, y int) {
 // Set position of master window.
 func (w *MasterWindow) SetPos(x, y int) {
 	if w.platform != nil {
-		if glfwPlatform, ok := w.platform.(*imguiLocal.GLFW); ok {
+		if glfwPlatform, ok := w.platform.(*platform.GLFW); ok {
 			glfwPlatform.GetWindow().SetPos(x, y)
 		}
 	}
@@ -232,7 +233,7 @@ func (w *MasterWindow) SetPos(x, y int) {
 
 func (w *MasterWindow) SetSize(x, y int) {
 	if w.platform != nil {
-		if glfwPlatform, ok := w.platform.(*imguiLocal.GLFW); ok {
+		if glfwPlatform, ok := w.platform.(*platform.GLFW); ok {
 			mainthread.CallNonBlock(func() {
 				glfwPlatform.GetWindow().SetSize(x, y)
 			})

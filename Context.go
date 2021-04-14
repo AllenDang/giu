@@ -1,9 +1,10 @@
 package giu
 
 import (
-	"sync"
+    platform2 "github.com/ianling/giu/platform"
+    "sync"
 
-	imguiLocal "github.com/ianling/giu/imgui"
+    "github.com/ianling/giu/renderer"
 	"github.com/ianling/imgui-go"
 )
 
@@ -19,8 +20,8 @@ type state struct {
 }
 
 type context struct {
-	renderer imguiLocal.Renderer
-	platform imguiLocal.Platform
+	renderer renderer.Renderer
+	platform platform2.Platform
 
 	// Indicate whether current application is running
 	isAlive bool
@@ -29,11 +30,11 @@ type context struct {
 	state sync.Map
 }
 
-func (c *context) GetRenderer() imguiLocal.Renderer {
+func (c *context) GetRenderer() renderer.Renderer {
 	return c.renderer
 }
 
-func (c *context) GetPlatform() imguiLocal.Platform {
+func (c *context) GetPlatform() platform2.Platform {
 	return c.platform
 }
 

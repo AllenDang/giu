@@ -1,4 +1,4 @@
-package imgui
+package renderer
 
 import (
 	"fmt"
