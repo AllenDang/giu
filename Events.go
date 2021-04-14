@@ -59,7 +59,7 @@ func IsWindowCollapsed() bool {
 }
 
 func IsWindowFocusedV(flags FocusedFlags) bool {
-	return imgui.IsWindowFocusedV(int(flags))
+	return imgui.IsWindowFocusedV(imgui.FocusedFlags(flags))
 }
 
 func IsWindowFocused() bool {
@@ -67,7 +67,7 @@ func IsWindowFocused() bool {
 }
 
 func IsWindowHoveredV(flags HoveredFlags) bool {
-	return imgui.IsWindowHoveredV(int(flags))
+	return imgui.IsWindowHoveredV(imgui.HoveredFlags(flags))
 }
 
 func IsWindowHovered() bool {

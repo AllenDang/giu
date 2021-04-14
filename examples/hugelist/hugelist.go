@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"image/color"
 
 	g "github.com/ianling/giu"
 )
@@ -20,17 +21,16 @@ func buildRows() []*g.RowWidget {
 		)
 	}
 
+	rows[0].BgColor(&(color.RGBA{200, 100, 100, 255}))
+
 	return rows
 }
 
 func loop() {
-	g.SingleWindow("Huge list demo").Layout(g.Layout{
-		g.Label("Use FastTable to display huge amount of rows"),
+	g.SingleWindow("Huge list demo").Layout(
 		g.Label("Note: FastTable only works if all rows have same height"),
-		g.Child("Container").Layout(g.Layout{
-			g.FastTable("Fast table").Rows(buildRows()),
-		}),
-	}).Build()
+		g.Table("Fast table").Freeze(0, 1).FastMode(true).Rows(buildRows()...),
+	).Build()
 }
 
 func main() {

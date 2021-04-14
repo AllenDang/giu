@@ -5,7 +5,7 @@ import (
 )
 
 func loop() {
-	g.SingleWindow("splitter").Layout(g.Layout{
+	g.SingleWindow("splitter").Layout(
 		g.SplitLayout("Split", g.DirectionHorizontal, true, 200,
 			g.Layout{
 				g.Label("Left panel"),
@@ -22,7 +22,7 @@ func loop() {
 				),
 			),
 		),
-	}).Build()
+	).Build()
 }
 
 func main() {

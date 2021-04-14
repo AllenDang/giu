@@ -9,7 +9,7 @@ import (
 )
 
 func loop() {
-	g.SingleWindow("load image").Layout(g.Layout{
+	g.SingleWindow("load image").Layout(
 		g.Label("Display image from file"),
 		g.ImageWithFile("gopher.png").Size(300, 200),
 
@@ -21,20 +21,20 @@ func loop() {
 			"https://png.pngitem.com/pimgs/s/424-4241958_transparent-gopher-png-golang-gopher-png-png-download.png").
 			Timeout(5*time.Second).
 			Size(300, 200).
-			LayoutForLoading(g.Layout{
+			LayoutForLoading(
 				g.Child("Loading").Size(300, 200).Layout(g.Layout{
 					g.Label("Loading..."),
 				}),
-			}).
-			LayoutForFailure(g.Layout{
+			).
+			LayoutForFailure(
 				g.ImageWithFile("./fallback.png").Size(300, 200),
-			}),
+			),
 
 		g.Label("Display image from url without placeholder (no size when loading)"),
 		g.ImageWithUrl("https://www.pngitem.com/pimgs/m/424-4242405_go-lang-gopher-clipart-png-download-golang-gopher.png").Size(300, 200),
 
 		g.Label("Footer"),
-	}).Build()
+	).Build()
 }
 
 func main() {

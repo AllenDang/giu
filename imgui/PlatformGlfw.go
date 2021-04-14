@@ -46,7 +46,7 @@ type GLFW struct {
 	time             float64
 	mouseJustPressed [3]bool
 
-	mouseCursors map[int]*glfw.Cursor
+	mouseCursors map[MouseCursorID]*glfw.Cursor
 
 	posChangeCallback  func(int, int)
 	sizeChangeCallback func(int, int)
@@ -108,7 +108,7 @@ func NewGLFW(io IO, title string, width, height int, flags GLFWWindowFlags) (*GL
 	platform.installCallbacks()
 
 	// Create mosue cursors
-	platform.mouseCursors = make(map[int]*glfw.Cursor)
+	platform.mouseCursors = make(map[MouseCursorID]*glfw.Cursor)
 	platform.mouseCursors[MouseCursorArrow] = glfw.CreateStandardCursor(glfw.ArrowCursor)
 	platform.mouseCursors[MouseCursorTextInput] = glfw.CreateStandardCursor(glfw.IBeamCursor)
 	platform.mouseCursors[MouseCursorResizeAll] = glfw.CreateStandardCursor(glfw.CrosshairCursor)
@@ -295,7 +295,7 @@ func (platform *GLFW) SetInputCallback(cb func(key glfw.Key, mods glfw.ModifierK
 
 func (platform *GLFW) updateMouseCursor() {
 	io := platform.imguiIO
-	if (io.ConfigFlags()&ConfigFlagNoMouseCursorChange) == 1 || platform.window.GetInputMode(glfw.CursorMode) == glfw.CursorDisabled {
+	if (io.ConfigFlags()&ConfigFlagsNoMouseCursorChange) == 1 || platform.window.GetInputMode(glfw.CursorMode) == glfw.CursorDisabled {
 		return
 	}
 

@@ -46,8 +46,8 @@ func main() {
 		RunCmd(cmd)
 
 		// Upx
-		cmd = exec.Command("upx", appName)
-		RunCmd(cmd)
+		// cmd = exec.Command("upx", appName)
+		// RunCmd(cmd)
 
 		// Bundle
 		macOSPath := filepath.Join(outputDir, fmt.Sprintf("%s.app", appName), "Contents", "MacOS")

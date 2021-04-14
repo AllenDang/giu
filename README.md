@@ -25,7 +25,6 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 - Declarative UI (see examples for more detail).
 - DPI awareness (auto scale font and UI to adapte high DPI monitor).
 - Drop in usage, no need to implement render and platform.
-- Freetype font rendering support.
 - OS clipboard support.
 
 ![Screenshot](https://github.com/AllenDang/giu/raw/master/examples/imguidemo/screenshot.png)
@@ -38,31 +37,32 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 package main
 
 import (
-    "fmt"
+	"fmt"
 
-    g "github.com/AllenDang/giu"
+	g "github.com/AllenDang/giu"
 )
 
 func onClickMe() {
-    fmt.Println("Hello world!")
+	fmt.Println("Hello world!")
 }
 
 func onImSoCute() {
-    fmt.Println("Im sooooooo cute!!")
+	fmt.Println("Im sooooooo cute!!")
 }
 
 func loop() {
-    g.SingleWindow("hello world").Layout(g.Layout{
-        g.Label("Hello world from giu"),
-        g.Line(
-            g.Button("Click Me").OnClick(onClickMe),
-            g.Button("I'm so cute").OnClick(onImSoCute)),
-        })
+	g.SingleWindow("hello world").Layout(
+		g.Label("Hello world from giu"),
+		g.Line(
+			g.Button("Click Me").OnClick(onClickMe),
+			g.Button("I'm so cute").OnClick(onImSoCute),
+		),
+	)
 }
 
 func main() {
-    wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable, nil)
-    wnd.Run(loop)
+	wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable, nil)
+	wnd.Run(loop)
 }
 ```
 
@@ -70,97 +70,66 @@ Here is result.
 
 ![Helloworld](https://github.com/AllenDang/giu/raw/master/examples/helloworld/helloworld.png)
 
+## Install
+
+The backend of giu depends on OpenGL 3.3, make sure your environment supports it (so far as I known some Virual Machine like VirualBox doesn't support it).
+
+### MacOS
+
+``` sh
+xcode-select --install
+go get github.com/AllenDang/giu@master
+```
+
+### Windows
+
+1. Install mingw [download here](https://github.com/brechtsanders/winlibs_mingw/releases/tag/10.2.0-11.0.0-8.0.0-r8). Thanks @alchem1ster!
+2. Add the binaries folder of mingw to the path (usually is *\mingw64\bin*).
+3. go get github.com/AllenDang/giu@master.
+
+### Linux
+
+*Need help* here cause I don't have any linux experience.
+
+## Deploy
+
+### Build MacOS version on MacOS.
+
+``` sh
+go build -ldflags "-s -w" .
+```
+
+### Build Windows version on Windows.
+
+``` sh
+go build -ldflags "-s -w -H=windowsgui -extldflags=-static" .
+```
+
+### Build Windows version on MacOS.
+
+1. Install mingw-64.
+``` sh
+brew install mingw-w64
+```
+
+2. Prepare and embed application icon to executable and build.
+
+``` sh
+cat > YourExeName.rc << EOL
+id ICON "./res/app_win.ico"
+GLFW_ICON ICON "./res/app_win.ico"
+EOL
+
+x86_64-w64-mingw32-windres YourExeName.rc -O coff -o YourExeName.syso
+GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ HOST=x86_64-w64-mingw32 go build -ldflags "-s -w -H=windowsgui -extldflags=-static" -p 4 -v -o YourExeName.exe
+
+rm YourExeName.syso
+rm YourExeName.rc
+```
+
 ## Document
 
 Check [Wiki](https://github.com/AllenDang/giu/wiki)
-
-## Embed Lua as script language to create UI
-
-This is a very interesting use case and it is incredibly easy.
-
-```go
-package main
-
-import (
-	g "github.com/AllenDang/giu"
-	lua "github.com/yuin/gopher-lua"
-	luar "layeh.com/gopher-luar"
-)
-
-// Define a simple plugin struct
-type LuaPlugin struct {
-	Name   string
-	Layout g.Layout
-}
-
-// Genreate a string pointer for lua
-func GStrPtr() *string {
-	var str string
-	return &str
-}
-
-// Receive string value from pointer
-func ToStr(str *string) string {
-	return *str
-}
-
-var luaPlugin LuaPlugin
-
-func onRunScript() {
-	luaPlugin.Name = ""
-	luaPlugin.Layout = g.Layout{}
-
-	luaState := lua.NewState()
-	defer luaState.Close()
-
-	// Pass luaPlugin into lua VM.
-	luaState.SetGlobal("luaPlugin", luar.New(luaState, &luaPlugin))
-
-	// Register some method (giu widget creator)
-	luaState.SetGlobal("GStrPtr", luar.New(luaState, GStrPtr))
-	luaState.SetGlobal("ToStr", luar.New(luaState, ToStr))
-
-	luaState.SetGlobal("Label", luar.New(luaState, g.Label))
-	luaState.SetGlobal("Button", luar.New(luaState, g.Button))
-	luaState.SetGlobal("InputText", luar.New(luaState, g.InputText))
-
-	// Simple lua code
-	luaCode := `
-    luaPlugin.Name = "test"
-
-    name = GStrPtr()
-    
-    function onGreeting()
-	  print(string.format("Greeting %s", ToStr(name)))
-    end
-    
-    luaPlugin.Layout = {
-      Label("Label from lua, tell me your name"),
-      InputText("##name", 200, name),
-      Button("Greeting"):OnClick(onGreeting),
-    }
-  `
-
-	// Run lua script
-	if err := luaState.DoString(luaCode); err != nil {
-		panic(err)
-	}
-}
-
-func loop() {
-	g.SingleWindow("Lua test", g.Layout{
-		g.Button("Load from lua").OnClick(onRunScript),
-		luaPlugin.Layout,
-	})
-}
-
-func main() {
-	wnd := g.NewMasterWindow("Lua test", 400, 300, 0, nil)
-	wnd.Run(loop)
-}
-
-
-```
 
 ## Contribution
 

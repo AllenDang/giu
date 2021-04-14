@@ -13,7 +13,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("Code Editor").Layout(g.Layout{
+	g.SingleWindow("Code Editor").Layout(
 		g.Line(
 			g.Button("Get Text").OnClick(func() {
 				if editor.HasSelection() {
@@ -44,7 +44,7 @@ func loop() {
 		g.Custom(func() {
 			editor.Render("Hello", imgui.Vec2{X: 0, Y: 0}, true)
 		}),
-	}).Build()
+	).Build()
 }
 
 func main() {

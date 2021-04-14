@@ -1,16 +1,27 @@
 package main
 
 import (
+	"github.com/ianling/imgui-go"
 	"image/color"
 
 	"github.com/ianling/giu"
 )
 
 func loop() {
-	giu.SingleWindow("set style").Layout(giu.Layout{
-		giu.Label("I'm a styled label").Color(&color.RGBA{0x36, 0x74, 0xD5, 255}),
-		giu.Label("I'm a normal label"),
-	}).Build()
+	giu.SingleWindow("set style").Layout(
+		giu.Style().
+			SetColor(imgui.StyleColorText, color.RGBA{0x36, 0x74, 0xD5, 255}).
+			To(
+				giu.Label("I'm a styled label"),
+			),
+		giu.Style().
+			SetColor(imgui.StyleColorBorder, color.RGBA{0x36, 0x74, 0xD5, 255}).
+			SetStyle(imgui.StyleVarFramePadding, 10, 10).
+			To(
+				giu.Button("I'm a styled button"),
+			),
+		giu.Button("I'm a normal button"),
+	).Build()
 }
 
 func main() {

@@ -81,8 +81,8 @@ func (p *ProgressIndicatorWidget) Build() {
 				color := imgui.CurrentStyle().Color(imgui.StyleColorText)
 				rgba := Vec4ToRGBA(color)
 
-				canvas.AddCircle(centerPt, float32(p.radius), rgba, float32(p.radius/20.0), 0)
-				canvas.AddCircleFilled(centerPt2, float32(p.radius/5), rgba)
+				canvas.AddCircle(centerPt, p.radius, rgba, p.radius/20.0)
+				canvas.AddCircleFilled(centerPt2, p.radius/5, rgba)
 
 				// Draw text
 				if len(p.label) > 0 {

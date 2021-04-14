@@ -8,11 +8,11 @@ func SingleWindow(title string) *WindowWidget {
 	size := Context.platform.DisplaySize()
 	return Window(title).
 		Flags(
-			imgui.WindowFlagsNoTitleBar|
-				imgui.WindowFlagsNoCollapse|
-				imgui.WindowFlagsNoScrollbar|
-				imgui.WindowFlagsNoMove|
-				imgui.WindowFlagsNoResize).
+			WindowFlagsNoTitleBar|
+				WindowFlagsNoCollapse|
+				WindowFlagsNoScrollbar|
+				WindowFlagsNoMove|
+				WindowFlagsNoResize).
 		Size(size[0], size[1])
 }
 
@@ -20,12 +20,12 @@ func SingleWindowWithMenuBar(title string) *WindowWidget {
 	size := Context.platform.DisplaySize()
 	return Window(title).
 		Flags(
-			imgui.WindowFlagsNoTitleBar|
-				imgui.WindowFlagsNoCollapse|
-				imgui.WindowFlagsNoScrollbar|
-				imgui.WindowFlagsNoMove|
-				imgui.WindowFlagsMenuBar|
-				imgui.WindowFlagsNoResize).Size(size[0], size[1])
+			WindowFlagsNoTitleBar|
+				WindowFlagsNoCollapse|
+				WindowFlagsNoScrollbar|
+				WindowFlagsNoMove|
+				WindowFlagsMenuBar|
+				WindowFlagsNoResize).Size(size[0], size[1])
 }
 
 type WindowWidget struct {
@@ -36,7 +36,7 @@ type WindowWidget struct {
 	width, height float32
 	hasFocus      bool
 	bringToFront  bool
-	layout        *Layout
+	layout        Layout
 	pos           imgui.Vec2
 	size          imgui.Vec2
 }
@@ -70,12 +70,12 @@ func (w *WindowWidget) Pos(x, y float32) *WindowWidget {
 	return w
 }
 
-func (w *WindowWidget) Layout(layout Layout) *WindowWidget {
-	if layout == nil {
+func (w *WindowWidget) Layout(widgets ...Widget) *WindowWidget {
+	if widgets == nil {
 		return w
 	}
 
-	if w.flags&imgui.WindowFlagsNoMove != 0 && w.flags&imgui.WindowFlagsNoResize != 0 {
+	if w.flags&WindowFlagsNoMove != 0 && w.flags&WindowFlagsNoResize != 0 {
 		imgui.SetNextWindowPos(imgui.Vec2{X: w.x, Y: w.y})
 		imgui.SetNextWindowSize(imgui.Vec2{X: w.width, Y: w.height})
 	} else {
@@ -83,13 +83,13 @@ func (w *WindowWidget) Layout(layout Layout) *WindowWidget {
 		imgui.SetNextWindowSizeV(imgui.Vec2{X: w.width, Y: w.height}, imgui.ConditionFirstUseEver)
 	}
 
-	layout = append(layout, Custom(func() {
+	widgets = append(widgets, Custom(func() {
 		w.hasFocus = IsWindowFocused()
 		w.pos = imgui.WindowPos()
 		w.size = imgui.WindowSize()
 	}))
 
-	w.layout = &layout
+	w.layout = widgets
 
 	return w
 }
@@ -104,9 +104,11 @@ func (w *WindowWidget) Build() {
 		imgui.SetNextWindowFocus()
 	}
 
-	imgui.BeginV(w.title, w.open, int(w.flags))
+	showed := imgui.BeginV(w.title, w.open, imgui.WindowFlags(w.flags))
 
-	w.layout.Build()
+	if showed {
+		w.layout.Build()
+	}
 
 	imgui.End()
 }

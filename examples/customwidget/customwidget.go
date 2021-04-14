@@ -41,12 +41,13 @@ func (c *CircleButtonWidget) Build() {
 
 	canvas := g.GetCanvas()
 	if drawActive {
-		canvas.AddCircleFilled(center, float32(radius), color.RGBA{12, 12, 200, 255})
+		canvas.AddCircleFilled(center, float32(radius), color.RGBA{R: 12, G: 12, B: 200, A: 255})
 	}
-	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, 2, 0)
+	canvas.AddCircle(center, float32(radius), color.RGBA{R: 200, G: 12, B: 12, A: 255}, 2)
 
 	// Draw text
-	canvas.AddText(center.Sub(image.Pt(int((width-padding)/2), int(height/2))), color.RGBA{255, 255, 255, 255}, c.id)
+	canvas.AddText(center.Sub(image.Pt(int((width-padding)/2), int(height/2))),
+		color.RGBA{R: 255, G: 255, B: 255, A: 255}, c.id)
 }
 
 func onHello() {
@@ -62,10 +63,10 @@ func onCircleButton() {
 }
 
 func loop() {
-	g.SingleWindow("custom widget").Layout(g.Layout{
+	g.SingleWindow("custom widget").Layout(
 		g.Line(CircleButton("Hello", onHello), CircleButton("World", onWorld)),
 		CircleButton("Circle Button", onCircleButton),
-	}).Build()
+	).Build()
 }
 
 func main() {

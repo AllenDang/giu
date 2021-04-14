@@ -139,7 +139,7 @@ const (
 )
 
 func SetMouseCursor(cursor MouseCursorType) {
-	imgui.SetMouseCursor(int(cursor))
+	imgui.SetMouseCursor(imgui.MouseCursorID(cursor))
 }
 
 func GetWindowPadding() (float32, float32) {
@@ -160,4 +160,50 @@ func GetItemInnerSpacing() (float32, float32) {
 func GetFramePadding() (float32, float32) {
 	vec2 := imgui.CurrentStyle().FramePadding()
 	return vec2.X, vec2.Y
+}
+
+type StyleSetter struct {
+	colors map[imgui.StyleColorID]color.RGBA
+	styles map[imgui.StyleVarID]imgui.Vec2
+	layout Layout
+}
+
+func Style() *StyleSetter {
+	var ss StyleSetter
+	ss.colors = make(map[imgui.StyleColorID]color.RGBA)
+	ss.styles = make(map[imgui.StyleVarID]imgui.Vec2)
+
+	return &ss
+}
+
+func (ss *StyleSetter) SetColor(colorId imgui.StyleColorID, col color.RGBA) *StyleSetter {
+	ss.colors[colorId] = col
+	return ss
+}
+
+func (ss *StyleSetter) SetStyle(varId imgui.StyleVarID, width, height float32) *StyleSetter {
+	ss.styles[varId] = imgui.Vec2{X: width, Y: height}
+	return ss
+}
+
+func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
+	ss.layout = widgets
+	return ss
+}
+
+func (ss *StyleSetter) Build() {
+	if len(ss.layout) > 0 {
+		for k, v := range ss.colors {
+			imgui.PushStyleColor(k, ToVec4Color(v))
+		}
+
+		for k, v := range ss.styles {
+			imgui.PushStyleVarVec2(k, v)
+		}
+
+		ss.layout.Build()
+
+		imgui.PopStyleColorV(len(ss.colors))
+		imgui.PopStyleVarV(len(ss.styles))
+	}
 }

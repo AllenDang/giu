@@ -322,11 +322,6 @@ func (renderer *OpenGL3) createFontsTexture() {
 		fonts.AddFontDefaultV(fontConfig)
 	}
 
-	err := fonts.BuildWithFreeType()
-	if err != nil {
-		// do nothing, freetype tag not added
-	}
-
 	image := fonts.TextureDataRGBA32()
 
 	// Upload texture to graphics system

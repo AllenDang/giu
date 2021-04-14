@@ -6,7 +6,6 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
-	"math"
 	"time"
 
 	"github.com/go-resty/resty/v2"
@@ -65,7 +64,7 @@ type InputTextMultilineWidget struct {
 }
 
 func (i *InputTextMultilineWidget) Build() {
-	if imgui.InputTextMultilineV(i.label, i.text, imgui.Vec2{X: i.width, Y: i.height}, int(i.flags), i.cb) && i.onChange != nil {
+	if imgui.InputTextMultilineV(i.label, i.text, imgui.Vec2{X: i.width, Y: i.height}, imgui.InputTextFlags(i.flags), i.cb) && i.onChange != nil {
 		i.onChange()
 	}
 }
@@ -133,36 +132,6 @@ func Button(id string) *ButtonWidget {
 		width:   0,
 		height:  0,
 		onClick: nil,
-	}
-}
-
-type PlotLinesWidget struct {
-	label        string
-	values       []float32
-	valuesOffset int
-	overlayText  string
-	scaleMin     float32
-	scaleMax     float32
-	graphSize    imgui.Vec2
-}
-
-func (p *PlotLinesWidget) Build() {
-	imgui.PlotLinesV(p.label, p.values, p.valuesOffset, p.overlayText, p.scaleMin, p.scaleMax, p.graphSize)
-}
-
-func PlotLines(label string, values []float32) *PlotLinesWidget {
-	return PlotLinesV(label, values, 0, "", math.MaxFloat32, math.MaxFloat32, 0, 0)
-}
-
-func PlotLinesV(label string, values []float32, valuesOffset int, overlayText string, scaleMin, scaleMax, width, height float32) *PlotLinesWidget {
-	return &PlotLinesWidget{
-		label:        label,
-		values:       values,
-		valuesOffset: valuesOffset,
-		overlayText:  overlayText,
-		scaleMin:     scaleMin,
-		scaleMax:     scaleMax,
-		graphSize:    imgui.Vec2{X: width, Y: height},
 	}
 }
 
@@ -396,8 +365,8 @@ type ChildWidget struct {
 }
 
 func (c *ChildWidget) Build() {
-	imgui.BeginChildV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, int(c.flags))
-	if c.layout != nil {
+	showed := imgui.BeginChildV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, imgui.WindowFlags(c.flags))
+	if showed && c.layout != nil {
 		c.layout.Build()
 	}
 	imgui.EndChild()
@@ -419,8 +388,8 @@ func (c *ChildWidget) Flags(flags WindowFlags) *ChildWidget {
 	return c
 }
 
-func (c *ChildWidget) Layout(layout Layout) *ChildWidget {
-	c.layout = layout
+func (c *ChildWidget) Layout(widgets ...Widget) *ChildWidget {
+	c.layout = widgets
 	return c
 }
 
@@ -453,8 +422,8 @@ func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	}
 }
 
-func (cc *ComboCustomWidget) Layout(layout Layout) *ComboCustomWidget {
-	cc.layout = layout
+func (cc *ComboCustomWidget) Layout(widgets ...Widget) *ComboCustomWidget {
+	cc.layout = widgets
 	return cc
 }
 
@@ -473,7 +442,7 @@ func (cc *ComboCustomWidget) Build() {
 		imgui.PushItemWidth(cc.width)
 	}
 
-	if imgui.BeginComboV(cc.label, cc.previewValue, int(cc.flags)) {
+	if imgui.BeginComboV(cc.label, cc.previewValue, imgui.ComboFlags(cc.flags)) {
 		if cc.layout != nil {
 			cc.layout.Build()
 		}
@@ -517,7 +486,7 @@ func (c *ComboWidget) Build() {
 		imgui.PushItemWidth(c.width)
 	}
 
-	if imgui.BeginComboV(c.label, c.previewValue, int(c.flags)) {
+	if imgui.BeginComboV(c.label, c.previewValue, imgui.ComboFlags(c.flags)) {
 		for i, item := range c.items {
 			if imgui.Selectable(item) {
 				*c.selected = int32(i)
@@ -559,8 +528,8 @@ func ContextMenu(label string) *ContextMenuWidget {
 	}
 }
 
-func (c *ContextMenuWidget) Layout(layout Layout) *ContextMenuWidget {
-	c.layout = layout
+func (c *ContextMenuWidget) Layout(widgets ...Widget) *ContextMenuWidget {
+	c.layout = widgets
 	return c
 }
 
@@ -609,7 +578,7 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 }
 
 func (d *DragIntWidget) Build() {
-	imgui.DragIntV(d.label, d.value, d.speed, d.min, d.max, d.format, imgui.SlidersFlagsNone)
+	imgui.DragIntV(d.label, d.value, d.speed, d.min, d.max, d.format, imgui.SliderFlagsNone)
 }
 
 type GroupWidget struct {
@@ -622,8 +591,8 @@ func Group() *GroupWidget {
 	}
 }
 
-func (g *GroupWidget) Layout(layout Layout) *GroupWidget {
-	g.layout = layout
+func (g *GroupWidget) Layout(widgets ...Widget) *GroupWidget {
+	g.layout = widgets
 	return g
 }
 
@@ -780,13 +749,13 @@ func (i *ImageWithUrlWidget) Size(width, height float32) *ImageWithUrlWidget {
 	return i
 }
 
-func (i *ImageWithUrlWidget) LayoutForLoading(layout Layout) *ImageWithUrlWidget {
-	i.whenLoading = layout
+func (i *ImageWithUrlWidget) LayoutForLoading(widgets ...Widget) *ImageWithUrlWidget {
+	i.whenLoading = widgets
 	return i
 }
 
-func (i *ImageWithUrlWidget) LayoutForFailure(layout Layout) *ImageWithUrlWidget {
-	i.whenFailure = layout
+func (i *ImageWithUrlWidget) LayoutForFailure(widgets ...Widget) *ImageWithUrlWidget {
+	i.whenFailure = widgets
 	return i
 }
 
@@ -893,7 +862,7 @@ func (i *InputTextWidget) Build() {
 		PushItemWidth(i.width)
 	}
 
-	if imgui.InputTextV(i.label, i.value, int(i.flags), i.cb) && i.onChange != nil {
+	if imgui.InputTextV(i.label, i.value, imgui.InputTextFlags(i.flags), i.cb) && i.onChange != nil {
 		i.onChange()
 	}
 
@@ -940,7 +909,7 @@ func (i *InputIntWidget) Build() {
 		PushItemWidth(i.width)
 	}
 
-	if imgui.InputIntV(i.label, i.value, 0, 100, int(i.flags)) && i.onChange != nil {
+	if imgui.InputIntV(i.label, i.value, 0, 100, imgui.InputTextFlags(i.flags)) && i.onChange != nil {
 		i.onChange()
 	}
 
@@ -958,7 +927,7 @@ type InputFloatWidget struct {
 	onChange func()
 }
 
-func InputFloatV(label string, value *float32) *InputFloatWidget {
+func InputFloat(label string, value *float32) *InputFloatWidget {
 	return &InputFloatWidget{
 		label:    label,
 		width:    0,
@@ -1001,7 +970,6 @@ func (i *InputFloatWidget) Build() {
 type LabelWidget struct {
 	label   string
 	wrapped bool
-	color   *color.RGBA
 	font    *imgui.Font
 }
 
@@ -1009,7 +977,6 @@ func Label(label string) *LabelWidget {
 	return &LabelWidget{
 		label:   label,
 		wrapped: false,
-		color:   nil,
 		font:    nil,
 	}
 }
@@ -1019,21 +986,12 @@ func (l *LabelWidget) Wrapped(wrapped bool) *LabelWidget {
 	return l
 }
 
-func (l *LabelWidget) Color(color *color.RGBA) *LabelWidget {
-	l.color = color
-	return l
-}
-
 func (l *LabelWidget) Font(font *imgui.Font) *LabelWidget {
 	l.font = font
 	return l
 }
 
 func (l *LabelWidget) Build() {
-	if l.color != nil {
-		PushColorText(*l.color)
-	}
-
 	if l.font != nil {
 		PushFont(*l.font)
 	}
@@ -1051,10 +1009,6 @@ func (l *LabelWidget) Build() {
 	if l.font != nil {
 		PopFont()
 	}
-
-	if l.color != nil {
-		PopStyleColor()
-	}
 }
 
 type MainMenuBarWidget struct {
@@ -1067,8 +1021,8 @@ func MainMenuBar() *MainMenuBarWidget {
 	}
 }
 
-func (m *MainMenuBarWidget) Layout(layout Layout) *MainMenuBarWidget {
-	m.layout = layout
+func (m *MainMenuBarWidget) Layout(widgets ...Widget) *MainMenuBarWidget {
+	m.layout = widgets
 	return m
 }
 
@@ -1091,8 +1045,8 @@ func MenuBar() *MenuBarWidget {
 	}
 }
 
-func (m *MenuBarWidget) Layout(layout Layout) *MenuBarWidget {
-	m.layout = layout
+func (m *MenuBarWidget) Layout(widgets ...Widget) *MenuBarWidget {
+	m.layout = widgets
 	return m
 }
 
@@ -1161,8 +1115,8 @@ func (m *MenuWidget) Enabled(e bool) *MenuWidget {
 	return m
 }
 
-func (m *MenuWidget) Layout(layout Layout) *MenuWidget {
-	m.layout = layout
+func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
+	m.layout = widgets
 	return m
 }
 
@@ -1194,13 +1148,13 @@ func (p *PopupWidget) Flags(flags imgui.PopupFlags) *PopupWidget {
 	return p
 }
 
-func (p *PopupWidget) Layout(layout Layout) *PopupWidget {
-	p.layout = layout
+func (p *PopupWidget) Layout(widgets ...Widget) *PopupWidget {
+	p.layout = widgets
 	return p
 }
 
 func (p *PopupWidget) Build() {
-	if imgui.BeginPopupV(p.name, p.flags) {
+	if imgui.BeginPopupV(p.name, imgui.WindowFlags(p.flags)) {
 		if p.layout != nil {
 			Update()
 			p.layout.Build()
@@ -1235,8 +1189,8 @@ func (p *PopupModalWidget) Flags(flags imgui.PopupFlags) *PopupModalWidget {
 	return p
 }
 
-func (p *PopupModalWidget) Layout(layout Layout) *PopupModalWidget {
-	p.layout = layout
+func (p *PopupModalWidget) Layout(widgets ...Widget) *PopupModalWidget {
+	p.layout = widgets
 	return p
 }
 
@@ -1245,7 +1199,7 @@ func (p *PopupModalWidget) Build() {
 		imgui.OpenPopup(p.name)
 	}
 
-	if imgui.BeginPopupModalV(p.name, p.open, p.flags) {
+	if imgui.BeginPopupModalV(p.name, p.open, imgui.WindowFlags(p.flags)) {
 		if p.layout != nil {
 			Update()
 			p.layout.Build()
@@ -1335,7 +1289,7 @@ func (s *SelectableWidget) OnClick(onClick func()) *SelectableWidget {
 }
 
 func (s *SelectableWidget) Build() {
-	if imgui.SelectableV(s.label, s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.SelectableV(s.label, s.selected, imgui.SelectableFlags(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 }
@@ -1392,12 +1346,71 @@ func (s *SliderIntWidget) Build() {
 		PushItemWidth(s.width)
 	}
 
-	if imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format, imgui.SlidersFlagsNone) && s.onChange != nil {
+	if imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format, imgui.SliderFlagsNone) && s.onChange != nil {
 		s.onChange()
 	}
 
 	if s.width != 0 {
 		PopItemWidth()
+	}
+}
+
+type VSliderIntWidget struct {
+	label    string
+	width    float32
+	height   float32
+	value    *int32
+	min      int32
+	max      int32
+	format   string
+	flags    imgui.SliderFlags
+	onChange func()
+}
+
+func VSliderInt(label string, value *int32, min, max int32) *VSliderIntWidget {
+	return &VSliderIntWidget{
+		label:  label,
+		width:  18,
+		height: 60,
+		value:  value,
+		min:    min,
+		max:    max,
+		format: "%d",
+		flags:  imgui.SliderFlagsNone,
+	}
+}
+
+func (vs *VSliderIntWidget) Size(width, height float32) *VSliderIntWidget {
+	vs.width, vs.height = width, height
+	return vs
+}
+
+func (vs *VSliderIntWidget) Flags(flags imgui.SliderFlags) *VSliderIntWidget {
+	vs.flags = flags
+	return vs
+}
+
+func (vs *VSliderIntWidget) Format(format string) *VSliderIntWidget {
+	vs.format = format
+	return vs
+}
+
+func (vs *VSliderIntWidget) OnChange(onChange func()) *VSliderIntWidget {
+	vs.onChange = onChange
+	return vs
+}
+
+func (vs *VSliderIntWidget) Build() {
+	if imgui.VSliderIntV(
+		vs.label,
+		imgui.Vec2{X: vs.width, Y: vs.height},
+		vs.value,
+		vs.min,
+		vs.max,
+		vs.format,
+		vs.flags,
+	) && vs.onChange != nil {
+		vs.onChange()
 	}
 }
 
@@ -1641,13 +1654,13 @@ func (t *TabItemWidget) Flags(flags TabItemFlags) *TabItemWidget {
 	return t
 }
 
-func (t *TabItemWidget) Layout(layout Layout) *TabItemWidget {
-	t.layout = layout
+func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
+	t.layout = widgets
 	return t
 }
 
 func (t *TabItemWidget) Build() {
-	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
+	if imgui.BeginTabItemV(t.label, t.open, imgui.TabItemFlags(t.flags)) {
 		if t.layout != nil {
 			t.layout.Build()
 		}
@@ -1657,7 +1670,7 @@ func (t *TabItemWidget) Build() {
 
 type TabBarWidget struct {
 	id     string
-	flags  TabBarFlags
+	flags  imgui.TabBarFlags
 	layout Layout
 }
 
@@ -1669,18 +1682,18 @@ func TabBar(id string) *TabBarWidget {
 	}
 }
 
-func (t *TabBarWidget) Flags(flags TabBarFlags) *TabBarWidget {
+func (t *TabBarWidget) Flags(flags imgui.TabBarFlags) *TabBarWidget {
 	t.flags = flags
 	return t
 }
 
-func (t *TabBarWidget) Layout(layout Layout) *TabBarWidget {
-	t.layout = layout
+func (t *TabBarWidget) Layout(widgets ...Widget) *TabBarWidget {
+	t.layout = widgets
 	return t
 }
 
 func (t *TabBarWidget) Build() {
-	if imgui.BeginTabBarV(t.id, int(t.flags)) {
+	if imgui.BeginTabBarV(t.id, t.flags) {
 		if t.layout != nil {
 			t.layout.Build()
 		}
@@ -1689,134 +1702,193 @@ func (t *TabBarWidget) Build() {
 }
 
 type RowWidget struct {
-	layout Layout
+	flags        imgui.TableRowFlags
+	minRowHeight float64
+	layout       Layout
+	bgColor      *color.RGBA
 }
 
 func Row(widgets ...Widget) *RowWidget {
 	return &RowWidget{
-		layout: widgets,
+		flags:        0,
+		minRowHeight: 0,
+		layout:       widgets,
+		bgColor:      nil,
 	}
 }
 
+func (r *RowWidget) BgColor(c *color.RGBA) *RowWidget {
+	r.bgColor = c
+	return r
+}
+
+func (r *RowWidget) Flags(flags imgui.TableRowFlags) *RowWidget {
+	r.flags = flags
+	return r
+}
+
+func (r *RowWidget) MinHeight(height float64) *RowWidget {
+	r.minRowHeight = height
+	return r
+}
+
 func (r *RowWidget) Build() {
-	for i, w := range r.layout {
+	imgui.TableNextRowV(r.flags, float32(r.minRowHeight))
+
+	for _, w := range r.layout {
 		_, isTooltip := w.(*TooltipWidget)
 		_, isContextMenu := w.(*ContextMenuWidget)
 		_, isPopup := w.(*PopupModalWidget)
 
-		if i > 0 && !isTooltip && !isContextMenu && !isPopup {
-			imgui.NextColumn()
+		if !isTooltip && !isContextMenu && !isPopup {
+			imgui.TableNextColumn()
 		}
 		w.Build()
 	}
-}
 
-type Rows []*RowWidget
-
-type TabelWidget struct {
-	label  string
-	border bool
-	rows   Rows
-}
-
-func Table(label string) *TabelWidget {
-	return &TabelWidget{
-		label:  label,
-		border: true,
-		rows:   nil,
+	if r.bgColor != nil {
+		imgui.TableSetBgColorV(imgui.TableBgTargetRowBg0, ToVec4Color(*(r.bgColor)), -1)
 	}
 }
 
-func (t *TabelWidget) Border(b bool) *TabelWidget {
-	t.border = b
+type ColumnWidget struct {
+	label              string
+	flags              imgui.TableColumnFlags
+	innerWidthOrWeight float32
+	userId             uint32
+}
+
+func Column(label string) *ColumnWidget {
+	return &ColumnWidget{
+		label:              label,
+		flags:              0,
+		innerWidthOrWeight: 0,
+		userId:             0,
+	}
+}
+
+func (c *ColumnWidget) Flags(flags imgui.TableColumnFlags) *ColumnWidget {
+	c.flags = flags
+	return c
+}
+
+func (c *ColumnWidget) InnerWidthOrWeight(w float32) *ColumnWidget {
+	c.innerWidthOrWeight = w
+	return c
+}
+
+func (c *ColumnWidget) UserId(id uint32) *ColumnWidget {
+	c.userId = id
+	return c
+}
+
+func (c *ColumnWidget) Build() {
+	imgui.TableSetupColumnV(c.label, c.flags, c.innerWidthOrWeight, uint(c.userId))
+}
+
+type TableWidget struct {
+	label        string
+	flags        imgui.TableFlags
+	size         imgui.Vec2
+	innerWidth   float64
+	rows         []*RowWidget
+	columns      []*ColumnWidget
+	fastMode     bool
+	freezeRow    int
+	freezeColumn int
+}
+
+func Table(label string) *TableWidget {
+	return &TableWidget{
+		label:        label,
+		flags:        imgui.TableFlagsResizable | imgui.TableFlagsBorders | imgui.TableFlagsScrollY,
+		rows:         nil,
+		columns:      nil,
+		fastMode:     false,
+		freezeRow:    -1,
+		freezeColumn: -1,
+	}
+}
+
+// Display visible rows only to boost performance.
+func (t *TableWidget) FastMode(b bool) *TableWidget {
+	t.fastMode = b
 	return t
 }
 
-func (t *TabelWidget) Rows(rows Rows) *TabelWidget {
+// Freeze columns/rows so they stay visible when scrolled.
+func (t *TableWidget) Freeze(col, row int) *TableWidget {
+	t.freezeColumn = col
+	t.freezeRow = row
+	return t
+}
+
+func (t *TableWidget) Columns(cols ...*ColumnWidget) *TableWidget {
+	t.columns = cols
+	return t
+}
+
+func (t *TableWidget) Rows(rows ...*RowWidget) *TableWidget {
 	t.rows = rows
 	return t
 }
 
-func (t *TabelWidget) Build() {
-	if len(t.rows) > 0 && len(t.rows[0].layout) > 0 {
-		imgui.ColumnsV(len(t.rows[0].layout), t.label, t.border)
-
-		for i, r := range t.rows {
-			if i > 0 {
-				imgui.NextColumn()
-			}
-
-			if t.border {
-				imgui.Separator()
-			}
-
-			r.Build()
-		}
-
-		imgui.Columns()
-
-		if t.border {
-			imgui.Separator()
-		}
-	}
-}
-
-type FastTabelWidget struct {
-	label  string
-	border bool
-	rows   Rows
-}
-
-// Create a fast table which only render visible rows.
-// Note this only works with all rows have same height.
-func FastTable(label string) *FastTabelWidget {
-	return &FastTabelWidget{
-		label:  label,
-		border: true,
-		rows:   nil,
-	}
-}
-
-func (t *FastTabelWidget) Border(b bool) *FastTabelWidget {
-	t.border = b
+func (t *TableWidget) Size(width, height float32) *TableWidget {
+	t.size = imgui.Vec2{X: width, Y: height}
 	return t
 }
 
-func (t *FastTabelWidget) Rows(rows Rows) *FastTabelWidget {
-	t.rows = rows
+func (t *TableWidget) InnerWidth(width float64) *TableWidget {
+	t.innerWidth = width
 	return t
 }
 
-func (t *FastTabelWidget) Build() {
-	if len(t.rows) > 0 && len(t.rows[0].layout) > 0 {
-		imgui.ColumnsV(len(t.rows[0].layout), t.label, t.border)
+func (t *TableWidget) Flags(flags imgui.TableFlags) *TableWidget {
+	t.flags = flags
+	return t
+}
 
-		var clipper imgui.ListClipper
-		clipper.Begin(len(t.rows))
+func (t *TableWidget) Build() {
+	if len(t.rows) == 0 {
+		return
+	}
 
-		for clipper.Step() {
-			for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
-				r := t.rows[i]
+	colCount := len(t.columns)
+	if colCount == 0 {
+		colCount = len(t.rows[0].layout)
+	}
 
-				if i > 0 {
-					imgui.NextColumn()
+	if imgui.BeginTableV(t.label, colCount, t.flags, t.size, float32(t.innerWidth)) {
+		if t.freezeColumn >= 0 && t.freezeRow >= 0 {
+			imgui.TableSetupScrollFreeze(t.freezeColumn, t.freezeRow)
+		}
+
+		if len(t.columns) > 0 {
+			for _, col := range t.columns {
+				imgui.TableSetupColumnV(col.label, col.flags, col.innerWidthOrWeight, uint(col.userId))
+			}
+			imgui.TableHeadersRow()
+		}
+
+		if t.fastMode {
+			var clipper imgui.ListClipper
+			clipper.Begin(len(t.rows))
+
+			for clipper.Step() {
+				for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
+					row := t.rows[i]
+					row.Build()
 				}
+			}
 
-				if t.border {
-					imgui.Separator()
-				}
-
-				r.Build()
+			clipper.End()
+		} else {
+			for _, row := range t.rows {
+				row.Build()
 			}
 		}
 
-		clipper.End()
-
-		imgui.Columns()
-
-		if t.border {
-			imgui.Separator()
-		}
+		imgui.EndTable()
 	}
 }
 
@@ -1844,8 +1916,8 @@ func Tooltip(tip string) *TooltipWidget {
 	}
 }
 
-func (t *TooltipWidget) Layout(layout Layout) *TooltipWidget {
-	t.layout = layout
+func (t *TooltipWidget) Layout(widgets ...Widget) *TooltipWidget {
+	t.layout = widgets
 	return t
 }
 
@@ -1877,13 +1949,13 @@ func (t *TreeNodeWidget) Event(handler func()) *TreeNodeWidget {
 	return t
 }
 
-func (t *TreeNodeWidget) Layout(layout Layout) *TreeNodeWidget {
-	t.layout = layout
+func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
+	t.layout = widgets
 	return t
 }
 
 func (t *TreeNodeWidget) Build() {
-	open := imgui.TreeNodeV(t.label, int(t.flags))
+	open := imgui.TreeNodeV(t.label, imgui.TreeNodeFlags(t.flags))
 
 	if t.eventHandler != nil {
 		t.eventHandler()
@@ -1893,7 +1965,7 @@ func (t *TreeNodeWidget) Build() {
 		if t.layout != nil {
 			t.layout.Build()
 		}
-		if (t.flags & imgui.TreeNodeFlagsNoTreePushOnOpen) == 0 {
+		if (imgui.TreeNodeFlags(t.flags) & imgui.TreeNodeFlagsNoTreePushOnOpen) == 0 {
 			imgui.TreePop()
 		}
 	}
@@ -2131,7 +2203,7 @@ func (d *DatePickerWidget) Build() {
 			}
 		}
 
-		if imgui.BeginComboV(d.id, d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
+		if imgui.BeginComboV(d.id, d.date.Format("2006-01-02"), imgui.ComboFlagsHeightLargest) {
 			// Build year widget
 			imgui.AlignTextToFramePadding()
 			imgui.Text(" Year")
@@ -2198,19 +2270,18 @@ func (d *DatePickerWidget) Build() {
 				}
 			}
 
-			// Build day widgets
-			var rows Rows
+			columns := []*ColumnWidget{
+				Column("S"),
+				Column("M"),
+				Column("T"),
+				Column("W"),
+				Column("T"),
+				Column("F"),
+				Column("S"),
+			}
 
-			// Build week names
-			rows = append(rows, Row(
-				Label("S"),
-				Label("M"),
-				Label("T"),
-				Label("W"),
-				Label("T"),
-				Label("F"),
-				Label("S"),
-			))
+			// Build day widgets
+			var rows []*RowWidget
 
 			today := time.Now()
 			style := imgui.CurrentStyle()
@@ -2254,7 +2325,7 @@ func (d *DatePickerWidget) Build() {
 				rows = append(rows, Row(row...))
 			}
 
-			Table("DayTable").Rows(rows).Build()
+			Table("DayTable").Flags(imgui.TableFlagsBorders | imgui.TableFlagsSizingStretchSame).Columns(columns...).Rows(rows...).Build()
 
 			imgui.EndCombo()
 		}

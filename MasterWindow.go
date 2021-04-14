@@ -40,6 +40,8 @@ type MasterWindow struct {
 
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, loadFontFunc func()) *MasterWindow {
 	context := imgui.CreateContext(nil)
+	imgui.ImPlotCreateContext()
+	imgui.ImNodesCreateContext()
 
 	io := imgui.CurrentIO()
 
@@ -53,7 +55,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, l
 
 	scale := p.GetContentScale()
 
-	imguiLocal.DPIScale = scale
+	imgui.DPIScale = scale
 
 	// Assign platform to contex
 	Context.platform = p
@@ -142,8 +144,9 @@ func (w *MasterWindow) setTheme() {
 	style.SetColor(imgui.StyleColorDragDropTarget, imgui.Vec4{X: 1.00, Y: 1.00, Z: 0.00, W: 0.90})
 	style.SetColor(imgui.StyleColorNavHighlight, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 1.00})
 	style.SetColor(imgui.StyleColorNavWindowingHighlight, imgui.Vec4{X: 1.00, Y: 1.00, Z: 1.00, W: 0.70})
-	style.SetColor(imgui.StyleColorNavWindowingDarkening, imgui.Vec4{X: 0.80, Y: 0.80, Z: 0.80, W: 0.20})
-	style.SetColor(imgui.StyleColorModalWindowDarkening, imgui.Vec4{X: 0.80, Y: 0.80, Z: 0.80, W: 0.35})
+	style.SetColor(imgui.StyleColorTableHeaderBg, imgui.Vec4{X: 0.12, Y: 0.20, Z: 0.28, W: 1.00})
+	style.SetColor(imgui.StyleColorTableBorderStrong, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
+	style.SetColor(imgui.StyleColorTableBorderLight, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 0.70})
 
 	scale := w.platform.GetContentScale()
 
@@ -227,6 +230,16 @@ func (w *MasterWindow) SetPos(x, y int) {
 	}
 }
 
+func (w *MasterWindow) SetSize(x, y int) {
+	if w.platform != nil {
+		if glfwPlatform, ok := w.platform.(*imguiLocal.GLFW); ok {
+			mainthread.CallNonBlock(func() {
+				glfwPlatform.GetWindow().SetSize(x, y)
+			})
+		}
+	}
+}
+
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
 }
@@ -250,6 +263,9 @@ func (w *MasterWindow) Run(loopFunc func()) {
 		mainthread.Call(func() {
 			w.renderer.Dispose()
 			w.platform.Dispose()
+
+			imgui.ImNodesDestroyContext()
+			imgui.ImPlotDestroyContext()
 			w.context.Destroy()
 		})
 	})

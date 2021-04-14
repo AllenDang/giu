@@ -12,10 +12,10 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("On Drop Demo").Layout(g.Layout{
+	g.SingleWindow("On Drop Demo").Layout(
 		g.Label("Drop file to this window"),
-		g.InputTextMultiline("#DroppedFiles", &dropInFiles).Size(-1, -1).Flags(g.InputTextFlagsReadOnly),
-	}).Build()
+		g.InputTextMultiline("#DroppedFiles", &dropInFiles).Size(-1, -1).Flags(g.InputTextFlags_ReadOnly),
+	).Build()
 }
 
 func onDrop(names []string) {

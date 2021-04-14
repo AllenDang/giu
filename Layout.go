@@ -8,6 +8,8 @@ type Layout []Widget
 
 func (l Layout) Build() {
 	for _, w := range l {
-		w.Build()
+		if w != nil {
+			w.Build()
+		}
 	}
 }
