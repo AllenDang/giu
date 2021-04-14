@@ -1670,7 +1670,7 @@ func (t *TabItemWidget) Build() {
 
 type TabBarWidget struct {
 	id     string
-	flags  imgui.TabBarFlags
+	flags  TabBarFlags
 	layout Layout
 }
 
@@ -1682,7 +1682,7 @@ func TabBar(id string) *TabBarWidget {
 	}
 }
 
-func (t *TabBarWidget) Flags(flags imgui.TabBarFlags) *TabBarWidget {
+func (t *TabBarWidget) Flags(flags TabBarFlags) *TabBarWidget {
 	t.flags = flags
 	return t
 }
@@ -1693,7 +1693,7 @@ func (t *TabBarWidget) Layout(widgets ...Widget) *TabBarWidget {
 }
 
 func (t *TabBarWidget) Build() {
-	if imgui.BeginTabBarV(t.id, t.flags) {
+	if imgui.BeginTabBarV(t.id, imgui.TabBarFlags(t.flags)) {
 		if t.layout != nil {
 			t.layout.Build()
 		}
