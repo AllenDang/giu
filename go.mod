@@ -7,5 +7,5 @@ require (
 	github.com/go-gl/gl v0.0.0-20190320180904-bf2b1f2f34d7
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20210311203641-62640a716d48
 	github.com/go-resty/resty/v2 v2.3.0
-	github.com/ianling/imgui-go v1.12.1-0.20210414072840-567171a2782c
+	github.com/ianling/imgui-go v1.12.1-0.20210414221249-3f5b056ba728
 )
