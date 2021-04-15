@@ -53,7 +53,7 @@ func loop() {
 		g.Custom(func() { g.PushFont(chineseFont) }),
 		g.InputTextMultiline("##content", &content).Size(-1, -1),
 		g.Custom(func() { g.PopFont() }),
-	).Build()
+	)
 }
 
 func main() {

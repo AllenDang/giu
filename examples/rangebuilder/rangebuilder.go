@@ -28,7 +28,7 @@ func loop() {
 				fmt.Println(str, "is clicked")
 			})
 		}),
-	).Build()
+	)
 }
 
 func main() {

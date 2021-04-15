@@ -187,7 +187,7 @@ func loop() {
 				),
 			),
 		),
-	).Build()
+	)
 }
 
 func main() {

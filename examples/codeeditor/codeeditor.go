@@ -44,7 +44,7 @@ func loop() {
 		g.Custom(func() {
 			editor.Render("Hello", imgui.Vec2{X: 0, Y: 0}, true)
 		}),
-	).Build()
+	)
 }
 
 func main() {

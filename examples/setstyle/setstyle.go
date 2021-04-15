@@ -21,7 +21,7 @@ func loop() {
 				giu.Button("I'm a styled button"),
 			),
 		giu.Button("I'm a normal button"),
-	).Build()
+	)
 }
 
 func main() {

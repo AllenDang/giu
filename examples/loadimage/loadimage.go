@@ -34,7 +34,7 @@ func loop() {
 		g.ImageWithUrl("https://www.pngitem.com/pimgs/m/424-4242405_go-lang-gopher-clipart-png-download-golang-gopher.png").Size(300, 200),
 
 		g.Label("Footer"),
-	).Build()
+	)
 }
 
 func main() {

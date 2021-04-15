@@ -51,7 +51,7 @@ func loop() {
 				canvas.AddImage(texture, image.Pt(350, 25), image.Pt(500, 125))
 			}
 		}),
-	).Build()
+	)
 }
 
 func main() {

@@ -1,3 +1,5 @@
+github.com/AllenDang/imgui-go v1.12.1-0.20210415172045-a8d556deea4a h1:6wnOYUTl79u0z8lxOsv9vD3vu3JyUS7PS06odInwya4=
+github.com/AllenDang/imgui-go v1.12.1-0.20210415172045-a8d556deea4a/go.mod h1:OO4Ilu1DgdaEfUcvufSOMp9mWCQW9ffvSrDzzSQlD/c=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 h1:baVdMKlASEHrj19iqjARrPbaRisD7EuZEVJj6ZMLl1Q=

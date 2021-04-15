@@ -55,7 +55,7 @@ func loop() {
 					g.PlotPieChart([]string{"Part 1", "Part 2", "Part 3"}, []float64{0.22, 0.38, 0.4}, 0.5, 0.5, 0.45),
 				),
 		),
-	).Build()
+	)
 }
 
 func main() {

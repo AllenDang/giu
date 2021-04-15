@@ -76,7 +76,7 @@ func loop() {
 				_ = g.Context.GetRenderer().SetTextureMagFilter(g.TextureFilterLinear)
 			}),
 		),
-	).Build()
+	)
 }
 
 func main() {

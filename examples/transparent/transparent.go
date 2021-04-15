@@ -37,7 +37,7 @@ func loop() {
 			p1 = p1.Add(image.Pt(120, 60))
 			canvas.AddCircleFilled(p1, 50, color)
 		}),
-	).Build()
+	)
 	g.PopStyleColor()
 	g.PopStyleColor()
 	imgui.PopStyleVar()

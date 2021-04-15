@@ -36,7 +36,6 @@ type WindowWidget struct {
 	width, height float32
 	hasFocus      bool
 	bringToFront  bool
-	layout        Layout
 	pos           imgui.Vec2
 	size          imgui.Vec2
 }
@@ -70,9 +69,9 @@ func (w *WindowWidget) Pos(x, y float32) *WindowWidget {
 	return w
 }
 
-func (w *WindowWidget) Layout(widgets ...Widget) *WindowWidget {
+func (w *WindowWidget) Layout(widgets ...Widget) {
 	if widgets == nil {
-		return w
+		return
 	}
 
 	if w.flags&WindowFlagsNoMove != 0 && w.flags&WindowFlagsNoResize != 0 {
@@ -89,16 +88,6 @@ func (w *WindowWidget) Layout(widgets ...Widget) *WindowWidget {
 		w.size = imgui.WindowSize()
 	}))
 
-	w.layout = widgets
-
-	return w
-}
-
-func (w *WindowWidget) Build() {
-	if w.layout == nil {
-		return
-	}
-
 	if w.bringToFront {
 		w.bringToFront = false
 		imgui.SetNextWindowFocus()
@@ -107,7 +96,7 @@ func (w *WindowWidget) Build() {
 	showed := imgui.BeginV(w.title, w.open, imgui.WindowFlags(w.flags))
 
 	if showed {
-		w.layout.Build()
+		Layout(widgets).Build()
 	}
 
 	imgui.End()

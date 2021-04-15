@@ -42,7 +42,7 @@ func loop() {
 				imgui.EndDragDropTarget()
 			}
 		}),
-	).Build()
+	)
 }
 
 func main() {
