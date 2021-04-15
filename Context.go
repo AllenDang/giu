@@ -1,11 +1,11 @@
 package giu
 
 import (
-    platform2 "github.com/ianling/giu/platform"
+    platform2 "github.com/AllenDang/giu/platform"
     "sync"
 
-    "github.com/ianling/giu/renderer"
-	"github.com/ianling/imgui-go"
+    "github.com/AllenDang/giu/renderer"
+	"github.com/AllenDang/imgui-go"
 )
 
 var Context context

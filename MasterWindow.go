@@ -2,14 +2,14 @@ package giu
 
 import (
 	"github.com/go-gl/glfw/v3.3/glfw"
-	"github.com/ianling/giu/platform"
+	"github.com/AllenDang/giu/platform"
 	"image/color"
 	"time"
 
 	"github.com/faiface/mainthread"
 
-	"github.com/ianling/giu/renderer"
-	"github.com/ianling/imgui-go"
+	"github.com/AllenDang/giu/renderer"
+	"github.com/AllenDang/imgui-go"
 )
 
 type MasterWindowFlags platform.GLFWWindowFlags

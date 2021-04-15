@@ -8,7 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/go-gl/gl/v3.2-core/gl"
-	. "github.com/ianling/imgui-go"
+	. "github.com/AllenDang/imgui-go"
 )
 
 // OpenGL3 implements a renderer based on github.com/go-gl/gl (v3.2-core).

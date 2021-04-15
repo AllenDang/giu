@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	g "github.com/ianling/giu"
+	g "github.com/AllenDang/giu"
 )
 
 func onClickMe() {

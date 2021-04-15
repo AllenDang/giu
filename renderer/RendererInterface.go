@@ -1,7 +1,7 @@
 package renderer
 
 import (
-	. "github.com/ianling/imgui-go"
+	. "github.com/AllenDang/imgui-go"
 	"image"
 )
 

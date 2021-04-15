@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/go-resty/resty/v2"
-	"github.com/ianling/imgui-go"
+	"github.com/AllenDang/imgui-go"
 )
 
 type LineWidget struct {

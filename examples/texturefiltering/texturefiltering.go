@@ -4,7 +4,7 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 
-	g "github.com/ianling/giu"
+	g "github.com/AllenDang/giu"
 )
 
 var (

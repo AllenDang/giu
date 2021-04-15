@@ -1,7 +1,7 @@
 package main
 
 import (
-	g "github.com/ianling/giu"
+	g "github.com/AllenDang/giu"
 )
 
 var (
