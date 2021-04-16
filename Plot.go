@@ -3,7 +3,7 @@ package giu
 import (
 	"image"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/giu/imgui"
 )
 
 type PlotWidget interface {

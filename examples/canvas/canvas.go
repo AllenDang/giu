@@ -3,7 +3,6 @@ package main
 import (
 	"image"
 	"image/color"
-	"log"
 
 	g "github.com/AllenDang/giu"
 )
@@ -57,11 +56,7 @@ func loop() {
 func main() {
 	wnd := g.NewMasterWindow("Canvas", 600, 600, g.MasterWindowFlagsNotResizable, nil)
 
-	img, err := g.LoadImage("gopher.png")
-	if err != nil {
-		log.Fatal(err)
-	}
-
+	img, _ := g.LoadImage("gopher.png")
 	go func() {
 		texture, _ = g.NewTextureFromRgba(img)
 	}()

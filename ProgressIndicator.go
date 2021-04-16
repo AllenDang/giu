@@ -6,7 +6,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/giu/imgui"
 )
 
 type ProgressIndicatorState struct {
@@ -78,11 +78,11 @@ func (p *ProgressIndicatorWidget) Build() {
 					int(float64(p.radius)*math.Cos(state.angle)+float64(centerPt.Y)),
 				)
 
-				color := imgui.CurrentStyle().Color(imgui.StyleColorText)
+				color := imgui.CurrentStyle().GetColor(imgui.StyleColorText)
 				rgba := Vec4ToRGBA(color)
 
-				canvas.AddCircle(centerPt, p.radius, rgba, p.radius/20.0)
-				canvas.AddCircleFilled(centerPt2, p.radius/5, rgba)
+				canvas.AddCircle(centerPt, float32(p.radius), rgba, float32(p.radius/20.0))
+				canvas.AddCircleFilled(centerPt2, float32(p.radius/5), rgba)
 
 				// Draw text
 				if len(p.label) > 0 {

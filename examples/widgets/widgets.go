@@ -153,7 +153,7 @@ func loop() {
 					g.Selectable("Selectable 1").OnClick(func() { fmt.Println(1) }),
 					g.Selectable("Selectable 2").OnClick(func() { fmt.Println(2) }),
 				).Event(func() {
-					if g.IsItemClicked() {
+					if g.IsItemClicked(g.MouseButtonLeft) {
 						fmt.Println("Clicked")
 					}
 				}),

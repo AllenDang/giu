@@ -6,7 +6,7 @@ import (
 	"image"
 	"runtime"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/giu/imgui"
 )
 
 type Texture struct {

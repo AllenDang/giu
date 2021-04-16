@@ -7,7 +7,7 @@ import (
 	"image/png"
 	"os"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/giu/imgui"
 )
 
 func LoadImage(imgPath string) (*image.RGBA, error) {
@@ -60,6 +60,7 @@ func Vec4ToRGBA(vec4 imgui.Vec4) color.RGBA {
 func Update() {
 	if Context.isAlive {
 		Context.platform.Update()
+		Context.IO().SetFrameCountSinceLastInput(0)
 	}
 }
 
