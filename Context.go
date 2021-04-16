@@ -1,14 +1,14 @@
 package giu
 
 import (
-    platform2 "github.com/AllenDang/giu/platform"
-    "sync"
+	"sync"
 
-    "github.com/AllenDang/giu/renderer"
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/giu/imgui"
 )
 
-var Context context
+var (
+	Context context
+)
 
 type Disposable interface {
 	Dispose()
@@ -20,8 +20,8 @@ type state struct {
 }
 
 type context struct {
-	renderer renderer.Renderer
-	platform platform2.Platform
+	renderer imgui.Renderer
+	platform imgui.Platform
 
 	// Indicate whether current application is running
 	isAlive bool
@@ -30,11 +30,11 @@ type context struct {
 	state sync.Map
 }
 
-func (c *context) GetRenderer() renderer.Renderer {
+func (c *context) GetRenderer() imgui.Renderer {
 	return c.renderer
 }
 
-func (c *context) GetPlatform() platform2.Platform {
+func (c *context) GetPlatform() imgui.Platform {
 	return c.platform
 }
 

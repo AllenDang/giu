@@ -1,6 +1,6 @@
 package giu
 
-import "github.com/AllenDang/imgui-go"
+import "github.com/AllenDang/giu/imgui"
 
 type MouseButton int
 
@@ -14,8 +14,8 @@ func IsItemHovered() bool {
 	return imgui.IsItemHovered()
 }
 
-func IsItemClicked() bool {
-	return imgui.IsItemClicked()
+func IsItemClicked(mouseButton MouseButton) bool {
+	return imgui.IsItemClicked(int(mouseButton))
 }
 
 func IsItemActive() bool {
@@ -58,18 +58,10 @@ func IsWindowCollapsed() bool {
 	return imgui.IsWindowCollapsed()
 }
 
-func IsWindowFocusedV(flags FocusedFlags) bool {
-	return imgui.IsWindowFocusedV(imgui.FocusedFlags(flags))
+func IsWindowFocused(flags FocusedFlags) bool {
+	return imgui.IsWindowFocused(int(flags))
 }
 
-func IsWindowFocused() bool {
-	return imgui.IsWindowFocused()
-}
-
-func IsWindowHoveredV(flags HoveredFlags) bool {
-	return imgui.IsWindowHoveredV(imgui.HoveredFlags(flags))
-}
-
-func IsWindowHovered() bool {
-	return imgui.IsWindowHovered()
+func IsWindowHovered(flags HoveredFlags) bool {
+	return imgui.IsWindowHovered(int(flags))
 }

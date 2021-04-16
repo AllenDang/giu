@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/giu/imgui"
 )
 
 var (
