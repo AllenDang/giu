@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go"
 )
 
 func PushFont(font imgui.Font) {
@@ -139,7 +139,7 @@ const (
 )
 
 func SetMouseCursor(cursor MouseCursorType) {
-	imgui.SetMouseCursor(int(cursor))
+	imgui.SetMouseCursor(imgui.MouseCursorID(cursor))
 }
 
 func GetWindowPadding() (float32, float32) {
