@@ -2,7 +2,7 @@ package main
 
 import (
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go"
 )
 
 func loadFont() {
@@ -11,12 +11,12 @@ func loadFont() {
 	ranges := imgui.NewGlyphRanges()
 
 	builder := imgui.NewFontGlyphRangesBuilder()
-	builder.AddText("铁憨憨你好！")
+	builder.AddText("铁憨憨你好！") // intentionally not loading all of the characters we use below
 	// builder.AddRanges(fonts.GlyphRangesChineseFull())
 	builder.BuildRanges(ranges)
 
-	fontPath := "c:/Windows/Fonts/MSYHL.TTC"
-	fonts.AddFontFromFileTTFV(fontPath, 12, imgui.DefaultFontConfig, ranges.Data())
+	fontPath := "/Users/iling/Downloads/msyhl.ttc"
+	fonts.AddFontFromFileTTFV(fontPath, 24, imgui.DefaultFontConfig, ranges.Data())
 }
 
 func loop() {
