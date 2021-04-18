@@ -1,27 +1,31 @@
 package giu
 
 import (
+	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go/platform"
+	"github.com/go-gl/glfw/v3.3/glfw"
 	"image/color"
 	"time"
 
 	"github.com/faiface/mainthread"
 
-	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/imgui-go/renderer"
 )
 
-type MasterWindowFlags imgui.GLFWWindowFlags
+type MasterWindowFlags platform.GLFWWindowFlags
 
 const (
 	// Specifies the window will be fixed size.
-	MasterWindowFlagsNotResizable MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsNotResizable)
+	MasterWindowFlagsNotResizable = MasterWindowFlags(platform.GLFWWindowFlagsNotResizable)
 	// Specifies whether the window is maximized.
-	MasterWindowFlagsMaximized MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsMaximized)
+	MasterWindowFlagsMaximized = MasterWindowFlags(platform.GLFWWindowFlagsMaximized)
 	// Specifies whether the window will be always-on-top.
-	MasterWindowFlagsFloating MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsFloating)
+	MasterWindowFlagsFloating = MasterWindowFlags(platform.GLFWWindowFlagsFloating)
 	// Specifies whether the window will be frameless.
-	MasterWindowFlagsFrameless MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsFrameless)
+	MasterWindowFlagsFrameless = MasterWindowFlags(platform.GLFWWindowFlagsFrameless)
 	// Specifies whether the window will be transparent.
-	MasterWindowFlagsTransparent MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsTransparent)
+	MasterWindowFlagsTransparent = MasterWindowFlags(platform.GLFWWindowFlagsTransparent)
 )
 
 type MasterWindow struct {
@@ -29,8 +33,8 @@ type MasterWindow struct {
 	height     int
 	clearColor [4]float32
 	title      string
-	platform   imgui.Platform
-	renderer   imgui.Renderer
+	platform   platform.Platform
+	renderer   renderer.Renderer
 	context    *imgui.Context
 	io         *imgui.IO
 	updateFunc func()
@@ -43,12 +47,10 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, l
 
 	io := imgui.CurrentIO()
 
-	io.SetConfigFlags(imgui.ConfigFlagEnablePowerSavingMode)
-
 	// Disable imgui.ini
 	io.SetIniFilename("")
 
-	p, err := imgui.NewGLFW(io, title, width, height, imgui.GLFWWindowFlags(flags))
+	p, err := platform.NewGLFW(io, title, width, height, platform.GLFWWindowFlags(flags))
 	if err != nil {
 		panic(err)
 	}
@@ -64,7 +66,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, l
 		loadFontFunc()
 	}
 
-	r, err := imgui.NewOpenGL3(io, scale)
+	r, err := renderer.NewOpenGL3(io, scale)
 	if err != nil {
 		panic(err)
 	}
@@ -202,7 +204,7 @@ func (w *MasterWindow) run() {
 // Return size of master window.
 func (w *MasterWindow) GetSize() (width, height int) {
 	if w.platform != nil {
-		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
+		if glfwPlatform, ok := w.platform.(*platform.GLFW); ok {
 			return glfwPlatform.GetWindow().GetSize()
 		}
 	}
@@ -213,7 +215,7 @@ func (w *MasterWindow) GetSize() (width, height int) {
 // Return position of master window.
 func (w *MasterWindow) GetPos() (x, y int) {
 	if w.platform != nil {
-		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
+		if glfwPlatform, ok := w.platform.(*platform.GLFW); ok {
 			x, y = glfwPlatform.GetWindow().GetPos()
 		}
 	}
@@ -224,7 +226,7 @@ func (w *MasterWindow) GetPos() (x, y int) {
 // Set position of master window.
 func (w *MasterWindow) SetPos(x, y int) {
 	if w.platform != nil {
-		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
+		if glfwPlatform, ok := w.platform.(*platform.GLFW); ok {
 			glfwPlatform.GetWindow().SetPos(x, y)
 		}
 	}
@@ -232,7 +234,7 @@ func (w *MasterWindow) SetPos(x, y int) {
 
 func (w *MasterWindow) SetSize(x, y int) {
 	if w.platform != nil {
-		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
+		if glfwPlatform, ok := w.platform.(*platform.GLFW); ok {
 			mainthread.CallNonBlock(func() {
 				glfwPlatform.GetWindow().SetSize(x, y)
 			})
@@ -242,6 +244,10 @@ func (w *MasterWindow) SetSize(x, y int) {
 
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
+}
+
+func (w *MasterWindow) SetInputCallback(cb func(key glfw.Key, mods glfw.ModifierKey, action glfw.Action)) {
+	w.platform.SetInputCallback(cb)
 }
 
 // Call the main loop.
