@@ -4,8 +4,6 @@ import (
 	"sync"
 
 	"github.com/AllenDang/imgui-go"
-	"github.com/AllenDang/imgui-go/platform"
-	"github.com/AllenDang/imgui-go/renderer"
 )
 
 var Context context
@@ -20,8 +18,8 @@ type state struct {
 }
 
 type context struct {
-	renderer renderer.Renderer
-	platform platform.Platform
+	renderer imgui.Renderer
+	platform imgui.Platform
 
 	// Indicate whether current application is running
 	isAlive bool
@@ -30,11 +28,11 @@ type context struct {
 	state sync.Map
 }
 
-func (c *context) GetRenderer() renderer.Renderer {
+func (c *context) GetRenderer() imgui.Renderer {
 	return c.renderer
 }
 
-func (c *context) GetPlatform() platform.Platform {
+func (c *context) GetPlatform() imgui.Platform {
 	return c.platform
 }
 
