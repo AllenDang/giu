@@ -89,7 +89,21 @@ go get github.com/AllenDang/giu@master
 
 ### Linux
 
-*Need help* here cause I don't have any linux experience.
+First you need to install libraries
+```bash
+# apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libglx-dev libgl1-mesa-dev libxxf86vm-dev
+```
+Then simple `go build` will work.
+
+Cross-compiling is a bit more complicated. Let's say that you want to build for arm64. That's what you would need to do:
+
+```bash
+# dpkg --add-architecture arm64
+# apt update
+# apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
+    libx11-dev:arm64 libxcursor-dev:arm64 libxrandr-dev:arm64 libxinerama-dev:arm64 libxi-dev:arm64 libglx-dev:arm64 libgl1-mesa-dev:arm64 libxxf86vm-dev:arm64
+$ GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ HOST=aarch64-linux-gnu go build -v
+```
 
 ## Deploy
 
