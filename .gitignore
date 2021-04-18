@@ -15,5 +15,4 @@
 # vendor/
 /cmd/gmdeploy/gmdeploy
 
-# IDE files
 .idea
