@@ -1,11 +1,11 @@
 package giu
 
 import (
-    platform2 "github.com/AllenDang/giu/platform"
-    "sync"
+	"sync"
 
-    "github.com/AllenDang/giu/renderer"
 	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/imgui-go/platform"
+	"github.com/AllenDang/imgui-go/renderer"
 )
 
 var Context context
@@ -21,7 +21,7 @@ type state struct {
 
 type context struct {
 	renderer renderer.Renderer
-	platform platform2.Platform
+	platform platform.Platform
 
 	// Indicate whether current application is running
 	isAlive bool
@@ -34,7 +34,7 @@ func (c *context) GetRenderer() renderer.Renderer {
 	return c.renderer
 }
 
-func (c *context) GetPlatform() platform2.Platform {
+func (c *context) GetPlatform() platform.Platform {
 	return c.platform
 }
 
