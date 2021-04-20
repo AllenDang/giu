@@ -3,7 +3,7 @@ package giu
 import (
 	"sync"
 
-	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go"
 )
 
 var (

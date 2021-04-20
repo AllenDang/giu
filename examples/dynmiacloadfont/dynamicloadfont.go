@@ -2,7 +2,7 @@ package main
 
 import (
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go"
 )
 
 func loadFont() {

@@ -1,7 +1,7 @@
 package giu
 
 import (
-	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go"
 )
 
 func SingleWindow(title string) *WindowWidget {

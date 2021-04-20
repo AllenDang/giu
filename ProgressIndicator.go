@@ -6,7 +6,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go"
 )
 
 type ProgressIndicatorState struct {

@@ -8,7 +8,7 @@ import (
 	"image/draw"
 	"time"
 
-	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go"
 	resty "github.com/go-resty/resty/v2"
 )
 

@@ -1,36 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
 	g "github.com/AllenDang/giu"
 )
 
-func onClickMe() {
-	fmt.Println("Hello world!")
-}
-
-func onImSoCute() {
-	fmt.Println("Im sooooooo cute!!")
-}
-
-func onQuit() {
-	os.Exit(0)
-}
+var (
+	content string
+)
 
 func loop() {
 	g.SingleWindow("hello world").Layout(
 		g.Label("Hello world from giu"),
-		g.Line(
-			g.Button("Click Me").OnClick(onClickMe),
-			g.Button("I'm so cute").OnClick(onImSoCute),
-			g.Button("Quit").OnClick(onQuit),
-		),
+		g.InputTextMultiline("##content", &content).Size(300, 200),
 	)
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable, nil)
+	wnd := g.NewMasterWindow("Hello world", 400, 200, 0, nil)
 	wnd.Run(loop)
 }

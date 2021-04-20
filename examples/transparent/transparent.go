@@ -5,7 +5,7 @@ import (
 	"image/color"
 
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go"
 )
 
 func loop() {
