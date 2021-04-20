@@ -4,7 +4,7 @@ import (
 	"image"
 	"image/color"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/ianling/imgui-go"
 )
 
 type Canvas struct {

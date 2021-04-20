@@ -1,8 +1,8 @@
 package main
 
 import (
-	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/imgui-go"
+	g "github.com/ianling/giu"
+	"github.com/ianling/imgui-go"
 )
 
 func loop() {

@@ -3,7 +3,7 @@ package giu
 import (
 	"sync"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/ianling/imgui-go"
 )
 
 var Context context

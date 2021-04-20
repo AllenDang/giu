@@ -7,7 +7,7 @@ import (
 
 	"github.com/faiface/mainthread"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/ianling/imgui-go"
 )
 
 type MasterWindowFlags imgui.GLFWWindowFlags

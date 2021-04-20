@@ -5,7 +5,7 @@ import (
 	"image/color"
 	"log"
 
-	g "github.com/AllenDang/giu"
+	g "github.com/ianling/giu"
 )
 
 var (

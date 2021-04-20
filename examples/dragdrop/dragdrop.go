@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"fmt"
 
-	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/imgui-go"
+	g "github.com/ianling/giu"
+	"github.com/ianling/imgui-go"
 )
 
 var (

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/AllenDang/imgui-go"
+	"github.com/ianling/imgui-go"
 	"image/color"
 
-	"github.com/AllenDang/giu"
+	"github.com/ianling/giu"
 )
 
 func loop() {
