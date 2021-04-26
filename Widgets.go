@@ -726,6 +726,7 @@ type ImageWithUrlWidget struct {
 	height          float32
 	whenLoading     Layout
 	whenFailure     Layout
+	onReady         func()
 }
 
 func ImageWithUrl(url string) *ImageWithUrlWidget {
@@ -737,6 +738,12 @@ func ImageWithUrl(url string) *ImageWithUrlWidget {
 		whenLoading:     Layout{Dummy(100, 100)},
 		whenFailure:     Layout{Dummy(100, 100)},
 	}
+}
+
+// Event trigger when image is downloaded and ready to display.
+func (i *ImageWithUrlWidget) OnReady(onReady func()) *ImageWithUrlWidget {
+	i.onReady = onReady
+	return i
 }
 
 func (i *ImageWithUrlWidget) Timeout(downloadTimeout time.Duration) *ImageWithUrlWidget {
@@ -798,6 +805,11 @@ func (i *ImageWithUrlWidget) Build() {
 				return
 			}
 			Context.SetState(stateId, &ImageState{loading: false, texture: texture})
+
+			// Trigger onReady event
+			if i.onReady != nil {
+				i.onReady()
+			}
 		}()
 	} else {
 		imgState := state.(*ImageState)

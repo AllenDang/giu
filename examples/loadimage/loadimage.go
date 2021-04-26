@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	_ "image/jpeg"
 	_ "image/png"
 	"time"
@@ -28,7 +29,10 @@ func loop() {
 			).
 			LayoutForFailure(
 				g.ImageWithFile("./fallback.png").Size(300, 200),
-			),
+			).
+			OnReady(func() {
+				fmt.Println("Image is downloaded.")
+			}),
 
 		g.Label("Display image from url without placeholder (no size when loading)"),
 		g.ImageWithUrl("https://www.pngitem.com/pimgs/m/424-4242405_go-lang-gopher-clipart-png-download-golang-gopher.png").Size(300, 200),
