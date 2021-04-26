@@ -727,6 +727,7 @@ type ImageWithUrlWidget struct {
 	whenLoading     Layout
 	whenFailure     Layout
 	onReady         func()
+	onFailure       func(error)
 }
 
 func ImageWithUrl(url string) *ImageWithUrlWidget {
@@ -743,6 +744,11 @@ func ImageWithUrl(url string) *ImageWithUrlWidget {
 // Event trigger when image is downloaded and ready to display.
 func (i *ImageWithUrlWidget) OnReady(onReady func()) *ImageWithUrlWidget {
 	i.onReady = onReady
+	return i
+}
+
+func (i *ImageWithUrlWidget) OnFailure(onFailure func(error)) *ImageWithUrlWidget {
+	i.onFailure = onFailure
 	return i
 }
 
@@ -787,12 +793,22 @@ func (i *ImageWithUrlWidget) Build() {
 			Context.SetState(stateId, &ImageState{loading: false})
 			if err != nil {
 				Context.SetState(stateId, &ImageState{failure: true})
+
+				// Trigger onFailure event
+				if i.onFailure != nil {
+					i.onFailure(err)
+				}
 				return
 			}
 
 			img, _, err := image.Decode(bytes.NewReader(resp.Body()))
 			if err != nil {
 				Context.SetState(stateId, &ImageState{failure: true})
+
+				// Trigger onFailure event
+				if i.onFailure != nil {
+					i.onFailure(err)
+				}
 				return
 			}
 
@@ -802,6 +818,11 @@ func (i *ImageWithUrlWidget) Build() {
 			texture, err := NewTextureFromRgba(rgba)
 			if err != nil {
 				Context.SetState(stateId, &ImageState{failure: true})
+
+				// Trigger onFailure event
+				if i.onFailure != nil {
+					i.onFailure(err)
+				}
 				return
 			}
 			Context.SetState(stateId, &ImageState{loading: false, texture: texture})
