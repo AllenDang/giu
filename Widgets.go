@@ -699,7 +699,7 @@ func (i *ImageWithFileWidget) Build() {
 	if state == nil {
 		widget = Image(nil).Size(i.width, i.height)
 
-		//Prevent multiple invocation to LoadImage.
+		// Prevent multiple invocation to LoadImage.
 		Context.SetState(stateId, &ImageState{})
 
 		img, err := LoadImage(i.imgPath)
@@ -781,7 +781,7 @@ func (i *ImageWithUrlWidget) Build() {
 	if state == nil {
 		widget = Image(nil).Size(i.width, i.height)
 
-		//Prevent multiple invocation to download image.
+		// Prevent multiple invocation to download image.
 		Context.SetState(stateId, &ImageState{loading: true})
 
 		go func() {
@@ -1541,7 +1541,6 @@ type HSplitterWidget struct {
 }
 
 func HSplitter(id string, delta *float32) *HSplitterWidget {
-
 	return &HSplitterWidget{
 		id:     id,
 		width:  0,
@@ -2377,5 +2376,50 @@ func (d *DatePickerWidget) Build() {
 		}
 
 		imgui.PopID()
+	}
+}
+
+type ColorEditWidget struct {
+	label    string
+	color    *color.RGBA
+	flags    int
+	onChange func()
+}
+
+func ColorEdit(label string, color *color.RGBA, flags int) *ColorEditWidget {
+	return &ColorEditWidget{
+		label: label,
+		color: color,
+		flags: flags,
+	}
+}
+
+func (ce *ColorEditWidget) OnChange(cb func()) *ColorEditWidget {
+	ce.onChange = cb
+	return ce
+}
+
+func (ce *ColorEditWidget) Build() {
+	c := ToVec4Color(*ce.color)
+	col := [4]float32{
+		c.X,
+		c.Y,
+		c.Z,
+		c.W,
+	}
+	if imgui.ColorEdit4V(
+		ce.label,
+		&col,
+		ce.flags,
+	) {
+		*ce.color = Vec4ToRGBA(imgui.Vec4{
+			col[0],
+			col[1],
+			col[2],
+			col[3],
+		})
+		if ce.onChange != nil {
+			ce.onChange()
+		}
 	}
 }

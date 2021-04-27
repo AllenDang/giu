@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"image/color"
 	"time"
 
 	g "github.com/AllenDang/giu"
@@ -17,6 +18,7 @@ var (
 	multiline    string
 	radioOp      int
 	date         time.Time = time.Now()
+	col                    = &color.RGBA{}
 )
 
 func btnClickMeClicked() {
@@ -187,6 +189,9 @@ func loop() {
 				),
 			),
 		),
+		g.ColorEdit("I'm changing a color for you##colorChanger", col, 0).OnChange(func() {
+			fmt.Println(col)
+		}),
 	)
 }
 
