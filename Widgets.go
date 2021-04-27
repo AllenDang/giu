@@ -2382,20 +2382,25 @@ func (d *DatePickerWidget) Build() {
 type ColorEditWidget struct {
 	label    string
 	color    *color.RGBA
-	flags    int
+	flags    ColorEditFlags
 	onChange func()
 }
 
-func ColorEdit(label string, color *color.RGBA, flags int) *ColorEditWidget {
+func ColorEdit(label string, color *color.RGBA) *ColorEditWidget {
 	return &ColorEditWidget{
 		label: label,
 		color: color,
-		flags: flags,
+		flags: ColorEditFlagsNone,
 	}
 }
 
 func (ce *ColorEditWidget) OnChange(cb func()) *ColorEditWidget {
 	ce.onChange = cb
+	return ce
+}
+
+func (ce *ColorEditWidget) Flags(f ColorEditFlags) *ColorEditWidget {
+	ce.flags = f
 	return ce
 }
 
@@ -2410,7 +2415,7 @@ func (ce *ColorEditWidget) Build() {
 	if imgui.ColorEdit4V(
 		ce.label,
 		&col,
-		ce.flags,
+		int(ce.flags),
 	) {
 		*ce.color = Vec4ToRGBA(imgui.Vec4{
 			col[0],

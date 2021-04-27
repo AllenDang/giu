@@ -189,9 +189,9 @@ func loop() {
 				),
 			),
 		),
-		g.ColorEdit("I'm changing a color for you##colorChanger", col, 0).OnChange(func() {
+		g.ColorEdit("I'm changing a color for you##colorChanger", col).OnChange(func() {
 			fmt.Println(col)
-		}),
+		}).Flags(g.ColorEditFlagsHEX),
 	)
 }
 
