@@ -251,7 +251,7 @@ const (
 	// HoveredFlagsAllowWhenBlockedByPopup matches even if a popup window is normally blocking access to this item/window
 	HoveredFlagsAllowWhenBlockedByPopup HoveredFlags = 1 << 3
 	// HoveredFlagsAllowWhenBlockedByModal matches even if a modal popup window is normally blocking access to this item/window. UNIMPLEMENTED in imgui.
-	//HoveredFlagsAllowWhenBlockedByModal  HoveredFlags   = 1 << 4
+	// HoveredFlagsAllowWhenBlockedByModal  HoveredFlags   = 1 << 4
 	// HoveredFlagsAllowWhenBlockedByActiveItem matches true even if an active item is blocking access to this item/window. Useful for Drag and Drop patterns.
 	HoveredFlagsAllowWhenBlockedByActiveItem HoveredFlags = 1 << 5
 	// HoveredFlagsAllowWhenOverlapped matches even if the position is obstructed or overlapped by another window
@@ -262,4 +262,65 @@ const (
 	HoveredFlagsRectOnly HoveredFlags = HoveredFlagsAllowWhenBlockedByPopup | HoveredFlagsAllowWhenBlockedByActiveItem | HoveredFlagsAllowWhenOverlapped
 	// HoveredFlagsRootAndChildWindows combines HoveredFlagsRootWindow and HoveredFlagsChildWindows.
 	HoveredFlagsRootAndChildWindows HoveredFlags = HoveredFlagsRootWindow | HoveredFlagsChildWindows
+)
+
+// ColorEditFlags for ColorEdit3V(), etc.
+type ColorEditFlags int
+
+const (
+	// ColorEditFlagsNone default = 0.
+	ColorEditFlagsNone ColorEditFlags = 0
+	// ColorEditFlagsNoAlpha ignores Alpha component (read 3 components from the input pointer).
+	ColorEditFlagsNoAlpha ColorEditFlags = 1 << 1
+	// ColorEditFlagsNoPicker disables picker when clicking on colored square.
+	ColorEditFlagsNoPicker ColorEditFlags = 1 << 2
+	// ColorEditFlagsNoOptions disables toggling options menu when right-clicking on inputs/small preview.
+	ColorEditFlagsNoOptions ColorEditFlags = 1 << 3
+	// ColorEditFlagsNoSmallPreview disables colored square preview next to the inputs. (e.g. to show only the inputs).
+	ColorEditFlagsNoSmallPreview ColorEditFlags = 1 << 4
+	// ColorEditFlagsNoInputs disables inputs sliders/text widgets (e.g. to show only the small preview colored square).
+	ColorEditFlagsNoInputs ColorEditFlags = 1 << 5
+	// ColorEditFlagsNoTooltip disables tooltip when hovering the preview.
+	ColorEditFlagsNoTooltip ColorEditFlags = 1 << 6
+	// ColorEditFlagsNoLabel disables display of inline text label (the label is still forwarded to the tooltip and picker).
+	ColorEditFlagsNoLabel ColorEditFlags = 1 << 7
+	// ColorEditFlagsNoSidePreview disables bigger color preview on right side of the picker, use small colored square preview instead.
+	ColorEditFlagsNoSidePreview ColorEditFlags = 1 << 8
+	// ColorEditFlagsNoDragDrop disables drag and drop target. ColorButton: disable drag and drop source.
+	ColorEditFlagsNoDragDrop ColorEditFlags = 1 << 9
+	// ColorEditFlagsNoBorder disables border (which is enforced by default).
+	ColorEditFlagsNoBorder ColorEditFlags = 1 << 10
+
+	// User Options (right-click on widget to change some of them). You can set application defaults using SetColorEditOptions().
+	// The idea is that you probably don't want to override them in most of your calls, let the user choose and/or call
+	// SetColorEditOptions() during startup.
+
+	// ColorEditFlagsAlphaBar shows vertical alpha bar/gradient in picker.
+	ColorEditFlagsAlphaBar ColorEditFlags = 1 << 16
+	// ColorEditFlagsAlphaPreview displays preview as a transparent color over a checkerboard, instead of opaque.
+	ColorEditFlagsAlphaPreview ColorEditFlags = 1 << 17
+	// ColorEditFlagsAlphaPreviewHalf displays half opaque / half checkerboard, instead of opaque.
+	ColorEditFlagsAlphaPreviewHalf ColorEditFlags = 1 << 18
+	// ColorEditFlagsHDR = (WIP) surrently only disable 0.0f..1.0f limits in RGBA edition.
+	// Note: you probably want to use ImGuiColorEditFlags_Float flag as well.
+	ColorEditFlagsHDR ColorEditFlags = 1 << 19
+	// ColorEditFlagsRGB sets the format as RGB.
+	ColorEditFlagsRGB ColorEditFlags = 1 << 20
+	// ColorEditFlagsHSV sets the format as HSV.
+	ColorEditFlagsHSV ColorEditFlags = 1 << 21
+	// ColorEditFlagsHEX sets the format as HEX.
+	ColorEditFlagsHEX ColorEditFlags = 1 << 22
+	// ColorEditFlagsUint8 _display_ values formatted as 0..255.
+	ColorEditFlagsUint8 ColorEditFlags = 1 << 23
+	// ColorEditFlagsFloat _display_ values formatted as 0.0f..1.0f floats instead of 0..255 integers. No round-trip of value via integers.
+	ColorEditFlagsFloat ColorEditFlags = 1 << 24
+
+	// ColorEditFlagsPickerHueBar shows bar for Hue, rectangle for Sat/Value.
+	ColorEditFlagsPickerHueBar ColorEditFlags = 1 << 25
+	// ColorEditFlagsPickerHueWheel shows wheel for Hue, triangle for Sat/Value.
+	ColorEditFlagsPickerHueWheel ColorEditFlags = 1 << 26
+	// ColorEditFlagsInputRGB enables input and output data in RGB format.
+	ColorEditFlagsInputRGB ColorEditFlags = 1 << 27
+	// ColorEditFlagsInputHSV enables input and output data in HSV format.
+	ColorEditFlagsInputHSV ColorEditFlags = 1 << 28
 )
