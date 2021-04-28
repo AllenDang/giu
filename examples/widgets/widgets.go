@@ -98,6 +98,13 @@ func loop() {
 
 		g.Combo("Combo", items[itemSelected], items, &itemSelected).OnChange(comboChanged),
 
+		g.ColorEdit("<- Click the black square. I'm changing a color for you##colorChanger", col).
+			Size(100).
+			Flags(g.ColorEditFlagsHEX).
+			OnChange(func() {
+				fmt.Println(col)
+			}),
+
 		g.Line(
 			g.Button("Button"),
 			g.SmallButton("SmallButton"),
@@ -189,9 +196,6 @@ func loop() {
 				),
 			),
 		),
-		g.ColorEdit("I'm changing a color for you##colorChanger", col).OnChange(func() {
-			fmt.Println(col)
-		}).Flags(g.ColorEditFlagsHEX),
 	)
 }
 
@@ -201,6 +205,6 @@ func main() {
 		items[i] = fmt.Sprintf("Item %d", i)
 	}
 
-	w := g.NewMasterWindow("Overview", 800, 600, 0, nil)
+	w := g.NewMasterWindow("Overview", 800, 630, 0, nil)
 	w.Run(loop)
 }
