@@ -36,7 +36,7 @@ func loop() {
 			g.PlotLineXY("Time Line", timeDataX, timeDataY),
 			g.PlotScatterXY("Time Scatter", timeDataX, timeScatterY),
 		),
-		g.Line(
+		g.Row(
 			g.Plot("Plot Bars").
 				Size(500, 250).
 				AxisLimits(0, 10, -1.2, 1.2, g.ConditionOnce).

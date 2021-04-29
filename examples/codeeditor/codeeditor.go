@@ -14,7 +14,7 @@ var (
 
 func loop() {
 	g.SingleWindow("Code Editor").Layout(
-		g.Line(
+		g.Row(
 			g.Button("Get Text").OnClick(func() {
 				if editor.HasSelection() {
 					fmt.Println(editor.GetSelectedText())

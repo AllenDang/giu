@@ -9,7 +9,7 @@ func loop() {
 		g.SplitLayout("Split", g.DirectionHorizontal, true, 200,
 			g.Layout{
 				g.Label("Left panel"),
-				g.Line(g.Button("Button1"), g.Button("Button2")),
+				g.Row(g.Button("Button1"), g.Button("Button2")),
 			},
 			g.SplitLayout("Right panel", g.DirectionVertical, true, 200,
 				g.Layout{},

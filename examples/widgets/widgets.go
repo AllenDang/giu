@@ -57,7 +57,7 @@ func loop() {
 		),
 		g.Label("One line label"),
 		g.Label("Auto wrapped label with very long line...............................................this line should be wrapped.").Wrapped(true),
-		g.Line(
+		g.Row(
 			g.InputText("##name", &name),
 			g.Button("Click Me").OnClick(btnClickMeClicked),
 			g.Tooltip("I'm a tooltip"),
@@ -72,7 +72,7 @@ func loop() {
 		g.DatePicker("Date Picker", &date).OnChange(func() {
 			fmt.Println(date)
 		}),
-		g.Line(
+		g.Row(
 			g.Checkbox("Checkbox", &checked).OnChange(func() {
 				fmt.Println(checked)
 			}),
@@ -90,7 +90,7 @@ func loop() {
 		g.SliderInt("Slider", &dragInt, 0, 100),
 
 		g.Label("Vertical sliders"),
-		g.Line(
+		g.Row(
 			g.VSliderInt("##VSlider1", &dragInt, 0, 100).OnChange(func() { fmt.Println(dragInt) }),
 			g.VSliderInt("##VSlider2", &dragInt, 0, 100),
 			g.VSliderInt("##VSlider3", &dragInt, 0, 100),
@@ -105,7 +105,7 @@ func loop() {
 				fmt.Println(col)
 			}),
 
-		g.Line(
+		g.Row(
 			g.Button("Button"),
 			g.SmallButton("SmallButton"),
 		),
@@ -114,7 +114,7 @@ func loop() {
 		g.BulletText("Bullet2"),
 		g.BulletText("Bullet3"),
 
-		g.Line(
+		g.Row(
 			g.Label("Arrow buttons: "),
 
 			g.ArrowButton("arrow left", g.DirectionLeft),
@@ -123,11 +123,11 @@ func loop() {
 			g.ArrowButton("arrow down", g.DirectionDown),
 		),
 
-		g.Line(
+		g.Row(
 			g.Button("Popup Modal").OnClick(btnPopupCLicked),
 			g.PopupModal("Confirm").Layout(
 				g.Label("Confirm to close me?"),
-				g.Line(
+				g.Row(
 					g.Button("Yes").OnClick(func() { g.CloseCurrentPopup() }),
 					g.Button("No"),
 				),
@@ -173,24 +173,24 @@ func loop() {
 			g.TabItem("Table").Layout(
 				g.Table("Table").
 					Columns(
-						g.Column("Column 1"),
-						g.Column("Column 2"),
-						g.Column("Column 3"),
+						g.TableColumn("Column 1"),
+						g.TableColumn("Column 2"),
+						g.TableColumn("Column 3"),
 					).
 					Rows(
-						g.Row(g.Label("Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog").Wrapped(true), g.Label("Age"), g.Label("Loc")),
-						g.Row(g.Label("Second Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog").Wrapped(true), g.Label("Age"), g.Label("Loc")),
-						g.Row(g.Label("Name"), g.Label("Age"), g.Label("Location")),
-						g.Row(g.Label("Allen"), g.Label("33"), g.Label("Shanghai/China")),
-						g.Row(g.Checkbox("check me", &checked), g.Button("click me"), g.Label("Anything")),
+						g.TableRow(g.Label("Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog").Wrapped(true), g.Label("Age"), g.Label("Loc")),
+						g.TableRow(g.Label("Second Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooog").Wrapped(true), g.Label("Age"), g.Label("Loc")),
+						g.TableRow(g.Label("Name"), g.Label("Age"), g.Label("Location")),
+						g.TableRow(g.Label("Allen"), g.Label("33"), g.Label("Shanghai/China")),
+						g.TableRow(g.Checkbox("check me", &checked), g.Button("click me"), g.Label("Anything")),
 					),
 			),
 			g.TabItem("Group").Layout(
-				g.Line(
-					g.Group().Layout(
+				g.Row(
+					g.Column(
 						g.Label("I'm inside group 1"),
 					),
-					g.Group().Layout(
+					g.Column(
 						g.Label("I'm inside group 2"),
 					),
 				),

@@ -53,7 +53,7 @@ func onImSoCute() {
 func loop() {
 	g.SingleWindow("hello world").Layout(
 		g.Label("Hello world from giu"),
-		g.Line(
+		g.Row(
 			g.Button("Click Me").OnClick(onClickMe),
 			g.Button("I'm so cute").OnClick(onImSoCute),
 		),
@@ -70,9 +70,45 @@ Here is result.
 
 ![Helloworld](https://github.com/AllenDang/giu/raw/master/examples/helloworld/helloworld.png)
 
+## Quick intruduction
+
+### What is immediate mode GUI?
+
+Immediate mode GUI system means the UI control doesn't retain it's state and value. For example, call `giu.InputText("ID", &str)` will display a input text box on screen, and the user entered value will be stored in `&str`, input text box doesn't know anything about it. 
+
+And the `loop` method in the *Hello world* example is in charge of **drawing** all widgets based on the parameters passed into them. This method will be invoked 30 times per second to reflect interactive states (like clicked, hovered, value-changed etc...). It will be the place you define the UI structure.
+
+### The layout and sizing system
+
+By default, any widget is placed inside a container's `Layout` will be place vertically.
+
+To create a row of widgets (aka place widgets one by one horizontally), use `Row()` method. For example `giu.Row(Label(...), Button(...))` will create a Label next to a Button.
+
+To creata a column of widgets (aka place widgets one by one vertically) inside a row, use `Column()`, method.
+
+Any widget which has a `Size()` method, could set it's size explicitly. Note you could pass negative value to `Size()`, it means avaiable remain width/height - value. For example, `InputText(...).Size(-1)` will create a input text box with longest width it's container has lefted.
+
+### Containers
+
+#### MasterWindow
+
+A `MasterWindow` means the platform native window implemented by OS. All sub window and widgets will be placed inside it.
+
+#### Window
+
+A `Window` is a container with a title bar, and could be collapsed. `SingleWindow` is a special kind of window who will occupy all avaialbe space of `MasterWindow`.
+
+#### Child
+
+A `Child` is like a panel in other GUI framework, it could have a background color and border.
+
+### Widgets
+
+Check `examples/widgets` for all kinds of widgets.
+
 ## Install
 
-The backend of giu depends on OpenGL 3.3, make sure your environment supports it (so far as I known some Virual Machine like VirualBox doesn't support it).
+The backend of giu depends on OpenGL 3.3, make sure your environment supports it (so far as I known some Virual Machine like VirualBox doesn`t support it).
 
 ### MacOS
 

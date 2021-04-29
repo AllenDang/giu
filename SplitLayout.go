@@ -98,7 +98,7 @@ func (s *SplitLayoutWidget) Build() {
 
 	if s.direction == DirectionHorizontal {
 		layout = Layout{
-			Line(
+			Row(
 				s.buildChild(fmt.Sprintf("%s_layout1", stateId), splitLayoutState.sashPos, 0, s.layout1),
 				VSplitter(fmt.Sprintf("%s_vsplitter", stateId), &(splitLayoutState.delta)).Size(itemSpacingX, 0),
 				s.buildChild(fmt.Sprintf("%s_layout2", stateId), 0, 0, s.layout2),

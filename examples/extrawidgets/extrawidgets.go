@@ -14,7 +14,7 @@ func loop() {
 		g.Checkbox("Show ProgressIndicator", &showPD),
 		g.Condition(showPD, g.Layout{
 			g.SliderFloat("Radius", &radius, 10, 100),
-			g.Line(
+			g.Row(
 				g.ProgressIndicator("pd1", "", 20+radius, 20+radius, radius),
 				g.ProgressIndicator("pd2", "", 20+radius, 20+radius, radius),
 			),

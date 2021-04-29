@@ -13,7 +13,7 @@ var (
 
 func loop() {
 	g.SingleWindow("Drag and Drop").Layout(
-		g.Line(
+		g.Row(
 			g.Button("Drag me: 9"),
 			g.Custom(func() {
 				if imgui.BeginDragDropSource() {

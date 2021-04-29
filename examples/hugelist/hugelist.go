@@ -11,11 +11,11 @@ var (
 	names []string
 )
 
-func buildRows() []*g.RowWidget {
-	rows := make([]*g.RowWidget, len(names))
+func buildRows() []*g.TableRowWidget {
+	rows := make([]*g.TableRowWidget, len(names))
 
 	for i := range rows {
-		rows[i] = g.Row(
+		rows[i] = g.TableRow(
 			g.Label(fmt.Sprintf("%d", i)),
 			g.Label(names[i]),
 		)

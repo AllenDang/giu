@@ -11,7 +11,7 @@ var (
 func loop() {
 	g.SingleWindow("hello world").Layout(
 		g.Label("Hello world from giu"),
-		g.InputTextMultiline("##content", &content).Size(300, 200),
+		g.InputTextMultiline("##content", &content).Size(-1, -1),
 	)
 }
 
