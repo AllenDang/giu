@@ -84,7 +84,7 @@ By default, any widget is placed inside a container's `Layout` will be place ver
 
 To create a row of widgets (aka place widgets one by one horizontally), use `Row()` method. For example `giu.Row(Label(...), Button(...))` will create a Label next to a Button.
 
-To creata a column of widgets (aka place widgets one by one vertically) inside a row, use `Column()`, method.
+To creata a column of widgets (aka place widgets one by one vertically) inside a row, use `Column()` method.
 
 Any widget which has a `Size()` method, could set it's size explicitly. Note you could pass negative value to `Size()`, it means avaiable remain width/height - value. For example, `InputText(...).Size(-1)` will create a input text box with longest width it's container has lefted.
 
