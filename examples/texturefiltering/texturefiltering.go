@@ -14,35 +14,35 @@ var (
 
 func loop() {
 	g.SingleWindow("load image").Layout(
-		g.Group().Layout(
+		g.Column(
 			g.Label("15x20 pixel image"),
 			g.Row(
-				g.Group().Layout(
+				g.Column(
 					g.Label("50%"),
 					g.Image(spriteTexture).Size(8, 10),
 				),
-				g.Group().Layout(
+				g.Column(
 					g.Label("100%"),
 					g.Image(spriteTexture).Size(15, 20),
 				),
-				g.Group().Layout(
+				g.Column(
 					g.Label("800%"),
 					g.Image(spriteTexture).Size(120, 160),
 				),
 			),
 		),
-		g.Group().Layout(
+		g.Column(
 			g.Label("215x140 image"),
 			g.Row(
-				g.Group().Layout(
+				g.Column(
 					g.Label("50%"),
 					g.Image(largeTexture).Size(215/2, 140/2),
 				),
-				g.Group().Layout(
+				g.Column(
 					g.Label("100%"),
 					g.Image(largeTexture).Size(215, 140),
 				),
-				g.Group().Layout(
+				g.Column(
 					g.Label("200%"),
 					g.Image(largeTexture).Size(215*2, 140*2),
 				),
