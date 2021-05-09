@@ -850,6 +850,7 @@ func (i *ImageWithUrlWidget) Build() {
 
 type InputTextWidget struct {
 	label    string
+	hint     string
 	value    *string
 	width    float32
 	flags    InputTextFlags
@@ -860,12 +861,18 @@ type InputTextWidget struct {
 func InputText(label string, value *string) *InputTextWidget {
 	return &InputTextWidget{
 		label:    label,
+		hint:     "",
 		value:    value,
 		width:    0,
 		flags:    0,
 		cb:       nil,
 		onChange: nil,
 	}
+}
+
+func (i *InputTextWidget) Hint(hint string) *InputTextWidget {
+	i.hint = hint
+	return i
 }
 
 func (i *InputTextWidget) Size(width float32) *InputTextWidget {
@@ -893,7 +900,7 @@ func (i *InputTextWidget) Build() {
 		PushItemWidth(i.width)
 	}
 
-	if imgui.InputTextV(i.label, i.value, int(i.flags), i.cb) && i.onChange != nil {
+	if imgui.InputTextWithHint(i.label, i.hint, i.value, int(i.flags), i.cb) && i.onChange != nil {
 		i.onChange()
 	}
 
