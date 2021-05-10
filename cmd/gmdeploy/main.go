@@ -41,7 +41,7 @@ func main() {
 	switch targetOS {
 	case "darwin":
 		// Compile
-		cmd := exec.Command("bash", "-c", "go build -ldflags='-s -w' .")
+		cmd := exec.Command("bash", "-c", fmt.Sprintf("go build -ldflags='-s -w' -o %s", appName))
 		cmd.Dir = projectPath
 		RunCmd(cmd)
 
