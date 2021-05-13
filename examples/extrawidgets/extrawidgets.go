@@ -24,6 +24,6 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Extra Widgets", 800, 600, g.MasterWindowFlagsNotResizable, nil)
+	wnd := g.NewMasterWindow("Extra Widgets", 800, 600, g.MasterWindowFlagsNotResizable)
 	wnd.Run(loop)
 }

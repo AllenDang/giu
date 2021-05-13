@@ -80,7 +80,7 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Texture Filtering", 800, 600, g.MasterWindowFlagsNotResizable, nil)
+	wnd := g.NewMasterWindow("Texture Filtering", 800, 600, g.MasterWindowFlagsNotResizable)
 
 	spriteImg, _ := g.LoadImage("gopher-sprite.png")
 	largeImg, _ := g.LoadImage("gopher.png")

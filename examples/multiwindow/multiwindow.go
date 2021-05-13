@@ -44,6 +44,6 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Multi sub window demo", 600, 400, 0, nil)
+	wnd := g.NewMasterWindow("Multi sub window demo", 600, 400, 0)
 	wnd.Run(loop)
 }

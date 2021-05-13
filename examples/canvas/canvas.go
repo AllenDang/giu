@@ -54,7 +54,7 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Canvas", 600, 600, g.MasterWindowFlagsNotResizable, nil)
+	wnd := g.NewMasterWindow("Canvas", 600, 600, g.MasterWindowFlagsNotResizable)
 
 	img, _ := g.LoadImage("gopher.png")
 	go func() {

@@ -69,6 +69,6 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Custom Widget", 400, 300, g.MasterWindowFlagsNotResizable, nil)
+	wnd := g.NewMasterWindow("Custom Widget", 400, 300, g.MasterWindowFlagsNotResizable)
 	wnd.Run(loop)
 }

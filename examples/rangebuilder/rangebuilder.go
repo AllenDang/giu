@@ -32,6 +32,6 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Range builder demo", 800, 600, 0, nil)
+	wnd := g.NewMasterWindow("Range builder demo", 800, 600, 0)
 	wnd.Run(loop)
 }

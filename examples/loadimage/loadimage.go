@@ -47,6 +47,6 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Load Image", 600, 500, g.MasterWindowFlagsNotResizable, nil)
+	wnd := g.NewMasterWindow("Load Image", 600, 500, g.MasterWindowFlagsNotResizable)
 	wnd.Run(loop)
 }

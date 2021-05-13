@@ -159,7 +159,7 @@ func (p *PlotCanvasWidget) Build() {
 			imgui.ImPlotSetNextPlotTicksY(p.yTicksValue, p.yTicksLabel, p.yTicksShowDefault, int(p.yTicksYAxis))
 		}
 
-		if imgui.ImPlotBegin(p.title, p.xLabel, p.yLabel, ToVec2(image.Pt(p.width, p.height)), p.flags, p.xFlags, p.yFlags, p.y2Flags, p.y3Flags, p.y2Label, p.y3Label) {
+		if imgui.ImPlotBegin(tStr(p.title), tStr(p.xLabel), tStr(p.yLabel), ToVec2(image.Pt(p.width, p.height)), p.flags, p.xFlags, p.yFlags, p.y2Flags, p.y3Flags, tStr(p.y2Label), tStr(p.y3Label)) {
 			for _, plot := range p.plots {
 				plot.Plot()
 			}
@@ -239,7 +239,7 @@ func (p *PlotBarHWidget) Offset(offset int) *PlotBarHWidget {
 }
 
 func (p *PlotBarHWidget) Plot() {
-	imgui.ImPlotBarsH(p.title, p.data, p.height, p.shift, p.offset)
+	imgui.ImPlotBarsH(tStr(p.title), p.data, p.height, p.shift, p.offset)
 }
 
 type PlotLineWidget struct {
@@ -275,7 +275,7 @@ func (p *PlotLineWidget) Offset(offset int) *PlotLineWidget {
 }
 
 func (p *PlotLineWidget) Plot() {
-	imgui.ImPlotLine(p.title, p.values, p.xScale, p.x0, p.offset)
+	imgui.ImPlotLine(tStr(p.title), p.values, p.xScale, p.x0, p.offset)
 }
 
 type PlotLineXYWidget struct {
@@ -299,7 +299,7 @@ func (p *PlotLineXYWidget) Offset(offset int) *PlotLineXYWidget {
 }
 
 func (p *PlotLineXYWidget) Plot() {
-	imgui.ImPlotLineXY(p.title, p.xs, p.ys, p.offset)
+	imgui.ImPlotLineXY(tStr(p.title), p.xs, p.ys, p.offset)
 }
 
 type PlotPieChartWidget struct {
@@ -340,6 +340,9 @@ func (p *PlotPieChartWidget) Angle0(a float64) *PlotPieChartWidget {
 }
 
 func (p *PlotPieChartWidget) Plot() {
+	for _, l := range p.labels {
+		tStr(l)
+	}
 	imgui.ImPlotPieChart(p.labels, p.values, p.x, p.y, p.radius, p.normalize, p.labelFormat, p.angle0)
 }
 
@@ -376,7 +379,7 @@ func (p *PlotScatterWidget) Offset(offset int) *PlotScatterWidget {
 }
 
 func (p *PlotScatterWidget) Plot() {
-	imgui.ImPlotScatter(p.label, p.values, p.xscale, p.x0, p.offset)
+	imgui.ImPlotScatter(tStr(p.label), p.values, p.xscale, p.x0, p.offset)
 }
 
 type PlotScatterXYWidget struct {
@@ -400,5 +403,5 @@ func (p *PlotScatterXYWidget) Offset(offset int) *PlotScatterXYWidget {
 }
 
 func (p *PlotScatterXYWidget) Plot() {
-	imgui.ImPlotScatterXY(p.label, p.xs, p.ys, p.offset)
+	imgui.ImPlotScatterXY(tStr(p.label), p.xs, p.ys, p.offset)
 }

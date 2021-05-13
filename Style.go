@@ -6,8 +6,12 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
-func PushFont(font imgui.Font) {
-	imgui.PushFont(font)
+func PushFont(font *FontInfo) bool {
+	if f, ok := extraFontMap[font.String()]; ok {
+		imgui.PushFont(*f)
+		return true
+	}
+	return false
 }
 
 func PopFont() {
@@ -165,6 +169,7 @@ func GetFramePadding() (float32, float32) {
 type StyleSetter struct {
 	colors map[imgui.StyleColorID]color.RGBA
 	styles map[imgui.StyleVarID]imgui.Vec2
+	font   *FontInfo
 	layout Layout
 }
 
@@ -186,6 +191,11 @@ func (ss *StyleSetter) SetStyle(varId imgui.StyleVarID, width, height float32) *
 	return ss
 }
 
+func (ss *StyleSetter) SetFont(font *FontInfo) *StyleSetter {
+	ss.font = font
+	return ss
+}
+
 func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
 	ss.layout = widgets
 	return ss
@@ -201,7 +211,16 @@ func (ss *StyleSetter) Build() {
 			imgui.PushStyleVarVec2(k, v)
 		}
 
+		isFontPushed := false
+		if ss.font != nil {
+			isFontPushed = PushFont(ss.font)
+		}
+
 		ss.layout.Build()
+
+		if isFontPushed {
+			PopFont()
+		}
 
 		imgui.PopStyleColorV(len(ss.colors))
 		imgui.PopStyleVarV(len(ss.styles))

@@ -56,6 +56,6 @@ func main() {
 	editor.SetText("select * from greeting\nwhere date > current_timestamp\norder by date")
 	editor.SetLanguageDefinitionSQL()
 
-	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0, nil)
+	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
 	wnd.Run(loop)
 }

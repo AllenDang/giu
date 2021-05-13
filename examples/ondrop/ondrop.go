@@ -29,7 +29,7 @@ func onDrop(names []string) {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("On Drop Demo", 600, 400, g.MasterWindowFlagsNotResizable, nil)
+	wnd := g.NewMasterWindow("On Drop Demo", 600, 400, g.MasterWindowFlagsNotResizable)
 	wnd.SetDropCallback(onDrop)
 	wnd.Run(loop)
 }

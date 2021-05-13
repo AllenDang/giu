@@ -45,6 +45,6 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Drag and Drop", 600, 400, g.MasterWindowFlagsNotResizable, nil)
+	wnd := g.NewMasterWindow("Drag and Drop", 600, 400, g.MasterWindowFlagsNotResizable)
 	wnd.Run(loop)
 }

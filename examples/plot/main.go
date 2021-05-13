@@ -26,24 +26,24 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("Plot Demo").Layout(
-		g.Plot("Plot").AxisLimits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(
-			g.PlotLine("Plot Line", linedata),
+	g.SingleWindow("Plot Demo 图表范例").Layout(
+		g.Plot("Plot 基本图表").AxisLimits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(
+			g.PlotLine("Plot Line 线图", linedata),
 			g.PlotLine("Plot Line2", linedata2),
-			g.PlotScatter("Scatter", scatterdata),
+			g.PlotScatter("Scatter 散点图", scatterdata),
 		),
-		g.Plot("Plot Time Axe").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).XAxeFlags(imgui.ImPlotAxisFlags_Time).Plots(
-			g.PlotLineXY("Time Line", timeDataX, timeDataY),
-			g.PlotScatterXY("Time Scatter", timeDataX, timeScatterY),
+		g.Plot("Plot Time Axe 时间线").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).XAxeFlags(imgui.ImPlotAxisFlags_Time).Plots(
+			g.PlotLineXY("Time Line 时间线", timeDataX, timeDataY),
+			g.PlotScatterXY("Time Scatter 时间散点图", timeDataX, timeScatterY),
 		),
 		g.Row(
 			g.Plot("Plot Bars").
 				Size(500, 250).
 				AxisLimits(0, 10, -1.2, 1.2, g.ConditionOnce).
 				Plots(
-					g.PlotBar("Plot Bar", bardata),
+					g.PlotBar("Plot Bar 柱状图", bardata),
 					g.PlotBar("Plot Bar2", bardata2).Shift(0.2),
-					g.PlotBarH("Plot Bar H", bardata3),
+					g.PlotBarH("Plot Bar H 水平柱状图", bardata3),
 				),
 			g.Plot("Pie Chart").
 				Flags(imgui.ImPlotFlags_Equal|imgui.ImPlotFlags_NoMousePos).
@@ -52,7 +52,7 @@ func loop() {
 				YAxeFlags(imgui.ImPlotAxisFlags_NoDecorations, 0, 0).
 				AxisLimits(0, 1, 0, 1, g.ConditionAlways).
 				Plots(
-					g.PlotPieChart([]string{"Part 1", "Part 2", "Part 3"}, []float64{0.22, 0.38, 0.4}, 0.5, 0.5, 0.45),
+					g.PlotPieChart([]string{"Part 1 图例1", "Part 2", "Part 3"}, []float64{0.22, 0.38, 0.4}, 0.5, 0.5, 0.45),
 				),
 		),
 	)
@@ -86,6 +86,6 @@ func main() {
 	timeDataMin = timeDataX[0]
 	timeDataMax = timeDataX[len(timeDataX)-1]
 
-	wnd := g.NewMasterWindow("Plot Demo", 1000, 900, 0, nil)
+	wnd := g.NewMasterWindow("Plot Demo", 1000, 900, 0)
 	wnd.Run(loop)
 }

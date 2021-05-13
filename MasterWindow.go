@@ -36,7 +36,7 @@ type MasterWindow struct {
 	updateFunc func()
 }
 
-func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, loadFontFunc func()) *MasterWindow {
+func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
 	context := imgui.CreateContext(nil)
 	imgui.ImPlotCreateContext()
 	imgui.ImNodesCreateContext()
@@ -60,8 +60,8 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags, l
 	// Assign platform to contex
 	Context.platform = p
 
-	if loadFontFunc != nil {
-		loadFontFunc()
+	if len(defaultFonts) == 0 {
+		io.Fonts().AddFontDefault()
 	}
 
 	r, err := imgui.NewOpenGL3(io, scale)
@@ -164,6 +164,8 @@ func (w *MasterWindow) sizeChange(width, height int) {
 
 func (w *MasterWindow) render() {
 	Context.invalidAllState()
+
+	rebuildFontAtlas()
 
 	p := w.platform
 	r := w.renderer

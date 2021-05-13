@@ -25,6 +25,6 @@ func loop() {
 }
 
 func main() {
-	wnd := giu.NewMasterWindow("Set Style", 400, 200, giu.MasterWindowFlagsNotResizable, nil)
+	wnd := giu.NewMasterWindow("Set Style", 400, 200, giu.MasterWindowFlagsNotResizable)
 	wnd.Run(loop)
 }

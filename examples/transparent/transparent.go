@@ -44,7 +44,7 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("transparent", 300, 200, g.MasterWindowFlagsNotResizable|g.MasterWindowFlagsFloating|g.MasterWindowFlagsFrameless|g.MasterWindowFlagsTransparent, nil)
+	wnd := g.NewMasterWindow("transparent", 300, 200, g.MasterWindowFlagsNotResizable|g.MasterWindowFlagsFloating|g.MasterWindowFlagsFrameless|g.MasterWindowFlagsTransparent)
 	wnd.SetBgColor(color.RGBA{0, 0, 0, 0})
 	wnd.Run(loop)
 }
