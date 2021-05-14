@@ -37,7 +37,7 @@ func init() {
 		// English font
 		registerDefaultFont("Menlo", 14)
 		// Chinese font
-		registerDefaultFont("PingFang", 15)
+		registerDefaultFont("PingFang", 17)
 		// Jananese font
 		registerDefaultFont("ヒラギノ角ゴシック W0", 15)
 		// Korean font
