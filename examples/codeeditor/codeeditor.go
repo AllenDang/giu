@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	editor     imgui.TextEditor
+	editor     *g.CodeEditorWidget
 	errMarkers imgui.ErrorMarkers
 )
 
@@ -42,7 +42,7 @@ func loop() {
 			}),
 		),
 		g.Custom(func() {
-			editor.Render("Hello", imgui.Vec2{X: 0, Y: 0}, true)
+			editor.Render()
 		}),
 	)
 }
@@ -50,7 +50,7 @@ func loop() {
 func main() {
 	errMarkers = imgui.NewErrorMarkers()
 
-	editor = imgui.NewTextEditor()
+	editor = g.CodeEditor("Code Editor", 0, 0, true)
 	editor.SetShowWhitespaces(false)
 	editor.SetTabSize(2)
 	editor.SetText("select * from greeting\nwhere date > current_timestamp\norder by date")
