@@ -60,6 +60,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	// Assign platform to contex
 	Context.platform = p
 
+	// Create font
 	if len(defaultFonts) == 0 {
 		io.Fonts().AddFontDefault()
 	}
