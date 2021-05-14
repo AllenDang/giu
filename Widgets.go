@@ -488,7 +488,7 @@ func (c *ComboWidget) Build() {
 
 	if imgui.BeginComboV(tStr(c.label), tStr(c.previewValue), int(c.flags)) {
 		for i, item := range c.items {
-			if imgui.Selectable(item) {
+			if imgui.Selectable(tStr(item)) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
 					c.onChange()
