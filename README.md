@@ -21,6 +21,17 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 
 - Small executable file size (<3mb after upx compression for the example/helloworld demo).
 - Live-update during the resizing of OS window (implemented on GLFW 3.3 and OpenGL 3.2).
+- Support to display various languages without any font setting. Giu will rebuild font atlas incrementally according to texts in UI between frames. Below is the list of languages currently support.
+  * MacOS
+	1. English
+	2. Simplified Chinese
+	3. Japanese
+	4. Korean
+  * Windows
+	1. English
+	2. Simplified Chinese
+	3. Japanese
+  *(Need your help to add more support by creating PR or tell me the OS default font name for your language)*
 - Redraw only when user event occurred. Costs only 0.5% CPU usage with 60FPS.
 - Declarative UI (see examples for more detail).
 - DPI awareness (auto scale font and UI to adapte high DPI monitor).
