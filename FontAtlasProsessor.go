@@ -39,13 +39,13 @@ func init() {
 		// Chinese font
 		registerDefaultFont("PingFang", 17)
 		// Jananese font
-		registerDefaultFont("ヒラギノ角ゴシック W0", 15)
+		registerDefaultFont("ヒラギノ角ゴシック W0", 17)
 		// Korean font
-		registerDefaultFont("AppleSDGothicNeo", 15)
+		registerDefaultFont("AppleSDGothicNeo", 16)
 		// TODO add more fonts for different languages.
 	case "windows":
 		// English font
-		registerDefaultFont("Calibri", 14)
+		registerDefaultFont("Calibri", 15)
 		// Chinese font
 		registerDefaultFont("MSYH", 15)
 		// Japanese font
@@ -139,9 +139,17 @@ func rebuildFontAtlas() {
 			fontPath := findFontPath(fontName)
 
 			if i == 0 {
+				fontConfig := imgui.NewFontConfig()
+				fontConfig.SetMergeMode(false)
+				fontConfig.SetRasterizerMultiply(2)
+				fontConfig.SetOversampleH(2)
+				fontConfig.SetOversampleV(2)
 				fonts.AddFontFromFileTTFV(fontPath, size, imgui.DefaultFontConfig, ranges.Data())
 			} else {
 				fontConfig := imgui.NewFontConfig()
+				fontConfig.SetRasterizerMultiply(2)
+				fontConfig.SetOversampleH(2)
+				fontConfig.SetOversampleV(2)
 				fontConfig.SetMergeMode(true)
 				fonts.AddFontFromFileTTFV(fontPath, float32(size), fontConfig, ranges.Data())
 			}
