@@ -48,6 +48,8 @@ func init() {
 		registerDefaultFont("Calibri", 14)
 		// Chinese font
 		registerDefaultFont("MSYH", 15)
+		// Japanese font
+		registerDefaultFont("Meiryo", 15)
 		// TODO add more fonts for different languages.
 	}
 }
