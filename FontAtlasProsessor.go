@@ -141,13 +141,11 @@ func rebuildFontAtlas() {
 			if i == 0 {
 				fontConfig := imgui.NewFontConfig()
 				fontConfig.SetMergeMode(false)
-				fontConfig.SetRasterizerMultiply(2)
 				fontConfig.SetOversampleH(2)
 				fontConfig.SetOversampleV(2)
-				fonts.AddFontFromFileTTFV(fontPath, size, imgui.DefaultFontConfig, ranges.Data())
+				fonts.AddFontFromFileTTFV(fontPath, size, fontConfig, ranges.Data())
 			} else {
 				fontConfig := imgui.NewFontConfig()
-				fontConfig.SetRasterizerMultiply(2)
 				fontConfig.SetOversampleH(2)
 				fontConfig.SetOversampleV(2)
 				fontConfig.SetMergeMode(true)

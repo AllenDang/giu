@@ -205,6 +205,6 @@ func main() {
 		items[i] = fmt.Sprintf("Item %d", i)
 	}
 
-	w := g.NewMasterWindow("Overview", 800, 630, 0)
+	w := g.NewMasterWindow("Overview", 1000, 800, 0)
 	w.Run(loop)
 }
