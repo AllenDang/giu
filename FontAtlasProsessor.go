@@ -11,10 +11,11 @@ import (
 )
 
 var (
-	stringMap    map[rune]bool // key is rune, value indicates whether it's a new rune.
-	defaultFonts []FontInfo
-	extraFonts   []FontInfo
-	extraFontMap map[string]*imgui.Font
+	shouldRebuildFontAtlas bool
+	stringMap              map[rune]bool // key is rune, value indicates whether it's a new rune.
+	defaultFonts           []FontInfo
+	extraFonts             []FontInfo
+	extraFontMap           map[string]*imgui.Font
 )
 
 type FontInfo struct {
@@ -81,6 +82,7 @@ func tStr(str string) string {
 	for _, s := range str {
 		if _, ok := stringMap[s]; !ok {
 			stringMap[s] = false
+			shouldRebuildFontAtlas = true
 		}
 	}
 
@@ -93,6 +95,7 @@ func tStrPtr(str *string) *string {
 	for _, s := range *str {
 		if _, ok := stringMap[s]; !ok {
 			stringMap[s] = false
+			shouldRebuildFontAtlas = true
 		}
 	}
 
@@ -105,16 +108,7 @@ func rebuildFontAtlas() {
 		return
 	}
 
-	shouldRebuild := false
-
-	for _, v := range stringMap {
-		if !v {
-			shouldRebuild = true
-			break
-		}
-	}
-
-	if shouldRebuild {
+	if shouldRebuildFontAtlas {
 		fonts := Context.IO().Fonts()
 
 		var sb strings.Builder
@@ -128,7 +122,10 @@ func rebuildFontAtlas() {
 
 		ranges := imgui.NewGlyphRanges()
 		builder := imgui.NewFontGlyphRangesBuilder()
-		builder.AddRanges(fonts.GlyphRangesDefault())
+		if sb.Len() == 0 {
+			builder.AddRanges(fonts.GlyphRangesDefault())
+		}
+
 		builder.AddText(sb.String())
 		builder.BuildRanges(ranges)
 
@@ -136,20 +133,23 @@ func rebuildFontAtlas() {
 			fontName := fontInfo.fontName
 			size := fontInfo.size
 
+			if runtime.GOOS != "darwin" {
+				// Scale font size based on DPI scaling.
+				size *= Context.platform.GetContentScale()
+			}
+
 			fontPath := findFontPath(fontName)
 
+			fontConfig := imgui.NewFontConfig()
+			fontConfig.SetOversampleH(2)
+			fontConfig.SetOversampleV(2)
 			if i == 0 {
-				fontConfig := imgui.NewFontConfig()
 				fontConfig.SetMergeMode(false)
-				fontConfig.SetOversampleH(2)
-				fontConfig.SetOversampleV(2)
 				fonts.AddFontFromFileTTFV(fontPath, size, fontConfig, ranges.Data())
 			} else {
-				fontConfig := imgui.NewFontConfig()
-				fontConfig.SetOversampleH(2)
-				fontConfig.SetOversampleV(2)
+
 				fontConfig.SetMergeMode(true)
-				fonts.AddFontFromFileTTFV(fontPath, float32(size), fontConfig, ranges.Data())
+				fonts.AddFontFromFileTTFV(fontPath, size, fontConfig, ranges.Data())
 			}
 		}
 
@@ -164,6 +164,8 @@ func rebuildFontAtlas() {
 
 		fontTextureImg := fonts.TextureDataRGBA32()
 		Context.renderer.SetFontTexture(fontTextureImg)
+
+		shouldRebuildFontAtlas = false
 	}
 }
 
