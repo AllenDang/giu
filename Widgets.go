@@ -2,6 +2,7 @@ package giu
 
 import (
 	"bytes"
+	ctx "context"
 	"fmt"
 	"image"
 	"image/color"
@@ -662,11 +663,16 @@ func (i *ImageWidget) Build() {
 type ImageState struct {
 	loading bool
 	failure bool
+	cancel  ctx.CancelFunc
 	texture *Texture
 }
 
 func (is *ImageState) Dispose() {
 	is.texture = nil
+	// Cancel ongoing image downloaidng
+	if is.loading && is.cancel != nil {
+		is.cancel()
+	}
 }
 
 type ImageWithFileWidget struct {
@@ -780,15 +786,14 @@ func (i *ImageWithUrlWidget) Build() {
 		widget = Image(nil).Size(i.width, i.height)
 
 		// Prevent multiple invocation to download image.
-		Context.SetState(stateId, &ImageState{loading: true})
+		downloadContext, cancalFunc := ctx.WithCancel(ctx.Background())
+		Context.SetState(stateId, &ImageState{loading: true, cancel: cancalFunc})
 
 		go func() {
 			// Load image from url
 			client := resty.New()
 			client.SetTimeout(i.downloadTimeout)
-
-			resp, err := client.R().Get(i.imgUrl)
-			Context.SetState(stateId, &ImageState{loading: false})
+			resp, err := client.R().SetContext(downloadContext).Get(i.imgUrl)
 			if err != nil {
 				Context.SetState(stateId, &ImageState{failure: true})
 
