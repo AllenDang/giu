@@ -2,7 +2,6 @@ package giu
 
 import (
 	"fmt"
-	"log"
 	"runtime"
 	"strings"
 
@@ -20,6 +19,7 @@ var (
 
 type FontInfo struct {
 	fontName string
+	fontPath string
 	size     float32
 }
 
@@ -55,24 +55,33 @@ func init() {
 	}
 }
 
+// Add font by name, if the font is found, return *FontInfo, otherwise return nil.
 func AddFont(fontName string, size float32) *FontInfo {
+	fontPath, err := findfont.Find(fontName)
+	if err != nil {
+		fmt.Printf("[Warning]Cannot find font %s at system, related text will not be rendered.\n", fontName)
+		return nil
+	}
+
 	fi := FontInfo{
 		fontName: fontName,
+		fontPath: fontPath,
 		size:     size,
 	}
+
 	extraFonts = append(extraFonts, fi)
 
 	return &fi
 }
 
 func registerDefaultFont(fontName string, size float32) {
-	_, err := findfont.Find(fontName)
+	fontPath, err := findfont.Find(fontName)
 	if err != nil {
 		fmt.Printf("[Warning]Cannot find font %s at system, related text will not be rendered.\n", fontName)
 		return
 	}
 
-	fontInfo := FontInfo{fontName: fontName, size: size}
+	fontInfo := FontInfo{fontName: fontName, fontPath: fontPath, size: size}
 	defaultFonts = append(defaultFonts, fontInfo)
 }
 
@@ -130,7 +139,6 @@ func rebuildFontAtlas() {
 		builder.BuildRanges(ranges)
 
 		for i, fontInfo := range defaultFonts {
-			fontName := fontInfo.fontName
 			size := fontInfo.size
 
 			if runtime.GOOS != "darwin" {
@@ -138,27 +146,23 @@ func rebuildFontAtlas() {
 				size *= Context.platform.GetContentScale()
 			}
 
-			fontPath := findFontPath(fontName)
-
 			fontConfig := imgui.NewFontConfig()
 			fontConfig.SetOversampleH(2)
 			fontConfig.SetOversampleV(2)
 			if i == 0 {
 				fontConfig.SetMergeMode(false)
-				fonts.AddFontFromFileTTFV(fontPath, size, fontConfig, ranges.Data())
+				fonts.AddFontFromFileTTFV(fontInfo.fontPath, size, fontConfig, ranges.Data())
 			} else {
 
 				fontConfig.SetMergeMode(true)
-				fonts.AddFontFromFileTTFV(fontPath, size, fontConfig, ranges.Data())
+				fonts.AddFontFromFileTTFV(fontInfo.fontPath, size, fontConfig, ranges.Data())
 			}
 		}
 
 		// Add extra fonts
 		for _, fontInfo := range extraFonts {
-			fontPath := findFontPath(fontInfo.fontName)
-
 			// Store imgui.Font for PushFont
-			f := fonts.AddFontFromFileTTFV(fontPath, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+			f := fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
 			extraFontMap[fontInfo.String()] = &f
 		}
 
@@ -167,13 +171,4 @@ func rebuildFontAtlas() {
 
 		shouldRebuildFontAtlas = false
 	}
-}
-
-func findFontPath(fontName string) string {
-	fontPath, err := findfont.Find(fontName)
-	if err != nil {
-		log.Fatal(fmt.Sprintf("Cannot find font %s", fontName))
-	}
-
-	return fontPath
 }
