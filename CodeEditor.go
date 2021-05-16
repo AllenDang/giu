@@ -4,18 +4,12 @@ import "github.com/AllenDang/imgui-go"
 
 type CodeEditorWidget struct {
 	title  string
-	width  float32
-	height float32
-	border bool
 	editor imgui.TextEditor
 }
 
-func CodeEditor(title string, width, height float32, border bool) *CodeEditorWidget {
+func CodeEditor(title string) *CodeEditorWidget {
 	return &CodeEditorWidget{
 		title:  title,
-		width:  width,
-		height: height,
-		border: border,
 		editor: imgui.NewTextEditor(),
 	}
 }
@@ -116,7 +110,7 @@ func (ce *CodeEditorWidget) Delete() {
 	ce.editor.Delete()
 }
 
-func (ce *CodeEditorWidget) Render() {
+func (ce *CodeEditorWidget) Render(width, height float32, border bool) {
 	tStr(ce.editor.GetText())
-	ce.editor.Render(ce.title, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)
+	ce.editor.Render(ce.title, imgui.Vec2{X: width, Y: height}, border)
 }

@@ -42,7 +42,7 @@ func loop() {
 			}),
 		),
 		g.Custom(func() {
-			editor.Render()
+			editor.Render(0, 0, true)
 		}),
 	)
 }
@@ -50,7 +50,7 @@ func loop() {
 func main() {
 	errMarkers = imgui.NewErrorMarkers()
 
-	editor = g.CodeEditor("Code Editor", 0, 0, true)
+	editor = g.CodeEditor("Code Editor")
 	editor.SetShowWhitespaces(false)
 	editor.SetTabSize(2)
 	editor.SetText("select * from greeting\nwhere date > current_timestamp\norder by date")
