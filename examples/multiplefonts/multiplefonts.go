@@ -12,9 +12,7 @@ var (
 
 func loop() {
 	g.SingleWindow("Multiple fonts").Layout(
-		g.Style().SetFont(bigFont).To(
-			g.Label("Title line"),
-		),
+		g.Label("Title line").Font(bigFont),
 		g.Label("Content line"),
 
 		g.Label("Change font for other widgets"),

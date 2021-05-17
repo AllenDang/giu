@@ -1011,8 +1011,9 @@ func (i *InputFloatWidget) Build() {
 }
 
 type LabelWidget struct {
-	label   string
-	wrapped bool
+	label    string
+	fontInfo *FontInfo
+	wrapped  bool
 }
 
 func Label(label string) *LabelWidget {
@@ -1027,12 +1028,26 @@ func (l *LabelWidget) Wrapped(wrapped bool) *LabelWidget {
 	return l
 }
 
+func (l *LabelWidget) Font(font *FontInfo) *LabelWidget {
+	l.fontInfo = font
+	return l
+}
+
 func (l *LabelWidget) Build() {
 	if l.wrapped {
 		PushTextWrapPos()
 	}
 
+	shouldPopFont := false
+	if l.fontInfo != nil {
+		shouldPopFont = PushFont(l.fontInfo)
+	}
+
 	imgui.Text(tStr(l.label))
+
+	if shouldPopFont {
+		PopFont()
+	}
 
 	if l.wrapped {
 		PopTextWrapPos()
