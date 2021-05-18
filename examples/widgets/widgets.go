@@ -9,16 +9,17 @@ import (
 )
 
 var (
-	name         string
-	items        []string
-	itemSelected int32
-	checked      bool
-	checked2     bool
-	dragInt      int32
-	multiline    string
-	radioOp      int
-	date         time.Time = time.Now()
-	col                    = &color.RGBA{}
+	name                   string
+	items                  []string
+	itemSelected           int32
+	checked                bool
+	checked2               bool
+	dragInt                int32
+	multiline              string
+	radioOp                int
+	autoCompleteCandidates           = []string{"hello", "hello world"}
+	date                   time.Time = time.Now()
+	col                              = &color.RGBA{}
 )
 
 func btnClickMeClicked() {
@@ -69,6 +70,7 @@ func loop() {
 				g.BulletText("I could be any widgets"),
 			),
 		),
+		g.InputText("Input text with auto complete, input hw and press enter", &name).Size(300).AutoComplete(autoCompleteCandidates),
 		g.DatePicker("Date Picker", &date).OnChange(func() {
 			fmt.Println(date)
 		}),

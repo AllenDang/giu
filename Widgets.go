@@ -7,10 +7,12 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"math"
 	"time"
 
 	"github.com/AllenDang/imgui-go"
 	resty "github.com/go-resty/resty/v2"
+	"github.com/sahilm/fuzzy"
 )
 
 type RowWidget struct {
@@ -854,13 +856,22 @@ func (i *ImageWithUrlWidget) Build() {
 }
 
 type InputTextWidget struct {
-	label    string
-	hint     string
-	value    *string
-	width    float32
-	flags    InputTextFlags
-	cb       imgui.InputTextCallback
-	onChange func()
+	label      string
+	hint       string
+	value      *string
+	width      float32
+	candidates []string
+	flags      InputTextFlags
+	cb         imgui.InputTextCallback
+	onChange   func()
+}
+
+type inputTextState struct {
+	autoCompleteCandidates fuzzy.Matches
+}
+
+func (s *inputTextState) Dispose() {
+	s.autoCompleteCandidates = nil
 }
 
 func InputText(label string, value *string) *InputTextWidget {
@@ -873,6 +884,13 @@ func InputText(label string, value *string) *InputTextWidget {
 		cb:       nil,
 		onChange: nil,
 	}
+}
+
+// Enable auto complete popup by using fuzzy search of current value agains candidates
+// Press enter to confirm the first candidate
+func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
+	i.candidates = candidates
+	return i
 }
 
 func (i *InputTextWidget) Hint(hint string) *InputTextWidget {
@@ -901,16 +919,59 @@ func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 }
 
 func (i *InputTextWidget) Build() {
+	// Get state
+	var state *inputTextState
+	if s := Context.GetState(i.label); s == nil {
+		state = &inputTextState{}
+		Context.SetState(i.label, state)
+	} else {
+		state = s.(*inputTextState)
+	}
+
 	if i.width != 0 {
 		PushItemWidth(i.width)
 	}
 
-	if imgui.InputTextWithHint(tStr(i.label), tStr(i.hint), tStrPtr(i.value), int(i.flags), i.cb) && i.onChange != nil {
-		i.onChange()
-	}
+	isChanged := imgui.InputTextWithHint(tStr(i.label), tStr(i.hint), tStrPtr(i.value), int(i.flags), i.cb)
 
 	if i.width != 0 {
 		PopItemWidth()
+	}
+
+	if isChanged && i.onChange != nil {
+		i.onChange()
+	}
+
+	if isChanged {
+		// Enable auto complete
+		if len(i.candidates) > 0 {
+			matches := fuzzy.Find(*i.value, i.candidates)
+			if matches.Len() > 0 {
+				size := int(math.Min(5, float64(matches.Len())))
+				matches = matches[:size]
+
+				state.autoCompleteCandidates = matches
+			}
+		}
+	}
+
+	// Draw autocomplete list
+	if len(state.autoCompleteCandidates) > 0 {
+		labels := make(Layout, len(state.autoCompleteCandidates))
+		for i, m := range state.autoCompleteCandidates {
+			labels[i] = Label(m.Str)
+		}
+
+		SetNextWindowPos(imgui.GetItemRectMin().X, imgui.GetItemRectMax().Y)
+		imgui.BeginTooltip()
+		labels.Build()
+		imgui.EndTooltip()
+
+		// Press enter will replace value string with first match candidate
+		if IsKeyPressed(KeyEnter) {
+			*i.value = state.autoCompleteCandidates[0].Str
+			state.autoCompleteCandidates = nil
+		}
 	}
 }
 
