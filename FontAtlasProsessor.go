@@ -41,7 +41,7 @@ func init() {
 		// English font
 		registerDefaultFont("Menlo", 14)
 		// Chinese font
-		registerDefaultFont("PingFang", 17)
+		registerDefaultFont("STHeiti", 14)
 		// Jananese font
 		registerDefaultFont("ヒラギノ角ゴシック W0", 17)
 		// Korean font
@@ -134,11 +134,13 @@ func rebuildFontAtlas() {
 
 		ranges := imgui.NewGlyphRanges()
 		builder := imgui.NewFontGlyphRangesBuilder()
-		if sb.Len() == 0 {
+
+		if sb.Len() > 0 {
+			builder.AddText(sb.String())
+		} else {
 			builder.AddRanges(fonts.GlyphRangesDefault())
 		}
 
-		builder.AddText(sb.String())
 		builder.BuildRanges(ranges)
 
 		for i, fontInfo := range defaultFonts {
