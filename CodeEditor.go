@@ -8,9 +8,6 @@ type CodeEditorWidget struct {
 }
 
 func CodeEditor(title string) *CodeEditorWidget {
-	// Ensure line number could be rendered
-	tStr("1234567890")
-
 	return &CodeEditorWidget{
 		title:  title,
 		editor: imgui.NewTextEditor(),

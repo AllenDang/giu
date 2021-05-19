@@ -31,6 +31,9 @@ func init() {
 	stringMap = make(map[rune]bool)
 	extraFontMap = make(map[string]*imgui.Font)
 
+	// Pre register numbers
+	tStr("01234567890.")
+
 	// Pre-register fonts
 	os := runtime.GOOS
 	switch os {
