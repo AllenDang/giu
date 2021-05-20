@@ -151,7 +151,6 @@ func rebuildFontAtlas() {
 				fontConfig.SetMergeMode(false)
 				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			} else {
-
 				fontConfig.SetMergeMode(true)
 				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			}
