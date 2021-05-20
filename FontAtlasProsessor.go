@@ -144,23 +144,16 @@ func rebuildFontAtlas() {
 		builder.BuildRanges(ranges)
 
 		for i, fontInfo := range defaultFonts {
-			size := fontInfo.size
-
-			if runtime.GOOS != "darwin" {
-				// Scale font size based on DPI scaling.
-				size *= Context.platform.GetContentScale()
-			}
-
 			fontConfig := imgui.NewFontConfig()
 			fontConfig.SetOversampleH(2)
 			fontConfig.SetOversampleV(2)
 			if i == 0 {
 				fontConfig.SetMergeMode(false)
-				fonts.AddFontFromFileTTFV(fontInfo.fontPath, size, fontConfig, ranges.Data())
+				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			} else {
 
 				fontConfig.SetMergeMode(true)
-				fonts.AddFontFromFileTTFV(fontInfo.fontPath, size, fontConfig, ranges.Data())
+				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			}
 		}
 
