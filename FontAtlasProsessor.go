@@ -55,6 +55,8 @@ func init() {
 		// Japanese font
 		registerDefaultFont("Meiryo", 15)
 		// TODO add more fonts for different languages.
+	case "linux":
+		registerDefaultFont("FiraCode", 15)
 	}
 }
 
