@@ -15,8 +15,8 @@ func loop() {
 		g.Condition(showPD, g.Layout{
 			g.SliderFloat("Radius", &radius, 10, 100),
 			g.Row(
-				g.ProgressIndicator("pd1", "", 20+radius, 20+radius, radius),
-				g.ProgressIndicator("pd2", "", 20+radius, 20+radius, radius),
+				g.ProgressIndicator("pd1", "", 2*radius+20, 2*radius+20, radius),
+				g.ProgressIndicator("pd2", "", 2*radius+20, 2*radius+20, radius),
 			),
 			g.ProgressIndicator("pd3", "Loading...", 0, 0, radius),
 		}, nil),
