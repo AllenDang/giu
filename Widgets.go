@@ -1977,7 +1977,7 @@ func (t *TableWidget) Build() {
 
 		if len(t.columns) > 0 {
 			for _, col := range t.columns {
-				imgui.TableSetupColumn(col.label, col.flags, col.innerWidthOrWeight, col.userId)
+				col.Build()
 			}
 			imgui.TableHeadersRow()
 		}
@@ -2318,31 +2318,31 @@ func (d *DatePickerWidget) Build() {
 		if imgui.BeginComboV(d.id, d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
 			// Build year widget
 			imgui.AlignTextToFramePadding()
-			imgui.Text(" Year")
+			imgui.Text(tStr(" Year"))
 			imgui.SameLine()
-			imgui.Text(fmt.Sprintf("%14d", d.date.Year()))
+			imgui.Text(tStr(fmt.Sprintf("%14d", d.date.Year())))
 			imgui.SameLine()
-			if imgui.Button("-##year") {
+			if imgui.Button(tStr("-##year")) {
 				*d.date = d.date.AddDate(-1, 0, 0)
 				evtTrigger()
 			}
 			imgui.SameLine()
-			if imgui.Button("+##year") {
+			if imgui.Button(tStr("+##year")) {
 				*d.date = d.date.AddDate(1, 0, 0)
 				evtTrigger()
 			}
 
 			// Build month widgets
-			imgui.Text("Month")
+			imgui.Text(tStr("Month"))
 			imgui.SameLine()
-			imgui.Text(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month()))
+			imgui.Text(tStr(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month())))
 			imgui.SameLine()
-			if imgui.Button("-##month") {
+			if imgui.Button(tStr("-##month")) {
 				*d.date = d.date.AddDate(0, -1, 0)
 				evtTrigger()
 			}
 			imgui.SameLine()
-			if imgui.Button("+##month") {
+			if imgui.Button(tStr("+##month")) {
 				*d.date = d.date.AddDate(0, 1, 0)
 				evtTrigger()
 			}
