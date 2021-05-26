@@ -31,6 +31,8 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 	1. English
 	2. Simplified Chinese
 	3. Japanese
+  * Kali Linux
+	1. English
   * Need your help to add more language support by creating PR or tell me the OS default font name for your language.
 - Redraw only when user event occurred. Costs only 0.5% CPU usage with 60FPS.
 - Declarative UI (see examples for more detail).
