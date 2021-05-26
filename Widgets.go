@@ -677,6 +677,48 @@ func (is *ImageState) Dispose() {
 	}
 }
 
+type ImageWithRgbaWidget struct {
+	ImageWidget
+	id   string
+	rgba *image.RGBA
+}
+
+func ImageWithRgba(rgba *image.RGBA) *ImageWithRgbaWidget {
+	// Generate a unique id from first 100 pix from rgba
+	var pix []uint8
+	if len(rgba.Pix) >= 100 {
+		pix = rgba.Pix[:100]
+	} else {
+		pix = rgba.Pix
+	}
+
+	return &ImageWithRgbaWidget{
+		ImageWidget: *Image(nil),
+		id:          fmt.Sprintf("ImageWithRgba_%v", pix),
+		rgba:        rgba,
+	}
+}
+
+func (i *ImageWithRgbaWidget) Build() {
+	state := Context.GetState(i.id)
+
+	if state == nil {
+		Context.SetState(i.id, &ImageState{})
+
+		go func() {
+			texture, err := NewTextureFromRgba(i.rgba)
+			if err == nil {
+				Context.SetState(i.id, &ImageState{texture: texture})
+			}
+		}()
+	} else {
+		imgState := state.(*ImageState)
+		i.ImageWidget.texture = imgState.texture
+	}
+
+	i.ImageWidget.Build()
+}
+
 type ImageWithFileWidget struct {
 	imgPath string
 	width   float32

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"image"
 	_ "image/jpeg"
 	_ "image/png"
 	"time"
@@ -9,8 +10,15 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
+var (
+	rgba *image.RGBA
+)
+
 func loop() {
 	g.SingleWindow("load image").Layout(
+		g.Label("Display image from rgba"),
+		g.ImageWithRgba(rgba),
+
 		g.Label("Display image from file"),
 		g.ImageWithFile("gopher.png").Size(300, 200),
 
@@ -47,6 +55,8 @@ func loop() {
 }
 
 func main() {
+	rgba, _ = g.LoadImage("./fallback.png")
+
 	wnd := g.NewMasterWindow("Load Image", 600, 500, g.MasterWindowFlagsNotResizable)
 	wnd.Run(loop)
 }
