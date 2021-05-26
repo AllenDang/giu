@@ -17,7 +17,7 @@ var (
 func loop() {
 	g.SingleWindow("load image").Layout(
 		g.Label("Display image from rgba"),
-		g.ImageWithRgba(rgba),
+		g.ImageWithRgba(rgba).Size(200, 100),
 
 		g.Label("Display image from file"),
 		g.ImageWithFile("gopher.png").Size(300, 200),

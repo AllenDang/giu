@@ -678,9 +678,10 @@ func (is *ImageState) Dispose() {
 }
 
 type ImageWithRgbaWidget struct {
-	ImageWidget
-	id   string
-	rgba *image.RGBA
+	id     string
+	width  float32
+	height float32
+	rgba   *image.RGBA
 }
 
 func ImageWithRgba(rgba *image.RGBA) *ImageWithRgbaWidget {
@@ -693,43 +694,55 @@ func ImageWithRgba(rgba *image.RGBA) *ImageWithRgbaWidget {
 	}
 
 	return &ImageWithRgbaWidget{
-		ImageWidget: *Image(nil),
-		id:          fmt.Sprintf("ImageWithRgba_%v", pix),
-		rgba:        rgba,
+		id:     fmt.Sprintf("ImageWithRgba_%v", pix),
+		width:  100,
+		height: 100,
+		rgba:   rgba,
 	}
+}
+
+func (i *ImageWithRgbaWidget) Size(width, height float32) *ImageWithRgbaWidget {
+	i.width, i.height = width, height
+	return i
 }
 
 func (i *ImageWithRgbaWidget) Build() {
-	state := Context.GetState(i.id)
+	widget := Image(nil).Size(i.width, i.height)
 
-	if state == nil {
-		Context.SetState(i.id, &ImageState{})
+	if i.rgba != nil {
+		state := Context.GetState(i.id)
 
-		go func() {
-			texture, err := NewTextureFromRgba(i.rgba)
-			if err == nil {
-				Context.SetState(i.id, &ImageState{texture: texture})
-			}
-		}()
-	} else {
-		imgState := state.(*ImageState)
-		i.ImageWidget.texture = imgState.texture
+		if state == nil {
+			Context.SetState(i.id, &ImageState{})
+
+			go func() {
+				texture, err := NewTextureFromRgba(i.rgba)
+				if err == nil {
+					Context.SetState(i.id, &ImageState{texture: texture})
+				}
+			}()
+		} else {
+			imgState := state.(*ImageState)
+			widget.texture = imgState.texture
+		}
 	}
 
-	i.ImageWidget.Build()
+	widget.Build()
 }
 
 type ImageWithFileWidget struct {
-	imgPath string
+	id      string
 	width   float32
 	height  float32
+	imgPath string
 }
 
 func ImageWithFile(imgPath string) *ImageWithFileWidget {
 	return &ImageWithFileWidget{
-		imgPath: imgPath,
+		id:      fmt.Sprintf("ImageWithFile_%s", imgPath),
 		width:   100,
 		height:  100,
+		imgPath: imgPath,
 	}
 }
 
@@ -739,35 +752,33 @@ func (i *ImageWithFileWidget) Size(width, height float32) *ImageWithFileWidget {
 }
 
 func (i *ImageWithFileWidget) Build() {
-	stateId := fmt.Sprintf("ImageWithFile_%s", i.imgPath)
-	state := Context.GetState(stateId)
+	state := Context.GetState(i.id)
 
-	var widget *ImageWidget
+	widget := Image(nil).Size(i.width, i.height)
 
 	if state == nil {
-		widget = Image(nil).Size(i.width, i.height)
-
 		// Prevent multiple invocation to LoadImage.
-		Context.SetState(stateId, &ImageState{})
+		Context.SetState(i.id, &ImageState{})
 
 		img, err := LoadImage(i.imgPath)
 		if err == nil {
 			go func() {
 				texture, err := NewTextureFromRgba(img)
 				if err == nil {
-					Context.SetState(stateId, &ImageState{texture: texture})
+					Context.SetState(i.id, &ImageState{texture: texture})
 				}
 			}()
 		}
 	} else {
 		imgState := state.(*ImageState)
-		widget = Image(imgState.texture).Size(i.width, i.height)
+		widget.texture = imgState.texture
 	}
 
 	widget.Build()
 }
 
 type ImageWithUrlWidget struct {
+	id              string
 	imgUrl          string
 	downloadTimeout time.Duration
 	width           float32
@@ -780,6 +791,7 @@ type ImageWithUrlWidget struct {
 
 func ImageWithUrl(url string) *ImageWithUrlWidget {
 	return &ImageWithUrlWidget{
+		id:              fmt.Sprintf("ImageWithUrl_%s", url),
 		imgUrl:          url,
 		downloadTimeout: 10 * time.Second,
 		width:           100,
@@ -821,17 +833,14 @@ func (i *ImageWithUrlWidget) LayoutForFailure(widgets ...Widget) *ImageWithUrlWi
 }
 
 func (i *ImageWithUrlWidget) Build() {
-	stateId := fmt.Sprintf("ImageWithUrl_%s", i.imgUrl)
-	state := Context.GetState(stateId)
+	state := Context.GetState(i.id)
 
-	var widget *ImageWidget
+	widget := Image(nil).Size(i.width, i.height)
 
 	if state == nil {
-		widget = Image(nil).Size(i.width, i.height)
-
 		// Prevent multiple invocation to download image.
 		downloadContext, cancalFunc := ctx.WithCancel(ctx.Background())
-		Context.SetState(stateId, &ImageState{loading: true, cancel: cancalFunc})
+		Context.SetState(i.id, &ImageState{loading: true, cancel: cancalFunc})
 
 		go func() {
 			// Load image from url
@@ -839,7 +848,7 @@ func (i *ImageWithUrlWidget) Build() {
 			client.SetTimeout(i.downloadTimeout)
 			resp, err := client.R().SetContext(downloadContext).Get(i.imgUrl)
 			if err != nil {
-				Context.SetState(stateId, &ImageState{failure: true})
+				Context.SetState(i.id, &ImageState{failure: true})
 
 				// Trigger onFailure event
 				if i.onFailure != nil {
@@ -850,7 +859,7 @@ func (i *ImageWithUrlWidget) Build() {
 
 			img, _, err := image.Decode(bytes.NewReader(resp.Body()))
 			if err != nil {
-				Context.SetState(stateId, &ImageState{failure: true})
+				Context.SetState(i.id, &ImageState{failure: true})
 
 				// Trigger onFailure event
 				if i.onFailure != nil {
@@ -864,7 +873,7 @@ func (i *ImageWithUrlWidget) Build() {
 
 			texture, err := NewTextureFromRgba(rgba)
 			if err != nil {
-				Context.SetState(stateId, &ImageState{failure: true})
+				Context.SetState(i.id, &ImageState{failure: true})
 
 				// Trigger onFailure event
 				if i.onFailure != nil {
@@ -872,7 +881,7 @@ func (i *ImageWithUrlWidget) Build() {
 				}
 				return
 			}
-			Context.SetState(stateId, &ImageState{loading: false, texture: texture})
+			Context.SetState(i.id, &ImageState{loading: false, texture: texture})
 
 			// Trigger onReady event
 			if i.onReady != nil {
@@ -891,7 +900,7 @@ func (i *ImageWithUrlWidget) Build() {
 			return
 		}
 
-		widget = Image(imgState.texture).Size(i.width, i.height)
+		widget.texture = imgState.texture
 	}
 
 	widget.Build()
