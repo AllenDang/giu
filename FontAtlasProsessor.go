@@ -53,7 +53,9 @@ func init() {
 		// Chinese font
 		registerDefaultFont("MSYH", 15)
 		// Japanese font
-		registerDefaultFont("Meiryo", 15)
+		registerDefaultFont("MSGOTHIC", 15)
+		// Korean font
+		registerDefaultFont("MALGUNSL", 15)
 		// TODO add more fonts for different languages.
 	case "linux":
 		registerDefaultFont("FiraCode-Medium", 15)
