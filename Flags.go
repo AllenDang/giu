@@ -3,27 +3,27 @@ package giu
 type InputTextFlags int
 
 const (
-	InputTextFlags_None                InputTextFlags = 0
-	InputTextFlags_CharsDecimal        InputTextFlags = 1 << 0  // Allow 0123456789.+-*/
-	InputTextFlags_CharsHexadecimal    InputTextFlags = 1 << 1  // Allow 0123456789ABCDEFabcdef
-	InputTextFlags_CharsUppercase      InputTextFlags = 1 << 2  // Turn a..z into A..Z
-	InputTextFlags_CharsNoBlank        InputTextFlags = 1 << 3  // Filter out spaces, tabs
-	InputTextFlags_AutoSelectAll       InputTextFlags = 1 << 4  // Select entire text when first taking mouse focus
-	InputTextFlags_EnterReturnsTrue    InputTextFlags = 1 << 5  // Return 'true' when Enter is pressed (as opposed to every time the value was modified). Consider looking at the IsItemDeactivatedAfterEdit() function.
-	InputTextFlags_CallbackCompletion  InputTextFlags = 1 << 6  // Callback on pressing TAB (for completion handling)
-	InputTextFlags_CallbackHistory     InputTextFlags = 1 << 7  // Callback on pressing Up/Down arrows (for history handling)
-	InputTextFlags_CallbackAlways      InputTextFlags = 1 << 8  // Callback on each iteration. User code may query cursor position, modify text buffer.
-	InputTextFlags_CallbackCharFilter  InputTextFlags = 1 << 9  // Callback on character inputs to replace or discard them. Modify 'EventChar' to replace or discard, or return 1 in callback to discard.
-	InputTextFlags_AllowTabInput       InputTextFlags = 1 << 10 // Pressing TAB input a '\t' character into the text field
-	InputTextFlags_CtrlEnterForNewLine InputTextFlags = 1 << 11 // In multi-line mode, unfocus with Enter, add new line with Ctrl+Enter (default is opposite: unfocus with Ctrl+Enter, add line with Enter).
-	InputTextFlags_NoHorizontalScroll  InputTextFlags = 1 << 12 // Disable following the cursor horizontally
-	InputTextFlags_AlwaysOverwrite     InputTextFlags = 1 << 13 // Overwrite mode
-	InputTextFlags_ReadOnly            InputTextFlags = 1 << 14 // Read-only mode
-	InputTextFlags_Password            InputTextFlags = 1 << 15 // Password mode, display all characters as '*'
-	InputTextFlags_NoUndoRedo          InputTextFlags = 1 << 16 // Disable undo/redo. Note that input text owns the text data while active, if you want to provide your own undo/redo stack you need e.g. to call ClearActiveID().
-	InputTextFlags_CharsScientific     InputTextFlags = 1 << 17 // Allow 0123456789.+-*/eE (Scientific notation input)
-	InputTextFlags_CallbackResize      InputTextFlags = 1 << 18 // Callback on buffer capacity changes request (beyond 'buf_size' parameter value), allowing the string to grow. Notify when the string wants to be resized (for string types which hold a cache of their Size). You will be provided a new BufSize in the callback and NEED to honor it. (see misc/cpp/imgui_stdlib.h for an example of using this)
-	InputTextFlags_CallbackEdit        InputTextFlags = 1 << 19 // Callback on any edit (note that InputText() already returns true on edit, the callback is useful mainly to manipulate the underlying buffer while focus is active)
+	InputTextFlagsNone                InputTextFlags = 0
+	InputTextFlagsCharsDecimal        InputTextFlags = 1 << 0  // Allow 0123456789.+-*/
+	InputTextFlagsCharsHexadecimal    InputTextFlags = 1 << 1  // Allow 0123456789ABCDEFabcdef
+	InputTextFlagsCharsUppercase      InputTextFlags = 1 << 2  // Turn a..z into A..Z
+	InputTextFlagsCharsNoBlank        InputTextFlags = 1 << 3  // Filter out spaces, tabs
+	InputTextFlagsAutoSelectAll       InputTextFlags = 1 << 4  // Select entire text when first taking mouse focus
+	InputTextFlagsEnterReturnsTrue    InputTextFlags = 1 << 5  // Return 'true' when Enter is pressed (as opposed to every time the value was modified). Consider looking at the IsItemDeactivatedAfterEdit() function.
+	InputTextFlagsCallbackCompletion  InputTextFlags = 1 << 6  // Callback on pressing TAB (for completion handling)
+	InputTextFlagsCallbackHistory     InputTextFlags = 1 << 7  // Callback on pressing Up/Down arrows (for history handling)
+	InputTextFlagsCallbackAlways      InputTextFlags = 1 << 8  // Callback on each iteration. User code may query cursor position, modify text buffer.
+	InputTextFlagsCallbackCharFilter  InputTextFlags = 1 << 9  // Callback on character inputs to replace or discard them. Modify 'EventChar' to replace or discard, or return 1 in callback to discard.
+	InputTextFlagsAllowTabInput       InputTextFlags = 1 << 10 // Pressing TAB input a '\t' character into the text field
+	InputTextFlagsCtrlEnterForNewLine InputTextFlags = 1 << 11 // In multi-line mode, unfocus with Enter, add new line with Ctrl+Enter (default is opposite: unfocus with Ctrl+Enter, add line with Enter).
+	InputTextFlagsNoHorizontalScroll  InputTextFlags = 1 << 12 // Disable following the cursor horizontally
+	InputTextFlagsAlwaysOverwrite     InputTextFlags = 1 << 13 // Overwrite mode
+	InputTextFlagsReadOnly            InputTextFlags = 1 << 14 // Read-only mode
+	InputTextFlagsPassword            InputTextFlags = 1 << 15 // Password mode, display all characters as '*'
+	InputTextFlagsNoUndoRedo          InputTextFlags = 1 << 16 // Disable undo/redo. Note that input text owns the text data while active, if you want to provide your own undo/redo stack you need e.g. to call ClearActiveID().
+	InputTextFlagsCharsScientific     InputTextFlags = 1 << 17 // Allow 0123456789.+-*/eE (Scientific notation input)
+	InputTextFlagsCallbackResize      InputTextFlags = 1 << 18 // Callback on buffer capacity changes request (beyond 'bufsize' parameter value), allowing the string to grow. Notify when the string wants to be resized (for string types which hold a cache of their Size). You will be provided a new BufSize in the callback and NEED to honor it. (see misc/cpp/imguistdlib.h for an example of using this)
+	InputTextFlagsCallbackEdit        InputTextFlags = 1 << 19 // Callback on any edit (note that InputText() already returns true on edit, the callback is useful mainly to manipulate the underlying buffer while focus is active)
 )
 
 type WindowFlags int
@@ -323,4 +323,145 @@ const (
 	ColorEditFlagsInputRGB ColorEditFlags = 1 << 27
 	// ColorEditFlagsInputHSV enables input and output data in HSV format.
 	ColorEditFlagsInputHSV ColorEditFlags = 1 << 28
+)
+
+type TableFlags int
+
+const (
+	// Features
+	TableFlagsNone              TableFlags = 0
+	TableFlagsResizable         TableFlags = 1 << 0 // Enable resizing columns.
+	TableFlagsReorderable       TableFlags = 1 << 1 // Enable reordering columns in header row (need calling TableSetupColumn() + TableHeadersRow() to display headers)
+	TableFlagsHideable          TableFlags = 1 << 2 // Enable hiding/disabling columns in context menu.
+	TableFlagsSortable          TableFlags = 1 << 3 // Enable sorting. Call TableGetSortSpecs() to obtain sort specs. Also see TableFlagsSortMulti and TableFlagsSortTristate.
+	TableFlagsNoSavedSettings   TableFlags = 1 << 4 // Disable persisting columns order, width and sort settings in the .ini file.
+	TableFlagsContextMenuInBody TableFlags = 1 << 5 // Right-click on columns body/contents will display table context menu. By default it is available in TableHeadersRow().
+	// Decorations
+	TableFlagsRowBg                                TableFlags = 1 << 6                                            // Set each RowBg color with ColTableRowBg or ColTableRowBgAlt (equivalent of calling TableSetBgColor with TableBgFlagsRowBg0 on each row manually)
+	TableFlagsBordersInnerH                        TableFlags = 1 << 7                                            // Draw horizontal borders between rows.
+	TableFlagsBordersOuterH                        TableFlags = 1 << 8                                            // Draw horizontal borders at the top and bottom.
+	TableFlagsBordersInnerV                        TableFlags = 1 << 9                                            // Draw vertical borders between columns.
+	TableFlagsBordersOuterV                        TableFlags = 1 << 10                                           // Draw vertical borders on the left and right sides.
+	TableFlagsBordersH                             TableFlags = TableFlagsBordersInnerH | TableFlagsBordersOuterH // Draw horizontal borders.
+	TableFlagsBordersV                             TableFlags = TableFlagsBordersInnerV | TableFlagsBordersOuterV // Draw vertical borders.
+	TableFlagsBordersInner                         TableFlags = TableFlagsBordersInnerV | TableFlagsBordersInnerH // Draw inner borders.
+	TableFlagsBordersOuter                         TableFlags = TableFlagsBordersOuterV | TableFlagsBordersOuterH // Draw outer borders.
+	TableFlagsBorders                              TableFlags = TableFlagsBordersInner | TableFlagsBordersOuter   // Draw all borders.
+	TableFlagsNoBordersInBody                      TableFlags = 1 << 11                                           // [ALPHA] Disable vertical borders in columns Body (borders will always appears in Headers). -> May move to style
+	TableFlagsNoBordersInBodyUntilResizeTableFlags TableFlags = 1 << 12                                           // [ALPHA] Disable vertical borders in columns Body until hovered for resize (borders will always appears in Headers). -> May move to style
+	// Sizing Policy (read above for defaults)TableFlags
+	TableFlagsSizingFixedFit    TableFlags = 1 << 13 // Columns default to WidthFixed or WidthAuto (if resizable or not resizable), matching contents width.
+	TableFlagsSizingFixedSame   TableFlags = 2 << 13 // Columns default to WidthFixed or WidthAuto (if resizable or not resizable), matching the maximum contents width of all columns. Implicitly enable TableFlagsNoKeepColumnsVisible.
+	TableFlagsSizingStretchProp TableFlags = 3 << 13 // Columns default to WidthStretch with default weights proportional to each columns contents widths.
+	TableFlagsSizingStretchSame TableFlags = 4 << 13 // Columns default to WidthStretch with default weights all equal, unless overriden by TableSetupColumn().
+	// Sizing Extra Options
+	TableFlagsNoHostExtendX        TableFlags = 1 << 16 // Make outer width auto-fit to columns, overriding outersize.x value. Only available when ScrollX/ScrollY are disabled and Stretch columns are not used.
+	TableFlagsNoHostExtendY        TableFlags = 1 << 17 // Make outer height stop exactly at outersize.y (prevent auto-extending table past the limit). Only available when ScrollX/ScrollY are disabled. Data below the limit will be clipped and not visible.
+	TableFlagsNoKeepColumnsVisible TableFlags = 1 << 18 // Disable keeping column always minimally visible when ScrollX is off and table gets too small. Not recommended if columns are resizable.
+	TableFlagsPreciseWidths        TableFlags = 1 << 19 // Disable distributing remainder width to stretched columns (width allocation on a 100-wide table with 3 columns: Without this flag: 33,33,34. With this flag: 33,33,33). With larger number of columns, resizing will appear to be less smooth.
+	// Clipping
+	TableFlagsNoClip TableFlags = 1 << 20 // Disable clipping rectangle for every individual columns (reduce draw command count, items will be able to overflow into other columns). Generally incompatible with TableSetupScrollFreeze().
+	// Padding
+	TableFlagsPadOuterX   TableFlags = 1 << 21 // Default if BordersOuterV is on. Enable outer-most padding. Generally desirable if you have headers.
+	TableFlagsNoPadOuterX TableFlags = 1 << 22 // Default if BordersOuterV is off. Disable outer-most padding.
+	TableFlagsNoPadInnerX TableFlags = 1 << 23 // Disable inner padding between columns (double inner padding if BordersOuterV is on, single inner padding if BordersOuterV is off).
+	// Scrolling
+	TableFlagsScrollX TableFlags = 1 << 24 // Enable horizontal scrolling. Require 'outersize' parameter of BeginTable() to specify the container size. Changes default sizing policy. Because this create a child window, ScrollY is currently generally recommended when using ScrollX.
+	TableFlagsScrollY TableFlags = 1 << 25 // Enable vertical scrolling. Require 'outersize' parameter of BeginTable() to specify the container size.
+	// Sorting
+	TableFlagsSortMulti    TableFlags = 1 << 26 // Hold shift when clicking headers to sort on multiple column. TableGetSortSpecs() may return specs where (SpecsCount > 1).
+	TableFlagsSortTristate TableFlags = 1 << 27 // Allow no sorting, disable default sorting. TableGetSortSpecs() may return specs where (SpecsCount == 0).
+
+	// [Internal] Combinations and masks
+	TableFlagsSizingMask TableFlags = TableFlagsSizingFixedFit | TableFlagsSizingFixedSame | TableFlagsSizingStretchProp | TableFlagsSizingStretchSame
+)
+
+type TableRowFlags int
+
+const (
+	TableRowFlagsNone    TableRowFlags = 0
+	TableRowFlagsHeaders TableRowFlags = 1 << 0 // Identify header row (set default background color + width of its contents accounted different for auto column width)
+)
+
+type TableColumnFlags int
+
+const (
+	// Input configuration flags
+	TableColumnFlagsNone                 TableColumnFlags = 0
+	TableColumnFlagsDefaultHide          TableColumnFlags = 1 << 0  // Default as a hidden/disabled column.
+	TableColumnFlagsDefaultSort          TableColumnFlags = 1 << 1  // Default as a sorting column.
+	TableColumnFlagsWidthStretch         TableColumnFlags = 1 << 2  // Column will stretch. Preferable with horizontal scrolling disabled (default if table sizing policy is SizingStretchSame or SizingStretchProp).
+	TableColumnFlagsWidthFixed           TableColumnFlags = 1 << 3  // Column will not stretch. Preferable with horizontal scrolling enabled (default if table sizing policy is SizingFixedFit and table is resizable).
+	TableColumnFlagsNoResize             TableColumnFlags = 1 << 4  // Disable manual resizing.
+	TableColumnFlagsNoReorder            TableColumnFlags = 1 << 5  // Disable manual reordering this column, this will also prevent other columns from crossing over this column.
+	TableColumnFlagsNoHide               TableColumnFlags = 1 << 6  // Disable ability to hide/disable this column.
+	TableColumnFlagsNoClip               TableColumnFlags = 1 << 7  // Disable clipping for this column (all NoClip columns will render in a same draw command).
+	TableColumnFlagsNoSort               TableColumnFlags = 1 << 8  // Disable ability to sort on this field (even if TableFlagsSortable is set on the table).
+	TableColumnFlagsNoSortAscending      TableColumnFlags = 1 << 9  // Disable ability to sort in the ascending direction.
+	TableColumnFlagsNoSortDescending     TableColumnFlags = 1 << 10 // Disable ability to sort in the descending direction.
+	TableColumnFlagsNoHeaderWidth        TableColumnFlags = 1 << 11 // Disable header text width contribution to automatic column width.
+	TableColumnFlagsPreferSortAscending  TableColumnFlags = 1 << 12 // Make the initial sort direction Ascending when first sorting on this column (default).
+	TableColumnFlagsPreferSortDescending TableColumnFlags = 1 << 13 // Make the initial sort direction Descending when first sorting on this column.
+	TableColumnFlagsIndentEnable         TableColumnFlags = 1 << 14 // Use current Indent value when entering cell (default for column 0).
+	TableColumnFlagsIndentDisable        TableColumnFlags = 1 << 15 // Ignore current Indent value when entering cell (default for columns > 0). Indentation changes within the cell will still be honored.
+
+	// Output status flags read-only via TableGetColumnFlags()
+	TableColumnFlagsIsEnabled TableColumnFlags = 1 << 20 // Status: is enabled == not hidden by user/api (referred to as "Hide" in DefaultHide and NoHide) flags.
+	TableColumnFlagsIsVisible TableColumnFlags = 1 << 21 // Status: is visible == is enabled AND not clipped by scrolling.
+	TableColumnFlagsIsSorted  TableColumnFlags = 1 << 22 // Status: is currently part of the sort specs
+	TableColumnFlagsIsHovered TableColumnFlags = 1 << 23 // Status: is hovered by mouse
+
+	// [Internal] Combinations and masks
+	TableColumnFlagsWidthMask      TableColumnFlags = TableColumnFlagsWidthStretch | TableColumnFlagsWidthFixed
+	TableColumnFlagsIndentMask     TableColumnFlags = TableColumnFlagsIndentEnable | TableColumnFlagsIndentDisable
+	TableColumnFlagsStatusMask     TableColumnFlags = TableColumnFlagsIsEnabled | TableColumnFlagsIsVisible | TableColumnFlagsIsSorted | TableColumnFlagsIsHovered
+	TableColumnFlagsNoDirectResize TableColumnFlags = 1 << 30 // [Internal] Disable user resizing this column directly (it may however we resized indirectly from its left edge)
+)
+
+type SliderFlags int
+
+const (
+	SliderFlagsNone            SliderFlags = 0
+	SliderFlagsAlwaysClamp     SliderFlags = 1 << 4     // Clamp value to min/max bounds when input manually with CTRL+Click. By default CTRL+Click allows going out of bounds.
+	SliderFlagsLogarithmic     SliderFlags = 1 << 5     // Make the widget logarithmic (linear otherwise). Consider using ImGuiSliderFlagsNoRoundToFormat with this if using a format-string with small amount of digits.
+	SliderFlagsNoRoundToFormat SliderFlags = 1 << 6     // Disable rounding underlying value to match precision of the display format string (e.g. %.3f values are rounded to those 3 digits)
+	SliderFlagsNoInput         SliderFlags = 1 << 7     // Disable CTRL+Click or Enter key allowing to input text directly into the widget
+	SliderFlagsInvalidMask     SliderFlags = 0x7000000F // [Internal] We treat using those bits as being potentially a 'float power' argument from the previous API that has got miscast to this enum, and will trigger an assert if needed.
+)
+
+type PlotFlags int
+
+const (
+	PlotFlagsNone        PlotFlags = 0       // default
+	PlotFlagsNoTitle     PlotFlags = 1 << 0  // the plot title will not be displayed (titles are also hidden if preceeded by double hashes, e.g. "##MyPlot")
+	PlotFlagsNoLegend    PlotFlags = 1 << 1  // the legend will not be displayed
+	PlotFlagsNoMenus     PlotFlags = 1 << 2  // the user will not be able to open context menus with right-click
+	PlotFlagsNoBoxSelect PlotFlags = 1 << 3  // the user will not be able to box-select with right-click drag
+	PlotFlagsNoMousePos  PlotFlags = 1 << 4  // the mouse position, in plot coordinates, will not be displayed inside of the plot
+	PlotFlagsNoHighlight PlotFlags = 1 << 5  // plot items will not be highlighted when their legend entry is hovered
+	PlotFlagsNoChild     PlotFlags = 1 << 6  // a child window region will not be used to capture mouse scroll (can boost performance for single Gui window applications)
+	PlotFlagsEqual       PlotFlags = 1 << 7  // primary x and y axes will be constrained to have the same units/pixel (does not apply to auxiliary y-axes)
+	PlotFlagsYAxis2      PlotFlags = 1 << 8  // enable a 2nd y-axis on the right side
+	PlotFlagsYAxis3      PlotFlags = 1 << 9  // enable a 3rd y-axis on the right side
+	PlotFlagsQuery       PlotFlags = 1 << 10 // the user will be able to draw query rects with middle-mouse or CTRL + right-click drag
+	PlotFlagsCrosshairs  PlotFlags = 1 << 11 // the default mouse cursor will be replaced with a crosshair when hovered
+	PlotFlagsAntiAliased PlotFlags = 1 << 12 // plot lines will be software anti-aliased (not recommended for high density plots, prefer MSAA)
+	PlotFlagsCanvasOnly  PlotFlags = PlotFlagsNoTitle | PlotFlagsNoLegend | PlotFlagsNoMenus | PlotFlagsNoBoxSelect | PlotFlagsNoMousePos
+)
+
+type PlotAxisFlags int
+
+const (
+	PlotAxisFlagsNone          PlotAxisFlags = 0      // default
+	PlotAxisFlagsNoLabel       PlotAxisFlags = 1 << 0 // the axis label will not be displayed (axis labels also hidden if the supplied string name is NULL)
+	PlotAxisFlagsNoGridLines   PlotAxisFlags = 1 << 1 // the axis grid lines will not be displayed
+	PlotAxisFlagsNoTickMarks   PlotAxisFlags = 1 << 2 // the axis tick marks will not be displayed
+	PlotAxisFlagsNoTickLabels  PlotAxisFlags = 1 << 3 // the axis tick labels will not be displayed
+	PlotAxisFlagsLogScale      PlotAxisFlags = 1 << 4 // a logartithmic (base 10) axis scale will be used (mutually exclusive with PlotAxisFlagsTime)
+	PlotAxisFlagsTime          PlotAxisFlags = 1 << 5 // axis will display date/time formatted labels (mutually exclusive with PlotAxisFlagsLogScale)
+	PlotAxisFlagsInvert        PlotAxisFlags = 1 << 6 // the axis will be inverted
+	PlotAxisFlagsLockMin       PlotAxisFlags = 1 << 7 // the axis minimum value will be locked when panning/zooming
+	PlotAxisFlagsLockMax       PlotAxisFlags = 1 << 8 // the axis maximum value will be locked when panning/zooming
+	PlotAxisFlagsLock          PlotAxisFlags = PlotAxisFlagsLockMin | PlotAxisFlagsLockMax
+	PlotAxisFlagsNoDecorations PlotAxisFlags = PlotAxisFlagsNoLabel | PlotAxisFlagsNoGridLines | PlotAxisFlagsNoTickMarks | PlotAxisFlagsNoTickLabels
 )

@@ -166,27 +166,139 @@ func GetFramePadding() (float32, float32) {
 	return vec2.X, vec2.Y
 }
 
+// StyleColorID identifies a color in the UI style.
+type StyleColorID int
+
+// StyleColor identifier
+const (
+	StyleColorText                  StyleColorID = 0
+	StyleColorTextDisabled          StyleColorID = 1
+	StyleColorWindowBg              StyleColorID = 2
+	StyleColorChildBg               StyleColorID = 3
+	StyleColorPopupBg               StyleColorID = 4
+	StyleColorBorder                StyleColorID = 5
+	StyleColorBorderShadow          StyleColorID = 6
+	StyleColorFrameBg               StyleColorID = 7
+	StyleColorFrameBgHovered        StyleColorID = 8
+	StyleColorFrameBgActive         StyleColorID = 9
+	StyleColorTitleBg               StyleColorID = 10
+	StyleColorTitleBgActive         StyleColorID = 11
+	StyleColorTitleBgCollapsed      StyleColorID = 12
+	StyleColorMenuBarBg             StyleColorID = 13
+	StyleColorScrollbarBg           StyleColorID = 14
+	StyleColorScrollbarGrab         StyleColorID = 15
+	StyleColorScrollbarGrabHovered  StyleColorID = 16
+	StyleColorScrollbarGrabActive   StyleColorID = 17
+	StyleColorCheckMark             StyleColorID = 18
+	StyleColorSliderGrab            StyleColorID = 19
+	StyleColorSliderGrabActive      StyleColorID = 20
+	StyleColorButton                StyleColorID = 21
+	StyleColorButtonHovered         StyleColorID = 22
+	StyleColorButtonActive          StyleColorID = 23
+	StyleColorHeader                StyleColorID = 24
+	StyleColorHeaderHovered         StyleColorID = 25
+	StyleColorHeaderActive          StyleColorID = 26
+	StyleColorSeparator             StyleColorID = 27
+	StyleColorSeparatorHovered      StyleColorID = 28
+	StyleColorSeparatorActive       StyleColorID = 29
+	StyleColorResizeGrip            StyleColorID = 30
+	StyleColorResizeGripHovered     StyleColorID = 31
+	StyleColorResizeGripActive      StyleColorID = 32
+	StyleColorTab                   StyleColorID = 33
+	StyleColorTabHovered            StyleColorID = 34
+	StyleColorTabActive             StyleColorID = 35
+	StyleColorTabUnfocused          StyleColorID = 36
+	StyleColorTabUnfocusedActive    StyleColorID = 37
+	StyleColorPlotLines             StyleColorID = 38
+	StyleColorPlotLinesHovered      StyleColorID = 39
+	StyleColorPlotHistogram         StyleColorID = 40
+	StyleColorPlotHistogramHovered  StyleColorID = 41
+	StyleColorTableHeaderBg         StyleColorID = 42
+	StyleColorTableBorderStrong     StyleColorID = 43
+	StyleColorTableBorderLight      StyleColorID = 44
+	StyleColorTableRowBg            StyleColorID = 45
+	StyleColorTableRowBgAlt         StyleColorID = 46
+	StyleColorTextSelectedBg        StyleColorID = 47
+	StyleColorDragDropTarget        StyleColorID = 48
+	StyleColorNavHighlight          StyleColorID = 49
+	StyleColorNavWindowingHighlight StyleColorID = 50
+	StyleColorNavWindowingDimBg     StyleColorID = 51
+	StyleColorModalWindowDimBg      StyleColorID = 52
+)
+
+// StyleVarID identifies a style variable in the UI style.
+type StyleVarID int
+
+const (
+	// StyleVarAlpha is a float
+	StyleVarAlpha StyleVarID = 0
+	// StyleVarWindowPadding is a Vec2
+	StyleVarWindowPadding StyleVarID = 1
+	// StyleVarWindowRounding is a float
+	StyleVarWindowRounding StyleVarID = 2
+	// StyleVarWindowBorderSize is a float
+	StyleVarWindowBorderSize StyleVarID = 3
+	// StyleVarWindowMinSize is a Vec2
+	StyleVarWindowMinSize StyleVarID = 4
+	// StyleVarWindowTitleAlign is a Vec2
+	StyleVarWindowTitleAlign StyleVarID = 5
+	// StyleVarChildRounding is a float
+	StyleVarChildRounding StyleVarID = 6
+	// StyleVarChildBorderSize is a float
+	StyleVarChildBorderSize StyleVarID = 7
+	// StyleVarPopupRounding is a float
+	StyleVarPopupRounding StyleVarID = 8
+	// StyleVarPopupBorderSize is a float
+	StyleVarPopupBorderSize StyleVarID = 9
+	// StyleVarFramePadding is a Vec2
+	StyleVarFramePadding StyleVarID = 10
+	// StyleVarFrameRounding is a float
+	StyleVarFrameRounding StyleVarID = 11
+	// StyleVarFrameBorderSize is a float
+	StyleVarFrameBorderSize StyleVarID = 12
+	// StyleVarItemSpacing is a Vec2
+	StyleVarItemSpacing StyleVarID = 13
+	// StyleVarItemInnerSpacing is a Vec2
+	StyleVarItemInnerSpacing StyleVarID = 14
+	// StyleVarIndentSpacing is a float
+	StyleVarIndentSpacing StyleVarID = 15
+	// StyleVarScrollbarSize is a float
+	StyleVarScrollbarSize StyleVarID = 16
+	// StyleVarScrollbarRounding is a float
+	StyleVarScrollbarRounding StyleVarID = 17
+	// StyleVarGrabMinSize is a float
+	StyleVarGrabMinSize StyleVarID = 18
+	// StyleVarGrabRounding is a float
+	StyleVarGrabRounding StyleVarID = 19
+	// StyleVarTabRounding is a float
+	StyleVarTabRounding StyleVarID = 20
+	// StyleVarButtonTextAlign is a Vec2
+	StyleVarButtonTextAlign StyleVarID = 21
+	// StyleVarSelectableTextAlign is a Vec2
+	StyleVarSelectableTextAlign StyleVarID = 22
+)
+
 type StyleSetter struct {
-	colors map[imgui.StyleColorID]color.RGBA
-	styles map[imgui.StyleVarID]imgui.Vec2
+	colors map[StyleColorID]color.RGBA
+	styles map[StyleVarID]imgui.Vec2
 	font   *FontInfo
 	layout Layout
 }
 
 func Style() *StyleSetter {
 	var ss StyleSetter
-	ss.colors = make(map[imgui.StyleColorID]color.RGBA)
-	ss.styles = make(map[imgui.StyleVarID]imgui.Vec2)
+	ss.colors = make(map[StyleColorID]color.RGBA)
+	ss.styles = make(map[StyleVarID]imgui.Vec2)
 
 	return &ss
 }
 
-func (ss *StyleSetter) SetColor(colorId imgui.StyleColorID, col color.RGBA) *StyleSetter {
+func (ss *StyleSetter) SetColor(colorId StyleColorID, col color.RGBA) *StyleSetter {
 	ss.colors[colorId] = col
 	return ss
 }
 
-func (ss *StyleSetter) SetStyle(varId imgui.StyleVarID, width, height float32) *StyleSetter {
+func (ss *StyleSetter) SetStyle(varId StyleVarID, width, height float32) *StyleSetter {
 	ss.styles[varId] = imgui.Vec2{X: width, Y: height}
 	return ss
 }
@@ -204,11 +316,11 @@ func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
 func (ss *StyleSetter) Build() {
 	if len(ss.layout) > 0 {
 		for k, v := range ss.colors {
-			imgui.PushStyleColor(k, ToVec4Color(v))
+			imgui.PushStyleColor(imgui.StyleColorID(k), ToVec4Color(v))
 		}
 
 		for k, v := range ss.styles {
-			imgui.PushStyleVarVec2(k, v)
+			imgui.PushStyleVarVec2(imgui.StyleVarID(k), v)
 		}
 
 		isFontPushed := false

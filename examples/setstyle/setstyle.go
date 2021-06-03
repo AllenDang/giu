@@ -3,28 +3,27 @@ package main
 import (
 	"image/color"
 
-	"github.com/AllenDang/giu"
-	"github.com/AllenDang/imgui-go"
+	g "github.com/AllenDang/giu"
 )
 
 func loop() {
-	giu.SingleWindow("set style").Layout(
-		giu.Style().
-			SetColor(imgui.StyleColorText, color.RGBA{0x36, 0x74, 0xD5, 255}).
+	g.SingleWindow("set style").Layout(
+		g.Style().
+			SetColor(g.StyleColorText, color.RGBA{0x36, 0x74, 0xD5, 255}).
 			To(
-				giu.Label("I'm a styled label"),
+				g.Label("I'm a styled label"),
 			),
-		giu.Style().
-			SetColor(imgui.StyleColorBorder, color.RGBA{0x36, 0x74, 0xD5, 255}).
-			SetStyle(imgui.StyleVarFramePadding, 10, 10).
+		g.Style().
+			SetColor(g.StyleColorBorder, color.RGBA{0x36, 0x74, 0xD5, 255}).
+			SetStyle(g.StyleVarFramePadding, 10, 10).
 			To(
-				giu.Button("I'm a styled button"),
+				g.Button("I'm a styled button"),
 			),
-		giu.Button("I'm a normal button"),
+		g.Button("I'm a normal button"),
 	)
 }
 
 func main() {
-	wnd := giu.NewMasterWindow("Set Style", 400, 200, giu.MasterWindowFlagsNotResizable)
+	wnd := g.NewMasterWindow("Set Style", 400, 200, g.MasterWindowFlagsNotResizable)
 	wnd.Run(loop)
 }

@@ -29,8 +29,8 @@ type PlotCanvasWidget struct {
 	yLabel                           string
 	width                            int
 	height                           int
-	flags                            imgui.ImPlotFlags
-	xFlags, yFlags, y2Flags, y3Flags imgui.ImPlotAxisFlags
+	flags                            PlotFlags
+	xFlags, yFlags, y2Flags, y3Flags PlotAxisFlags
 	y2Label                          string
 	y3Label                          string
 	xMin, xMax, yMin, yMax           float64
@@ -50,11 +50,11 @@ func Plot(title string) *PlotCanvasWidget {
 		yLabel:             "",
 		width:              -1,
 		height:             0,
-		flags:              imgui.ImPlotFlags_None,
-		xFlags:             imgui.ImPlotAxisFlags_None,
-		yFlags:             imgui.ImPlotAxisFlags_None,
-		y2Flags:            imgui.ImPlotAxisFlags_NoGridLines,
-		y3Flags:            imgui.ImPlotAxisFlags_NoGridLines,
+		flags:              PlotFlagsNone,
+		xFlags:             PlotAxisFlagsNone,
+		yFlags:             PlotAxisFlagsNone,
+		y2Flags:            PlotAxisFlagsNoGridLines,
+		y3Flags:            PlotAxisFlagsNoGridLines,
 		y2Label:            "",
 		y3Label:            "",
 		xMin:               0,
@@ -119,17 +119,17 @@ func (p *PlotCanvasWidget) YTicks(ticks []PlotTicker, showDefault bool, yAxis Im
 	return p
 }
 
-func (p *PlotCanvasWidget) Flags(flags imgui.ImPlotFlags) *PlotCanvasWidget {
+func (p *PlotCanvasWidget) Flags(flags PlotFlags) *PlotCanvasWidget {
 	p.flags = flags
 	return p
 }
 
-func (p *PlotCanvasWidget) XAxeFlags(flags imgui.ImPlotAxisFlags) *PlotCanvasWidget {
+func (p *PlotCanvasWidget) XAxeFlags(flags PlotAxisFlags) *PlotCanvasWidget {
 	p.xFlags = flags
 	return p
 }
 
-func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags imgui.ImPlotAxisFlags) *PlotCanvasWidget {
+func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags PlotAxisFlags) *PlotCanvasWidget {
 	p.yFlags = yFlags
 	p.y2Flags = y2Flags
 	p.y3Flags = y3Flags
@@ -159,7 +159,7 @@ func (p *PlotCanvasWidget) Build() {
 			imgui.ImPlotSetNextPlotTicksY(p.yTicksValue, p.yTicksLabel, p.yTicksShowDefault, int(p.yTicksYAxis))
 		}
 
-		if imgui.ImPlotBegin(tStr(p.title), tStr(p.xLabel), tStr(p.yLabel), ToVec2(image.Pt(p.width, p.height)), p.flags, p.xFlags, p.yFlags, p.y2Flags, p.y3Flags, tStr(p.y2Label), tStr(p.y3Label)) {
+		if imgui.ImPlotBegin(tStr(p.title), tStr(p.xLabel), tStr(p.yLabel), ToVec2(image.Pt(p.width, p.height)), imgui.ImPlotFlags(p.flags), imgui.ImPlotAxisFlags(p.xFlags), imgui.ImPlotAxisFlags(p.yFlags), imgui.ImPlotAxisFlags(p.y2Flags), imgui.ImPlotAxisFlags(p.y3Flags), tStr(p.y2Label), tStr(p.y3Label)) {
 			for _, plot := range p.plots {
 				plot.Plot()
 			}

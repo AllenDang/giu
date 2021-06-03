@@ -1465,17 +1465,6 @@ type SliderIntWidget struct {
 	onChange func()
 }
 
-type SliderFlags int
-
-const (
-	SliderFlags_None            SliderFlags = 0
-	SliderFlags_AlwaysClamp     SliderFlags = 1 << 4     // Clamp value to min/max bounds when input manually with CTRL+Click. By default CTRL+Click allows going out of bounds.
-	SliderFlags_Logarithmic     SliderFlags = 1 << 5     // Make the widget logarithmic (linear otherwise). Consider using ImGuiSliderFlags_NoRoundToFormat with this if using a format-string with small amount of digits.
-	SliderFlags_NoRoundToFormat SliderFlags = 1 << 6     // Disable rounding underlying value to match precision of the display format string (e.g. %.3f values are rounded to those 3 digits)
-	SliderFlags_NoInput         SliderFlags = 1 << 7     // Disable CTRL+Click or Enter key allowing to input text directly into the widget
-	SliderFlags_InvalidMask_    SliderFlags = 0x7000000F // [Internal] We treat using those bits as being potentially a 'float power' argument from the previous API that has got miscast to this enum, and will trigger an assert if needed.
-)
-
 func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 	return &SliderIntWidget{
 		label:    label,
@@ -1539,7 +1528,7 @@ func VSliderInt(label string, value *int32, min, max int32) *VSliderIntWidget {
 		min:    min,
 		max:    max,
 		format: "%d",
-		flags:  SliderFlags_None,
+		flags:  SliderFlagsNone,
 	}
 }
 
@@ -1865,7 +1854,7 @@ func (t *TabBarWidget) Build() {
 }
 
 type TableRowWidget struct {
-	flags        imgui.TableRowFlags
+	flags        TableRowFlags
 	minRowHeight float64
 	layout       Layout
 	bgColor      *color.RGBA
@@ -1885,7 +1874,7 @@ func (r *TableRowWidget) BgColor(c *color.RGBA) *TableRowWidget {
 	return r
 }
 
-func (r *TableRowWidget) Flags(flags imgui.TableRowFlags) *TableRowWidget {
+func (r *TableRowWidget) Flags(flags TableRowFlags) *TableRowWidget {
 	r.flags = flags
 	return r
 }
@@ -1896,7 +1885,7 @@ func (r *TableRowWidget) MinHeight(height float64) *TableRowWidget {
 }
 
 func (r *TableRowWidget) Build() {
-	imgui.TableNextRow(r.flags, r.minRowHeight)
+	imgui.TableNextRow(imgui.TableRowFlags(r.flags), r.minRowHeight)
 
 	for _, w := range r.layout {
 		_, isTooltip := w.(*TooltipWidget)
@@ -1916,7 +1905,7 @@ func (r *TableRowWidget) Build() {
 
 type TableColumnWidget struct {
 	label              string
-	flags              imgui.TableColumnFlags
+	flags              TableColumnFlags
 	innerWidthOrWeight float32
 	userId             uint32
 }
@@ -1930,7 +1919,7 @@ func TableColumn(label string) *TableColumnWidget {
 	}
 }
 
-func (c *TableColumnWidget) Flags(flags imgui.TableColumnFlags) *TableColumnWidget {
+func (c *TableColumnWidget) Flags(flags TableColumnFlags) *TableColumnWidget {
 	c.flags = flags
 	return c
 }
@@ -1946,12 +1935,12 @@ func (c *TableColumnWidget) UserId(id uint32) *TableColumnWidget {
 }
 
 func (c *TableColumnWidget) Build() {
-	imgui.TableSetupColumn(tStr(c.label), c.flags, c.innerWidthOrWeight, c.userId)
+	imgui.TableSetupColumn(tStr(c.label), imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userId)
 }
 
 type TableWidget struct {
 	label        string
-	flags        imgui.TableFlags
+	flags        TableFlags
 	size         imgui.Vec2
 	innerWidth   float64
 	rows         []*TableRowWidget
@@ -1964,7 +1953,7 @@ type TableWidget struct {
 func Table(label string) *TableWidget {
 	return &TableWidget{
 		label:        label,
-		flags:        imgui.TableFlags_Resizable | imgui.TableFlags_Borders | imgui.TableFlags_ScrollY,
+		flags:        TableFlagsResizable | TableFlagsBorders | TableFlagsScrollY,
 		rows:         nil,
 		columns:      nil,
 		fastMode:     false,
@@ -2006,7 +1995,7 @@ func (t *TableWidget) InnerWidth(width float64) *TableWidget {
 	return t
 }
 
-func (t *TableWidget) Flags(flags imgui.TableFlags) *TableWidget {
+func (t *TableWidget) Flags(flags TableFlags) *TableWidget {
 	t.flags = flags
 	return t
 }
@@ -2021,7 +2010,7 @@ func (t *TableWidget) Build() {
 		colCount = len(t.rows[0].layout)
 	}
 
-	if imgui.BeginTable(t.label, colCount, t.flags, t.size, t.innerWidth) {
+	if imgui.BeginTable(t.label, colCount, imgui.TableFlags(t.flags), t.size, t.innerWidth) {
 		if t.freezeColumn >= 0 && t.freezeRow >= 0 {
 			imgui.TableSetupScrollFreeze(t.freezeColumn, t.freezeRow)
 		}
@@ -2488,7 +2477,7 @@ func (d *DatePickerWidget) Build() {
 				rows = append(rows, TableRow(row...))
 			}
 
-			Table("DayTable").Flags(imgui.TableFlags_Borders | imgui.TableFlags_SizingStretchSame).Columns(columns...).Rows(rows...).Build()
+			Table("DayTable").Flags(TableFlagsBorders | TableFlagsSizingStretchSame).Columns(columns...).Rows(rows...).Build()
 
 			imgui.EndCombo()
 		}

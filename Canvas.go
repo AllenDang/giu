@@ -24,20 +24,20 @@ func (c *Canvas) AddLine(p1, p2 image.Point, color color.RGBA, thickness float32
 type DrawFlags int
 
 const (
-	DrawFlags_None                    DrawFlags = 0
-	DrawFlags_Closed                  DrawFlags = 1 << 0 // PathStroke(), AddPolyline(): specify that shape should be closed (portant: this is always == 1 for legacy reason)
-	DrawFlags_RoundCornersTopLeft     DrawFlags = 1 << 4 // AddRect(), AddRectFilled(), PathRect(): enable rounding top-left corner only (when rounding > 0.0f, we default to all corners). Was 0x01.
-	DrawFlags_RoundCornersTopRight    DrawFlags = 1 << 5 // AddRect(), AddRectFilled(), PathRect(): enable rounding top-right corner only (when rounding > 0.0f, we default to all corners). Was 0x02.
-	DrawFlags_RoundCornersBottomLeft  DrawFlags = 1 << 6 // AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-left corner only (when rounding > 0.0f, we default to all corners). Was 0x04.
-	DrawFlags_RoundCornersBottomRight DrawFlags = 1 << 7 // AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-right corner only (when rounding > 0.0f, we default to all corners). Wax 0x08.
-	DrawFlags_RoundCornersNone        DrawFlags = 1 << 8 // AddRect(), AddRectFilled(), PathRect(): disable rounding on all corners (when rounding > 0.0f). This is NOT zero, NOT an implicit flag!
-	DrawFlags_RoundCornersTop         DrawFlags = DrawFlags_RoundCornersTopLeft | DrawFlags_RoundCornersTopRight
-	DrawFlags_RoundCornersBottom      DrawFlags = DrawFlags_RoundCornersBottomLeft | DrawFlags_RoundCornersBottomRight
-	DrawFlags_RoundCornersLeft        DrawFlags = DrawFlags_RoundCornersBottomLeft | DrawFlags_RoundCornersTopLeft
-	DrawFlags_RoundCornersRight       DrawFlags = DrawFlags_RoundCornersBottomRight | DrawFlags_RoundCornersTopRight
-	DrawFlags_RoundCornersAll         DrawFlags = DrawFlags_RoundCornersTopLeft | DrawFlags_RoundCornersTopRight | DrawFlags_RoundCornersBottomLeft | DrawFlags_RoundCornersBottomRight
-	DrawFlags_RoundCornersDefault_    DrawFlags = DrawFlags_RoundCornersAll // Default to ALL corners if none of the _RoundCornersXX flags are specified.
-	DrawFlags_RoundCornersMask_       DrawFlags = DrawFlags_RoundCornersAll | DrawFlags_RoundCornersNone
+	DrawFlagsNone                    DrawFlags = 0
+	DrawFlagsClosed                  DrawFlags = 1 << 0 // PathStroke(), AddPolyline(): specify that shape should be closed (portant: this is always == 1 for legacy reason)
+	DrawFlagsRoundCornersTopLeft     DrawFlags = 1 << 4 // AddRect(), AddRectFilled(), PathRect(): enable rounding top-left corner only (when rounding > 0.0f, we default to all corners). Was 0x01.
+	DrawFlagsRoundCornersTopRight    DrawFlags = 1 << 5 // AddRect(), AddRectFilled(), PathRect(): enable rounding top-right corner only (when rounding > 0.0f, we default to all corners). Was 0x02.
+	DrawFlagsRoundCornersBottomLeft  DrawFlags = 1 << 6 // AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-left corner only (when rounding > 0.0f, we default to all corners). Was 0x04.
+	DrawFlagsRoundCornersBottomRight DrawFlags = 1 << 7 // AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-right corner only (when rounding > 0.0f, we default to all corners). Wax 0x08.
+	DrawFlagsRoundCornersNone        DrawFlags = 1 << 8 // AddRect(), AddRectFilled(), PathRect(): disable rounding on all corners (when rounding > 0.0f). This is NOT zero, NOT an implicit flag!
+	DrawFlagsRoundCornersTop         DrawFlags = DrawFlagsRoundCornersTopLeft | DrawFlagsRoundCornersTopRight
+	DrawFlagsRoundCornersBottom      DrawFlags = DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersBottomRight
+	DrawFlagsRoundCornersLeft        DrawFlags = DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersTopLeft
+	DrawFlagsRoundCornersRight       DrawFlags = DrawFlagsRoundCornersBottomRight | DrawFlagsRoundCornersTopRight
+	DrawFlagsRoundCornersAll         DrawFlags = DrawFlagsRoundCornersTopLeft | DrawFlagsRoundCornersTopRight | DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersBottomRight
+	DrawFlagsRoundCornersDefault     DrawFlags = DrawFlagsRoundCornersAll // Default to ALL corners if none of the RoundCornersXX flags are specified.
+	DrawFlagsRoundCornersMask        DrawFlags = DrawFlagsRoundCornersAll | DrawFlagsRoundCornersNone
 )
 
 func (c *Canvas) AddRect(pMin, pMax image.Point, color color.RGBA, rounding float32, rounding_corners DrawFlags, thickness float32) {

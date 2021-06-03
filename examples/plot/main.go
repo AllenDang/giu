@@ -7,7 +7,6 @@ import (
 	"time"
 
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/imgui-go"
 )
 
 var (
@@ -32,7 +31,7 @@ func loop() {
 			g.PlotLine("Plot Line2", linedata2),
 			g.PlotScatter("Scatter 散点图", scatterdata),
 		),
-		g.Plot("Plot Time Axe 时间线").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).XAxeFlags(imgui.ImPlotAxisFlags_Time).Plots(
+		g.Plot("Plot Time Axe 时间线").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).XAxeFlags(g.PlotAxisFlagsTime).Plots(
 			g.PlotLineXY("Time Line 时间线", timeDataX, timeDataY),
 			g.PlotScatterXY("Time Scatter 时间散点图", timeDataX, timeScatterY),
 		),
@@ -46,10 +45,10 @@ func loop() {
 					g.PlotBarH("Plot Bar H 水平柱状图", bardata3),
 				),
 			g.Plot("Pie Chart").
-				Flags(imgui.ImPlotFlags_Equal|imgui.ImPlotFlags_NoMousePos).
+				Flags(g.PlotFlagsEqual|g.PlotFlagsNoMousePos).
 				Size(250, 250).
-				XAxeFlags(imgui.ImPlotAxisFlags_NoDecorations).
-				YAxeFlags(imgui.ImPlotAxisFlags_NoDecorations, 0, 0).
+				XAxeFlags(g.PlotAxisFlagsNoDecorations).
+				YAxeFlags(g.PlotAxisFlagsNoDecorations, 0, 0).
 				AxisLimits(0, 1, 0, 1, g.ConditionAlways).
 				Plots(
 					g.PlotPieChart([]string{"Part 1 图例1", "Part 2", "Part 3"}, []float64{0.22, 0.38, 0.4}, 0.5, 0.5, 0.45),
