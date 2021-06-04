@@ -2,6 +2,8 @@ github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8 h1:dKZMqib/y
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8/go.mod h1:b4uuDd0s6KRIPa84cEEchdQ9ICh7K0OryZHbSzMca9k=
 github.com/AllenDang/imgui-go v1.12.1-0.20210604135916-9d6191a42021 h1:m6q1QWlxYGW4qIddXTtzp3uxeYRESRlUgGvUl0RYicI=
 github.com/AllenDang/imgui-go v1.12.1-0.20210604135916-9d6191a42021/go.mod h1:+pYwstqlGGlU2lI1FREPlVAKP2nwV+bNhAlMrbQynhQ=
+github.com/AllenDang/imgui-go v1.12.1-0.20210604144118-da87de2dad3f h1:1Ryo8vTIxqOTWaTDZIBj1p7wd2Ym6vz7PMDZaPjJ7mQ=
+github.com/AllenDang/imgui-go v1.12.1-0.20210604144118-da87de2dad3f/go.mod h1:+pYwstqlGGlU2lI1FREPlVAKP2nwV+bNhAlMrbQynhQ=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 h1:baVdMKlASEHrj19iqjARrPbaRisD7EuZEVJj6ZMLl1Q=

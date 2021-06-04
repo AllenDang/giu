@@ -64,8 +64,8 @@ func (c *Canvas) AddTriangleFilled(p1, p2, p3 image.Point, color color.RGBA) {
 	c.drawlist.AddTriangleFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec4Color(color))
 }
 
-func (c *Canvas) AddCircle(center image.Point, radius float32, color color.RGBA, thickness float32) {
-	c.drawlist.AddCircle(ToVec2(center), radius, ToVec4Color(color), thickness)
+func (c *Canvas) AddCircle(center image.Point, radius float32, color color.RGBA, segments int, thickness float32) {
+	c.drawlist.AddCircle(ToVec2(center), radius, ToVec4Color(color), segments, thickness)
 }
 
 func (c *Canvas) AddCircleFilled(center image.Point, radius float32, color color.RGBA) {
