@@ -230,7 +230,7 @@ func (b *InvisibleButtonWidget) OnClick(onClick func()) *InvisibleButtonWidget {
 
 func InvisibleButton(id string) *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
-		id:      id,
+		id:      tStr(id),
 		width:   0,
 		height:  0,
 		onClick: nil,

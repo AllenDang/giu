@@ -27,7 +27,7 @@ func (c *CircleButtonWidget) Build() {
 	pos := g.GetCursorPos()
 
 	// Calcuate the center point
-	radius := int(width/2 + padding)
+	radius := int(width/2 + padding*2)
 
 	// Place a invisible button to be a placeholder for events
 	buttonWidth := float32(radius) * 2
@@ -43,7 +43,7 @@ func (c *CircleButtonWidget) Build() {
 	if drawActive {
 		canvas.AddCircleFilled(center, float32(radius), color.RGBA{12, 12, 200, 255})
 	}
-	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, 2)
+	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, radius, 2)
 
 	// Draw text
 	canvas.AddText(center.Sub(image.Pt(int((width-padding)/2), int(height/2))), color.RGBA{255, 255, 255, 255}, c.id)
