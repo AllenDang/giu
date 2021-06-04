@@ -17,6 +17,10 @@ var (
 	extraFontMap           map[string]*imgui.Font
 )
 
+const (
+	preRegisterString = "01234567890."
+)
+
 type FontInfo struct {
 	fontName string
 	fontPath string
@@ -32,7 +36,7 @@ func init() {
 	extraFontMap = make(map[string]*imgui.Font)
 
 	// Pre register numbers
-	tStr("01234567890.")
+	tStr(preRegisterString)
 
 	// Pre-register fonts
 	os := runtime.GOOS
@@ -140,7 +144,7 @@ func rebuildFontAtlas() {
 		builder := imgui.NewFontGlyphRangesBuilder()
 
 		// Because we pre-regestered numbers, so default string map's length should greater then 11.
-		if sb.Len() > 11 {
+		if sb.Len() > len(preRegisterString) {
 			builder.AddText(sb.String())
 		} else {
 			builder.AddRanges(fonts.GlyphRangesDefault())
@@ -153,7 +157,6 @@ func rebuildFontAtlas() {
 			fontConfig.SetOversampleH(2)
 			fontConfig.SetOversampleV(2)
 			if i == 0 {
-				fontConfig.SetMergeMode(false)
 				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			} else {
 				fontConfig.SetMergeMode(true)
