@@ -53,13 +53,13 @@ func init() {
 		// TODO add more fonts for different languages.
 	case "windows":
 		// English font
-		registerDefaultFont("Calibri", 15)
+		registerDefaultFont("Calibri", 16)
 		// Chinese font
-		registerDefaultFont("MSYH", 15)
+		registerDefaultFont("MSYH", 16)
 		// Japanese font
-		registerDefaultFont("MSGOTHIC", 15)
+		registerDefaultFont("MSGOTHIC", 16)
 		// Korean font
-		registerDefaultFont("MALGUNSL", 15)
+		registerDefaultFont("MALGUNSL", 16)
 		// TODO add more fonts for different languages.
 	case "linux":
 		registerDefaultFont("FiraCode-Medium", 15)
@@ -156,6 +156,7 @@ func rebuildFontAtlas() {
 			fontConfig := imgui.NewFontConfig()
 			fontConfig.SetOversampleH(2)
 			fontConfig.SetOversampleV(2)
+			fontConfig.SetRasterizerMultiply(1.5)
 			if i == 0 {
 				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			} else {
