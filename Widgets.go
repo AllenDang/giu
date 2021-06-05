@@ -67,7 +67,7 @@ type InputTextMultilineWidget struct {
 }
 
 func (i *InputTextMultilineWidget) Build() {
-	if imgui.InputTextMultilineV(tStr(i.label), tStrPtr(i.text), imgui.Vec2{X: i.width, Y: i.height}, int(i.flags), i.cb) && i.onChange != nil {
+	if imgui.InputTextMultilineV(i.label, tStrPtr(i.text), imgui.Vec2{X: i.width, Y: i.height}, int(i.flags), i.cb) && i.onChange != nil {
 		i.onChange()
 	}
 }
@@ -95,7 +95,7 @@ func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultili
 
 func InputTextMultiline(label string, text *string) *InputTextMultilineWidget {
 	return &InputTextMultilineWidget{
-		label:    label,
+		label:    tStr(label),
 		text:     text,
 		width:    0,
 		height:   0,
@@ -113,7 +113,7 @@ type ButtonWidget struct {
 }
 
 func (b *ButtonWidget) Build() {
-	if imgui.ButtonV(tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.ButtonV(b.id, imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -131,7 +131,7 @@ func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 
 func Button(id string) *ButtonWidget {
 	return &ButtonWidget{
-		id:      id,
+		id:      tStr(id),
 		width:   0,
 		height:  0,
 		onClick: nil,
@@ -154,12 +154,12 @@ type BulletTextWidget struct {
 
 func BulletText(text string) *BulletTextWidget {
 	return &BulletTextWidget{
-		text: text,
+		text: tStr(text),
 	}
 }
 
 func (bt *BulletTextWidget) Build() {
-	imgui.BulletText(tStr(bt.text))
+	imgui.BulletText(bt.text)
 }
 
 type ArrowButtonWidget struct {
@@ -199,13 +199,13 @@ func (b *SmallButtonWidget) OnClick(onClick func()) *SmallButtonWidget {
 
 func SmallButton(id string) *SmallButtonWidget {
 	return &SmallButtonWidget{
-		id:      id,
+		id:      tStr(id),
 		onClick: nil,
 	}
 }
 
 func (sb *SmallButtonWidget) Build() {
-	if imgui.SmallButton(tStr(sb.id)) && sb.onClick != nil {
+	if imgui.SmallButton(sb.id) && sb.onClick != nil {
 		sb.onClick()
 	}
 }
@@ -315,7 +315,7 @@ type CheckboxWidget struct {
 }
 
 func (c *CheckboxWidget) Build() {
-	if imgui.Checkbox(tStr(c.text), c.selected) && c.onChange != nil {
+	if imgui.Checkbox(c.text, c.selected) && c.onChange != nil {
 		c.onChange()
 	}
 }
@@ -327,7 +327,7 @@ func (c *CheckboxWidget) OnChange(onChange func()) *CheckboxWidget {
 
 func Checkbox(text string, selected *bool) *CheckboxWidget {
 	return &CheckboxWidget{
-		text:     text,
+		text:     tStr(text),
 		selected: selected,
 		onChange: nil,
 	}
@@ -340,7 +340,7 @@ type RadioButtonWidget struct {
 }
 
 func (r *RadioButtonWidget) Build() {
-	if imgui.RadioButton(tStr(r.text), r.active) && r.onChange != nil {
+	if imgui.RadioButton(r.text, r.active) && r.onChange != nil {
 		r.onChange()
 	}
 }
@@ -352,7 +352,7 @@ func (r *RadioButtonWidget) OnChange(onChange func()) *RadioButtonWidget {
 
 func RadioButton(text string, active bool) *RadioButtonWidget {
 	return &RadioButtonWidget{
-		text:     text,
+		text:     tStr(text),
 		active:   active,
 		onChange: nil,
 	}
@@ -417,8 +417,8 @@ type ComboCustomWidget struct {
 
 func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	return &ComboCustomWidget{
-		label:        label,
-		previewValue: previewValue,
+		label:        tStr(label),
+		previewValue: tStr(previewValue),
 		width:        0,
 		flags:        0,
 		layout:       nil,
@@ -445,7 +445,7 @@ func (cc *ComboCustomWidget) Build() {
 		imgui.PushItemWidth(cc.width)
 	}
 
-	if imgui.BeginComboV(tStr(cc.label), tStr(cc.previewValue), int(cc.flags)) {
+	if imgui.BeginComboV(cc.label, cc.previewValue, int(cc.flags)) {
 		if cc.layout != nil {
 			cc.layout.Build()
 		}
@@ -468,9 +468,13 @@ type ComboWidget struct {
 }
 
 func Combo(label, previewValue string, items []string, selected *int32) *ComboWidget {
+	for _, item := range items {
+		tStr(item)
+	}
+
 	return &ComboWidget{
-		label:        label,
-		previewValue: previewValue,
+		label:        tStr(label),
+		previewValue: tStr(previewValue),
 		items:        items,
 		selected:     selected,
 		flags:        0,
@@ -489,9 +493,9 @@ func (c *ComboWidget) Build() {
 		imgui.PushItemWidth(c.width)
 	}
 
-	if imgui.BeginComboV(tStr(c.label), tStr(c.previewValue), int(c.flags)) {
+	if imgui.BeginComboV(c.label, c.previewValue, int(c.flags)) {
 		for i, item := range c.items {
-			if imgui.Selectable(tStr(item)) {
+			if imgui.Selectable(item) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
 					c.onChange()
@@ -561,7 +565,7 @@ type DragIntWidget struct {
 
 func DragInt(label string, value *int32, min, max int32) *DragIntWidget {
 	return &DragIntWidget{
-		label:  label,
+		label:  tStr(label),
 		value:  value,
 		speed:  1.0,
 		min:    min,
@@ -581,7 +585,7 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 }
 
 func (d *DragIntWidget) Build() {
-	imgui.DragIntV(tStr(d.label), d.value, d.speed, d.min, d.max, d.format)
+	imgui.DragIntV(d.label, d.value, d.speed, d.min, d.max, d.format)
 }
 
 type ColumnWidget struct {
@@ -927,7 +931,7 @@ func (s *inputTextState) Dispose() {
 
 func InputText(label string, value *string) *InputTextWidget {
 	return &InputTextWidget{
-		label:    label,
+		label:    tStr(label),
 		hint:     "",
 		value:    value,
 		width:    0,
@@ -945,7 +949,7 @@ func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
 }
 
 func (i *InputTextWidget) Hint(hint string) *InputTextWidget {
-	i.hint = hint
+	i.hint = tStr(hint)
 	return i
 }
 
@@ -983,7 +987,7 @@ func (i *InputTextWidget) Build() {
 		PushItemWidth(i.width)
 	}
 
-	isChanged := imgui.InputTextWithHint(tStr(i.label), tStr(i.hint), tStrPtr(i.value), int(i.flags), i.cb)
+	isChanged := imgui.InputTextWithHint(i.label, i.hint, tStrPtr(i.value), int(i.flags), i.cb)
 
 	if i.width != 0 {
 		PopItemWidth()
@@ -1036,7 +1040,7 @@ type InputIntWidget struct {
 
 func InputInt(label string, value *int32) *InputIntWidget {
 	return &InputIntWidget{
-		label:    label,
+		label:    tStr(label),
 		value:    value,
 		width:    0,
 		flags:    0,
@@ -1064,7 +1068,7 @@ func (i *InputIntWidget) Build() {
 		PushItemWidth(i.width)
 	}
 
-	if imgui.InputIntV(tStr(i.label), i.value, 0, 100, int(i.flags)) && i.onChange != nil {
+	if imgui.InputIntV(i.label, i.value, 0, 100, int(i.flags)) && i.onChange != nil {
 		i.onChange()
 	}
 
@@ -1084,7 +1088,7 @@ type InputFloatWidget struct {
 
 func InputFloat(label string, value *float32) *InputFloatWidget {
 	return &InputFloatWidget{
-		label:    label,
+		label:    tStr(label),
 		width:    0,
 		value:    value,
 		format:   "%.3f",
@@ -1113,7 +1117,7 @@ func (i *InputFloatWidget) Build() {
 		PushItemWidth(i.width)
 	}
 
-	if imgui.InputFloatV(tStr(i.label), i.value, 0, 0, i.format, int(i.flags)) && i.onChange != nil {
+	if imgui.InputFloatV(i.label, i.value, 0, 0, i.format, int(i.flags)) && i.onChange != nil {
 		i.onChange()
 	}
 
@@ -1130,7 +1134,7 @@ type LabelWidget struct {
 
 func Label(label string) *LabelWidget {
 	return &LabelWidget{
-		label:   label,
+		label:   tStr(label),
 		wrapped: false,
 	}
 }
@@ -1155,7 +1159,7 @@ func (l *LabelWidget) Build() {
 		shouldPopFont = PushFont(l.fontInfo)
 	}
 
-	imgui.Text(tStr(l.label))
+	imgui.Text(l.label)
 
 	if shouldPopFont {
 		PopFont()
@@ -1223,7 +1227,7 @@ type MenuItemWidget struct {
 
 func MenuItem(label string) *MenuItemWidget {
 	return &MenuItemWidget{
-		label:    label,
+		label:    tStr(label),
 		selected: false,
 		enabled:  true,
 		onClick:  nil,
@@ -1246,7 +1250,7 @@ func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 }
 
 func (m *MenuItemWidget) Build() {
-	if imgui.MenuItemV(tStr(m.label), "", m.selected, m.enabled) && m.onClick != nil {
+	if imgui.MenuItemV(m.label, "", m.selected, m.enabled) && m.onClick != nil {
 		m.onClick()
 	}
 }
@@ -1259,7 +1263,7 @@ type MenuWidget struct {
 
 func Menu(label string) *MenuWidget {
 	return &MenuWidget{
-		label:   label,
+		label:   tStr(label),
 		enabled: true,
 		layout:  nil,
 	}
@@ -1276,7 +1280,7 @@ func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
 }
 
 func (m *MenuWidget) Build() {
-	if imgui.BeginMenuV(tStr(m.label), m.enabled) {
+	if imgui.BeginMenuV(m.label, m.enabled) {
 		if m.layout != nil {
 			m.layout.Build()
 		}
@@ -1292,7 +1296,7 @@ type PopupWidget struct {
 
 func Popup(name string) *PopupWidget {
 	return &PopupWidget{
-		name:   name,
+		name:   tStr(name),
 		flags:  0,
 		layout: nil,
 	}
@@ -1309,7 +1313,7 @@ func (p *PopupWidget) Layout(widgets ...Widget) *PopupWidget {
 }
 
 func (p *PopupWidget) Build() {
-	if imgui.BeginPopup(tStr(p.name), int(p.flags)) {
+	if imgui.BeginPopup(p.name, int(p.flags)) {
 		if p.layout != nil {
 			Update()
 			p.layout.Build()
@@ -1327,7 +1331,7 @@ type PopupModalWidget struct {
 
 func PopupModal(name string) *PopupModalWidget {
 	return &PopupModalWidget{
-		name:   name,
+		name:   tStr(name),
 		open:   nil,
 		flags:  WindowFlagsNoResize,
 		layout: nil,
@@ -1350,7 +1354,7 @@ func (p *PopupModalWidget) Layout(widgets ...Widget) *PopupModalWidget {
 }
 
 func (p *PopupModalWidget) Build() {
-	if imgui.BeginPopupModalV(tStr(p.name), p.open, int(p.flags)) {
+	if imgui.BeginPopupModalV(p.name, p.open, int(p.flags)) {
 		if p.layout != nil {
 			Update()
 			p.layout.Build()
@@ -1390,12 +1394,12 @@ func (p *ProgressBarWidget) Size(width, height float32) *ProgressBarWidget {
 }
 
 func (p *ProgressBarWidget) Overlay(overlay string) *ProgressBarWidget {
-	p.overlay = overlay
+	p.overlay = tStr(overlay)
 	return p
 }
 
 func (p *ProgressBarWidget) Build() {
-	imgui.ProgressBarV(p.fraction, imgui.Vec2{X: p.width, Y: p.height}, tStr(p.overlay))
+	imgui.ProgressBarV(p.fraction, imgui.Vec2{X: p.width, Y: p.height}, p.overlay)
 }
 
 type SelectableWidget struct {
@@ -1409,7 +1413,7 @@ type SelectableWidget struct {
 
 func Selectable(label string) *SelectableWidget {
 	return &SelectableWidget{
-		label:    label,
+		label:    tStr(label),
 		selected: false,
 		flags:    0,
 		width:    0,
@@ -1440,7 +1444,7 @@ func (s *SelectableWidget) OnClick(onClick func()) *SelectableWidget {
 }
 
 func (s *SelectableWidget) Build() {
-	if imgui.SelectableV(tStr(s.label), s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.SelectableV(s.label, s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 }
@@ -1467,7 +1471,7 @@ type SliderIntWidget struct {
 
 func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 	return &SliderIntWidget{
-		label:    label,
+		label:    tStr(label),
 		value:    value,
 		min:      min,
 		max:      max,
@@ -1498,7 +1502,7 @@ func (s *SliderIntWidget) Build() {
 		PushItemWidth(s.width)
 	}
 
-	if imgui.SliderIntV(tStr(s.label), s.value, s.min, s.max, s.format) && s.onChange != nil {
+	if imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format) && s.onChange != nil {
 		s.onChange()
 	}
 
@@ -1521,7 +1525,7 @@ type VSliderIntWidget struct {
 
 func VSliderInt(label string, value *int32, min, max int32) *VSliderIntWidget {
 	return &VSliderIntWidget{
-		label:  label,
+		label:  tStr(label),
 		width:  18,
 		height: 60,
 		value:  value,
@@ -1554,7 +1558,7 @@ func (vs *VSliderIntWidget) OnChange(onChange func()) *VSliderIntWidget {
 
 func (vs *VSliderIntWidget) Build() {
 	if imgui.VSliderIntV(
-		tStr(vs.label),
+		vs.label,
 		imgui.Vec2{X: vs.width, Y: vs.height},
 		vs.value,
 		vs.min,
@@ -1578,7 +1582,7 @@ type SliderFloatWidget struct {
 
 func SliderFloat(label string, value *float32, min, max float32) *SliderFloatWidget {
 	return &SliderFloatWidget{
-		label:    label,
+		label:    tStr(label),
 		value:    value,
 		min:      min,
 		max:      max,
@@ -1609,7 +1613,7 @@ func (sf *SliderFloatWidget) Build() {
 		PushItemWidth(sf.width)
 	}
 
-	if imgui.SliderFloatV(tStr(sf.label), sf.value, sf.min, sf.max, sf.format, 1.0) && sf.onChange != nil {
+	if imgui.SliderFloatV(sf.label, sf.value, sf.min, sf.max, sf.format, 1.0) && sf.onChange != nil {
 		sf.onChange()
 	}
 
@@ -1789,7 +1793,7 @@ type TabItemWidget struct {
 
 func TabItem(label string) *TabItemWidget {
 	return &TabItemWidget{
-		label:  label,
+		label:  tStr(label),
 		open:   nil,
 		flags:  0,
 		layout: nil,
@@ -1812,7 +1816,7 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 }
 
 func (t *TabItemWidget) Build() {
-	if imgui.BeginTabItemV(tStr(t.label), t.open, int(t.flags)) {
+	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
 		if t.layout != nil {
 			t.layout.Build()
 		}
@@ -1828,7 +1832,7 @@ type TabBarWidget struct {
 
 func TabBar(id string) *TabBarWidget {
 	return &TabBarWidget{
-		id:     id,
+		id:     tStr(id),
 		flags:  0,
 		layout: nil,
 	}
@@ -1845,7 +1849,7 @@ func (t *TabBarWidget) Layout(widgets ...Widget) *TabBarWidget {
 }
 
 func (t *TabBarWidget) Build() {
-	if imgui.BeginTabBarV(tStr(t.id), int(t.flags)) {
+	if imgui.BeginTabBarV(t.id, int(t.flags)) {
 		if t.layout != nil {
 			t.layout.Build()
 		}
@@ -1912,7 +1916,7 @@ type TableColumnWidget struct {
 
 func TableColumn(label string) *TableColumnWidget {
 	return &TableColumnWidget{
-		label:              label,
+		label:              tStr(label),
 		flags:              0,
 		innerWidthOrWeight: 0,
 		userId:             0,
@@ -1935,7 +1939,7 @@ func (c *TableColumnWidget) UserId(id uint32) *TableColumnWidget {
 }
 
 func (c *TableColumnWidget) Build() {
-	imgui.TableSetupColumn(tStr(c.label), imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userId)
+	imgui.TableSetupColumn(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userId)
 }
 
 type TableWidget struct {
@@ -2056,14 +2060,14 @@ func (t *TooltipWidget) Build() {
 			t.layout.Build()
 			imgui.EndTooltip()
 		} else {
-			imgui.SetTooltip(tStr(t.tip))
+			imgui.SetTooltip(t.tip)
 		}
 	}
 }
 
 func Tooltip(tip string) *TooltipWidget {
 	return &TooltipWidget{
-		tip:    tip,
+		tip:    tStr(tip),
 		layout: nil,
 	}
 }
@@ -2082,7 +2086,7 @@ type TreeNodeWidget struct {
 
 func TreeNode(label string) *TreeNodeWidget {
 	return &TreeNodeWidget{
-		label:        label,
+		label:        tStr(label),
 		flags:        0,
 		layout:       nil,
 		eventHandler: nil,
@@ -2107,7 +2111,7 @@ func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
 }
 
 func (t *TreeNodeWidget) Build() {
-	open := imgui.TreeNodeV(tStr(t.label), int(t.flags))
+	open := imgui.TreeNodeV(t.label, int(t.flags))
 
 	if t.eventHandler != nil {
 		t.eventHandler()
@@ -2500,7 +2504,7 @@ type ColorEditWidget struct {
 
 func ColorEdit(label string, color *color.RGBA) *ColorEditWidget {
 	return &ColorEditWidget{
-		label: label,
+		label: tStr(label),
 		color: color,
 		flags: ColorEditFlagsNone,
 	}
@@ -2535,7 +2539,7 @@ func (ce *ColorEditWidget) Build() {
 	}
 
 	if imgui.ColorEdit4V(
-		tStr(ce.label),
+		ce.label,
 		&col,
 		int(ce.flags),
 	) {
