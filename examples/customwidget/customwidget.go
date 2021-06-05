@@ -46,7 +46,7 @@ func (c *CircleButtonWidget) Build() {
 	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, radius, 2)
 
 	// Draw text
-	canvas.AddText(center.Sub(image.Pt(int((width-padding)/2), int(height/2))), color.RGBA{255, 255, 255, 255}, c.id)
+	canvas.AddText(center.Sub(image.Pt(int((width)/2), int(height/2))), color.RGBA{255, 255, 255, 255}, c.id)
 }
 
 func onHello() {
