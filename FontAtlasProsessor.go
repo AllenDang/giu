@@ -62,7 +62,9 @@ func init() {
 		registerDefaultFont("MALGUNSL", 16)
 		// TODO add more fonts for different languages.
 	case "linux":
+		// English fonts
 		registerDefaultFont("FiraCode-Medium", 15)
+		registerDefaultFont("Cantarell", 15)
 	}
 }
 
@@ -88,7 +90,6 @@ func AddFont(fontName string, size float32) *FontInfo {
 func registerDefaultFont(fontName string, size float32) {
 	fontPath, err := findfont.Find(fontName)
 	if err != nil {
-		fmt.Printf("[Warning]Cannot find font %s at system, related text will not be rendered.\n", fontName)
 		return
 	}
 
