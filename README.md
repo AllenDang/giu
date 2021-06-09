@@ -127,14 +127,14 @@ The backend of giu depends on OpenGL 3.3, make sure your environment supports it
 
 ``` sh
 xcode-select --install
-go get github.com/AllenDang/giu@master
+go get github.com/AllenDang/giu
 ```
 
 ### Windows
 
 1. Install mingw [download here](https://github.com/brechtsanders/winlibs_mingw/releases/tag/10.2.0-11.0.0-8.0.0-r8). Thanks @alchem1ster!
 2. Add the binaries folder of mingw to the path (usually is *\mingw64\bin*).
-3. go get github.com/AllenDang/giu@master.
+3. go get github.com/AllenDang/giu
 
 ### Linux
 
