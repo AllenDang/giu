@@ -279,10 +279,11 @@ const (
 )
 
 type StyleSetter struct {
-	colors map[StyleColorID]color.RGBA
-	styles map[StyleVarID]imgui.Vec2
-	font   *FontInfo
-	layout Layout
+	colors   map[StyleColorID]color.RGBA
+	styles   map[StyleVarID]imgui.Vec2
+	font     *FontInfo
+	disabled bool
+	layout   Layout
 }
 
 func Style() *StyleSetter {
@@ -308,6 +309,11 @@ func (ss *StyleSetter) SetFont(font *FontInfo) *StyleSetter {
 	return ss
 }
 
+func (ss *StyleSetter) SetDisabled(d bool) *StyleSetter {
+	ss.disabled = d
+	return ss
+}
+
 func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
 	ss.layout = widgets
 	return ss
@@ -328,7 +334,15 @@ func (ss *StyleSetter) Build() {
 			isFontPushed = PushFont(ss.font)
 		}
 
+		if ss.disabled {
+			imgui.PushDisabled()
+		}
+
 		ss.layout.Build()
+
+		if ss.disabled {
+			imgui.PopDisabled()
+		}
 
 		if isFontPushed {
 			PopFont()
