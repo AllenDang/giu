@@ -106,20 +106,34 @@ func InputTextMultiline(label string, text *string) *InputTextMultilineWidget {
 }
 
 type ButtonWidget struct {
-	id      string
-	width   float32
-	height  float32
-	onClick func()
+	id       string
+	width    float32
+	height   float32
+	disabled bool
+	onClick  func()
 }
 
 func (b *ButtonWidget) Build() {
+	if b.disabled {
+		imgui.PushDisabled()
+	}
+
 	if imgui.ButtonV(b.id, imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
+	}
+
+	if b.disabled {
+		imgui.PopDisabled()
 	}
 }
 
 func (b *ButtonWidget) OnClick(onClick func()) *ButtonWidget {
 	b.onClick = onClick
+	return b
+}
+
+func (b *ButtonWidget) Disabled(d bool) *ButtonWidget {
+	b.disabled = d
 	return b
 }
 
