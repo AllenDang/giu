@@ -63,8 +63,16 @@ func init() {
 		// TODO add more fonts for different languages.
 	case "linux":
 		// English fonts
-		registerDefaultFont("FiraCode-Medium", 15)
-		registerDefaultFont("Cantarell", 15)
+		registerDefaultFonts([]FontInfo{
+			{
+				fontName: "FiraCode-Medium",
+				size:     15,
+			},
+			{
+				fontName: "Cantarell",
+				size:     15,
+			},
+		})
 	}
 }
 
@@ -95,6 +103,21 @@ func registerDefaultFont(fontName string, size float32) {
 
 	fontInfo := FontInfo{fontName: fontName, fontPath: fontPath, size: size}
 	defaultFonts = append(defaultFonts, fontInfo)
+}
+
+func registerDefaultFonts(fontInfos []FontInfo) {
+	var firstFoundFont *FontInfo
+	for _, fi := range fontInfos {
+		fontPath, err := findfont.Find(fi.fontName)
+		if err == nil {
+			firstFoundFont = &FontInfo{fontName: fi.fontName, fontPath: fontPath, size: fi.size}
+			break
+		}
+	}
+
+	if firstFoundFont != nil {
+		defaultFonts = append(defaultFonts, *firstFoundFont)
+	}
 }
 
 // Register string to font atlas builder.
