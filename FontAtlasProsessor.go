@@ -18,7 +18,7 @@ var (
 )
 
 const (
-	preRegisterString = "01234567890."
+	preRegisterString = "01234567890.*"
 )
 
 type FontInfo struct {
