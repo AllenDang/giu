@@ -24,6 +24,7 @@ const (
 type FontInfo struct {
 	fontName string
 	fontPath string
+	fontByte []byte
 	size     float32
 }
 
@@ -87,6 +88,18 @@ func AddFont(fontName string, size float32) *FontInfo {
 	fi := FontInfo{
 		fontName: fontName,
 		fontPath: fontPath,
+		size:     size,
+	}
+
+	extraFonts = append(extraFonts, fi)
+
+	return &fi
+}
+
+func AddFontFromBytes(fontName string, fontBytes []byte, size float32) *FontInfo {
+	fi := FontInfo{
+		fontName: fontName,
+		fontByte: fontBytes,
 		size:     size,
 	}
 
@@ -176,23 +189,28 @@ func rebuildFontAtlas() {
 
 		builder.BuildRanges(ranges)
 
+		fontConfig := imgui.NewFontConfig()
+		fontConfig.SetOversampleH(2)
+		fontConfig.SetOversampleV(2)
+		fontConfig.SetRasterizerMultiply(1.5)
+
 		for i, fontInfo := range defaultFonts {
-			fontConfig := imgui.NewFontConfig()
-			fontConfig.SetOversampleH(2)
-			fontConfig.SetOversampleV(2)
-			fontConfig.SetRasterizerMultiply(1.5)
-			if i == 0 {
-				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
-			} else {
+			if i > 0 {
 				fontConfig.SetMergeMode(true)
-				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			}
+
+			fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 		}
 
 		// Add extra fonts
 		for _, fontInfo := range extraFonts {
 			// Store imgui.Font for PushFont
-			f := fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+			var f imgui.Font
+			if len(fontInfo.fontByte) == 0 {
+				f = fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+			} else {
+				f = fonts.AddFontFromMemoryTTFV(fontInfo.fontByte, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+			}
 			extraFontMap[fontInfo.String()] = &f
 		}
 
