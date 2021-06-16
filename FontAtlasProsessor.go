@@ -86,6 +86,16 @@ func SetDefaultFont(fontName string, size float32) {
 	defaultFonts = append([]FontInfo{fontInfo}, defaultFonts...)
 }
 
+// Change default font by bytes of the font file
+func SetDefaultFontFromBytes(fontBytes []byte, size float32) {
+	defaultFonts = append([]FontInfo{
+		{
+			fontByte: fontBytes,
+			size:     size,
+		},
+	}, defaultFonts...)
+}
+
 // Add font by name, if the font is found, return *FontInfo, otherwise return nil.
 // To use added font, use giu.Style().SetFont(...).
 func AddFont(fontName string, size float32) *FontInfo {
@@ -207,7 +217,11 @@ func rebuildFontAtlas() {
 				fontConfig.SetMergeMode(true)
 			}
 
-			fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
+			if len(fontInfo.fontByte) == 0 {
+				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
+			} else {
+				fonts.AddFontFromMemoryTTFV(fontInfo.fontByte, fontInfo.size, fontConfig, ranges.Data())
+			}
 		}
 
 		// Fall back if no font is added
