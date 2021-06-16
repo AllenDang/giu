@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
+	"sync"
 
 	"github.com/AllenDang/go-findfont"
 	"github.com/AllenDang/imgui-go"
@@ -15,6 +16,7 @@ var (
 	defaultFonts           []FontInfo
 	extraFonts             []FontInfo
 	extraFontMap           map[string]*imgui.Font
+	fontAtlasMutex         = &sync.Mutex{}
 )
 
 const (
@@ -137,24 +139,23 @@ func registerDefaultFonts(fontInfos []FontInfo) {
 // Note only register strings that will be displayed on the UI.
 func tStr(str string) string {
 	for _, s := range str {
+		fontAtlasMutex.Lock()
+
 		if _, ok := stringMap[s]; !ok {
 			stringMap[s] = false
 			shouldRebuildFontAtlas = true
 		}
+
+		fontAtlasMutex.Unlock()
 	}
 
 	return str
 }
 
-// Register string to font atlas builder.
+// Register string pointer to font atlas builder.
 // Note only register strings that will be displayed on the UI.
 func tStrPtr(str *string) *string {
-	for _, s := range *str {
-		if _, ok := stringMap[s]; !ok {
-			stringMap[s] = false
-			shouldRebuildFontAtlas = true
-		}
-	}
+	tStr(*str)
 
 	return str
 }
