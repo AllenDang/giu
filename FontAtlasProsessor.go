@@ -2,6 +2,7 @@ package giu
 
 import (
 	"fmt"
+	"log"
 	"runtime"
 	"strings"
 	"sync"
@@ -73,7 +74,20 @@ func init() {
 	}
 }
 
+// Change default font
+func SetDefaultFont(fontName string, size float32) {
+	fontPath, err := findfont.Find(fontName)
+	if err != nil {
+		log.Fatalf("Cannot find font %s", fontName)
+		return
+	}
+
+	fontInfo := FontInfo{fontName: fontName, fontPath: fontPath, size: size}
+	defaultFonts = append([]FontInfo{fontInfo}, defaultFonts...)
+}
+
 // Add font by name, if the font is found, return *FontInfo, otherwise return nil.
+// To use added font, use giu.Style().SetFont(...).
 func AddFont(fontName string, size float32) *FontInfo {
 	fontPath, err := findfont.Find(fontName)
 	if err != nil {
