@@ -152,7 +152,7 @@ func tStr(str string) string {
 	return str
 }
 
-// Register string to font atlas builder.
+// Register string pointer to font atlas builder.
 // Note only register strings that will be displayed on the UI.
 func tStrPtr(str *string) *string {
 	tStr(*str)
