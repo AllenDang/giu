@@ -162,34 +162,33 @@ func tStrPtr(str *string) *string {
 
 // Rebuild font atlas when necessary.
 func rebuildFontAtlas() {
-	if len(defaultFonts) == 0 {
+	if !shouldRebuildFontAtlas {
 		return
 	}
 
-	if shouldRebuildFontAtlas {
-		fonts := Context.IO().Fonts()
+	fonts := Context.IO().Fonts()
+	fonts.Clear()
 
-		var sb strings.Builder
+	var sb strings.Builder
 
-		for k := range stringMap {
-			stringMap[k] = true
-			sb.WriteRune(k)
-		}
+	for k := range stringMap {
+		stringMap[k] = true
+		sb.WriteRune(k)
+	}
 
-		fonts.Clear()
+	ranges := imgui.NewGlyphRanges()
+	builder := imgui.NewFontGlyphRangesBuilder()
 
-		ranges := imgui.NewGlyphRanges()
-		builder := imgui.NewFontGlyphRangesBuilder()
+	// Because we pre-regestered numbers, so default string map's length should greater then 11.
+	if sb.Len() > len(preRegisterString) {
+		builder.AddText(sb.String())
+	} else {
+		builder.AddRanges(fonts.GlyphRangesDefault())
+	}
 
-		// Because we pre-regestered numbers, so default string map's length should greater then 11.
-		if sb.Len() > len(preRegisterString) {
-			builder.AddText(sb.String())
-		} else {
-			builder.AddRanges(fonts.GlyphRangesDefault())
-		}
+	builder.BuildRanges(ranges)
 
-		builder.BuildRanges(ranges)
-
+	if len(defaultFonts) > 0 {
 		fontConfig := imgui.NewFontConfig()
 		fontConfig.SetOversampleH(2)
 		fontConfig.SetOversampleV(2)
@@ -202,22 +201,24 @@ func rebuildFontAtlas() {
 
 			fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 		}
-
-		// Add extra fonts
-		for _, fontInfo := range extraFonts {
-			// Store imgui.Font for PushFont
-			var f imgui.Font
-			if len(fontInfo.fontByte) == 0 {
-				f = fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
-			} else {
-				f = fonts.AddFontFromMemoryTTFV(fontInfo.fontByte, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
-			}
-			extraFontMap[fontInfo.String()] = &f
-		}
-
-		fontTextureImg := fonts.TextureDataRGBA32()
-		Context.renderer.SetFontTexture(fontTextureImg)
-
-		shouldRebuildFontAtlas = false
+	} else {
+		fonts.AddFontDefault()
 	}
+
+	// Add extra fonts
+	for _, fontInfo := range extraFonts {
+		// Store imgui.Font for PushFont
+		var f imgui.Font
+		if len(fontInfo.fontByte) == 0 {
+			f = fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+		} else {
+			f = fonts.AddFontFromMemoryTTFV(fontInfo.fontByte, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+		}
+		extraFontMap[fontInfo.String()] = &f
+	}
+
+	fontTextureImg := fonts.TextureDataRGBA32()
+	Context.renderer.SetFontTexture(fontTextureImg)
+
+	shouldRebuildFontAtlas = false
 }
