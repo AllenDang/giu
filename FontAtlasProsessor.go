@@ -201,6 +201,11 @@ func rebuildFontAtlas() {
 
 			fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 		}
+
+		// Fall back if no font is added
+		if fonts.GetFontCount() == 0 {
+			fonts.AddFontDefault()
+		}
 	} else {
 		fonts.AddFontDefault()
 	}
