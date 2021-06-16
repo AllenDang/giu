@@ -155,16 +155,7 @@ func tStr(str string) string {
 // Register string to font atlas builder.
 // Note only register strings that will be displayed on the UI.
 func tStrPtr(str *string) *string {
-	for _, s := range *str {
-		fontAtlasMutex.Lock()
-
-		if _, ok := stringMap[s]; !ok {
-			stringMap[s] = false
-			shouldRebuildFontAtlas = true
-		}
-
-		fontAtlasMutex.Unlock()
-	}
+	tStr(*str)
 
 	return str
 }
