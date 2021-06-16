@@ -53,7 +53,6 @@ func init() {
 		registerDefaultFont("ヒラギノ角ゴシック W0", 17)
 		// Korean font
 		registerDefaultFont("AppleSDGothicNeo", 16)
-		// TODO add more fonts for different languages.
 	case "windows":
 		// English font
 		registerDefaultFont("Calibri", 16)
@@ -63,16 +62,11 @@ func init() {
 		registerDefaultFont("MSGOTHIC", 16)
 		// Korean font
 		registerDefaultFont("MALGUNSL", 16)
-		// TODO add more fonts for different languages.
 	case "linux":
 		// English fonts
 		registerDefaultFonts([]FontInfo{
 			{
 				fontName: "FiraCode-Medium",
-				size:     15,
-			},
-			{
-				fontName: "Cantarell",
 				size:     15,
 			},
 		})
