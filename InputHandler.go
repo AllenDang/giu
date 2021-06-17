@@ -8,6 +8,10 @@ import (
 // store keyboard shortcuts
 var shortcuts map[keyCombo]*callbacks
 
+func init() {
+	shortcuts = make(map[keyCombo]*callbacks)
+}
+
 // ShortcutType represens a type of shortcut (global or local)
 type ShortcutType bool
 

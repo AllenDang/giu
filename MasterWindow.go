@@ -89,6 +89,8 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		renderer:   r,
 	}
 
+	mw.platform.SetInputCallback(handler)
+
 	p.SetSizeChangeCallback(mw.sizeChange)
 
 	mw.setTheme()

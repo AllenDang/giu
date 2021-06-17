@@ -6,9 +6,7 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
-var (
-	Context context
-)
+var Context context
 
 type Disposable interface {
 	Dispose()
