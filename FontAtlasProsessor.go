@@ -65,6 +65,10 @@ func init() {
 		// English fonts
 		registerDefaultFonts([]FontInfo{
 			{
+				fontName: "FreeSans.ttf",
+				size:     15,
+			},
+			{
 				fontName: "FiraCode-Medium",
 				size:     15,
 			},
