@@ -13,11 +13,10 @@ import (
 
 var (
 	shouldRebuildFontAtlas bool
-	stringMap              map[rune]bool // key is rune, value indicates whether it's a new rune.
+	stringMap              sync.Map // key is rune, value indicates whether it's a new rune.
 	defaultFonts           []FontInfo
 	extraFonts             []FontInfo
 	extraFontMap           map[string]*imgui.Font
-	fontAtlasMutex         = &sync.Mutex{}
 )
 
 const (
@@ -36,7 +35,6 @@ func (f *FontInfo) String() string {
 }
 
 func init() {
-	stringMap = make(map[rune]bool)
 	extraFontMap = make(map[string]*imgui.Font)
 
 	// Pre register numbers
@@ -157,14 +155,10 @@ func registerDefaultFonts(fontInfos []FontInfo) {
 // Note only register strings that will be displayed on the UI.
 func tStr(str string) string {
 	for _, s := range str {
-		fontAtlasMutex.Lock()
-
-		if _, ok := stringMap[s]; !ok {
-			stringMap[s] = false
+		if _, ok := stringMap.Load(s); !ok {
+			stringMap.Store(s, false)
 			shouldRebuildFontAtlas = true
 		}
-
-		fontAtlasMutex.Unlock()
 	}
 
 	return str
@@ -174,7 +168,6 @@ func tStr(str string) string {
 // Note only register strings that will be displayed on the UI.
 func tStrPtr(str *string) *string {
 	tStr(*str)
-
 	return str
 }
 
@@ -189,10 +182,14 @@ func rebuildFontAtlas() {
 
 	var sb strings.Builder
 
-	for k := range stringMap {
-		stringMap[k] = true
-		sb.WriteRune(k)
-	}
+	stringMap.Range(func(k, v interface{}) bool {
+		stringMap.Store(k, true)
+		if ks, ok := k.(rune); ok {
+			sb.WriteRune(ks)
+		}
+
+		return true
+	})
 
 	ranges := imgui.NewGlyphRanges()
 	builder := imgui.NewFontGlyphRangesBuilder()
