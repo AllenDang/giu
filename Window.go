@@ -93,3 +93,10 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 func (w *WindowWidget) BringToFront() {
 	w.bringToFront = true
 }
+
+func (w *WindowWidget) RegisterKeyboardShortcuts(s ...Shortcut) {
+	for _, shortcut := range s {
+		shortcut.IsGlobal = false
+		RegisterKeyboardShortcut(shortcut)
+	}
+}
