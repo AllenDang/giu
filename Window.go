@@ -121,11 +121,15 @@ func (w *WindowWidget) HasFocus() bool {
 	return w.getState().hasFocus
 }
 
-func (w *WindowWidget) RegisterKeyboardShortcuts(s ...Shortcut) *WindowWidget {
+func (w *WindowWidget) RegisterKeyboardShortcuts(s ...WindowShortcut) *WindowWidget {
 	if w.HasFocus() {
 		for _, shortcut := range s {
-			shortcut.IsGlobal = false
-			RegisterKeyboardShortcut(shortcut)
+			RegisterKeyboardShortcuts(Shortcut{
+				Key:      shortcut.Key,
+				Modifier: shortcut.Modifier,
+				Callback: shortcut.Callback,
+				IsGlobal: LocalShortcut,
+			})
 		}
 	}
 

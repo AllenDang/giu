@@ -276,3 +276,16 @@ func (w *MasterWindow) Run(loopFunc func()) {
 		})
 	})
 }
+
+func (w *MasterWindow) RegisterKeyboardShortcuts(s ...WindowShortcut) *MasterWindow {
+	for _, shortcut := range s {
+		RegisterKeyboardShortcuts(Shortcut{
+			Key:      shortcut.Key,
+			Modifier: shortcut.Modifier,
+			Callback: shortcut.Callback,
+			IsGlobal: GlobalShortcut,
+		})
+	}
+
+	return w
+}

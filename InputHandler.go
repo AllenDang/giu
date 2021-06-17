@@ -40,7 +40,7 @@ type Shortcut struct {
 	IsGlobal ShortcutType
 }
 
-func RegisterKeyboardShortcut(s ...Shortcut) {
+func RegisterKeyboardShortcuts(s ...Shortcut) {
 	for _, shortcut := range s {
 		combo := keyCombo{glfw.Key(shortcut.Key), glfw.ModifierKey(shortcut.Modifier)}
 
@@ -81,4 +81,10 @@ func handler(key glfw.Key, mod glfw.ModifierKey, action glfw.Action) {
 			cb.global()
 		}
 	}
+}
+
+type WindowShortcut struct {
+	Key      Key
+	Modifier Modifier
+	Callback func()
 }
