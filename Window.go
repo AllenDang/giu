@@ -34,6 +34,7 @@ type WindowWidget struct {
 	flags         WindowFlags
 	x, y          float32
 	width, height float32
+	bringToFront  bool
 }
 
 func Window(title string) *WindowWidget {
@@ -75,6 +76,11 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 		imgui.SetNextWindowSizeV(imgui.Vec2{X: w.width, Y: w.height}, imgui.ConditionFirstUseEver)
 	}
 
+	if w.bringToFront {
+		imgui.SetNextWindowFocus()
+		w.bringToFront = false
+	}
+
 	showed := imgui.BeginV(tStr(w.title), w.open, int(w.flags))
 
 	if showed {
@@ -82,4 +88,8 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 	}
 
 	imgui.End()
+}
+
+func (w *WindowWidget) BringToFront() {
+	w.bringToFront = true
 }
