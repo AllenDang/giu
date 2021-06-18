@@ -1,6 +1,9 @@
 package giu
 
-import "fmt"
+import (
+	"fmt"
+	"image/color"
+)
 
 type SplitDirection uint8
 
@@ -65,7 +68,9 @@ func (s *SplitLayoutWidget) buildChild(id string, width, height float32, layout 
 				PushFramePadding(0, 0)
 			}
 		}),
-		Child(id).Border(!isSplitLayoutWidget && s.border).Size(width, height).Layout(s.restoreItemSpacing(layout)),
+		Style().SetColor(StyleColorChildBg, color.RGBA{R: 0x1c, G: 0x26, B: 0x2b, A: 0xff}).To(
+			Child(id).Border(!isSplitLayoutWidget && s.border).Size(width, height).Layout(s.restoreItemSpacing(layout)),
+		),
 		Custom(func() {
 			if isSplitLayoutWidget || !s.border {
 				PopStyle()
