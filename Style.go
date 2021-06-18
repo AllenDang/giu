@@ -18,6 +18,10 @@ func PopFont() {
 	imgui.PopFont()
 }
 
+func PushStyleColor(id StyleColorID, col color.RGBA) {
+	imgui.PushStyleColor(imgui.StyleColorID(id), ToVec4Color(col))
+}
+
 func PushColorText(col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorText, ToVec4Color(col))
 }

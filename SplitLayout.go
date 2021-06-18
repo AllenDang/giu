@@ -50,9 +50,12 @@ func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 		Custom(func() {
 			PushItemSpacing(s.originItemSpacingX, s.originItemSpacingY)
 			PushFramePadding(s.originFramePaddingX, s.originFramePaddingY)
+			// Restore Child bg color
+			PushStyleColor(StyleColorChildBg, color.RGBA{R: 0x26, G: 0x2e, B: 0x38, A: 0xff})
 		}),
 		layout,
 		Custom(func() {
+			PopStyleColor()
 			PopStyleV(2)
 		}),
 	}
