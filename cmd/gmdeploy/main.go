@@ -24,6 +24,9 @@ func main() {
 	var iconPath string
 	flag.StringVar(&iconPath, "icon", "", "applicatio icon file path")
 
+	var upx bool
+	flag.BoolVar(&upx, "upx", false, "use upx to compress executable")
+
 	flag.Parse()
 
 	if len(targetOS) == 0 {
@@ -46,8 +49,10 @@ func main() {
 		RunCmd(cmd)
 
 		// Upx
-		// cmd = exec.Command("upx", appName)
-		// RunCmd(cmd)
+		if upx {
+			cmd = exec.Command("upx", appName)
+			RunCmd(cmd)
+		}
 
 		// Bundle
 		macOSPath := filepath.Join(outputDir, fmt.Sprintf("%s.app", appName), "Contents", "MacOS")
