@@ -19,7 +19,7 @@ func main() {
 	}
 
 	var targetOS string
-	flag.StringVar(&targetOS, "os", "", "target deploy os [windows, darwin, linux]")
+	flag.StringVar(&targetOS, "os", runtime.GOOS, "target deploy os [windows, darwin, linux]")
 
 	var iconPath string
 	flag.StringVar(&iconPath, "icon", "", "applicatio icon file path")
