@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-//darwin
+// darwin
 
 func darwinPlist(name string) string {
 	return fmt.Sprintf(`<?xml version="1.0" encoding="UTF-8"?>
@@ -42,4 +42,26 @@ func darwinPlist(name string) string {
 
 func darwinPkginfo() string {
 	return "APPL????\n"
+}
+
+// linux
+
+func linuxDesktop(name string, hasIcon bool) string {
+	result := fmt.Sprintf(`[Desktop Entry]
+Name=%s
+Exec=%s
+`, name, name,
+	)
+
+	if hasIcon {
+		result += fmt.Sprintf(
+			"Icon=%s\n", name,
+		)
+	}
+
+	result += `Terminal=false
+Type=Application
+`
+
+	return result
 }

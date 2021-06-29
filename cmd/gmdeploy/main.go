@@ -80,7 +80,38 @@ func main() {
 		}
 
 		fmt.Printf("%s.app is generated at %s/build/%s/\n", appName, projectPath, targetOS)
+	case "linux":
+		// Compile
+		cmd := exec.Command("bash", "-c", fmt.Sprintf("go build -ldflags='-s -w' -o %s", filepath.Join(appName)))
+		cmd.Dir = projectPath
+		RunCmd(cmd)
 
+		// Bundle
+		contentsPath := filepath.Join(outputDir, fmt.Sprintf("%s.app", appName))
+		binPath := filepath.Join(contentsPath, "bin")
+		MkdirAll(binPath)
+
+		// Copy compiled executable to build folder
+		cmd = exec.Command("mv", appName, binPath)
+		RunCmd(cmd)
+
+		// create desktop entry
+		hasIcon := iconPath != "" && filepath.Ext(iconPath) == ".icns"
+
+		desktopPath := filepath.Join(contentsPath, "share", "applications")
+		MkdirAll(desktopPath)
+
+		Save(filepath.Join(desktopPath, fmt.Sprintf("%s.desktop", appName)), linuxDesktop(appName, hasIcon))
+
+		if hasIcon {
+			// Prepare icon
+			iconsPath := filepath.Join(contentsPath, "share", "icons")
+			MkdirAll(iconsPath)
+
+			// Rename icon file name to [appName].icns
+			cmd = exec.Command("cp", iconPath, filepath.Join(iconsPath, fmt.Sprintf("%s.icns", appName)))
+			RunCmd(cmd)
+		}
 	default:
 		fmt.Printf("Sorry, %s is not supported yet.\n", targetOS)
 	}
