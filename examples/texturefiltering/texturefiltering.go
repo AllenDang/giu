@@ -13,7 +13,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("load image").Layout(
+	g.SingleWindow().Layout(
 		g.Column(
 			g.Label("15x20 pixel image"),
 			g.Row(

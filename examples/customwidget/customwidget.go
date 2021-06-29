@@ -62,7 +62,7 @@ func onCircleButton() {
 }
 
 func loop() {
-	g.SingleWindow("custom widget").Layout(
+	g.SingleWindow().Layout(
 		g.Row(CircleButton("Hello", onHello), CircleButton("World", onWorld)),
 		CircleButton("Circle Button", onCircleButton),
 	)

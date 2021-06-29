@@ -15,7 +15,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("load image").Layout(
+	g.SingleWindow().Layout(
 		g.Label("Display image from rgba"),
 		g.ImageWithRgba(rgba).Size(200, 100),
 
@@ -31,7 +31,7 @@ func loop() {
 			Timeout(5*time.Second).
 			Size(300, 200).
 			LayoutForLoading(
-				g.Child("Loading").Size(300, 200).Layout(g.Layout{
+				g.Child().Size(300, 200).Layout(g.Layout{
 					g.Label("Loading..."),
 				}),
 			).

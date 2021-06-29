@@ -25,7 +25,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("Plot Demo 图表范例").Layout(
+	g.SingleWindow().Layout(
 		g.Plot("Plot 基本图表").AxisLimits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(
 			g.PlotLine("Plot Line 线图", linedata),
 			g.PlotLine("Plot Line2", linedata2),

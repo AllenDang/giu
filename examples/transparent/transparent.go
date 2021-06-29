@@ -12,7 +12,7 @@ func loop() {
 	imgui.PushStyleVarFloat(imgui.StyleVarWindowBorderSize, 0)
 	g.PushColorWindowBg(color.RGBA{50, 50, 50, 0})
 	g.PushColorFrameBg(color.RGBA{10, 10, 10, 0})
-	g.SingleWindow("transparent").Layout(
+	g.SingleWindow().Layout(
 		g.Custom(func() {
 			canvas := g.GetCanvas()
 			pos := g.GetCursorScreenPos()

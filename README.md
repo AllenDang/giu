@@ -64,7 +64,7 @@ func onImSoCute() {
 }
 
 func loop() {
-	g.SingleWindow("hello world").Layout(
+	g.SingleWindow().Layout(
 		g.Label("Hello world from giu"),
 		g.Row(
 			g.Button("Click Me").OnClick(onClickMe),

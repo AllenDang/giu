@@ -11,7 +11,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("Multiple fonts").Layout(
+	g.SingleWindow().Layout(
 		g.Label("Title line").Font(bigFont),
 		g.Label("Content line"),
 

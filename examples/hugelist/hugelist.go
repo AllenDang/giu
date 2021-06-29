@@ -27,9 +27,9 @@ func buildRows() []*g.TableRowWidget {
 }
 
 func loop() {
-	g.SingleWindow("Huge list demo").Layout(
+	g.SingleWindow().Layout(
 		g.Label("Note: FastTable only works if all rows have same height"),
-		g.Table("Fast table").Freeze(0, 1).FastMode(true).Rows(buildRows()...),
+		g.Table().Freeze(0, 1).FastMode(true).Rows(buildRows()...),
 	)
 }
 

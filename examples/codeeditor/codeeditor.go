@@ -13,7 +13,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("Code Editor").Layout(
+	g.SingleWindow().Layout(
 		g.Row(
 			g.Button("Get Text").OnClick(func() {
 				if editor.HasSelection() {

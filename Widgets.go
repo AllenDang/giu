@@ -16,7 +16,7 @@ import (
 )
 
 type RowWidget struct {
-	widgets []Widget
+	widgets Layout
 }
 
 func Row(widgets ...Widget) *RowWidget {
@@ -49,6 +49,10 @@ func (l *RowWidget) Build() {
 			index += 1
 		}
 
+		if ids, ok := w.(idSetter); ok {
+			ids.setId(Context.getWidgetIndexAndIncr())
+		}
+
 		w.Build()
 	}
 }
@@ -64,6 +68,10 @@ type InputTextMultilineWidget struct {
 	flags         InputTextFlags
 	cb            imgui.InputTextCallback
 	onChange      func()
+}
+
+func (itmw *InputTextMultilineWidget) setId(i int) {
+	itmw.label = fmt.Sprintf("%s##%d", itmw.label, i)
 }
 
 func (i *InputTextMultilineWidget) Build() {
@@ -111,6 +119,10 @@ type ButtonWidget struct {
 	height   float32
 	disabled bool
 	onClick  func()
+}
+
+func (b *ButtonWidget) setId(i int) {
+	b.id = fmt.Sprintf("%s##%d", b.id, i)
 }
 
 func (b *ButtonWidget) Build() {
@@ -182,6 +194,10 @@ type ArrowButtonWidget struct {
 	onClick func()
 }
 
+func (b *ArrowButtonWidget) setId(i int) {
+	b.id = fmt.Sprintf("%s##%d", b.id, i)
+}
+
 func (b *ArrowButtonWidget) OnClick(onClick func()) *ArrowButtonWidget {
 	b.onClick = onClick
 	return b
@@ -218,6 +234,10 @@ func SmallButton(id string) *SmallButtonWidget {
 	}
 }
 
+func (sb *SmallButtonWidget) setId(i int) {
+	sb.id = fmt.Sprintf("%s##%d", sb.id, i)
+}
+
 func (sb *SmallButtonWidget) Build() {
 	if imgui.SmallButton(sb.id) && sb.onClick != nil {
 		sb.onClick()
@@ -249,6 +269,10 @@ func InvisibleButton(id string) *InvisibleButtonWidget {
 		height:  0,
 		onClick: nil,
 	}
+}
+
+func (ib *InvisibleButtonWidget) setId(i int) {
+	ib.id = fmt.Sprintf("%s##%d", ib.id, i)
 }
 
 func (ib *InvisibleButtonWidget) Build() {
@@ -328,6 +352,10 @@ type CheckboxWidget struct {
 	onChange func()
 }
 
+func (c *CheckboxWidget) setId(i int) {
+	c.text = fmt.Sprintf("%s##%d", c.text, i)
+}
+
 func (c *CheckboxWidget) Build() {
 	if imgui.Checkbox(c.text, c.selected) && c.onChange != nil {
 		c.onChange()
@@ -351,6 +379,10 @@ type RadioButtonWidget struct {
 	text     string
 	active   bool
 	onChange func()
+}
+
+func (r *RadioButtonWidget) setId(i int) {
+	r.text = fmt.Sprintf("%s##%d", r.text, i)
 }
 
 func (r *RadioButtonWidget) Build() {
@@ -410,9 +442,12 @@ func (c *ChildWidget) Layout(widgets ...Widget) *ChildWidget {
 	return c
 }
 
-func Child(id string) *ChildWidget {
+func (c *ChildWidget) setId(index int) {
+	c.id = fmt.Sprintf("Child_%d", index)
+}
+
+func Child() *ChildWidget {
 	return &ChildWidget{
-		id:     id,
 		width:  0,
 		height: 0,
 		border: true,
@@ -437,6 +472,10 @@ func ComboCustom(label, previewValue string) *ComboCustomWidget {
 		flags:        0,
 		layout:       nil,
 	}
+}
+
+func (cc *ComboCustomWidget) setId(i int) {
+	cc.label = fmt.Sprintf("%s##%d", cc.label, i)
 }
 
 func (cc *ComboCustomWidget) Layout(widgets ...Widget) *ComboCustomWidget {
@@ -497,6 +536,10 @@ func Combo(label, previewValue string, items []string, selected *int32) *ComboWi
 	}
 }
 
+func (c *ComboWidget) setId(i int) {
+	c.label = fmt.Sprintf("%s##%d", c.label, i)
+}
+
 func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
 	c.flags = flags
 	return c
@@ -541,12 +584,15 @@ type ContextMenuWidget struct {
 	layout      Layout
 }
 
-func ContextMenu(label string) *ContextMenuWidget {
+func ContextMenu() *ContextMenuWidget {
 	return &ContextMenuWidget{
-		label:       label,
 		mouseButton: MouseButtonRight,
 		layout:      nil,
 	}
+}
+
+func (c *ContextMenuWidget) setId(i int) {
+	c.label = fmt.Sprintf("ContextMenuWidget_%d", i)
 }
 
 func (c *ContextMenuWidget) Layout(widgets ...Widget) *ContextMenuWidget {
@@ -588,6 +634,10 @@ func DragInt(label string, value *int32, min, max int32) *DragIntWidget {
 	}
 }
 
+func (d *DragIntWidget) setId(i int) {
+	d.label = fmt.Sprintf("%s##%d", d.label, i)
+}
+
 func (d *DragIntWidget) Speed(speed float32) *DragIntWidget {
 	d.speed = speed
 	return d
@@ -603,7 +653,7 @@ func (d *DragIntWidget) Build() {
 }
 
 type ColumnWidget struct {
-	widgets []Widget
+	widgets Layout
 }
 
 // Column layout will place all widgets one by one vertically.
@@ -616,9 +666,7 @@ func Column(widgets ...Widget) *ColumnWidget {
 func (g *ColumnWidget) Build() {
 	imgui.BeginGroup()
 
-	for _, w := range g.widgets {
-		w.Build()
-	}
+	g.widgets.Build()
 
 	imgui.EndGroup()
 }
@@ -703,20 +751,15 @@ type ImageWithRgbaWidget struct {
 }
 
 func ImageWithRgba(rgba *image.RGBA) *ImageWithRgbaWidget {
-	// Generate a unique id from first 100 pix from rgba
-	var pix []uint8
-	if len(rgba.Pix) >= 100 {
-		pix = rgba.Pix[:100]
-	} else {
-		pix = rgba.Pix
-	}
-
 	return &ImageWithRgbaWidget{
-		id:     fmt.Sprintf("ImageWithRgba_%v", pix),
 		width:  100,
 		height: 100,
 		rgba:   rgba,
 	}
+}
+
+func (iwr *ImageWithRgbaWidget) setId(i int) {
+	iwr.id = fmt.Sprintf("ImageWithRgbaWidget_%d", i)
 }
 
 func (i *ImageWithRgbaWidget) Size(width, height float32) *ImageWithRgbaWidget {
@@ -762,6 +805,10 @@ func ImageWithFile(imgPath string) *ImageWithFileWidget {
 		height:  100,
 		imgPath: imgPath,
 	}
+}
+
+func (iwfw *ImageWithFileWidget) setId(i int) {
+	iwfw.id = fmt.Sprintf("%s##%d", iwfw.id, i)
 }
 
 func (i *ImageWithFileWidget) Size(width, height float32) *ImageWithFileWidget {
@@ -817,6 +864,10 @@ func ImageWithUrl(url string) *ImageWithUrlWidget {
 		whenLoading:     Layout{Dummy(100, 100)},
 		whenFailure:     Layout{Dummy(100, 100)},
 	}
+}
+
+func (i *ImageWithUrlWidget) setId(index int) {
+	i.id = fmt.Sprintf("%s##%d", i.id, index)
 }
 
 // Event trigger when image is downloaded and ready to display.
@@ -987,6 +1038,10 @@ func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 	return i
 }
 
+func (itw *InputTextWidget) setId(i int) {
+	itw.label = fmt.Sprintf("%s##%d", itw.label, i)
+}
+
 func (i *InputTextWidget) Build() {
 	// Get state
 	var state *inputTextState
@@ -1062,6 +1117,10 @@ func InputInt(label string, value *int32) *InputIntWidget {
 	}
 }
 
+func (i *InputIntWidget) setId(index int) {
+	i.label = fmt.Sprintf("%s##%d", i.label, index)
+}
+
 func (i *InputIntWidget) Size(width float32) *InputIntWidget {
 	i.width = width * Context.platform.GetContentScale()
 	return i
@@ -1109,6 +1168,10 @@ func InputFloat(label string, value *float32) *InputFloatWidget {
 		flags:    0,
 		onChange: nil,
 	}
+}
+
+func (i *InputFloatWidget) setId(index int) {
+	i.label = fmt.Sprintf("%s##%d", i.label, index)
 }
 
 func (i *InputFloatWidget) Size(width float32) *InputFloatWidget {
@@ -1248,6 +1311,10 @@ func MenuItem(label string) *MenuItemWidget {
 	}
 }
 
+func (m *MenuItemWidget) setId(i int) {
+	m.label = fmt.Sprintf("%s##%d", m.label, i)
+}
+
 func (m *MenuItemWidget) Selected(s bool) *MenuItemWidget {
 	m.selected = s
 	return m
@@ -1281,6 +1348,10 @@ func Menu(label string) *MenuWidget {
 		enabled: true,
 		layout:  nil,
 	}
+}
+
+func (m *MenuWidget) setId(i int) {
+	m.label = fmt.Sprintf("%s##%d", m.label, i)
 }
 
 func (m *MenuWidget) Enabled(e bool) *MenuWidget {
@@ -1436,6 +1507,10 @@ func Selectable(label string) *SelectableWidget {
 	}
 }
 
+func (s *SelectableWidget) setId(i int) {
+	s.label = fmt.Sprintf("%s##%d", s.label, i)
+}
+
 func (s *SelectableWidget) Selected(selected bool) *SelectableWidget {
 	s.selected = selected
 	return s
@@ -1495,6 +1570,10 @@ func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 	}
 }
 
+func (s *SliderIntWidget) setId(i int) {
+	s.label = fmt.Sprintf("%s##%d", s.label, i)
+}
+
 func (s *SliderIntWidget) Format(format string) *SliderIntWidget {
 	s.format = format
 	return s
@@ -1548,6 +1627,10 @@ func VSliderInt(label string, value *int32, min, max int32) *VSliderIntWidget {
 		format: "%d",
 		flags:  SliderFlagsNone,
 	}
+}
+
+func (vs *VSliderIntWidget) setId(i int) {
+	vs.label = fmt.Sprintf("%s##%d", vs.label, i)
 }
 
 func (vs *VSliderIntWidget) Size(width, height float32) *VSliderIntWidget {
@@ -1604,6 +1687,10 @@ func SliderFloat(label string, value *float32, min, max float32) *SliderFloatWid
 		width:    0,
 		onChange: nil,
 	}
+}
+
+func (s *SliderFloatWidget) setId(i int) {
+	s.label = fmt.Sprintf("%s##%d", s.label, i)
 }
 
 func (s *SliderFloatWidget) Format(format string) *SliderFloatWidget {
@@ -1669,13 +1756,16 @@ type HSplitterWidget struct {
 	delta  *float32
 }
 
-func HSplitter(id string, delta *float32) *HSplitterWidget {
+func HSplitter(delta *float32) *HSplitterWidget {
 	return &HSplitterWidget{
-		id:     id,
 		width:  0,
 		height: 0,
 		delta:  delta,
 	}
+}
+
+func (h *HSplitterWidget) setId(i int) {
+	h.id = fmt.Sprintf("HSplitter_%d", i)
 }
 
 func (h *HSplitterWidget) Size(width, height float32) *HSplitterWidget {
@@ -1737,13 +1827,16 @@ type VSplitterWidget struct {
 	delta  *float32
 }
 
-func VSplitter(id string, delta *float32) *VSplitterWidget {
+func VSplitter(delta *float32) *VSplitterWidget {
 	return &VSplitterWidget{
-		id:     id,
 		width:  0,
 		height: 0,
 		delta:  delta,
 	}
+}
+
+func (v *VSplitterWidget) setId(i int) {
+	v.id = fmt.Sprintf("VSplitter_%d", i)
 }
 
 func (v *VSplitterWidget) Size(width, height float32) *VSplitterWidget {
@@ -1814,6 +1907,11 @@ func TabItem(label string) *TabItemWidget {
 	}
 }
 
+func (t *TabItemWidget) setId(i int) {
+	// FIXME maybe a bug for imgui, the tab item won't accept ##id.
+	// t.label = fmt.Sprintf("%s##%d", t.label, i)
+}
+
 func (t *TabItemWidget) IsOpen(open *bool) *TabItemWidget {
 	t.open = open
 	return t
@@ -1844,12 +1942,15 @@ type TabBarWidget struct {
 	layout Layout
 }
 
-func TabBar(id string) *TabBarWidget {
+func TabBar() *TabBarWidget {
 	return &TabBarWidget{
-		id:     tStr(id),
 		flags:  0,
 		layout: nil,
 	}
+}
+
+func (t *TabBarWidget) setId(i int) {
+	t.id = fmt.Sprintf("TabBar##%d", i)
 }
 
 func (t *TabBarWidget) Flags(flags TabBarFlags) *TabBarWidget {
@@ -1913,6 +2014,11 @@ func (r *TableRowWidget) Build() {
 		if !isTooltip && !isContextMenu && !isPopup {
 			imgui.TableNextColumn()
 		}
+
+		if ids, ok := w.(idSetter); ok {
+			ids.setId(Context.getWidgetIndexAndIncr())
+		}
+
 		w.Build()
 	}
 
@@ -1968,9 +2074,8 @@ type TableWidget struct {
 	freezeColumn int
 }
 
-func Table(label string) *TableWidget {
+func Table() *TableWidget {
 	return &TableWidget{
-		label:        label,
 		flags:        TableFlagsResizable | TableFlagsBorders | TableFlagsScrollY,
 		rows:         nil,
 		columns:      nil,
@@ -1978,6 +2083,10 @@ func Table(label string) *TableWidget {
 		freezeRow:    -1,
 		freezeColumn: -1,
 	}
+}
+
+func (t *TableWidget) setId(i int) {
+	t.label = fmt.Sprintf("Table_%d", i)
 }
 
 // Display visible rows only to boost performance.
@@ -2286,7 +2395,7 @@ func (l *ListBoxWidget) Build() {
 		state = s.(*ListBoxState)
 	}
 
-	child := Child(l.id).Border(l.border).Size(l.width, l.height).Layout(Layout{
+	child := Child().Border(l.border).Size(l.width, l.height).Layout(Layout{
 		Custom(func() {
 			var clipper imgui.ListClipper
 			clipper.Begin(len(l.items))
@@ -2321,7 +2430,7 @@ func (l *ListBoxWidget) Build() {
 					}
 
 					if len(menus) > 0 {
-						ContextMenu(fmt.Sprintf("%d_contextmenu", i)).Layout(menus).Build()
+						ContextMenu().Layout(menus).Build()
 					}
 				}
 			}
@@ -2495,7 +2604,7 @@ func (d *DatePickerWidget) Build() {
 				rows = append(rows, TableRow(row...))
 			}
 
-			Table("DayTable").Flags(TableFlagsBorders | TableFlagsSizingStretchSame).Columns(columns...).Rows(rows...).Build()
+			Table().Flags(TableFlagsBorders | TableFlagsSizingStretchSame).Columns(columns...).Rows(rows...).Build()
 
 			imgui.EndCombo()
 		}
@@ -2522,6 +2631,10 @@ func ColorEdit(label string, color *color.RGBA) *ColorEditWidget {
 		color: color,
 		flags: ColorEditFlagsNone,
 	}
+}
+
+func (ce *ColorEditWidget) setId(i int) {
+	ce.label = fmt.Sprintf("%s##%d", ce.label, i)
 }
 
 func (ce *ColorEditWidget) OnChange(cb func()) *ColorEditWidget {

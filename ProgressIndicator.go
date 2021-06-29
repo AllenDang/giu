@@ -1,7 +1,6 @@
 package giu
 
 import (
-	"fmt"
 	"image"
 	"math"
 	"time"
@@ -63,7 +62,7 @@ func (p *ProgressIndicatorWidget) Build() {
 	} else {
 		state := s.(*ProgressIndicatorState)
 
-		child := Child(fmt.Sprintf("%s-container", p.id)).Border(false).Size(p.width, p.height).Layout(Layout{
+		child := Child().Border(false).Size(p.width, p.height).Layout(Layout{
 			Custom(func() {
 				// Process width and height
 				width, height := GetAvaiableRegion()

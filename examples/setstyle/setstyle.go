@@ -7,7 +7,7 @@ import (
 )
 
 func loop() {
-	g.SingleWindow("set style").Layout(
+	g.SingleWindow().Layout(
 		g.Style().
 			SetColor(g.StyleColorText, color.RGBA{0x36, 0x74, 0xD5, 255}).
 			To(

@@ -43,7 +43,7 @@ func btnPopupCLicked() {
 }
 
 func loop() {
-	g.SingleWindowWithMenuBar("Overview").Layout(
+	g.SingleWindowWithMenuBar().Layout(
 		g.MenuBar().Layout(
 			g.Menu("File").Layout(
 				g.MenuItem("Open"),
@@ -135,13 +135,13 @@ func loop() {
 				),
 			),
 			g.Label("Right click me to see the context menu"),
-			g.ContextMenu("Context menu").Layout(
+			g.ContextMenu().Layout(
 				g.Selectable("Context menu 1").OnClick(contextMenu1Clicked),
 				g.Selectable("Context menu 2").OnClick(contextMenu2Clicked),
 			),
 		),
 
-		g.TabBar("Tabbar Input").Layout(
+		g.TabBar().Layout(
 			g.TabItem("Multiline Input").Layout(
 				g.Label("This is first tab with a multiline input text field"),
 				g.InputTextMultiline("##multiline", &multiline).Size(-1, -1),
@@ -173,7 +173,7 @@ func loop() {
 				g.ListBox("ListBox1", []string{"List item 1", "List item 2", "List item 3"}),
 			),
 			g.TabItem("Table").Layout(
-				g.Table("Table").
+				g.Table().
 					Columns(
 						g.TableColumn("Column 1"),
 						g.TableColumn("Column 2"),

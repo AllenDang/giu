@@ -12,7 +12,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("canvas").Layout(
+	g.SingleWindow().Layout(
 		g.Label("Canvas demo"),
 		g.Custom(func() {
 			canvas := g.GetCanvas()

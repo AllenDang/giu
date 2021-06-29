@@ -10,7 +10,7 @@ var (
 )
 
 func loop() {
-	g.SingleWindow("Extra Widgets").Layout(
+	g.SingleWindow().Layout(
 		g.Checkbox("Show ProgressIndicator", &showPD),
 		g.Condition(showPD, g.Layout{
 			g.SliderFloat("Radius", &radius, 10, 100),

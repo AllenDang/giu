@@ -21,6 +21,8 @@ type context struct {
 	renderer imgui.Renderer
 	platform imgui.Platform
 
+	widgetIndexCounter int
+
 	// Indicate whether current application is running
 	isAlive bool
 
@@ -59,6 +61,9 @@ func (c *context) cleanState() {
 		}
 		return true
 	})
+
+	// Reset widgetIndexCounter
+	c.widgetIndexCounter = 0
 }
 
 func (c *context) SetState(id string, data Disposable) {
@@ -74,4 +79,10 @@ func (c *context) GetState(id string) interface{} {
 	}
 
 	return nil
+}
+
+func (c *context) getWidgetIndexAndIncr() int {
+	i := c.widgetIndexCounter
+	c.widgetIndexCounter += 1
+	return i
 }

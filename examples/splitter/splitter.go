@@ -5,17 +5,17 @@ import (
 )
 
 func loop() {
-	g.SingleWindow("splitter").Layout(
-		g.SplitLayout("Split", g.DirectionHorizontal, true, 200,
+	g.SingleWindow().Layout(
+		g.SplitLayout(g.DirectionHorizontal, true, 200,
 			g.Layout{
 				g.Label("Left panel"),
 				g.Row(g.Button("Button1"), g.Button("Button2")),
 			},
-			g.SplitLayout("Right panel", g.DirectionVertical, true, 200,
+			g.SplitLayout(g.DirectionVertical, true, 200,
 				g.Layout{},
-				g.SplitLayout("HSplit", g.DirectionHorizontal, true, 200,
+				g.SplitLayout(g.DirectionHorizontal, true, 200,
 					g.Layout{},
-					g.SplitLayout("VSplit", g.DirectionVertical, true, 100,
+					g.SplitLayout(g.DirectionVertical, true, 100,
 						g.Layout{},
 						g.Layout{},
 					),

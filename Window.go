@@ -6,8 +6,9 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
-func SingleWindow(title string) *WindowWidget {
+func SingleWindow() *WindowWidget {
 	size := Context.platform.DisplaySize()
+	title := fmt.Sprintf("SingleWindow_%d", Context.getWidgetIndexAndIncr())
 	return Window(title).
 		Flags(
 			imgui.WindowFlagsNoTitleBar|
@@ -18,8 +19,9 @@ func SingleWindow(title string) *WindowWidget {
 		Size(size[0], size[1])
 }
 
-func SingleWindowWithMenuBar(title string) *WindowWidget {
+func SingleWindowWithMenuBar() *WindowWidget {
 	size := Context.platform.DisplaySize()
+	title := fmt.Sprintf("SingleWindow_%d", Context.getWidgetIndexAndIncr())
 	return Window(title).
 		Flags(
 			imgui.WindowFlagsNoTitleBar|
