@@ -59,7 +59,7 @@ func loop() {
 		g.Label("One line label"),
 		g.Label("Auto wrapped label with very long line...............................................this line should be wrapped.").Wrapped(true),
 		g.Row(
-			g.InputText("##name", &name),
+			g.InputText(&name),
 			g.Button("Click Me").OnClick(btnClickMeClicked),
 			g.Tooltip("I'm a tooltip"),
 			g.Button("More tooltip"),
@@ -70,7 +70,7 @@ func loop() {
 				g.BulletText("I could be any widgets"),
 			),
 		),
-		g.InputText("Input text with auto complete, input hw and press enter", &name).Size(300).AutoComplete(autoCompleteCandidates),
+		g.InputText(&name).Label("Input text with auto complete, input hw and press enter").Size(300).AutoComplete(autoCompleteCandidates),
 		g.DatePicker("Date Picker", &date).OnChange(func() {
 			fmt.Println(date)
 		}),
@@ -144,7 +144,7 @@ func loop() {
 		g.TabBar().Layout(
 			g.TabItem("Multiline Input").Layout(
 				g.Label("This is first tab with a multiline input text field"),
-				g.InputTextMultiline("##multiline", &multiline).Size(-1, -1),
+				g.InputTextMultiline(&multiline).Size(-1, -1),
 			),
 			g.TabItem("Tree").Layout(
 				g.TreeNode("TreeNode1").Flags(g.TreeNodeFlagsCollapsingHeader|g.TreeNodeFlagsDefaultOpen).Layout(

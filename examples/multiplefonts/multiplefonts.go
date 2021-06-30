@@ -27,7 +27,7 @@ func loop() {
 		g.Label("你好啊！世界"),
 
 		// Change font for input area
-		g.InputTextMultiline("##content", &content).Size(-1, -1),
+		g.InputTextMultiline(&content).Size(-1, -1),
 	)
 }
 

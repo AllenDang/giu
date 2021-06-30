@@ -70,8 +70,26 @@ type InputTextMultilineWidget struct {
 	onChange      func()
 }
 
-func (itmw *InputTextMultilineWidget) setId(i int) {
-	itmw.label = fmt.Sprintf("%s##%d", itmw.label, i)
+func InputTextMultiline(text *string) *InputTextMultilineWidget {
+	return &InputTextMultilineWidget{
+		text:     text,
+		width:    0,
+		height:   0,
+		flags:    0,
+		cb:       nil,
+		onChange: nil,
+	}
+}
+
+func (i *InputTextMultilineWidget) Label(label string) *InputTextMultilineWidget {
+	i.label = tStr(label)
+	return i
+}
+
+func (i *InputTextMultilineWidget) setId(index int) {
+	if len(i.label) == 0 {
+		i.label = fmt.Sprintf("%s##%d", i.label, index)
+	}
 }
 
 func (i *InputTextMultilineWidget) Build() {
@@ -99,18 +117,6 @@ func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultili
 	scale := Context.platform.GetContentScale()
 	i.width, i.height = width*scale, height*scale
 	return i
-}
-
-func InputTextMultiline(label string, text *string) *InputTextMultilineWidget {
-	return &InputTextMultilineWidget{
-		label:    tStr(label),
-		text:     text,
-		width:    0,
-		height:   0,
-		flags:    0,
-		cb:       nil,
-		onChange: nil,
-	}
 }
 
 type ButtonWidget struct {
@@ -991,9 +997,8 @@ func (s *inputTextState) Dispose() {
 	s.autoCompleteCandidates = nil
 }
 
-func InputText(label string, value *string) *InputTextWidget {
+func InputText(value *string) *InputTextWidget {
 	return &InputTextWidget{
-		label:    tStr(label),
 		hint:     "",
 		value:    value,
 		width:    0,
@@ -1001,6 +1006,11 @@ func InputText(label string, value *string) *InputTextWidget {
 		cb:       nil,
 		onChange: nil,
 	}
+}
+
+func (i *InputTextWidget) Label(label string) *InputTextWidget {
+	i.label = tStr(label)
+	return i
 }
 
 // Enable auto complete popup by using fuzzy search of current value agains candidates
@@ -1036,7 +1046,9 @@ func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 }
 
 func (itw *InputTextWidget) setId(i int) {
-	itw.label = fmt.Sprintf("%s##%d", itw.label, i)
+	if len(itw.label) == 0 {
+		itw.label = fmt.Sprintf("%s##%d", itw.label, i)
+	}
 }
 
 func (i *InputTextWidget) Build() {
@@ -1104,9 +1116,8 @@ type InputIntWidget struct {
 	onChange func()
 }
 
-func InputInt(label string, value *int32) *InputIntWidget {
+func InputInt(value *int32) *InputIntWidget {
 	return &InputIntWidget{
-		label:    tStr(label),
 		value:    value,
 		width:    0,
 		flags:    0,
@@ -1114,8 +1125,15 @@ func InputInt(label string, value *int32) *InputIntWidget {
 	}
 }
 
+func (i *InputIntWidget) Label(label string) *InputIntWidget {
+	i.label = tStr(label)
+	return i
+}
+
 func (i *InputIntWidget) setId(index int) {
-	i.label = fmt.Sprintf("%s##%d", i.label, index)
+	if len(i.label) == 0 {
+		i.label = fmt.Sprintf("%s##%d", i.label, index)
+	}
 }
 
 func (i *InputIntWidget) Size(width float32) *InputIntWidget {
@@ -1158,7 +1176,6 @@ type InputFloatWidget struct {
 
 func InputFloat(label string, value *float32) *InputFloatWidget {
 	return &InputFloatWidget{
-		label:    tStr(label),
 		width:    0,
 		value:    value,
 		format:   "%.3f",
@@ -1167,8 +1184,15 @@ func InputFloat(label string, value *float32) *InputFloatWidget {
 	}
 }
 
+func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
+	i.label = tStr(label)
+	return i
+}
+
 func (i *InputFloatWidget) setId(index int) {
-	i.label = fmt.Sprintf("%s##%d", i.label, index)
+	if len(i.label) == 0 {
+		i.label = fmt.Sprintf("%s##%d", i.label, index)
+	}
 }
 
 func (i *InputFloatWidget) Size(width float32) *InputFloatWidget {

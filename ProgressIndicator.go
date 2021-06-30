@@ -33,7 +33,6 @@ func (ps *ProgressIndicatorState) Dispose() {
 }
 
 type ProgressIndicatorWidget struct {
-	id         string
 	internalId string
 	width      float32
 	height     float32
@@ -41,9 +40,8 @@ type ProgressIndicatorWidget struct {
 	label      string
 }
 
-func ProgressIndicator(id, label string, width, height, radius float32) *ProgressIndicatorWidget {
+func ProgressIndicator(label string, width, height, radius float32) *ProgressIndicatorWidget {
 	return &ProgressIndicatorWidget{
-		id:         id,
 		internalId: "###giu-progress-indicator",
 		width:      width * Context.GetPlatform().GetContentScale(),
 		height:     height * Context.GetPlatform().GetContentScale(),
@@ -91,6 +89,8 @@ func (p *ProgressIndicatorWidget) Build() {
 				}
 			}),
 		})
+
+		child.setId(Context.getWidgetIndexAndIncr())
 
 		child.Build()
 	}

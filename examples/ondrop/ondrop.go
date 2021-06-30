@@ -14,7 +14,7 @@ var (
 func loop() {
 	g.SingleWindow().Layout(
 		g.Label("Drop file to this window"),
-		g.InputTextMultiline("#DroppedFiles", &dropInFiles).Size(-1, -1).Flags(g.InputTextFlagsReadOnly),
+		g.InputTextMultiline(&dropInFiles).Size(-1, -1).Flags(g.InputTextFlagsReadOnly),
 	)
 }
 
