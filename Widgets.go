@@ -1907,11 +1907,6 @@ func TabItem(label string) *TabItemWidget {
 	}
 }
 
-func (t *TabItemWidget) setId(i int) {
-	// FIXME maybe a bug for imgui, the tab item won't accept ##id.
-	// t.label = fmt.Sprintf("%s##%d", t.label, i)
-}
-
 func (t *TabItemWidget) IsOpen(open *bool) *TabItemWidget {
 	t.open = open
 	return t
