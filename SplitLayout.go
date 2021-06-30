@@ -44,7 +44,7 @@ func SplitLayout(direction SplitDirection, border bool, sashPos float32, layout1
 	}
 }
 
-func (s *SplitLayoutWidget) setId(i int) {
+func (s *SplitLayoutWidget) SetId(i int) {
 	s.id = fmt.Sprintf("SplitLayout_%d", i)
 }
 

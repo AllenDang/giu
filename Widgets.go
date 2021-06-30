@@ -49,8 +49,8 @@ func (l *RowWidget) Build() {
 			index += 1
 		}
 
-		if ids, ok := w.(idSetter); ok {
-			ids.setId(Context.getWidgetIndexAndIncr())
+		if ids, ok := w.(IdSetter); ok {
+			ids.SetId(Context.GetWidgetIndex())
 		}
 
 		w.Build()
@@ -86,7 +86,7 @@ func (i *InputTextMultilineWidget) Label(label string) *InputTextMultilineWidget
 	return i
 }
 
-func (i *InputTextMultilineWidget) setId(index int) {
+func (i *InputTextMultilineWidget) SetId(index int) {
 	if len(i.label) == 0 {
 		i.label = fmt.Sprintf("%s##%d", i.label, index)
 	}
@@ -127,7 +127,7 @@ type ButtonWidget struct {
 	onClick  func()
 }
 
-func (b *ButtonWidget) setId(i int) {
+func (b *ButtonWidget) SetId(i int) {
 	b.id = fmt.Sprintf("%s##%d", b.id, i)
 }
 
@@ -200,7 +200,7 @@ type ArrowButtonWidget struct {
 	onClick func()
 }
 
-func (b *ArrowButtonWidget) setId(i int) {
+func (b *ArrowButtonWidget) SetId(i int) {
 	b.id = fmt.Sprintf("%s##%d", b.id, i)
 }
 
@@ -240,7 +240,7 @@ func SmallButton(id string) *SmallButtonWidget {
 	}
 }
 
-func (sb *SmallButtonWidget) setId(i int) {
+func (sb *SmallButtonWidget) SetId(i int) {
 	sb.id = fmt.Sprintf("%s##%d", sb.id, i)
 }
 
@@ -277,7 +277,7 @@ func InvisibleButton(id string) *InvisibleButtonWidget {
 	}
 }
 
-func (ib *InvisibleButtonWidget) setId(i int) {
+func (ib *InvisibleButtonWidget) SetId(i int) {
 	ib.id = fmt.Sprintf("%s##%d", ib.id, i)
 }
 
@@ -358,7 +358,7 @@ type CheckboxWidget struct {
 	onChange func()
 }
 
-func (c *CheckboxWidget) setId(i int) {
+func (c *CheckboxWidget) SetId(i int) {
 	c.text = fmt.Sprintf("%s##%d", c.text, i)
 }
 
@@ -387,7 +387,7 @@ type RadioButtonWidget struct {
 	onChange func()
 }
 
-func (r *RadioButtonWidget) setId(i int) {
+func (r *RadioButtonWidget) SetId(i int) {
 	r.text = fmt.Sprintf("%s##%d", r.text, i)
 }
 
@@ -448,7 +448,7 @@ func (c *ChildWidget) Layout(widgets ...Widget) *ChildWidget {
 	return c
 }
 
-func (c *ChildWidget) setId(index int) {
+func (c *ChildWidget) SetId(index int) {
 	c.id = fmt.Sprintf("Child_%d", index)
 }
 
@@ -480,7 +480,7 @@ func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	}
 }
 
-func (cc *ComboCustomWidget) setId(i int) {
+func (cc *ComboCustomWidget) SetId(i int) {
 	cc.label = fmt.Sprintf("%s##%d", cc.label, i)
 }
 
@@ -542,7 +542,7 @@ func Combo(label, previewValue string, items []string, selected *int32) *ComboWi
 	}
 }
 
-func (c *ComboWidget) setId(i int) {
+func (c *ComboWidget) SetId(i int) {
 	c.label = fmt.Sprintf("%s##%d", c.label, i)
 }
 
@@ -597,7 +597,7 @@ func ContextMenu() *ContextMenuWidget {
 	}
 }
 
-func (c *ContextMenuWidget) setId(i int) {
+func (c *ContextMenuWidget) SetId(i int) {
 	c.label = fmt.Sprintf("ContextMenuWidget_%d", i)
 }
 
@@ -640,7 +640,7 @@ func DragInt(label string, value *int32, min, max int32) *DragIntWidget {
 	}
 }
 
-func (d *DragIntWidget) setId(i int) {
+func (d *DragIntWidget) SetId(i int) {
 	d.label = fmt.Sprintf("%s##%d", d.label, i)
 }
 
@@ -1045,7 +1045,7 @@ func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 	return i
 }
 
-func (itw *InputTextWidget) setId(i int) {
+func (itw *InputTextWidget) SetId(i int) {
 	if len(itw.label) == 0 {
 		itw.label = fmt.Sprintf("%s##%d", itw.label, i)
 	}
@@ -1130,7 +1130,7 @@ func (i *InputIntWidget) Label(label string) *InputIntWidget {
 	return i
 }
 
-func (i *InputIntWidget) setId(index int) {
+func (i *InputIntWidget) SetId(index int) {
 	if len(i.label) == 0 {
 		i.label = fmt.Sprintf("%s##%d", i.label, index)
 	}
@@ -1189,7 +1189,7 @@ func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
 	return i
 }
 
-func (i *InputFloatWidget) setId(index int) {
+func (i *InputFloatWidget) SetId(index int) {
 	if len(i.label) == 0 {
 		i.label = fmt.Sprintf("%s##%d", i.label, index)
 	}
@@ -1332,7 +1332,7 @@ func MenuItem(label string) *MenuItemWidget {
 	}
 }
 
-func (m *MenuItemWidget) setId(i int) {
+func (m *MenuItemWidget) SetId(i int) {
 	m.label = fmt.Sprintf("%s##%d", m.label, i)
 }
 
@@ -1371,7 +1371,7 @@ func Menu(label string) *MenuWidget {
 	}
 }
 
-func (m *MenuWidget) setId(i int) {
+func (m *MenuWidget) SetId(i int) {
 	m.label = fmt.Sprintf("%s##%d", m.label, i)
 }
 
@@ -1528,7 +1528,7 @@ func Selectable(label string) *SelectableWidget {
 	}
 }
 
-func (s *SelectableWidget) setId(i int) {
+func (s *SelectableWidget) SetId(i int) {
 	s.label = fmt.Sprintf("%s##%d", s.label, i)
 }
 
@@ -1591,7 +1591,7 @@ func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 	}
 }
 
-func (s *SliderIntWidget) setId(i int) {
+func (s *SliderIntWidget) SetId(i int) {
 	s.label = fmt.Sprintf("%s##%d", s.label, i)
 }
 
@@ -1650,7 +1650,7 @@ func VSliderInt(label string, value *int32, min, max int32) *VSliderIntWidget {
 	}
 }
 
-func (vs *VSliderIntWidget) setId(i int) {
+func (vs *VSliderIntWidget) SetId(i int) {
 	vs.label = fmt.Sprintf("%s##%d", vs.label, i)
 }
 
@@ -1710,7 +1710,7 @@ func SliderFloat(label string, value *float32, min, max float32) *SliderFloatWid
 	}
 }
 
-func (s *SliderFloatWidget) setId(i int) {
+func (s *SliderFloatWidget) SetId(i int) {
 	s.label = fmt.Sprintf("%s##%d", s.label, i)
 }
 
@@ -1785,7 +1785,7 @@ func HSplitter(delta *float32) *HSplitterWidget {
 	}
 }
 
-func (h *HSplitterWidget) setId(i int) {
+func (h *HSplitterWidget) SetId(i int) {
 	h.id = fmt.Sprintf("HSplitter_%d", i)
 }
 
@@ -1856,7 +1856,7 @@ func VSplitter(delta *float32) *VSplitterWidget {
 	}
 }
 
-func (v *VSplitterWidget) setId(i int) {
+func (v *VSplitterWidget) SetId(i int) {
 	v.id = fmt.Sprintf("VSplitter_%d", i)
 }
 
@@ -1965,7 +1965,7 @@ func TabBar() *TabBarWidget {
 	}
 }
 
-func (t *TabBarWidget) setId(i int) {
+func (t *TabBarWidget) SetId(i int) {
 	t.id = fmt.Sprintf("TabBar##%d", i)
 }
 
@@ -2031,8 +2031,8 @@ func (r *TableRowWidget) Build() {
 			imgui.TableNextColumn()
 		}
 
-		if ids, ok := w.(idSetter); ok {
-			ids.setId(Context.getWidgetIndexAndIncr())
+		if ids, ok := w.(IdSetter); ok {
+			ids.SetId(Context.GetWidgetIndex())
 		}
 
 		w.Build()
@@ -2101,7 +2101,7 @@ func Table() *TableWidget {
 	}
 }
 
-func (t *TableWidget) setId(i int) {
+func (t *TableWidget) SetId(i int) {
 	t.label = fmt.Sprintf("Table_%d", i)
 }
 
@@ -2649,7 +2649,7 @@ func ColorEdit(label string, color *color.RGBA) *ColorEditWidget {
 	}
 }
 
-func (ce *ColorEditWidget) setId(i int) {
+func (ce *ColorEditWidget) SetId(i int) {
 	ce.label = fmt.Sprintf("%s##%d", ce.label, i)
 }
 

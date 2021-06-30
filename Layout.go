@@ -1,7 +1,7 @@
 package giu
 
-type idSetter interface {
-	setId(index int)
+type IdSetter interface {
+	SetId(index int)
 }
 
 type Widget interface {
@@ -14,9 +14,9 @@ func (l Layout) Build() {
 	for _, w := range l {
 		if w != nil {
 			// Set id for children
-			if ids, ok := w.(idSetter); ok {
-				index := Context.getWidgetIndexAndIncr()
-				ids.setId(index)
+			if ids, ok := w.(IdSetter); ok {
+				index := Context.GetWidgetIndex()
+				ids.SetId(index)
 			}
 			w.Build()
 		}

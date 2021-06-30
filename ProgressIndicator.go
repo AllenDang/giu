@@ -90,7 +90,7 @@ func (p *ProgressIndicatorWidget) Build() {
 			}),
 		})
 
-		child.setId(Context.getWidgetIndexAndIncr())
+		child.SetId(Context.GetWidgetIndex())
 
 		child.Build()
 	}
