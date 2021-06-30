@@ -751,15 +751,20 @@ type ImageWithRgbaWidget struct {
 }
 
 func ImageWithRgba(rgba *image.RGBA) *ImageWithRgbaWidget {
+	// Generate a unique id from first 100 pix from rgba
+	var pix []uint8
+	if len(rgba.Pix) >= 100 {
+		pix = rgba.Pix[:100]
+	} else {
+		pix = rgba.Pix
+	}
+
 	return &ImageWithRgbaWidget{
+		id:     fmt.Sprintf("ImageWithRgba_%v", pix),
 		width:  100,
 		height: 100,
 		rgba:   rgba,
 	}
-}
-
-func (iwr *ImageWithRgbaWidget) setId(i int) {
-	iwr.id = fmt.Sprintf("ImageWithRgbaWidget_%d", i)
 }
 
 func (i *ImageWithRgbaWidget) Size(width, height float32) *ImageWithRgbaWidget {
@@ -805,10 +810,6 @@ func ImageWithFile(imgPath string) *ImageWithFileWidget {
 		height:  100,
 		imgPath: imgPath,
 	}
-}
-
-func (iwfw *ImageWithFileWidget) setId(i int) {
-	iwfw.id = fmt.Sprintf("%s##%d", iwfw.id, i)
 }
 
 func (i *ImageWithFileWidget) Size(width, height float32) *ImageWithFileWidget {
@@ -864,10 +865,6 @@ func ImageWithUrl(url string) *ImageWithUrlWidget {
 		whenLoading:     Layout{Dummy(100, 100)},
 		whenFailure:     Layout{Dummy(100, 100)},
 	}
-}
-
-func (i *ImageWithUrlWidget) setId(index int) {
-	i.id = fmt.Sprintf("%s##%d", i.id, index)
 }
 
 // Event trigger when image is downloaded and ready to display.
