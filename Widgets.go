@@ -2455,6 +2455,8 @@ func (l *ListBoxWidget) Build() {
 		}),
 	})
 
+	child.SetId(Context.GetWidgetIndex())
+
 	child.Build()
 }
 
