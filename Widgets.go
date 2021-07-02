@@ -560,7 +560,7 @@ func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 }
 
 type ContextMenuWidget struct {
-	label       string
+	id          string
 	mouseButton MouseButton
 	layout      Layout
 }
@@ -582,10 +582,17 @@ func (c *ContextMenuWidget) MouseButton(mouseButton MouseButton) *ContextMenuWid
 	return c
 }
 
-func (c *ContextMenuWidget) Build() {
-	c.label = GenAutoID(c.label)
+func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
+	c.id = id
+	return c
+}
 
-	if imgui.BeginPopupContextItemV(c.label, int(c.mouseButton)) {
+func (c *ContextMenuWidget) Build() {
+	if len(c.id) == 0 {
+		c.id = GenAutoID(c.id)
+	}
+
+	if imgui.BeginPopupContextItemV(c.id, int(c.mouseButton)) {
 		if c.layout != nil {
 			c.layout.Build()
 		}
