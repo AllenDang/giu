@@ -44,10 +44,6 @@ func SplitLayout(direction SplitDirection, border bool, sashPos float32, layout1
 	}
 }
 
-func (s *SplitLayoutWidget) SetId(i int) {
-	s.id = fmt.Sprintf("SplitLayout_%d", i)
-}
-
 func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 	return Layout{
 		Custom(func() {
@@ -86,6 +82,8 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 }
 
 func (s *SplitLayoutWidget) Build() {
+	s.id = GenAutoID("SplitLayout")
+
 	var splitLayoutState *SplitLayoutState
 	// Register state
 	stateId := fmt.Sprintf("SplitLayout_%s", s.id)
