@@ -589,7 +589,7 @@ func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
 
 func (c *ContextMenuWidget) Build() {
 	if len(c.id) == 0 {
-		c.id = GenAutoID(c.id)
+		c.id = GenAutoID("ContextMenu")
 	}
 
 	if imgui.BeginPopupContextItemV(c.id, int(c.mouseButton)) {
