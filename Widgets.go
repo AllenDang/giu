@@ -16,9 +16,7 @@ import (
 )
 
 func GenAutoID(id string) string {
-	newId := fmt.Sprintf("%s##%d", id, Context.GetWidgetIndex())
-	fmt.Println(newId)
-	return newId
+	return fmt.Sprintf("%s##%d", id, Context.GetWidgetIndex())
 }
 
 type RowWidget struct {
