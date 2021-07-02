@@ -10,14 +10,14 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
-var (
-	rgba *image.RGBA
-)
+var rgba *image.RGBA
 
 func loop() {
 	g.SingleWindow().Layout(
 		g.Label("Display image from rgba"),
-		g.ImageWithRgba(rgba).Size(200, 100),
+		g.ImageWithRgba(rgba).OnClick(func() {
+			fmt.Println("rgba image was clicked")
+		}).Size(200, 100),
 
 		g.Label("Display image from file"),
 		g.ImageWithFile("gopher.png").Size(300, 200),
