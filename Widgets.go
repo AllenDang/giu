@@ -16,7 +16,9 @@ import (
 )
 
 func GenAutoID(id string) string {
-	return fmt.Sprintf("%s##%d", id, Context.GetWidgetIndex())
+	newId := fmt.Sprintf("%s##%d", id, Context.GetWidgetIndex())
+	fmt.Println(newId)
+	return newId
 }
 
 type RowWidget struct {
@@ -1382,7 +1384,6 @@ func (p *PopupWidget) Layout(widgets ...Widget) *PopupWidget {
 func (p *PopupWidget) Build() {
 	if imgui.BeginPopup(p.name, int(p.flags)) {
 		if p.layout != nil {
-			Update()
 			p.layout.Build()
 		}
 		imgui.EndPopup()
@@ -1423,7 +1424,6 @@ func (p *PopupModalWidget) Layout(widgets ...Widget) *PopupModalWidget {
 func (p *PopupModalWidget) Build() {
 	if imgui.BeginPopupModalV(p.name, p.open, int(p.flags)) {
 		if p.layout != nil {
-			Update()
 			p.layout.Build()
 		}
 		imgui.EndPopup()
