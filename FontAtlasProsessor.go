@@ -20,7 +20,7 @@ var (
 )
 
 const (
-	preRegisterString = "01234567890.*"
+	preRegisterString = "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 )
 
 type FontInfo struct {
