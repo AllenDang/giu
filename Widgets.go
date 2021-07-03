@@ -808,6 +808,7 @@ type ImageWithFileWidget struct {
 	width   float32
 	height  float32
 	imgPath string
+	onClick func()
 }
 
 func ImageWithFile(imgPath string) *ImageWithFileWidget {
@@ -824,10 +825,15 @@ func (i *ImageWithFileWidget) Size(width, height float32) *ImageWithFileWidget {
 	return i
 }
 
+func (i *ImageWithFileWidget) OnClick(cb func()) *ImageWithFileWidget {
+	i.onClick = cb
+	return i
+}
+
 func (i *ImageWithFileWidget) Build() {
 	state := Context.GetState(i.id)
 
-	widget := Image(nil).Size(i.width, i.height)
+	widget := Image(nil).OnClick(i.onClick).Size(i.width, i.height)
 
 	if state == nil {
 		// Prevent multiple invocation to LoadImage.
@@ -860,6 +866,7 @@ type ImageWithUrlWidget struct {
 	whenFailure     Layout
 	onReady         func()
 	onFailure       func(error)
+	onClick         func()
 }
 
 func ImageWithUrl(url string) *ImageWithUrlWidget {
@@ -882,6 +889,11 @@ func (i *ImageWithUrlWidget) OnReady(onReady func()) *ImageWithUrlWidget {
 
 func (i *ImageWithUrlWidget) OnFailure(onFailure func(error)) *ImageWithUrlWidget {
 	i.onFailure = onFailure
+	return i
+}
+
+func (i *ImageWithUrlWidget) OnClick(cb func()) *ImageWithUrlWidget {
+	i.onClick = cb
 	return i
 }
 
@@ -908,7 +920,7 @@ func (i *ImageWithUrlWidget) LayoutForFailure(widgets ...Widget) *ImageWithUrlWi
 func (i *ImageWithUrlWidget) Build() {
 	state := Context.GetState(i.id)
 
-	widget := Image(nil).Size(i.width, i.height)
+	widget := Image(nil).OnClick(i.onClick).Size(i.width, i.height)
 
 	if state == nil {
 		// Prevent multiple invocation to download image.
