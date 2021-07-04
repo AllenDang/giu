@@ -661,6 +661,7 @@ type ImageWidget struct {
 	height                 float32
 	uv0, uv1               image.Point
 	tintColor, borderColor color.RGBA
+	onClick                func()
 }
 
 func Image(texture *Texture) *ImageWidget {
@@ -690,6 +691,11 @@ func (i *ImageWidget) BorderCol(borderColor color.RGBA) *ImageWidget {
 	return i
 }
 
+func (i *ImageWidget) OnClick(cb func()) *ImageWidget {
+	i.onClick = cb
+	return i
+}
+
 func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 	scale := Context.platform.GetContentScale()
 	i.width, i.height = width*scale, height*scale
@@ -706,6 +712,17 @@ func (i *ImageWidget) Build() {
 		size.Y = rect.Y
 	}
 	if i.texture != nil && i.texture.id != 0 {
+		// trick: detect click event
+		if i.onClick != nil && IsMouseClicked(MouseButtonLeft) {
+			cursorPos := GetCursorScreenPos()
+			mousePos := GetMousePos()
+			mousePos.Add(cursorPos)
+			if cursorPos.X <= mousePos.X && cursorPos.Y <= mousePos.Y &&
+				cursorPos.X+int(i.width) >= mousePos.X && cursorPos.Y+int(i.height) >= mousePos.Y {
+				i.onClick()
+			}
+		}
+
 		imgui.ImageV(i.texture.id, size, ToVec2(i.uv0), ToVec2(i.uv1), ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
 	} else {
 		Dummy(i.width, i.height).Build()
@@ -728,10 +745,11 @@ func (is *ImageState) Dispose() {
 }
 
 type ImageWithRgbaWidget struct {
-	id     string
-	width  float32
-	height float32
-	rgba   *image.RGBA
+	id      string
+	width   float32
+	height  float32
+	rgba    *image.RGBA
+	onClick func()
 }
 
 func ImageWithRgba(rgba *image.RGBA) *ImageWithRgbaWidget {
@@ -756,8 +774,13 @@ func (i *ImageWithRgbaWidget) Size(width, height float32) *ImageWithRgbaWidget {
 	return i
 }
 
+func (i *ImageWithRgbaWidget) OnClick(cb func()) *ImageWithRgbaWidget {
+	i.onClick = cb
+	return i
+}
+
 func (i *ImageWithRgbaWidget) Build() {
-	widget := Image(nil).Size(i.width, i.height)
+	widget := Image(nil).Size(i.width, i.height).OnClick(i.onClick)
 
 	if i.rgba != nil {
 		state := Context.GetState(i.id)
@@ -785,6 +808,7 @@ type ImageWithFileWidget struct {
 	width   float32
 	height  float32
 	imgPath string
+	onClick func()
 }
 
 func ImageWithFile(imgPath string) *ImageWithFileWidget {
@@ -801,10 +825,15 @@ func (i *ImageWithFileWidget) Size(width, height float32) *ImageWithFileWidget {
 	return i
 }
 
+func (i *ImageWithFileWidget) OnClick(cb func()) *ImageWithFileWidget {
+	i.onClick = cb
+	return i
+}
+
 func (i *ImageWithFileWidget) Build() {
 	state := Context.GetState(i.id)
 
-	widget := Image(nil).Size(i.width, i.height)
+	widget := Image(nil).OnClick(i.onClick).Size(i.width, i.height)
 
 	if state == nil {
 		// Prevent multiple invocation to LoadImage.
@@ -837,6 +866,7 @@ type ImageWithUrlWidget struct {
 	whenFailure     Layout
 	onReady         func()
 	onFailure       func(error)
+	onClick         func()
 }
 
 func ImageWithUrl(url string) *ImageWithUrlWidget {
@@ -859,6 +889,11 @@ func (i *ImageWithUrlWidget) OnReady(onReady func()) *ImageWithUrlWidget {
 
 func (i *ImageWithUrlWidget) OnFailure(onFailure func(error)) *ImageWithUrlWidget {
 	i.onFailure = onFailure
+	return i
+}
+
+func (i *ImageWithUrlWidget) OnClick(cb func()) *ImageWithUrlWidget {
+	i.onClick = cb
 	return i
 }
 
@@ -885,7 +920,7 @@ func (i *ImageWithUrlWidget) LayoutForFailure(widgets ...Widget) *ImageWithUrlWi
 func (i *ImageWithUrlWidget) Build() {
 	state := Context.GetState(i.id)
 
-	widget := Image(nil).Size(i.width, i.height)
+	widget := Image(nil).OnClick(i.onClick).Size(i.width, i.height)
 
 	if state == nil {
 		// Prevent multiple invocation to download image.

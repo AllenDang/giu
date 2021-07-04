@@ -10,20 +10,24 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
-var (
-	rgba *image.RGBA
-)
+var rgba *image.RGBA
 
 func loop() {
 	g.SingleWindow().Layout(
 		g.Label("Display image from rgba"),
-		g.ImageWithRgba(rgba).Size(200, 100),
+		g.ImageWithRgba(rgba).OnClick(func() {
+			fmt.Println("rgba image was clicked")
+		}).Size(200, 100),
 
 		g.Label("Display image from file"),
-		g.ImageWithFile("gopher.png").Size(300, 200),
+		g.ImageWithFile("gopher.png").OnClick(func() {
+			fmt.Println("image from file was clicked")
+		}).Size(300, 200),
 
 		g.Label("Display image from url (wait few seconds to download)"),
-		g.ImageWithUrl("https://png.pngitem.com/pimgs/s/3-36108_gopher-golang-hd-png-download.png").Size(300, 200),
+		g.ImageWithUrl("https://png.pngitem.com/pimgs/s/3-36108_gopher-golang-hd-png-download.png").OnClick(func() {
+			fmt.Println("image from url clicked")
+		}).Size(300, 200),
 
 		g.Label("Display images from url with loading and fallback"),
 		g.ImageWithUrl(
