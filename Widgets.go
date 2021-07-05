@@ -87,11 +87,7 @@ func (i *InputTextMultilineWidget) Label(label string) *InputTextMultilineWidget
 }
 
 func (i *InputTextMultilineWidget) Build() {
-	if len(i.label) == 0 {
-		i.label = GenAutoID(i.label)
-	}
-
-	if imgui.InputTextMultilineV(i.label, tStrPtr(i.text), imgui.Vec2{X: i.width, Y: i.height}, int(i.flags), i.cb) && i.onChange != nil {
+	if imgui.InputTextMultilineV(GetAutoID(i.label), tStrPtr(i.text), imgui.Vec2{X: i.width, Y: i.height}, int(i.flags), i.cb) && i.onChange != nil {
 		i.onChange()
 	}
 }
