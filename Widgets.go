@@ -8,7 +8,6 @@ import (
 	"image/color"
 	"image/draw"
 	"math"
-	"strings"
 	"time"
 
 	"github.com/AllenDang/imgui-go"
@@ -17,11 +16,7 @@ import (
 )
 
 func GenAutoID(id string) string {
-	originalId := id
-	if strings.Contains(id, "##") {
-		originalId = strings.Split(id, "##")[0]
-	}
-	return fmt.Sprintf("%s##%d", originalId, Context.GetWidgetIndex())
+	return fmt.Sprintf("%s##%d", id, Context.GetWidgetIndex())
 }
 
 type RowWidget struct {
@@ -131,13 +126,11 @@ type ButtonWidget struct {
 }
 
 func (b *ButtonWidget) Build() {
-	b.id = GenAutoID(b.id)
-
 	if b.disabled {
 		imgui.PushDisabled()
 	}
 
-	if imgui.ButtonV(b.id, imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.ButtonV(GenAutoID(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 
@@ -215,9 +208,7 @@ func ArrowButton(id string, dir Direction) *ArrowButtonWidget {
 }
 
 func (ab *ArrowButtonWidget) Build() {
-	ab.id = GenAutoID(ab.id)
-
-	if imgui.ArrowButton(ab.id, uint8(ab.dir)) && ab.onClick != nil {
+	if imgui.ArrowButton(GenAutoID(ab.id), uint8(ab.dir)) && ab.onClick != nil {
 		ab.onClick()
 	}
 }
@@ -240,8 +231,7 @@ func SmallButton(id string) *SmallButtonWidget {
 }
 
 func (sb *SmallButtonWidget) Build() {
-	sb.id = GenAutoID(sb.id)
-	if imgui.SmallButton(sb.id) && sb.onClick != nil {
+	if imgui.SmallButton(GenAutoID(sb.id)) && sb.onClick != nil {
 		sb.onClick()
 	}
 }
@@ -274,8 +264,7 @@ func InvisibleButton(id string) *InvisibleButtonWidget {
 }
 
 func (ib *InvisibleButtonWidget) Build() {
-	ib.id = GenAutoID(ib.id)
-	if imgui.InvisibleButton(ib.id, imgui.Vec2{X: ib.width, Y: ib.height}) && ib.onClick != nil {
+	if imgui.InvisibleButton(GenAutoID(ib.id), imgui.Vec2{X: ib.width, Y: ib.height}) && ib.onClick != nil {
 		ib.onClick()
 	}
 }
@@ -352,8 +341,7 @@ type CheckboxWidget struct {
 }
 
 func (c *CheckboxWidget) Build() {
-	c.text = GenAutoID(c.text)
-	if imgui.Checkbox(c.text, c.selected) && c.onChange != nil {
+	if imgui.Checkbox(GenAutoID(c.text), c.selected) && c.onChange != nil {
 		c.onChange()
 	}
 }
@@ -378,8 +366,7 @@ type RadioButtonWidget struct {
 }
 
 func (r *RadioButtonWidget) Build() {
-	r.text = GenAutoID(r.text)
-	if imgui.RadioButton(r.text, r.active) && r.onChange != nil {
+	if imgui.RadioButton(GenAutoID(r.text), r.active) && r.onChange != nil {
 		r.onChange()
 	}
 }
@@ -398,7 +385,6 @@ func RadioButton(text string, active bool) *RadioButtonWidget {
 }
 
 type ChildWidget struct {
-	id     string
 	width  float32
 	height float32
 	border bool
@@ -407,8 +393,7 @@ type ChildWidget struct {
 }
 
 func (c *ChildWidget) Build() {
-	c.id = GenAutoID("Child")
-	showed := imgui.BeginChildV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, int(c.flags))
+	showed := imgui.BeginChildV(GenAutoID("Child"), imgui.Vec2{X: c.width, Y: c.height}, c.border, int(c.flags))
 	if showed && c.layout != nil {
 		c.layout.Build()
 	}
@@ -480,13 +465,11 @@ func (cc *ComboCustomWidget) Size(width float32) *ComboCustomWidget {
 }
 
 func (cc *ComboCustomWidget) Build() {
-	cc.label = GenAutoID(cc.label)
-
 	if cc.width > 0 {
 		imgui.PushItemWidth(cc.width)
 	}
 
-	if imgui.BeginComboV(cc.label, cc.previewValue, int(cc.flags)) {
+	if imgui.BeginComboV(GenAutoID(cc.label), cc.previewValue, int(cc.flags)) {
 		if cc.layout != nil {
 			cc.layout.Build()
 		}
@@ -530,13 +513,11 @@ func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
 }
 
 func (c *ComboWidget) Build() {
-	c.label = GenAutoID(c.label)
-
 	if c.width > 0 {
 		imgui.PushItemWidth(c.width)
 	}
 
-	if imgui.BeginComboV(c.label, c.previewValue, int(c.flags)) {
+	if imgui.BeginComboV(GenAutoID(c.label), c.previewValue, int(c.flags)) {
 		for i, item := range c.items {
 			if imgui.Selectable(item) {
 				*c.selected = int32(i)
@@ -636,9 +617,7 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 }
 
 func (d *DragIntWidget) Build() {
-	d.label = GenAutoID(d.label)
-
-	imgui.DragIntV(d.label, d.value, d.speed, d.min, d.max, d.format)
+	imgui.DragIntV(GenAutoID(d.label), d.value, d.speed, d.min, d.max, d.format)
 }
 
 type ColumnWidget struct {
@@ -1360,9 +1339,7 @@ func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 }
 
 func (m *MenuItemWidget) Build() {
-	m.label = GenAutoID(m.label)
-
-	if imgui.MenuItemV(m.label, "", m.selected, m.enabled) && m.onClick != nil {
+	if imgui.MenuItemV(GenAutoID(m.label), "", m.selected, m.enabled) && m.onClick != nil {
 		m.onClick()
 	}
 }
@@ -1392,9 +1369,7 @@ func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
 }
 
 func (m *MenuWidget) Build() {
-	m.label = GenAutoID(m.label)
-
-	if imgui.BeginMenuV(m.label, m.enabled) {
+	if imgui.BeginMenuV(GenAutoID(m.label), m.enabled) {
 		if m.layout != nil {
 			m.layout.Build()
 		}
@@ -1556,9 +1531,7 @@ func (s *SelectableWidget) OnClick(onClick func()) *SelectableWidget {
 }
 
 func (s *SelectableWidget) Build() {
-	s.label = GenAutoID(s.label)
-
-	if imgui.SelectableV(s.label, s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.SelectableV(GenAutoID(s.label), s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 }
@@ -1612,13 +1585,11 @@ func (s *SliderIntWidget) OnChange(onChange func()) *SliderIntWidget {
 }
 
 func (s *SliderIntWidget) Build() {
-	s.label = GenAutoID(s.label)
-
 	if s.width != 0 {
 		PushItemWidth(s.width)
 	}
 
-	if imgui.SliderIntV(s.label, s.value, s.min, s.max, s.format) && s.onChange != nil {
+	if imgui.SliderIntV(GenAutoID(s.label), s.value, s.min, s.max, s.format) && s.onChange != nil {
 		s.onChange()
 	}
 
@@ -1673,10 +1644,8 @@ func (vs *VSliderIntWidget) OnChange(onChange func()) *VSliderIntWidget {
 }
 
 func (vs *VSliderIntWidget) Build() {
-	vs.label = GenAutoID(vs.label)
-
 	if imgui.VSliderIntV(
-		vs.label,
+		GenAutoID(vs.label),
 		imgui.Vec2{X: vs.width, Y: vs.height},
 		vs.value,
 		vs.min,
@@ -1727,13 +1696,11 @@ func (sf *SliderFloatWidget) Size(width float32) *SliderFloatWidget {
 }
 
 func (sf *SliderFloatWidget) Build() {
-	sf.label = GenAutoID(sf.label)
-
 	if sf.width != 0 {
 		PushItemWidth(sf.width)
 	}
 
-	if imgui.SliderFloatV(sf.label, sf.value, sf.min, sf.max, sf.format, 1.0) && sf.onChange != nil {
+	if imgui.SliderFloatV(GenAutoID(sf.label), sf.value, sf.min, sf.max, sf.format, 1.0) && sf.onChange != nil {
 		sf.onChange()
 	}
 
@@ -1947,7 +1914,6 @@ func (t *TabItemWidget) Build() {
 }
 
 type TabBarWidget struct {
-	id       string
 	flags    TabBarFlags
 	tabItems []*TabItemWidget
 }
@@ -1969,9 +1935,7 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 }
 
 func (t *TabBarWidget) Build() {
-	t.id = GenAutoID("TabBar")
-
-	if imgui.BeginTabBarV(t.id, int(t.flags)) {
+	if imgui.BeginTabBarV(GenAutoID("TabBar"), int(t.flags)) {
 		for _, ti := range t.tabItems {
 			ti.Build()
 		}
@@ -2066,7 +2030,6 @@ func (c *TableColumnWidget) Build() {
 }
 
 type TableWidget struct {
-	label        string
 	flags        TableFlags
 	size         imgui.Vec2
 	innerWidth   float64
@@ -2127,8 +2090,6 @@ func (t *TableWidget) Flags(flags TableFlags) *TableWidget {
 }
 
 func (t *TableWidget) Build() {
-	t.label = GenAutoID("Table")
-
 	if len(t.rows) == 0 {
 		return
 	}
@@ -2138,7 +2099,7 @@ func (t *TableWidget) Build() {
 		colCount = len(t.rows[0].layout)
 	}
 
-	if imgui.BeginTable(t.label, colCount, imgui.TableFlags(t.flags), t.size, t.innerWidth) {
+	if imgui.BeginTable(GenAutoID("Table"), colCount, imgui.TableFlags(t.flags), t.size, t.innerWidth) {
 		if t.freezeColumn >= 0 && t.freezeRow >= 0 {
 			imgui.TableSetupScrollFreeze(t.freezeColumn, t.freezeRow)
 		}
@@ -2650,8 +2611,6 @@ func (ce *ColorEditWidget) Size(width float32) *ColorEditWidget {
 }
 
 func (ce *ColorEditWidget) Build() {
-	ce.label = GenAutoID(ce.label)
-
 	c := ToVec4Color(*ce.color)
 	col := [4]float32{
 		c.X,
@@ -2665,7 +2624,7 @@ func (ce *ColorEditWidget) Build() {
 	}
 
 	if imgui.ColorEdit4V(
-		ce.label,
+		GenAutoID(ce.label),
 		&col,
 		int(ce.flags),
 	) {

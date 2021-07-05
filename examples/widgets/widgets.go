@@ -141,7 +141,7 @@ func loop() {
 			),
 		),
 
-		g.TabBar().Layout(
+		g.TabBar().TabItems(
 			g.TabItem("Multiline Input").Layout(
 				g.Label("This is first tab with a multiline input text field"),
 				g.InputTextMultiline(&multiline).Size(-1, -1),
