@@ -8,6 +8,7 @@ import (
 	"image/color"
 	"image/draw"
 	"math"
+	"strings"
 	"time"
 
 	"github.com/AllenDang/imgui-go"
@@ -16,7 +17,11 @@ import (
 )
 
 func GenAutoID(id string) string {
-	return fmt.Sprintf("%s##%d", id, Context.GetWidgetIndex())
+	originalId := id
+	if strings.Contains(id, "##") {
+		originalId = strings.Split(id, "##")[0]
+	}
+	return fmt.Sprintf("%s##%d", originalId, Context.GetWidgetIndex())
 }
 
 type RowWidget struct {
