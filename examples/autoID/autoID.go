@@ -2,7 +2,10 @@ package main
 
 import "github.com/AllenDang/giu"
 
-var text string
+var (
+	text    string
+	intager int32
+)
 
 func loop() {
 	giu.SingleWindow().Layout(
@@ -19,6 +22,8 @@ func loop() {
 		giu.ContextMenu().ID("contextMenu").Layout(
 			giu.MenuItem("menuItem"),
 		),
+		giu.InputInt(&intager).Label("inputInt"),
+		giu.InputInt(&intager).Label("inputInt"),
 	)
 }
 
