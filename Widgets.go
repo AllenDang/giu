@@ -87,7 +87,7 @@ func (i *InputTextMultilineWidget) Label(label string) *InputTextMultilineWidget
 }
 
 func (i *InputTextMultilineWidget) Build() {
-	if imgui.InputTextMultilineV(GetAutoID(i.label), tStrPtr(i.text), imgui.Vec2{X: i.width, Y: i.height}, int(i.flags), i.cb) && i.onChange != nil {
+	if imgui.InputTextMultilineV(GenAutoID(i.label), tStrPtr(i.text), imgui.Vec2{X: i.width, Y: i.height}, int(i.flags), i.cb) && i.onChange != nil {
 		i.onChange()
 	}
 }
@@ -993,6 +993,7 @@ func (s *inputTextState) Dispose() {
 func InputText(value *string) *InputTextWidget {
 	return &InputTextWidget{
 		hint:     "",
+		label:    GenAutoID(""),
 		value:    value,
 		width:    0,
 		flags:    0,
@@ -1002,7 +1003,7 @@ func InputText(value *string) *InputTextWidget {
 }
 
 func (i *InputTextWidget) Label(label string) *InputTextWidget {
-	i.label = tStr(label)
+	i.label = tStr(label) + i.label
 	return i
 }
 
@@ -1039,10 +1040,6 @@ func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 }
 
 func (i *InputTextWidget) Build() {
-	if len(i.label) == 0 {
-		i.label = GenAutoID(i.label)
-	}
-
 	// Get state
 	var state *inputTextState
 	if s := Context.GetState(i.label); s == nil {
