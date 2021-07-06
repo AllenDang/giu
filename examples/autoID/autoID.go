@@ -12,7 +12,13 @@ func loop() {
 		giu.InputText(&text).Label("input"),
 		giu.InputText(&text).Label("input"),
 		giu.InputTextMultiline(&text),
+		giu.ContextMenu().ID("contextMenu").Layout(
+			giu.MenuItem("menuItem"),
+		),
 		giu.InputTextMultiline(&text),
+		giu.ContextMenu().ID("contextMenu").Layout(
+			giu.MenuItem("menuItem"),
+		),
 	)
 }
 

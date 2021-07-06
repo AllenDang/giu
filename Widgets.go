@@ -549,6 +549,7 @@ type ContextMenuWidget struct {
 
 func ContextMenu() *ContextMenuWidget {
 	return &ContextMenuWidget{
+		id:          GenAutoID("contextMenu"),
 		mouseButton: MouseButtonRight,
 		layout:      nil,
 	}
@@ -565,15 +566,11 @@ func (c *ContextMenuWidget) MouseButton(mouseButton MouseButton) *ContextMenuWid
 }
 
 func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
-	c.id = id
+	c.id = GenAutoID(id)
 	return c
 }
 
 func (c *ContextMenuWidget) Build() {
-	if len(c.id) == 0 {
-		c.id = GenAutoID("ContextMenu")
-	}
-
 	if imgui.BeginPopupContextItemV(c.id, int(c.mouseButton)) {
 		if c.layout != nil {
 			c.layout.Build()
