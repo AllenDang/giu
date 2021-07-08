@@ -39,19 +39,16 @@ func (l *RowWidget) Build() {
 		_, isPopup := w.(*PopupWidget)
 		_, isTabItem := w.(*TabItemWidget)
 		_, isLabel := w.(*LabelWidget)
-		_, isCustom := w.(*CustomWidget)
 
 		if isLabel {
 			AlignTextToFramePadding()
 		}
 
-		if index > 0 && !isTooltip && !isContextMenu && !isPopupModal && !isPopup && !isTabItem && !isCustom {
+		if index > 0 && !isTooltip && !isContextMenu && !isPopupModal && !isPopup && !isTabItem {
 			imgui.SameLine()
 		}
 
-		if !isCustom {
-			index += 1
-		}
+		index += 1
 
 		w.Build()
 	}
