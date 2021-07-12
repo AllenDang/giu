@@ -215,6 +215,7 @@ const (
 	StyleColorTabUnfocusedActive    StyleColorID = 37
 	StyleColorPlotLines             StyleColorID = 38
 	StyleColorPlotLinesHovered      StyleColorID = 39
+	StyleColorProgressBarActive     StyleColorID = 40
 	StyleColorPlotHistogram         StyleColorID = 40
 	StyleColorPlotHistogramHovered  StyleColorID = 41
 	StyleColorTableHeaderBg         StyleColorID = 42
