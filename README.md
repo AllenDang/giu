@@ -2,27 +2,27 @@
 
 [![Join the chat at https://gitter.im/AllenDang-giu/community](https://badges.gitter.im/AllenDang-giu/community.svg)](https://gitter.im/AllenDang-giu/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Go Report Card](https://goreportcard.com/badge/github.com/AllenDang/giu)](https://goreportcard.com/report/github.com/AllenDang/giu) [![Build Status](https://travis-ci.org/AllenDang/giu.svg?branch=master)](https://travis-ci.org/AllenDang/giu) [![Godoc Card](https://camo.githubusercontent.com/fd3cd5d5f44237541b35fcfdcba2fd4466a60c12/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f476f646f632d7265666572656e63652d626c75652e737667)](https://pkg.go.dev/github.com/AllenDang/giu?tab=doc)
 
-Cross platform rapid GUI framework for golang based on [Dear ImGui](https://github.com/ocornut/imgui) and the great golang binding [imgui-go](https://github.com/inkyblackness/imgui-go).
+A rapid cross-platform GUI framework for Go based on [Dear ImGui](https://github.com/ocornut/imgui) and the great Go binding [imgui-go](https://github.com/inkyblackness/imgui-go).
 
-Any contribution (features, widgets, tutorials, documents and etc...) is appreciated!
+Any contribution (features, widgets, tutorials, documents, etc...) is appreciated!
 
 ## Supported Platforms
 
-giu is built upon GLFW v3.3, so idealy giu could support all platforms that GLFW v3.3 supports.
+giu is built upon GLFW v3.3, so ideally giu could support all platforms that GLFW v3.3 supports.
 
 - Windows (only tested on Windows 10 x64)
 - MacOS (only tested on MacOS v10.15)
 - Linux (thanks remeh to test it)
-- Raspberry pi 3b (thanks sndvaps to test it)
+- Raspberry Pi 3B (thanks sndvaps to test it)
 
 ## Features
 
 Compare to other Dear ImGui golang bindings, giu has following features:
 
-- Small executable file size (<3mb after upx compression for the example/helloworld demo).
-- Live-update during the resizing of OS window (implemented on GLFW 3.3 and OpenGL 3.2).
-- Support to display various languages without any font setting. Giu will rebuild font atlas incrementally according to texts in UI between frames. Below is the list of languages currently support.
-  * MacOS
+- Small executable file size (<3MB after UPX compression for the example/helloworld demo).
+- Live-updating during the resizing of OS window (implemented on GLFW 3.3 and OpenGL 3.2).
+- Support for displaying various languages without any font setting. Giu will rebuild font atlas incrementally according to texts in UI between frames. Below is the list of languages currently supported:
+  * macOS
 	1. English
 	2. Simplified Chinese
 	3. Japanese
@@ -33,10 +33,10 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 	3. Japanese
   * Kali Linux
 	1. English
-  * Need your help to add more language support by creating PR or tell me the OS default font name for your language.
-- Redraw only when user event occurred. Costs only 0.5% CPU usage with 60FPS.
+  * Need your help to add more language support by creating a PR or telling me the OS default font name for your language.
+- Redraws only when user event occurred. Costs only 0.5% CPU usage with 60FPS.
 - Declarative UI (see examples for more detail).
-- DPI awareness (auto scale font and UI to adapte high DPI monitor).
+- DPI awareness (auto scaling font and UI to adapt high DPI monitor).
 - Drop in usage, no need to implement render and platform.
 - OS clipboard support.
 
@@ -79,7 +79,7 @@ func main() {
 }
 ```
 
-Here is result.
+Here is result:
 
 ![Helloworld](https://github.com/AllenDang/giu/raw/master/examples/helloworld/helloworld.png)
 
@@ -87,33 +87,33 @@ Here is result.
 
 ### What is immediate mode GUI?
 
-Immediate mode GUI system means the UI control doesn't retain it's state and value. For example, call `giu.InputText("ID", &str)` will display a input text box on screen, and the user entered value will be stored in `&str`, input text box doesn't know anything about it. 
+Immediate mode GUI system means the UI control doesn't retain its state and value. For example, calling `giu.InputText("ID", &str)` will display a input text box on screen, and the user entered value will be stored in `&str`. Input text box doesn't know anything about it. 
 
-And the `loop` method in the *Hello world* example is in charge of **drawing** all widgets based on the parameters passed into them. This method will be invoked 30 times per second to reflect interactive states (like clicked, hovered, value-changed etc...). It will be the place you define the UI structure.
+And the `loop` method in the *Hello world* example is in charge of **drawing** all widgets based on the parameters passed into them. This method will be invoked 30 times per second to reflect interactive states (like clicked, hovered, value-changed, etc.). It will be the place you define the UI structure.
 
 ### The layout and sizing system
 
-By default, any widget is placed inside a container's `Layout` will be place vertically.
+By default, any widget placed inside a container's `Layout` will be placed vertically.
 
-To create a row of widgets (aka place widgets one by one horizontally), use `Row()` method. For example `giu.Row(Label(...), Button(...))` will create a Label next to a Button.
+To create a row of widgets (aka place widgets one by one horizontally), use the `Row()` method. For example `giu.Row(Label(...), Button(...))` will create a Label next to a Button.
 
-To creata a column of widgets (aka place widgets one by one vertically) inside a row, use `Column()` method.
+To creata a column of widgets (aka place widgets one by one vertically) inside a row, use the `Column()` method.
 
-Any widget which has a `Size()` method, could set it's size explicitly. Note you could pass negative value to `Size()`, it means avaiable remain width/height - value. For example, `InputText(...).Size(-1)` will create a input text box with longest width it's container has lefted.
+Any widget that has a `Size()` method, could set its size explicitly. Note that you could pass a negative value to `Size()`, which will fill the remaining width/height value. For example, `InputText(...).Size(-1)` will create a input text box with longest width that its container has left.
 
 ### Containers
 
 #### MasterWindow
 
-A `MasterWindow` means the platform native window implemented by OS. All sub window and widgets will be placed inside it.
+A `MasterWindow` means the platform native window implemented by OS. All subwindows and widgets will be placed inside it.
 
 #### Window
 
-A `Window` is a container with a title bar, and could be collapsed. `SingleWindow` is a special kind of window who will occupy all avaialbe space of `MasterWindow`.
+A `Window` is a container with a title bar, and can be collapsed. `SingleWindow` is a special kind of window that will occupy all available space of `MasterWindow`.
 
 #### Child
 
-A `Child` is like a panel in other GUI framework, it could have a background color and border.
+A `Child` is like a panel in other GUI frameworks - it can have a background color and border.
 
 ### Widgets
 
@@ -121,7 +121,7 @@ Check `examples/widgets` for all kinds of widgets.
 
 ## Install
 
-The backend of giu depends on OpenGL 3.3, make sure your environment supports it (so far as I known some Virual Machine like VirualBox doesn`t support it).
+The backend of giu depends on OpenGL 3.3, make sure your environment supports it (so far as I known some Virtual Machines like VirualBox doesn't support it).
 
 ### MacOS
 
@@ -136,13 +136,15 @@ go get github.com/AllenDang/giu
 2. Add the binaries folder of mingw to the path (usually is *\mingw64\bin*).
 3. go get github.com/AllenDang/giu
 
+Or, install [TDM-GCC](https://jmeubank.github.io/tdm-gcc/).
+
 ### Linux
 
-First you need to install libraries
+First you need to install required dependencies:
 ```bash
 # apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libglx-dev libgl1-mesa-dev libxxf86vm-dev
 ```
-Then simple `go build` will work.
+Then, a simple `go build` will work.
 
 Cross-compiling is a bit more complicated. Let's say that you want to build for arm64. That's what you would need to do:
 
@@ -154,7 +156,7 @@ Cross-compiling is a bit more complicated. Let's say that you want to build for 
 $ GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ HOST=aarch64-linux-gnu go build -v
 ```
 
-## Deploy
+## Deploying
 
 ### Build MacOS version on MacOS.
 
@@ -190,13 +192,13 @@ rm YourExeName.syso
 rm YourExeName.rc
 ```
 
-## Document
+## Documentation
 
 Check [Wiki](https://github.com/AllenDang/giu/wiki)
 
 ## Contribution
 
-All kinds of pull request (document, demo, screenshots, code, etc...) are more then welcome!
+All kinds of pull request (document, demo, screenshots, code, etc.) are more then welcome!
 
 ## Projects using giu
 
