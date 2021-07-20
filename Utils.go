@@ -69,9 +69,17 @@ func GetCursorScreenPos() image.Point {
 	return image.Pt(int(pos.X), int(pos.Y))
 }
 
+func SetCursorScreenPos(pos image.Point) {
+	imgui.SetCursorScreenPos(imgui.Vec2{X: float32(pos.X), Y: float32(pos.Y)})
+}
+
 func GetCursorPos() image.Point {
 	pos := imgui.CursorPos()
 	return image.Pt(int(pos.X), int(pos.Y))
+}
+
+func SetCursorPos(pos image.Point) {
+	imgui.SetCursorPos(imgui.Vec2{X: float32(pos.X), Y: float32(pos.Y)})
 }
 
 func GetMousePos() image.Point {

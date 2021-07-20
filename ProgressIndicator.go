@@ -63,7 +63,7 @@ func (p *ProgressIndicatorWidget) Build() {
 		child := Child().Border(false).Size(p.width, p.height).Layout(Layout{
 			Custom(func() {
 				// Process width and height
-				width, height := GetAvaiableRegion()
+				width, height := GetAvailableRegion()
 
 				canvas := GetCanvas()
 

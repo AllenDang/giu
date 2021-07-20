@@ -1712,7 +1712,7 @@ type DummyWidget struct {
 }
 
 func (d *DummyWidget) Build() {
-	w, h := GetAvaiableRegion()
+	w, h := GetAvailableRegion()
 
 	if d.width < 0 {
 		d.width = w + d.width
@@ -1749,7 +1749,7 @@ func HSplitter(delta *float32) *HSplitterWidget {
 
 func (h *HSplitterWidget) Size(width, height float32) *HSplitterWidget {
 	scale := Context.platform.GetContentScale()
-	aw, ah := GetAvaiableRegion()
+	aw, ah := GetAvailableRegion()
 
 	if width == 0 {
 		h.width = aw / scale
@@ -1817,7 +1817,7 @@ func VSplitter(delta *float32) *VSplitterWidget {
 }
 
 func (v *VSplitterWidget) Size(width, height float32) *VSplitterWidget {
-	aw, ah := GetAvaiableRegion()
+	aw, ah := GetAvailableRegion()
 	scale := Context.platform.GetContentScale()
 
 	if width == 0 {
