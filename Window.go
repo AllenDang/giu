@@ -34,6 +34,8 @@ func SingleWindowWithMenuBar() *WindowWidget {
 
 type windowState struct {
 	hasFocus bool
+	currentPosition,
+	currentSize imgui.Vec2
 }
 
 func (s *windowState) Dispose() {
@@ -103,6 +105,9 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 			}
 
 			ws.hasFocus = hasFocus
+
+			ws.currentPosition = imgui.WindowPos()
+			ws.currentSize = imgui.WindowSize()
 		}),
 	)
 
@@ -113,6 +118,16 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 	}
 
 	imgui.End()
+}
+
+func (w *WindowWidget) CurrentPosition() (x, y float32) {
+	pos := w.getState().currentPosition
+	return pos.X, pos.Y
+}
+
+func (w *WindowWidget) CurrentSize() (width, height float32) {
+	size := w.getState().currentSize
+	return size.X, size.Y
 }
 
 func (w *WindowWidget) BringToFront() {
