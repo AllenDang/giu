@@ -331,6 +331,78 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 	}
 }
 
+type ImageButtonWithRgbaWidget struct {
+	*ImageButtonWidget
+	rgba *image.RGBA
+	id   string
+}
+
+func ImageButtonWithRgba(rgba *image.RGBA) *ImageButtonWithRgbaWidget {
+	// Generate a unique id from first 100 pix from rgba
+	var pix []uint8
+	if len(rgba.Pix) >= 100 {
+		pix = rgba.Pix[:100]
+	} else {
+		pix = rgba.Pix
+	}
+
+	return &ImageButtonWithRgbaWidget{
+		ImageButtonWidget: ImageButton(nil),
+		rgba:              rgba,
+		id:                fmt.Sprintf("ImageButtonWithRgba_%v", pix),
+	}
+}
+
+func (b *ImageButtonWithRgbaWidget) Size(width, height float32) *ImageButtonWithRgbaWidget {
+	b.ImageButtonWidget.Size(width, height)
+	return b
+}
+
+func (b *ImageButtonWithRgbaWidget) OnClick(onClick func()) *ImageButtonWithRgbaWidget {
+	b.ImageButtonWidget.OnClick(onClick)
+	return b
+}
+
+func (b *ImageButtonWithRgbaWidget) UV(uv0, uv1 image.Point) *ImageButtonWithRgbaWidget {
+	b.ImageButtonWidget.UV(uv0, uv1)
+	return b
+}
+
+func (b *ImageButtonWithRgbaWidget) BgColor(bgColor color.RGBA) *ImageButtonWithRgbaWidget {
+	b.ImageButtonWidget.BgColor(bgColor)
+	return b
+}
+
+func (b *ImageButtonWithRgbaWidget) TintColor(tintColor color.RGBA) *ImageButtonWithRgbaWidget {
+	b.ImageButtonWidget.TintColor(tintColor)
+	return b
+}
+
+func (b *ImageButtonWithRgbaWidget) FramePadding(padding int) *ImageButtonWithRgbaWidget {
+	b.ImageButtonWidget.FramePadding(padding)
+	return b
+}
+
+func (i *ImageButtonWithRgbaWidget) Build() {
+	state := Context.GetState(i.id)
+
+	if state == nil {
+		Context.SetState(i.id, &ImageState{})
+
+		go func() {
+			texture, err := NewTextureFromRgba(i.rgba)
+			if err == nil {
+				Context.SetState(i.id, &ImageState{texture: texture})
+			}
+		}()
+	} else {
+		imgState := state.(*ImageState)
+		i.ImageButtonWidget.texture = imgState.texture
+	}
+
+	i.ImageButtonWidget.Build()
+}
+
 type CheckboxWidget struct {
 	text     string
 	selected *bool
