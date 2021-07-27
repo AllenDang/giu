@@ -806,16 +806,8 @@ type ImageWithRgbaWidget struct {
 }
 
 func ImageWithRgba(rgba *image.RGBA) *ImageWithRgbaWidget {
-	// Generate a unique id from first 100 pix from rgba
-	var pix []uint8
-	if len(rgba.Pix) >= 100 {
-		pix = rgba.Pix[:100]
-	} else {
-		pix = rgba.Pix
-	}
-
 	return &ImageWithRgbaWidget{
-		id:     fmt.Sprintf("ImageWithRgba_%v", pix),
+		id:     GenAutoID("ImageWithRgba_%v"),
 		width:  100,
 		height: 100,
 		rgba:   rgba,
