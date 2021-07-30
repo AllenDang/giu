@@ -1,6 +1,7 @@
 package giu
 
 import (
+	"image"
 	"image/color"
 	"time"
 
@@ -288,4 +289,20 @@ func (w *MasterWindow) RegisterKeyboardShortcuts(s ...WindowShortcut) *MasterWin
 	}
 
 	return w
+}
+
+// SetIcon sets the icon of the specified window. If passed an array of candidate images,
+// those of or closest to the sizes desired by the system are selected. If no images are
+// specified, the window reverts to its default icon.
+//
+// The image is ideally provided in the form of *image.NRGBA.
+// The pixels are 32-bit, little-endian, non-premultiplied RGBA, i.e. eight
+// bits per channel with the red channel first. They are arranged canonically
+// as packed sequential rows, starting from the top-left corner. If the image
+// type is not *image.NRGBA, it will be converted to it.
+//
+// The desired image sizes varies depending on platform and system settings. The selected
+// images will be rescaled as needed. Good sizes include 16x16, 32x32 and 48x48.
+func (w *MasterWindow) SetIcon(icons []image.Image) {
+	w.platform.SetIcon(icons)
 }
