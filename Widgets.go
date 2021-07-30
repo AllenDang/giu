@@ -1557,6 +1557,7 @@ type SelectableWidget struct {
 	width    float32
 	height   float32
 	onClick  func()
+	onDClick func()
 }
 
 func Selectable(label string) *SelectableWidget {
@@ -1591,9 +1592,25 @@ func (s *SelectableWidget) OnClick(onClick func()) *SelectableWidget {
 	return s
 }
 
+// Handle mouse left button's double click event.
+// SelectableFlagsAllowDoubleClick will set once tonDClick callback is notnull
+func (s *SelectableWidget) OnDClick(onDClick func()) *SelectableWidget {
+	s.onDClick = onDClick
+	return s
+}
+
 func (s *SelectableWidget) Build() {
+	// If onDClick is set, check flags and set related flag when necessary
+	if s.onDClick != nil && s.flags&SelectableFlagsAllowDoubleClick != 0 {
+		s.flags |= SelectableFlagsAllowDoubleClick
+	}
+
 	if imgui.SelectableV(GenAutoID(s.label), s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
+	}
+
+	if s.onDClick != nil && IsItemActive() && IsMouseDoubleClicked(MouseButtonLeft) {
+		s.onDClick()
 	}
 }
 
