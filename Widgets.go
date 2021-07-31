@@ -2211,6 +2211,137 @@ func (t *TableWidget) Build() {
 	}
 }
 
+type TreeTableRowWidget struct {
+	label    string
+	flags    TreeNodeFlags
+	layout   Layout
+	children []*TreeTableRowWidget
+}
+
+func TreeTableRow(label string, widgets ...Widget) *TreeTableRowWidget {
+	return &TreeTableRowWidget{
+		label:  label,
+		layout: widgets,
+	}
+}
+
+func (ttr *TreeTableRowWidget) Children(rows ...*TreeTableRowWidget) *TreeTableRowWidget {
+	ttr.children = rows
+	return ttr
+}
+
+func (ttr *TreeTableRowWidget) Flags(flags TreeNodeFlags) *TreeTableRowWidget {
+	ttr.flags = flags
+	return ttr
+}
+
+func (ttr *TreeTableRowWidget) Build() {
+	imgui.TableNextRow(0, 0)
+	imgui.TableNextColumn()
+
+	open := false
+	if len(ttr.children) > 0 {
+		open = imgui.TreeNodeV(GenAutoID(ttr.label), int(ttr.flags))
+	} else {
+		ttr.flags |= TreeNodeFlagsLeaf | TreeNodeFlagsNoTreePushOnOpen
+		imgui.TreeNodeV(GenAutoID(ttr.label), int(ttr.flags))
+	}
+
+	for _, w := range ttr.layout {
+		_, isTooltip := w.(*TooltipWidget)
+		_, isContextMenu := w.(*ContextMenuWidget)
+		_, isPopup := w.(*PopupModalWidget)
+
+		if !isTooltip && !isContextMenu && !isPopup {
+			imgui.TableNextColumn()
+		}
+
+		w.Build()
+	}
+
+	if len(ttr.children) > 0 && open {
+		for _, c := range ttr.children {
+			c.Build()
+		}
+
+		imgui.TreePop()
+	}
+}
+
+type TreeTableWidget struct {
+	flags        TableFlags
+	size         imgui.Vec2
+	columns      []*TableColumnWidget
+	rows         []*TreeTableRowWidget
+	freezeRow    int
+	freezeColumn int
+}
+
+func TreeTable() *TreeTableWidget {
+	return &TreeTableWidget{
+		flags:   TableFlagsBordersV | TableFlagsBordersOuterH | TableFlagsResizable | TableFlagsRowBg | TableFlagsNoBordersInBody,
+		rows:    nil,
+		columns: nil,
+	}
+}
+
+// Freeze columns/rows so they stay visible when scrolled.
+func (tt *TreeTableWidget) Freeze(col, row int) *TreeTableWidget {
+	tt.freezeColumn = col
+	tt.freezeRow = row
+	return tt
+}
+
+func (tt *TreeTableWidget) Size(width, height float32) *TreeTableWidget {
+	tt.size = imgui.Vec2{X: width, Y: height}
+	return tt
+}
+
+func (tt *TreeTableWidget) Flags(flags TableFlags) *TreeTableWidget {
+	tt.flags = flags
+	return tt
+}
+
+func (tt *TreeTableWidget) Columns(cols ...*TableColumnWidget) *TreeTableWidget {
+	tt.columns = cols
+	return tt
+}
+
+func (tt *TreeTableWidget) Rows(rows ...*TreeTableRowWidget) *TreeTableWidget {
+	tt.rows = rows
+	return tt
+}
+
+func (tt *TreeTableWidget) Build() {
+	if len(tt.rows) == 0 {
+		return
+	}
+
+	colCount := len(tt.columns)
+	if colCount == 0 {
+		colCount = len(tt.rows[0].layout) + 1
+	}
+
+	if imgui.BeginTable(GenAutoID("TreeTable"), colCount, imgui.TableFlags(tt.flags), tt.size, 0) {
+		if tt.freezeColumn >= 0 && tt.freezeRow >= 0 {
+			imgui.TableSetupScrollFreeze(tt.freezeColumn, tt.freezeRow)
+		}
+
+		if len(tt.columns) > 0 {
+			for _, col := range tt.columns {
+				col.Build()
+			}
+			imgui.TableHeadersRow()
+		}
+
+		for _, row := range tt.rows {
+			row.Build()
+		}
+
+		imgui.EndTable()
+	}
+}
+
 type TooltipWidget struct {
 	tip    string
 	layout Layout

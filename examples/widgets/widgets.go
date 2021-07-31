@@ -169,6 +169,30 @@ func loop() {
 					}
 				}),
 			),
+			g.TabItem("TreeTable").Layout(
+				g.TreeTable().
+					Columns(g.TableColumn("Name"), g.TableColumn("Size")).
+					Rows(
+						[]*g.TreeTableRowWidget{
+							g.TreeTableRow("Folder1", g.Label("")).Children(
+								g.TreeTableRow("File1", g.Label("1MB")),
+								g.TreeTableRow("File2", g.Label("2MB")),
+							),
+							g.TreeTableRow("Folder2", g.Label("")).Children(
+								g.TreeTableRow("File1", g.Label("1MB")),
+								g.TreeTableRow("File2", g.Label("2MB")),
+							),
+							g.TreeTableRow("Folder3", g.Label("")).Flags(g.TreeNodeFlagsDefaultOpen).Children(
+								g.TreeTableRow("File1", g.Label("1MB")),
+								g.TreeTableRow("File2", g.Label("2MB")),
+								g.TreeTableRow("File2", g.Label("2MB")),
+								g.TreeTableRow("File2", g.Label("2MB")),
+								g.TreeTableRow("File2", g.Label("2MB")),
+							),
+						}...,
+					).
+					Size(-1, -1),
+			),
 			g.TabItem("ListBox").Layout(
 				g.ListBox("ListBox1", []string{"List item 1", "List item 2", "List item 3"}),
 			),
