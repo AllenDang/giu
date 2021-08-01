@@ -49,7 +49,7 @@ func (c *Canvas) AddRectFilled(pMin, pMax image.Point, color color.RGBA, roundin
 }
 
 func (c *Canvas) AddText(pos image.Point, color color.RGBA, text string) {
-	c.drawlist.AddText(ToVec2(pos), ToVec4Color(color), text)
+	c.drawlist.AddText(ToVec2(pos), ToVec4Color(color), tStr(text))
 }
 
 func (c *Canvas) AddBezierCubic(pos0, cp0, cp1, pos1 image.Point, color color.RGBA, thickness float32, num_segments int) {
