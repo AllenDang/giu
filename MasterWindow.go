@@ -251,6 +251,19 @@ func (w *MasterWindow) SetSize(x, y int) {
 	}
 }
 
+// SetCloseCallback sets the close callback of the window, which is called when
+// the user attempts to close the window, for example by clicking the close
+// widget in the title bar.
+//
+// The close flag is set before this callback is called, but you can modify it at
+// any time with returned value of callback function.
+//
+// Mac OS X: Selecting Quit from the application menu will trigger the close
+// callback for all windows.
+func (w *MasterWindow) SetCloseCallback(cb func() bool) {
+	w.platform.SetCloseCallback(cb)
+}
+
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
 }
@@ -303,6 +316,6 @@ func (w *MasterWindow) RegisterKeyboardShortcuts(s ...WindowShortcut) *MasterWin
 //
 // The desired image sizes varies depending on platform and system settings. The selected
 // images will be rescaled as needed. Good sizes include 16x16, 32x32 and 48x48.
-func (w *MasterWindow) SetIcon(icons ...image.Image) {
+func (w *MasterWindow) SetIcon(icons []image.Image) {
 	w.platform.SetIcon(icons)
 }
