@@ -22,18 +22,18 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 - Small executable file size (<3MB after UPX compression for the example/helloworld demo).
 - Live-updating during the resizing of OS window (implemented on GLFW 3.3 and OpenGL 3.2).
 - Support for displaying various languages without any font setting. Giu will rebuild font atlas incrementally according to texts in UI between frames. Below is the list of languages currently supported:
-  * macOS
-	1. English
-	2. Simplified Chinese
-	3. Japanese
-	4. Korean
-  * Windows
-	1. English
-	2. Simplified Chinese
-	3. Japanese
-  * Kali Linux
-	1. English
-  * Need your help to add more language support by creating a PR or telling me the OS default font name for your language.
+  - macOS
+  1.  English
+  2.  Simplified Chinese
+  3.  Japanese
+  4.  Korean
+  - Windows
+  1.  English
+  2.  Simplified Chinese
+  3.  Japanese
+  - Kali Linux
+  1.  English
+  - Need your help to add more language support by creating a PR or telling me the OS default font name for your language.
 - Redraws only when user event occurred. Costs only 0.5% CPU usage with 60FPS.
 - Declarative UI (see examples for more detail).
 - DPI awareness (auto scaling font and UI to adapt high DPI monitor).
@@ -87,9 +87,9 @@ Here is result:
 
 ### What is immediate mode GUI?
 
-Immediate mode GUI system means the UI control doesn't retain its state and value. For example, calling `giu.InputText("ID", &str)` will display a input text box on screen, and the user entered value will be stored in `&str`. Input text box doesn't know anything about it. 
+Immediate mode GUI system means the UI control doesn't retain its state and value. For example, calling `giu.InputText("ID", &str)` will display a input text box on screen, and the user entered value will be stored in `&str`. Input text box doesn't know anything about it.
 
-And the `loop` method in the *Hello world* example is in charge of **drawing** all widgets based on the parameters passed into them. This method will be invoked 30 times per second to reflect interactive states (like clicked, hovered, value-changed, etc.). It will be the place you define the UI structure.
+And the `loop` method in the _Hello world_ example is in charge of **drawing** all widgets based on the parameters passed into them. This method will be invoked 30 times per second to reflect interactive states (like clicked, hovered, value-changed, etc.). It will be the place you define the UI structure.
 
 ### The layout and sizing system
 
@@ -99,7 +99,7 @@ To create a row of widgets (aka place widgets one by one horizontally), use the 
 
 To creata a column of widgets (aka place widgets one by one vertically) inside a row, use the `Column()` method.
 
-Any widget that has a `Size()` method, could set its size explicitly. Note that you could pass a negative value to `Size()`, which will fill the remaining width/height value. For example, `InputText(...).Size(-1)` will create a input text box with longest width that its container has left.
+Any widget that has a `Size()` method, could set its size explicitly. Note that you could pass a negative value to `Size()`, which will fill the remaining width/height value. For example, `InputText(...).Size(giu.Auto)` will create a input text box with longest width that its container has left.
 
 ### Containers
 
@@ -125,7 +125,7 @@ The backend of giu depends on OpenGL 3.3, make sure your environment supports it
 
 ### MacOS
 
-``` sh
+```sh
 xcode-select --install
 go get github.com/AllenDang/giu
 ```
@@ -133,7 +133,7 @@ go get github.com/AllenDang/giu
 ### Windows
 
 1. Install mingw [download here](https://github.com/brechtsanders/winlibs_mingw/releases/tag/10.2.0-11.0.0-8.0.0-r8). Thanks @alchem1ster!
-2. Add the binaries folder of mingw to the path (usually is *\mingw64\bin*).
+2. Add the binaries folder of mingw to the path (usually is _\mingw64\bin_).
 3. go get github.com/AllenDang/giu
 
 Or, install [TDM-GCC](https://jmeubank.github.io/tdm-gcc/).
@@ -141,9 +141,11 @@ Or, install [TDM-GCC](https://jmeubank.github.io/tdm-gcc/).
 ### Linux
 
 First you need to install required dependencies:
+
 ```bash
 # apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libglx-dev libgl1-mesa-dev libxxf86vm-dev
 ```
+
 Then, a simple `go build` will work.
 
 Cross-compiling is a bit more complicated. Let's say that you want to build for arm64. That's what you would need to do:
@@ -160,26 +162,27 @@ $ GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc CXX=aarch64-lin
 
 ### Build MacOS version on MacOS.
 
-``` sh
+```sh
 go build -ldflags "-s -w" .
 ```
 
 ### Build Windows version on Windows.
 
-``` sh
+```sh
 go build -ldflags "-s -w -H=windowsgui -extldflags=-static" .
 ```
 
 ### Build Windows version on MacOS.
 
 1. Install mingw-64.
-``` sh
+
+```sh
 brew install mingw-w64
 ```
 
 2. Prepare and embed application icon to executable and build.
 
-``` sh
+```sh
 cat > YourExeName.rc << EOL
 id ICON "./res/app_win.ico"
 GLFW_ICON ICON "./res/app_win.ico"

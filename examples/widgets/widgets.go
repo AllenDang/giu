@@ -87,7 +87,7 @@ func loop() {
 			g.RadioButton("Radio 3", radioOp == 2).OnChange(func() { radioOp = 2 }),
 		),
 
-		g.ProgressBar(0.8).Size(-1, 0).Overlay("Progress"),
+		g.ProgressBar(0.8).Size(g.Auto, 0).Overlay("Progress"),
 		g.DragInt("DragInt", &dragInt, 0, 100),
 		g.SliderInt("Slider", &dragInt, 0, 100),
 
@@ -144,7 +144,7 @@ func loop() {
 		g.TabBar().TabItems(
 			g.TabItem("Multiline Input").Layout(
 				g.Label("This is first tab with a multiline input text field"),
-				g.InputTextMultiline(&multiline).Size(-1, -1),
+				g.InputTextMultiline(&multiline).Size(g.Auto, g.Auto),
 			),
 			g.TabItem("Tree").Layout(
 				g.TreeNode("TreeNode1").Flags(g.TreeNodeFlagsCollapsingHeader|g.TreeNodeFlagsDefaultOpen).Layout(
@@ -191,7 +191,7 @@ func loop() {
 							),
 						}...,
 					).
-					Size(-1, -1),
+					Size(g.Auto, g.Auto),
 			),
 			g.TabItem("ListBox").Layout(
 				g.ListBox("ListBox1", []string{"List item 1", "List item 2", "List item 3"}),
