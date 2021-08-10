@@ -802,6 +802,7 @@ type ImageWithRgbaWidget struct {
 	width   float32
 	height  float32
 	rgba    *image.RGBA
+	texture *Texture
 	onClick func()
 }
 
@@ -825,23 +826,25 @@ func (i *ImageWithRgbaWidget) OnClick(cb func()) *ImageWithRgbaWidget {
 }
 
 func (i *ImageWithRgbaWidget) Build() {
-	widget := Image(nil).Size(i.width, i.height).OnClick(i.onClick)
+	widget := Image(i.texture).Size(i.width, i.height).OnClick(i.onClick)
 
-	if i.rgba != nil {
-		state := Context.GetState(i.id)
+	if i.texture == nil {
+		if i.rgba != nil {
+			state := Context.GetState(i.id)
 
-		if state == nil {
-			Context.SetState(i.id, &ImageState{})
+			if state == nil {
+				Context.SetState(i.id, &ImageState{})
 
-			go func() {
-				texture, err := NewTextureFromRgba(i.rgba)
-				if err == nil {
-					Context.SetState(i.id, &ImageState{texture: texture})
-				}
-			}()
-		} else {
-			imgState := state.(*ImageState)
-			widget.texture = imgState.texture
+				go func() {
+					texture, err := NewTextureFromRgba(i.rgba)
+					if err == nil {
+						Context.SetState(i.id, &ImageState{texture: texture})
+					}
+				}()
+			} else {
+				imgState := state.(*ImageState)
+				widget.texture = imgState.texture
+			}
 		}
 	}
 
