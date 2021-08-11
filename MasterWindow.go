@@ -25,6 +25,10 @@ const (
 	MasterWindowFlagsTransparent MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsTransparent)
 )
 
+var (
+	DontCare int = imgui.GlfwDontCare
+)
+
 type MasterWindow struct {
 	width      int
 	height     int
@@ -318,4 +322,14 @@ func (w *MasterWindow) RegisterKeyboardShortcuts(s ...WindowShortcut) *MasterWin
 // images will be rescaled as needed. Good sizes include 16x16, 32x32 and 48x48.
 func (w *MasterWindow) SetIcon(icons []image.Image) {
 	w.platform.SetIcon(icons)
+}
+
+// SetSizeLimits sets the size limits of the client area of the specified window.
+// If the window is full screen or not resizable, this function does nothing.
+//
+// The size limits are applied immediately and may cause the window to be resized.
+// To specify only a minimum size or only a maximum one, set the other pair to giu.DontCare.
+// To disable size limits for a window, set them all to giu.DontCare.
+func (w *MasterWindow) SetSizeLimits(minw, minh, maxw, maxh int) {
+	w.platform.SetSizeLimits(minw, minh, maxw, maxh)
 }

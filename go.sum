@@ -1,7 +1,7 @@
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8 h1:dKZMqib/yUDoCFigmz2agG8geZ/e3iRq304/KJXqKyw=
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8/go.mod h1:b4uuDd0s6KRIPa84cEEchdQ9ICh7K0OryZHbSzMca9k=
-github.com/AllenDang/imgui-go v1.12.1-0.20210801050644-e183d1c04c13 h1:8i7ZGtBAQ+eNpPYxfwHDd9Ztsu68OAAScwn26Yb16wA=
-github.com/AllenDang/imgui-go v1.12.1-0.20210801050644-e183d1c04c13/go.mod h1:+pYwstqlGGlU2lI1FREPlVAKP2nwV+bNhAlMrbQynhQ=
+github.com/AllenDang/imgui-go v1.12.1-0.20210811111318-d8a9ca10b924 h1:38hxznFQ0Y/ssnjIgsqgX7xifDgcybSNdYpgFMfzdsw=
+github.com/AllenDang/imgui-go v1.12.1-0.20210811111318-d8a9ca10b924/go.mod h1:+pYwstqlGGlU2lI1FREPlVAKP2nwV+bNhAlMrbQynhQ=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 h1:baVdMKlASEHrj19iqjARrPbaRisD7EuZEVJj6ZMLl1Q=
@@ -9,8 +9,9 @@ github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3/go.mod h1:VEPNJ
 github.com/go-gl/gl v0.0.0-20210315015930-ae072cafe09d/go.mod h1:482civXOzJJCPzJ4ZOX/pwvXBWSnzD4OKMdH4ClKGbk=
 github.com/go-gl/gl v0.0.0-20210501111010-69f74958bac0 h1:7xNa69TzlTrKtlBtE4yyNRFP9oqAneXAs9oKJkVOECs=
 github.com/go-gl/gl v0.0.0-20210501111010-69f74958bac0/go.mod h1:wjpnOv6ONl2SuJSxqCPVaPZibGFdSci9HFocT9qtVYM=
-github.com/go-gl/glfw/v3.3/glfw v0.0.0-20210410170116-ea3d685f79fb h1:T6gaWBvRzJjuOrdCtg8fXXjKai2xSDqWTcKFUPuw8Tw=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20210410170116-ea3d685f79fb/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
+github.com/go-gl/glfw/v3.3/glfw v0.0.0-20210727001814-0db043d8d5be h1:vEIVIuBApEBQTEJt19GfhoU+zFSV+sNTa9E9FdnRYfk=
+github.com/go-gl/glfw/v3.3/glfw v0.0.0-20210727001814-0db043d8d5be/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/go-resty/resty/v2 v2.3.0 h1:JOOeAvjSlapTT92p8xiS19Zxev1neGikoHsXJeOq8So=
 github.com/go-resty/resty/v2 v2.3.0/go.mod h1:UpN9CgLZNsv4e9XG50UU8xdI0F43UQ4HmxLBDwaroHU=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
