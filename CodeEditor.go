@@ -23,17 +23,17 @@ func CodeEditor(title string) *CodeEditorWidget {
 	}
 }
 
-func (ce *CodeEditorWidget) SetShowWhitespaces(s bool) *CodeEditorWidget {
+func (ce *CodeEditorWidget) ShowWhitespaces(s bool) *CodeEditorWidget {
 	ce.editor.SetShowWhitespaces(s)
 	return ce
 }
 
-func (ce *CodeEditorWidget) SetTabSize(size int) *CodeEditorWidget {
+func (ce *CodeEditorWidget) TabSize(size int) *CodeEditorWidget {
 	ce.editor.SetTabSize(size)
 	return ce
 }
 
-func (ce *CodeEditorWidget) SetLanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
+func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
 	switch definition {
 	case LanguageDefinitionSQL:
 		ce.editor.SetLanguageDefinitionSQL()
@@ -48,17 +48,17 @@ func (ce *CodeEditorWidget) SetLanguageDefinition(definition LanguageDefinition)
 	return ce
 }
 
-func (ce *CodeEditorWidget) SetText(str string) *CodeEditorWidget {
+func (ce *CodeEditorWidget) Text(str string) *CodeEditorWidget {
 	ce.editor.SetText(str)
 	return ce
 }
 
-func (ce *CodeEditorWidget) SetErrorMarkers(markers imgui.ErrorMarkers) *CodeEditorWidget {
+func (ce *CodeEditorWidget) ErrorMarkers(markers imgui.ErrorMarkers) *CodeEditorWidget {
 	ce.editor.SetErrorMarkers(markers)
 	return ce
 }
 
-func (ce *CodeEditorWidget) SetHandleKeyboardInputs(b bool) *CodeEditorWidget {
+func (ce *CodeEditorWidget) HandleKeyboardInputs(b bool) *CodeEditorWidget {
 	ce.editor.SetHandleKeyboardInputs(b)
 	return ce
 }

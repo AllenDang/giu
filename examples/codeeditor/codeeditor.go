@@ -32,14 +32,14 @@ func loop() {
 				fmt.Println("Current line is", editor.GetCurrentLineText())
 			}),
 			g.Button("Set Text").OnClick(func() {
-				editor.SetText("Set text")
+				editor.Text("Set text")
 			}),
 			g.Button("Set Error Marker").OnClick(func() {
 				errMarkers.Clear()
 				errMarkers.Insert(1, "Error message")
 				fmt.Println("ErrMarkers Size:", errMarkers.Size())
 
-				editor.SetErrorMarkers(errMarkers)
+				editor.ErrorMarkers(errMarkers)
 			}),
 		),
 		g.Custom(func() {
@@ -52,10 +52,10 @@ func main() {
 	errMarkers = imgui.NewErrorMarkers()
 
 	editor = g.CodeEditor("Code Editor").
-		SetShowWhitespaces(false).
-		SetTabSize(2).
-		SetText("select * from greeting\nwhere date > current_timestamp\norder by date").
-		SetLanguageDefinition(giu.LanguageDefinitionSQL)
+		ShowWhitespaces(false).
+		TabSize(2).
+		Text("select * from greeting\nwhere date > current_timestamp\norder by date").
+		LanguageDefinition(giu.LanguageDefinitionSQL)
 
 	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
 	wnd.Run(loop)
