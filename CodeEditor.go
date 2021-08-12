@@ -12,7 +12,10 @@ const (
 )
 
 type CodeEditorWidget struct {
-	title  string
+	title string
+	width,
+	height float32
+	border bool
 	editor imgui.TextEditor
 }
 
@@ -60,6 +63,16 @@ func (ce *CodeEditorWidget) ErrorMarkers(markers imgui.ErrorMarkers) *CodeEditor
 
 func (ce *CodeEditorWidget) HandleKeyboardInputs(b bool) *CodeEditorWidget {
 	ce.editor.SetHandleKeyboardInputs(b)
+	return ce
+}
+
+func (ce *CodeEditorWidget) Size(w, h float32) *CodeEditorWidget {
+	ce.width, ce.height = w, h
+	return ce
+}
+
+func (ce *CodeEditorWidget) Border(border bool) *CodeEditorWidget {
+	ce.border = border
 	return ce
 }
 
@@ -123,7 +136,10 @@ func (ce *CodeEditorWidget) Delete() {
 	ce.editor.Delete()
 }
 
-func (ce *CodeEditorWidget) Render(width, height float32, border bool) {
+func (ce *CodeEditorWidget) Build() {
+	// register text in font atlas
 	tStr(ce.editor.GetText())
-	ce.editor.Render(ce.title, imgui.Vec2{X: width, Y: height}, border)
+
+	// build editor
+	ce.editor.Render(ce.title, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)
 }

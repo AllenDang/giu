@@ -42,9 +42,7 @@ func loop() {
 				editor.ErrorMarkers(errMarkers)
 			}),
 		),
-		g.Custom(func() {
-			editor.Render(0, 0, true)
-		}),
+		editor,
 	)
 }
 
@@ -55,7 +53,8 @@ func main() {
 		ShowWhitespaces(false).
 		TabSize(2).
 		Text("select * from greeting\nwhere date > current_timestamp\norder by date").
-		LanguageDefinition(giu.LanguageDefinitionSQL)
+		LanguageDefinition(giu.LanguageDefinitionSQL).
+		Border(true)
 
 	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
 	wnd.Run(loop)
