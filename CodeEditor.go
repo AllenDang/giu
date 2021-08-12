@@ -2,6 +2,15 @@ package giu
 
 import "github.com/AllenDang/imgui-go"
 
+type LanguageDefinition byte
+
+const (
+	LanguageDefinitionSQL LanguageDefinition = iota
+	LanguageDefinitionCPP
+	LanguageDefinitionLua
+	LanguageDefinitionC
+)
+
 type CodeEditorWidget struct {
 	title  string
 	editor imgui.TextEditor
@@ -22,20 +31,19 @@ func (ce *CodeEditorWidget) SetTabSize(size int) {
 	ce.editor.SetTabSize(size)
 }
 
-func (ce *CodeEditorWidget) SetLanguageDefinitionSQL() {
-	ce.editor.SetLanguageDefinitionSQL()
-}
+func (ce *CodeEditorWidget) SetLanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
+	switch definition {
+	case LanguageDefinitionSQL:
+		ce.editor.SetLanguageDefinitionSQL()
+	case LanguageDefinitionCPP:
+		ce.editor.SetLanguageDefinitionCPP()
+	case LanguageDefinitionLua:
+		ce.editor.SetLanguageDefinitionLua()
+	case LanguageDefinitionC:
+		ce.editor.SetLanguageDefinitionC()
+	}
 
-func (ce *CodeEditorWidget) SetLanguageDefinitionCPP() {
-	ce.editor.SetLanguageDefinitionCPP()
-}
-
-func (ce *CodeEditorWidget) SetLanguageDefinitionLua() {
-	ce.editor.SetLanguageDefinitionLua()
-}
-
-func (ce *CodeEditorWidget) SetLanguageDefinitionC() {
-	ce.editor.SetLanguageDefinitionC()
+	return ce
 }
 
 func (ce *CodeEditorWidget) SetText(str string) {

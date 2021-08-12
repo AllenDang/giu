@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/AllenDang/giu"
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/imgui-go"
 )
@@ -54,7 +55,7 @@ func main() {
 	editor.SetShowWhitespaces(false)
 	editor.SetTabSize(2)
 	editor.SetText("select * from greeting\nwhere date > current_timestamp\norder by date")
-	editor.SetLanguageDefinitionSQL()
+	editor.SetLanguageDefinition(giu.LanguageDefinitionSQL)
 
 	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
 	wnd.Run(loop)
