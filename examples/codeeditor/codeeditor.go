@@ -51,11 +51,11 @@ func loop() {
 func main() {
 	errMarkers = imgui.NewErrorMarkers()
 
-	editor = g.CodeEditor("Code Editor")
-	editor.SetShowWhitespaces(false)
-	editor.SetTabSize(2)
-	editor.SetText("select * from greeting\nwhere date > current_timestamp\norder by date")
-	editor.SetLanguageDefinition(giu.LanguageDefinitionSQL)
+	editor = g.CodeEditor("Code Editor").
+		SetShowWhitespaces(false).
+		SetTabSize(2).
+		SetText("select * from greeting\nwhere date > current_timestamp\norder by date").
+		SetLanguageDefinition(giu.LanguageDefinitionSQL)
 
 	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
 	wnd.Run(loop)

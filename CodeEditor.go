@@ -23,12 +23,14 @@ func CodeEditor(title string) *CodeEditorWidget {
 	}
 }
 
-func (ce *CodeEditorWidget) SetShowWhitespaces(s bool) {
+func (ce *CodeEditorWidget) SetShowWhitespaces(s bool) *CodeEditorWidget {
 	ce.editor.SetShowWhitespaces(s)
+	return ce
 }
 
-func (ce *CodeEditorWidget) SetTabSize(size int) {
+func (ce *CodeEditorWidget) SetTabSize(size int) *CodeEditorWidget {
 	ce.editor.SetTabSize(size)
+	return ce
 }
 
 func (ce *CodeEditorWidget) SetLanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
@@ -46,8 +48,19 @@ func (ce *CodeEditorWidget) SetLanguageDefinition(definition LanguageDefinition)
 	return ce
 }
 
-func (ce *CodeEditorWidget) SetText(str string) {
+func (ce *CodeEditorWidget) SetText(str string) *CodeEditorWidget {
 	ce.editor.SetText(str)
+	return ce
+}
+
+func (ce *CodeEditorWidget) SetErrorMarkers(markers imgui.ErrorMarkers) *CodeEditorWidget {
+	ce.editor.SetErrorMarkers(markers)
+	return ce
+}
+
+func (ce *CodeEditorWidget) SetHandleKeyboardInputs(b bool) *CodeEditorWidget {
+	ce.editor.SetHandleKeyboardInputs(b)
+	return ce
 }
 
 func (ce *CodeEditorWidget) HasSelection() bool {
@@ -74,10 +87,6 @@ func (ce *CodeEditorWidget) GetSelectionStart() (int, int) {
 	return ce.editor.GetSelectionStart()
 }
 
-func (ce *CodeEditorWidget) SetErrorMarkers(markers imgui.ErrorMarkers) {
-	ce.editor.SetErrorMarkers(markers)
-}
-
 func (ce *CodeEditorWidget) InsertText(text string) {
 	ce.editor.InsertText(text)
 }
@@ -92,10 +101,6 @@ func (ce *CodeEditorWidget) SelectWordUnderCursor() {
 
 func (ce *CodeEditorWidget) IsTextChanged() bool {
 	return ce.editor.IsTextChanged()
-}
-
-func (ce *CodeEditorWidget) SetHandleKeyboardInputs(b bool) {
-	ce.editor.SetHandleKeyboardInputs(b)
 }
 
 func (ce *CodeEditorWidget) GetScreenCursorPos() (int, int) {
