@@ -2,8 +2,20 @@ package giu
 
 import "github.com/AllenDang/imgui-go"
 
+type LanguageDefinition byte
+
+const (
+	LanguageDefinitionSQL LanguageDefinition = iota
+	LanguageDefinitionCPP
+	LanguageDefinitionLua
+	LanguageDefinitionC
+)
+
 type CodeEditorWidget struct {
-	title  string
+	title string
+	width,
+	height float32
+	border bool
 	editor imgui.TextEditor
 }
 
@@ -14,32 +26,54 @@ func CodeEditor(title string) *CodeEditorWidget {
 	}
 }
 
-func (ce *CodeEditorWidget) SetShowWhitespaces(s bool) {
+func (ce *CodeEditorWidget) ShowWhitespaces(s bool) *CodeEditorWidget {
 	ce.editor.SetShowWhitespaces(s)
+	return ce
 }
 
-func (ce *CodeEditorWidget) SetTabSize(size int) {
+func (ce *CodeEditorWidget) TabSize(size int) *CodeEditorWidget {
 	ce.editor.SetTabSize(size)
+	return ce
 }
 
-func (ce *CodeEditorWidget) SetLanguageDefinitionSQL() {
-	ce.editor.SetLanguageDefinitionSQL()
+func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
+	switch definition {
+	case LanguageDefinitionSQL:
+		ce.editor.SetLanguageDefinitionSQL()
+	case LanguageDefinitionCPP:
+		ce.editor.SetLanguageDefinitionCPP()
+	case LanguageDefinitionLua:
+		ce.editor.SetLanguageDefinitionLua()
+	case LanguageDefinitionC:
+		ce.editor.SetLanguageDefinitionC()
+	}
+
+	return ce
 }
 
-func (ce *CodeEditorWidget) SetLanguageDefinitionCPP() {
-	ce.editor.SetLanguageDefinitionCPP()
-}
-
-func (ce *CodeEditorWidget) SetLanguageDefinitionLua() {
-	ce.editor.SetLanguageDefinitionLua()
-}
-
-func (ce *CodeEditorWidget) SetLanguageDefinitionC() {
-	ce.editor.SetLanguageDefinitionC()
-}
-
-func (ce *CodeEditorWidget) SetText(str string) {
+func (ce *CodeEditorWidget) Text(str string) *CodeEditorWidget {
 	ce.editor.SetText(str)
+	return ce
+}
+
+func (ce *CodeEditorWidget) ErrorMarkers(markers imgui.ErrorMarkers) *CodeEditorWidget {
+	ce.editor.SetErrorMarkers(markers)
+	return ce
+}
+
+func (ce *CodeEditorWidget) HandleKeyboardInputs(b bool) *CodeEditorWidget {
+	ce.editor.SetHandleKeyboardInputs(b)
+	return ce
+}
+
+func (ce *CodeEditorWidget) Size(w, h float32) *CodeEditorWidget {
+	ce.width, ce.height = w, h
+	return ce
+}
+
+func (ce *CodeEditorWidget) Border(border bool) *CodeEditorWidget {
+	ce.border = border
+	return ce
 }
 
 func (ce *CodeEditorWidget) HasSelection() bool {
@@ -66,10 +100,6 @@ func (ce *CodeEditorWidget) GetSelectionStart() (int, int) {
 	return ce.editor.GetSelectionStart()
 }
 
-func (ce *CodeEditorWidget) SetErrorMarkers(markers imgui.ErrorMarkers) {
-	ce.editor.SetErrorMarkers(markers)
-}
-
 func (ce *CodeEditorWidget) InsertText(text string) {
 	ce.editor.InsertText(text)
 }
@@ -84,10 +114,6 @@ func (ce *CodeEditorWidget) SelectWordUnderCursor() {
 
 func (ce *CodeEditorWidget) IsTextChanged() bool {
 	return ce.editor.IsTextChanged()
-}
-
-func (ce *CodeEditorWidget) SetHandleKeyboardInputs(b bool) {
-	ce.editor.SetHandleKeyboardInputs(b)
 }
 
 func (ce *CodeEditorWidget) GetScreenCursorPos() (int, int) {
@@ -110,7 +136,10 @@ func (ce *CodeEditorWidget) Delete() {
 	ce.editor.Delete()
 }
 
-func (ce *CodeEditorWidget) Render(width, height float32, border bool) {
+func (ce *CodeEditorWidget) Build() {
+	// register text in font atlas
 	tStr(ce.editor.GetText())
-	ce.editor.Render(ce.title, imgui.Vec2{X: width, Y: height}, border)
+
+	// build editor
+	ce.editor.Render(ce.title, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)
 }
