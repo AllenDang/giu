@@ -115,9 +115,11 @@ func (s *SplitLayoutWidget) Build() {
 		}
 	} else {
 		layout = Layout{
-			s.buildChild(0, splitLayoutState.sashPos, s.layout1),
-			HSplitter(&(splitLayoutState.delta)).Size(0, itemSpacingY),
-			s.buildChild(0, 0, s.layout2),
+			Column(
+				s.buildChild(0, splitLayoutState.sashPos, s.layout1),
+				HSplitter(&(splitLayoutState.delta)).Size(0, itemSpacingY),
+				s.buildChild(0, 0, s.layout2),
+			),
 		}
 	}
 
