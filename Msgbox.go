@@ -114,22 +114,41 @@ func PrepareMsgbox() Layout {
 	}
 }
 
-func Msgbox(title, content string) {
-	MsgboxV(title, content, MsgboxButtonsOk, nil)
-}
+type MsgboxWidget struct{}
 
-func MsgboxV(title, content string, buttons MsgboxButtons, resultCallback func(DialogResult)) {
+func (m *MsgboxWidget) getState() *MsgboxState {
 	stateRaw := Context.GetState(msgboxId)
 	if stateRaw == nil {
-		fmt.Println("Msgbox is not prepared. Invoke giu.PrepareMsgbox in the end of the layout.")
-		return
+		panic("Msgbox is not prepared. Invoke giu.PrepareMsgbox in the end of the layout.")
+		return nil
 	}
 
-	state := stateRaw.(*MsgboxState)
+	return stateRaw.(*MsgboxState)
+}
+
+func Msgbox(title, content string) *MsgboxWidget {
+	result := &MsgboxWidget{}
+
+	state := result.getState()
 	state.title = title
 	state.content = content
-	state.buttons = buttons
-	state.resultCallback = resultCallback
+
+	state.buttons = MsgboxButtonsOk
+	state.resultCallback = nil
 
 	state.open = true
+
+	return result
+}
+
+func (m *MsgboxWidget) Buttons(buttons MsgboxButtons) *MsgboxWidget {
+	s := m.getState()
+	s.buttons = buttons
+	return m
+}
+
+func (m *MsgboxWidget) ResultCallback(cb DialogResultCallback) *MsgboxWidget {
+	s := m.getState()
+	s.resultCallback = cb
+	return m
 }
