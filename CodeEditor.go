@@ -1,6 +1,10 @@
 package giu
 
-import "github.com/AllenDang/imgui-go"
+import (
+	"fmt"
+
+	"github.com/AllenDang/imgui-go"
+)
 
 type LanguageDefinition byte
 
@@ -37,16 +41,19 @@ func (ce *CodeEditorWidget) TabSize(size int) *CodeEditorWidget {
 }
 
 func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
-	switch definition {
-	case LanguageDefinitionSQL:
-		ce.editor.SetLanguageDefinitionSQL()
-	case LanguageDefinitionCPP:
-		ce.editor.SetLanguageDefinitionCPP()
-	case LanguageDefinitionLua:
-		ce.editor.SetLanguageDefinitionLua()
-	case LanguageDefinitionC:
-		ce.editor.SetLanguageDefinitionC()
+	lookup := map[LanguageDefinition]func(){
+		LanguageDefinitionSQL: ce.editor.SetLanguageDefinitionSQL,
+		LanguageDefinitionCPP: ce.editor.SetLanguageDefinitionCPP,
+		LanguageDefinitionLua: ce.editor.SetLanguageDefinitionLua,
+		LanguageDefinitionC:   ce.editor.SetLanguageDefinitionC,
 	}
+
+	setter, correctDefinition := lookup[definition]
+	if !correctDefinition {
+		panic(fmt.Sprintf("giu/CodeEditor.go: unknown language definition %d", definition))
+	}
+
+	setter()
 
 	return ce
 }
