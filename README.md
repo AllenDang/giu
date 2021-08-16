@@ -10,8 +10,8 @@ Any contribution (features, widgets, tutorials, documents, etc...) is appreciate
 
 giu is built upon GLFW v3.3, so ideally giu could support all platforms that GLFW v3.3 supports.
 
-- Windows (only tested on Windows 10 x64)
-- MacOS (only tested on MacOS v10.15)
+- Windows (Windows 10 x64 and Windows 11 x64)
+- macOS (macOS v10.15 and macOS Big Sur)
 - Linux (thanks remeh to test it)
 - Raspberry Pi 3B (thanks sndvaps to test it)
 
