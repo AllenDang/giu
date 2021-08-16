@@ -5,9 +5,9 @@ import "github.com/AllenDang/imgui-go"
 type MouseButton int
 
 const (
-	MouseButtonLeft   MouseButton = 0
-	MouseButtonRight  MouseButton = 1
-	MouseButtonMiddle MouseButton = 2
+	MouseButtonLeft MouseButton = iota
+	MouseButtonRight
+	MouseButtonMiddle
 )
 
 func IsItemHovered() bool {
