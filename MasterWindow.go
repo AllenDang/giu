@@ -333,3 +333,7 @@ func (w *MasterWindow) SetIcon(icons []image.Image) {
 func (w *MasterWindow) SetSizeLimits(minw, minh, maxw, maxh int) {
 	w.platform.SetSizeLimits(minw, minh, maxw, maxh)
 }
+
+func (w *MasterWindow) SetTitle(title string) {
+	w.platform.SetTitle(title)
+}
