@@ -234,10 +234,11 @@ func (sb *SmallButtonWidget) Build() {
 }
 
 type InvisibleButtonWidget struct {
-	id      string
-	width   float32
-	height  float32
-	onClick func()
+	id       string
+	width    float32
+	height   float32
+	onClick  func()
+	onDClick func()
 }
 
 func (b *InvisibleButtonWidget) Size(width, height float32) *InvisibleButtonWidget {
@@ -251,6 +252,11 @@ func (b *InvisibleButtonWidget) OnClick(onClick func()) *InvisibleButtonWidget {
 	return b
 }
 
+func (b *InvisibleButtonWidget) OnDClick(onDClick func()) *InvisibleButtonWidget {
+	b.onClick = onDClick
+	return b
+}
+
 func InvisibleButton(id string) *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
 		id:      tStr(id),
@@ -261,8 +267,14 @@ func InvisibleButton(id string) *InvisibleButtonWidget {
 }
 
 func (ib *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(GenAutoID(ib.id), imgui.Vec2{X: ib.width, Y: ib.height}) && ib.onClick != nil {
-		ib.onClick()
+	if imgui.InvisibleButton(GenAutoID(ib.id), imgui.Vec2{X: ib.width, Y: ib.height}) {
+		if ib.onClick != nil {
+			ib.onClick()
+		}
+
+		if ib.onDClick != nil && IsMouseDoubleClicked(MouseButtonLeft) {
+			ib.onDClick()
+		}
 	}
 }
 
