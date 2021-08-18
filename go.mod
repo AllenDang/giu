@@ -11,4 +11,5 @@ require (
 	github.com/go-resty/resty/v2 v2.3.0
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/sahilm/fuzzy v0.1.0
+	github.com/stretchr/testify v1.7.0 // indirect
 )
