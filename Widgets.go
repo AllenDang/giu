@@ -1992,6 +1992,7 @@ func (t *TabItemWidget) Build() {
 }
 
 type TabBarWidget struct {
+	id       string
 	flags    TabBarFlags
 	tabItems []*TabItemWidget
 }
@@ -2007,13 +2008,22 @@ func (t *TabBarWidget) Flags(flags TabBarFlags) *TabBarWidget {
 	return t
 }
 
+func (t *TabBarWidget) ID(id string) *TabBarWidget {
+	t.id = id
+	return t
+}
+
 func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 	t.tabItems = items
 	return t
 }
 
 func (t *TabBarWidget) Build() {
-	if imgui.BeginTabBarV(GenAutoID("TabBar"), int(t.flags)) {
+	buildingId := t.id
+	if len(buildingId) == 0 {
+		buildingId = GenAutoID("TabBar")
+	}
+	if imgui.BeginTabBarV(buildingId, int(t.flags)) {
 		for _, ti := range t.tabItems {
 			ti.Build()
 		}
