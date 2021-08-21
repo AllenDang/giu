@@ -120,7 +120,6 @@ func (m *MsgboxWidget) getState() *MsgboxState {
 	stateRaw := Context.GetState(msgboxId)
 	if stateRaw == nil {
 		panic("Msgbox is not prepared. Invoke giu.PrepareMsgbox in the end of the layout.")
-		return nil
 	}
 
 	return stateRaw.(*MsgboxState)

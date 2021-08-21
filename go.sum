@@ -1,7 +1,7 @@
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8 h1:dKZMqib/yUDoCFigmz2agG8geZ/e3iRq304/KJXqKyw=
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8/go.mod h1:b4uuDd0s6KRIPa84cEEchdQ9ICh7K0OryZHbSzMca9k=
-github.com/AllenDang/imgui-go v1.12.1-0.20210816034733-e162f16e0278 h1:jW82+gqpPlPIanqP+5r2bqc8pc/KwtYnPiGbN1G8QeQ=
-github.com/AllenDang/imgui-go v1.12.1-0.20210816034733-e162f16e0278/go.mod h1:2jS7bvvG+PejKdNu4eg2UYqx7Ky8IXGAhxOfjq9qTNk=
+github.com/AllenDang/imgui-go v1.12.1-0.20210821050933-c6813f114e7e h1:d28ehOQiICvcFmLDpOWdQUBFXWBzR3ByUMIm4S3WnJo=
+github.com/AllenDang/imgui-go v1.12.1-0.20210821050933-c6813f114e7e/go.mod h1:2jS7bvvG+PejKdNu4eg2UYqx7Ky8IXGAhxOfjq9qTNk=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 h1:baVdMKlASEHrj19iqjARrPbaRisD7EuZEVJj6ZMLl1Q=
@@ -28,6 +28,7 @@ golang.org/x/net v0.0.0-20200513185701-a91f0712d120/go.mod h1:qpuaurCH72eLCgpAm/
 golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a/go.mod h1:STP8DvDyc/dI5b8T5hshtkjS+E42TnysNCUPdjciGhY=
 golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c h1:dUUwHk2QECo/6vqA44rthZ8ie2QXMNeKRTHCNY2nXvo=
 gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=

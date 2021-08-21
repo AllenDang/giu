@@ -124,7 +124,7 @@ type ButtonWidget struct {
 
 func (b *ButtonWidget) Build() {
 	if b.disabled {
-		imgui.PushDisabled()
+		imgui.BeginDisabled(true)
 	}
 
 	if imgui.ButtonV(GenAutoID(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
@@ -132,7 +132,7 @@ func (b *ButtonWidget) Build() {
 	}
 
 	if b.disabled {
-		imgui.PopDisabled()
+		imgui.EndDisabled()
 	}
 }
 

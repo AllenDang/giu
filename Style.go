@@ -340,13 +340,13 @@ func (ss *StyleSetter) Build() {
 		}
 
 		if ss.disabled {
-			imgui.PushDisabled()
+			imgui.BeginDisabled(true)
 		}
 
 		ss.layout.Build()
 
 		if ss.disabled {
-			imgui.PopDisabled()
+			imgui.EndDisabled()
 		}
 
 		if isFontPushed {
