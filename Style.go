@@ -339,15 +339,11 @@ func (ss *StyleSetter) Build() {
 			isFontPushed = PushFont(ss.font)
 		}
 
-		if ss.disabled {
-			imgui.BeginDisabled(true)
-		}
+		imgui.BeginDisabled(ss.disabled)
 
 		ss.layout.Build()
 
-		if ss.disabled {
-			imgui.EndDisabled()
-		}
+		imgui.EndDisabled()
 
 		if isFontPushed {
 			PopFont()
