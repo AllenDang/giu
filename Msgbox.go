@@ -2,13 +2,14 @@ package giu
 
 import "fmt"
 
-type DialogResult uint8
+type DialogResult bool
 
 const (
-	DialogResultOK DialogResult = 1 << iota
-	DialogResultCancel
-	DialogResultYes
-	DialogResultNo
+	DialogResultOK     DialogResult = true
+	DialogResultCancel DialogResult = false
+
+	DialogResultYes = DialogResultOK
+	DialogResultNo  = DialogResultCancel
 )
 
 type MsgboxButtons uint8
@@ -102,14 +103,14 @@ func PrepareMsgbox() Layout {
 				state.open = false
 			}
 			SetNextWindowSize(300, 0)
-			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxId)).Layout(Layout{
+			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxId)).Layout(
 				Custom(func() {
 					// Ensure the state is valid.
 					Context.GetState(msgboxId)
 				}),
 				Label(state.content).Wrapped(true),
 				buildMsgboxButtons(state.buttons, state.resultCallback),
-			}).Build()
+			).Build()
 		}),
 	}
 }
