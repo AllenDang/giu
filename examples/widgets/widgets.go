@@ -58,6 +58,8 @@ func loop() {
 		),
 		g.Label("One line label"),
 		g.Label("Auto wrapped label with very long line...............................................this line should be wrapped.").Wrapped(true),
+		g.Label("I'm a clickable label. Right-double-click me"),
+		g.OnClick(func() { fmt.Println("I was clicked") }).DoubleClick().MouseButton(g.MouseButtonRight),
 		g.Row(
 			g.InputText(&name),
 			g.Button("Click Me").OnClick(btnClickMeClicked),

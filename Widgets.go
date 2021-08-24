@@ -2862,3 +2862,37 @@ func (ce *ColorEditWidget) Build() {
 		imgui.PopItemWidth()
 	}
 }
+
+type ClickWidget struct {
+	callback          func()
+	mouseClickChecker func(MouseButton) bool
+	mouseButton       MouseButton
+}
+
+// OnDClick could be used to detect double clicking on widget
+// example:
+//	giu.Button("button"),
+//	giu.OnDClick(func() { fmt.Println("Button was double clicked"),
+func OnClick(callback func()) *ClickWidget {
+	return &ClickWidget{
+		callback:          callback,
+		mouseButton:       MouseButtonLeft,
+		mouseClickChecker: IsMouseClicked,
+	}
+}
+
+func (c *ClickWidget) MouseButton(b MouseButton) *ClickWidget {
+	c.mouseButton = b
+	return c
+}
+
+func (c *ClickWidget) DoubleClick() *ClickWidget {
+	c.mouseClickChecker = IsMouseDoubleClicked
+	return c
+}
+
+func (c *ClickWidget) Build() {
+	if IsItemHovered() && c.mouseClickChecker(c.mouseButton) && c.callback != nil {
+		c.callback()
+	}
+}
