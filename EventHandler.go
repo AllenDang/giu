@@ -44,6 +44,10 @@ func (eh *EventHandler) Build() {
 		return
 	}
 
+	if eh.hover != nil {
+		eh.hover()
+	}
+
 	if len(eh.mouseEvents) > 0 {
 		for _, event := range eh.mouseEvents {
 			if event.callback != nil && event.cond(event.mouseButton) {
