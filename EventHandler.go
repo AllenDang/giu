@@ -39,6 +39,11 @@ func (eh *EventHandler) OnMouseDown(mouseButton MouseButton, callback func()) *E
 	return eh
 }
 
+func (eh *EventHandler) OnMouseReleased(mouseButton MouseButton, callback func()) *EventHandler {
+	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseReleased})
+	return eh
+}
+
 func (eh *EventHandler) Build() {
 	if !IsItemHovered() {
 		return
