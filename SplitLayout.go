@@ -2,7 +2,8 @@ package giu
 
 import (
 	"fmt"
-	"image/color"
+
+	"github.com/AllenDang/imgui-go"
 )
 
 type SplitDirection uint8
@@ -50,7 +51,8 @@ func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 			PushItemSpacing(s.originItemSpacingX, s.originItemSpacingY)
 			PushFramePadding(s.originFramePaddingX, s.originFramePaddingY)
 			// Restore Child bg color
-			PushStyleColor(StyleColorChildBg, color.RGBA{R: 0x26, G: 0x2e, B: 0x38, A: 0xff})
+			bgColor := imgui.CurrentStyle().GetColor(imgui.StyleColorChildBg)
+			PushStyleColor(StyleColorChildBg, Vec4ToRGBA(bgColor))
 		}),
 		layout,
 		Custom(func() {
@@ -70,7 +72,7 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 				PushFramePadding(0, 0)
 			}
 		}),
-		Style().SetColor(StyleColorChildBg, color.RGBA{R: 0x1c, G: 0x26, B: 0x2b, A: 0xff}).To(
+		Style().SetColor(StyleColorChildBg, Vec4ToRGBA(imgui.CurrentStyle().GetColor(imgui.StyleColorChildBg))).To(
 			Child().Border(!isSplitLayoutWidget && s.border).Size(width, height).Layout(s.restoreItemSpacing(layout)),
 		),
 		Custom(func() {
