@@ -339,7 +339,7 @@ type ImageButtonWithRgbaWidget struct {
 
 func ImageButtonWithRgba(rgba image.Image) *ImageButtonWithRgbaWidget {
 	return &ImageButtonWithRgbaWidget{
-		id:                GenAutoID("ImageButtonWithRgba_%v"),
+		id:                GenAutoID("ImageButtonWithRgba"),
 		ImageButtonWidget: ImageButton(nil),
 		rgba:              rgba,
 	}
@@ -799,7 +799,7 @@ type ImageWithRgbaWidget struct {
 
 func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 	return &ImageWithRgbaWidget{
-		id:     GenAutoID("ImageWithRgba_%v"),
+		id:     GenAutoID("ImageWithRgba"),
 		width:  100,
 		height: 100,
 		rgba:   rgba,
