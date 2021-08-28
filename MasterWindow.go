@@ -25,9 +25,7 @@ const (
 	MasterWindowFlagsTransparent MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsTransparent)
 )
 
-var (
-	DontCare int = imgui.GlfwDontCare
-)
+var DontCare int = imgui.GlfwDontCare
 
 type MasterWindow struct {
 	width      int
@@ -177,6 +175,7 @@ func (w *MasterWindow) sizeChange(width, height int) {
 
 func (w *MasterWindow) render() {
 	Context.invalidAllState()
+	unprepareMsgbox()
 
 	rebuildFontAtlas()
 

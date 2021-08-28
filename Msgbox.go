@@ -28,6 +28,8 @@ type MsgboxState struct {
 	resultCallback DialogResultCallback
 	buttons        MsgboxButtons
 	open           bool
+
+	isLoaded bool
 }
 
 func (ms *MsgboxState) Dispose() {
@@ -92,7 +94,14 @@ func PrepareMsgbox() Layout {
 			stateRaw := Context.GetState(msgboxId)
 
 			if stateRaw == nil {
-				state = &MsgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
+				state = &MsgboxState{
+					title:          "Info",
+					content:        "Content",
+					buttons:        MsgboxButtonsOk,
+					resultCallback: nil,
+					open:           false,
+					isLoaded:       false,
+				}
 				Context.SetState(msgboxId, state)
 			} else {
 				state = stateRaw.(*MsgboxState)
@@ -102,6 +111,11 @@ func PrepareMsgbox() Layout {
 				OpenPopup(msgboxId)
 				state.open = false
 			}
+
+			if state.isLoaded {
+				return
+			}
+
 			SetNextWindowSize(300, 0)
 			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxId)).Layout(
 				Custom(func() {
@@ -111,13 +125,24 @@ func PrepareMsgbox() Layout {
 				Label(state.content).Wrapped(true),
 				buildMsgboxButtons(state.buttons, state.resultCallback),
 			).Build()
+
+			state.isLoaded = true
 		}),
+	}
+}
+
+// unprepareMsgbox should be called on start of the next frame
+// to fix bug described in https://github.com/AllenDang/giu/issues/290
+func unprepareMsgbox() {
+	if s := Context.GetState(msgboxId); s != nil {
+		state := s.(*MsgboxState)
+		state.isLoaded = false
 	}
 }
 
 type MsgboxWidget struct{}
 
-func (m *MsgboxWidget) getState() *MsgboxState {
+func getMsgboxState() *MsgboxState {
 	stateRaw := Context.GetState(msgboxId)
 	if stateRaw == nil {
 		panic("Msgbox is not prepared. Invoke giu.PrepareMsgbox in the end of the layout.")
@@ -129,7 +154,7 @@ func (m *MsgboxWidget) getState() *MsgboxState {
 func Msgbox(title, content string) *MsgboxWidget {
 	result := &MsgboxWidget{}
 
-	state := result.getState()
+	state := getMsgboxState()
 	state.title = title
 	state.content = content
 
@@ -142,13 +167,13 @@ func Msgbox(title, content string) *MsgboxWidget {
 }
 
 func (m *MsgboxWidget) Buttons(buttons MsgboxButtons) *MsgboxWidget {
-	s := m.getState()
+	s := getMsgboxState()
 	s.buttons = buttons
 	return m
 }
 
 func (m *MsgboxWidget) ResultCallback(cb DialogResultCallback) *MsgboxWidget {
-	s := m.getState()
+	s := getMsgboxState()
 	s.resultCallback = cb
 	return m
 }

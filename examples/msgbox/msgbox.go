@@ -9,6 +9,7 @@ import (
 func loop() {
 	giu.Window("window").Layout(
 		giu.PrepareMsgbox(),
+		giu.PrepareMsgbox(),
 		giu.Button("click me to see message box").OnClick(func() {
 			giu.Msgbox("Info", "I'm a msgbox. press OK to close me")
 		}),
