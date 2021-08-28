@@ -7,10 +7,14 @@ import (
 	_ "image/png"
 	"time"
 
+	"github.com/AllenDang/giu"
 	g "github.com/AllenDang/giu"
 )
 
-var rgba *image.RGBA
+var (
+	rgba    *image.RGBA
+	texture = &giu.Texture{}
+)
 
 func loop() {
 	g.SingleWindow().Layout(
@@ -18,6 +22,9 @@ func loop() {
 		g.ImageWithRgba(rgba).OnClick(func() {
 			fmt.Println("rgba image was clicked")
 		}).Size(200, 100),
+
+		g.AddTexture(rgba).Tex(texture),
+		g.Image(texture),
 
 		g.Label("Display image from file"),
 		g.ImageWithFile("gopher.png").OnClick(func() {
