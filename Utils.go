@@ -22,13 +22,17 @@ func LoadImage(imgPath string) (*image.RGBA, error) {
 		return nil, err
 	}
 
+	return ImageToRgba(img), nil
+}
+
+func ImageToRgba(img image.Image) *image.RGBA {
 	switch trueImg := img.(type) {
 	case *image.RGBA:
-		return trueImg, nil
+		return trueImg
 	default:
 		rgba := image.NewRGBA(trueImg.Bounds())
 		draw.Draw(rgba, trueImg.Bounds(), trueImg, image.Pt(0, 0), draw.Src)
-		return rgba, nil
+		return rgba
 	}
 }
 

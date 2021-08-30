@@ -2,9 +2,10 @@ package giu
 
 import (
 	"errors"
-	"github.com/faiface/mainthread"
 	"image"
 	"runtime"
+
+	"github.com/faiface/mainthread"
 
 	"github.com/AllenDang/imgui-go"
 )
@@ -21,10 +22,10 @@ type loadImageResult struct {
 // Create new texture from rgba.
 // Note: this function has to be invokded in a go routine.
 // If call this in mainthread will result in stuck.
-func NewTextureFromRgba(rgba *image.RGBA) (*Texture, error) {
+func NewTextureFromRgba(rgba image.Image) (*Texture, error) {
 	Update()
 	result := mainthread.CallVal(func() interface{} {
-		texId, err := Context.renderer.LoadImage(rgba)
+		texId, err := Context.renderer.LoadImage(ImageToRgba(rgba))
 		return &loadImageResult{id: texId, err: err}
 	})
 
