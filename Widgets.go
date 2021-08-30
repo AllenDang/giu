@@ -333,23 +333,15 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 
 type ImageButtonWithRgbaWidget struct {
 	*ImageButtonWidget
-	rgba *image.RGBA
+	rgba image.Image
 	id   string
 }
 
-func ImageButtonWithRgba(rgba *image.RGBA) *ImageButtonWithRgbaWidget {
-	// Generate a unique id from first 100 pix from rgba
-	var pix []uint8
-	if len(rgba.Pix) >= 100 {
-		pix = rgba.Pix[:100]
-	} else {
-		pix = rgba.Pix
-	}
-
+func ImageButtonWithRgba(rgba image.Image) *ImageButtonWithRgbaWidget {
 	return &ImageButtonWithRgbaWidget{
+		id:                GenAutoID("ImageButtonWithRgba"),
 		ImageButtonWidget: ImageButton(nil),
 		rgba:              rgba,
-		id:                fmt.Sprintf("ImageButtonWithRgba_%v", pix),
 	}
 }
 
@@ -801,13 +793,13 @@ type ImageWithRgbaWidget struct {
 	id      string
 	width   float32
 	height  float32
-	rgba    *image.RGBA
+	rgba    image.Image
 	onClick func()
 }
 
-func ImageWithRgba(rgba *image.RGBA) *ImageWithRgbaWidget {
+func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 	return &ImageWithRgbaWidget{
-		id:     GenAutoID("ImageWithRgba_%v"),
+		id:     GenAutoID("ImageWithRgba"),
 		width:  100,
 		height: 100,
 		rgba:   rgba,
