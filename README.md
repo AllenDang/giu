@@ -21,19 +21,7 @@ Compare to other Dear ImGui golang bindings, giu has following features:
 
 - Small executable file size (<3MB after UPX compression for the example/helloworld demo).
 - Live-updating during the resizing of OS window (implemented on GLFW 3.3 and OpenGL 3.2).
-- Support for displaying various languages without any font setting. Giu will rebuild font atlas incrementally according to texts in UI between frames. Below is the list of languages currently supported:
-  - macOS
-  1.  English
-  2.  Simplified Chinese
-  3.  Japanese
-  4.  Korean
-  - Windows
-  1.  English
-  2.  Simplified Chinese
-  3.  Japanese
-  - Kali Linux
-  1.  English
-  - Need your help to add more language support by creating a PR or telling me the OS default font name for your language.
+- Support for displaying various languages without any font setting. Giu will rebuild font atlas incrementally according to texts in UI between frames.
 - Redraws only when user event occurred. Costs only 0.5% CPU usage with 60FPS.
 - Declarative UI (see examples for more detail).
 - DPI awareness (auto scaling font and UI to adapt high DPI monitor).
@@ -202,11 +190,3 @@ Check [Wiki](https://github.com/AllenDang/giu/wiki)
 ## Contribution
 
 All kinds of pull request (document, demo, screenshots, code, etc.) are more then welcome!
-
-## Projects using giu
-
-### [PipeIt](https://github.com/AllenDang/PipeIt)
-
-PipeIt is a text transformation, conversion, cleansing and extraction tool.
-
-![PipeIt Demo](https://github.com/AllenDang/PipeIt/raw/master/screenshot/findimageurl.gif)
