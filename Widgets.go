@@ -152,9 +152,9 @@ func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 	return b
 }
 
-func Button(id string) *ButtonWidget {
+func Button(id string, args ...interface{}) *ButtonWidget {
 	return &ButtonWidget{
-		id:      tStr(id),
+		id:      tStr(fmt.Sprintf(id, args...)),
 		width:   0,
 		height:  0,
 		onClick: nil,
@@ -175,9 +175,9 @@ type BulletTextWidget struct {
 	text string
 }
 
-func BulletText(text string) *BulletTextWidget {
+func BulletText(text string, args ...interface{}) *BulletTextWidget {
 	return &BulletTextWidget{
-		text: tStr(text),
+		text: tStr(fmt.Sprintf(text, args...)),
 	}
 }
 
@@ -220,9 +220,9 @@ func (b *SmallButtonWidget) OnClick(onClick func()) *SmallButtonWidget {
 	return b
 }
 
-func SmallButton(id string) *SmallButtonWidget {
+func SmallButton(id string, args ...interface{}) *SmallButtonWidget {
 	return &SmallButtonWidget{
-		id:      tStr(id),
+		id:      tStr(fmt.Sprintf(id, args...)),
 		onClick: nil,
 	}
 }
@@ -251,9 +251,14 @@ func (b *InvisibleButtonWidget) OnClick(onClick func()) *InvisibleButtonWidget {
 	return b
 }
 
-func InvisibleButton(id string) *InvisibleButtonWidget {
+func (ib *InvisibleButtonWidget) ID(id string) *InvisibleButtonWidget {
+	ib.id = id
+	return ib
+}
+
+func InvisibleButton() *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
-		id:      tStr(id),
+		id:      GenAutoID("##InvisibleButton"),
 		width:   0,
 		height:  0,
 		onClick: nil,
@@ -261,7 +266,7 @@ func InvisibleButton(id string) *InvisibleButtonWidget {
 }
 
 func (ib *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(GenAutoID(ib.id), imgui.Vec2{X: ib.width, Y: ib.height}) && ib.onClick != nil {
+	if imgui.InvisibleButton(tStr(ib.id), imgui.Vec2{X: ib.width, Y: ib.height}) && ib.onClick != nil {
 		ib.onClick()
 	}
 }
@@ -672,8 +677,8 @@ func (d *DragIntWidget) Speed(speed float32) *DragIntWidget {
 	return d
 }
 
-func (d *DragIntWidget) Format(format string) *DragIntWidget {
-	d.format = format
+func (d *DragIntWidget) Format(format string, args ...interface{}) *DragIntWidget {
+	d.format = fmt.Sprintf(format, args...)
 	return d
 }
 
@@ -1173,8 +1178,8 @@ func InputInt(value *int32) *InputIntWidget {
 	}
 }
 
-func (i *InputIntWidget) Label(label string) *InputIntWidget {
-	i.label = tStr(label)
+func (i *InputIntWidget) Label(label string, args ...interface{}) *InputIntWidget {
+	i.label = tStr(fmt.Sprintf(label, args...))
 	return i
 }
 
@@ -1230,8 +1235,8 @@ func InputFloat(label string, value *float32) *InputFloatWidget {
 	}
 }
 
-func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
-	i.label = tStr(label)
+func (i *InputFloatWidget) Label(label string, args ...interface{}) *InputFloatWidget {
+	i.label = tStr(fmt.Sprintf(label, args...))
 	return i
 }
 
@@ -1245,8 +1250,8 @@ func (i *InputFloatWidget) Flags(flags InputTextFlags) *InputFloatWidget {
 	return i
 }
 
-func (i *InputFloatWidget) Format(format string) *InputFloatWidget {
-	i.format = format
+func (i *InputFloatWidget) Format(format string, args ...interface{}) *InputFloatWidget {
+	i.format = fmt.Sprintf(format, args...)
 	return i
 }
 
@@ -1274,9 +1279,9 @@ type LabelWidget struct {
 	wrapped  bool
 }
 
-func Label(label string) *LabelWidget {
+func Label(label string, args ...interface{}) *LabelWidget {
 	return &LabelWidget{
-		label:   tStr(label),
+		label:   tStr(fmt.Sprintf(label, args...)),
 		wrapped: false,
 	}
 }
@@ -1367,9 +1372,9 @@ type MenuItemWidget struct {
 	onClick  func()
 }
 
-func MenuItem(label string) *MenuItemWidget {
+func MenuItem(label string, args ...interface{}) *MenuItemWidget {
 	return &MenuItemWidget{
-		label:    tStr(label),
+		label:    tStr(fmt.Sprintf(label, args...)),
 		selected: false,
 		enabled:  true,
 		onClick:  nil,
@@ -1552,9 +1557,9 @@ type SelectableWidget struct {
 	onDClick func()
 }
 
-func Selectable(label string) *SelectableWidget {
+func Selectable(label string, args ...interface{}) *SelectableWidget {
 	return &SelectableWidget{
-		label:    tStr(label),
+		label:    tStr(fmt.Sprintf(label, args...)),
 		selected: false,
 		flags:    0,
 		width:    0,
@@ -1638,8 +1643,8 @@ func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
 	}
 }
 
-func (s *SliderIntWidget) Format(format string) *SliderIntWidget {
-	s.format = format
+func (s *SliderIntWidget) Format(format string, args ...interface{}) *SliderIntWidget {
+	s.format = fmt.Sprintf(format, args...)
 	return s
 }
 
@@ -1703,8 +1708,8 @@ func (vs *VSliderIntWidget) Flags(flags SliderFlags) *VSliderIntWidget {
 	return vs
 }
 
-func (vs *VSliderIntWidget) Format(format string) *VSliderIntWidget {
-	vs.format = format
+func (vs *VSliderIntWidget) Format(format string, args ...interface{}) *VSliderIntWidget {
+	vs.format = fmt.Sprintf(format, args...)
 	return vs
 }
 
@@ -1749,8 +1754,8 @@ func SliderFloat(label string, value *float32, min, max float32) *SliderFloatWid
 	}
 }
 
-func (s *SliderFloatWidget) Format(format string) *SliderFloatWidget {
-	s.format = format
+func (s *SliderFloatWidget) Format(format string, args ...interface{}) *SliderFloatWidget {
+	s.format = fmt.Sprintf(format, args...)
 	return s
 }
 
@@ -1950,9 +1955,9 @@ type TabItemWidget struct {
 	layout Layout
 }
 
-func TabItem(label string) *TabItemWidget {
+func TabItem(label string, args ...interface{}) *TabItemWidget {
 	return &TabItemWidget{
-		label:  tStr(label),
+		label:  tStr(fmt.Sprintf(label, args...)),
 		open:   nil,
 		flags:  0,
 		layout: nil,
@@ -2361,9 +2366,9 @@ func (t *TooltipWidget) Build() {
 	}
 }
 
-func Tooltip(tip string) *TooltipWidget {
+func Tooltip(tip string, args ...interface{}) *TooltipWidget {
 	return &TooltipWidget{
-		tip:    tStr(tip),
+		tip:    tStr(fmt.Sprintf(tip, args...)),
 		layout: nil,
 	}
 }
@@ -2380,9 +2385,9 @@ type TreeNodeWidget struct {
 	eventHandler func()
 }
 
-func TreeNode(label string) *TreeNodeWidget {
+func TreeNode(label string, args ...interface{}) *TreeNodeWidget {
 	return &TreeNodeWidget{
-		label:        tStr(label),
+		label:        tStr(fmt.Sprintf(label, args...)),
 		flags:        0,
 		layout:       nil,
 		eventHandler: nil,
