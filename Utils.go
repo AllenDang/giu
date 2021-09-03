@@ -97,7 +97,7 @@ func GetAvailableRegion() (width, height float32) {
 }
 
 func CalcTextSize(text string) (width, height float32) {
-	return CalcTextSizeV(text, false, 0)
+	return CalcTextSizeV(text, false, -1)
 }
 
 func CalcTextSizeV(text string, hideAfterDoubleHash bool, wrapWidth float32) (w, h float32) {
