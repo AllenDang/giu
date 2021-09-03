@@ -161,6 +161,10 @@ func Button(id string) *ButtonWidget {
 	}
 }
 
+func Buttonf(format string, args ...interface{}) *ButtonWidget {
+	return Button(fmt.Sprintf(format, args...))
+}
+
 type BulletWidget struct{}
 
 func Bullet() *BulletWidget {
@@ -1279,6 +1283,10 @@ func Label(label string) *LabelWidget {
 		label:   tStr(label),
 		wrapped: false,
 	}
+}
+
+func Labelf(format string, args ...interface{}) *LabelWidget {
+	return Label(fmt.Sprintf(format, args...))
 }
 
 func (l *LabelWidget) Wrapped(wrapped bool) *LabelWidget {
