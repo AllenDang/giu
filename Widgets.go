@@ -251,9 +251,14 @@ func (b *InvisibleButtonWidget) OnClick(onClick func()) *InvisibleButtonWidget {
 	return b
 }
 
-func InvisibleButton(id string) *InvisibleButtonWidget {
+func (b *InvisibleButtonWidget) ID(id string) *InvisibleButtonWidget {
+	b.id = id
+	return b
+}
+
+func InvisibleButton() *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
-		id:      tStr(id),
+		id:      GenAutoID("InvisibleButton"),
 		width:   0,
 		height:  0,
 		onClick: nil,
@@ -261,7 +266,7 @@ func InvisibleButton(id string) *InvisibleButtonWidget {
 }
 
 func (ib *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(GenAutoID(ib.id), imgui.Vec2{X: ib.width, Y: ib.height}) && ib.onClick != nil {
+	if imgui.InvisibleButton(tStr(ib.id), imgui.Vec2{X: ib.width, Y: ib.height}) && ib.onClick != nil {
 		ib.onClick()
 	}
 }
