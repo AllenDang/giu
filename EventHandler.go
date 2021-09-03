@@ -1,5 +1,13 @@
 package giu
 
+type eventHandlerState struct {
+	isActive bool
+}
+
+func (s *eventHandlerState) Dispose() {
+	// noop
+}
+
 type mouseEvent struct {
 	mouseButton MouseButton
 	callback    func()
@@ -18,6 +26,8 @@ type EventHandler struct {
 	hover       func()
 	mouseEvents []mouseEvent
 	keyEvents   []keyEvent
+	onActivate,
+	onDezactivate func()
 }
 
 func Event() *EventHandler {
@@ -29,6 +39,16 @@ func Event() *EventHandler {
 
 func (eh *EventHandler) OnHover(onHover func()) *EventHandler {
 	eh.hover = onHover
+	return eh
+}
+
+func (eh *EventHandler) OnActivate(cb func()) *EventHandler {
+	eh.onActivate = cb
+	return eh
+}
+
+func (eh *EventHandler) OnDezactivate(cb func()) *EventHandler {
+	eh.onDezactivate = cb
 	return eh
 }
 
@@ -72,6 +92,30 @@ func (eh *EventHandler) OnMouseReleased(mouseButton MouseButton, callback func()
 }
 
 func (eh *EventHandler) Build() {
+	if eh.onActivate != nil || eh.onDezactivate != nil {
+		isActive := IsItemActive()
+
+		var state *eventHandlerState
+		stateID := GenAutoID("eventHandlerState")
+		if s := Context.GetState(stateID); s != nil {
+			state = s.(*eventHandlerState)
+		} else {
+			newState := &eventHandlerState{}
+			Context.SetState(stateID, newState)
+			state = newState
+		}
+
+		if eh.onActivate != nil && isActive && !state.isActive {
+			state.isActive = true
+			eh.onActivate()
+		}
+
+		if eh.onDezactivate != nil && !isActive && state.isActive {
+			state.isActive = false
+			eh.onDezactivate()
+		}
+	}
+
 	if !IsItemHovered() {
 		return
 	}
