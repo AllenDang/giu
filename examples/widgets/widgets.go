@@ -66,6 +66,8 @@ func loop() {
 			OnDClick(g.MouseButtonRight, func() { fmt.Println("I was right-double-clicked") }),
 		g.Row(
 			g.InputText(&name),
+			g.Event().OnActivate(func() { fmt.Println("input text focused") }).
+				OnDezactivate(func() { fmt.Println("input text unfocused") }),
 			g.Button("Click Me").OnClick(btnClickMeClicked),
 			g.Tooltip("I'm a tooltip"),
 			g.Button("More tooltip"),
