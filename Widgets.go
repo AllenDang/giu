@@ -185,6 +185,10 @@ func BulletText(text string) *BulletTextWidget {
 	}
 }
 
+func BulletTextf(format string, args ...interface{}) *BulletTextWidget {
+	return BulletTextf(fmt.Sprintf(format, args...))
+}
+
 func (bt *BulletTextWidget) Build() {
 	imgui.BulletText(bt.text)
 }
@@ -229,6 +233,10 @@ func SmallButton(id string) *SmallButtonWidget {
 		id:      tStr(id),
 		onClick: nil,
 	}
+}
+
+func SmallButtonf(format string, args ...interface{}) *SmallButtonWidget {
+	return SmallButton(fmt.SPrintf(format, args...))
 }
 
 func (sb *SmallButtonWidget) Build() {
@@ -1384,6 +1392,10 @@ func MenuItem(label string) *MenuItemWidget {
 	}
 }
 
+func MenuItemf(format string, args ...interface{}) *MenuItemWidget {
+	return MenuItem(fmt.Sprintf(format, args...))
+}
+
 func (m *MenuItemWidget) Selected(s bool) *MenuItemWidget {
 	m.selected = s
 	return m
@@ -1417,6 +1429,10 @@ func Menu(label string) *MenuWidget {
 		enabled: true,
 		layout:  nil,
 	}
+}
+
+func Menuf(format string, args ...interface{}) *MenuWIdget {
+	return Menu(fmt.Sprintf(format, args...))
 }
 
 func (m *MenuWidget) Enabled(e bool) *MenuWidget {
@@ -1546,6 +1562,11 @@ func (p *ProgressBarWidget) Overlay(overlay string) *ProgressBarWidget {
 	return p
 }
 
+func (p *ProgressBarWidget) Overlayf(format string, args ...interface{}) *ProgressBarWidget {
+	p.overlay = tStr(fmt.Sprintf(overlay))
+	return p
+}
+
 func (p *ProgressBarWidget) Build() {
 	imgui.ProgressBarV(p.fraction, imgui.Vec2{X: p.width, Y: p.height}, p.overlay)
 }
@@ -1569,6 +1590,10 @@ func Selectable(label string) *SelectableWidget {
 		height:   0,
 		onClick:  nil,
 	}
+}
+
+func Selectablef(format string, args ...interface{}) *SelectableWIdget {
+	return Selectable(fmt.Sprintf(format, args...))
 }
 
 func (s *SelectableWidget) Selected(selected bool) *SelectableWidget {
@@ -1965,6 +1990,10 @@ func TabItem(label string) *TabItemWidget {
 		flags:  0,
 		layout: nil,
 	}
+}
+
+func TabItemf(format string, args ...interface{}) *TabItemWidget {
+	return TabItem(fmt.Sprintf(format, args...))
 }
 
 func (t *TabItemWidget) IsOpen(open *bool) *TabItemWidget {
@@ -2376,6 +2405,10 @@ func Tooltip(tip string) *TooltipWidget {
 	}
 }
 
+func Tooltipf(format string, args ...interface{}) *TooltipWidget {
+	return Tooltip(fmt.SPrintf(format, args...))
+}
+
 func (t *TooltipWidget) Layout(widgets ...Widget) *TooltipWidget {
 	t.layout = Layout(widgets)
 	return t
@@ -2395,6 +2428,10 @@ func TreeNode(label string) *TreeNodeWidget {
 		layout:       nil,
 		eventHandler: nil,
 	}
+}
+
+func TreeNodef(format string, args ...interface{}) *TreeNodeWidget {
+	return TreeNode(fmt.Sprintf(format, args...))
 }
 
 func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
