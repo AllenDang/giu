@@ -31,7 +31,7 @@ func (c *CircleButtonWidget) Build() {
 
 	// Place a invisible button to be a placeholder for events
 	buttonWidth := float32(radius) * 2
-	g.InvisibleButton(c.id).Size(buttonWidth, buttonWidth).OnClick(c.clicked).Build()
+	g.InvisibleButton().Size(buttonWidth, buttonWidth).OnClick(c.clicked).Build()
 
 	// If button is hovered
 	drawActive := g.IsItemHovered()
