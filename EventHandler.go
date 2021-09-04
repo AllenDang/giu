@@ -27,7 +27,7 @@ type EventHandler struct {
 	mouseEvents []mouseEvent
 	keyEvents   []keyEvent
 	onActivate,
-	onDezactivate func()
+	onDeactivate func()
 }
 
 func Event() *EventHandler {
@@ -47,8 +47,8 @@ func (eh *EventHandler) OnActivate(cb func()) *EventHandler {
 	return eh
 }
 
-func (eh *EventHandler) OnDezactivate(cb func()) *EventHandler {
-	eh.onDezactivate = cb
+func (eh *EventHandler) OnDeactivate(cb func()) *EventHandler {
+	eh.onDeactivate = cb
 	return eh
 }
 
@@ -92,7 +92,7 @@ func (eh *EventHandler) OnMouseReleased(mouseButton MouseButton, callback func()
 }
 
 func (eh *EventHandler) Build() {
-	if eh.onActivate != nil || eh.onDezactivate != nil {
+	if eh.onActivate != nil || eh.onDeactivate != nil {
 		isActive := IsItemActive()
 
 		var state *eventHandlerState
@@ -110,9 +110,9 @@ func (eh *EventHandler) Build() {
 			eh.onActivate()
 		}
 
-		if eh.onDezactivate != nil && !isActive && state.isActive {
+		if eh.onDeactivate != nil && !isActive && state.isActive {
 			state.isActive = false
-			eh.onDezactivate()
+			eh.onDeactivate()
 		}
 	}
 
