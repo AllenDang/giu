@@ -21,6 +21,29 @@ type AlignmentSetter struct {
 	id        string
 }
 
+// Align sets widgets alignment.
+// usage: see examples/align
+//
+// FIXME: all widgets will be build twice
+// it means, that if you have e.g. CustomWidget it could do unexpected things.
+// Example:
+// Align(AlignToCenter).To(
+//   Custom(func() { fmt.Println("running custom widget") }),
+// )
+// will print the message two times per frame.
+//
+// BUG:
+// if the source layout (set by (*alignSetter).To(...) contains another Layout
+// only the last widget from the embeded layout will be processed.
+// Example:
+// Align(AlignToRight).To(
+//	Label("I'm the label"),
+//	Layout(
+//		Label("I'm th e other label and I'll not be aligned to right"),
+//		Label("I'm the next label"),
+//	),
+//	label("I'm the last label"),
+// )
 func Align(at AlignmentType) *AlignmentSetter {
 	return &AlignmentSetter{
 		alignType: at,
