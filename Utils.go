@@ -97,7 +97,11 @@ func GetAvailableRegion() (width, height float32) {
 }
 
 func CalcTextSize(text string) (width, height float32) {
-	size := imgui.CalcTextSize(text, false, 0)
+	return CalcTextSizeV(text, false, -1)
+}
+
+func CalcTextSizeV(text string, hideAfterDoubleHash bool, wrapWidth float32) (w, h float32) {
+	size := imgui.CalcTextSize(text, hideAfterDoubleHash, wrapWidth)
 	return size.X, size.Y
 }
 
