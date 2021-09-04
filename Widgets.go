@@ -236,7 +236,7 @@ func SmallButton(id string) *SmallButtonWidget {
 }
 
 func SmallButtonf(format string, args ...interface{}) *SmallButtonWidget {
-	return SmallButton(fmt.SPrintf(format, args...))
+	return SmallButton(fmt.Sprintf(format, args...))
 }
 
 func (sb *SmallButtonWidget) Build() {
@@ -1436,7 +1436,7 @@ func Menu(label string) *MenuWidget {
 	}
 }
 
-func Menuf(format string, args ...interface{}) *MenuWIdget {
+func Menuf(format string, args ...interface{}) *MenuWidget {
 	return Menu(fmt.Sprintf(format, args...))
 }
 
@@ -1568,7 +1568,7 @@ func (p *ProgressBarWidget) Overlay(overlay string) *ProgressBarWidget {
 }
 
 func (p *ProgressBarWidget) Overlayf(format string, args ...interface{}) *ProgressBarWidget {
-	p.overlay = tStr(fmt.Sprintf(overlay))
+	p.overlay = tStr(fmt.Sprintf(p.overlay))
 	return p
 }
 
@@ -1597,7 +1597,7 @@ func Selectable(label string) *SelectableWidget {
 	}
 }
 
-func Selectablef(format string, args ...interface{}) *SelectableWIdget {
+func Selectablef(format string, args ...interface{}) *SelectableWidget {
 	return Selectable(fmt.Sprintf(format, args...))
 }
 
@@ -2411,7 +2411,7 @@ func Tooltip(tip string) *TooltipWidget {
 }
 
 func Tooltipf(format string, args ...interface{}) *TooltipWidget {
-	return Tooltip(fmt.SPrintf(format, args...))
+	return Tooltip(fmt.Sprintf(format, args...))
 }
 
 func (t *TooltipWidget) Layout(widgets ...Widget) *TooltipWidget {
