@@ -15,14 +15,6 @@ const (
 	AlignRight
 )
 
-type alignSetterState struct {
-	widgets []float32
-}
-
-func (s *alignSetterState) Dispose() {
-	// noop
-}
-
 type AlignmentSetter struct {
 	alignType AlignmentType
 	layout    Layout
@@ -36,7 +28,6 @@ func Align(at AlignmentType) *AlignmentSetter {
 	}
 }
 
-// BUG: currently layout cannot be changed
 func (a *AlignmentSetter) To(widgets ...Widget) *AlignmentSetter {
 	a.layout = Layout(widgets)
 	return a
@@ -52,41 +43,36 @@ func (a *AlignmentSetter) Build() {
 		return
 	}
 
-	stateID := fmt.Sprintf("%s_state", a.id)
-	var state *alignSetterState
+	// WORKAROUND: get widgets widths rendering them with 100% transparency
+	// first save start cursor position
+	startPos := GetCursorPos()
 
-	// WORKAROUND: to get widgets width in further code, save them in state
-	if s := Context.GetState(stateID); s == nil {
-		newState := &alignSetterState{
-			widgets: make([]float32, 0),
+	widgetsWidths := make([]float32, 0)
+
+	// render widgets with 0 alpha and store thems widths
+	imgui.PushStyleVarFloat(imgui.StyleVarID(StyleVarAlpha), 0)
+	for _, item := range a.layout {
+		var width float32
+		if item != nil {
+			item.Build()
+			size := imgui.GetItemRectSize()
+			width = size.X
 		}
 
-		Context.SetState(stateID, newState)
-
-		state = newState
-
-		getItemWidth := func(i Widget) float32 {
-			if i == nil {
-				return 0
-			}
-
-			i.Build()
-			w := imgui.GetItemRectSize()
-			return w.X
-		}
-
-		for _, item := range a.layout {
-			state.widgets = append(state.widgets, getItemWidth(item))
-		}
-	} else {
-		state = s.(*alignSetterState)
+		widgetsWidths = append(widgetsWidths, width)
 	}
+	imgui.PopStyleVar()
 
+	// reset cursor pos
+	SetCursorPos(startPos)
+
+	// ALIGN WIDGETS
 	for i, item := range a.layout {
 		if item == nil {
 			continue
 		}
-		w := state.widgets[i]
+
+		w := widgetsWidths[i]
 		currentPos := GetCursorPos()
 		availableW, _ := GetAvailableRegion()
 		switch a.alignType {
