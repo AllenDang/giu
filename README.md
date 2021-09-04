@@ -13,7 +13,7 @@ Businesses: support continued development and maintenance via invoiced technical
 
 E-mail: allengnr@gmail.com
 
-Individuals: support continued development and maintenance.
+Individuals: support continued development and maintenance [here](https://patreon.com/AllenDang).
 
 ## Supported Platforms
 
