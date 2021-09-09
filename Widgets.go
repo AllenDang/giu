@@ -2703,6 +2703,7 @@ func (d *DatePickerWidget) Build() {
 
 	if d.width > 0 {
 		PushItemWidth(d.width)
+		defer PopItemWidth()
 	}
 
 	if imgui.BeginComboV(d.id+"##Combo", d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
@@ -2774,10 +2775,6 @@ func (d *DatePickerWidget) Build() {
 		Table().Flags(TableFlagsBorders | TableFlagsSizingStretchSame).Columns(columns...).Rows(rows...).Build()
 
 		imgui.EndCombo()
-	}
-
-	if d.width > 0 {
-		PopItemWidth()
 	}
 }
 
