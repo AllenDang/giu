@@ -2677,7 +2677,7 @@ func DatePicker(id string, date *time.Time) *DatePickerWidget {
 		id:       id,
 		date:     date,
 		width:    100 * Context.GetPlatform().GetContentScale(),
-		onChange: nil,
+		onChange: func() {}, // small hack - prevent giu from setting nil cb (skip nil check later)
 	}
 }
 
@@ -2687,156 +2687,153 @@ func (d *DatePickerWidget) Size(width float32) *DatePickerWidget {
 }
 
 func (d *DatePickerWidget) OnChange(onChange func()) *DatePickerWidget {
-	d.onChange = onChange
+	if onChange != nil {
+		d.onChange = onChange
+	}
 	return d
 }
 
 func (d *DatePickerWidget) Build() {
-	if d.date != nil {
-		imgui.PushID(d.id)
+	if d.date == nil {
+		return
+	}
 
-		if d.width > 0 {
-			PushItemWidth(d.width)
+	imgui.PushID(d.id)
+	defer imgui.PopID()
+
+	if d.width > 0 {
+		PushItemWidth(d.width)
+	}
+
+	if imgui.BeginComboV(d.id, d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
+		// Build year widget
+		imgui.AlignTextToFramePadding()
+		imgui.Text(tStr(" Year"))
+		imgui.SameLine()
+		imgui.Text(tStr(fmt.Sprintf("%14d", d.date.Year())))
+		imgui.SameLine()
+		if imgui.Button(tStr("-##year")) {
+			*d.date = d.date.AddDate(-1, 0, 0)
+			d.onChange()
+		}
+		imgui.SameLine()
+		if imgui.Button(tStr("+##year")) {
+			*d.date = d.date.AddDate(1, 0, 0)
+			d.onChange()
 		}
 
-		evtTrigger := func() {
-			if d.onChange != nil {
-				d.onChange()
+		// Build month widgets
+		imgui.Text(tStr("Month"))
+		imgui.SameLine()
+		imgui.Text(tStr(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month())))
+		imgui.SameLine()
+		if imgui.Button(tStr("-##month")) {
+			*d.date = d.date.AddDate(0, -1, 0)
+			d.onChange()
+		}
+		imgui.SameLine()
+		if imgui.Button(tStr("+##month")) {
+			*d.date = d.date.AddDate(0, 1, 0)
+			d.onChange()
+		}
+
+		// Build day widgets
+		firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
+		lastDay := firstDay.AddDate(0, 1, 0).Add(time.Nanosecond * -1)
+
+		var days [][]int
+
+		// Build first row
+		days = append(days, []int{})
+		j := 1
+		for i := 0; i < 7; i++ {
+			if i < int(firstDay.Weekday()) {
+				days[0] = append(days[0], 0)
+			} else {
+				days[0] = append(days[0], j)
+				j += 1
 			}
 		}
 
-		if imgui.BeginComboV(d.id, d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
-			// Build year widget
-			imgui.AlignTextToFramePadding()
-			imgui.Text(tStr(" Year"))
-			imgui.SameLine()
-			imgui.Text(tStr(fmt.Sprintf("%14d", d.date.Year())))
-			imgui.SameLine()
-			if imgui.Button(tStr("-##year")) {
-				*d.date = d.date.AddDate(-1, 0, 0)
-				evtTrigger()
-			}
-			imgui.SameLine()
-			if imgui.Button(tStr("+##year")) {
-				*d.date = d.date.AddDate(1, 0, 0)
-				evtTrigger()
+		// Build rest rows
+		for ; j <= lastDay.Day(); j++ {
+			if len(days[len(days)-1]) == 7 {
+				days = append(days, []int{})
 			}
 
-			// Build month widgets
-			imgui.Text(tStr("Month"))
-			imgui.SameLine()
-			imgui.Text(tStr(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month())))
-			imgui.SameLine()
-			if imgui.Button(tStr("-##month")) {
-				*d.date = d.date.AddDate(0, -1, 0)
-				evtTrigger()
+			days[len(days)-1] = append(days[len(days)-1], j)
+		}
+
+		// Pad last row
+		lastRowLen := len(days[len(days)-1])
+		if lastRowLen < 7 {
+			for i := lastRowLen; i < 7; i++ {
+				days[len(days)-1] = append(days[len(days)-1], 0)
 			}
-			imgui.SameLine()
-			if imgui.Button(tStr("+##month")) {
-				*d.date = d.date.AddDate(0, 1, 0)
-				evtTrigger()
-			}
+		}
 
-			// Build day widgets
-			firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
-			lastDay := firstDay.AddDate(0, 1, 0).Add(time.Nanosecond * -1)
+		columns := []*TableColumnWidget{
+			TableColumn("S"),
+			TableColumn("M"),
+			TableColumn("T"),
+			TableColumn("W"),
+			TableColumn("T"),
+			TableColumn("F"),
+			TableColumn("S"),
+		}
 
-			var days [][]int
+		// Build day widgets
+		var rows []*TableRowWidget
 
-			// Build first row
-			days = append(days, []int{})
-			j := 1
-			for i := 0; i < 7; i++ {
-				if i < int(firstDay.Weekday()) {
-					days[0] = append(days[0], 0)
+		today := time.Now()
+		style := imgui.CurrentStyle()
+		highlightColor := style.GetColor(imgui.StyleColorPlotHistogram)
+		for r := 0; r < len(days); r++ {
+			var row []Widget
+
+			for c := 0; c < 7; c++ {
+				day := days[r][c]
+				if day == 0 {
+					row = append(row, Label(" "))
 				} else {
-					days[0] = append(days[0], j)
-					j += 1
+					row = append(row,
+						Custom(func() {
+							if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
+								imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
+							}
+
+							Selectable(fmt.Sprintf("%02d", day)).Selected(day == int(d.date.Day())).OnClick(func() {
+								*d.date, _ = time.ParseInLocation(
+									"2006-01-02",
+									fmt.Sprintf("%d-%02d-%02d",
+										d.date.Year(),
+										d.date.Month(),
+										day,
+									),
+									time.Local,
+								)
+
+								d.onChange()
+							}).Build()
+
+							if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
+								imgui.PopStyleColor()
+							}
+						}),
+					)
 				}
 			}
 
-			// Build rest rows
-			for ; j <= lastDay.Day(); j++ {
-				if len(days[len(days)-1]) == 7 {
-					days = append(days, []int{})
-				}
-
-				days[len(days)-1] = append(days[len(days)-1], j)
-			}
-
-			// Pad last row
-			lastRowLen := len(days[len(days)-1])
-			if lastRowLen < 7 {
-				for i := lastRowLen; i < 7; i++ {
-					days[len(days)-1] = append(days[len(days)-1], 0)
-				}
-			}
-
-			columns := []*TableColumnWidget{
-				TableColumn("S"),
-				TableColumn("M"),
-				TableColumn("T"),
-				TableColumn("W"),
-				TableColumn("T"),
-				TableColumn("F"),
-				TableColumn("S"),
-			}
-
-			// Build day widgets
-			var rows []*TableRowWidget
-
-			today := time.Now()
-			style := imgui.CurrentStyle()
-			highlightColor := style.GetColor(imgui.StyleColorPlotHistogram)
-			for r := 0; r < len(days); r++ {
-				var row []Widget
-
-				for c := 0; c < 7; c++ {
-					day := days[r][c]
-					if day == 0 {
-						row = append(row, Label(" "))
-					} else {
-						row = append(row,
-							Custom(func() {
-								if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
-									imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
-								}
-
-								Selectable(fmt.Sprintf("%02d", day)).Selected(day == int(d.date.Day())).OnClick(func() {
-									*d.date, _ = time.ParseInLocation(
-										"2006-01-02",
-										fmt.Sprintf("%d-%02d-%02d",
-											d.date.Year(),
-											d.date.Month(),
-											day,
-										),
-										time.Local,
-									)
-
-									evtTrigger()
-								}).Build()
-
-								if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
-									imgui.PopStyleColor()
-								}
-							}),
-						)
-					}
-				}
-
-				rows = append(rows, TableRow(row...))
-			}
-
-			Table().Flags(TableFlagsBorders | TableFlagsSizingStretchSame).Columns(columns...).Rows(rows...).Build()
-
-			imgui.EndCombo()
+			rows = append(rows, TableRow(row...))
 		}
 
-		if d.width > 0 {
-			PopItemWidth()
-		}
+		Table().Flags(TableFlagsBorders | TableFlagsSizingStretchSame).Columns(columns...).Rows(rows...).Build()
 
-		imgui.PopID()
+		imgui.EndCombo()
+	}
+
+	if d.width > 0 {
+		PopItemWidth()
 	}
 }
 
