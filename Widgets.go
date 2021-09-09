@@ -2812,7 +2812,7 @@ func (d *DatePickerWidget) Build() {
 							imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
 						}
 
-						Selectable(fmt.Sprintf("%02d", day)).Selected(day == int(d.date.Day())).OnClick(func() {
+						Selectable(fmt.Sprintf("%02d", day)).Selected(isToday).OnClick(func() {
 							*d.date, _ = time.ParseInLocation(
 								"2006-01-02",
 								fmt.Sprintf("%d-%02d-%02d",
