@@ -7,9 +7,7 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
-var (
-	texture *g.Texture
-)
+var texture *g.Texture
 
 func loop() {
 	g.SingleWindow().Layout(
@@ -57,9 +55,9 @@ func main() {
 	wnd := g.NewMasterWindow("Canvas", 600, 600, g.MasterWindowFlagsNotResizable)
 
 	img, _ := g.LoadImage("gopher.png")
-	go func() {
-		texture, _ = g.NewTextureFromRgba(img)
-	}()
+	g.NewTextureFromRgba(img, func(tex *g.Texture) {
+		texture = tex
+	})
 
 	wnd.Run(loop)
 }
