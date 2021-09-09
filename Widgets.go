@@ -2755,45 +2755,17 @@ func (d *DatePickerWidget) Build() {
 		// Build day widgets
 		var rows []*TableRowWidget
 
-		today := time.Now()
-		highlightColor := imgui.CurrentStyle().GetColor(imgui.StyleColorPlotHistogram)
-
-		for r := 0; r < len(days); r++ {
+		for _, week := range days {
 			var row []Widget
 
-			for c := 0; c < 7; c++ {
-				day := days[r][c]
+			for _, day := range week {
+				day := day // hack for golang ranges
 				if day == 0 {
 					row = append(row, Label(" "))
 					continue
 				}
 
-				row = append(row,
-					Custom(func() {
-						isToday := d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day()
-						if isToday {
-							imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
-						}
-
-						Selectable(fmt.Sprintf("%02d", day)).Selected(isToday).OnClick(func() {
-							*d.date, _ = time.ParseInLocation(
-								"2006-01-02",
-								fmt.Sprintf("%d-%02d-%02d",
-									d.date.Year(),
-									d.date.Month(),
-									day,
-								),
-								time.Local,
-							)
-
-							d.onChange()
-						}).Build()
-
-						if isToday {
-							imgui.PopStyleColor()
-						}
-					}),
-				)
+				row = append(row, d.calendarField(day))
 			}
 
 			rows = append(rows, TableRow(row...))
@@ -2847,6 +2819,35 @@ func (d *DatePickerWidget) getDaysGroups() (days [][]int) {
 	}
 
 	return days
+}
+
+func (d *DatePickerWidget) calendarField(day int) Widget {
+	today := time.Now()
+	highlightColor := imgui.CurrentStyle().GetColor(imgui.StyleColorPlotHistogram)
+	return Custom(func() {
+		isToday := d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day()
+		if isToday {
+			imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
+		}
+
+		Selectable(fmt.Sprintf("%02d", day)).Selected(isToday).OnClick(func() {
+			*d.date, _ = time.ParseInLocation(
+				"2006-01-02",
+				fmt.Sprintf("%d-%02d-%02d",
+					d.date.Year(),
+					d.date.Month(),
+					day,
+				),
+				time.Local,
+			)
+
+			d.onChange()
+		}).Build()
+
+		if isToday {
+			imgui.PopStyleColor()
+		}
+	})
 }
 
 type ColorEditWidget struct {
