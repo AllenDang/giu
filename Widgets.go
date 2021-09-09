@@ -2706,7 +2706,7 @@ func (d *DatePickerWidget) Build() {
 	}
 
 	if imgui.BeginComboV(d.id+"##Combo", d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
-		// Build year widget
+		// --- [Build year widget] ---
 		imgui.AlignTextToFramePadding()
 
 		const yearButtonSize = 25
@@ -2724,7 +2724,7 @@ func (d *DatePickerWidget) Build() {
 			}).Size(yearButtonSize, yearButtonSize),
 		).Build()
 
-		// Build month widgets
+		// --- [Build month widgets] ---
 		Row(
 			Label("Month"),
 			Label(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month())),
@@ -2738,44 +2738,8 @@ func (d *DatePickerWidget) Build() {
 			}).Size(yearButtonSize, yearButtonSize),
 		).Build()
 
-		// Build day widgets
-		firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
-		lastDay := firstDay.AddDate(0, 1, 0).Add(time.Nanosecond * -1)
-
-		// store month days sorted in weeks
-		var days [][]int
-
-		// Build first row
-		days = append(days, []int{})
-
-		monthDay := 1
-		for i := 0; i < 7; i++ {
-			// check for the first month weekday
-			if i < int(firstDay.Weekday()) {
-				days[0] = append(days[0], 0)
-				continue
-			}
-
-			days[0] = append(days[0], monthDay)
-			monthDay++
-		}
-
-		// Build rest rows
-		for ; monthDay <= lastDay.Day(); monthDay++ {
-			if len(days[len(days)-1]) == 7 {
-				days = append(days, []int{})
-			}
-
-			days[len(days)-1] = append(days[len(days)-1], monthDay)
-		}
-
-		// Pad last row
-		lastRowLen := len(days[len(days)-1])
-		if lastRowLen < 7 {
-			for i := lastRowLen; i < 7; i++ {
-				days[len(days)-1] = append(days[len(days)-1], 0)
-			}
-		}
+		// --- [Build day widgets] ---
+		days := d.getDaysGroups()
 
 		// Create calendar (widget)
 		columns := []*TableColumnWidget{
@@ -2793,6 +2757,7 @@ func (d *DatePickerWidget) Build() {
 
 		today := time.Now()
 		highlightColor := imgui.CurrentStyle().GetColor(imgui.StyleColorPlotHistogram)
+
 		for r := 0; r < len(days); r++ {
 			var row []Widget
 
@@ -2842,6 +2807,46 @@ func (d *DatePickerWidget) Build() {
 	if d.width > 0 {
 		PopItemWidth()
 	}
+}
+
+// store month days sorted in weeks
+func (d *DatePickerWidget) getDaysGroups() (days [][]int) {
+	firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
+	lastDay := firstDay.AddDate(0, 1, 0).Add(time.Nanosecond * -1)
+
+	// calculate first week
+	days = append(days, []int{})
+
+	monthDay := 1
+	for i := 0; i < 7; i++ {
+		// check for the first month weekday
+		if i < int(firstDay.Weekday()) {
+			days[0] = append(days[0], 0)
+			continue
+		}
+
+		days[0] = append(days[0], monthDay)
+		monthDay++
+	}
+
+	// Build rest rows
+	for ; monthDay <= lastDay.Day(); monthDay++ {
+		if len(days[len(days)-1]) == 7 {
+			days = append(days, []int{})
+		}
+
+		days[len(days)-1] = append(days[len(days)-1], monthDay)
+	}
+
+	// Pad last row
+	lastRowLen := len(days[len(days)-1])
+	if lastRowLen < 7 {
+		for i := lastRowLen; i < 7; i++ {
+			days[len(days)-1] = append(days[len(days)-1], 0)
+		}
+	}
+
+	return days
 }
 
 type ColorEditWidget struct {
