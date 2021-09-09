@@ -2712,30 +2712,32 @@ func (d *DatePickerWidget) Build() {
 		imgui.SameLine()
 		imgui.Text(tStr(fmt.Sprintf("%14d", d.date.Year())))
 		imgui.SameLine()
-		if imgui.Button(tStr("-##year")) {
+
+		const yearButtonSize = 25
+		Button(tStr("-##year")).OnClick(func() {
 			*d.date = d.date.AddDate(-1, 0, 0)
 			d.onChange()
-		}
+		}).Size(yearButtonSize, yearButtonSize).Build()
 		imgui.SameLine()
-		if imgui.Button(tStr("+##year")) {
+		Button(tStr("+##year")).OnClick(func() {
 			*d.date = d.date.AddDate(1, 0, 0)
 			d.onChange()
-		}
+		}).Size(yearButtonSize, yearButtonSize).Build()
 
 		// Build month widgets
 		imgui.Text(tStr("Month"))
 		imgui.SameLine()
 		imgui.Text(tStr(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month())))
 		imgui.SameLine()
-		if imgui.Button(tStr("-##month")) {
+		Button(tStr("-##month")).OnClick(func() {
 			*d.date = d.date.AddDate(0, -1, 0)
 			d.onChange()
-		}
+		}).Size(yearButtonSize, yearButtonSize).Build()
 		imgui.SameLine()
-		if imgui.Button(tStr("+##month")) {
+		Button(tStr("+##month")).OnClick(func() {
 			*d.date = d.date.AddDate(0, 1, 0)
 			d.onChange()
-		}
+		}).Size(yearButtonSize, yearButtonSize).Build()
 
 		// Build day widgets
 		firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
