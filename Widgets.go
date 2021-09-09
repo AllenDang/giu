@@ -2743,27 +2743,31 @@ func (d *DatePickerWidget) Build() {
 		firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
 		lastDay := firstDay.AddDate(0, 1, 0).Add(time.Nanosecond * -1)
 
+		// store month days sorted in weeks
 		var days [][]int
 
 		// Build first row
 		days = append(days, []int{})
-		j := 1
+
+		monthDay := 1
 		for i := 0; i < 7; i++ {
+			// check for the first month weekday
 			if i < int(firstDay.Weekday()) {
 				days[0] = append(days[0], 0)
-			} else {
-				days[0] = append(days[0], j)
-				j += 1
+				continue
 			}
+
+			days[0] = append(days[0], monthDay)
+			monthDay++
 		}
 
 		// Build rest rows
-		for ; j <= lastDay.Day(); j++ {
+		for ; monthDay <= lastDay.Day(); monthDay++ {
 			if len(days[len(days)-1]) == 7 {
 				days = append(days, []int{})
 			}
 
-			days[len(days)-1] = append(days[len(days)-1], j)
+			days[len(days)-1] = append(days[len(days)-1], monthDay)
 		}
 
 		// Pad last row
