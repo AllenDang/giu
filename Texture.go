@@ -1,7 +1,7 @@
 package giu
 
 import (
-	"errors"
+	"fmt"
 	"image"
 	"runtime"
 
@@ -19,25 +19,31 @@ type loadImageResult struct {
 	err error
 }
 
-// Create new texture from rgba.
-// Note: this function has to be invokded in a go routine.
-// If call this in mainthread will result in stuck.
-func NewTextureFromRgba(rgba image.Image) (*Texture, error) {
-	Update()
-	result := mainthread.CallVal(func() interface{} {
-		texId, err := Context.renderer.LoadImage(ImageToRgba(rgba))
-		return &loadImageResult{id: texId, err: err}
-	})
+// NewTextureFromRgba creates a new texture from image.Image and, when it is done, calls loadCallback(loadedTexture).
+func NewTextureFromRgba(rgba image.Image, loadCallback func(*Texture)) {
+	go func() {
+		Update()
+		result := mainthread.CallVal(func() interface{} {
+			texId, err := Context.renderer.LoadImage(ImageToRgba(rgba))
+			return &loadImageResult{id: texId, err: err}
+		})
 
-	if tid, ok := result.(*loadImageResult); ok {
-		texture := Texture{id: tid.id}
-		if tid.err == nil {
-			// Set finalizer
-			runtime.SetFinalizer(&texture, (*Texture).release)
+		tid, ok := result.(*loadImageResult)
+		switch {
+		case !ok:
+			panic("giu: NewTextureFromRgba: unexpected error occured")
+		case tid.err != nil:
+			panic(fmt.Sprintf("giu: NewTextureFromRgba: error loading texture: %v", tid.err))
 		}
-		return &texture, tid.err
-	}
-	return nil, errors.New("Unknown error occurred")
+
+		texture := Texture{id: tid.id}
+
+		// Set finalizer
+		runtime.SetFinalizer(&texture, (*Texture).release)
+
+		// execute callback
+		loadCallback(&texture)
+	}()
 }
 
 // ToTexture converts imgui.TextureID to Texture.
