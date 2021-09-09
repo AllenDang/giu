@@ -2674,7 +2674,7 @@ type DatePickerWidget struct {
 
 func DatePicker(id string, date *time.Time) *DatePickerWidget {
 	return &DatePickerWidget{
-		id:       id,
+		id:       GenAutoID(id),
 		date:     date,
 		width:    100 * Context.GetPlatform().GetContentScale(),
 		onChange: func() {}, // small hack - prevent giu from setting nil cb (skip nil check later)
@@ -2705,39 +2705,38 @@ func (d *DatePickerWidget) Build() {
 		PushItemWidth(d.width)
 	}
 
-	if imgui.BeginComboV(d.id, d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
+	if imgui.BeginComboV(d.id+"##Combo", d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
 		// Build year widget
 		imgui.AlignTextToFramePadding()
-		imgui.Text(tStr(" Year"))
-		imgui.SameLine()
-		imgui.Text(tStr(fmt.Sprintf("%14d", d.date.Year())))
-		imgui.SameLine()
 
 		const yearButtonSize = 25
-		Button(tStr("-##year")).OnClick(func() {
-			*d.date = d.date.AddDate(-1, 0, 0)
-			d.onChange()
-		}).Size(yearButtonSize, yearButtonSize).Build()
-		imgui.SameLine()
-		Button(tStr("+##year")).OnClick(func() {
-			*d.date = d.date.AddDate(1, 0, 0)
-			d.onChange()
-		}).Size(yearButtonSize, yearButtonSize).Build()
+
+		Row(
+			Label(tStr(" Year")),
+			Label(fmt.Sprintf("%14d", d.date.Year())),
+			Button("-##"+d.id+"year").OnClick(func() {
+				*d.date = d.date.AddDate(-1, 0, 0)
+				d.onChange()
+			}).Size(yearButtonSize, yearButtonSize),
+			Button("+##"+d.id+"year").OnClick(func() {
+				*d.date = d.date.AddDate(1, 0, 0)
+				d.onChange()
+			}).Size(yearButtonSize, yearButtonSize),
+		).Build()
 
 		// Build month widgets
-		imgui.Text(tStr("Month"))
-		imgui.SameLine()
-		imgui.Text(tStr(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month())))
-		imgui.SameLine()
-		Button(tStr("-##month")).OnClick(func() {
-			*d.date = d.date.AddDate(0, -1, 0)
-			d.onChange()
-		}).Size(yearButtonSize, yearButtonSize).Build()
-		imgui.SameLine()
-		Button(tStr("+##month")).OnClick(func() {
-			*d.date = d.date.AddDate(0, 1, 0)
-			d.onChange()
-		}).Size(yearButtonSize, yearButtonSize).Build()
+		Row(
+			Label("Month"),
+			Label(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month())),
+			Button("-##"+d.id+"month").OnClick(func() {
+				*d.date = d.date.AddDate(0, -1, 0)
+				d.onChange()
+			}).Size(yearButtonSize, yearButtonSize),
+			Button("+##"+d.id+"month").OnClick(func() {
+				*d.date = d.date.AddDate(0, 1, 0)
+				d.onChange()
+			}).Size(yearButtonSize, yearButtonSize),
+		).Build()
 
 		// Build day widgets
 		firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
@@ -2793,8 +2792,7 @@ func (d *DatePickerWidget) Build() {
 		var rows []*TableRowWidget
 
 		today := time.Now()
-		style := imgui.CurrentStyle()
-		highlightColor := style.GetColor(imgui.StyleColorPlotHistogram)
+		highlightColor := imgui.CurrentStyle().GetColor(imgui.StyleColorPlotHistogram)
 		for r := 0; r < len(days); r++ {
 			var row []Widget
 
