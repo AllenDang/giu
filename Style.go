@@ -327,31 +327,33 @@ func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
 }
 
 func (ss *StyleSetter) Build() {
-	if len(ss.layout) > 0 {
-		for k, v := range ss.colors {
-			imgui.PushStyleColor(imgui.StyleColorID(k), ToVec4Color(v))
-		}
-
-		for k, v := range ss.styles {
-			imgui.PushStyleVarVec2(imgui.StyleVarID(k), v)
-		}
-
-		isFontPushed := false
-		if ss.font != nil {
-			isFontPushed = PushFont(ss.font)
-		}
-
-		imgui.BeginDisabled(ss.disabled)
-
-		ss.layout.Build()
-
-		imgui.EndDisabled()
-
-		if isFontPushed {
-			PopFont()
-		}
-
-		imgui.PopStyleColorV(len(ss.colors))
-		imgui.PopStyleVarV(len(ss.styles))
+	if ss.layout == nil || len(ss.layout) == 0 {
+		return
 	}
+
+	for k, v := range ss.colors {
+		imgui.PushStyleColor(imgui.StyleColorID(k), ToVec4Color(v))
+	}
+
+	for k, v := range ss.styles {
+		imgui.PushStyleVarVec2(imgui.StyleVarID(k), v)
+	}
+
+	isFontPushed := false
+	if ss.font != nil {
+		isFontPushed = PushFont(ss.font)
+	}
+
+	imgui.BeginDisabled(ss.disabled)
+
+	ss.layout.Build()
+
+	imgui.EndDisabled()
+
+	if isFontPushed {
+		PopFont()
+	}
+
+	imgui.PopStyleColorV(len(ss.colors))
+	imgui.PopStyleVarV(len(ss.styles))
 }

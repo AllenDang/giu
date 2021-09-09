@@ -6,6 +6,15 @@ A rapid cross-platform GUI framework for Go based on [Dear ImGui](https://github
 
 Any contribution (features, widgets, tutorials, documents, etc...) is appreciated!
 
+## Sponsor
+(This library is available under a free and permissive license, but needs financial support to sustain its continued improvements. In addition to maintenance and stability there are many desirable features yet to be added. If you are using giu, please consider reaching out.)
+
+Businesses: support continued development and maintenance via invoiced technical support, maintenance, sponsoring contracts:
+
+E-mail: allengnr@gmail.com
+
+Individuals: support continued development and maintenance [here](https://patreon.com/AllenDang).
+
 ## Supported Platforms
 
 giu is built upon GLFW v3.3, so ideally giu could support all platforms that GLFW v3.3 supports.
