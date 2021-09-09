@@ -2778,6 +2778,7 @@ func (d *DatePickerWidget) Build() {
 			}
 		}
 
+		// Create calendar (widget)
 		columns := []*TableColumnWidget{
 			TableColumn("S"),
 			TableColumn("M"),
@@ -2801,33 +2802,35 @@ func (d *DatePickerWidget) Build() {
 				day := days[r][c]
 				if day == 0 {
 					row = append(row, Label(" "))
-				} else {
-					row = append(row,
-						Custom(func() {
-							if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
-								imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
-							}
-
-							Selectable(fmt.Sprintf("%02d", day)).Selected(day == int(d.date.Day())).OnClick(func() {
-								*d.date, _ = time.ParseInLocation(
-									"2006-01-02",
-									fmt.Sprintf("%d-%02d-%02d",
-										d.date.Year(),
-										d.date.Month(),
-										day,
-									),
-									time.Local,
-								)
-
-								d.onChange()
-							}).Build()
-
-							if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
-								imgui.PopStyleColor()
-							}
-						}),
-					)
+					continue
 				}
+
+				row = append(row,
+					Custom(func() {
+						isToday := d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day()
+						if isToday {
+							imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
+						}
+
+						Selectable(fmt.Sprintf("%02d", day)).Selected(day == int(d.date.Day())).OnClick(func() {
+							*d.date, _ = time.ParseInLocation(
+								"2006-01-02",
+								fmt.Sprintf("%d-%02d-%02d",
+									d.date.Year(),
+									d.date.Month(),
+									day,
+								),
+								time.Local,
+							)
+
+							d.onChange()
+						}).Build()
+
+						if isToday {
+							imgui.PopStyleColor()
+						}
+					}),
+				)
 			}
 
 			rows = append(rows, TableRow(row...))
