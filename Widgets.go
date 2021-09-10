@@ -2655,10 +2655,10 @@ type DatePickerWidget struct {
 
 func DatePicker(id string, date *time.Time) *DatePickerWidget {
 	return &DatePickerWidget{
-		id:       id,
+		id:       GenAutoID(id),
 		date:     date,
 		width:    100 * Context.GetPlatform().GetContentScale(),
-		onChange: nil,
+		onChange: func() {}, // small hack - prevent giu from setting nil cb (skip nil check later)
 	}
 }
 
@@ -2668,157 +2668,164 @@ func (d *DatePickerWidget) Size(width float32) *DatePickerWidget {
 }
 
 func (d *DatePickerWidget) OnChange(onChange func()) *DatePickerWidget {
-	d.onChange = onChange
+	if onChange != nil {
+		d.onChange = onChange
+	}
 	return d
 }
 
 func (d *DatePickerWidget) Build() {
-	if d.date != nil {
-		imgui.PushID(d.id)
-
-		if d.width > 0 {
-			PushItemWidth(d.width)
-		}
-
-		evtTrigger := func() {
-			if d.onChange != nil {
-				d.onChange()
-			}
-		}
-
-		if imgui.BeginComboV(d.id, d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
-			// Build year widget
-			imgui.AlignTextToFramePadding()
-			imgui.Text(tStr(" Year"))
-			imgui.SameLine()
-			imgui.Text(tStr(fmt.Sprintf("%14d", d.date.Year())))
-			imgui.SameLine()
-			if imgui.Button(tStr("-##year")) {
-				*d.date = d.date.AddDate(-1, 0, 0)
-				evtTrigger()
-			}
-			imgui.SameLine()
-			if imgui.Button(tStr("+##year")) {
-				*d.date = d.date.AddDate(1, 0, 0)
-				evtTrigger()
-			}
-
-			// Build month widgets
-			imgui.Text(tStr("Month"))
-			imgui.SameLine()
-			imgui.Text(tStr(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month())))
-			imgui.SameLine()
-			if imgui.Button(tStr("-##month")) {
-				*d.date = d.date.AddDate(0, -1, 0)
-				evtTrigger()
-			}
-			imgui.SameLine()
-			if imgui.Button(tStr("+##month")) {
-				*d.date = d.date.AddDate(0, 1, 0)
-				evtTrigger()
-			}
-
-			// Build day widgets
-			firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
-			lastDay := firstDay.AddDate(0, 1, 0).Add(time.Nanosecond * -1)
-
-			var days [][]int
-
-			// Build first row
-			days = append(days, []int{})
-			j := 1
-			for i := 0; i < 7; i++ {
-				if i < int(firstDay.Weekday()) {
-					days[0] = append(days[0], 0)
-				} else {
-					days[0] = append(days[0], j)
-					j += 1
-				}
-			}
-
-			// Build rest rows
-			for ; j <= lastDay.Day(); j++ {
-				if len(days[len(days)-1]) == 7 {
-					days = append(days, []int{})
-				}
-
-				days[len(days)-1] = append(days[len(days)-1], j)
-			}
-
-			// Pad last row
-			lastRowLen := len(days[len(days)-1])
-			if lastRowLen < 7 {
-				for i := lastRowLen; i < 7; i++ {
-					days[len(days)-1] = append(days[len(days)-1], 0)
-				}
-			}
-
-			columns := []*TableColumnWidget{
-				TableColumn("S"),
-				TableColumn("M"),
-				TableColumn("T"),
-				TableColumn("W"),
-				TableColumn("T"),
-				TableColumn("F"),
-				TableColumn("S"),
-			}
-
-			// Build day widgets
-			var rows []*TableRowWidget
-
-			today := time.Now()
-			style := imgui.CurrentStyle()
-			highlightColor := style.GetColor(imgui.StyleColorPlotHistogram)
-			for r := 0; r < len(days); r++ {
-				var row []Widget
-
-				for c := 0; c < 7; c++ {
-					day := days[r][c]
-					if day == 0 {
-						row = append(row, Label(" "))
-					} else {
-						row = append(row,
-							Custom(func() {
-								if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
-									imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
-								}
-
-								Selectable(fmt.Sprintf("%02d", day)).Selected(day == int(d.date.Day())).OnClick(func() {
-									*d.date, _ = time.ParseInLocation(
-										"2006-01-02",
-										fmt.Sprintf("%d-%02d-%02d",
-											d.date.Year(),
-											d.date.Month(),
-											day,
-										),
-										time.Local,
-									)
-
-									evtTrigger()
-								}).Build()
-
-								if d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day() {
-									imgui.PopStyleColor()
-								}
-							}),
-						)
-					}
-				}
-
-				rows = append(rows, TableRow(row...))
-			}
-
-			Table().Flags(TableFlagsBorders | TableFlagsSizingStretchSame).Columns(columns...).Rows(rows...).Build()
-
-			imgui.EndCombo()
-		}
-
-		if d.width > 0 {
-			PopItemWidth()
-		}
-
-		imgui.PopID()
+	if d.date == nil {
+		return
 	}
+
+	imgui.PushID(d.id)
+	defer imgui.PopID()
+
+	if d.width > 0 {
+		PushItemWidth(d.width)
+		defer PopItemWidth()
+	}
+
+	if imgui.BeginComboV(d.id+"##Combo", d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
+		// --- [Build year widget] ---
+		imgui.AlignTextToFramePadding()
+
+		const yearButtonSize = 25
+
+		Row(
+			Label(tStr(" Year")),
+			Label(fmt.Sprintf("%14d", d.date.Year())),
+			Button("-##"+d.id+"year").OnClick(func() {
+				*d.date = d.date.AddDate(-1, 0, 0)
+				d.onChange()
+			}).Size(yearButtonSize, yearButtonSize),
+			Button("+##"+d.id+"year").OnClick(func() {
+				*d.date = d.date.AddDate(1, 0, 0)
+				d.onChange()
+			}).Size(yearButtonSize, yearButtonSize),
+		).Build()
+
+		// --- [Build month widgets] ---
+		Row(
+			Label("Month"),
+			Label(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month())),
+			Button("-##"+d.id+"month").OnClick(func() {
+				*d.date = d.date.AddDate(0, -1, 0)
+				d.onChange()
+			}).Size(yearButtonSize, yearButtonSize),
+			Button("+##"+d.id+"month").OnClick(func() {
+				*d.date = d.date.AddDate(0, 1, 0)
+				d.onChange()
+			}).Size(yearButtonSize, yearButtonSize),
+		).Build()
+
+		// --- [Build day widgets] ---
+		days := d.getDaysGroups()
+
+		// Create calendar (widget)
+		columns := []*TableColumnWidget{
+			TableColumn("S"),
+			TableColumn("M"),
+			TableColumn("T"),
+			TableColumn("W"),
+			TableColumn("T"),
+			TableColumn("F"),
+			TableColumn("S"),
+		}
+
+		// Build day widgets
+		var rows []*TableRowWidget
+
+		for _, week := range days {
+			var row []Widget
+
+			for _, day := range week {
+				day := day // hack for golang ranges
+				if day == 0 {
+					row = append(row, Label(" "))
+					continue
+				}
+
+				row = append(row, d.calendarField(day))
+			}
+
+			rows = append(rows, TableRow(row...))
+		}
+
+		Table().Flags(TableFlagsBorders | TableFlagsSizingStretchSame).Columns(columns...).Rows(rows...).Build()
+
+		imgui.EndCombo()
+	}
+}
+
+// store month days sorted in weeks
+func (d *DatePickerWidget) getDaysGroups() (days [][]int) {
+	firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
+	lastDay := firstDay.AddDate(0, 1, 0).Add(time.Nanosecond * -1)
+
+	// calculate first week
+	days = append(days, []int{})
+
+	monthDay := 1
+	for i := 0; i < 7; i++ {
+		// check for the first month weekday
+		if i < int(firstDay.Weekday()) {
+			days[0] = append(days[0], 0)
+			continue
+		}
+
+		days[0] = append(days[0], monthDay)
+		monthDay++
+	}
+
+	// Build rest rows
+	for ; monthDay <= lastDay.Day(); monthDay++ {
+		if len(days[len(days)-1]) == 7 {
+			days = append(days, []int{})
+		}
+
+		days[len(days)-1] = append(days[len(days)-1], monthDay)
+	}
+
+	// Pad last row
+	lastRowLen := len(days[len(days)-1])
+	if lastRowLen < 7 {
+		for i := lastRowLen; i < 7; i++ {
+			days[len(days)-1] = append(days[len(days)-1], 0)
+		}
+	}
+
+	return days
+}
+
+func (d *DatePickerWidget) calendarField(day int) Widget {
+	today := time.Now()
+	highlightColor := imgui.CurrentStyle().GetColor(imgui.StyleColorPlotHistogram)
+	return Custom(func() {
+		isToday := d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day()
+		if isToday {
+			imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
+		}
+
+		Selectable(fmt.Sprintf("%02d", day)).Selected(isToday).OnClick(func() {
+			*d.date, _ = time.ParseInLocation(
+				"2006-01-02",
+				fmt.Sprintf("%d-%02d-%02d",
+					d.date.Year(),
+					d.date.Month(),
+					day,
+				),
+				time.Local,
+			)
+
+			d.onChange()
+		}).Build()
+
+		if isToday {
+			imgui.PopStyleColor()
+		}
+	})
 }
 
 type ColorEditWidget struct {
