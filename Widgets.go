@@ -1029,6 +1029,7 @@ func (s *inputTextState) Dispose() {
 
 func InputText(value *string) *InputTextWidget {
 	return &InputTextWidget{
+		label:    GenAutoID("##InputText"),
 		hint:     "",
 		value:    value,
 		width:    0,
@@ -1076,10 +1077,6 @@ func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 }
 
 func (i *InputTextWidget) Build() {
-	if len(i.label) == 0 {
-		i.label = GenAutoID(i.label)
-	}
-
 	// Get state
 	var state *inputTextState
 	if s := Context.GetState(i.label); s == nil {
@@ -1091,13 +1088,10 @@ func (i *InputTextWidget) Build() {
 
 	if i.width != 0 {
 		PushItemWidth(i.width)
+		defer PopItemWidth()
 	}
 
 	isChanged := imgui.InputTextWithHint(i.label, i.hint, tStrPtr(i.value), int(i.flags), i.cb)
-
-	if i.width != 0 {
-		PopItemWidth()
-	}
 
 	if isChanged && i.onChange != nil {
 		i.onChange()
@@ -1146,6 +1140,7 @@ type InputIntWidget struct {
 
 func InputInt(value *int32) *InputIntWidget {
 	return &InputIntWidget{
+		label:    GenAutoID("##InputInt"),
 		value:    value,
 		width:    0,
 		flags:    0,
@@ -1174,20 +1169,13 @@ func (i *InputIntWidget) OnChange(onChange func()) *InputIntWidget {
 }
 
 func (i *InputIntWidget) Build() {
-	if len(i.label) == 0 {
-		i.label = GenAutoID(i.label)
-	}
-
 	if i.width != 0 {
 		PushItemWidth(i.width)
+		defer PopItemWidth()
 	}
 
 	if imgui.InputIntV(i.label, i.value, 0, 100, int(i.flags)) && i.onChange != nil {
 		i.onChange()
-	}
-
-	if i.width != 0 {
-		PopItemWidth()
 	}
 }
 
@@ -1202,6 +1190,7 @@ type InputFloatWidget struct {
 
 func InputFloat(label string, value *float32) *InputFloatWidget {
 	return &InputFloatWidget{
+		label:    GenAutoID("##InputFloatWidget"),
 		width:    0,
 		value:    value,
 		format:   "%.3f",
@@ -1231,20 +1220,13 @@ func (i *InputFloatWidget) Format(format string) *InputFloatWidget {
 }
 
 func (i *InputFloatWidget) Build() {
-	if len(i.label) == 0 {
-		i.label = GenAutoID(i.label)
-	}
-
 	if i.width != 0 {
 		PushItemWidth(i.width)
+		PopItemWidth()
 	}
 
 	if imgui.InputFloatV(i.label, i.value, 0, 0, i.format, int(i.flags)) && i.onChange != nil {
 		i.onChange()
-	}
-
-	if i.width != 0 {
-		PopItemWidth()
 	}
 }
 
@@ -1278,22 +1260,16 @@ func (l *LabelWidget) Font(font *FontInfo) *LabelWidget {
 func (l *LabelWidget) Build() {
 	if l.wrapped {
 		PushTextWrapPos()
+		defer PopTextWrapPos()
 	}
 
-	shouldPopFont := false
 	if l.fontInfo != nil {
-		shouldPopFont = PushFont(l.fontInfo)
+		if PushFont(l.fontInfo) {
+			defer PopFont()
+		}
 	}
 
 	imgui.Text(l.label)
-
-	if shouldPopFont {
-		PopFont()
-	}
-
-	if l.wrapped {
-		PopTextWrapPos()
-	}
 }
 
 type MainMenuBarWidget struct {
@@ -1521,8 +1497,7 @@ func (p *ProgressBarWidget) Overlay(overlay string) *ProgressBarWidget {
 }
 
 func (p *ProgressBarWidget) Overlayf(format string, args ...interface{}) *ProgressBarWidget {
-	p.overlay = tStr(fmt.Sprintf(p.overlay))
-	return p
+	return p.Overlay(fmt.Sprintf(format, args...))
 }
 
 func (p *ProgressBarWidget) Build() {
