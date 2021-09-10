@@ -887,13 +887,11 @@ type ImageWithUrlWidget struct {
 	id              string
 	imgUrl          string
 	downloadTimeout time.Duration
-	width           float32
-	height          float32
 	whenLoading     Layout
 	whenFailure     Layout
 	onReady         func()
 	onFailure       func(error)
-	onClick         func()
+	img             *ImageWidget
 }
 
 func ImageWithUrl(url string) *ImageWithUrlWidget {
@@ -901,10 +899,9 @@ func ImageWithUrl(url string) *ImageWithUrlWidget {
 		id:              fmt.Sprintf("ImageWithUrl_%s", url),
 		imgUrl:          url,
 		downloadTimeout: 10 * time.Second,
-		width:           100,
-		height:          100,
 		whenLoading:     Layout{Dummy(100, 100)},
 		whenFailure:     Layout{Dummy(100, 100)},
+		img:             Image(nil),
 	}
 }
 
@@ -920,7 +917,7 @@ func (i *ImageWithUrlWidget) OnFailure(onFailure func(error)) *ImageWithUrlWidge
 }
 
 func (i *ImageWithUrlWidget) OnClick(cb func()) *ImageWithUrlWidget {
-	i.onClick = cb
+	i.img.OnClick(cb)
 	return i
 }
 
@@ -930,7 +927,7 @@ func (i *ImageWithUrlWidget) Timeout(downloadTimeout time.Duration) *ImageWithUr
 }
 
 func (i *ImageWithUrlWidget) Size(width, height float32) *ImageWithUrlWidget {
-	i.width, i.height = width, height
+	i.img.Size(width, height)
 	return i
 }
 
@@ -945,11 +942,10 @@ func (i *ImageWithUrlWidget) LayoutForFailure(widgets ...Widget) *ImageWithUrlWi
 }
 
 func (i *ImageWithUrlWidget) Build() {
-	state := Context.GetState(i.id)
+	var imgState *ImageState = &ImageState{}
+	if state := Context.GetState(i.id); state == nil {
+		Context.SetState(i.id, imgState)
 
-	widget := Image(nil).OnClick(i.onClick).Size(i.width, i.height)
-
-	if state == nil {
 		// Prevent multiple invocation to download image.
 		downloadContext, cancalFunc := ctx.WithCancel(ctx.Background())
 		Context.SetState(i.id, &ImageState{loading: true, cancel: cancalFunc})
@@ -966,6 +962,7 @@ func (i *ImageWithUrlWidget) Build() {
 				if i.onFailure != nil {
 					i.onFailure(err)
 				}
+
 				return
 			}
 
@@ -977,13 +974,18 @@ func (i *ImageWithUrlWidget) Build() {
 				if i.onFailure != nil {
 					i.onFailure(err)
 				}
+
 				return
 			}
 
 			rgba := ImageToRgba(img)
 
 			NewTextureFromRgba(rgba, func(tex *Texture) {
-				Context.SetState(i.id, &ImageState{loading: false, texture: tex})
+				Context.SetState(i.id, &ImageState{
+					loading: false,
+					failure: false,
+					texture: tex,
+				})
 			})
 
 			// Trigger onReady event
@@ -992,21 +994,18 @@ func (i *ImageWithUrlWidget) Build() {
 			}
 		}()
 	} else {
-		imgState := state.(*ImageState)
-		if imgState.failure {
-			i.whenFailure.Build()
-			return
-		}
-
-		if imgState.loading {
-			i.whenLoading.Build()
-			return
-		}
-
-		widget.texture = imgState.texture
+		imgState = state.(*ImageState)
 	}
 
-	widget.Build()
+	switch {
+	case imgState.failure:
+		i.whenFailure.Build()
+	case imgState.loading:
+		i.whenLoading.Build()
+	default:
+		i.img.texture = imgState.texture
+		i.img.Build()
+	}
 }
 
 type InputTextWidget struct {
