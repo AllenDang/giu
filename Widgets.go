@@ -196,16 +196,21 @@ func (b *ArrowButtonWidget) OnClick(onClick func()) *ArrowButtonWidget {
 	return b
 }
 
-func ArrowButton(id string, dir Direction) *ArrowButtonWidget {
+func ArrowButton(dir Direction) *ArrowButtonWidget {
 	return &ArrowButtonWidget{
-		id:      id,
+		id:      GenAutoID("ArrowButton"),
 		dir:     dir,
 		onClick: nil,
 	}
 }
 
+func (ab *ArrowButtonWidget) ID(id string) *ArrowButtonWidget {
+	ab.id = id
+	return ab
+}
+
 func (ab *ArrowButtonWidget) Build() {
-	if imgui.ArrowButton(GenAutoID(ab.id), uint8(ab.dir)) && ab.onClick != nil {
+	if imgui.ArrowButton(ab.id, uint8(ab.dir)) && ab.onClick != nil {
 		ab.onClick()
 	}
 }
