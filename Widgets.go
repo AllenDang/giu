@@ -29,9 +29,7 @@ func Row(widgets ...Widget) *RowWidget {
 }
 
 func (l *RowWidget) Build() {
-	index := 0
-
-	for _, w := range l.widgets {
+	for index, w := range l.widgets {
 		_, isTooltip := w.(*TooltipWidget)
 		_, isContextMenu := w.(*ContextMenuWidget)
 		_, isPopupModal := w.(*PopupModalWidget)
@@ -46,8 +44,6 @@ func (l *RowWidget) Build() {
 		if index > 0 && !isTooltip && !isContextMenu && !isPopupModal && !isPopup && !isTabItem {
 			imgui.SameLine()
 		}
-
-		index += 1
 
 		w.Build()
 	}
