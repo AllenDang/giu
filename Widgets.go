@@ -841,52 +841,46 @@ func (i *ImageWithRgbaWidget) Build() {
 
 type ImageWithFileWidget struct {
 	id      string
-	width   float32
-	height  float32
 	imgPath string
-	onClick func()
+	img     *ImageWidget
 }
 
 func ImageWithFile(imgPath string) *ImageWithFileWidget {
 	return &ImageWithFileWidget{
 		id:      fmt.Sprintf("ImageWithFile_%s", imgPath),
-		width:   100,
-		height:  100,
 		imgPath: imgPath,
+		img:     Image(nil),
 	}
 }
 
 func (i *ImageWithFileWidget) Size(width, height float32) *ImageWithFileWidget {
-	i.width, i.height = width, height
+	i.img.Size(width, height)
 	return i
 }
 
 func (i *ImageWithFileWidget) OnClick(cb func()) *ImageWithFileWidget {
-	i.onClick = cb
+	i.img.OnClick(cb)
 	return i
 }
 
 func (i *ImageWithFileWidget) Build() {
-	state := Context.GetState(i.id)
-
-	widget := Image(nil).OnClick(i.onClick).Size(i.width, i.height)
-
-	if state == nil {
+	imgState := &ImageState{}
+	if state := Context.GetState(i.id); state == nil {
 		// Prevent multiple invocation to LoadImage.
-		Context.SetState(i.id, &ImageState{})
+		Context.SetState(i.id, imgState)
 
 		img, err := LoadImage(i.imgPath)
 		if err == nil {
 			NewTextureFromRgba(img, func(tex *Texture) {
-				Context.SetState(i.id, &ImageState{texture: tex})
+				imgState.texture = tex
 			})
 		}
 	} else {
-		imgState := state.(*ImageState)
-		widget.texture = imgState.texture
+		imgState = state.(*ImageState)
 	}
 
-	widget.Build()
+	i.img.texture = imgState.texture
+	i.img.Build()
 }
 
 type ImageWithUrlWidget struct {
