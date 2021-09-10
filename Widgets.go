@@ -185,7 +185,7 @@ func BulletText(text string) *BulletTextWidget {
 }
 
 func BulletTextf(format string, args ...interface{}) *BulletTextWidget {
-	return BulletTextf(fmt.Sprintf(format, args...))
+	return BulletText(fmt.Sprintf(format, args...))
 }
 
 func (bt *BulletTextWidget) Build() {
