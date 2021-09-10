@@ -803,42 +803,40 @@ type ImageWithRgbaWidget struct {
 
 func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 	return &ImageWithRgbaWidget{
-		id:     GenAutoID("ImageWithRgba"),
-		width:  100,
-		height: 100,
-		rgba:   rgba,
+		id:   GenAutoID("ImageWithRgba"),
+		rgba: rgba,
+		img:  Image(nil),
 	}
 }
 
 func (i *ImageWithRgbaWidget) Size(width, height float32) *ImageWithRgbaWidget {
-	i.width, i.height = width, height
+	i.img.Size(width, height)
 	return i
 }
 
 func (i *ImageWithRgbaWidget) OnClick(cb func()) *ImageWithRgbaWidget {
-	i.onClick = cb
+	i.img.OnClick(cb)
 	return i
 }
 
 func (i *ImageWithRgbaWidget) Build() {
-	widget := Image(nil).Size(i.width, i.height).OnClick(i.onClick)
-
 	if i.rgba != nil {
-		state := Context.GetState(i.id)
-
-		if state == nil {
-			Context.SetState(i.id, &ImageState{})
+		var imgState *ImageState
+		if state := Context.GetState(i.id); state == nil {
+			imgState = &ImageState{}
+			Context.SetState(i.id, imgState)
 
 			NewTextureFromRgba(i.rgba, func(tex *Texture) {
-				Context.SetState(i.id, &ImageState{texture: tex})
+				imgState.texture = tex
 			})
 		} else {
-			imgState := state.(*ImageState)
-			widget.texture = imgState.texture
+			imgState = state.(*ImageState)
 		}
+
+		i.img.texture = imgState.texture
 	}
 
-	widget.Build()
+	i.img.Build()
 }
 
 type ImageWithFileWidget struct {
