@@ -127,10 +127,10 @@ func loop() {
 		g.Row(
 			g.Label("Arrow buttons: "),
 
-			g.ArrowButton("arrow left", g.DirectionLeft),
-			g.ArrowButton("arrow right", g.DirectionRight),
-			g.ArrowButton("arrow up", g.DirectionUp),
-			g.ArrowButton("arrow down", g.DirectionDown),
+			g.ArrowButton(g.DirectionLeft),
+			g.ArrowButton(g.DirectionRight),
+			g.ArrowButton(g.DirectionUp),
+			g.ArrowButton(g.DirectionDown),
 		),
 
 		g.Row(
