@@ -549,6 +549,7 @@ func (cc *ComboCustomWidget) Size(width float32) *ComboCustomWidget {
 func (cc *ComboCustomWidget) Build() {
 	if cc.width > 0 {
 		imgui.PushItemWidth(cc.width)
+		defer imgui.PopItemWidth()
 	}
 
 	if imgui.BeginComboV(GenAutoID(cc.label), cc.previewValue, int(cc.flags)) {
@@ -556,10 +557,6 @@ func (cc *ComboCustomWidget) Build() {
 			cc.layout.Build()
 		}
 		imgui.EndCombo()
-	}
-
-	if cc.width > 0 {
-		imgui.PopItemWidth()
 	}
 }
 
@@ -597,6 +594,7 @@ func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
 func (c *ComboWidget) Build() {
 	if c.width > 0 {
 		imgui.PushItemWidth(c.width)
+		defer imgui.PopItemWidth()
 	}
 
 	if imgui.BeginComboV(GenAutoID(c.label), c.previewValue, int(c.flags)) {
@@ -610,10 +608,6 @@ func (c *ComboWidget) Build() {
 		}
 
 		imgui.EndCombo()
-	}
-
-	if c.width > 0 {
-		imgui.PopItemWidth()
 	}
 }
 
@@ -637,6 +631,7 @@ func ContextMenu() *ContextMenuWidget {
 	return &ContextMenuWidget{
 		mouseButton: MouseButtonRight,
 		layout:      nil,
+		id:          GenAutoID("ContextMenu"),
 	}
 }
 
@@ -656,10 +651,6 @@ func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
 }
 
 func (c *ContextMenuWidget) Build() {
-	if len(c.id) == 0 {
-		c.id = GenAutoID("ContextMenu")
-	}
-
 	if imgui.BeginPopupContextItemV(c.id, int(c.mouseButton)) {
 		if c.layout != nil {
 			c.layout.Build()
