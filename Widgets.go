@@ -760,22 +760,24 @@ func (i *ImageWidget) Build() {
 	if size.Y == (-1 * Context.GetPlatform().GetContentScale()) {
 		size.Y = rect.Y
 	}
-	if i.texture != nil && i.texture.id != 0 {
-		// trick: detect click event
-		if i.onClick != nil && IsMouseClicked(MouseButtonLeft) {
-			cursorPos := GetCursorScreenPos()
-			mousePos := GetMousePos()
-			mousePos.Add(cursorPos)
-			if cursorPos.X <= mousePos.X && cursorPos.Y <= mousePos.Y &&
-				cursorPos.X+int(i.width) >= mousePos.X && cursorPos.Y+int(i.height) >= mousePos.Y {
-				i.onClick()
-			}
-		}
 
-		imgui.ImageV(i.texture.id, size, ToVec2(i.uv0), ToVec2(i.uv1), ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
-	} else {
-		Dummy(i.width, i.height).Build()
+	if i.texture == nil || i.texture.id == 0 {
+		Dummy(size.X, size.Y).Build()
+		return
 	}
+
+	// trick: detect click event
+	if i.onClick != nil && IsMouseClicked(MouseButtonLeft) {
+		cursorPos := GetCursorScreenPos()
+		mousePos := GetMousePos()
+		mousePos.Add(cursorPos)
+		if cursorPos.X <= mousePos.X && cursorPos.Y <= mousePos.Y &&
+			cursorPos.X+int(i.width) >= mousePos.X && cursorPos.Y+int(i.height) >= mousePos.Y {
+			i.onClick()
+		}
+	}
+
+	imgui.ImageV(i.texture.id, size, ToVec2(i.uv0), ToVec2(i.uv1), ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
 }
 
 type ImageState struct {
@@ -794,11 +796,9 @@ func (is *ImageState) Dispose() {
 }
 
 type ImageWithRgbaWidget struct {
-	id      string
-	width   float32
-	height  float32
-	rgba    image.Image
-	onClick func()
+	id   string
+	rgba image.Image
+	img  *ImageWidget
 }
 
 func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
