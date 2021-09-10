@@ -398,9 +398,7 @@ func (b *ImageButtonWithRgbaWidget) FramePadding(padding int) *ImageButtonWithRg
 }
 
 func (i *ImageButtonWithRgbaWidget) Build() {
-	state := Context.GetState(i.id)
-
-	if state == nil {
+	if state := Context.GetState(i.id); state == nil {
 		Context.SetState(i.id, &ImageState{})
 
 		NewTextureFromRgba(i.rgba, func(tex *Texture) {
