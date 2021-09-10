@@ -1592,9 +1592,9 @@ type SliderIntWidget struct {
 	onChange func()
 }
 
-func SliderInt(label string, value *int32, min, max int32) *SliderIntWidget {
+func SliderInt(value *int32, min, max int32) *SliderIntWidget {
 	return &SliderIntWidget{
-		label:    tStr(label),
+		label:    GenAutoID("##SliderInt"),
 		value:    value,
 		min:      min,
 		max:      max,
@@ -1620,17 +1620,19 @@ func (s *SliderIntWidget) OnChange(onChange func()) *SliderIntWidget {
 	return s
 }
 
+func (s *SliderIntWidget) Label(label string) *SliderIntWidget {
+	s.label = tStr(label)
+	return s
+}
+
 func (s *SliderIntWidget) Build() {
 	if s.width != 0 {
 		PushItemWidth(s.width)
+		defer PopItemWidth()
 	}
 
 	if imgui.SliderIntV(GenAutoID(s.label), s.value, s.min, s.max, s.format) && s.onChange != nil {
 		s.onChange()
-	}
-
-	if s.width != 0 {
-		PopItemWidth()
 	}
 }
 
@@ -1646,9 +1648,9 @@ type VSliderIntWidget struct {
 	onChange func()
 }
 
-func VSliderInt(label string, value *int32, min, max int32) *VSliderIntWidget {
+func VSliderInt(value *int32, min, max int32) *VSliderIntWidget {
 	return &VSliderIntWidget{
-		label:  tStr(label),
+		label:  GenAutoID("##VSliderInt"),
 		width:  18,
 		height: 60,
 		value:  value,
@@ -1679,6 +1681,11 @@ func (vs *VSliderIntWidget) OnChange(onChange func()) *VSliderIntWidget {
 	return vs
 }
 
+func (vs *VSliderIntWidget) Label(label string) *VSliderIntWidget {
+	vs.label = tStr(label)
+	return vs
+}
+
 func (vs *VSliderIntWidget) Build() {
 	if imgui.VSliderIntV(
 		GenAutoID(vs.label),
@@ -1703,9 +1710,9 @@ type SliderFloatWidget struct {
 	onChange func()
 }
 
-func SliderFloat(label string, value *float32, min, max float32) *SliderFloatWidget {
+func SliderFloat(value *float32, min, max float32) *SliderFloatWidget {
 	return &SliderFloatWidget{
-		label:    tStr(label),
+		label:    GenAutoID("##SliderFloat"),
 		value:    value,
 		min:      min,
 		max:      max,
@@ -1731,17 +1738,19 @@ func (sf *SliderFloatWidget) Size(width float32) *SliderFloatWidget {
 	return sf
 }
 
+func (sf *SliderFloatWidget) Label(label string) *SliderFloatWidget {
+	sf.label = tStr(label)
+	return sf
+}
+
 func (sf *SliderFloatWidget) Build() {
 	if sf.width != 0 {
 		PushItemWidth(sf.width)
+		defer PopItemWidth()
 	}
 
 	if imgui.SliderFloatV(GenAutoID(sf.label), sf.value, sf.min, sf.max, sf.format, 1.0) && sf.onChange != nil {
 		sf.onChange()
-	}
-
-	if sf.width != 0 {
-		PopItemWidth()
 	}
 }
 
@@ -1780,6 +1789,7 @@ type HSplitterWidget struct {
 
 func HSplitter(delta *float32) *HSplitterWidget {
 	return &HSplitterWidget{
+		id:     GenAutoID("HSplitter"),
 		width:  0,
 		height: 0,
 		delta:  delta,
@@ -1805,9 +1815,12 @@ func (h *HSplitterWidget) Size(width, height float32) *HSplitterWidget {
 	return h
 }
 
-func (h *HSplitterWidget) Build() {
-	h.id = GenAutoID("HSplitter")
+func (h *HSplitterWidget) ID(id string) *HSplitterWidget {
+	h.id = id
+	return h
+}
 
+func (h *HSplitterWidget) Build() {
 	// Calc line position.
 	width := int(40 * Context.GetPlatform().GetContentScale())
 	height := int(2 * Context.GetPlatform().GetContentScale())
@@ -1849,6 +1862,7 @@ type VSplitterWidget struct {
 
 func VSplitter(delta *float32) *VSplitterWidget {
 	return &VSplitterWidget{
+		id:     GenAutoID("VSplitter"),
 		width:  0,
 		height: 0,
 		delta:  delta,
@@ -1874,9 +1888,12 @@ func (v *VSplitterWidget) Size(width, height float32) *VSplitterWidget {
 	return v
 }
 
-func (v *VSplitterWidget) Build() {
-	v.id = GenAutoID("VSplitter")
+func (v *VSplitterWidget) ID(id string) *VSplitterWidget {
+	v.id = id
+	return v
+}
 
+func (v *VSplitterWidget) Build() {
 	// Calc line position.
 	width := int(2 * Context.GetPlatform().GetContentScale())
 	height := int(40 * Context.GetPlatform().GetContentScale())

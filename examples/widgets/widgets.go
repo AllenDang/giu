@@ -97,13 +97,13 @@ func loop() {
 
 		g.ProgressBar(0.8).Size(g.Auto, 0).Overlay("Progress"),
 		g.DragInt("DragInt", &dragInt, 0, 100),
-		g.SliderInt("Slider", &dragInt, 0, 100),
+		g.SliderInt(&dragInt, 0, 100).Label("Slider"),
 
 		g.Label("Vertical sliders"),
 		g.Row(
-			g.VSliderInt("##VSlider1", &dragInt, 0, 100).OnChange(func() { fmt.Println(dragInt) }),
-			g.VSliderInt("##VSlider2", &dragInt, 0, 100),
-			g.VSliderInt("##VSlider3", &dragInt, 0, 100),
+			g.VSliderInt(&dragInt, 0, 100).OnChange(func() { fmt.Println(dragInt) }),
+			g.VSliderInt(&dragInt, 0, 100),
+			g.VSliderInt(&dragInt, 0, 100),
 		),
 
 		g.Combo("Combo", items[itemSelected], items, &itemSelected).OnChange(comboChanged),
