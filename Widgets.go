@@ -78,6 +78,10 @@ func (i *InputTextMultilineWidget) Label(label string) *InputTextMultilineWidget
 	return i
 }
 
+func (i *InputTextMultilineWidget) Labelf(format string, args ...interface{}) *InputTextMultilineWidget {
+	return i.Label(fmt.Sprintf(format, args...))
+}
+
 func (i *InputTextMultilineWidget) Build() {
 	if len(i.label) == 0 {
 		i.label = GenAutoID(i.label)
@@ -1044,6 +1048,10 @@ func (i *InputTextWidget) Label(label string) *InputTextWidget {
 	return i
 }
 
+func (i *InputTextWidget) Labelf(format string, args ...interface{}) *InputTextWidget {
+	return i.Label(fmt.Sprintf(format, args...))
+}
+
 // Enable auto complete popup by using fuzzy search of current value agains candidates
 // Press enter to confirm the first candidate
 func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
@@ -1153,6 +1161,10 @@ func (i *InputIntWidget) Label(label string) *InputIntWidget {
 	return i
 }
 
+func (i *InputIntWidget) Labelf(format string, args ...interface{}) *InputIntWidget {
+	return i.Label(fmt.Sprintf(format, args...))
+}
+
 func (i *InputIntWidget) Size(width float32) *InputIntWidget {
 	i.width = width * Context.platform.GetContentScale()
 	return i
@@ -1202,6 +1214,10 @@ func InputFloat(label string, value *float32) *InputFloatWidget {
 func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
 	i.label = tStr(label)
 	return i
+}
+
+func (i *InputFloatWidget) Labelf(format string, args ...interface{}) *InputFloatWidget {
+	return i.Label(fmt.Sprintf(format, args...))
 }
 
 func (i *InputFloatWidget) Size(width float32) *InputFloatWidget {
@@ -1625,6 +1641,10 @@ func (s *SliderIntWidget) Label(label string) *SliderIntWidget {
 	return s
 }
 
+func (s *SliderIntWidget) Labelf(format string, args ...interface{}) *SliderIntWidget {
+	return s.Label(fmt.Sprintf(format, args...))
+}
+
 func (s *SliderIntWidget) Build() {
 	if s.width != 0 {
 		PushItemWidth(s.width)
@@ -1686,6 +1706,10 @@ func (vs *VSliderIntWidget) Label(label string) *VSliderIntWidget {
 	return vs
 }
 
+func (vs *VSliderIntWidget) Labelf(format string, args ...interface{}) *VSliderIntWidget {
+	return vs.Label(fmt.Sprintf(format, args...))
+}
+
 func (vs *VSliderIntWidget) Build() {
 	if imgui.VSliderIntV(
 		GenAutoID(vs.label),
@@ -1741,6 +1765,10 @@ func (sf *SliderFloatWidget) Size(width float32) *SliderFloatWidget {
 func (sf *SliderFloatWidget) Label(label string) *SliderFloatWidget {
 	sf.label = tStr(label)
 	return sf
+}
+
+func (sf *SliderFloatWidget) Labelf(format string, args ...interface{}) *SliderFloatWidget {
+	return sf.Label(fmt.Sprintf(format, args...))
 }
 
 func (sf *SliderFloatWidget) Build() {
@@ -2655,7 +2683,7 @@ func (d *DatePickerWidget) Build() {
 
 		Row(
 			Label(tStr(" Year")),
-			Label(fmt.Sprintf("%14d", d.date.Year())),
+			Labelf("%14d", d.date.Year()),
 			Button("-##"+d.id+"year").OnClick(func() {
 				*d.date = d.date.AddDate(-1, 0, 0)
 				d.onChange()
@@ -2669,7 +2697,7 @@ func (d *DatePickerWidget) Build() {
 		// --- [Build month widgets] ---
 		Row(
 			Label("Month"),
-			Label(fmt.Sprintf("%10s(%02d)", d.date.Month().String(), d.date.Month())),
+			Labelf("%10s(%02d)", d.date.Month().String(), d.date.Month()),
 			Button("-##"+d.id+"month").OnClick(func() {
 				*d.date = d.date.AddDate(0, -1, 0)
 				d.onChange()
