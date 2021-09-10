@@ -471,10 +471,6 @@ type ChildWidget struct {
 }
 
 func (c *ChildWidget) Build() {
-	if c.layout == nil {
-		return
-	}
-
 	if imgui.BeginChildV(GenAutoID("Child"), imgui.Vec2{X: c.width, Y: c.height}, c.border, int(c.flags)) {
 		c.layout.Build()
 	}
@@ -553,9 +549,7 @@ func (cc *ComboCustomWidget) Build() {
 	}
 
 	if imgui.BeginComboV(GenAutoID(cc.label), cc.previewValue, int(cc.flags)) {
-		if cc.layout != nil {
-			cc.layout.Build()
-		}
+		cc.layout.Build()
 		imgui.EndCombo()
 	}
 }
@@ -652,9 +646,7 @@ func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
 
 func (c *ContextMenuWidget) Build() {
 	if imgui.BeginPopupContextItemV(c.id, int(c.mouseButton)) {
-		if c.layout != nil {
-			c.layout.Build()
-		}
+		c.layout.Build()
 		imgui.EndPopup()
 	}
 }
@@ -1330,9 +1322,7 @@ func (m *MainMenuBarWidget) Layout(widgets ...Widget) *MainMenuBarWidget {
 
 func (m *MainMenuBarWidget) Build() {
 	if imgui.BeginMainMenuBar() {
-		if m.layout != nil {
-			m.layout.Build()
-		}
+		m.layout.Build()
 		imgui.EndMainMenuBar()
 	}
 }
@@ -1354,9 +1344,7 @@ func (m *MenuBarWidget) Layout(widgets ...Widget) *MenuBarWidget {
 
 func (m *MenuBarWidget) Build() {
 	if imgui.BeginMenuBar() {
-		if m.layout != nil {
-			m.layout.Build()
-		}
+		m.layout.Build()
 		imgui.EndMenuBar()
 	}
 }
@@ -1432,9 +1420,7 @@ func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
 
 func (m *MenuWidget) Build() {
 	if imgui.BeginMenuV(GenAutoID(m.label), m.enabled) {
-		if m.layout != nil {
-			m.layout.Build()
-		}
+		m.layout.Build()
 		imgui.EndMenu()
 	}
 }
@@ -1465,9 +1451,7 @@ func (p *PopupWidget) Layout(widgets ...Widget) *PopupWidget {
 
 func (p *PopupWidget) Build() {
 	if imgui.BeginPopup(p.name, int(p.flags)) {
-		if p.layout != nil {
-			p.layout.Build()
-		}
+		p.layout.Build()
 		imgui.EndPopup()
 	}
 }
@@ -1505,9 +1489,7 @@ func (p *PopupModalWidget) Layout(widgets ...Widget) *PopupModalWidget {
 
 func (p *PopupModalWidget) Build() {
 	if imgui.BeginPopupModalV(p.name, p.open, int(p.flags)) {
-		if p.layout != nil {
-			p.layout.Build()
-		}
+		p.layout.Build()
 		imgui.EndPopup()
 	}
 }
@@ -1998,9 +1980,7 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 
 func (t *TabItemWidget) Build() {
 	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
-		if t.layout != nil {
-			t.layout.Build()
-		}
+		t.layout.Build()
 		imgui.EndTabItem()
 	}
 }
@@ -2444,9 +2424,7 @@ func (t *TreeNodeWidget) Build() {
 	}
 
 	if open {
-		if t.layout != nil {
-			t.layout.Build()
-		}
+		t.layout.Build()
 		if (t.flags & imgui.TreeNodeFlagsNoTreePushOnOpen) == 0 {
 			imgui.TreePop()
 		}

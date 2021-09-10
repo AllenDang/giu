@@ -4,9 +4,7 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
-var (
-	content string
-)
+var content string
 
 func loop() {
 	g.SingleWindow().Layout(
