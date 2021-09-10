@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"image/draw"
 	"math"
 	"time"
 
@@ -398,12 +397,9 @@ func (i *ImageButtonWithRgbaWidget) Build() {
 	if state == nil {
 		Context.SetState(i.id, &ImageState{})
 
-		go func() {
-			texture, err := NewTextureFromRgba(i.rgba)
-			if err == nil {
-				Context.SetState(i.id, &ImageState{texture: texture})
-			}
-		}()
+		NewTextureFromRgba(i.rgba, func(tex *Texture) {
+			Context.SetState(i.id, &ImageState{texture: tex})
+		})
 	} else {
 		imgState := state.(*ImageState)
 		i.ImageButtonWidget.texture = imgState.texture
@@ -842,12 +838,9 @@ func (i *ImageWithRgbaWidget) Build() {
 		if state == nil {
 			Context.SetState(i.id, &ImageState{})
 
-			go func() {
-				texture, err := NewTextureFromRgba(i.rgba)
-				if err == nil {
-					Context.SetState(i.id, &ImageState{texture: texture})
-				}
-			}()
+			NewTextureFromRgba(i.rgba, func(tex *Texture) {
+				Context.SetState(i.id, &ImageState{texture: tex})
+			})
 		} else {
 			imgState := state.(*ImageState)
 			widget.texture = imgState.texture
@@ -895,12 +888,9 @@ func (i *ImageWithFileWidget) Build() {
 
 		img, err := LoadImage(i.imgPath)
 		if err == nil {
-			go func() {
-				texture, err := NewTextureFromRgba(img)
-				if err == nil {
-					Context.SetState(i.id, &ImageState{texture: texture})
-				}
-			}()
+			NewTextureFromRgba(img, func(tex *Texture) {
+				Context.SetState(i.id, &ImageState{texture: tex})
+			})
 		}
 	} else {
 		imgState := state.(*ImageState)
@@ -1007,20 +997,11 @@ func (i *ImageWithUrlWidget) Build() {
 				return
 			}
 
-			rgba := image.NewRGBA(img.Bounds())
-			draw.Draw(rgba, img.Bounds(), img, image.Point{}, draw.Src)
+			rgba := ImageToRgba(img)
 
-			texture, err := NewTextureFromRgba(rgba)
-			if err != nil {
-				Context.SetState(i.id, &ImageState{failure: true})
-
-				// Trigger onFailure event
-				if i.onFailure != nil {
-					i.onFailure(err)
-				}
-				return
-			}
-			Context.SetState(i.id, &ImageState{loading: false, texture: texture})
+			NewTextureFromRgba(rgba, func(tex *Texture) {
+				Context.SetState(i.id, &ImageState{loading: false, texture: tex})
+			})
 
 			// Trigger onReady event
 			if i.onReady != nil {

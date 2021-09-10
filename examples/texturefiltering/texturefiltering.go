@@ -84,10 +84,13 @@ func main() {
 
 	spriteImg, _ := g.LoadImage("gopher-sprite.png")
 	largeImg, _ := g.LoadImage("gopher.png")
-	go func() {
-		spriteTexture, _ = g.NewTextureFromRgba(spriteImg)
-		largeTexture, _ = g.NewTextureFromRgba(largeImg)
-	}()
+
+	g.NewTextureFromRgba(spriteImg, func(tex *g.Texture) {
+		spriteTexture = tex
+	})
+	g.NewTextureFromRgba(largeImg, func(tex *g.Texture) {
+		largeTexture = tex
+	})
 
 	wnd.Run(loop)
 }
