@@ -1200,7 +1200,7 @@ type InputFloatWidget struct {
 	onChange func()
 }
 
-func InputFloat(label string, value *float32) *InputFloatWidget {
+func InputFloat(value *float32) *InputFloatWidget {
 	return &InputFloatWidget{
 		label:    GenAutoID("##InputFloatWidget"),
 		width:    0,
@@ -1208,6 +1208,7 @@ func InputFloat(label string, value *float32) *InputFloatWidget {
 		format:   "%.3f",
 		flags:    0,
 		onChange: nil,
+		label:    GenAutoID("##InputFloat"),
 	}
 }
 
@@ -1235,10 +1236,15 @@ func (i *InputFloatWidget) Format(format string) *InputFloatWidget {
 	return i
 }
 
+func (i *InputFloatWidget) OnChange(onChange func()) *InputFloatWidget {
+	i.onChange = onChange
+	return i
+}
+
 func (i *InputFloatWidget) Build() {
 	if i.width != 0 {
 		PushItemWidth(i.width)
-		PopItemWidth()
+		defer PopItemWidth()
 	}
 
 	if imgui.InputFloatV(i.label, i.value, 0, 0, i.format, int(i.flags)) && i.onChange != nil {
