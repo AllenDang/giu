@@ -1208,7 +1208,6 @@ func InputFloat(value *float32) *InputFloatWidget {
 		format:   "%.3f",
 		flags:    0,
 		onChange: nil,
-		label:    GenAutoID("##InputFloat"),
 	}
 }
 
