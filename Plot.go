@@ -347,10 +347,7 @@ func (p *PlotPieChartWidget) Angle0(a float64) *PlotPieChartWidget {
 }
 
 func (p *PlotPieChartWidget) Plot() {
-	for _, l := range p.labels {
-		tStr(l)
-	}
-	imgui.ImPlotPieChart(p.labels, p.values, p.x, p.y, p.radius, p.normalize, p.labelFormat, p.angle0)
+	imgui.ImPlotPieChart(tStrSlice(p.labels), p.values, p.x, p.y, p.radius, p.normalize, p.labelFormat, p.angle0)
 }
 
 type PlotScatterWidget struct {
