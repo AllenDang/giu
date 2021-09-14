@@ -301,13 +301,13 @@ func Style() *StyleSetter {
 	return &ss
 }
 
-func (ss *StyleSetter) SetColor(colorId StyleColorID, col color.RGBA) *StyleSetter {
-	ss.colors[colorId] = col
+func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.RGBA) *StyleSetter {
+	ss.colors[colorID] = col
 	return ss
 }
 
-func (ss *StyleSetter) SetStyle(varId StyleVarID, width, height float32) *StyleSetter {
-	ss.styles[varId] = imgui.Vec2{X: width, Y: height}
+func (ss *StyleSetter) SetStyle(varID StyleVarID, width, height float32) *StyleSetter {
+	ss.styles[varID] = imgui.Vec2{X: width, Y: height}
 	return ss
 }
 

@@ -40,20 +40,20 @@ const (
 	DrawFlagsRoundCornersMask        DrawFlags = DrawFlagsRoundCornersAll | DrawFlagsRoundCornersNone
 )
 
-func (c *Canvas) AddRect(pMin, pMax image.Point, color color.RGBA, rounding float32, rounding_corners DrawFlags, thickness float32) {
-	c.drawlist.AddRect(ToVec2(pMin), ToVec2(pMax), ToVec4Color(color), rounding, int(rounding_corners), thickness)
+func (c *Canvas) AddRect(pMin, pMax image.Point, color color.RGBA, rounding float32, roundingCorners DrawFlags, thickness float32) {
+	c.drawlist.AddRect(ToVec2(pMin), ToVec2(pMax), ToVec4Color(color), rounding, int(roundingCorners), thickness)
 }
 
-func (c *Canvas) AddRectFilled(pMin, pMax image.Point, color color.RGBA, rounding float32, rounding_corners DrawFlags) {
-	c.drawlist.AddRectFilled(ToVec2(pMin), ToVec2(pMax), ToVec4Color(color), rounding, int(rounding_corners))
+func (c *Canvas) AddRectFilled(pMin, pMax image.Point, color color.RGBA, rounding float32, roundingCorners DrawFlags) {
+	c.drawlist.AddRectFilled(ToVec2(pMin), ToVec2(pMax), ToVec4Color(color), rounding, int(roundingCorners))
 }
 
 func (c *Canvas) AddText(pos image.Point, color color.RGBA, text string) {
 	c.drawlist.AddText(ToVec2(pos), ToVec4Color(color), tStr(text))
 }
 
-func (c *Canvas) AddBezierCubic(pos0, cp0, cp1, pos1 image.Point, color color.RGBA, thickness float32, num_segments int) {
-	c.drawlist.AddBezierCubic(ToVec2(pos0), ToVec2(cp0), ToVec2(cp1), ToVec2(pos1), ToVec4Color(color), thickness, num_segments)
+func (c *Canvas) AddBezierCubic(pos0, cp0, cp1, pos1 image.Point, color color.RGBA, thickness float32, numSegments int) {
+	c.drawlist.AddBezierCubic(ToVec2(pos0), ToVec2(cp0), ToVec2(cp1), ToVec2(pos1), ToVec4Color(color), thickness, numSegments)
 }
 
 func (c *Canvas) AddTriangle(p1, p2, p3 image.Point, color color.RGBA, thickness float32) {
@@ -102,16 +102,16 @@ func (c *Canvas) PathStroke(color color.RGBA, closed bool, thickness float32) {
 	c.drawlist.PathStroke(ToVec4Color(color), closed, thickness)
 }
 
-func (c *Canvas) PathArcTo(center image.Point, radius, a_min, a_max float32, num_segments int) {
-	c.drawlist.PathArcTo(ToVec2(center), radius, a_min, a_max, num_segments)
+func (c *Canvas) PathArcTo(center image.Point, radius, min, max float32, numSegments int) {
+	c.drawlist.PathArcTo(ToVec2(center), radius, min, max, numSegments)
 }
 
-func (c *Canvas) PathArcToFast(center image.Point, radius float32, a_min_of_12, a_max_of_12 int) {
-	c.drawlist.PathArcToFast(ToVec2(center), radius, a_min_of_12, a_max_of_12)
+func (c *Canvas) PathArcToFast(center image.Point, radius float32, min12, max12 int) {
+	c.drawlist.PathArcToFast(ToVec2(center), radius, min12, max12)
 }
 
-func (c *Canvas) PathBezierCubicCurveTo(p1, p2, p3 image.Point, num_segments int) {
-	c.drawlist.PathBezierCubicCurveTo(ToVec2(p1), ToVec2(p2), ToVec2(p3), num_segments)
+func (c *Canvas) PathBezierCubicCurveTo(p1, p2, p3 image.Point, numSegments int) {
+	c.drawlist.PathBezierCubicCurveTo(ToVec2(p1), ToVec2(p2), ToVec2(p3), numSegments)
 }
 
 func (c *Canvas) AddImage(texture *Texture, pMin, pMax image.Point) {

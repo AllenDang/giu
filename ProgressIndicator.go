@@ -33,7 +33,7 @@ func (ps *ProgressIndicatorState) Dispose() {
 }
 
 type ProgressIndicatorWidget struct {
-	internalId string
+	internalID string
 	width      float32
 	height     float32
 	radius     float32
@@ -42,7 +42,7 @@ type ProgressIndicatorWidget struct {
 
 func ProgressIndicator(label string, width, height, radius float32) *ProgressIndicatorWidget {
 	return &ProgressIndicatorWidget{
-		internalId: "###giu-progress-indicator",
+		internalID: "###giu-progress-indicator",
 		width:      width * Context.GetPlatform().GetContentScale(),
 		height:     height * Context.GetPlatform().GetContentScale(),
 		radius:     radius * Context.GetPlatform().GetContentScale(),
@@ -52,10 +52,10 @@ func ProgressIndicator(label string, width, height, radius float32) *ProgressInd
 
 func (p *ProgressIndicatorWidget) Build() {
 	// State exists
-	if s := Context.GetState(p.internalId); s == nil {
+	if s := Context.GetState(p.internalID); s == nil {
 		// Register state and start go routine
 		ps := ProgressIndicatorState{angle: 0.0, stop: false}
-		Context.SetState(p.internalId, &ps)
+		Context.SetState(p.internalID, &ps)
 		go ps.Update()
 	} else {
 		state := s.(*ProgressIndicatorState)

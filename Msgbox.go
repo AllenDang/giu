@@ -80,7 +80,7 @@ func buildMsgboxButtons(buttons MsgboxButtons, callback DialogResultCallback) La
 	}
 }
 
-const msgboxId string = "###Msgbox"
+const msgboxID string = "###Msgbox"
 
 // Embed various Msgboxs to layout. Invoke this function in the same layout level where you call g.Msgbox.
 func PrepareMsgbox() Layout {
@@ -89,24 +89,24 @@ func PrepareMsgbox() Layout {
 			var state *MsgboxState
 
 			// Register state.
-			stateRaw := Context.GetState(msgboxId)
+			stateRaw := Context.GetState(msgboxID)
 
 			if stateRaw == nil {
 				state = &MsgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
-				Context.SetState(msgboxId, state)
+				Context.SetState(msgboxID, state)
 			} else {
 				state = stateRaw.(*MsgboxState)
 			}
 
 			if state.open {
-				OpenPopup(msgboxId)
+				OpenPopup(msgboxID)
 				state.open = false
 			}
 			SetNextWindowSize(300, 0)
-			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxId)).Layout(
+			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxID)).Layout(
 				Custom(func() {
 					// Ensure the state is valid.
-					Context.GetState(msgboxId)
+					Context.GetState(msgboxID)
 				}),
 				Label(state.content).Wrapped(true),
 				buildMsgboxButtons(state.buttons, state.resultCallback),
@@ -118,7 +118,7 @@ func PrepareMsgbox() Layout {
 type MsgboxWidget struct{}
 
 func (m *MsgboxWidget) getState() *MsgboxState {
-	stateRaw := Context.GetState(msgboxId)
+	stateRaw := Context.GetState(msgboxID)
 	if stateRaw == nil {
 		panic("Msgbox is not prepared. Invoke giu.PrepareMsgbox in the end of the layout.")
 	}
