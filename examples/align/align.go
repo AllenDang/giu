@@ -15,6 +15,15 @@ func loop() {
 			giu.Label("I'm a alined to right label"),
 			giu.InputText(&text),
 		),
+
+		giu.Align(giu.AlignRight).To(
+			giu.Label("I'm the label"),
+			giu.Layout{
+				giu.Label("I'm th e other label embeded in another layout"),
+				giu.Label("I'm the next label"),
+			},
+			giu.Label("I'm the last label"),
+		),
 	)
 }
 

@@ -31,19 +31,6 @@ type AlignmentSetter struct {
 //   Custom(func() { fmt.Println("running custom widget") }),
 // )
 // will print the message two times per frame.
-//
-// BUG:
-// if the source layout (set by (*alignSetter).To(...) contains another Layout
-// only the last widget from the embeded layout will be processed.
-// Example:
-// Align(AlignToRight).To(
-//	Label("I'm the label"),
-//	Layout(
-//		Label("I'm th e other label and I'll not be aligned to right"),
-//		Label("I'm the next label"),
-//	),
-//	label("I'm the last label"),
-// )
 func Align(at AlignmentType) *AlignmentSetter {
 	return &AlignmentSetter{
 		alignType: at,
@@ -74,7 +61,7 @@ func (a *AlignmentSetter) Build() {
 
 	// render widgets with 0 alpha and store thems widths
 	imgui.PushStyleVarFloat(imgui.StyleVarID(StyleVarAlpha), 0)
-	for _, item := range a.layout {
+	a.layout.Range(func(item Widget) {
 		var width float32
 		if item != nil {
 			item.Build()
@@ -83,19 +70,20 @@ func (a *AlignmentSetter) Build() {
 		}
 
 		widgetsWidths = append(widgetsWidths, width)
-	}
+	})
 	imgui.PopStyleVar()
 
 	// reset cursor pos
 	SetCursorPos(startPos)
 
 	// ALIGN WIDGETS
-	for i, item := range a.layout {
+	idx := 0o0
+	a.layout.Range(func(item Widget) {
 		if item == nil {
-			continue
+			return
 		}
 
-		w := widgetsWidths[i]
+		w := widgetsWidths[idx]
 		currentPos := GetCursorPos()
 		availableW, _ := GetAvailableRegion()
 		switch a.alignType {
@@ -110,5 +98,7 @@ func (a *AlignmentSetter) Build() {
 		}
 
 		item.Build()
-	}
+
+		idx++
+	})
 }
