@@ -25,7 +25,7 @@ func loop() {
 		}, nil),
 		g.Separator(),
 		g.Label("stack widget"),
-		g.SliderInt("##currentStack", &stack, 0, 2),
+		g.SliderInt(&stack, 0, 2),
 		g.Stack(stack,
 			g.Layout{
 				g.Label("I'm label 1"),
