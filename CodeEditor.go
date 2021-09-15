@@ -15,37 +15,44 @@ const (
 	LanguageDefinitionC
 )
 
+type codeEditorState struct {
+	editor imgui.TextEditor
+}
+
+func (s *codeEditorState) Dispose() {
+	// noop
+}
+
 type CodeEditorWidget struct {
 	title string
 	width,
 	height float32
 	border bool
-	editor imgui.TextEditor
 }
 
 func CodeEditor(title string) *CodeEditorWidget {
 	return &CodeEditorWidget{
-		title:  title,
-		editor: imgui.NewTextEditor(),
+		title: title,
 	}
 }
 
 func (ce *CodeEditorWidget) ShowWhitespaces(s bool) *CodeEditorWidget {
-	ce.editor.SetShowWhitespaces(s)
+	ce.getState().editor.SetShowWhitespaces(s)
 	return ce
 }
 
 func (ce *CodeEditorWidget) TabSize(size int) *CodeEditorWidget {
-	ce.editor.SetTabSize(size)
+	ce.getState().editor.SetTabSize(size)
 	return ce
 }
 
 func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
+	s := ce.getState()
 	lookup := map[LanguageDefinition]func(){
-		LanguageDefinitionSQL: ce.editor.SetLanguageDefinitionSQL,
-		LanguageDefinitionCPP: ce.editor.SetLanguageDefinitionCPP,
-		LanguageDefinitionLua: ce.editor.SetLanguageDefinitionLua,
-		LanguageDefinitionC:   ce.editor.SetLanguageDefinitionC,
+		LanguageDefinitionSQL: s.editor.SetLanguageDefinitionSQL,
+		LanguageDefinitionCPP: s.editor.SetLanguageDefinitionCPP,
+		LanguageDefinitionLua: s.editor.SetLanguageDefinitionLua,
+		LanguageDefinitionC:   s.editor.SetLanguageDefinitionC,
 	}
 
 	setter, correctDefinition := lookup[definition]
@@ -59,17 +66,17 @@ func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *C
 }
 
 func (ce *CodeEditorWidget) Text(str string) *CodeEditorWidget {
-	ce.editor.SetText(str)
+	ce.getState().editor.SetText(str)
 	return ce
 }
 
 func (ce *CodeEditorWidget) ErrorMarkers(markers imgui.ErrorMarkers) *CodeEditorWidget {
-	ce.editor.SetErrorMarkers(markers)
+	ce.getState().editor.SetErrorMarkers(markers)
 	return ce
 }
 
 func (ce *CodeEditorWidget) HandleKeyboardInputs(b bool) *CodeEditorWidget {
-	ce.editor.SetHandleKeyboardInputs(b)
+	ce.getState().editor.SetHandleKeyboardInputs(b)
 	return ce
 }
 
@@ -84,69 +91,85 @@ func (ce *CodeEditorWidget) Border(border bool) *CodeEditorWidget {
 }
 
 func (ce *CodeEditorWidget) HasSelection() bool {
-	return ce.editor.HasSelection()
+	return ce.getState().editor.HasSelection()
 }
 
 func (ce *CodeEditorWidget) GetSelectedText() string {
-	return ce.editor.GetSelectedText()
+	return ce.getState().editor.GetSelectedText()
 }
 
 func (ce *CodeEditorWidget) GetText() string {
-	return ce.editor.GetText()
+	return ce.getState().editor.GetText()
 }
 
 func (ce *CodeEditorWidget) GetCurrentLineText() string {
-	return ce.editor.GetCurrentLineText()
+	return ce.getState().editor.GetCurrentLineText()
 }
 
 func (ce *CodeEditorWidget) GetCursorPos() (int, int) {
-	return ce.editor.GetCursorPos()
+	return ce.getState().editor.GetCursorPos()
 }
 
 func (ce *CodeEditorWidget) GetSelectionStart() (int, int) {
-	return ce.editor.GetSelectionStart()
+	return ce.getState().editor.GetSelectionStart()
 }
 
 func (ce *CodeEditorWidget) InsertText(text string) {
-	ce.editor.InsertText(text)
+	ce.getState().editor.InsertText(text)
 }
 
 func (ce *CodeEditorWidget) GetWordUnderCursor() string {
-	return ce.editor.GetWordUnderCursor()
+	return ce.getState().editor.GetWordUnderCursor()
 }
 
 func (ce *CodeEditorWidget) SelectWordUnderCursor() {
-	ce.editor.SelectWordUnderCursor()
+	ce.getState().editor.SelectWordUnderCursor()
 }
 
 func (ce *CodeEditorWidget) IsTextChanged() bool {
-	return ce.editor.IsTextChanged()
+	return ce.getState().editor.IsTextChanged()
 }
 
 func (ce *CodeEditorWidget) GetScreenCursorPos() (int, int) {
-	return ce.editor.GetScreenCursorPos()
+	return ce.getState().editor.GetScreenCursorPos()
 }
 
 func (ce *CodeEditorWidget) Copy() {
-	ce.editor.Copy()
+	ce.getState().editor.Copy()
 }
 
 func (ce *CodeEditorWidget) Cut() {
-	ce.editor.Cut()
+	ce.getState().editor.Cut()
 }
 
 func (ce *CodeEditorWidget) Paste() {
-	ce.editor.Paste()
+	ce.getState().editor.Paste()
 }
 
 func (ce *CodeEditorWidget) Delete() {
-	ce.editor.Delete()
+	ce.getState().editor.Delete()
 }
 
 func (ce *CodeEditorWidget) Build() {
+	s := ce.getState()
+
 	// register text in font atlas
-	tStr(ce.editor.GetText())
+	tStr(s.editor.GetText())
 
 	// build editor
-	ce.editor.Render(ce.title, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)
+	s.editor.Render(ce.title, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)
+}
+
+func (ce *CodeEditorWidget) getState() (state *codeEditorState) {
+	if s := Context.GetState(ce.title); s == nil {
+		state = &codeEditorState{
+			editor: imgui.NewTextEditor(),
+		}
+
+		Context.SetState(ce.title, state)
+	} else {
+		state = s.(*codeEditorState)
+	}
+
+	return state
 }
