@@ -2,8 +2,8 @@ package giu
 
 import "github.com/go-gl/glfw/v3.3/glfw"
 
-type Key int
-type Modifier int
+// Key represents a glfw key
+type Key glfw.Key
 
 // These key codes are inspired by the USB HID Usage Tables v1.12 (p. 53-60),
 // but re-arranged to map to 7-bit ASCII for printable keys (function keys are
@@ -133,6 +133,10 @@ const (
 	KeyLast         Key = Key(glfw.KeyLast)
 )
 
+// Modifier represents glfw.Modifier
+type Modifier glfw.ModifierKey
+
+// modifier keys
 const (
 	ModNone     Modifier = iota
 	ModControl  Modifier = Modifier(glfw.ModControl)
