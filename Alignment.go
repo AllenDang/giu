@@ -31,6 +31,8 @@ type AlignmentSetter struct {
 //   Custom(func() { fmt.Println("running custom widget") }),
 // )
 // will print the message two times per frame.
+//
+// BUG: DatePickerWidget doesn't work properly
 func Align(at AlignmentType) *AlignmentSetter {
 	return &AlignmentSetter{
 		alignType: at,
