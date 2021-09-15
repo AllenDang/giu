@@ -9,6 +9,8 @@ type Widget interface {
 	Build()
 }
 
+var _ Widget = Layout{}
+
 type Layout []Widget
 
 func (l Layout) Build() {
