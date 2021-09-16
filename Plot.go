@@ -247,6 +247,7 @@ type PlotLineWidget struct {
 	values     []float64
 	xScale, x0 float64
 	offset     int
+	yAxis      ImPlotYAxis
 }
 
 func PlotLine(title string, values []float64) *PlotLineWidget {
@@ -257,6 +258,11 @@ func PlotLine(title string, values []float64) *PlotLineWidget {
 		x0:     0,
 		offset: 0,
 	}
+}
+
+func (p *PlotLineWidget) SetPlotYAxis(yAxis ImPlotYAxis) *PlotLineWidget {
+	p.yAxis = yAxis
+	return p
 }
 
 func (p *PlotLineWidget) XScale(scale float64) *PlotLineWidget {
@@ -275,6 +281,7 @@ func (p *PlotLineWidget) Offset(offset int) *PlotLineWidget {
 }
 
 func (p *PlotLineWidget) Plot() {
+	imgui.ImPlotSetPlotYAxis(imgui.ImPlotYAxis(p.yAxis))
 	imgui.ImPlotLine(tStr(p.title), p.values, p.xScale, p.x0, p.offset)
 }
 
