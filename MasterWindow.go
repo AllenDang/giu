@@ -338,5 +338,10 @@ func (w *MasterWindow) SetTitle(title string) {
 
 // Close will savely close the master window
 func (w *MasterWindow) Close() {
-	w.platform.SetShouldClose(true)
+	w.SetShouldClose(true)
+}
+
+// SetSHouldClose sets whether master window should be closed
+func (w *MasterWindow) SetShouldClose(v bool) {
+	w.platform.SetSHouldClose(v)
 }
