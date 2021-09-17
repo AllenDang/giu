@@ -25,9 +25,7 @@ const (
 	MasterWindowFlagsTransparent MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsTransparent)
 )
 
-var (
-	DontCare int = imgui.GlfwDontCare
-)
+var DontCare int = imgui.GlfwDontCare
 
 type MasterWindow struct {
 	width      int
@@ -336,4 +334,9 @@ func (w *MasterWindow) SetSizeLimits(minw, minh, maxw, maxh int) {
 
 func (w *MasterWindow) SetTitle(title string) {
 	w.platform.SetTitle(title)
+}
+
+// Close will savely close the master window
+func (w *MasterWindow) Close() {
+	w.platform.SetShouldClose(true)
 }
