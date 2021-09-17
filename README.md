@@ -24,20 +24,20 @@ giu is built upon GLFW v3.3, so ideally giu could support all platforms that GLF
 
 - Windows (Windows 10 x64 and Windows 11 x64)
 - macOS (macOS v10.15 and macOS Big Sur)
-- Linux (thanks remeh to test it)
-- Raspberry Pi 3B (thanks sndvaps to test it)
+- Linux (thanks remeh for testing it)
+- Raspberry Pi 3B (thanks sndvaps for testing it)
 
 ## Features
 
-Compare to other Dear ImGui golang bindings, giu has following features:
+Compared to other Dear ImGui golang bindings, giu has the following features:
 
 - Small executable file size (<3MB after UPX compression for the example/helloworld demo).
-- Live-updating during the resizing of OS window (implemented on GLFW 3.3 and OpenGL 3.2).
+- Live-updating during the resizing of the OS window (implemented on GLFW 3.3 and OpenGL 3.2).
 - Support for displaying various languages without any font setting. Giu will rebuild font atlas incrementally according to texts in UI between frames.
-- Redraws only when user event occurred. Costs only 0.5% CPU usage with 60FPS.
-- Declarative UI (see examples for more detail).
-- DPI awareness (auto scaling font and UI to adapt high DPI monitor).
-- Drop in usage, no need to implement render and platform.
+- Redraws only when user event occurs. Costs only 0.5% CPU usage with 60FPS.
+- Declarative UI (see examples for more details).
+- DPI awareness (auto scaling font and UI to adapt to high DPI monitors).
+- Drop in usage; no need to implement render and platform.
 - OS clipboard support.
 
 ![Screenshot](https://github.com/AllenDang/giu/raw/master/examples/imguidemo/screenshot.png)
@@ -79,11 +79,11 @@ func main() {
 }
 ```
 
-Here is result:
+Here is the result:
 
 ![Helloworld](https://github.com/AllenDang/giu/raw/master/examples/helloworld/helloworld.png)
 
-## Quick intruduction
+## Quick introduction
 
 ### What is immediate mode GUI?
 
@@ -95,21 +95,21 @@ And the `loop` method in the _Hello world_ example is in charge of **drawing** a
 
 By default, any widget placed inside a container's `Layout` will be placed vertically.
 
-To create a row of widgets (aka place widgets one by one horizontally), use the `Row()` method. For example `giu.Row(Label(...), Button(...))` will create a Label next to a Button.
+To create a row of widgets (i.e. place widgets one by one horizontally), use the `Row()` method. For example `giu.Row(Label(...), Button(...))` will create a Label next to a Button.
 
-To creata a column of widgets (aka place widgets one by one vertically) inside a row, use the `Column()` method.
+To create a column of widgets (i.e. place widgets one by one vertically) inside a row, use the `Column()` method.
 
-Any widget that has a `Size()` method, could set its size explicitly. Note that you could pass a negative value to `Size()`, which will fill the remaining width/height value. For example, `InputText(...).Size(giu.Auto)` will create a input text box with longest width that its container has left.
+Any widget that has a `Size()` method, can set its size explicitly. Note that you can pass a negative value to `Size()`, which will fill the remaining width/height value. For example, `InputText(...).Size(giu.Auto)` will create an input text box with the longest width that its container has left.
 
 ### Containers
 
 #### MasterWindow
 
-A `MasterWindow` means the platform native window implemented by OS. All subwindows and widgets will be placed inside it.
+A `MasterWindow` means the platform native window implemented by the OS. All subwindows and widgets will be placed inside it.
 
 #### Window
 
-A `Window` is a container with a title bar, and can be collapsed. `SingleWindow` is a special kind of window that will occupy all available space of `MasterWindow`.
+A `Window` is a container with a title bar, and can be collapsed. `SingleWindow` is a special kind of window that will occupy all the available space of `MasterWindow`.
 
 #### Child
 
@@ -121,7 +121,7 @@ Check `examples/widgets` for all kinds of widgets.
 
 ## Install
 
-The backend of giu depends on OpenGL 3.3, make sure your environment supports it (so far as I known some Virtual Machines like VirualBox doesn't support it).
+The backend of giu depends on OpenGL 3.3, make sure your environment supports it (as far as I know, some Virtual Machines like VirtualBox doesn't support it).
 
 ### MacOS
 
@@ -140,7 +140,7 @@ Or, install [TDM-GCC](https://jmeubank.github.io/tdm-gcc/).
 
 ### Linux
 
-First you need to install required dependencies:
+First you need to install the required dependencies:
 
 ```bash
 # apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libglx-dev libgl1-mesa-dev libxxf86vm-dev
@@ -148,7 +148,7 @@ First you need to install required dependencies:
 
 Then, a simple `go build` will work.
 
-Cross-compiling is a bit more complicated. Let's say that you want to build for arm64. That's what you would need to do:
+Cross-compiling is a bit more complicated. Let's say that you want to build for arm64. This is what you would need to do:
 
 ```bash
 # dpkg --add-architecture arm64
@@ -180,7 +180,7 @@ go build -ldflags "-s -w -H=windowsgui -extldflags=-static" .
 brew install mingw-w64
 ```
 
-2. Prepare and embed application icon to executable and build.
+2. Prepare and embed the application icon into the executable and build.
 
 ```sh
 cat > YourExeName.rc << EOL
@@ -201,4 +201,4 @@ Check [Wiki](https://github.com/AllenDang/giu/wiki)
 
 ## Contribution
 
-All kinds of pull request (document, demo, screenshots, code, etc.) are more then welcome!
+All kinds of pull requests (document, demo, screenshots, code, etc.) are more than welcome!
