@@ -16,7 +16,7 @@ type StackWidget struct {
 func Stack(visible int32, layouts ...Widget) *StackWidget {
 	return &StackWidget{
 		visible: visible,
-		layouts: []Widget(layouts),
+		layouts: layouts,
 	}
 }
 
