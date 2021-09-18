@@ -1,9 +1,12 @@
 package giu
 
+var _ Disposable = &eventHandlerState{}
+
 type eventHandlerState struct {
 	isActive bool
 }
 
+// Dispose implements Disposable interface
 func (s *eventHandlerState) Dispose() {
 	// noop
 }
@@ -20,6 +23,8 @@ type keyEvent struct {
 	cond     func(Key) bool
 }
 
+var _ Widget = &EventHandler{}
+
 // EventHandler is a universal event handler for giu widgets.
 // put giu.Event()... after any widget to handle any event
 type EventHandler struct {
@@ -30,6 +35,7 @@ type EventHandler struct {
 	onDeactivate func()
 }
 
+// Event adds a new event to widget above
 func Event() *EventHandler {
 	return &EventHandler{
 		mouseEvents: make([]mouseEvent, 0),
@@ -37,16 +43,19 @@ func Event() *EventHandler {
 	}
 }
 
+// OnHover sets callback when item gets hovered
 func (eh *EventHandler) OnHover(onHover func()) *EventHandler {
 	eh.hover = onHover
 	return eh
 }
 
+// OnActivate sets callback when item gets activated
 func (eh *EventHandler) OnActivate(cb func()) *EventHandler {
 	eh.onActivate = cb
 	return eh
 }
 
+// OnActivate sets callback when item gets deactivated
 func (eh *EventHandler) OnDeactivate(cb func()) *EventHandler {
 	eh.onDeactivate = cb
 	return eh
@@ -54,16 +63,19 @@ func (eh *EventHandler) OnDeactivate(cb func()) *EventHandler {
 
 // Key events
 
+// OnKeyDown sets callback when key `key` is down
 func (eh *EventHandler) OnKeyDown(key Key, cb func()) *EventHandler {
 	eh.keyEvents = append(eh.keyEvents, keyEvent{key, cb, IsKeyDown})
 	return eh
 }
 
+// OnKeyDown sets callback when key `key` is pressed
 func (eh *EventHandler) OnKeyPressed(key Key, cb func()) *EventHandler {
 	eh.keyEvents = append(eh.keyEvents, keyEvent{key, cb, IsKeyPressed})
 	return eh
 }
 
+// OnKeyDown sets callback when key `key` is released
 func (eh *EventHandler) OnKeyReleased(key Key, cb func()) *EventHandler {
 	eh.keyEvents = append(eh.keyEvents, keyEvent{key, cb, IsKeyReleased})
 	return eh
@@ -71,26 +83,31 @@ func (eh *EventHandler) OnKeyReleased(key Key, cb func()) *EventHandler {
 
 // Mouse events
 
+// OnKeyDown sets callback when mouse button `mouseButton` is clicked
 func (eh *EventHandler) OnClick(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseClicked})
 	return eh
 }
 
+// OnKeyDown sets callback when mouse button `mouseButton` is double-clicked
 func (eh *EventHandler) OnDClick(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseDoubleClicked})
 	return eh
 }
 
+// OnKeyDown sets callback when mouse button `mouseButton` is down
 func (eh *EventHandler) OnMouseDown(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseDown})
 	return eh
 }
 
+// OnKeyDown sets callback when mouse button `mouseButton` is released
 func (eh *EventHandler) OnMouseReleased(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseReleased})
 	return eh
 }
 
+// Build implements Widget interface
 func (eh *EventHandler) Build() {
 	if eh.onActivate != nil || eh.onDeactivate != nil {
 		isActive := IsItemActive()

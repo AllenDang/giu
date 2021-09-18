@@ -208,14 +208,14 @@ func ArrowButton(dir Direction) *ArrowButtonWidget {
 	}
 }
 
-func (ab *ArrowButtonWidget) ID(id string) *ArrowButtonWidget {
-	ab.id = id
-	return ab
+func (b *ArrowButtonWidget) ID(id string) *ArrowButtonWidget {
+	b.id = id
+	return b
 }
 
-func (ab *ArrowButtonWidget) Build() {
-	if imgui.ArrowButton(ab.id, uint8(ab.dir)) && ab.onClick != nil {
-		ab.onClick()
+func (b *ArrowButtonWidget) Build() {
+	if imgui.ArrowButton(b.id, uint8(b.dir)) && b.onClick != nil {
+		b.onClick()
 	}
 }
 
@@ -240,9 +240,9 @@ func SmallButtonf(format string, args ...interface{}) *SmallButtonWidget {
 	return SmallButton(fmt.Sprintf(format, args...))
 }
 
-func (sb *SmallButtonWidget) Build() {
-	if imgui.SmallButton(GenAutoID(sb.id)) && sb.onClick != nil {
-		sb.onClick()
+func (b *SmallButtonWidget) Build() {
+	if imgui.SmallButton(GenAutoID(b.id)) && b.onClick != nil {
+		b.onClick()
 	}
 }
 
@@ -278,9 +278,9 @@ func InvisibleButton() *InvisibleButtonWidget {
 	}
 }
 
-func (ib *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(tStr(ib.id), imgui.Vec2{X: ib.width, Y: ib.height}) && ib.onClick != nil {
-		ib.onClick()
+func (b *InvisibleButtonWidget) Build() {
+	if imgui.InvisibleButton(tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+		b.onClick()
 	}
 }
 
@@ -296,19 +296,19 @@ type ImageButtonWidget struct {
 	onClick      func()
 }
 
-func (i *ImageButtonWidget) Build() {
-	if i.texture == nil && i.texture.id == 0 {
+func (b *ImageButtonWidget) Build() {
+	if b.texture == nil && b.texture.id == 0 {
 		return
 	}
 
 	if imgui.ImageButtonV(
-		i.texture.id,
-		imgui.Vec2{X: i.width, Y: i.height},
-		ToVec2(i.uv0), ToVec2(i.uv1),
-		i.framePadding, ToVec4Color(i.bgColor),
-		ToVec4Color(i.tintColor),
-	) && i.onClick != nil {
-		i.onClick()
+		b.texture.id,
+		imgui.Vec2{X: b.width, Y: b.height},
+		ToVec2(b.uv0), ToVec2(b.uv1),
+		b.framePadding, ToVec4Color(b.bgColor),
+		ToVec4Color(b.tintColor),
+	) && b.onClick != nil {
+		b.onClick()
 	}
 }
 
@@ -401,19 +401,19 @@ func (b *ImageButtonWithRgbaWidget) FramePadding(padding int) *ImageButtonWithRg
 	return b
 }
 
-func (i *ImageButtonWithRgbaWidget) Build() {
-	if state := Context.GetState(i.id); state == nil {
-		Context.SetState(i.id, &ImageState{})
+func (b *ImageButtonWithRgbaWidget) Build() {
+	if state := Context.GetState(b.id); state == nil {
+		Context.SetState(b.id, &ImageState{})
 
-		NewTextureFromRgba(i.rgba, func(tex *Texture) {
-			Context.SetState(i.id, &ImageState{texture: tex})
+		NewTextureFromRgba(b.rgba, func(tex *Texture) {
+			Context.SetState(b.id, &ImageState{texture: tex})
 		})
 	} else {
 		imgState := state.(*ImageState)
-		i.ImageButtonWidget.texture = imgState.texture
+		b.ImageButtonWidget.texture = imgState.texture
 	}
 
-	i.ImageButtonWidget.Build()
+	b.ImageButtonWidget.Build()
 }
 
 type CheckboxWidget struct {
@@ -887,9 +887,9 @@ func (i *ImageWithFileWidget) Build() {
 	i.img.Build()
 }
 
-type ImageWithUrlWidget struct {
+type ImageWithURLWidget struct {
 	id              string
-	imgUrl          string
+	imgURL          string
 	downloadTimeout time.Duration
 	whenLoading     Layout
 	whenFailure     Layout
@@ -898,10 +898,10 @@ type ImageWithUrlWidget struct {
 	img             *ImageWidget
 }
 
-func ImageWithUrl(url string) *ImageWithUrlWidget {
-	return &ImageWithUrlWidget{
-		id:              fmt.Sprintf("ImageWithUrl_%s", url),
-		imgUrl:          url,
+func ImageWithURL(url string) *ImageWithURLWidget {
+	return &ImageWithURLWidget{
+		id:              fmt.Sprintf("ImageWithURL_%s", url),
+		imgURL:          url,
 		downloadTimeout: 10 * time.Second,
 		whenLoading:     Layout{Dummy(100, 100)},
 		whenFailure:     Layout{Dummy(100, 100)},
@@ -910,42 +910,42 @@ func ImageWithUrl(url string) *ImageWithUrlWidget {
 }
 
 // Event trigger when image is downloaded and ready to display.
-func (i *ImageWithUrlWidget) OnReady(onReady func()) *ImageWithUrlWidget {
+func (i *ImageWithURLWidget) OnReady(onReady func()) *ImageWithURLWidget {
 	i.onReady = onReady
 	return i
 }
 
-func (i *ImageWithUrlWidget) OnFailure(onFailure func(error)) *ImageWithUrlWidget {
+func (i *ImageWithURLWidget) OnFailure(onFailure func(error)) *ImageWithURLWidget {
 	i.onFailure = onFailure
 	return i
 }
 
-func (i *ImageWithUrlWidget) OnClick(cb func()) *ImageWithUrlWidget {
+func (i *ImageWithURLWidget) OnClick(cb func()) *ImageWithURLWidget {
 	i.img.OnClick(cb)
 	return i
 }
 
-func (i *ImageWithUrlWidget) Timeout(downloadTimeout time.Duration) *ImageWithUrlWidget {
+func (i *ImageWithURLWidget) Timeout(downloadTimeout time.Duration) *ImageWithURLWidget {
 	i.downloadTimeout = downloadTimeout
 	return i
 }
 
-func (i *ImageWithUrlWidget) Size(width, height float32) *ImageWithUrlWidget {
+func (i *ImageWithURLWidget) Size(width, height float32) *ImageWithURLWidget {
 	i.img.Size(width, height)
 	return i
 }
 
-func (i *ImageWithUrlWidget) LayoutForLoading(widgets ...Widget) *ImageWithUrlWidget {
+func (i *ImageWithURLWidget) LayoutForLoading(widgets ...Widget) *ImageWithURLWidget {
 	i.whenLoading = Layout(widgets)
 	return i
 }
 
-func (i *ImageWithUrlWidget) LayoutForFailure(widgets ...Widget) *ImageWithUrlWidget {
+func (i *ImageWithURLWidget) LayoutForFailure(widgets ...Widget) *ImageWithURLWidget {
 	i.whenFailure = Layout(widgets)
 	return i
 }
 
-func (i *ImageWithUrlWidget) Build() {
+func (i *ImageWithURLWidget) Build() {
 	var imgState *ImageState = &ImageState{}
 	if state := Context.GetState(i.id); state == nil {
 		Context.SetState(i.id, imgState)
@@ -958,7 +958,7 @@ func (i *ImageWithUrlWidget) Build() {
 			// Load image from url
 			client := resty.New()
 			client.SetTimeout(i.downloadTimeout)
-			resp, err := client.R().SetContext(downloadContext).Get(i.imgUrl)
+			resp, err := client.R().SetContext(downloadContext).Get(i.imgURL)
 			if err != nil {
 				Context.SetState(i.id, &ImageState{failure: true})
 
@@ -1751,9 +1751,9 @@ func SliderFloat(value *float32, min, max float32) *SliderFloatWidget {
 	}
 }
 
-func (s *SliderFloatWidget) Format(format string) *SliderFloatWidget {
-	s.format = format
-	return s
+func (sf *SliderFloatWidget) Format(format string) *SliderFloatWidget {
+	sf.format = format
+	return sf
 }
 
 func (sf *SliderFloatWidget) OnChange(onChange func()) *SliderFloatWidget {
@@ -2029,11 +2029,11 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 }
 
 func (t *TabBarWidget) Build() {
-	buildingId := t.id
-	if len(buildingId) == 0 {
-		buildingId = GenAutoID("TabBar")
+	buildingID := t.id
+	if len(buildingID) == 0 {
+		buildingID = GenAutoID("TabBar")
 	}
-	if imgui.BeginTabBarV(buildingId, int(t.flags)) {
+	if imgui.BeginTabBarV(buildingID, int(t.flags)) {
 		for _, ti := range t.tabItems {
 			ti.Build()
 		}
@@ -2096,7 +2096,7 @@ type TableColumnWidget struct {
 	label              string
 	flags              TableColumnFlags
 	innerWidthOrWeight float32
-	userId             uint32
+	userID             uint32
 }
 
 func TableColumn(label string) *TableColumnWidget {
@@ -2104,7 +2104,7 @@ func TableColumn(label string) *TableColumnWidget {
 		label:              tStr(label),
 		flags:              0,
 		innerWidthOrWeight: 0,
-		userId:             0,
+		userID:             0,
 	}
 }
 
@@ -2118,13 +2118,13 @@ func (c *TableColumnWidget) InnerWidthOrWeight(w float32) *TableColumnWidget {
 	return c
 }
 
-func (c *TableColumnWidget) UserId(id uint32) *TableColumnWidget {
-	c.userId = id
+func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
+	c.userID = id
 	return c
 }
 
 func (c *TableColumnWidget) Build() {
-	imgui.TableSetupColumn(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userId)
+	imgui.TableSetupColumn(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
 }
 
 type TableWidget struct {
