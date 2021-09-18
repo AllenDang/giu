@@ -130,6 +130,8 @@ func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultili
 	return i
 }
 
+var _ Widget = &ButtonWidget{}
+
 type ButtonWidget struct {
 	id       string
 	width    float32
@@ -179,6 +181,8 @@ func Buttonf(format string, args ...interface{}) *ButtonWidget {
 	return Button(fmt.Sprintf(format, args...))
 }
 
+var _ Widget = &BulletWidget{}
+
 type BulletWidget struct{}
 
 func Bullet() *BulletWidget {
@@ -189,6 +193,8 @@ func Bullet() *BulletWidget {
 func (b *BulletWidget) Build() {
 	imgui.Bullet()
 }
+
+var _ Widget = &BulletTextWidget{}
 
 type BulletTextWidget struct {
 	text string
@@ -208,6 +214,8 @@ func BulletTextf(format string, args ...interface{}) *BulletTextWidget {
 func (bt *BulletTextWidget) Build() {
 	imgui.BulletText(bt.text)
 }
+
+var _ Widget = &ArrowButtonWidget{}
 
 type ArrowButtonWidget struct {
 	id      string
@@ -240,6 +248,8 @@ func (b *ArrowButtonWidget) Build() {
 	}
 }
 
+var _ Widget = &SmallButtonWidget{}
+
 type SmallButtonWidget struct {
 	id      string
 	onClick func()
@@ -267,6 +277,8 @@ func (b *SmallButtonWidget) Build() {
 		b.onClick()
 	}
 }
+
+var _ Widget = &InvisibleButtonWidget{}
 
 type InvisibleButtonWidget struct {
 	id      string
@@ -306,6 +318,8 @@ func (b *InvisibleButtonWidget) Build() {
 		b.onClick()
 	}
 }
+
+var _ Widget = &ImageButtonWidget{}
 
 type ImageButtonWidget struct {
 	texture      *Texture
@@ -381,6 +395,8 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 	}
 }
 
+var _ Widget = &ImageButtonWithRgbaWidget{}
+
 type ImageButtonWithRgbaWidget struct {
 	*ImageButtonWidget
 	rgba image.Image
@@ -441,6 +457,8 @@ func (b *ImageButtonWithRgbaWidget) Build() {
 	b.ImageButtonWidget.Build()
 }
 
+var _ Widget = &CheckboxWidget{}
+
 type CheckboxWidget struct {
 	text     string
 	selected *bool
@@ -467,6 +485,8 @@ func Checkbox(text string, selected *bool) *CheckboxWidget {
 	}
 }
 
+var _ Widget = &RadioButtonWidget{}
+
 type RadioButtonWidget struct {
 	text     string
 	active   bool
@@ -492,6 +512,8 @@ func RadioButton(text string, active bool) *RadioButtonWidget {
 		onChange: nil,
 	}
 }
+
+var _ Widget = &ChildWidget{}
 
 type ChildWidget struct {
 	width  float32
@@ -541,6 +563,8 @@ func Child() *ChildWidget {
 	}
 }
 
+var _ Widget = &ComboCustomWidget{}
+
 type ComboCustomWidget struct {
 	label        string
 	previewValue string
@@ -586,6 +610,8 @@ func (cc *ComboCustomWidget) Build() {
 		imgui.EndCombo()
 	}
 }
+
+var _ Widget = &ComboWidget{}
 
 type ComboWidget struct {
 	label        string
@@ -649,6 +675,8 @@ func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 	return c
 }
 
+var _ Widget = &ContextMenuWidget{}
+
 type ContextMenuWidget struct {
 	id          string
 	mouseButton MouseButton
@@ -686,6 +714,8 @@ func (c *ContextMenuWidget) Build() {
 	}
 }
 
+var _ Widget = &DragIntWidget{}
+
 type DragIntWidget struct {
 	label  string
 	value  *int32
@@ -721,6 +751,8 @@ func (d *DragIntWidget) Build() {
 	imgui.DragIntV(GenAutoID(d.label), d.value, d.speed, d.min, d.max, d.format)
 }
 
+var _ Widget = &ColumnWidget{}
+
 type ColumnWidget struct {
 	widgets Layout
 }
@@ -740,6 +772,8 @@ func (g *ColumnWidget) Build() {
 
 	imgui.EndGroup()
 }
+
+var _ Widget = &ImageWidget{}
 
 type ImageWidget struct {
 	texture                *Texture
@@ -833,6 +867,8 @@ func (is *ImageState) Dispose() {
 	}
 }
 
+var _ Widget = &ImageWithRgbaWidget{}
+
 type ImageWithRgbaWidget struct {
 	id   string
 	rgba image.Image
@@ -878,6 +914,8 @@ func (i *ImageWithRgbaWidget) Build() {
 	i.img.Build()
 }
 
+var _ Widget = &ImageWithFileWidget{}
+
 type ImageWithFileWidget struct {
 	id      string
 	imgPath string
@@ -922,6 +960,8 @@ func (i *ImageWithFileWidget) Build() {
 	i.img.texture = imgState.texture
 	i.img.Build()
 }
+
+var _ Widget = &ImageWithURLWidget{}
 
 type ImageWithURLWidget struct {
 	id              string
@@ -1048,6 +1088,8 @@ func (i *ImageWithURLWidget) Build() {
 		i.img.Build()
 	}
 }
+
+var _ Widget = &InputTextWidget{}
 
 type InputTextWidget struct {
 	label      string
@@ -1176,6 +1218,8 @@ func (i *InputTextWidget) Build() {
 	}
 }
 
+var _ Widget = &InputIntWidget{}
+
 type InputIntWidget struct {
 	label    string
 	value    *int32
@@ -1229,6 +1273,8 @@ func (i *InputIntWidget) Build() {
 		i.onChange()
 	}
 }
+
+var _ Widget = &InputFloatWidget{}
 
 type InputFloatWidget struct {
 	label    string
@@ -1291,6 +1337,8 @@ func (i *InputFloatWidget) Build() {
 	}
 }
 
+var _ Widget = &LabelWidget{}
+
 type LabelWidget struct {
 	label    string
 	fontInfo *FontInfo
@@ -1334,6 +1382,8 @@ func (l *LabelWidget) Build() {
 	imgui.Text(l.label)
 }
 
+var _ Widget = &MainMenuBarWidget{}
+
 type MainMenuBarWidget struct {
 	layout Layout
 }
@@ -1357,6 +1407,8 @@ func (m *MainMenuBarWidget) Build() {
 	}
 }
 
+var _ Widget = &MenuBarWidget{}
+
 type MenuBarWidget struct {
 	layout Layout
 }
@@ -1379,6 +1431,8 @@ func (m *MenuBarWidget) Build() {
 		imgui.EndMenuBar()
 	}
 }
+
+var _ Widget = &MenuItemWidget{}
 
 type MenuItemWidget struct {
 	label    string
@@ -1422,6 +1476,8 @@ func (m *MenuItemWidget) Build() {
 	}
 }
 
+var _ Widget = &MenuWidget{}
+
 type MenuWidget struct {
 	label   string
 	enabled bool
@@ -1458,6 +1514,8 @@ func (m *MenuWidget) Build() {
 	}
 }
 
+var _ Widget = &PopupWidget{}
+
 type PopupWidget struct {
 	name   string
 	flags  WindowFlags
@@ -1489,6 +1547,8 @@ func (p *PopupWidget) Build() {
 		imgui.EndPopup()
 	}
 }
+
+var _ Widget = &PopupModalWidget{}
 
 type PopupModalWidget struct {
 	name   string
@@ -1537,6 +1597,8 @@ func CloseCurrentPopup() {
 	imgui.CloseCurrentPopup()
 }
 
+var _ Widget = &ProgressBarWidget{}
+
 type ProgressBarWidget struct {
 	fraction float32
 	width    float32
@@ -1572,6 +1634,8 @@ func (p *ProgressBarWidget) Overlayf(format string, args ...interface{}) *Progre
 func (p *ProgressBarWidget) Build() {
 	imgui.ProgressBarV(p.fraction, imgui.Vec2{X: p.width, Y: p.height}, p.overlay)
 }
+
+var _ Widget = &SelectableWidget{}
 
 type SelectableWidget struct {
 	label    string
@@ -1642,6 +1706,8 @@ func (s *SelectableWidget) Build() {
 	}
 }
 
+var _ Widget = &SeparatorWidget{}
+
 type SeparatorWidget struct{}
 
 // Build implements Widget interface
@@ -1652,6 +1718,8 @@ func (s *SeparatorWidget) Build() {
 func Separator() *SeparatorWidget {
 	return &SeparatorWidget{}
 }
+
+var _ Widget = &SliderIntWidget{}
 
 type SliderIntWidget struct {
 	label    string
@@ -1711,6 +1779,8 @@ func (s *SliderIntWidget) Build() {
 		s.onChange()
 	}
 }
+
+var _ Widget = &VSliderIntWidget{}
 
 type VSliderIntWidget struct {
 	label    string
@@ -1781,6 +1851,8 @@ func (vs *VSliderIntWidget) Build() {
 	}
 }
 
+var _ Widget = &SliderFloatWidget{}
+
 type SliderFloatWidget struct {
 	label    string
 	value    *float32
@@ -1840,6 +1912,8 @@ func (sf *SliderFloatWidget) Build() {
 	}
 }
 
+var _ Widget = &DummyWidget{}
+
 type DummyWidget struct {
 	width  float32
 	height float32
@@ -1866,6 +1940,8 @@ func Dummy(width, height float32) *DummyWidget {
 		height: height * Context.platform.GetContentScale(),
 	}
 }
+
+var _ Widget = &HSplitterWidget{}
 
 type HSplitterWidget struct {
 	id     string
@@ -1941,6 +2017,8 @@ func (h *HSplitterWidget) Build() {
 	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), color, 0, 0)
 }
 
+var _ Widget = &VSplitterWidget{}
+
 type VSplitterWidget struct {
 	id     string
 	width  float32
@@ -2015,6 +2093,8 @@ func (v *VSplitterWidget) Build() {
 	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), color, 0, 0)
 }
 
+var _ Widget = &TabItemWidget{}
+
 type TabItemWidget struct {
 	label  string
 	open   *bool
@@ -2058,6 +2138,8 @@ func (t *TabItemWidget) Build() {
 	}
 }
 
+var _ Widget = &TabBarWidget{}
+
 type TabBarWidget struct {
 	id       string
 	flags    TabBarFlags
@@ -2098,6 +2180,8 @@ func (t *TabBarWidget) Build() {
 		imgui.EndTabBar()
 	}
 }
+
+var _ Widget = &TableRowWidget{}
 
 type TableRowWidget struct {
 	flags        TableRowFlags
@@ -2151,6 +2235,8 @@ func (r *TableRowWidget) Build() {
 	}
 }
 
+var _ Widget = &TableColumnWidget{}
+
 type TableColumnWidget struct {
 	label              string
 	flags              TableColumnFlags
@@ -2186,6 +2272,8 @@ func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
 func (c *TableColumnWidget) Build() {
 	imgui.TableSetupColumn(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
 }
+
+var _ Widget = &TableWidget{}
 
 type TableWidget struct {
 	flags        TableFlags
@@ -2292,6 +2380,8 @@ func (t *TableWidget) Build() {
 	}
 }
 
+var _ Widget = &TreeTableRowWidget{}
+
 type TreeTableRowWidget struct {
 	label    string
 	flags    TreeNodeFlags
@@ -2349,6 +2439,8 @@ func (ttr *TreeTableRowWidget) Build() {
 		imgui.TreePop()
 	}
 }
+
+var _ Widget = &TreeTableWidget{}
 
 type TreeTableWidget struct {
 	flags        TableFlags
@@ -2425,6 +2517,8 @@ func (tt *TreeTableWidget) Build() {
 	}
 }
 
+var _ Widget = &TooltipWidget{}
+
 type TooltipWidget struct {
 	tip    string
 	layout Layout
@@ -2458,6 +2552,8 @@ func (t *TooltipWidget) Layout(widgets ...Widget) *TooltipWidget {
 	t.layout = Layout(widgets)
 	return t
 }
+
+var _ Widget = &TreeNodeWidget{}
 
 type TreeNodeWidget struct {
 	label        string
@@ -2512,6 +2608,8 @@ func (t *TreeNodeWidget) Build() {
 	}
 }
 
+var _ Widget = &SpacingWidget{}
+
 type SpacingWidget struct{}
 
 // Build implements Widget interface
@@ -2522,6 +2620,8 @@ func (s *SpacingWidget) Build() {
 func Spacing() *SpacingWidget {
 	return &SpacingWidget{}
 }
+
+var _ Widget = &CustomWidget{}
 
 type CustomWidget struct {
 	builder func()
@@ -2539,6 +2639,8 @@ func Custom(builder func()) *CustomWidget {
 		builder: builder,
 	}
 }
+
+var _ Widget = &ConditionWidget{}
 
 type ConditionWidget struct {
 	cond       bool
@@ -2593,6 +2695,8 @@ type ListBoxState struct {
 func (s *ListBoxState) Dispose() {
 	// Nothing to do here.
 }
+
+var _ Widget = &ListBoxWidget{}
 
 type ListBoxWidget struct {
 	id       string
@@ -2707,6 +2811,8 @@ func (l *ListBoxWidget) Build() {
 
 	child.Build()
 }
+
+var _ Widget = &DatePickerWidget{}
 
 type DatePickerWidget struct {
 	id       string
@@ -2890,6 +2996,8 @@ func (d *DatePickerWidget) calendarField(day int) Widget {
 		}
 	})
 }
+
+var _ Widget = &ColorEditWidget{}
 
 type ColorEditWidget struct {
 	label    string
