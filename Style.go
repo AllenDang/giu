@@ -112,7 +112,7 @@ func PopStyle() {
 	imgui.PopStyleVar()
 }
 
-// PopStyleV does similary to PopStyle, but allows to specify number
+// PopStyleV does similarly to PopStyle, but allows to specify number
 // of styles you're going to pop
 func PopStyleV(count int) {
 	imgui.PopStyleVarV(count)

@@ -353,7 +353,7 @@ const (
 	TableFlagsSizingFixedFit    TableFlags = 1 << 13 // Columns default to WidthFixed or WidthAuto (if resizable or not resizable), matching contents width.
 	TableFlagsSizingFixedSame   TableFlags = 2 << 13 // Columns default to WidthFixed or WidthAuto (if resizable or not resizable), matching the maximum contents width of all columns. Implicitly enable TableFlagsNoKeepColumnsVisible.
 	TableFlagsSizingStretchProp TableFlags = 3 << 13 // Columns default to WidthStretch with default weights proportional to each columns contents widths.
-	TableFlagsSizingStretchSame TableFlags = 4 << 13 // Columns default to WidthStretch with default weights all equal, unless overriden by TableSetupColumn().
+	TableFlagsSizingStretchSame TableFlags = 4 << 13 // Columns default to WidthStretch with default weights all equal, unless overridden by TableSetupColumn().
 	// Sizing Extra Options
 	TableFlagsNoHostExtendX        TableFlags = 1 << 16 // Make outer width auto-fit to columns, overriding outersize.x value. Only available when ScrollX/ScrollY are disabled and Stretch columns are not used.
 	TableFlagsNoHostExtendY        TableFlags = 1 << 17 // Make outer height stop exactly at outersize.y (prevent auto-extending table past the limit). Only available when ScrollX/ScrollY are disabled. Data below the limit will be clipped and not visible.
@@ -433,7 +433,7 @@ type PlotFlags int
 
 const (
 	PlotFlagsNone        PlotFlags = 0       // default
-	PlotFlagsNoTitle     PlotFlags = 1 << 0  // the plot title will not be displayed (titles are also hidden if preceeded by double hashes, e.g. "##MyPlot")
+	PlotFlagsNoTitle     PlotFlags = 1 << 0  // the plot title will not be displayed (titles are also hidden if preceded by double hashes, e.g. "##MyPlot")
 	PlotFlagsNoLegend    PlotFlags = 1 << 1  // the legend will not be displayed
 	PlotFlagsNoMenus     PlotFlags = 1 << 2  // the user will not be able to open context menus with right-click
 	PlotFlagsNoBoxSelect PlotFlags = 1 << 3  // the user will not be able to box-select with right-click drag

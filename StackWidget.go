@@ -26,9 +26,9 @@ func (s *StackWidget) Build() {
 
 	// build visible layout
 	// NOTE: it is important to build the visiblely showed layout before
-	// building another ones, becouse the interactive layout widgets
+	// building another ones, because the interactive layout widgets
 	// (e.g. buttons) should be rendered on top of `stack`
-	var layouts []Widget = s.layouts
+	layouts := s.layouts
 
 	if s.visible >= 0 && s.visible < int32(len(s.layouts)) {
 		s.layouts[s.visible].Build()

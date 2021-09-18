@@ -5,9 +5,8 @@ import (
 	"image/color"
 	"time"
 
-	"github.com/faiface/mainthread"
-
 	"github.com/AllenDang/imgui-go"
+	"github.com/faiface/mainthread"
 )
 
 // MasterWindowFlags wrapps imgui.GLFWWindowFlags

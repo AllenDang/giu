@@ -1052,7 +1052,7 @@ func (i *InputTextWidget) Labelf(format string, args ...interface{}) *InputTextW
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
-// Enable auto complete popup by using fuzzy search of current value agains candidates
+// Enable auto complete popup by using fuzzy search of current value against candidates
 // Press enter to confirm the first candidate
 func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
 	i.candidates = candidates

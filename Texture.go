@@ -5,9 +5,8 @@ import (
 	"image"
 	"runtime"
 
-	"github.com/faiface/mainthread"
-
 	"github.com/AllenDang/imgui-go"
+	"github.com/faiface/mainthread"
 )
 
 type Texture struct {
@@ -31,7 +30,7 @@ func NewTextureFromRgba(rgba image.Image, loadCallback func(*Texture)) {
 		tid, ok := result.(*loadImageResult)
 		switch {
 		case !ok:
-			panic("giu: NewTextureFromRgba: unexpected error occured")
+			panic("giu: NewTextureFromRgba: unexpected error occurred")
 		case tid.err != nil:
 			panic(fmt.Sprintf("giu: NewTextureFromRgba: error loading texture: %v", tid.err))
 		}

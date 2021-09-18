@@ -8,14 +8,14 @@ import (
 )
 
 func Save(name, data string) {
-	err := ioutil.WriteFile(name, []byte(data), 0644)
+	err := ioutil.WriteFile(name, []byte(data), 0o644)
 	if err != nil {
 		log.Fatalf("Failed to save %s:%v\n", name, err)
 	}
 }
 
 func MkdirAll(name string) {
-	err := os.MkdirAll(name, 0755)
+	err := os.MkdirAll(name, 0o755)
 	if err != nil {
 		log.Fatalf("Failed to make all dir, %s:%v\n", name, err)
 	}
