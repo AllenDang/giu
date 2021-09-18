@@ -83,6 +83,8 @@ func handler(key glfw.Key, mod glfw.ModifierKey, action glfw.Action) {
 	}
 }
 
+// WindowShortcut represents a window-level shortcut
+// could be used as an argument to (*Window).RegisterKeyboardShortcuts
 type WindowShortcut struct {
 	Key      Key
 	Modifier Modifier

@@ -13,11 +13,14 @@ const (
 	DirectionVertical
 )
 
+var _ Disposable = &SplitLayoutState{}
+
 type SplitLayoutState struct {
 	delta   float32
 	sashPos float32
 }
 
+// Dispose implements Disposable interface
 func (s *SplitLayoutState) Dispose() {
 	// Nothing to do here.
 }

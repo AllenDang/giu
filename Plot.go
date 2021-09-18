@@ -6,23 +6,29 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
+// PlotWidget is implemented by all the particular plots, which can be used
+// in (*PlotCanvasWidget).Plots
 type PlotWidget interface {
 	Plot()
 }
 
+// ImPlotYAxis represents y axis settings
 type ImPlotYAxis int
 
+// ImPlotYAxis enum:
 const (
 	ImPlotYAxisLeft          ImPlotYAxis = 0 // left (default)
 	ImPlotYAxisFirstOnRight  ImPlotYAxis = 1 // first on right side
 	ImPlotYAxisSecondOnRight ImPlotYAxis = 2 // second on right side
 )
 
+// PlotTicker represents axis ticks
 type PlotTicker struct {
 	Position float64
 	Label    string
 }
 
+// PlotCanvasWidget represents a giu plot widget.
 type PlotCanvasWidget struct {
 	title                            string
 	xLabel                           string
@@ -43,6 +49,7 @@ type PlotCanvasWidget struct {
 	plots                            []PlotWidget
 }
 
+// Plot adds creates a new plot widget.
 func Plot(title string) *PlotCanvasWidget {
 	return &PlotCanvasWidget{
 		title:              title,
@@ -98,6 +105,7 @@ func (p *PlotCanvasWidget) XTicks(ticks []PlotTicker, showDefault bool) *PlotCan
 	return p
 }
 
+// YTicks sets y axis ticks
 func (p *PlotCanvasWidget) YTicks(ticks []PlotTicker, showDefault bool, yAxis ImPlotYAxis) *PlotCanvasWidget {
 	length := len(ticks)
 	if length == 0 {
@@ -119,6 +127,7 @@ func (p *PlotCanvasWidget) YTicks(ticks []PlotTicker, showDefault bool, yAxis Im
 	return p
 }
 
+// Flags sets plot canvas flags
 func (p *PlotCanvasWidget) Flags(flags PlotFlags) *PlotCanvasWidget {
 	p.flags = flags
 	return p

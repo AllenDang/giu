@@ -83,7 +83,7 @@ func (eh *EventHandler) OnKeyReleased(key Key, cb func()) *EventHandler {
 
 // Mouse events
 
-// OnKeyDown sets callback when mouse button `mouseButton` is clicked
+// OnClick sets callback when mouse button `mouseButton` is clicked
 func (eh *EventHandler) OnClick(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseClicked})
 	return eh

@@ -177,6 +177,7 @@ const (
 	TabBarFlagsFittingPolicyDefault TabBarFlags = TabBarFlagsFittingPolicyResizeDown
 )
 
+// TreeNodeFlags represents tree node widget flags
 type TreeNodeFlags int
 
 const (
@@ -237,6 +238,7 @@ const (
 	FocusedFlagsRootAndChildWindows = FocusedFlagsRootWindow | FocusedFlagsChildWindows
 )
 
+// HoveredFlags represents a hovered flags
 type HoveredFlags int
 
 const (
@@ -327,6 +329,7 @@ const (
 
 type TableFlags int
 
+// Table flags enum:
 const (
 	// Features
 	TableFlagsNone              TableFlags = 0

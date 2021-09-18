@@ -8,12 +8,14 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
-type ProgressIndicatorState struct {
+var _ Disposable = &progressIndicatorState{}
+
+type progressIndicatorState struct {
 	angle float64
 	stop  bool
 }
 
-func (ps *ProgressIndicatorState) Update() {
+func (ps *progressIndicatorState) update() {
 	ticker := time.NewTicker(time.Second / 60)
 	for !ps.stop {
 		if ps.angle > 6.2 {
@@ -28,10 +30,16 @@ func (ps *ProgressIndicatorState) Update() {
 	ticker.Stop()
 }
 
-func (ps *ProgressIndicatorState) Dispose() {
+// Dispose implements Disposable interface
+func (ps *progressIndicatorState) Dispose() {
 	ps.stop = true
 }
 
+// static check to ensure if ProgressIndicatorWidget implements Widget interface
+var _ Widget = &ProgressIndicatorWidget{}
+
+// ProgressIndicatorWidget represents progress indicator widget
+// see examples/extrawidgets/
 type ProgressIndicatorWidget struct {
 	internalID string
 	width      float32
@@ -40,6 +48,7 @@ type ProgressIndicatorWidget struct {
 	label      string
 }
 
+// ProgressIndicator creates a new ProgressIndicatorWidget
 func ProgressIndicator(label string, width, height, radius float32) *ProgressIndicatorWidget {
 	return &ProgressIndicatorWidget{
 		internalID: "###giu-progress-indicator",
@@ -50,15 +59,16 @@ func ProgressIndicator(label string, width, height, radius float32) *ProgressInd
 	}
 }
 
+// Build implements Widget interface
 func (p *ProgressIndicatorWidget) Build() {
 	// State exists
 	if s := Context.GetState(p.internalID); s == nil {
 		// Register state and start go routine
-		ps := ProgressIndicatorState{angle: 0.0, stop: false}
+		ps := progressIndicatorState{angle: 0.0, stop: false}
 		Context.SetState(p.internalID, &ps)
-		go ps.Update()
+		go ps.update()
 	} else {
-		state := s.(*ProgressIndicatorState)
+		state := s.(*progressIndicatorState)
 
 		child := Child().Border(false).Size(p.width, p.height).Layout(Layout{
 			Custom(func() {

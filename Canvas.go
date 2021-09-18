@@ -21,8 +21,10 @@ func (c *Canvas) AddLine(p1, p2 image.Point, color color.RGBA, thickness float32
 	c.drawlist.AddLine(ToVec2(p1), ToVec2(p2), ToVec4Color(color), thickness)
 }
 
+// DrawFlags represents imgui.DrawFlags
 type DrawFlags int
 
+// draw flags enum:
 const (
 	DrawFlagsNone                    DrawFlags = 0
 	DrawFlagsClosed                  DrawFlags = 1 << 0 // PathStroke(), AddPolyline(): specify that shape should be closed (portant: this is always == 1 for legacy reason)
