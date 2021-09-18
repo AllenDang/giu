@@ -127,6 +127,7 @@ const (
 	SelectableFlagsDisabled SelectableFlags = 1 << 3
 )
 
+// TabItemFlags represents tab item flags
 type TabItemFlags int
 
 const (
