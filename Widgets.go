@@ -1023,7 +1023,8 @@ func (i *ImageWithURLWidget) LayoutForFailure(widgets ...Widget) *ImageWithURLWi
 
 // Build implements Widget interface
 func (i *ImageWithURLWidget) Build() {
-	var imgState *ImageState = &ImageState{}
+	imgState := &ImageState{}
+
 	if state := Context.GetState(i.id); state == nil {
 		Context.SetState(i.id, imgState)
 

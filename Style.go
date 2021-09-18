@@ -356,7 +356,7 @@ func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.RGBA) *StyleSett
 	return ss
 }
 
-/// SetStyle sets styleVarID to width and height
+// SetStyle sets styleVarID to width and height
 func (ss *StyleSetter) SetStyle(varID StyleVarID, width, height float32) *StyleSetter {
 	ss.styles[varID] = imgui.Vec2{X: width, Y: height}
 	return ss
