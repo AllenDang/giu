@@ -51,7 +51,7 @@ linters:
     - goconst
     - gocritic
     - gocyclo
-    - godox
+      #- godox
     - goerr113
     - gofmt
     - gofumpt

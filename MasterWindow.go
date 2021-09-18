@@ -42,7 +42,7 @@ type MasterWindow struct {
 	updateFunc func()
 }
 
-// MasterWindow creates a new master window and initializes GLFW.
+// NewMasterWindow creates a new master window and initializes GLFW.
 // it should be called in main function. For more details and use cases,
 // see examples/helloworld/
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {

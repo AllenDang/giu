@@ -55,7 +55,7 @@ func (eh *EventHandler) OnActivate(cb func()) *EventHandler {
 	return eh
 }
 
-// OnActivate sets callback when item gets deactivated
+// OnDeactivate sets callback when item gets deactivated
 func (eh *EventHandler) OnDeactivate(cb func()) *EventHandler {
 	eh.onDeactivate = cb
 	return eh
@@ -69,13 +69,13 @@ func (eh *EventHandler) OnKeyDown(key Key, cb func()) *EventHandler {
 	return eh
 }
 
-// OnKeyDown sets callback when key `key` is pressed
+// OnKeyPressed sets callback when key `key` is pressed
 func (eh *EventHandler) OnKeyPressed(key Key, cb func()) *EventHandler {
 	eh.keyEvents = append(eh.keyEvents, keyEvent{key, cb, IsKeyPressed})
 	return eh
 }
 
-// OnKeyDown sets callback when key `key` is released
+// OnKeyReleaed sets callback when key `key` is released
 func (eh *EventHandler) OnKeyReleased(key Key, cb func()) *EventHandler {
 	eh.keyEvents = append(eh.keyEvents, keyEvent{key, cb, IsKeyReleased})
 	return eh
@@ -89,19 +89,19 @@ func (eh *EventHandler) OnClick(mouseButton MouseButton, callback func()) *Event
 	return eh
 }
 
-// OnKeyDown sets callback when mouse button `mouseButton` is double-clicked
+// OnDClick sets callback when mouse button `mouseButton` is double-clicked
 func (eh *EventHandler) OnDClick(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseDoubleClicked})
 	return eh
 }
 
-// OnKeyDown sets callback when mouse button `mouseButton` is down
+// OnMouseDown sets callback when mouse button `mouseButton` is down
 func (eh *EventHandler) OnMouseDown(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseDown})
 	return eh
 }
 
-// OnKeyDown sets callback when mouse button `mouseButton` is released
+// OnMouseReleased sets callback when mouse button `mouseButton` is released
 func (eh *EventHandler) OnMouseReleased(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseReleased})
 	return eh
