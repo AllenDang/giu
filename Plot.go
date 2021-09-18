@@ -75,6 +75,7 @@ func Plot(title string) *PlotCanvasWidget {
 	}
 }
 
+// AxisLimits sets X and Y axis limits
 func (p *PlotCanvasWidget) AxisLimits(xmin, xmax, ymin, ymax float64, cond ExecCondition) *PlotCanvasWidget {
 	p.xMin = xmin
 	p.xMax = xmax
@@ -85,6 +86,7 @@ func (p *PlotCanvasWidget) AxisLimits(xmin, xmax, ymin, ymax float64, cond ExecC
 	return p
 }
 
+// XTicks sets x axis ticks
 func (p *PlotCanvasWidget) XTicks(ticks []PlotTicker, showDefault bool) *PlotCanvasWidget {
 	length := len(ticks)
 	if length == 0 {
@@ -133,11 +135,13 @@ func (p *PlotCanvasWidget) Flags(flags PlotFlags) *PlotCanvasWidget {
 	return p
 }
 
+// XAxeFlags sets x axis fags
 func (p *PlotCanvasWidget) XAxeFlags(flags PlotAxisFlags) *PlotCanvasWidget {
 	p.xFlags = flags
 	return p
 }
 
+// YAxeFlags sets y axis flags
 func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags PlotAxisFlags) *PlotCanvasWidget {
 	p.yFlags = yFlags
 	p.y2Flags = y2Flags
@@ -145,17 +149,20 @@ func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags PlotAxisFlags) *Pl
 	return p
 }
 
+// Plots adds plots to plot canvas
 func (p *PlotCanvasWidget) Plots(plots ...PlotWidget) *PlotCanvasWidget {
 	p.plots = plots
 	return p
 }
 
+// Size set canvas size
 func (p *PlotCanvasWidget) Size(width, height int) *PlotCanvasWidget {
 	p.width = width
 	p.height = height
 	return p
 }
 
+// Build implements Widget interface
 func (p *PlotCanvasWidget) Build() {
 	if len(p.plots) > 0 {
 		imgui.ImPlotSetNextPlotLimits(p.xMin, p.xMax, p.yMin, p.yMax, imgui.Condition(p.axisLimitCondition))

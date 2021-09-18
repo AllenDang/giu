@@ -328,6 +328,7 @@ const (
 	ColorEditFlagsInputHSV ColorEditFlags = 1 << 28
 )
 
+// TableFlags represents table flags
 type TableFlags int
 
 // Table flags enum:
