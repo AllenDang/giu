@@ -49,7 +49,7 @@ func loop() {
 func main() {
 	errMarkers = imgui.NewErrorMarkers()
 
-	editor = g.CodeEditor("Code Editor").
+	editor = g.CodeEditor().
 		ShowWhitespaces(false).
 		TabSize(2).
 		Text("select * from greeting\nwhere date > current_timestamp\norder by date").
