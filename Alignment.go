@@ -24,13 +24,8 @@ type AlignmentSetter struct {
 // Align sets widgets alignment.
 // usage: see examples/align
 //
-// FIXME: all widgets will be build twice
-// it means, that if you have e.g. CustomWidget it could do unexpected things.
-// Example:
-// Align(AlignToCenter).To(
-//   Custom(func() { fmt.Println("running custom widget") }),
-// )
-// will print the message two times per frame.
+// FIXME: DONOT put giu widgets inside of CustomWidget function in
+// Align setter. CustomWidgets will be skip in alignment process
 //
 // BUG: DatePickerWidget doesn't work properly
 func Align(at AlignmentType) *AlignmentSetter {
@@ -60,6 +55,13 @@ func (a *AlignmentSetter) Build() {
 	a.layout.Range(func(item Widget) {
 		// if item is inil, just skip it
 		if item == nil {
+			return
+		}
+
+		// exclude some widgets from alignment process
+		switch item.(type) {
+		case *CustomWidget:
+			item.Build()
 			return
 		}
 
