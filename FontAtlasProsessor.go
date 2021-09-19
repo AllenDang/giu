@@ -171,13 +171,13 @@ func tStr(str string) string {
 // Register string pointer to font atlas builder.
 // Note only register strings that will be displayed on the UI.
 func tStrPtr(str *string) *string {
-	*str = tStr(*str)
+	tStr(*str)
 	return str
 }
 
 func tStrSlice(str []string) []string {
-	for i, s := range str {
-		str[i] = tStr(s)
+	for _, s := range str {
+		tStr(s)
 	}
 
 	return str
