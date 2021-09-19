@@ -29,7 +29,8 @@ func Row(widgets ...Widget) *RowWidget {
 }
 
 func (l *RowWidget) Build() {
-	for index, w := range l.widgets {
+	isFirst := true
+	l.widgets.Range(func(w Widget) {
 		switch w.(type) {
 		case *LabelWidget:
 			AlignTextToFramePadding()
@@ -38,13 +39,15 @@ func (l *RowWidget) Build() {
 			*PopupWidget, *TabItemWidget:
 			// noop
 		default:
-			if index > 0 {
+			if !isFirst {
 				imgui.SameLine()
+			} else {
+				isFirst = false
 			}
 		}
 
 		w.Build()
-	}
+	})
 }
 
 func SameLine() {
