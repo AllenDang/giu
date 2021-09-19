@@ -30,20 +30,32 @@ type DrawFlags int
 
 // draw flags enum:
 const (
-	DrawFlagsNone                    DrawFlags = 0
-	DrawFlagsClosed                  DrawFlags = 1 << 0 // PathStroke(), AddPolyline(): specify that shape should be closed (portant: this is always == 1 for legacy reason)
-	DrawFlagsRoundCornersTopLeft     DrawFlags = 1 << 4 // AddRect(), AddRectFilled(), PathRect(): enable rounding top-left corner only (when rounding > 0.0f, we default to all corners). Was 0x01.
-	DrawFlagsRoundCornersTopRight    DrawFlags = 1 << 5 // AddRect(), AddRectFilled(), PathRect(): enable rounding top-right corner only (when rounding > 0.0f, we default to all corners). Was 0x02.
-	DrawFlagsRoundCornersBottomLeft  DrawFlags = 1 << 6 // AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-left corner only (when rounding > 0.0f, we default to all corners). Was 0x04.
-	DrawFlagsRoundCornersBottomRight DrawFlags = 1 << 7 // AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-right corner only (when rounding > 0.0f, we default to all corners). Wax 0x08.
-	DrawFlagsRoundCornersNone        DrawFlags = 1 << 8 // AddRect(), AddRectFilled(), PathRect(): disable rounding on all corners (when rounding > 0.0f). This is NOT zero, NOT an implicit flag!
-	DrawFlagsRoundCornersTop         DrawFlags = DrawFlagsRoundCornersTopLeft | DrawFlagsRoundCornersTopRight
-	DrawFlagsRoundCornersBottom      DrawFlags = DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersBottomRight
-	DrawFlagsRoundCornersLeft        DrawFlags = DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersTopLeft
-	DrawFlagsRoundCornersRight       DrawFlags = DrawFlagsRoundCornersBottomRight | DrawFlagsRoundCornersTopRight
-	DrawFlagsRoundCornersAll         DrawFlags = DrawFlagsRoundCornersTopLeft | DrawFlagsRoundCornersTopRight | DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersBottomRight
-	DrawFlagsRoundCornersDefault     DrawFlags = DrawFlagsRoundCornersAll // Default to ALL corners if none of the RoundCornersXX flags are specified.
-	DrawFlagsRoundCornersMask        DrawFlags = DrawFlagsRoundCornersAll | DrawFlagsRoundCornersNone
+	DrawFlagsNone DrawFlags = 0
+	// PathStroke(), AddPolyline(): specify that shape should be closed (portant: this is always == 1 for legacy reason)
+	DrawFlagsClosed DrawFlags = 1 << 0
+	// AddRect(), AddRectFilled(), PathRect(): enable rounding top-left corner only (when rounding > 0.0f, we default to all corners).
+	// Was 0x01.
+	DrawFlagsRoundCornersTopLeft DrawFlags = 1 << 4
+	// AddRect(), AddRectFilled(), PathRect(): enable rounding top-right corner only (when rounding > 0.0f, we default to all corners).
+	// Was 0x02.
+	DrawFlagsRoundCornersTopRight DrawFlags = 1 << 5
+	// AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-left corner only (when rounding > 0.0f, we default to all corners).
+	// Was 0x04.
+	DrawFlagsRoundCornersBottomLeft DrawFlags = 1 << 6
+	// AddRect(), AddRectFilled(), PathRect(): enable rounding bottom-right corner only (when rounding > 0.0f,
+	// we default to all corners). Wax 0x08.
+	DrawFlagsRoundCornersBottomRight DrawFlags = 1 << 7
+	// AddRect(), AddRectFilled(), PathRect(): disable rounding on all corners (when rounding > 0.0f). This is NOT zero, NOT an implicit flag!
+	DrawFlagsRoundCornersNone   DrawFlags = 1 << 8
+	DrawFlagsRoundCornersTop    DrawFlags = DrawFlagsRoundCornersTopLeft | DrawFlagsRoundCornersTopRight
+	DrawFlagsRoundCornersBottom DrawFlags = DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersBottomRight
+	DrawFlagsRoundCornersLeft   DrawFlags = DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersTopLeft
+	DrawFlagsRoundCornersRight  DrawFlags = DrawFlagsRoundCornersBottomRight | DrawFlagsRoundCornersTopRight
+	DrawFlagsRoundCornersAll    DrawFlags = DrawFlagsRoundCornersTopLeft | DrawFlagsRoundCornersTopRight |
+		DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersBottomRight
+	// Default to ALL corners if none of the RoundCornersXX flags are specified.
+	DrawFlagsRoundCornersDefault DrawFlags = DrawFlagsRoundCornersAll
+	DrawFlagsRoundCornersMask    DrawFlags = DrawFlagsRoundCornersAll | DrawFlagsRoundCornersNone
 )
 
 // AddRect draws a rectangle

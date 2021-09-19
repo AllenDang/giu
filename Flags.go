@@ -3,27 +3,53 @@ package giu
 type InputTextFlags int
 
 const (
-	InputTextFlagsNone                InputTextFlags = 0
-	InputTextFlagsCharsDecimal        InputTextFlags = 1 << 0  // Allow 0123456789.+-*/
-	InputTextFlagsCharsHexadecimal    InputTextFlags = 1 << 1  // Allow 0123456789ABCDEFabcdef
-	InputTextFlagsCharsUppercase      InputTextFlags = 1 << 2  // Turn a..z into A..Z
-	InputTextFlagsCharsNoBlank        InputTextFlags = 1 << 3  // Filter out spaces, tabs
-	InputTextFlagsAutoSelectAll       InputTextFlags = 1 << 4  // Select entire text when first taking mouse focus
-	InputTextFlagsEnterReturnsTrue    InputTextFlags = 1 << 5  // Return 'true' when Enter is pressed (as opposed to every time the value was modified). Consider looking at the IsItemDeactivatedAfterEdit() function.
-	InputTextFlagsCallbackCompletion  InputTextFlags = 1 << 6  // Callback on pressing TAB (for completion handling)
-	InputTextFlagsCallbackHistory     InputTextFlags = 1 << 7  // Callback on pressing Up/Down arrows (for history handling)
-	InputTextFlagsCallbackAlways      InputTextFlags = 1 << 8  // Callback on each iteration. User code may query cursor position, modify text buffer.
-	InputTextFlagsCallbackCharFilter  InputTextFlags = 1 << 9  // Callback on character inputs to replace or discard them. Modify 'EventChar' to replace or discard, or return 1 in callback to discard.
-	InputTextFlagsAllowTabInput       InputTextFlags = 1 << 10 // Pressing TAB input a '\t' character into the text field
-	InputTextFlagsCtrlEnterForNewLine InputTextFlags = 1 << 11 // In multi-line mode, unfocus with Enter, add new line with Ctrl+Enter (default is opposite: unfocus with Ctrl+Enter, add line with Enter).
-	InputTextFlagsNoHorizontalScroll  InputTextFlags = 1 << 12 // Disable following the cursor horizontally
-	InputTextFlagsAlwaysOverwrite     InputTextFlags = 1 << 13 // Overwrite mode
-	InputTextFlagsReadOnly            InputTextFlags = 1 << 14 // Read-only mode
-	InputTextFlagsPassword            InputTextFlags = 1 << 15 // Password mode, display all characters as '*'
-	InputTextFlagsNoUndoRedo          InputTextFlags = 1 << 16 // Disable undo/redo. Note that input text owns the text data while active, if you want to provide your own undo/redo stack you need e.g. to call ClearActiveID().
-	InputTextFlagsCharsScientific     InputTextFlags = 1 << 17 // Allow 0123456789.+-*/eE (Scientific notation input)
-	InputTextFlagsCallbackResize      InputTextFlags = 1 << 18 // Callback on buffer capacity changes request (beyond 'bufsize' parameter value), allowing the string to grow. Notify when the string wants to be resized (for string types which hold a cache of their Size). You will be provided a new BufSize in the callback and NEED to honor it. (see misc/cpp/imguistdlib.h for an example of using this)
-	InputTextFlagsCallbackEdit        InputTextFlags = 1 << 19 // Callback on any edit (note that InputText() already returns true on edit, the callback is useful mainly to manipulate the underlying buffer while focus is active)
+	InputTextFlagsNone InputTextFlags = 0
+	// Allow 0123456789.+-*/
+	InputTextFlagsCharsDecimal InputTextFlags = 1 << 0
+	// Allow 0123456789ABCDEFabcdef
+	InputTextFlagsCharsHexadecimal InputTextFlags = 1 << 1
+	// Turn a..z into A..Z
+	InputTextFlagsCharsUppercase InputTextFlags = 1 << 2
+	// Filter out spaces, tabs
+	InputTextFlagsCharsNoBlank InputTextFlags = 1 << 3
+	// Select entire text when first taking mouse focus
+	InputTextFlagsAutoSelectAll InputTextFlags = 1 << 4
+	// Return 'true' when Enter is pressed (as opposed to every time the value was modified).
+	// Consider looking at the IsItemDeactivatedAfterEdit() function.
+	InputTextFlagsEnterReturnsTrue InputTextFlags = 1 << 5
+	// Callback on pressing TAB (for completion handling)
+	InputTextFlagsCallbackCompletion InputTextFlags = 1 << 6
+	// Callback on pressing Up/Down arrows (for history handling)
+	InputTextFlagsCallbackHistory InputTextFlags = 1 << 7
+	// Callback on each iteration. User code may query cursor position, modify text buffer.
+	InputTextFlagsCallbackAlways InputTextFlags = 1 << 8
+	// Callback on character inputs to replace or discard them. Modify 'EventChar' to replace or discard, or return 1 in callback to discard.
+	InputTextFlagsCallbackCharFilter InputTextFlags = 1 << 9
+	// Pressing TAB input a '\t' character into the text field
+	InputTextFlagsAllowTabInput InputTextFlags = 1 << 10
+	// In multi-line mode, unfocus with Enter, add new line with Ctrl+Enter
+	// (default is opposite: unfocus with Ctrl+Enter, add line with Enter).
+	InputTextFlagsCtrlEnterForNewLine InputTextFlags = 1 << 11
+	// Disable following the cursor horizontally
+	InputTextFlagsNoHorizontalScroll InputTextFlags = 1 << 12
+	// Overwrite mode
+	InputTextFlagsAlwaysOverwrite InputTextFlags = 1 << 13
+	// Read-only mode
+	InputTextFlagsReadOnly InputTextFlags = 1 << 14
+	// Password mode, display all characters as '*'
+	InputTextFlagsPassword InputTextFlags = 1 << 15
+	// Disable undo/redo. Note that input text owns the text data while active, if you want to provide your own undo/redo
+	// stack you need e.g. to call ClearActiveID().
+	InputTextFlagsNoUndoRedo InputTextFlags = 1 << 16
+	// Allow 0123456789.+-*/eE (Scientific notation input)
+	InputTextFlagsCharsScientific InputTextFlags = 1 << 17
+	// Callback on buffer capacity changes request (beyond 'bufsize' parameter value), allowing the string to grow.
+	// Notify when the string wants to be resized (for string types which hold a cache of their Size).
+	// You will be provided a new BufSize in the callback and NEED to honor it. (see misc/cpp/imguistdlib.h for an example of using this)
+	InputTextFlagsCallbackResize InputTextFlags = 1 << 18
+	// Callback on any edit (note that InputText() already returns true on edit,
+	// the callback is useful mainly to manipulate the underlying buffer while focus is active)
+	InputTextFlagsCallbackEdit InputTextFlags = 1 << 19
 )
 
 type WindowFlags int
@@ -245,7 +271,8 @@ const (
 type HoveredFlags int
 
 const (
-	// HoveredFlagsNone is the default and matches if directly over the item/window, not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
+	// HoveredFlagsNone is the default and matches if directly over the item/window,
+	// not obstructed by another window, not obstructed by an active popup or modal blocking inputs under them.
 	HoveredFlagsNone HoveredFlags = 0
 	// HoveredFlagsChildWindows is for IsWindowHovered() and matches if any children of the window is hovered
 	HoveredFlagsChildWindows HoveredFlags = 1 << 0
@@ -255,16 +282,20 @@ const (
 	HoveredFlagsAnyWindow HoveredFlags = 1 << 2
 	// HoveredFlagsAllowWhenBlockedByPopup matches even if a popup window is normally blocking access to this item/window
 	HoveredFlagsAllowWhenBlockedByPopup HoveredFlags = 1 << 3
-	// HoveredFlagsAllowWhenBlockedByModal matches even if a modal popup window is normally blocking access to this item/window. UNIMPLEMENTED in imgui.
+	// HoveredFlagsAllowWhenBlockedByModal matches even if a modal popup window is normally blocking access to this item/window.
+	// UNIMPLEMENTED in imgui.
 	// HoveredFlagsAllowWhenBlockedByModal  HoveredFlags   = 1 << 4
-	// HoveredFlagsAllowWhenBlockedByActiveItem matches true even if an active item is blocking access to this item/window. Useful for Drag and Drop patterns.
+	// HoveredFlagsAllowWhenBlockedByActiveItem matches true even if an active item is blocking access to this item/window.
+	// Useful for Drag and Drop patterns.
 	HoveredFlagsAllowWhenBlockedByActiveItem HoveredFlags = 1 << 5
 	// HoveredFlagsAllowWhenOverlapped matches even if the position is obstructed or overlapped by another window
 	HoveredFlagsAllowWhenOverlapped HoveredFlags = 1 << 6
 	// HoveredFlagsAllowWhenDisabled matches even if the item is disabled
 	HoveredFlagsAllowWhenDisabled HoveredFlags = 1 << 7
-	// HoveredFlagsRectOnly combines HoveredFlagsAllowWhenBlockedByPopup, HoveredFlagsAllowWhenBlockedByActiveItem, and HoveredFlagsAllowWhenOverlapped.
-	HoveredFlagsRectOnly HoveredFlags = HoveredFlagsAllowWhenBlockedByPopup | HoveredFlagsAllowWhenBlockedByActiveItem | HoveredFlagsAllowWhenOverlapped
+	// HoveredFlagsRectOnly combines HoveredFlagsAllowWhenBlockedByPopup,
+	// HoveredFlagsAllowWhenBlockedByActiveItem, and HoveredFlagsAllowWhenOverlapped.
+	HoveredFlagsRectOnly HoveredFlags = HoveredFlagsAllowWhenBlockedByPopup |
+		HoveredFlagsAllowWhenBlockedByActiveItem | HoveredFlagsAllowWhenOverlapped
 	// HoveredFlagsRootAndChildWindows combines HoveredFlagsRootWindow and HoveredFlagsChildWindows.
 	HoveredFlagsRootAndChildWindows HoveredFlags = HoveredFlagsRootWindow | HoveredFlagsChildWindows
 )
@@ -352,7 +383,8 @@ const (
 	TableFlagsContextMenuInBody TableFlags = 1 << 5
 	// Decorations
 
-	// Set each RowBg color with ColTableRowBg or ColTableRowBgAlt (equivalent of calling TableSetBgColor with TableBgFlagsRowBg0 on each row manually)
+	// Set each RowBg color with ColTableRowBg or ColTableRowBgAlt
+	// (equivalent of calling TableSetBgColor with TableBgFlagsRowBg0 on each row manually)
 	TableFlagsRowBg TableFlags = 1 << 6
 	// Draw horizontal borders between rows.
 	TableFlagsBordersInnerH TableFlags = 1 << 7
