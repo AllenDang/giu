@@ -1985,6 +1985,7 @@ func (h *HSplitterWidget) ID(id string) *HSplitterWidget {
 }
 
 // Build implements Widget interface
+// nolint:dupl // will fix later
 func (h *HSplitterWidget) Build() {
 	// Calc line position.
 	width := int(40 * Context.GetPlatform().GetContentScale())
@@ -2061,6 +2062,7 @@ func (v *VSplitterWidget) ID(id string) *VSplitterWidget {
 }
 
 // Build implements Widget interface
+// nolint:dupl // will fix later
 func (v *VSplitterWidget) Build() {
 	// Calc line position.
 	width := int(2 * Context.GetPlatform().GetContentScale())
@@ -2757,6 +2759,7 @@ func (l *ListBoxWidget) OnMenu(onMenu func(selectedIndex int, menu string)) *Lis
 }
 
 // Build implements Widget interface
+// nolint:gocognit // will fix later
 func (l *ListBoxWidget) Build() {
 	var state *ListBoxState
 	if s := Context.GetState(l.id); s == nil {
