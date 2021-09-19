@@ -62,6 +62,7 @@ func (a *AlignmentSetter) Build() {
 		}
 
 		// exclude some widgets from alignment process
+		// nolint:gocritic // could have more cases later
 		switch item.(type) {
 		case *CustomWidget:
 			item.Build()
