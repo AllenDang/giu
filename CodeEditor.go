@@ -30,10 +30,17 @@ type CodeEditorWidget struct {
 	border bool
 }
 
-func CodeEditor(title string) *CodeEditorWidget {
+func CodeEditor() *CodeEditorWidget {
 	return &CodeEditorWidget{
-		title: title,
+		title: GenAutoID("##CodeEditor"),
 	}
+}
+
+// ID allows to manually set editor's ID.
+// It isn't necessary to use it in a normal conditions.
+func (ce *CodeEditorWidget) ID(id string) *CodeEditorWidget {
+	ce.title = id
+	return ce
 }
 
 func (ce *CodeEditorWidget) ShowWhitespaces(s bool) *CodeEditorWidget {
