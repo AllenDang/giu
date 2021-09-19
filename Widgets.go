@@ -32,13 +32,16 @@ func (l *RowWidget) Build() {
 	isFirst := true
 	l.widgets.Range(func(w Widget) {
 		switch w.(type) {
-		case *LabelWidget:
-			AlignTextToFramePadding()
 		case *TooltipWidget,
 			*ContextMenuWidget, *PopupModalWidget,
 			*PopupWidget, *TabItemWidget:
 			// noop
 		default:
+			switch w.(type) {
+			case *LabelWidget:
+				AlignTextToFramePadding()
+			}
+
 			if !isFirst {
 				imgui.SameLine()
 			} else {
