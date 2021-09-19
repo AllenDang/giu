@@ -56,41 +56,31 @@ func (a *AlignmentSetter) Build() {
 	}
 
 	// WORKAROUND: get widgets widths rendering them with 100% transparency
-	// first save start cursor position
-	startPos := GetCursorPos()
-
-	widgetsWidths := make([]float32, 0)
-
-	// render widgets with 0 alpha and store thems widths
-	imgui.PushStyleVarFloat(imgui.StyleVarID(StyleVarAlpha), 0)
+	// to align them later
 	a.layout.Range(func(item Widget) {
-		var width float32
-		if item != nil {
-			item.Build()
-			size := imgui.GetItemRectSize()
-			width = size.X
-		}
-
-		widgetsWidths = append(widgetsWidths, width)
-	})
-	imgui.PopStyleVar()
-
-	// reset cursor pos
-	SetCursorPos(startPos)
-
-	// ALIGN WIDGETS
-	idx := 0o0
-	a.layout.Range(func(item Widget) {
+		// if item is inil, just skip it
 		if item == nil {
 			return
 		}
 
-		w := widgetsWidths[idx]
+		// save cursor position before rendering
 		currentPos := GetCursorPos()
+
+		// render widget in `dry` mode
+		imgui.PushStyleVarFloat(imgui.StyleVarAlpha, 0)
+		item.Build()
+		imgui.PopStyleVar()
+
+		// save widget's width
+		size := imgui.GetItemRectSize()
+		w := size.X
+
 		availableW, _ := GetAvailableRegion()
+
+		// set cursor position to align the widget
 		switch a.alignType {
 		case AlignLeft:
-			// noop
+			SetCursorPos(currentPos)
 		case AlignCenter:
 			SetCursorPos(image.Pt(int(availableW/2-w/2), int(currentPos.Y)))
 		case AlignRight:
@@ -99,8 +89,7 @@ func (a *AlignmentSetter) Build() {
 			panic(fmt.Sprintf("giu: (*AlignSetter).Build: unknown align type %d", a.alignType))
 		}
 
+		// build aligned widget
 		item.Build()
-
-		idx++
 	})
 }
