@@ -164,7 +164,7 @@ func (w *WindowWidget) HasFocus() bool {
 	return w.getState().hasFocus
 }
 
-// Registerkeyboardshortcuts adds local (window-level) keyboard shortcuts
+// RegisterKeyboardShortcuts adds local (window-level) keyboard shortcuts
 // see InputHandler.go
 func (w *WindowWidget) RegisterKeyboardShortcuts(s ...WindowShortcut) *WindowWidget {
 	if w.HasFocus() {

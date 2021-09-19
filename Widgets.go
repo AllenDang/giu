@@ -985,7 +985,7 @@ func ImageWithURL(url string) *ImageWithURLWidget {
 	}
 }
 
-// Event trigger when image is downloaded and ready to display.
+// OnReady sets event trigger when image is downloaded and ready to display.
 func (i *ImageWithURLWidget) OnReady(onReady func()) *ImageWithURLWidget {
 	i.onReady = onReady
 	return i
@@ -1132,7 +1132,7 @@ func (i *InputTextWidget) Labelf(format string, args ...interface{}) *InputTextW
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
-// Enable auto complete popup by using fuzzy search of current value against candidates
+// AutoComplete enables auto complete popup by using fuzzy search of current value against candidates
 // Press enter to confirm the first candidate
 func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
 	i.candidates = candidates
@@ -1684,7 +1684,7 @@ func (s *SelectableWidget) OnClick(onClick func()) *SelectableWidget {
 	return s
 }
 
-// Handle mouse left button's double click event.
+// OnDClick handles mouse left button's double click event.
 // SelectableFlagsAllowDoubleClick will set once tonDClick callback is notnull
 func (s *SelectableWidget) OnDClick(onDClick func()) *SelectableWidget {
 	s.onDClick = onDClick
@@ -2298,7 +2298,7 @@ func Table() *TableWidget {
 	}
 }
 
-// Display visible rows only to boost performance.
+// FastMode Displays visible rows only to boost performance.
 func (t *TableWidget) FastMode(b bool) *TableWidget {
 	t.fastMode = b
 	return t
@@ -2581,7 +2581,7 @@ func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
 	return t
 }
 
-// Create TreeNode with eventHandler
+// Event create TreeNode with eventHandler
 // You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler
 func (t *TreeNodeWidget) Event(handler func()) *TreeNodeWidget {
 	t.eventHandler = handler
@@ -2670,7 +2670,7 @@ func (c *ConditionWidget) Build() {
 	}
 }
 
-// Batch create widgets and render only which is visible.
+// RangeBuilder batch create widgets and render only which is visible.
 func RangeBuilder(id string, values []interface{}, builder func(int, interface{}) Widget) Layout {
 	var layout Layout
 

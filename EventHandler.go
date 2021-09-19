@@ -75,7 +75,7 @@ func (eh *EventHandler) OnKeyPressed(key Key, cb func()) *EventHandler {
 	return eh
 }
 
-// OnKeyReleaed sets callback when key `key` is released
+// OnKeyReleased sets callback when key `key` is released
 func (eh *EventHandler) OnKeyReleased(key Key, cb func()) *EventHandler {
 	eh.keyEvents = append(eh.keyEvents, keyEvent{key, cb, IsKeyReleased})
 	return eh

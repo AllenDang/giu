@@ -46,7 +46,7 @@ func CodeEditor(title string) *CodeEditorWidget {
 	}
 }
 
-// ShowWhitespace sets if whitespaces are shown in code editor
+// ShowWhitespaces sets if whitespaces are shown in code editor
 func (ce *CodeEditorWidget) ShowWhitespaces(s bool) *CodeEditorWidget {
 	ce.getState().editor.SetShowWhitespaces(s)
 	return ce

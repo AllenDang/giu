@@ -175,7 +175,13 @@ func (p *PlotCanvasWidget) Build() {
 			imgui.ImPlotSetNextPlotTicksY(p.yTicksValue, p.yTicksLabel, p.yTicksShowDefault, int(p.yTicksYAxis))
 		}
 
-		if imgui.ImPlotBegin(tStr(p.title), tStr(p.xLabel), tStr(p.yLabel), ToVec2(image.Pt(p.width, p.height)), imgui.ImPlotFlags(p.flags), imgui.ImPlotAxisFlags(p.xFlags), imgui.ImPlotAxisFlags(p.yFlags), imgui.ImPlotAxisFlags(p.y2Flags), imgui.ImPlotAxisFlags(p.y3Flags), tStr(p.y2Label), tStr(p.y3Label)) {
+		if imgui.ImPlotBegin(
+			tStr(p.title), tStr(p.xLabel),
+			tStr(p.yLabel), ToVec2(image.Pt(p.width, p.height)),
+			imgui.ImPlotFlags(p.flags), imgui.ImPlotAxisFlags(p.xFlags),
+			imgui.ImPlotAxisFlags(p.yFlags), imgui.ImPlotAxisFlags(p.y2Flags),
+			imgui.ImPlotAxisFlags(p.y3Flags), tStr(p.y2Label), tStr(p.y3Label),
+		) {
 			for _, plot := range p.plots {
 				plot.Plot()
 			}

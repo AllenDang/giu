@@ -56,7 +56,7 @@ func ToVec2(pt image.Point) imgui.Vec2 {
 	}
 }
 
-// Vec4ToRgba converts imgui's Vec4 to golang rgba color
+// Vec4ToRGBA converts imgui's Vec4 to golang rgba color
 func Vec4ToRGBA(vec4 imgui.Vec4) color.RGBA {
 	return color.RGBA{
 		R: uint8(vec4.X * 255),
@@ -145,7 +145,13 @@ func SetNextWindowPos(x, y float32) {
 
 // SetNextWindowSizeV does similar to SetNextWIndowSize but allows to specify imgui.Condition
 func SetNextWindowSizeV(width, height float32, condition ExecCondition) {
-	imgui.SetNextWindowSizeV(imgui.Vec2{X: width * Context.platform.GetContentScale(), Y: height * Context.platform.GetContentScale()}, imgui.Condition(condition))
+	imgui.SetNextWindowSizeV(
+		imgui.Vec2{
+			X: width * Context.platform.GetContentScale(),
+			Y: height * Context.platform.GetContentScale(),
+		},
+		imgui.Condition(condition),
+	)
 }
 
 // SetItemDefaultFocus set the item focused by default

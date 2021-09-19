@@ -69,14 +69,12 @@ linters:
     - makezero
     - misspell
     - nakedret
-    - nestif
     - nilerr
-    #- nlreturn
     - nolintlint
     - prealloc
     - predeclared
     - promlinter
-    - revive
+      #- revive
     - rowserrcheck
     - staticcheck
     - structcheck
