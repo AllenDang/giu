@@ -100,7 +100,7 @@ func (i *InputTextMultilineWidget) Labelf(format string, args ...interface{}) *I
 
 // Build implements Widget interface
 func (i *InputTextMultilineWidget) Build() {
-	if len(i.label) == 0 {
+	if i.label == "" {
 		i.label = GenAutoID(i.label)
 	}
 
@@ -1999,7 +1999,7 @@ func (h *HSplitterWidget) Build() {
 	ptMax := image.Pt(centerX+width/2, centerY+height/2)
 
 	style := imgui.CurrentStyle()
-	color := Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrab))
+	c := Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrab))
 
 	// Place a invisible button to capture event.
 	imgui.InvisibleButton(h.id, imgui.Vec2{X: h.width, Y: h.height})
@@ -2010,12 +2010,12 @@ func (h *HSplitterWidget) Build() {
 	}
 	if imgui.IsItemHovered() {
 		imgui.SetMouseCursor(imgui.MouseCursorResizeNS)
-		color = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
+		c = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
 	}
 
 	// Draw a line in the very center
 	canvas := GetCanvas()
-	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), color, 0, 0)
+	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), c, 0, 0)
 }
 
 var _ Widget = &VSplitterWidget{}
@@ -2075,7 +2075,7 @@ func (v *VSplitterWidget) Build() {
 	ptMax := image.Pt(centerX+width/2, centerY+height/2)
 
 	style := imgui.CurrentStyle()
-	color := Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrab))
+	c := Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrab))
 
 	// Place a invisible button to capture event.
 	imgui.InvisibleButton(v.id, imgui.Vec2{X: v.width, Y: v.height})
@@ -2086,12 +2086,12 @@ func (v *VSplitterWidget) Build() {
 	}
 	if imgui.IsItemHovered() {
 		imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
-		color = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
+		c = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
 	}
 
 	// Draw a line in the very center
 	canvas := GetCanvas()
-	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), color, 0, 0)
+	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), c, 0, 0)
 }
 
 var _ Widget = &TabItemWidget{}
@@ -2171,7 +2171,7 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 // Build implements Widget interface
 func (t *TabBarWidget) Build() {
 	buildingID := t.id
-	if len(buildingID) == 0 {
+	if buildingID == "" {
 		buildingID = GenAutoID("TabBar")
 	}
 	if imgui.BeginTabBarV(buildingID, int(t.flags)) {
@@ -2649,7 +2649,7 @@ type ConditionWidget struct {
 	layoutElse Layout
 }
 
-func Condition(cond bool, layoutIf Layout, layoutElse Layout) *ConditionWidget {
+func Condition(cond bool, layoutIf, layoutElse Layout) *ConditionWidget {
 	return &ConditionWidget{
 		cond:       cond,
 		layoutIf:   layoutIf,
@@ -3008,10 +3008,10 @@ type ColorEditWidget struct {
 	onChange func()
 }
 
-func ColorEdit(label string, color *color.RGBA) *ColorEditWidget {
+func ColorEdit(label string, c *color.RGBA) *ColorEditWidget {
 	return &ColorEditWidget{
 		label: tStr(label),
-		color: color,
+		color: c,
 		flags: ColorEditFlagsNone,
 	}
 }

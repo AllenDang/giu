@@ -1,6 +1,6 @@
-// input menager is used to register a keyboard shortcuts in an app
 package giu
 
+// input menager is used to register a keyboard shortcuts in an app
 import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 )

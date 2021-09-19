@@ -157,7 +157,7 @@ func (ce *CodeEditorWidget) IsTextChanged() bool {
 	return ce.getState().editor.IsTextChanged()
 }
 
-func (ce *CodeEditorWidget) GetScreenCursorPos() (int, int) {
+func (ce *CodeEditorWidget) GetScreenCursorPos() (x, y int) {
 	return ce.getState().editor.GetScreenCursorPos()
 }
 

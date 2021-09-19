@@ -171,8 +171,13 @@ func (w *MasterWindow) setTheme() {
 }
 
 // SetBgColor sets background color of master window.
-func (w *MasterWindow) SetBgColor(color color.RGBA) {
-	w.clearColor = [4]float32{float32(color.R) / 255.0, float32(color.G) / 255.0, float32(color.B) / 255.0, float32(color.A) / 255.0}
+func (w *MasterWindow) SetBgColor(bgColor color.RGBA) {
+	w.clearColor = [4]float32{
+		float32(bgColor.R) / 255.0,
+		float32(bgColor.G) / 255.0,
+		float32(bgColor.B) / 255.0,
+		float32(bgColor.A) / 255.0,
+	}
 }
 
 func (w *MasterWindow) sizeChange(width, height int) {

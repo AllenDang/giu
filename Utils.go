@@ -1,22 +1,30 @@
 package giu
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
 	"image/png"
 	"os"
+	"path/filepath"
 
 	"github.com/AllenDang/imgui-go"
 )
 
 // LoadImage loads image from file and returns *image.RGBA
 func LoadImage(imgPath string) (*image.RGBA, error) {
-	imgFile, err := os.Open(imgPath)
+	imgFile, err := os.Open(filepath.Clean(imgPath))
 	if err != nil {
 		return nil, err
 	}
-	defer imgFile.Close()
+
+	defer func() {
+		// nolint:govet // we want to reuse this err variable here
+		if err := imgFile.Close(); err != nil {
+			panic(fmt.Sprintf("error closing image file: %s", imgPath))
+		}
+	}()
 
 	img, err := png.Decode(imgFile)
 	if err != nil {

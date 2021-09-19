@@ -192,25 +192,25 @@ func SetMouseCursor(cursor MouseCursorType) {
 }
 
 // GetWindowPadding returns window padding
-func GetWindowPadding() (float32, float32) {
+func GetWindowPadding() (x, y float32) {
 	vec2 := imgui.CurrentStyle().WindowPadding()
 	return vec2.X, vec2.Y
 }
 
 // GetItemSpacing returns current item spacing
-func GetItemSpacing() (float32, float32) {
+func GetItemSpacing() (w, h float32) {
 	vec2 := imgui.CurrentStyle().ItemSpacing()
 	return vec2.X, vec2.Y
 }
 
 // GetItemInnerSpacing returns current item inner spacing
-func GetItemInnerSpacing() (float32, float32) {
+func GetItemInnerSpacing() (w, h float32) {
 	vec2 := imgui.CurrentStyle().ItemInnerSpacing()
 	return vec2.X, vec2.Y
 }
 
 // GetFramePadding returns current frame padding
-func GetFramePadding() (float32, float32) {
+func GetFramePadding() (x, y float32) {
 	vec2 := imgui.CurrentStyle().FramePadding()
 	return vec2.X, vec2.Y
 }

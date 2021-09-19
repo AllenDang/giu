@@ -21,8 +21,8 @@ func GetCanvas() *Canvas {
 }
 
 // AddLine draws a line (from p1 to p2)
-func (c *Canvas) AddLine(p1, p2 image.Point, color color.RGBA, thickness float32) {
-	c.drawlist.AddLine(ToVec2(p1), ToVec2(p2), ToVec4Color(color), thickness)
+func (c *Canvas) AddLine(p1, p2 image.Point, col color.RGBA, thickness float32) {
+	c.drawlist.AddLine(ToVec2(p1), ToVec2(p2), ToVec4Color(col), thickness)
 }
 
 // DrawFlags represents imgui.DrawFlags
@@ -59,53 +59,53 @@ const (
 )
 
 // AddRect draws a rectangle
-func (c *Canvas) AddRect(pMin, pMax image.Point, color color.RGBA, rounding float32, roundingCorners DrawFlags, thickness float32) {
-	c.drawlist.AddRect(ToVec2(pMin), ToVec2(pMax), ToVec4Color(color), rounding, int(roundingCorners), thickness)
+func (c *Canvas) AddRect(pMin, pMax image.Point, col color.RGBA, rounding float32, roundingCorners DrawFlags, thickness float32) {
+	c.drawlist.AddRect(ToVec2(pMin), ToVec2(pMax), ToVec4Color(col), rounding, int(roundingCorners), thickness)
 }
 
-// AddRectFilled draws a rectangle filled with `color`
-func (c *Canvas) AddRectFilled(pMin, pMax image.Point, color color.RGBA, rounding float32, roundingCorners DrawFlags) {
-	c.drawlist.AddRectFilled(ToVec2(pMin), ToVec2(pMax), ToVec4Color(color), rounding, int(roundingCorners))
+// AddRectFilled draws a rectangle filled with `col`
+func (c *Canvas) AddRectFilled(pMin, pMax image.Point, col color.RGBA, rounding float32, roundingCorners DrawFlags) {
+	c.drawlist.AddRectFilled(ToVec2(pMin), ToVec2(pMax), ToVec4Color(col), rounding, int(roundingCorners))
 }
 
 // AddText draws text
-func (c *Canvas) AddText(pos image.Point, color color.RGBA, text string) {
-	c.drawlist.AddText(ToVec2(pos), ToVec4Color(color), tStr(text))
+func (c *Canvas) AddText(pos image.Point, col color.RGBA, text string) {
+	c.drawlist.AddText(ToVec2(pos), ToVec4Color(col), tStr(text))
 }
 
 // AddBezierCubic draws bezier cubic
-func (c *Canvas) AddBezierCubic(pos0, cp0, cp1, pos1 image.Point, color color.RGBA, thickness float32, numSegments int) {
-	c.drawlist.AddBezierCubic(ToVec2(pos0), ToVec2(cp0), ToVec2(cp1), ToVec2(pos1), ToVec4Color(color), thickness, numSegments)
+func (c *Canvas) AddBezierCubic(pos0, cp0, cp1, pos1 image.Point, col color.RGBA, thickness float32, numSegments int) {
+	c.drawlist.AddBezierCubic(ToVec2(pos0), ToVec2(cp0), ToVec2(cp1), ToVec2(pos1), ToVec4Color(col), thickness, numSegments)
 }
 
 // AddTriangle draws a triangle
-func (c *Canvas) AddTriangle(p1, p2, p3 image.Point, color color.RGBA, thickness float32) {
-	c.drawlist.AddTriangle(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec4Color(color), thickness)
+func (c *Canvas) AddTriangle(p1, p2, p3 image.Point, col color.RGBA, thickness float32) {
+	c.drawlist.AddTriangle(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec4Color(col), thickness)
 }
 
 // AddTriangleFilled draws a filled triangle
-func (c *Canvas) AddTriangleFilled(p1, p2, p3 image.Point, color color.RGBA) {
-	c.drawlist.AddTriangleFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec4Color(color))
+func (c *Canvas) AddTriangleFilled(p1, p2, p3 image.Point, col color.RGBA) {
+	c.drawlist.AddTriangleFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec4Color(col))
 }
 
 // AddCircle draws a circle
-func (c *Canvas) AddCircle(center image.Point, radius float32, color color.RGBA, segments int, thickness float32) {
-	c.drawlist.AddCircle(ToVec2(center), radius, ToVec4Color(color), segments, thickness)
+func (c *Canvas) AddCircle(center image.Point, radius float32, col color.RGBA, segments int, thickness float32) {
+	c.drawlist.AddCircle(ToVec2(center), radius, ToVec4Color(col), segments, thickness)
 }
 
 // AddCircleFilled draws a filled circle
-func (c *Canvas) AddCircleFilled(center image.Point, radius float32, color color.RGBA) {
-	c.drawlist.AddCircleFilled(ToVec2(center), radius, ToVec4Color(color))
+func (c *Canvas) AddCircleFilled(center image.Point, radius float32, col color.RGBA) {
+	c.drawlist.AddCircleFilled(ToVec2(center), radius, ToVec4Color(col))
 }
 
 // AddQuad draws a quad
-func (c *Canvas) AddQuad(p1, p2, p3, p4 image.Point, color color.RGBA, thickness float32) {
-	c.drawlist.AddQuad(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec4Color(color), thickness)
+func (c *Canvas) AddQuad(p1, p2, p3, p4 image.Point, col color.RGBA, thickness float32) {
+	c.drawlist.AddQuad(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec4Color(col), thickness)
 }
 
 // AddQuadFilled draws a filled quad
-func (c *Canvas) AddQuadFilled(p1, p2, p3, p4 image.Point, color color.RGBA) {
-	c.drawlist.AddQuadFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec4Color(color))
+func (c *Canvas) AddQuadFilled(p1, p2, p3, p4 image.Point, col color.RGBA) {
+	c.drawlist.AddQuadFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec4Color(col))
 }
 
 // Stateful path API, add points then finish with PathFillConvex() or PathStroke()
@@ -122,12 +122,12 @@ func (c *Canvas) PathLineToMergeDuplicate(pos image.Point) {
 	c.drawlist.PathLineToMergeDuplicate(ToVec2(pos))
 }
 
-func (c *Canvas) PathFillConvex(color color.RGBA) {
-	c.drawlist.PathFillConvex(ToVec4Color(color))
+func (c *Canvas) PathFillConvex(col color.RGBA) {
+	c.drawlist.PathFillConvex(ToVec4Color(col))
 }
 
-func (c *Canvas) PathStroke(color color.RGBA, closed bool, thickness float32) {
-	c.drawlist.PathStroke(ToVec4Color(color), closed, thickness)
+func (c *Canvas) PathStroke(col color.RGBA, closed bool, thickness float32) {
+	c.drawlist.PathStroke(ToVec4Color(col), closed, thickness)
 }
 
 func (c *Canvas) PathArcTo(center image.Point, radius, min, max float32, numSegments int) {
@@ -146,6 +146,6 @@ func (c *Canvas) AddImage(texture *Texture, pMin, pMax image.Point) {
 	c.drawlist.AddImage(texture.id, ToVec2(pMin), ToVec2(pMax))
 }
 
-func (c *Canvas) AddImageV(texture *Texture, pMin, pMax image.Point, uvMin, uvMax image.Point, color color.RGBA) {
-	c.drawlist.AddImageV(texture.id, ToVec2(pMin), ToVec2(pMax), ToVec2(uvMin), ToVec2(uvMax), ToVec4Color(color))
+func (c *Canvas) AddImageV(texture *Texture, pMin, pMax, uvMin, uvMax image.Point, col color.RGBA) {
+	c.drawlist.AddImageV(texture.id, ToVec2(pMin), ToVec2(pMax), ToVec2(uvMin), ToVec2(uvMax), ToVec4Color(col))
 }
