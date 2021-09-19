@@ -279,6 +279,7 @@ const (
 // StyleVarID identifies a style variable in the UI style.
 type StyleVarID int
 
+// Style IDs
 const (
 	// StyleVarAlpha is a float
 	StyleVarAlpha StyleVarID = iota

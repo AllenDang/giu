@@ -23,6 +23,8 @@ const (
 	preRegisterString = "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 )
 
+// FontInfo represents a the font.
+//
 type FontInfo struct {
 	fontName string
 	fontPath string
@@ -76,7 +78,7 @@ func init() {
 	}
 }
 
-// Change default font
+// SetDefaultFont changes default font
 func SetDefaultFont(fontName string, size float32) {
 	fontPath, err := findfont.Find(fontName)
 	if err != nil {
@@ -88,7 +90,7 @@ func SetDefaultFont(fontName string, size float32) {
 	defaultFonts = append([]FontInfo{fontInfo}, defaultFonts...)
 }
 
-// Change default font by bytes of the font file
+// SetDefaultFontFromBytes changes default font by bytes of the font file.
 func SetDefaultFontFromBytes(fontBytes []byte, size float32) {
 	defaultFonts = append([]FontInfo{
 		{
@@ -98,7 +100,7 @@ func SetDefaultFontFromBytes(fontBytes []byte, size float32) {
 	}, defaultFonts...)
 }
 
-// Add font by name, if the font is found, return *FontInfo, otherwise return nil.
+// AddFont adds font by name, if the font is found, return *FontInfo, otherwise return nil.
 // To use added font, use giu.Style().SetFont(...).
 func AddFont(fontName string, size float32) *FontInfo {
 	fontPath, err := findfont.Find(fontName)
@@ -118,6 +120,7 @@ func AddFont(fontName string, size float32) *FontInfo {
 	return &fi
 }
 
+// AddFontFromBytes does similar to AddFont, but using data from memory
 func AddFontFromBytes(fontName string, fontBytes []byte, size float32) *FontInfo {
 	fi := FontInfo{
 		fontName: fontName,

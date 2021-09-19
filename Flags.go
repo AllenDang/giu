@@ -112,6 +112,7 @@ const (
 	ComboFlagNoPreview ComboFlags = 1 << 6
 )
 
+// SelectableFlags represents imgui.SelectableFlags
 type SelectableFlags int
 
 const (
@@ -224,6 +225,7 @@ const (
 	TreeNodeFlagsCollapsingHeader TreeNodeFlags = TreeNodeFlagsFramed | TreeNodeFlagsNoTreePushOnOpen | TreeNodeFlagsNoAutoOpenOnLog
 )
 
+// FocusedFlags represents imgui.FocusedFlags
 type FocusedFlags int
 
 const (
