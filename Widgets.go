@@ -37,19 +37,17 @@ func Row(widgets ...Widget) *RowWidget {
 // Build implements Widget interface
 func (l *RowWidget) Build() {
 	for index, w := range l.widgets {
-		_, isTooltip := w.(*TooltipWidget)
-		_, isContextMenu := w.(*ContextMenuWidget)
-		_, isPopupModal := w.(*PopupModalWidget)
-		_, isPopup := w.(*PopupWidget)
-		_, isTabItem := w.(*TabItemWidget)
-		_, isLabel := w.(*LabelWidget)
-
-		if isLabel {
+		switch w.(type) {
+		case *LabelWidget:
 			AlignTextToFramePadding()
-		}
-
-		if index > 0 && !isTooltip && !isContextMenu && !isPopupModal && !isPopup && !isTabItem {
-			imgui.SameLine()
+		case *TooltipWidget,
+			*ContextMenuWidget, *PopupModalWidget,
+			*PopupWidget, *TabItemWidget:
+			// noop
+		default:
+			if index > 0 {
+				imgui.SameLine()
+			}
 		}
 
 		w.Build()
@@ -2222,11 +2220,11 @@ func (r *TableRowWidget) Build() {
 	imgui.TableNextRow(imgui.TableRowFlags(r.flags), r.minRowHeight)
 
 	for _, w := range r.layout {
-		_, isTooltip := w.(*TooltipWidget)
-		_, isContextMenu := w.(*ContextMenuWidget)
-		_, isPopup := w.(*PopupModalWidget)
-
-		if !isTooltip && !isContextMenu && !isPopup {
+		switch w.(type) {
+		case *TooltipWidget,
+			*ContextMenuWidget, *PopupModalWidget:
+			// noop
+		default:
 			imgui.TableNextColumn()
 		}
 
@@ -2423,11 +2421,11 @@ func (ttr *TreeTableRowWidget) Build() {
 	}
 
 	for _, w := range ttr.layout {
-		_, isTooltip := w.(*TooltipWidget)
-		_, isContextMenu := w.(*ContextMenuWidget)
-		_, isPopup := w.(*PopupModalWidget)
-
-		if !isTooltip && !isContextMenu && !isPopup {
+		switch w.(type) {
+		case *TooltipWidget,
+			*ContextMenuWidget, *PopupModalWidget:
+			// noop
+		default:
 			imgui.TableNextColumn()
 		}
 
