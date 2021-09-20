@@ -44,8 +44,7 @@ func (l *RowWidget) Build() {
 			*PopupWidget, *TabItemWidget:
 			// noop
 		default:
-			switch w.(type) {
-			case *LabelWidget:
+			if _, isLabel := w.(*LabelWidget); isLabel {
 				AlignTextToFramePadding()
 			}
 
