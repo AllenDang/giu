@@ -39,11 +39,17 @@ type CodeEditorWidget struct {
 	border bool
 }
 
-// CodeEditor creates a new code editor widget
-func CodeEditor(title string) *CodeEditorWidget {
+func CodeEditor() *CodeEditorWidget {
 	return &CodeEditorWidget{
-		title: title,
+		title: GenAutoID("##CodeEditor"),
 	}
+}
+
+// ID allows to manually set editor's ID.
+// It isn't necessary to use it in a normal conditions.
+func (ce *CodeEditorWidget) ID(id string) *CodeEditorWidget {
+	ce.title = id
+	return ce
 }
 
 // ShowWhitespaces sets if whitespaces are shown in code editor

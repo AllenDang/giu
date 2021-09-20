@@ -36,22 +36,28 @@ func Row(widgets ...Widget) *RowWidget {
 
 // Build implements Widget interface
 func (l *RowWidget) Build() {
-	for index, w := range l.widgets {
+	isFirst := true
+	l.widgets.Range(func(w Widget) {
 		switch w.(type) {
-		case *LabelWidget:
-			AlignTextToFramePadding()
 		case *TooltipWidget,
 			*ContextMenuWidget, *PopupModalWidget,
 			*PopupWidget, *TabItemWidget:
 			// noop
 		default:
-			if index > 0 {
+			switch w.(type) {
+			case *LabelWidget:
+				AlignTextToFramePadding()
+			}
+
+			if !isFirst {
 				imgui.SameLine()
+			} else {
+				isFirst = false
 			}
 		}
 
 		w.Build()
-	}
+	})
 }
 
 // SameLine wrapps imgui.SomeLine
