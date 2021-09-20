@@ -57,7 +57,15 @@ func (a *AlignmentSetter) Build() {
 		}
 
 		switch item.(type) {
+		// ok, it doesn't make sense to align two times :-)
+		case *AlignmentSetter:
+			item.Build()
+			return
 		case *CustomWidget:
+			item.Build()
+			return
+		// there is a bug with selectables, so skip them for now
+		case *SelectableWidget:
 			item.Build()
 			return
 		}
