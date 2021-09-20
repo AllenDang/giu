@@ -175,6 +175,14 @@ func tStrPtr(str *string) *string {
 	return str
 }
 
+func tStrSlice(str []string) []string {
+	for _, s := range str {
+		tStr(s)
+	}
+
+	return str
+}
+
 // Rebuild font atlas when necessary.
 func rebuildFontAtlas() {
 	if !shouldRebuildFontAtlas {

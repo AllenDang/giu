@@ -573,14 +573,10 @@ type ComboWidget struct {
 }
 
 func Combo(label, previewValue string, items []string, selected *int32) *ComboWidget {
-	for _, item := range items {
-		tStr(item)
-	}
-
 	return &ComboWidget{
 		label:        tStr(label),
 		previewValue: tStr(previewValue),
-		items:        items,
+		items:        tStrSlice(items),
 		selected:     selected,
 		flags:        0,
 		width:        0,
