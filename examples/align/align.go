@@ -24,6 +24,13 @@ func loop() {
 			},
 			giu.Label("I'm the last label"),
 		),
+		giu.Label("Buttons in row:"),
+		giu.Align(giu.AlignCenter).To(
+			giu.Row(
+				giu.Button("button 1"),
+				giu.Button("button 2"),
+			),
+		),
 	)
 }
 
