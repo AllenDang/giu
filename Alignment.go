@@ -49,8 +49,6 @@ func (a *AlignmentSetter) Build() {
 		return
 	}
 
-	// WORKAROUND: get widgets widths rendering them with 100% transparency
-	// to align them later
 	a.layout.Range(func(item Widget) {
 		// if item is inil, just skip it
 		if item == nil {
@@ -58,7 +56,7 @@ func (a *AlignmentSetter) Build() {
 		}
 
 		switch item.(type) {
-		// ok, it doesn't make sense to align two times :-)
+		// ok, it doesn't make sense to align again :-)
 		case *AlignmentSetter:
 			item.Build()
 			return
@@ -93,13 +91,16 @@ func (a *AlignmentSetter) Build() {
 }
 
 // GetWidgetWidth returns a width of widget
+// NOTE: THIS IS A BETA SOLUTION and may contain bugs
+// in most cases, you may want to use supported by imgui GetItemRectSize.
+// There is an upstream issue for this problem:
+// https://github.com/ocornut/imgui/issues/3714
+//
+// This function is just a workaround used in giu.
+//
 // NOTE: user-definied widgets, which contains more than one
 // giu widget will be processed incorrectly (only width of the last built
 // widget will be processed)
-// NOTE: THIS IS A BETA SOLUTION and may contain bugs
-// there is an upstream issue for this problem:
-// https://github.com/ocornut/imgui/issues/3714
-// this is just workaround used in giu.
 //
 // here is a list of known bugs:
 // - BUG: Custom widgets are skipped, so if user put some widgets
