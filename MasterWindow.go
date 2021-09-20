@@ -343,5 +343,5 @@ func (w *MasterWindow) Close() {
 
 // SetSHouldClose sets whether master window should be closed
 func (w *MasterWindow) SetShouldClose(v bool) {
-	w.platform.SetSHouldClose(v)
+	w.platform.SetShouldStop(v)
 }
