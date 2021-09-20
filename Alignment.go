@@ -26,6 +26,7 @@ type AlignmentSetter struct {
 //
 // - BUG: DatePickerWidget doesn't work properly
 // - BUG: there is some bug with SelectableWidget
+// - BUG: ComboWidget and ComboCustomWidgets doesn't work properly
 func Align(at AlignmentType) *AlignmentSetter {
 	return &AlignmentSetter{
 		alignType: at,
@@ -64,8 +65,8 @@ func (a *AlignmentSetter) Build() {
 		case *CustomWidget:
 			item.Build()
 			return
-		// there is a bug with selectables, so skip them for now
-		case *SelectableWidget:
+		// there is a bug with selectables and combos, so skip them for now
+		case *SelectableWidget, *ComboWidget, *ComboCustomWidget:
 			item.Build()
 			return
 		}
