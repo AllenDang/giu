@@ -6,8 +6,10 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
+// LanguageDefinition represents code editor's language definition
 type LanguageDefinition byte
 
+// language definitions:
 const (
 	LanguageDefinitionSQL LanguageDefinition = iota
 	LanguageDefinitionCPP
@@ -15,14 +17,21 @@ const (
 	LanguageDefinitionC
 )
 
+var _ Disposable = &codeEditorState{}
+
 type codeEditorState struct {
 	editor imgui.TextEditor
 }
 
+// Dispose implements Disposable interface
 func (s *codeEditorState) Dispose() {
 	// noop
 }
 
+// static check if code editor implements Widget interface
+var _ Widget = &CodeEditorWidget{}
+
+// CodeEditorWidget represents imgui.TextEditor
 type CodeEditorWidget struct {
 	title string
 	width,
@@ -43,16 +52,19 @@ func (ce *CodeEditorWidget) ID(id string) *CodeEditorWidget {
 	return ce
 }
 
+// ShowWhitespaces sets if whitespaces are shown in code editor
 func (ce *CodeEditorWidget) ShowWhitespaces(s bool) *CodeEditorWidget {
 	ce.getState().editor.SetShowWhitespaces(s)
 	return ce
 }
 
+// TabSize sets editor's tab size
 func (ce *CodeEditorWidget) TabSize(size int) *CodeEditorWidget {
 	ce.getState().editor.SetTabSize(size)
 	return ce
 }
 
+// LanguageDefinition sets code editor language definition
 func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
 	s := ce.getState()
 	lookup := map[LanguageDefinition]func(){
@@ -72,63 +84,77 @@ func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *C
 	return ce
 }
 
+// Text sets editor's text
 func (ce *CodeEditorWidget) Text(str string) *CodeEditorWidget {
 	ce.getState().editor.SetText(str)
 	return ce
 }
 
+// ErrorMarkers sets error markers
 func (ce *CodeEditorWidget) ErrorMarkers(markers imgui.ErrorMarkers) *CodeEditorWidget {
 	ce.getState().editor.SetErrorMarkers(markers)
 	return ce
 }
 
+// HandleKeyboardInputs sets if editor should handle keyboard input
 func (ce *CodeEditorWidget) HandleKeyboardInputs(b bool) *CodeEditorWidget {
 	ce.getState().editor.SetHandleKeyboardInputs(b)
 	return ce
 }
 
+// Size sets editor's size
 func (ce *CodeEditorWidget) Size(w, h float32) *CodeEditorWidget {
 	ce.width, ce.height = w, h
 	return ce
 }
 
+// Border sets editors borders
 func (ce *CodeEditorWidget) Border(border bool) *CodeEditorWidget {
 	ce.border = border
 	return ce
 }
 
+// HasSelection returns true if some text is selected
 func (ce *CodeEditorWidget) HasSelection() bool {
 	return ce.getState().editor.HasSelection()
 }
 
+// GetSelectedText returns selected text
 func (ce *CodeEditorWidget) GetSelectedText() string {
 	return ce.getState().editor.GetSelectedText()
 }
 
+// GetText returns whole text from editor
 func (ce *CodeEditorWidget) GetText() string {
 	return ce.getState().editor.GetText()
 }
 
+// GetCurrentLineText returns current line
 func (ce *CodeEditorWidget) GetCurrentLineText() string {
 	return ce.getState().editor.GetCurrentLineText()
 }
 
-func (ce *CodeEditorWidget) GetCursorPos() (int, int) {
+// GetCursorPos returns cursor position
+func (ce *CodeEditorWidget) GetCursorPos() (x, y int) {
 	return ce.getState().editor.GetCursorPos()
 }
 
-func (ce *CodeEditorWidget) GetSelectionStart() (int, int) {
+// GetSelectionStart returns star pos of selection
+func (ce *CodeEditorWidget) GetSelectionStart() (x, y int) {
 	return ce.getState().editor.GetSelectionStart()
 }
 
+// InsertText inserts the `text`
 func (ce *CodeEditorWidget) InsertText(text string) {
 	ce.getState().editor.InsertText(text)
 }
 
+// GetWordUnderCursor returns the word under the cursor
 func (ce *CodeEditorWidget) GetWordUnderCursor() string {
 	return ce.getState().editor.GetWordUnderCursor()
 }
 
+// SelectWordUnderCursor selects the word under cursor
 func (ce *CodeEditorWidget) SelectWordUnderCursor() {
 	ce.getState().editor.SelectWordUnderCursor()
 }
@@ -137,26 +163,31 @@ func (ce *CodeEditorWidget) IsTextChanged() bool {
 	return ce.getState().editor.IsTextChanged()
 }
 
-func (ce *CodeEditorWidget) GetScreenCursorPos() (int, int) {
+func (ce *CodeEditorWidget) GetScreenCursorPos() (x, y int) {
 	return ce.getState().editor.GetScreenCursorPos()
 }
 
+// Copy copies selection
 func (ce *CodeEditorWidget) Copy() {
 	ce.getState().editor.Copy()
 }
 
+// Cut cuts selection
 func (ce *CodeEditorWidget) Cut() {
 	ce.getState().editor.Cut()
 }
 
+// Paste does the same as Ctrl+V
 func (ce *CodeEditorWidget) Paste() {
 	ce.getState().editor.Paste()
 }
 
+// Delete deletes the selection
 func (ce *CodeEditorWidget) Delete() {
 	ce.getState().editor.Delete()
 }
 
+// Build implements Widget interface
 func (ce *CodeEditorWidget) Build() {
 	s := ce.getState()
 

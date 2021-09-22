@@ -25,12 +25,12 @@ func loop() {
 		}).Size(300, 200),
 
 		g.Label("Display image from url (wait few seconds to download)"),
-		g.ImageWithUrl("https://png.pngitem.com/pimgs/s/3-36108_gopher-golang-hd-png-download.png").OnClick(func() {
+		g.ImageWithURL("https://png.pngitem.com/pimgs/s/3-36108_gopher-golang-hd-png-download.png").OnClick(func() {
 			fmt.Println("image from url clicked")
 		}).Size(300, 200),
 
 		g.Label("Display images from url with loading and fallback"),
-		g.ImageWithUrl(
+		g.ImageWithURL(
 			"https://png.pngitem.com/pimgs/s/424-4241958_transparent-gopher-png-golang-gopher-png-png-download.png").
 			Timeout(5*time.Second).
 			Size(300, 200).
@@ -47,12 +47,12 @@ func loop() {
 			}),
 
 		g.Label("Handle failure event"),
-		g.ImageWithUrl("http://x.y/z.jpg").Timeout(2*time.Second).OnFailure(func(err error) {
+		g.ImageWithURL("http://x.y/z.jpg").Timeout(2*time.Second).OnFailure(func(err error) {
 			fmt.Printf("Failed to download image, Error msg is %s\n", err.Error())
 		}),
 
 		g.Label("Display image from url without placeholder (no size when loading)"),
-		g.ImageWithUrl("https://www.pngitem.com/pimgs/m/424-4242405_go-lang-gopher-clipart-png-download-golang-gopher.png").Size(300, 200),
+		g.ImageWithURL("https://www.pngitem.com/pimgs/m/424-4242405_go-lang-gopher-clipart-png-download-golang-gopher.png").Size(300, 200),
 
 		g.Label("Footer"),
 	)

@@ -5,11 +5,11 @@ import (
 	"image/color"
 	"time"
 
-	"github.com/faiface/mainthread"
-
 	"github.com/AllenDang/imgui-go"
+	"github.com/faiface/mainthread"
 )
 
+// MasterWindowFlags wrapps imgui.GLFWWindowFlags
 type MasterWindowFlags imgui.GLFWWindowFlags
 
 const (
@@ -25,10 +25,11 @@ const (
 	MasterWindowFlagsTransparent MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsTransparent)
 )
 
-var (
-	DontCare int = imgui.GlfwDontCare
-)
+// DontCare could be used as an argument to (*MasterWindow).SetSizeLimits
+var DontCare int = imgui.GlfwDontCare
 
+// MasterWindow represents a glfw master window
+// It is a base for a windows (see Window.go)
 type MasterWindow struct {
 	width      int
 	height     int
@@ -41,6 +42,9 @@ type MasterWindow struct {
 	updateFunc func()
 }
 
+// NewMasterWindow creates a new master window and initializes GLFW.
+// it should be called in main function. For more details and use cases,
+// see examples/helloworld/
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
 	context := imgui.CreateContext(nil)
 	imgui.ImPlotCreateContext()
@@ -166,9 +170,14 @@ func (w *MasterWindow) setTheme() {
 	style.ScaleAllSizes(scale)
 }
 
-// Set background color of master window.
-func (w *MasterWindow) SetBgColor(color color.RGBA) {
-	w.clearColor = [4]float32{float32(color.R) / 255.0, float32(color.G) / 255.0, float32(color.B) / 255.0, float32(color.A) / 255.0}
+// SetBgColor sets background color of master window.
+func (w *MasterWindow) SetBgColor(bgColor color.RGBA) {
+	w.clearColor = [4]float32{
+		float32(bgColor.R) / 255.0,
+		float32(bgColor.G) / 255.0,
+		float32(bgColor.B) / 255.0,
+		float32(bgColor.A) / 255.0,
+	}
 }
 
 func (w *MasterWindow) sizeChange(width, height int) {
@@ -214,7 +223,7 @@ func (w *MasterWindow) run() {
 	}
 }
 
-// Return size of master window.
+// GetSize return size of master window.
 func (w *MasterWindow) GetSize() (width, height int) {
 	if w.platform != nil {
 		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
@@ -225,7 +234,7 @@ func (w *MasterWindow) GetSize() (width, height int) {
 	return w.width, w.height
 }
 
-// Return position of master window.
+// GetPos return position of master window.
 func (w *MasterWindow) GetPos() (x, y int) {
 	if w.platform != nil {
 		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
@@ -236,7 +245,7 @@ func (w *MasterWindow) GetPos() (x, y int) {
 	return
 }
 
-// Set position of master window.
+// SetPos sets position of master window.
 func (w *MasterWindow) SetPos(x, y int) {
 	if w.platform != nil {
 		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
@@ -245,6 +254,7 @@ func (w *MasterWindow) SetPos(x, y int) {
 	}
 }
 
+// SetSize sets size of master window
 func (w *MasterWindow) SetSize(x, y int) {
 	if w.platform != nil {
 		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
@@ -272,8 +282,10 @@ func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
 }
 
-// Call the main loop.
+// Run runs the main loop.
 // loopFunc will be used to construct the ui.
+// Run should be called at the end of main function, after setting
+// up the master window.
 func (w *MasterWindow) Run(loopFunc func()) {
 	mainthread.Run(func() {
 		w.updateFunc = loopFunc
@@ -295,6 +307,7 @@ func (w *MasterWindow) Run(loopFunc func()) {
 	})
 }
 
+// RegisterKeyboardShortcuts registers a global - master window - keyboard shortcuts
 func (w *MasterWindow) RegisterKeyboardShortcuts(s ...WindowShortcut) *MasterWindow {
 	for _, shortcut := range s {
 		RegisterKeyboardShortcuts(Shortcut{
@@ -334,6 +347,7 @@ func (w *MasterWindow) SetSizeLimits(minw, minh, maxw, maxh int) {
 	w.platform.SetSizeLimits(minw, minh, maxw, maxh)
 }
 
+// SetTitle updates master window's title
 func (w *MasterWindow) SetTitle(title string) {
 	w.platform.SetTitle(title)
 }

@@ -13,11 +13,14 @@ const (
 	DirectionVertical
 )
 
+var _ Disposable = &SplitLayoutState{}
+
 type SplitLayoutState struct {
 	delta   float32
 	sashPos float32
 }
 
+// Dispose implements Disposable interface
 func (s *SplitLayoutState) Dispose() {
 	// Nothing to do here.
 }
@@ -88,10 +91,10 @@ func (s *SplitLayoutWidget) Build() {
 
 	var splitLayoutState *SplitLayoutState
 	// Register state
-	stateId := fmt.Sprintf("SplitLayout_%s", s.id)
-	if state := Context.GetState(stateId); state == nil {
+	stateID := fmt.Sprintf("SplitLayout_%s", s.id)
+	if state := Context.GetState(stateID); state == nil {
 		splitLayoutState = &SplitLayoutState{delta: 0.0, sashPos: s.sashPos}
-		Context.SetState(stateId, splitLayoutState)
+		Context.SetState(stateID, splitLayoutState)
 	} else {
 		splitLayoutState = state.(*SplitLayoutState)
 	}
