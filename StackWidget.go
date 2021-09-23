@@ -16,7 +16,7 @@ type StackWidget struct {
 func Stack(visible int32, layouts ...Widget) *StackWidget {
 	return &StackWidget{
 		visible: visible,
-		layouts: []Widget(layouts),
+		layouts: layouts,
 	}
 }
 
@@ -26,13 +26,14 @@ func (s *StackWidget) Build() {
 
 	// build visible layout
 	// NOTE: it is important to build the visiblely showed layout before
-	// building another ones, becouse the interactive layout widgets
+	// building another ones, because the interactive layout widgets
 	// (e.g. buttons) should be rendered on top of `stack`
-	var layouts []Widget = s.layouts
+	layouts := s.layouts
 
 	if s.visible >= 0 && s.visible < int32(len(s.layouts)) {
 		s.layouts[s.visible].Build()
 		// remove visible layout from layouts list
+		// nolint:gocritic // remove visible widget
 		layouts = append(s.layouts[:s.visible], s.layouts[:s.visible+1]...)
 	}
 

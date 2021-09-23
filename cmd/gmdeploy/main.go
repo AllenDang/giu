@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -29,7 +30,7 @@ func main() {
 
 	flag.Parse()
 
-	if len(targetOS) == 0 {
+	if targetOS == "" {
 		targetOS = runtime.GOOS
 	}
 
@@ -38,79 +39,89 @@ func main() {
 
 	// Prepare build dir
 	outputDir := filepath.Join(projectPath, "build", targetOS)
-	os.RemoveAll(outputDir)
-	MkdirAll(outputDir)
+	if err := os.RemoveAll(outputDir); err != nil {
+		log.Fatalf("error removing content of %s", outputDir)
+	}
+
+	mkdirAll(outputDir)
 
 	switch targetOS {
 	case "darwin":
-		// Compile
+		const iconExtension = ".icns"
+		// nolint:gosec // Compile: cannot fix
 		cmd := exec.Command("bash", "-c", fmt.Sprintf("go build -ldflags='-s -w' -o %s", appName))
 		cmd.Dir = projectPath
-		RunCmd(cmd)
+		runCmd(cmd)
 
 		// Upx
 		if upx {
+			// nolint:gosec // cannot fix
 			cmd = exec.Command("upx", appName)
-			RunCmd(cmd)
+			runCmd(cmd)
 		}
 
 		// Bundle
 		macOSPath := filepath.Join(outputDir, fmt.Sprintf("%s.app", appName), "Contents", "MacOS")
-		MkdirAll(macOSPath)
+		mkdirAll(macOSPath)
 
 		// Copy compiled executable to build folder
+		// nolint:gosec // cannot fix
 		cmd = exec.Command("mv", appName, macOSPath)
-		RunCmd(cmd)
+		runCmd(cmd)
 
 		// Prepare Info.plist
 		contentsPath := filepath.Join(outputDir, fmt.Sprintf("%s.app", appName), "Contents")
-		Save(filepath.Join(contentsPath, "Info.plist"), darwinPlist(appName))
+		save(filepath.Join(contentsPath, "Info.plist"), darwinPlist(appName))
 
 		// Prepare PkgInfo
-		Save(filepath.Join(contentsPath, "PkgInfo"), darwinPkginfo())
+		save(filepath.Join(contentsPath, "PkgInfo"), darwinPkginfo())
 
-		if len(iconPath) > 0 && filepath.Ext(iconPath) == ".icns" {
+		if len(iconPath) > 0 && filepath.Ext(iconPath) == iconExtension {
 			// Prepare icon
 			resourcesPath := filepath.Join(contentsPath, "Resources")
-			MkdirAll(resourcesPath)
+			mkdirAll(resourcesPath)
 
 			// Rename icon file name to [appName].icns
-			cmd = exec.Command("cp", iconPath, filepath.Join(resourcesPath, fmt.Sprintf("%s.icns", appName)))
-			RunCmd(cmd)
+			// nolint:gosec // cannot fix
+			cmd = exec.Command("cp", iconPath, filepath.Join(resourcesPath, fmt.Sprintf("%s%s", appName, iconExtension)))
+			runCmd(cmd)
 		}
 
 		fmt.Printf("%s.app is generated at %s/build/%s/\n", appName, projectPath, targetOS)
 	case "linux":
-		// Compile
+		// nolint:gosec // Compile: cannot fix
 		cmd := exec.Command("bash", "-c", fmt.Sprintf("go build -ldflags='-s -w' -o %s", filepath.Join(appName)))
 		cmd.Dir = projectPath
-		RunCmd(cmd)
+		runCmd(cmd)
 
 		// Bundle
 		contentsPath := filepath.Join(outputDir, fmt.Sprintf("%s.app", appName))
 		binPath := filepath.Join(contentsPath, "bin")
-		MkdirAll(binPath)
+		mkdirAll(binPath)
 
 		// Copy compiled executable to build folder
+		// nolint:gosec // rename command - cannot be fixed
 		cmd = exec.Command("mv", appName, binPath)
-		RunCmd(cmd)
+		runCmd(cmd)
 
 		// create desktop entry
 		hasIcon := iconPath != "" && filepath.Ext(iconPath) == ".icns"
 
 		desktopPath := filepath.Join(contentsPath, "share", "applications")
-		MkdirAll(desktopPath)
+		mkdirAll(desktopPath)
 
-		Save(filepath.Join(desktopPath, fmt.Sprintf("%s.desktop", appName)), linuxDesktop(appName, hasIcon))
+		save(filepath.Join(desktopPath, fmt.Sprintf("%s.desktop", appName)), linuxDesktop(appName, hasIcon))
 
 		if hasIcon {
 			// Prepare icon
 			iconsPath := filepath.Join(contentsPath, "share", "icons")
-			MkdirAll(iconsPath)
+			mkdirAll(iconsPath)
 
 			// Rename icon file name to [appName].icns
-			cmd = exec.Command("cp", iconPath, filepath.Join(iconsPath, fmt.Sprintf("%s.icns", appName)))
-			RunCmd(cmd)
+			newIconName := filepath.Join(iconsPath, fmt.Sprintf("%s.icns", appName))
+			// nolint:gosec // cp comman - cannot fix
+			cmd = exec.Command("cp", iconPath, newIconName)
+			runCmd(cmd)
 		}
 	default:
 		fmt.Printf("Sorry, %s is not supported yet.\n", targetOS)

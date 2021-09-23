@@ -2,8 +2,11 @@ package giu
 
 import "fmt"
 
+// DialogResult represents dialog result
+// dialog resullt is bool. if OK/Yes it is true, else (Cancel/No) - false
 type DialogResult bool
 
+// dialog results
 const (
 	DialogResultOK     DialogResult = true
 	DialogResultCancel DialogResult = false
@@ -12,17 +15,25 @@ const (
 	DialogResultNo  = DialogResultCancel
 )
 
+// MsgboxButtons determines which buttons are in the dialog.
 type MsgboxButtons uint8
 
+// button sets
 const (
+	// Yes-No question
 	MsgboxButtonsYesNo MsgboxButtons = 1 << iota
+	// Ok / Cancel dialog
 	MsgboxButtonsOkCancel
+	// info
 	MsgboxButtonsOk
 )
 
+// DialogResultCallback is a callback for dialogs
 type DialogResultCallback func(DialogResult)
 
-type MsgboxState struct {
+var _ Disposable = &msgboxState{}
+
+type msgboxState struct {
 	title          string
 	content        string
 	resultCallback DialogResultCallback
@@ -30,7 +41,8 @@ type MsgboxState struct {
 	open           bool
 }
 
-func (ms *MsgboxState) Dispose() {
+// Dispose implements disposable interface
+func (ms *msgboxState) Dispose() {
 	// Nothing to do here.
 }
 
@@ -80,33 +92,35 @@ func buildMsgboxButtons(buttons MsgboxButtons, callback DialogResultCallback) La
 	}
 }
 
-const msgboxId string = "###Msgbox"
+const msgboxID string = "###Msgbox"
 
-// Embed various Msgboxs to layout. Invoke this function in the same layout level where you call g.Msgbox.
+// PrepareMsgbox should be invoked in function in the same layout level where you call g.Msgbox.
+// BUG: calling this more than 1 time per frame causes unexpected
+// merging msgboxes layouts (see https://github.com/AllenDang/giu/issues/290)
 func PrepareMsgbox() Layout {
 	return Layout{
 		Custom(func() {
-			var state *MsgboxState
+			var state *msgboxState
 
 			// Register state.
-			stateRaw := Context.GetState(msgboxId)
+			stateRaw := Context.GetState(msgboxID)
 
 			if stateRaw == nil {
-				state = &MsgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
-				Context.SetState(msgboxId, state)
+				state = &msgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
+				Context.SetState(msgboxID, state)
 			} else {
-				state = stateRaw.(*MsgboxState)
+				state = stateRaw.(*msgboxState)
 			}
 
 			if state.open {
-				OpenPopup(msgboxId)
+				OpenPopup(msgboxID)
 				state.open = false
 			}
 			SetNextWindowSize(300, 0)
-			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxId)).Layout(
+			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxID)).Layout(
 				Custom(func() {
 					// Ensure the state is valid.
-					Context.GetState(msgboxId)
+					Context.GetState(msgboxID)
 				}),
 				Label(state.content).Wrapped(true),
 				buildMsgboxButtons(state.buttons, state.resultCallback),
@@ -115,17 +129,21 @@ func PrepareMsgbox() Layout {
 	}
 }
 
+// MsgboxWidget represents message dialog
 type MsgboxWidget struct{}
 
-func (m *MsgboxWidget) getState() *MsgboxState {
-	stateRaw := Context.GetState(msgboxId)
+func (m *MsgboxWidget) getState() *msgboxState {
+	stateRaw := Context.GetState(msgboxID)
 	if stateRaw == nil {
 		panic("Msgbox is not prepared. Invoke giu.PrepareMsgbox in the end of the layout.")
 	}
 
-	return stateRaw.(*MsgboxState)
+	return stateRaw.(*msgboxState)
 }
 
+// Msgbox opens message box.
+// call it whenever you want to open popup with
+// question / info
 func Msgbox(title, content string) *MsgboxWidget {
 	result := &MsgboxWidget{}
 
@@ -141,12 +159,14 @@ func Msgbox(title, content string) *MsgboxWidget {
 	return result
 }
 
+// Buttons sets which buttons should be possible
 func (m *MsgboxWidget) Buttons(buttons MsgboxButtons) *MsgboxWidget {
 	s := m.getState()
 	s.buttons = buttons
 	return m
 }
 
+// ResultCallback sets result callback
 func (m *MsgboxWidget) ResultCallback(cb DialogResultCallback) *MsgboxWidget {
 	s := m.getState()
 	s.resultCallback = cb

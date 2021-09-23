@@ -6,6 +6,9 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
+// PushFont sets font to "font"
+// NOTE: PopFont has to be called
+// NOTE: Don't use PushFont. use StyleSetter instead
 func PushFont(font *FontInfo) bool {
 	if f, ok := extraFontMap[font.String()]; ok {
 		imgui.PushFont(*f)
@@ -14,86 +17,117 @@ func PushFont(font *FontInfo) bool {
 	return false
 }
 
+// PopFont pops the font (should be called after PushFont)
 func PopFont() {
 	imgui.PopFont()
 }
 
+// PushStyleColor wrapps imgui.PushStyleColor
+// NOTE: don't forget to call PopStyleColor()!
 func PushStyleColor(id StyleColorID, col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorID(id), ToVec4Color(col))
 }
 
+// PushColorText calls PushStyleColor(StyleColorText,...)
+// NOTE: don't forget to call PopStyleColor()!
 func PushColorText(col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorText, ToVec4Color(col))
 }
 
+// PushColorTextDisabled calls PushStyleColor(StyleColorTextDisabled,...)
+// NOTE: don't forget to call PopStyleColor()!
 func PushColorTextDisabled(col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorTextDisabled, ToVec4Color(col))
 }
 
+// PushColorWindowBg calls PushStyleColor(StyleColorWindowBg,...)
+// NOTE: don't forget to call PopStyleColor()!
 func PushColorWindowBg(col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorWindowBg, ToVec4Color(col))
 }
 
+// PushColorFrameBg calls PushStyleColor(StyleColorFrameBg,...)
+// NOTE: don't forget to call PopStyleColor()!
 func PushColorFrameBg(col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorFrameBg, ToVec4Color(col))
 }
 
+// PushColorButton calls PushStyleColor(StyleColorButton,...)
+// NOTE: don't forget to call PopStyleColor()!
 func PushColorButton(col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorButton, ToVec4Color(col))
 }
 
+// PushColorButtonHovered calls PushStyleColor(StyleColorButtonHovered,...)
+// NOTE: don't forget to call PopStyleColor()!
 func PushColorButtonHovered(col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorButtonHovered, ToVec4Color(col))
 }
 
+// PushColorButtonActive calls PushStyleColor(StyleColorButtonActive,...)
+// NOTE: don't forget to call PopStyleColor()!
 func PushColorButtonActive(col color.RGBA) {
 	imgui.PushStyleColor(imgui.StyleColorButtonActive, ToVec4Color(col))
 }
 
+// PushWindowPadding calls PushStyleVar(StyleWindowPadding,...)
 func PushWindowPadding(width, height float32) {
 	width *= Context.GetPlatform().GetContentScale()
 	height *= Context.GetPlatform().GetContentScale()
 	imgui.PushStyleVarVec2(imgui.StyleVarWindowPadding, imgui.Vec2{X: width, Y: height})
 }
 
+// PushFramePadding calls PushStyleVar(StyleFramePadding,...)
 func PushFramePadding(width, height float32) {
 	width *= Context.GetPlatform().GetContentScale()
 	height *= Context.GetPlatform().GetContentScale()
 	imgui.PushStyleVarVec2(imgui.StyleVarFramePadding, imgui.Vec2{X: width, Y: height})
 }
 
+// PushItemSpacing calls PushStyleVar(StyleVarItemSpacing,...)
 func PushItemSpacing(width, height float32) {
 	width *= Context.GetPlatform().GetContentScale()
 	height *= Context.GetPlatform().GetContentScale()
 	imgui.PushStyleVarVec2(imgui.StyleVarItemSpacing, imgui.Vec2{X: width, Y: height})
 }
 
-// Alignment for button text. Defaults to (0.0f,0.5f) for left-aligned,vertically centered.
+// PushButtonTextAlign sets alignment for button text. Defaults to (0.0f,0.5f) for left-aligned,vertically centered.
 func PushButtonTextAlign(width, height float32) {
 	width *= Context.GetPlatform().GetContentScale()
 	height *= Context.GetPlatform().GetContentScale()
 	imgui.PushStyleVarVec2(imgui.StyleVarButtonTextAlign, imgui.Vec2{X: width, Y: height})
 }
 
-// Alignment for selectable text. Defaults to (0.0f,0.5f) for left-aligned,vertically centered.
+// PushSelectableTextAlign sets alignment for selectable text. Defaults to (0.0f,0.5f) for left-aligned,vertically centered.
 func PushSelectableTextAlign(width, height float32) {
 	width *= Context.GetPlatform().GetContentScale()
 	height *= Context.GetPlatform().GetContentScale()
 	imgui.PushStyleVarVec2(imgui.StyleVarSelectableTextAlign, imgui.Vec2{X: width, Y: height})
 }
 
+// PopStyle should be called to stop applying style.
+// It should be called as much times, as you Called PushStyle...
+// NOTE: If you don't call PopStyle imgui will panic
 func PopStyle() {
 	imgui.PopStyleVar()
 }
 
+// PopStyleV does similarly to PopStyle, but allows to specify number
+// of styles you're going to pop
 func PopStyleV(count int) {
 	imgui.PopStyleVarV(count)
 }
 
+// PopStyleColor is used to stop applying colors styles.
+// It should be called after each PushStyleColor... (for each push)
+// If PopStyleColor wasn't called after PushColor... or was called
+// inproperly, imgui will panic
 func PopStyleColor() {
 	imgui.PopStyleColor()
 }
 
+// PopStyleColorV does similar to PopStyleColor, but allows to specify
+// how much style colors would you like to pop
 func PopStyleColorV(count int) {
 	imgui.PopStyleColorV(count)
 }
@@ -105,11 +139,16 @@ func AlignTextToFramePadding() {
 	imgui.AlignTextToFramePadding()
 }
 
+// PushItemWidth sets following item's widths
+// NOTE: don't forget to call PopItemWidth! If you don't do so, imgui
+// will panic
 func PushItemWidth(width float32) {
 	width *= Context.GetPlatform().GetContentScale()
 	imgui.PushItemWidth(width)
 }
 
+// PopItemWidth should be called to stop applying PushItemWidth effect
+// If it isn't called imgui will panic
 func PopItemWidth() {
 	imgui.PopItemWidth()
 }
@@ -122,6 +161,7 @@ func PopTextWrapPos() {
 	imgui.PopTextWrapPos()
 }
 
+// MouseCursorType represents a type (layout) of mouse cursor
 type MouseCursorType int
 
 const (
@@ -146,26 +186,31 @@ const (
 	MouseCursorCount MouseCursorType = 8
 )
 
+// SetMouseCursor sets mouse cursor layout
 func SetMouseCursor(cursor MouseCursorType) {
 	imgui.SetMouseCursor(int(cursor))
 }
 
-func GetWindowPadding() (float32, float32) {
+// GetWindowPadding returns window padding
+func GetWindowPadding() (x, y float32) {
 	vec2 := imgui.CurrentStyle().WindowPadding()
 	return vec2.X, vec2.Y
 }
 
-func GetItemSpacing() (float32, float32) {
+// GetItemSpacing returns current item spacing
+func GetItemSpacing() (w, h float32) {
 	vec2 := imgui.CurrentStyle().ItemSpacing()
 	return vec2.X, vec2.Y
 }
 
-func GetItemInnerSpacing() (float32, float32) {
+// GetItemInnerSpacing returns current item inner spacing
+func GetItemInnerSpacing() (w, h float32) {
 	vec2 := imgui.CurrentStyle().ItemInnerSpacing()
 	return vec2.X, vec2.Y
 }
 
-func GetFramePadding() (float32, float32) {
+// GetFramePadding returns current frame padding
+func GetFramePadding() (x, y float32) {
 	vec2 := imgui.CurrentStyle().FramePadding()
 	return vec2.X, vec2.Y
 }
@@ -234,6 +279,7 @@ const (
 // StyleVarID identifies a style variable in the UI style.
 type StyleVarID int
 
+// Style IDs
 const (
 	// StyleVarAlpha is a float
 	StyleVarAlpha StyleVarID = iota
@@ -285,6 +331,9 @@ const (
 	StyleVarSelectableTextAlign
 )
 
+var _ Widget = &StyleSetter{}
+
+// StyleSetter is a user-friendly way to manage imgui styles
 type StyleSetter struct {
 	colors   map[StyleColorID]color.RGBA
 	styles   map[StyleVarID]imgui.Vec2
@@ -293,6 +342,7 @@ type StyleSetter struct {
 	layout   Layout
 }
 
+// Style initializes a style setter (see examples/setstyle)
 func Style() *StyleSetter {
 	var ss StyleSetter
 	ss.colors = make(map[StyleColorID]color.RGBA)
@@ -301,31 +351,37 @@ func Style() *StyleSetter {
 	return &ss
 }
 
-func (ss *StyleSetter) SetColor(colorId StyleColorID, col color.RGBA) *StyleSetter {
-	ss.colors[colorId] = col
+// SetColor sets colorID's color
+func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.RGBA) *StyleSetter {
+	ss.colors[colorID] = col
 	return ss
 }
 
-func (ss *StyleSetter) SetStyle(varId StyleVarID, width, height float32) *StyleSetter {
-	ss.styles[varId] = imgui.Vec2{X: width, Y: height}
+// SetStyle sets styleVarID to width and height
+func (ss *StyleSetter) SetStyle(varID StyleVarID, width, height float32) *StyleSetter {
+	ss.styles[varID] = imgui.Vec2{X: width, Y: height}
 	return ss
 }
 
+// SetFont sets font
 func (ss *StyleSetter) SetFont(font *FontInfo) *StyleSetter {
 	ss.font = font
 	return ss
 }
 
+// SetDisabled sets if items are disabled
 func (ss *StyleSetter) SetDisabled(d bool) *StyleSetter {
 	ss.disabled = d
 	return ss
 }
 
+// To allows to specify a layout, StyleSetter should apply style for
 func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
 	ss.layout = widgets
 	return ss
 }
 
+// Build implements Widget
 func (ss *StyleSetter) Build() {
 	if ss.layout == nil || len(ss.layout) == 0 {
 		return

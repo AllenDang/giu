@@ -34,11 +34,14 @@ func Align(at AlignmentType) *AlignmentSetter {
 	}
 }
 
+// To sets a layout, alignment should be applied to
 func (a *AlignmentSetter) To(widgets ...Widget) *AlignmentSetter {
 	a.layout = Layout(widgets)
 	return a
 }
 
+// ID allows to manually set AlignmentSetter ID (it shouldn't be used
+// in a normal conditions)
 func (a *AlignmentSetter) ID(id string) *AlignmentSetter {
 	a.id = id
 	return a
@@ -78,9 +81,9 @@ func (a *AlignmentSetter) Build() {
 		case AlignLeft:
 			SetCursorPos(currentPos)
 		case AlignCenter:
-			SetCursorPos(image.Pt(int(availableW/2-w/2), int(currentPos.Y)))
+			SetCursorPos(image.Pt(int(availableW/2-w/2), currentPos.Y))
 		case AlignRight:
-			SetCursorPos(image.Pt(int(availableW-w), int(currentPos.Y)))
+			SetCursorPos(image.Pt(int(availableW-w), currentPos.Y))
 		default:
 			panic(fmt.Sprintf("giu: (*AlignSetter).Build: unknown align type %d", a.alignType))
 		}

@@ -8,12 +8,14 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
-type ProgressIndicatorState struct {
+var _ Disposable = &progressIndicatorState{}
+
+type progressIndicatorState struct {
 	angle float64
 	stop  bool
 }
 
-func (ps *ProgressIndicatorState) Update() {
+func (ps *progressIndicatorState) update() {
 	ticker := time.NewTicker(time.Second / 60)
 	for !ps.stop {
 		if ps.angle > 6.2 {
@@ -28,21 +30,28 @@ func (ps *ProgressIndicatorState) Update() {
 	ticker.Stop()
 }
 
-func (ps *ProgressIndicatorState) Dispose() {
+// Dispose implements Disposable interface
+func (ps *progressIndicatorState) Dispose() {
 	ps.stop = true
 }
 
+// static check to ensure if ProgressIndicatorWidget implements Widget interface
+var _ Widget = &ProgressIndicatorWidget{}
+
+// ProgressIndicatorWidget represents progress indicator widget
+// see examples/extrawidgets/
 type ProgressIndicatorWidget struct {
-	internalId string
+	internalID string
 	width      float32
 	height     float32
 	radius     float32
 	label      string
 }
 
+// ProgressIndicator creates a new ProgressIndicatorWidget
 func ProgressIndicator(label string, width, height, radius float32) *ProgressIndicatorWidget {
 	return &ProgressIndicatorWidget{
-		internalId: "###giu-progress-indicator",
+		internalID: "###giu-progress-indicator",
 		width:      width * Context.GetPlatform().GetContentScale(),
 		height:     height * Context.GetPlatform().GetContentScale(),
 		radius:     radius * Context.GetPlatform().GetContentScale(),
@@ -50,15 +59,16 @@ func ProgressIndicator(label string, width, height, radius float32) *ProgressInd
 	}
 }
 
+// Build implements Widget interface
 func (p *ProgressIndicatorWidget) Build() {
 	// State exists
-	if s := Context.GetState(p.internalId); s == nil {
+	if s := Context.GetState(p.internalID); s == nil {
 		// Register state and start go routine
-		ps := ProgressIndicatorState{angle: 0.0, stop: false}
-		Context.SetState(p.internalId, &ps)
-		go ps.Update()
+		ps := progressIndicatorState{angle: 0.0, stop: false}
+		Context.SetState(p.internalID, &ps)
+		go ps.update()
 	} else {
-		state := s.(*ProgressIndicatorState)
+		state := s.(*progressIndicatorState)
 
 		child := Child().Border(false).Size(p.width, p.height).Layout(Layout{
 			Custom(func() {
@@ -78,8 +88,8 @@ func (p *ProgressIndicatorWidget) Build() {
 				color := imgui.CurrentStyle().GetColor(imgui.StyleColorText)
 				rgba := Vec4ToRGBA(color)
 
-				canvas.AddCircle(centerPt, float32(p.radius), rgba, int(p.radius), float32(p.radius/20.0))
-				canvas.AddCircleFilled(centerPt2, float32(p.radius/5), rgba)
+				canvas.AddCircle(centerPt, p.radius, rgba, int(p.radius), p.radius/20.0)
+				canvas.AddCircleFilled(centerPt2, p.radius/5, rgba)
 
 				// Draw text
 				if len(p.label) > 0 {
