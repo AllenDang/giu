@@ -25,7 +25,6 @@ const (
 	MasterWindowFlagsTransparent MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsTransparent)
 )
 
-
 // DontCare could be used as an argument to (*MasterWindow).SetSizeLimits
 var DontCare int = imgui.GlfwDontCare
 
@@ -358,7 +357,7 @@ func (w *MasterWindow) Close() {
 	w.SetShouldClose(true)
 }
 
-// SetSHouldClose sets whether master window should be closed
+// SetShouldClose sets whether master window should be closed
 func (w *MasterWindow) SetShouldClose(v bool) {
 	w.platform.SetShouldStop(v)
 }
