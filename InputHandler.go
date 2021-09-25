@@ -1,6 +1,6 @@
-// input menager is used to register a keyboard shortcuts in an app
 package giu
 
+// input menager is used to register a keyboard shortcuts in an app
 import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -83,6 +83,8 @@ func handler(key glfw.Key, mod glfw.ModifierKey, action glfw.Action) {
 	}
 }
 
+// WindowShortcut represents a window-level shortcut
+// could be used as an argument to (*Window).RegisterKeyboardShortcuts
 type WindowShortcut struct {
 	Key      Key
 	Modifier Modifier

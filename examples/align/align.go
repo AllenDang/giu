@@ -5,7 +5,7 @@ import "github.com/AllenDang/giu"
 var text string
 
 func loop() {
-	giu.SingleWindow().Layout(
+	giu.Window("window").Layout(
 		giu.Align(giu.AlignCenter).To(
 			giu.Label("I'm a centered label"),
 			giu.Button("I'm a centered button"),
@@ -23,6 +23,13 @@ func loop() {
 				giu.Label("I'm the next label"),
 			},
 			giu.Label("I'm the last label"),
+		),
+		giu.Label("Buttons in row:"),
+		giu.Align(giu.AlignCenter).To(
+			giu.Row(
+				giu.Button("button 1"),
+				giu.Button("button 2"),
+			),
 		),
 	)
 }
