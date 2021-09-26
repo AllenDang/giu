@@ -351,3 +351,13 @@ func (w *MasterWindow) SetSizeLimits(minw, minh, maxw, maxh int) {
 func (w *MasterWindow) SetTitle(title string) {
 	w.platform.SetTitle(title)
 }
+
+// Close will savely close the master window
+func (w *MasterWindow) Close() {
+	w.SetShouldClose(true)
+}
+
+// SetShouldClose sets whether master window should be closed
+func (w *MasterWindow) SetShouldClose(v bool) {
+	w.platform.SetShouldStop(v)
+}
