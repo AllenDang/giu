@@ -75,6 +75,10 @@ func (a *AlignmentSetter) Build() {
 		currentPos := GetCursorPos()
 		w := GetWidgetWidth(item)
 		availableW, _ := GetAvailableRegion()
+		// we need to increase available region by 2 * window padding (X),
+		// because GetCursorPos considers it
+		paddingW, _ := GetWindowPadding()
+		availableW += 2 * paddingW
 
 		// set cursor position to align the widget
 		switch a.alignType {
