@@ -52,9 +52,9 @@ type ProgressIndicatorWidget struct {
 func ProgressIndicator(label string, width, height, radius float32) *ProgressIndicatorWidget {
 	return &ProgressIndicatorWidget{
 		internalID: "###giu-progress-indicator",
-		width:      width * Context.GetPlatform().GetContentScale(),
-		height:     height * Context.GetPlatform().GetContentScale(),
-		radius:     radius * Context.GetPlatform().GetContentScale(),
+		width:      width,
+		height:     height,
+		radius:     radius,
 		label:      label,
 	}
 }

@@ -103,8 +103,6 @@ func (s *SplitLayoutWidget) Build() {
 	s.originItemSpacingX, s.originItemSpacingY = itemSpacingX, itemSpacingY
 
 	s.originFramePaddingX, s.originFramePaddingY = GetFramePadding()
-	s.originFramePaddingX /= Context.GetPlatform().GetContentScale()
-	s.originFramePaddingY /= Context.GetPlatform().GetContentScale()
 
 	var layout Layout
 

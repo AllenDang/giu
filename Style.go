@@ -72,36 +72,26 @@ func PushColorButtonActive(col color.RGBA) {
 
 // PushWindowPadding calls PushStyleVar(StyleWindowPadding,...)
 func PushWindowPadding(width, height float32) {
-	width *= Context.GetPlatform().GetContentScale()
-	height *= Context.GetPlatform().GetContentScale()
 	imgui.PushStyleVarVec2(imgui.StyleVarWindowPadding, imgui.Vec2{X: width, Y: height})
 }
 
 // PushFramePadding calls PushStyleVar(StyleFramePadding,...)
 func PushFramePadding(width, height float32) {
-	width *= Context.GetPlatform().GetContentScale()
-	height *= Context.GetPlatform().GetContentScale()
 	imgui.PushStyleVarVec2(imgui.StyleVarFramePadding, imgui.Vec2{X: width, Y: height})
 }
 
 // PushItemSpacing calls PushStyleVar(StyleVarItemSpacing,...)
 func PushItemSpacing(width, height float32) {
-	width *= Context.GetPlatform().GetContentScale()
-	height *= Context.GetPlatform().GetContentScale()
 	imgui.PushStyleVarVec2(imgui.StyleVarItemSpacing, imgui.Vec2{X: width, Y: height})
 }
 
 // PushButtonTextAlign sets alignment for button text. Defaults to (0.0f,0.5f) for left-aligned,vertically centered.
 func PushButtonTextAlign(width, height float32) {
-	width *= Context.GetPlatform().GetContentScale()
-	height *= Context.GetPlatform().GetContentScale()
 	imgui.PushStyleVarVec2(imgui.StyleVarButtonTextAlign, imgui.Vec2{X: width, Y: height})
 }
 
 // PushSelectableTextAlign sets alignment for selectable text. Defaults to (0.0f,0.5f) for left-aligned,vertically centered.
 func PushSelectableTextAlign(width, height float32) {
-	width *= Context.GetPlatform().GetContentScale()
-	height *= Context.GetPlatform().GetContentScale()
 	imgui.PushStyleVarVec2(imgui.StyleVarSelectableTextAlign, imgui.Vec2{X: width, Y: height})
 }
 
@@ -143,7 +133,6 @@ func AlignTextToFramePadding() {
 // NOTE: don't forget to call PopItemWidth! If you don't do so, imgui
 // will panic
 func PushItemWidth(width float32) {
-	width *= Context.GetPlatform().GetContentScale()
 	imgui.PushItemWidth(width)
 }
 

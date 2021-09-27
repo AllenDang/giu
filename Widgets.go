@@ -133,8 +133,7 @@ func (i *InputTextMultilineWidget) OnChange(onChange func()) *InputTextMultiline
 }
 
 func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultilineWidget {
-	scale := Context.platform.GetContentScale()
-	i.width, i.height = width*scale, height*scale
+	i.width, i.height = width, height
 	return i
 }
 
@@ -171,8 +170,7 @@ func (b *ButtonWidget) Disabled(d bool) *ButtonWidget {
 }
 
 func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
-	scale := Context.platform.GetContentScale()
-	b.width, b.height = width*scale, height*scale
+	b.width, b.height = width, height
 	return b
 }
 
@@ -296,8 +294,7 @@ type InvisibleButtonWidget struct {
 }
 
 func (b *InvisibleButtonWidget) Size(width, height float32) *InvisibleButtonWidget {
-	scale := Context.platform.GetContentScale()
-	b.width, b.height = width*scale, height*scale
+	b.width, b.height = width, height
 	return b
 }
 
@@ -359,8 +356,7 @@ func (b *ImageButtonWidget) Build() {
 }
 
 func (b *ImageButtonWidget) Size(width, height float32) *ImageButtonWidget {
-	scale := Context.platform.GetContentScale()
-	b.width, b.height = width*scale, height*scale
+	b.width, b.height = width, height
 	return b
 }
 
@@ -392,8 +388,8 @@ func (b *ImageButtonWidget) FramePadding(padding int) *ImageButtonWidget {
 func ImageButton(texture *Texture) *ImageButtonWidget {
 	return &ImageButtonWidget{
 		texture:      texture,
-		width:        50 * Context.platform.GetContentScale(),
-		height:       50 * Context.platform.GetContentScale(),
+		width:        50,
+		height:       50,
 		uv0:          image.Point{X: 0, Y: 0},
 		uv1:          image.Point{X: 1, Y: 1},
 		framePadding: -1,
@@ -547,8 +543,7 @@ func (c *ChildWidget) Border(border bool) *ChildWidget {
 }
 
 func (c *ChildWidget) Size(width, height float32) *ChildWidget {
-	scale := Context.platform.GetContentScale()
-	c.width, c.height = width*scale, height*scale
+	c.width, c.height = width, height
 	return c
 }
 
@@ -604,7 +599,7 @@ func (cc *ComboCustomWidget) Flags(flags ComboFlags) *ComboCustomWidget {
 }
 
 func (cc *ComboCustomWidget) Size(width float32) *ComboCustomWidget {
-	cc.width = width * Context.platform.GetContentScale()
+	cc.width = width
 	return cc
 }
 
@@ -672,7 +667,7 @@ func (c *ComboWidget) Build() {
 }
 
 func (c *ComboWidget) Size(width float32) *ComboWidget {
-	c.width = width * Context.platform.GetContentScale()
+	c.width = width
 	return c
 }
 
@@ -793,8 +788,8 @@ type ImageWidget struct {
 func Image(texture *Texture) *ImageWidget {
 	return &ImageWidget{
 		texture:     texture,
-		width:       100 * Context.platform.GetContentScale(),
-		height:      100 * Context.platform.GetContentScale(),
+		width:       100,
+		height:      100,
 		uv0:         image.Point{X: 0, Y: 0},
 		uv1:         image.Point{X: 1, Y: 1},
 		tintColor:   color.RGBA{255, 255, 255, 255},
@@ -823,8 +818,7 @@ func (i *ImageWidget) OnClick(cb func()) *ImageWidget {
 }
 
 func (i *ImageWidget) Size(width, height float32) *ImageWidget {
-	scale := Context.platform.GetContentScale()
-	i.width, i.height = width*scale, height*scale
+	i.width, i.height = width, height
 	return i
 }
 
@@ -832,10 +826,10 @@ func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 func (i *ImageWidget) Build() {
 	size := imgui.Vec2{X: i.width, Y: i.height}
 	rect := imgui.ContentRegionAvail()
-	if size.X == (-1 * Context.GetPlatform().GetContentScale()) {
+	if size.X == -1 {
 		size.X = rect.X
 	}
-	if size.Y == (-1 * Context.GetPlatform().GetContentScale()) {
+	if size.Y == -1 {
 		size.Y = rect.Y
 	}
 
@@ -1151,7 +1145,7 @@ func (i *InputTextWidget) Hint(hint string) *InputTextWidget {
 }
 
 func (i *InputTextWidget) Size(width float32) *InputTextWidget {
-	i.width = width * Context.platform.GetContentScale()
+	i.width = width
 	return i
 }
 
@@ -1255,7 +1249,7 @@ func (i *InputIntWidget) Labelf(format string, args ...interface{}) *InputIntWid
 }
 
 func (i *InputIntWidget) Size(width float32) *InputIntWidget {
-	i.width = width * Context.platform.GetContentScale()
+	i.width = width
 	return i
 }
 
@@ -1313,7 +1307,7 @@ func (i *InputFloatWidget) Labelf(format string, args ...interface{}) *InputFloa
 }
 
 func (i *InputFloatWidget) Size(width float32) *InputFloatWidget {
-	i.width = width * Context.platform.GetContentScale()
+	i.width = width
 	return i
 }
 
@@ -1623,8 +1617,7 @@ func ProgressBar(fraction float32) *ProgressBarWidget {
 }
 
 func (p *ProgressBarWidget) Size(width, height float32) *ProgressBarWidget {
-	scale := Context.platform.GetContentScale()
-	p.width, p.height = width*scale, height*scale
+	p.width, p.height = width, height
 	return p
 }
 
@@ -1680,8 +1673,7 @@ func (s *SelectableWidget) Flags(flags SelectableFlags) *SelectableWidget {
 }
 
 func (s *SelectableWidget) Size(width, height float32) *SelectableWidget {
-	scale := Context.platform.GetContentScale()
-	s.width, s.height = width*scale, height*scale
+	s.width, s.height = width, height
 	return s
 }
 
@@ -1756,7 +1748,7 @@ func (s *SliderIntWidget) Format(format string) *SliderIntWidget {
 }
 
 func (s *SliderIntWidget) Size(width float32) *SliderIntWidget {
-	s.width = width * Context.platform.GetContentScale()
+	s.width = width
 	return s
 }
 
@@ -1894,7 +1886,7 @@ func (sf *SliderFloatWidget) OnChange(onChange func()) *SliderFloatWidget {
 }
 
 func (sf *SliderFloatWidget) Size(width float32) *SliderFloatWidget {
-	sf.width = width * Context.platform.GetContentScale()
+	sf.width = width
 	return sf
 }
 
@@ -1943,8 +1935,8 @@ func (d *DummyWidget) Build() {
 
 func Dummy(width, height float32) *DummyWidget {
 	return &DummyWidget{
-		width:  width * Context.platform.GetContentScale(),
-		height: height * Context.platform.GetContentScale(),
+		width:  width,
+		height: height,
 	}
 }
 
@@ -1967,19 +1959,18 @@ func HSplitter(delta *float32) *HSplitterWidget {
 }
 
 func (h *HSplitterWidget) Size(width, height float32) *HSplitterWidget {
-	scale := Context.platform.GetContentScale()
 	aw, ah := GetAvailableRegion()
 
 	if width == 0 {
-		h.width = aw / scale
+		h.width = aw
 	} else {
-		h.width = width * scale
+		h.width = width
 	}
 
 	if height == 0 {
-		h.height = ah / scale
+		h.height = ah
 	} else {
-		h.height = height * scale
+		h.height = height
 	}
 
 	return h
@@ -1994,8 +1985,8 @@ func (h *HSplitterWidget) ID(id string) *HSplitterWidget {
 // nolint:dupl // will fix later
 func (h *HSplitterWidget) Build() {
 	// Calc line position.
-	width := int(40 * Context.GetPlatform().GetContentScale())
-	height := int(2 * Context.GetPlatform().GetContentScale())
+	width := 40
+	height := 2
 
 	pt := GetCursorScreenPos()
 
@@ -2011,7 +2002,7 @@ func (h *HSplitterWidget) Build() {
 	// Place a invisible button to capture event.
 	imgui.InvisibleButton(h.id, imgui.Vec2{X: h.width, Y: h.height})
 	if imgui.IsItemActive() {
-		*(h.delta) = imgui.CurrentIO().GetMouseDelta().Y / Context.platform.GetContentScale()
+		*(h.delta) = imgui.CurrentIO().GetMouseDelta().Y
 	} else {
 		*(h.delta) = 0
 	}
@@ -2045,18 +2036,17 @@ func VSplitter(delta *float32) *VSplitterWidget {
 
 func (v *VSplitterWidget) Size(width, height float32) *VSplitterWidget {
 	aw, ah := GetAvailableRegion()
-	scale := Context.platform.GetContentScale()
 
 	if width == 0 {
-		v.width = aw / scale
+		v.width = aw
 	} else {
-		v.width = width * scale
+		v.width = width
 	}
 
 	if height == 0 {
-		v.height = ah / scale
+		v.height = ah
 	} else {
-		v.height = height * scale
+		v.height = height
 	}
 
 	return v
@@ -2071,8 +2061,8 @@ func (v *VSplitterWidget) ID(id string) *VSplitterWidget {
 // nolint:dupl // will fix later
 func (v *VSplitterWidget) Build() {
 	// Calc line position.
-	width := int(2 * Context.GetPlatform().GetContentScale())
-	height := int(40 * Context.GetPlatform().GetContentScale())
+	width := 2
+	height := 40
 
 	pt := GetCursorScreenPos()
 
@@ -2088,7 +2078,7 @@ func (v *VSplitterWidget) Build() {
 	// Place a invisible button to capture event.
 	imgui.InvisibleButton(v.id, imgui.Vec2{X: v.width, Y: v.height})
 	if imgui.IsItemActive() {
-		*(v.delta) = imgui.CurrentIO().GetMouseDelta().X / Context.platform.GetContentScale()
+		*(v.delta) = imgui.CurrentIO().GetMouseDelta().X
 	} else {
 		*(v.delta) = 0
 	}
@@ -2735,8 +2725,7 @@ func ListBox(id string, items []string) *ListBoxWidget {
 }
 
 func (l *ListBoxWidget) Size(width, height float32) *ListBoxWidget {
-	scale := Context.platform.GetContentScale()
-	l.width, l.height = width*scale, height*scale
+	l.width, l.height = width, height
 	return l
 }
 
@@ -2836,13 +2825,13 @@ func DatePicker(id string, date *time.Time) *DatePickerWidget {
 	return &DatePickerWidget{
 		id:       GenAutoID(id),
 		date:     date,
-		width:    100 * Context.GetPlatform().GetContentScale(),
+		width:    100,
 		onChange: func() {}, // small hack - prevent giu from setting nil cb (skip nil check later)
 	}
 }
 
 func (d *DatePickerWidget) Size(width float32) *DatePickerWidget {
-	d.width = width * Context.platform.GetContentScale()
+	d.width = width
 	return d
 }
 
@@ -3037,7 +3026,7 @@ func (ce *ColorEditWidget) Flags(f ColorEditFlags) *ColorEditWidget {
 }
 
 func (ce *ColorEditWidget) Size(width float32) *ColorEditWidget {
-	ce.width = width * Context.platform.GetContentScale()
+	ce.width = width
 	return ce
 }
 

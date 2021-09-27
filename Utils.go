@@ -132,7 +132,7 @@ func CalcTextSizeV(text string, hideAfterDoubleHash bool, wrapWidth float32) (w,
 
 // SetNextWindowSize sets size of the next window
 func SetNextWindowSize(width, height float32) {
-	imgui.SetNextWindowSize(imgui.Vec2{X: width * Context.platform.GetContentScale(), Y: height * Context.platform.GetContentScale()})
+	imgui.SetNextWindowSize(imgui.Vec2{X: width, Y: height})
 }
 
 // ExecCondition represents imgui.Condition
@@ -155,8 +155,8 @@ func SetNextWindowPos(x, y float32) {
 func SetNextWindowSizeV(width, height float32, condition ExecCondition) {
 	imgui.SetNextWindowSizeV(
 		imgui.Vec2{
-			X: width * Context.platform.GetContentScale(),
-			Y: height * Context.platform.GetContentScale(),
+			X: width,
+			Y: height,
 		},
 		imgui.Condition(condition),
 	)

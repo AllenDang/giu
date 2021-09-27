@@ -62,14 +62,10 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		panic(err)
 	}
 
-	scale := p.GetContentScale()
-
-	imgui.DPIScale = scale
-
 	// Assign platform to contex
 	Context.platform = p
 
-	r, err := imgui.NewOpenGL3(io, scale)
+	r, err := imgui.NewOpenGL3(io, 1.0)
 	if err != nil {
 		panic(err)
 	}
@@ -164,10 +160,6 @@ func (w *MasterWindow) setTheme() {
 	style.SetColor(imgui.StyleColorTableHeaderBg, imgui.Vec4{X: 0.12, Y: 0.20, Z: 0.28, W: 1.00})
 	style.SetColor(imgui.StyleColorTableBorderStrong, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
 	style.SetColor(imgui.StyleColorTableBorderLight, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 0.70})
-
-	scale := w.platform.GetContentScale()
-
-	style.ScaleAllSizes(scale)
 }
 
 // SetBgColor sets background color of master window.
