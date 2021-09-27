@@ -331,6 +331,7 @@ type PlotLineXYWidget struct {
 	title  string
 	xs, ys []float64
 	offset int
+	yAxis  ImPlotYAxis
 }
 
 // PlotLineXY adds XY plot line to canvas
@@ -343,6 +344,12 @@ func PlotLineXY(title string, xvalues, yvalues []float64) *PlotLineXYWidget {
 	}
 }
 
+// SetPlotYAxis sets yAxis parameters
+func (p *PlotLineXYWidget) SetPlotYAxis(yAxis ImPlotYAxis) *PlotLineXYWidget {
+	p.yAxis = yAxis
+	return p
+}
+
 // Offset sets chart's offset
 func (p *PlotLineXYWidget) Offset(offset int) *PlotLineXYWidget {
 	p.offset = offset
@@ -351,6 +358,7 @@ func (p *PlotLineXYWidget) Offset(offset int) *PlotLineXYWidget {
 
 // Plot implements Plot interface
 func (p *PlotLineXYWidget) Plot() {
+	imgui.ImPlotSetPlotYAxis(imgui.ImPlotYAxis(p.yAxis))
 	imgui.ImPlotLineXY(tStr(p.title), p.xs, p.ys, p.offset)
 }
 
