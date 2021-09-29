@@ -454,7 +454,9 @@ func (b *ImageButtonWithRgbaWidget) Build() {
 			Context.SetState(b.id, &ImageState{texture: tex})
 		})
 	} else {
-		imgState := state.(*ImageState)
+		var isOk bool
+		imgState, isOk := state.(*ImageState)
+		Assert(isOk, "ImageButtonWithRgbaWidget", "Build", "got unexpected type of widget's state")
 		b.ImageButtonWidget.texture = imgState.texture
 	}
 
@@ -905,7 +907,9 @@ func (i *ImageWithRgbaWidget) Build() {
 				imgState.texture = tex
 			})
 		} else {
-			imgState = state.(*ImageState)
+			var isOk bool
+			imgState, isOk = state.(*ImageState)
+			Assert(isOk, "ImageWithRgbaWidget", "Build", "unexpected type of widget's state recovered")
 		}
 
 		i.img.texture = imgState.texture
@@ -954,7 +958,9 @@ func (i *ImageWithFileWidget) Build() {
 			})
 		}
 	} else {
-		imgState = state.(*ImageState)
+		var isOk bool
+		imgState, isOk = state.(*ImageState)
+		Assert(isOk, "ImageWithFileWidget", "Build", "wrong type of widget's state got")
 	}
 
 	i.img.texture = imgState.texture
@@ -1076,7 +1082,9 @@ func (i *ImageWithURLWidget) Build() {
 			}
 		}()
 	} else {
-		imgState = state.(*ImageState)
+		var isOk bool
+		imgState, isOk = state.(*ImageState)
+		Assert(isOk, "ImageWithURLWidget", "Build", "wrong type of widget's state recovered.")
 	}
 
 	switch {
@@ -1172,7 +1180,9 @@ func (i *InputTextWidget) Build() {
 		state = &inputTextState{}
 		Context.SetState(i.label, state)
 	} else {
-		state = s.(*inputTextState)
+		var isOk bool
+		state, isOk = s.(*inputTextState)
+		Assert(isOk, "InputTextWidget", "Build", "wrong state type recovered.")
 	}
 
 	if i.width != 0 {
@@ -2762,7 +2772,9 @@ func (l *ListBoxWidget) Build() {
 		state = &ListBoxState{selectedIndex: 0}
 		Context.SetState(l.id, state)
 	} else {
-		state = s.(*ListBoxState)
+		var isOk bool
+		state, isOk = s.(*ListBoxState)
+		Assert(isOk, "ListBoxWidget", "Build", "wrong state type recovered")
 	}
 
 	child := Child().Border(l.border).Size(l.width, l.height).Layout(Layout{

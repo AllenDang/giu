@@ -116,7 +116,9 @@ func (eh *EventHandler) Build() {
 		var state *eventHandlerState
 		stateID := GenAutoID("eventHandlerState")
 		if s := Context.GetState(stateID); s != nil {
-			state = s.(*eventHandlerState)
+			var isOk bool
+			state, isOk = s.(*eventHandlerState)
+			Assert(isOk, "EventHandler", "Build", "unexpected type of state received")
 		} else {
 			newState := &eventHandlerState{}
 			Context.SetState(stateID, newState)

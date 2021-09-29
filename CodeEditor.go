@@ -206,7 +206,9 @@ func (ce *CodeEditorWidget) getState() (state *codeEditorState) {
 
 		Context.SetState(ce.title, state)
 	} else {
-		state = s.(*codeEditorState)
+		var isOk bool
+		state, isOk = s.(*codeEditorState)
+		Assert(isOk, "CodeEditorWidget", "getState", "unexpected widget's state type")
 	}
 
 	return state

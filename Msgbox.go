@@ -109,7 +109,9 @@ func PrepareMsgbox() Layout {
 				state = &msgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
 				Context.SetState(msgboxID, state)
 			} else {
-				state = stateRaw.(*msgboxState)
+				var isOk bool
+				state, isOk = stateRaw.(*msgboxState)
+				Assert(isOk, "MsgboxWidget", "PrepareMsgbox", "got state of unexpected type")
 			}
 
 			if state.open {

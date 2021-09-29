@@ -6,6 +6,7 @@ import (
 	"image/color"
 	"image/draw"
 	"image/png"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -182,4 +183,18 @@ func PushClipRect(clipRectMin, clipRectMax image.Point, intersectWithClipRect bo
 
 func PopClipRect() {
 	imgui.PopClipRect()
+}
+
+func Assert(cond bool, t, method, msg string, args ...interface{}) {
+	if !cond {
+		fatal(t, method, msg, args...)
+	}
+}
+
+func fatal(widgetName, method, message string, args ...interface{}) {
+	if widgetName != "" {
+		widgetName = fmt.Sprintf("(*%s)", widgetName)
+	}
+
+	log.Panicf("giu: %s.%s: %s", widgetName, method, fmt.Sprintf(message, args...))
 }

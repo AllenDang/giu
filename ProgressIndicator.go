@@ -68,7 +68,9 @@ func (p *ProgressIndicatorWidget) Build() {
 		Context.SetState(p.internalID, &ps)
 		go ps.update()
 	} else {
-		state := s.(*progressIndicatorState)
+		var isOk bool
+		state, isOk := s.(*progressIndicatorState)
+		Assert(isOk, "ProgressIndicatorWidget", "Build", "got unexpected type of widget's sate")
 
 		child := Child().Border(false).Size(p.width, p.height).Layout(Layout{
 			Custom(func() {
