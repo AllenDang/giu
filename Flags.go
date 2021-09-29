@@ -310,7 +310,9 @@ const (
 	// ColorEditFlagsNoDragDrop disables drag and drop target. ColorButton: disable drag and drop source.
 	ColorEditFlagsNoDragDrop ColorEditFlags = imgui.ColorEditFlagsNoDragDrop
 
-	// User Options (right-click on widget to change some of them). You can set application defaults using SetColorEditOptions(). The idea is that you probably don't want to override them in most of your calls, let the user choose and/or call SetColorEditOptions() during startup.
+	// User Options (right-click on widget to change some of them). You can set application defaults using SetColorEditOptions().
+	// The idea is that you probably don't want to override them in most of your calls, let the user choose and/or call SetColorEditOptions()
+	// during startup.
 
 	// ColorEditFlagsAlphaBar shows vertical alpha bar/gradient in picker.
 	ColorEditFlagsAlphaBar ColorEditFlags = imgui.ColorEditFlagsAlphaBar
@@ -318,7 +320,8 @@ const (
 	ColorEditFlagsAlphaPreview ColorEditFlags = imgui.ColorEditFlagsAlphaPreview
 	// ColorEditFlagsAlphaPreviewHalf displays half opaque / half checkerboard, instead of opaque.
 	ColorEditFlagsAlphaPreviewHalf ColorEditFlags = imgui.ColorEditFlagsAlphaPreviewHalf
-	// ColorEditFlagsHDR = (WIP) surrently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use ImGuiColorEditFlags_Float flag as well).
+	// ColorEditFlagsHDR = (WIP) surrently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use
+	// ImGuiColorEditFlags_Float flag as well).
 	ColorEditFlagsHDR ColorEditFlags = imgui.ColorEditFlagsHDR
 	// ColorEditFlagsRGB sets the format as RGB
 	ColorEditFlagsRGB ColorEditFlags = imgui.ColorEditFlagsRGB

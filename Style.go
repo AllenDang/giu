@@ -10,10 +10,15 @@ import (
 // NOTE: PopFont has to be called
 // NOTE: Don't use PushFont. use StyleSetter instead
 func PushFont(font *FontInfo) bool {
+	if font == nil {
+		return false
+	}
+
 	if f, ok := extraFontMap[font.String()]; ok {
 		imgui.PushFont(*f)
 		return true
 	}
+
 	return false
 }
 
@@ -355,6 +360,23 @@ func (ss *StyleSetter) SetStyle(varID StyleVarID, width, height float32) *StyleS
 // SetFont sets font
 func (ss *StyleSetter) SetFont(font *FontInfo) *StyleSetter {
 	ss.font = font
+	return ss
+}
+
+func (ss *StyleSetter) SetFontSize(size float32) *StyleSetter {
+	var font FontInfo
+	if ss.font != nil {
+		font = *ss.font
+	} else {
+		font = defaultFonts[0]
+	}
+
+	font.size = size
+
+	extraFonts = append(extraFonts, font)
+
+	ss.font = &font
+
 	return ss
 }
 
