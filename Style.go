@@ -358,6 +358,23 @@ func (ss *StyleSetter) SetFont(font *FontInfo) *StyleSetter {
 	return ss
 }
 
+func (ss *StyleSetter) SetFontSize(size float32) *StyleSetter {
+	var font FontInfo
+	if ss.font != nil {
+		font = *ss.font
+	} else {
+		font = defaultFonts[0]
+	}
+
+	font.size = size
+
+	extraFonts = append(extraFonts, font)
+
+	ss.font = &font
+
+	return ss
+}
+
 // SetDisabled sets if items are disabled
 func (ss *StyleSetter) SetDisabled(d bool) *StyleSetter {
 	ss.disabled = d
