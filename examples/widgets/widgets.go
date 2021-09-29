@@ -229,6 +229,31 @@ func loop() {
 					),
 				),
 			),
+			g.TabItem("List").Layout(
+				g.Child().Layout(
+					g.ListClipper().Layout(
+						g.Label("these labels"),
+						g.Label("uses ListClipper"),
+						g.Label("and are rendered only when visible."),
+						g.BulletText("I'm a bullet"),
+						g.Label("label 1"),
+						g.Label("label 2"),
+						g.Label("label 3"),
+						g.Label("label 4"),
+						g.Label("label 5"),
+						g.Label("label 6"),
+						g.Label("label 7"),
+						g.Label("label 8"),
+						g.Label("label 9"),
+						g.Button("I'm a button 1"),
+						g.Row(
+							g.Button("we're the buttons"),
+							g.Button("in row"),
+						),
+						g.InputTextMultiline(&multiline),
+					),
+				),
+			),
 		),
 	)
 }
