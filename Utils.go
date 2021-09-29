@@ -17,7 +17,7 @@ import (
 func LoadImage(imgPath string) (*image.RGBA, error) {
 	imgFile, err := os.Open(filepath.Clean(imgPath))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("LoadImage: error opening image file %s: %w", imgPath, err)
 	}
 
 	defer func() {
@@ -29,7 +29,7 @@ func LoadImage(imgPath string) (*image.RGBA, error) {
 
 	img, err := png.Decode(imgFile)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("LoadImage: error decoding png image: %w", err)
 	}
 
 	return ImageToRgba(img), nil

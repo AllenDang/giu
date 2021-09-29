@@ -51,7 +51,6 @@ linters:
     - goconst
     - gocritic
     - gocyclo
-      #- godox
     - goerr113
     - gofmt
     - gofumpt
@@ -74,7 +73,7 @@ linters:
     - prealloc
     - predeclared
     - promlinter
-      #- revive
+    #- revive
     - rowserrcheck
     - staticcheck
     - structcheck
@@ -86,7 +85,7 @@ linters:
     - varcheck
     - wastedassign
     - whitespace
-    #- wrapcheck
+    - wrapcheck
     #- wsl
 
 run:
