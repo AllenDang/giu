@@ -12,6 +12,7 @@ import (
 	"github.com/AllenDang/imgui-go"
 	resty "github.com/go-resty/resty/v2"
 	"github.com/sahilm/fuzzy"
+	"golang.org/x/image/colornames"
 )
 
 // GenAutoID automatically generates fidget's id
@@ -393,8 +394,8 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 		uv0:          image.Point{X: 0, Y: 0},
 		uv1:          image.Point{X: 1, Y: 1},
 		framePadding: -1,
-		bgColor:      color.RGBA{0, 0, 0, 0},
-		tintColor:    color.RGBA{255, 255, 255, 255},
+		bgColor:      colornames.Black,
+		tintColor:    colornames.White,
 		onClick:      nil,
 	}
 }
