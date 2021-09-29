@@ -20,6 +20,10 @@ func loop() {
 				g.Button("I'm a styled button"),
 			),
 		g.Button("I'm a normal button"),
+		g.Style().
+			SetFontSize(60).To(
+			g.Label("large label"),
+		),
 	)
 }
 
