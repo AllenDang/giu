@@ -63,9 +63,6 @@ func (a *AlignmentSetter) Build() {
 		case *AlignmentSetter:
 			item.Build()
 			return
-		case *CustomWidget:
-			item.Build()
-			return
 		// there is a bug with selectables and combos, so skip them for now
 		case *SelectableWidget, *ComboWidget, *ComboCustomWidget:
 			item.Build()
@@ -110,45 +107,29 @@ func (a *AlignmentSetter) Build() {
 // widget will be processed)
 //
 // here is a list of known bugs:
-// - BUG: Custom widgets are skipped, so if user put some widgets
-// inside of CustomWidget, its sizes will not be returned
+// - BUG: clicking bug - when widget is clickable, it is unable to be
+// clicked see:
+//   - https://github.com/AllenDang/giu/issues/341
+//   - https://github.com/ocornut/imgui/issues/4588
+// - BUG: text pasted into input text is pasted twice
+//   (see: https://github.com/AllenDang/giu/issues/340)
 //
 // if you find anything else, please report it on
 // https://github.com/AllenDang/giu Any contribution is appreciated!
 func GetWidgetWidth(w Widget) (result float32) {
 	// save cursor position before rendering
 	currentPos := GetCursorPos()
-	// enumerate some special cases
-	switch typed := w.(type) {
-	// Don't process custom widgets
-	case *CustomWidget:
-		return 0
-	// when row, sum all widget's sizes (adding spacing)
-	case *RowWidget:
-		isFirst := true
-		typed.widgets.Range(func(r Widget) {
-			result += GetWidgetWidth(r)
-			if !isFirst {
-				spacing, _ := GetItemSpacing()
-				result += spacing
-			} else {
-				isFirst = false
-			}
-		})
-		return result
-	// panic if layout - cannot calculate width of multiple widgets
-	case Layout, *Layout:
-		panic("GetWidgetWidth: requires Widget argument, but []Widget (Layout) got")
-	default:
-		// render widget in `dry` mode
-		imgui.PushStyleVarFloat(imgui.StyleVarAlpha, 0)
-		w.Build()
-		imgui.PopStyleVar()
 
-		// save widget's width
-		size := imgui.GetItemRectSize()
-		result = size.X
-	}
+	// render widget in `dry` mode
+	imgui.PushStyleVarFloat(imgui.StyleVarAlpha, 0)
+	w.Build()
+	imgui.PopStyleVar()
+
+	// save widget's width
+	// check cursor position
+	imgui.SameLine()
+	spacingW, _ := GetItemSpacing()
+	result = float32(GetCursorPos().X-currentPos.X) - spacingW
 
 	SetCursorPos(currentPos)
 
