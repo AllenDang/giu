@@ -6,7 +6,7 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
-// Context represents a giu context
+// Context represents a giu context.
 var Context context
 
 type Disposable interface {

@@ -599,6 +599,7 @@ func Child() *ChildWidget {
 
 var _ Widget = &ComboCustomWidget{}
 
+// ComboCustomWidget represents a combo with custom layout when opened.
 type ComboCustomWidget struct {
 	label        string
 	previewValue string
@@ -607,6 +608,7 @@ type ComboCustomWidget struct {
 	layout       Layout
 }
 
+// ComboCustom creates a new combo custom widget.
 func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	return &ComboCustomWidget{
 		label:        GenAutoID(label),
@@ -617,16 +619,19 @@ func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	}
 }
 
+// Layout add combo's layout.
 func (cc *ComboCustomWidget) Layout(widgets ...Widget) *ComboCustomWidget {
 	cc.layout = Layout(widgets)
 	return cc
 }
 
+// Flags allows to set combo flags (see Flags.go).
 func (cc *ComboCustomWidget) Flags(flags ComboFlags) *ComboCustomWidget {
 	cc.flags = flags
 	return cc
 }
 
+// Size sets combo preiview width.
 func (cc *ComboCustomWidget) Size(width float32) *ComboCustomWidget {
 	cc.width = width
 	return cc
@@ -647,6 +652,8 @@ func (cc *ComboCustomWidget) Build() {
 
 var _ Widget = &ComboWidget{}
 
+// ComboWidget is a wrapper of ComboCustomWidget.
+// It creates a combo of selectables. (it is the most frequently used).
 type ComboWidget struct {
 	label        string
 	previewValue string
@@ -657,6 +664,7 @@ type ComboWidget struct {
 	onChange     func()
 }
 
+// Combo creates a new ComboWidget.
 func Combo(label, previewValue string, items []string, selected *int32) *ComboWidget {
 	return &ComboWidget{
 		label:        GenAutoID(label),
@@ -667,11 +675,6 @@ func Combo(label, previewValue string, items []string, selected *int32) *ComboWi
 		width:        0,
 		onChange:     nil,
 	}
-}
-
-func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
-	c.flags = flags
-	return c
 }
 
 // Build implements Widget interface.
@@ -695,11 +698,19 @@ func (c *ComboWidget) Build() {
 	}
 }
 
+// Flags allows to set combo flags (see Flags.go).
+func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
+	c.flags = flags
+	return c
+}
+
+// Size sets combo's width.
 func (c *ComboWidget) Size(width float32) *ComboWidget {
 	c.width = width
 	return c
 }
 
+// OnChange sets callback when combo value gets changed.
 func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 	c.onChange = onChange
 	return c
@@ -806,6 +817,10 @@ func (g *ColumnWidget) Build() {
 
 var _ Widget = &ImageWidget{}
 
+// ImageWidget adds an image.
+// NOTE: ImageWidget is going to be deprecated. ImageWithRGBAWidget
+// should be used instead, however, because it is a native
+// imgui's solution it is still there.
 type ImageWidget struct {
 	texture                *Texture
 	width                  float32
@@ -815,6 +830,7 @@ type ImageWidget struct {
 	onClick                func()
 }
 
+// Image adds an image from giu.Texture.
 func Image(texture *Texture) *ImageWidget {
 	return &ImageWidget{
 		texture:     texture,
@@ -837,16 +853,19 @@ func (i *ImageWidget) TintColor(tintColor color.RGBA) *ImageWidget {
 	return i
 }
 
+// BorderCol sets color of the border.
 func (i *ImageWidget) BorderCol(borderColor color.RGBA) *ImageWidget {
 	i.borderColor = borderColor
 	return i
 }
 
+// OnClick adds on-click-callback.
 func (i *ImageWidget) OnClick(cb func()) *ImageWidget {
 	i.onClick = cb
 	return i
 }
 
+// Size sets image size.
 func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 	i.width, i.height = width, height
 	return i
