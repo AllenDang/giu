@@ -117,21 +117,25 @@ func (i *InputTextMultilineWidget) Build() {
 	}
 }
 
+// Flags sets InputTextFlags (see Flags.go)
 func (i *InputTextMultilineWidget) Flags(flags InputTextFlags) *InputTextMultilineWidget {
 	i.flags = flags
 	return i
 }
 
+// Callback sets imgui.InputTextCallback
 func (i *InputTextMultilineWidget) Callback(cb imgui.InputTextCallback) *InputTextMultilineWidget {
 	i.cb = cb
 	return i
 }
 
+// OnChange set callback called when user action taken on input text field (when text was changed)
 func (i *InputTextMultilineWidget) OnChange(onChange func()) *InputTextMultilineWidget {
 	i.onChange = onChange
 	return i
 }
 
+// Size sets input field size
 func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultilineWidget {
 	i.width, i.height = width, height
 	return i
@@ -139,6 +143,7 @@ func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultili
 
 var _ Widget = &ButtonWidget{}
 
+// ButtonWidget represents a ImGui button widget.
 type ButtonWidget struct {
 	id       string
 	width    float32
@@ -159,38 +164,49 @@ func (b *ButtonWidget) Build() {
 	}
 }
 
+// OnClick sets callback called when button is clicked
+// NOTE: to set double click, see EventHandler.go
 func (b *ButtonWidget) OnClick(onClick func()) *ButtonWidget {
 	b.onClick = onClick
 	return b
 }
 
+// Disabled sets button's disabled state
+// NOTE: same effect as Style().SetDisabled
 func (b *ButtonWidget) Disabled(d bool) *ButtonWidget {
 	b.disabled = d
 	return b
 }
 
+// Size sets button's size
 func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 	b.width, b.height = width, height
 	return b
 }
 
-func Button(id string) *ButtonWidget {
+// Button creates a new button widget
+func Button(label string) *ButtonWidget {
 	return &ButtonWidget{
-		id:      GenAutoID(id),
+		id:      GenAutoID(label),
 		width:   0,
 		height:  0,
 		onClick: nil,
 	}
 }
 
+// Buttonf creates button with formated label
+// NOTE: works like fmt.Sprintf (see `go doc fmt`)
 func Buttonf(format string, args ...interface{}) *ButtonWidget {
 	return Button(fmt.Sprintf(format, args...))
 }
 
 var _ Widget = &BulletWidget{}
 
+// BulletWidget adds a small, white dot (bullet).
+// useful in enumerations.
 type BulletWidget struct{}
 
+// Bullet creates a bullet widget
 func Bullet() *BulletWidget {
 	return &BulletWidget{}
 }
@@ -202,16 +218,20 @@ func (b *BulletWidget) Build() {
 
 var _ Widget = &BulletTextWidget{}
 
+// BulletTextWidget does similar to BulletWidget, but allows
+// to add a text after a bullet. Very useful to create lists.
 type BulletTextWidget struct {
 	text string
 }
 
+// BulletText creates bulletTextWidget
 func BulletText(text string) *BulletTextWidget {
 	return &BulletTextWidget{
 		text: tStr(text),
 	}
 }
 
+// BulletTextf is a formatting version of BulletText
 func BulletTextf(format string, args ...interface{}) *BulletTextWidget {
 	return BulletText(fmt.Sprintf(format, args...))
 }
