@@ -44,7 +44,7 @@ linters:
     - forcetypeassert
     #- funlen
     - gci
-    #- godot
+    - godot
     #- gochecknoglobals
     #- gochecknoinits
     - gocognit

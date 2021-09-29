@@ -3,10 +3,10 @@ package giu
 import "fmt"
 
 // DialogResult represents dialog result
-// dialog resullt is bool. if OK/Yes it is true, else (Cancel/No) - false
+// dialog resullt is bool. if OK/Yes it is true, else (Cancel/No) - false.
 type DialogResult bool
 
-// dialog results
+// dialog results.
 const (
 	DialogResultOK     DialogResult = true
 	DialogResultCancel DialogResult = false
@@ -18,17 +18,17 @@ const (
 // MsgboxButtons determines which buttons are in the dialog.
 type MsgboxButtons uint8
 
-// button sets
+// button sets.
 const (
-	// Yes-No question
+	// Yes-No question.
 	MsgboxButtonsYesNo MsgboxButtons = 1 << iota
-	// Ok / Cancel dialog
+	// Ok / Cancel dialog.
 	MsgboxButtonsOkCancel
-	// info
+	// info.
 	MsgboxButtonsOk
 )
 
-// DialogResultCallback is a callback for dialogs
+// DialogResultCallback is a callback for dialogs.
 type DialogResultCallback func(DialogResult)
 
 var _ Disposable = &msgboxState{}
@@ -41,7 +41,7 @@ type msgboxState struct {
 	open           bool
 }
 
-// Dispose implements disposable interface
+// Dispose implements disposable interface.
 func (ms *msgboxState) Dispose() {
 	// Nothing to do here.
 }
@@ -131,7 +131,7 @@ func PrepareMsgbox() Layout {
 	}
 }
 
-// MsgboxWidget represents message dialog
+// MsgboxWidget represents message dialog.
 type MsgboxWidget struct{}
 
 func (m *MsgboxWidget) getState() *msgboxState {
@@ -145,7 +145,7 @@ func (m *MsgboxWidget) getState() *msgboxState {
 
 // Msgbox opens message box.
 // call it whenever you want to open popup with
-// question / info
+// question / info.
 func Msgbox(title, content string) *MsgboxWidget {
 	result := &MsgboxWidget{}
 
@@ -161,14 +161,14 @@ func Msgbox(title, content string) *MsgboxWidget {
 	return result
 }
 
-// Buttons sets which buttons should be possible
+// Buttons sets which buttons should be possible.
 func (m *MsgboxWidget) Buttons(buttons MsgboxButtons) *MsgboxWidget {
 	s := m.getState()
 	s.buttons = buttons
 	return m
 }
 
-// ResultCallback sets result callback
+// ResultCallback sets result callback.
 func (m *MsgboxWidget) ResultCallback(cb DialogResultCallback) *MsgboxWidget {
 	s := m.getState()
 	s.resultCallback = cb

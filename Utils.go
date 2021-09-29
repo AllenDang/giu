@@ -13,7 +13,7 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
-// LoadImage loads image from file and returns *image.RGBA
+// LoadImage loads image from file and returns *image.RGBA.
 func LoadImage(imgPath string) (*image.RGBA, error) {
 	imgFile, err := os.Open(filepath.Clean(imgPath))
 	if err != nil {
@@ -35,7 +35,7 @@ func LoadImage(imgPath string) (*image.RGBA, error) {
 	return ImageToRgba(img), nil
 }
 
-// ImageToRgba converts image.Image to *image.RGBA
+// ImageToRgba converts image.Image to *image.RGBA.
 func ImageToRgba(img image.Image) *image.RGBA {
 	switch trueImg := img.(type) {
 	case *image.RGBA:
@@ -47,7 +47,7 @@ func ImageToRgba(img image.Image) *image.RGBA {
 	}
 }
 
-// ToVec4Color converts rgba color to imgui.Vec4
+// ToVec4Color converts rgba color to imgui.Vec4.
 func ToVec4Color(col color.RGBA) imgui.Vec4 {
 	return imgui.Vec4{
 		X: float32(col.R) / 255,
@@ -57,7 +57,7 @@ func ToVec4Color(col color.RGBA) imgui.Vec4 {
 	}
 }
 
-// ToVec2 converts image.Point to imgui.Vec2
+// ToVec2 converts image.Point to imgui.Vec2.
 func ToVec2(pt image.Point) imgui.Vec2 {
 	return imgui.Vec2{
 		X: float32(pt.X),
@@ -65,7 +65,7 @@ func ToVec2(pt image.Point) imgui.Vec2 {
 	}
 }
 
-// Vec4ToRGBA converts imgui's Vec4 to golang rgba color
+// Vec4ToRGBA converts imgui's Vec4 to golang rgba color.
 func Vec4ToRGBA(vec4 imgui.Vec4) color.RGBA {
 	return color.RGBA{
 		R: uint8(vec4.X * 255),
@@ -87,29 +87,29 @@ func Update() {
 	}
 }
 
-// GetCursorScreenPos returns imgui drawing cursor on the screen
+// GetCursorScreenPos returns imgui drawing cursor on the screen.
 func GetCursorScreenPos() image.Point {
 	pos := imgui.CursorScreenPos()
 	return image.Pt(int(pos.X), int(pos.Y))
 }
 
-// SetCursorScreenPos sets imgui drawing cursor on the screen
+// SetCursorScreenPos sets imgui drawing cursor on the screen.
 func SetCursorScreenPos(pos image.Point) {
 	imgui.SetCursorScreenPos(imgui.Vec2{X: float32(pos.X), Y: float32(pos.Y)})
 }
 
-// GetCursorPos gets imgui drawing cursor inside of current window
+// GetCursorPos gets imgui drawing cursor inside of current window.
 func GetCursorPos() image.Point {
 	pos := imgui.CursorPos()
 	return image.Pt(int(pos.X), int(pos.Y))
 }
 
-// SetCursorPos sets imgui drawing cursor inside of current window
+// SetCursorPos sets imgui drawing cursor inside of current window.
 func SetCursorPos(pos image.Point) {
 	imgui.SetCursorPos(imgui.Vec2{X: float32(pos.X), Y: float32(pos.Y)})
 }
 
-// GetMousePos returns mouse position
+// GetMousePos returns mouse position.
 func GetMousePos() image.Point {
 	pos := imgui.MousePos()
 	return image.Pt(int(pos.X), int(pos.Y))
@@ -120,26 +120,26 @@ func GetAvailableRegion() (width, height float32) {
 	return region.X, region.Y
 }
 
-// CalcTextSize calls CalcTextSizeV(text, false, -1)
+// CalcTextSize calls CalcTextSizeV(text, false, -1).
 func CalcTextSize(text string) (width, height float32) {
 	return CalcTextSizeV(text, false, -1)
 }
 
-// CalcTextSizeV calculates text dimensions
+// CalcTextSizeV calculates text dimensions.
 func CalcTextSizeV(text string, hideAfterDoubleHash bool, wrapWidth float32) (w, h float32) {
 	size := imgui.CalcTextSize(text, hideAfterDoubleHash, wrapWidth)
 	return size.X, size.Y
 }
 
-// SetNextWindowSize sets size of the next window
+// SetNextWindowSize sets size of the next window.
 func SetNextWindowSize(width, height float32) {
 	imgui.SetNextWindowSize(imgui.Vec2{X: width, Y: height})
 }
 
-// ExecCondition represents imgui.Condition
+// ExecCondition represents imgui.Condition.
 type ExecCondition imgui.Condition
 
-// imgui conditions
+// imgui conditions.
 const (
 	ConditionAlways       ExecCondition = ExecCondition(imgui.ConditionAlways)
 	ConditionOnce         ExecCondition = ExecCondition(imgui.ConditionOnce)
@@ -147,12 +147,12 @@ const (
 	ConditionAppearing    ExecCondition = ExecCondition(imgui.ConditionAppearing)
 )
 
-// SetNextWindowPos sets position of next window
+// SetNextWindowPos sets position of next window.
 func SetNextWindowPos(x, y float32) {
 	imgui.SetNextWindowPos(imgui.Vec2{X: x, Y: y})
 }
 
-// SetNextWindowSizeV does similar to SetNextWIndowSize but allows to specify imgui.Condition
+// SetNextWindowSizeV does similar to SetNextWIndowSize but allows to specify imgui.Condition.
 func SetNextWindowSizeV(width, height float32, condition ExecCondition) {
 	imgui.SetNextWindowSizeV(
 		imgui.Vec2{
@@ -163,12 +163,12 @@ func SetNextWindowSizeV(width, height float32, condition ExecCondition) {
 	)
 }
 
-// SetItemDefaultFocus set the item focused by default
+// SetItemDefaultFocus set the item focused by default.
 func SetItemDefaultFocus() {
 	imgui.SetItemDefaultFocus()
 }
 
-// SetKeyboardFocusHere sets keyboard focus at the widget
+// SetKeyboardFocusHere sets keyboard focus at the widget.
 func SetKeyboardFocusHere() {
 	SetKeyboardFocusHereV(0)
 }

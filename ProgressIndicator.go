@@ -30,16 +30,16 @@ func (ps *progressIndicatorState) update() {
 	ticker.Stop()
 }
 
-// Dispose implements Disposable interface
+// Dispose implements Disposable interface.
 func (ps *progressIndicatorState) Dispose() {
 	ps.stop = true
 }
 
-// static check to ensure if ProgressIndicatorWidget implements Widget interface
+// static check to ensure if ProgressIndicatorWidget implements Widget interface.
 var _ Widget = &ProgressIndicatorWidget{}
 
 // ProgressIndicatorWidget represents progress indicator widget
-// see examples/extrawidgets/
+// see examples/extrawidgets/.
 type ProgressIndicatorWidget struct {
 	internalID string
 	width      float32
@@ -48,7 +48,7 @@ type ProgressIndicatorWidget struct {
 	label      string
 }
 
-// ProgressIndicator creates a new ProgressIndicatorWidget
+// ProgressIndicator creates a new ProgressIndicatorWidget.
 func ProgressIndicator(label string, width, height, radius float32) *ProgressIndicatorWidget {
 	return &ProgressIndicatorWidget{
 		internalID: "###giu-progress-indicator",
@@ -59,7 +59,7 @@ func ProgressIndicator(label string, width, height, radius float32) *ProgressInd
 	}
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (p *ProgressIndicatorWidget) Build() {
 	// State exists
 	if s := Context.GetState(p.internalID); s == nil {

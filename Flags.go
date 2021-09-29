@@ -7,9 +7,9 @@ type InputTextFlags int
 const (
 	// InputTextFlagsNone sets everything default.
 	InputTextFlagsNone InputTextFlags = imgui.InputTextFlagsNone
-	// InputTextFlagsCharsDecimal allows 0123456789.+-
+	// InputTextFlagsCharsDecimal allows 0123456789.+-.
 	InputTextFlagsCharsDecimal InputTextFlags = imgui.InputTextFlagsCharsDecimal
-	// InputTextFlagsCharsHexadecimal allow 0123456789ABCDEFabcdef
+	// InputTextFlagsCharsHexadecimal allow 0123456789ABCDEFabcdef.
 	InputTextFlagsCharsHexadecimal InputTextFlags = imgui.InputTextFlagsCharsHexadecimal
 	// InputTextFlagsCharsUppercase turns a..z into A..Z.
 	InputTextFlagsCharsUppercase InputTextFlags = imgui.InputTextFlagsCharsUppercase
@@ -51,7 +51,7 @@ const (
 type WindowFlags int
 
 const (
-	// WindowFlagsNone default = 0
+	// WindowFlagsNone default = 0.
 	WindowFlagsNone WindowFlags = imgui.WindowFlagsNone
 	// WindowFlagsNoTitleBar disables title-bar.
 	WindowFlagsNoTitleBar WindowFlags = imgui.WindowFlagsNoTitleBar
@@ -96,7 +96,7 @@ const (
 	// WindowFlagsNoNavInputs has no gamepad/keyboard navigation within the window.
 	WindowFlagsNoNavInputs WindowFlags = imgui.WindowFlagsNoNavInputs
 	// WindowFlagsNoNavFocus has no focusing toward this window with gamepad/keyboard navigation
-	// (e.g. skipped by CTRL+TAB)
+	// (e.g. skipped by CTRL+TAB).
 	WindowFlagsNoNavFocus WindowFlags = imgui.WindowFlagsNoNavFocus
 	// WindowFlagsUnsavedDocument appends '*' to title without affecting the ID, as a convenience to avoid using the
 	// ### operator. When used in a tab/docking context, tab is selected on closure and closure is deferred by one
@@ -115,7 +115,7 @@ const (
 type ComboFlags int
 
 const (
-	// ComboFlagNone default = 0
+	// ComboFlagNone default = 0.
 	ComboFlagNone ComboFlags = imgui.ComboFlagNone
 	// ComboFlagPopupAlignLeft aligns the popup toward the left by default.
 	ComboFlagPopupAlignLeft ComboFlags = imgui.ComboFlagPopupAlignLeft
@@ -134,11 +134,11 @@ const (
 	ComboFlagNoPreview ComboFlags = imgui.ComboFlagNoPreview
 )
 
-// SelectableFlags represents imgui.SelectableFlags
+// SelectableFlags represents imgui.SelectableFlags.
 type SelectableFlags int
 
 const (
-	// SelectableFlagsNone default = 0
+	// SelectableFlagsNone default = 0.
 	SelectableFlagsNone SelectableFlags = imgui.SelectableFlagsNone
 	// SelectableFlagsDontClosePopups makes clicking the selectable not close any parent popup windows.
 	SelectableFlagsDontClosePopups SelectableFlags = imgui.SelectableFlagsDontClosePopups
@@ -150,23 +150,23 @@ const (
 	SelectableFlagsDisabled SelectableFlags = imgui.SelectableFlagsDisabled
 )
 
-// TabItemFlags represents tab item flags
+// TabItemFlags represents tab item flags.
 type TabItemFlags int
 
 const (
-	// TabItemFlagsNone default = 0
+	// TabItemFlagsNone default = 0.
 	TabItemFlagsNone TabItemFlags = imgui.TabItemFlagsNone
 	// TabItemFlagsUnsavedDocument Append '*' to title without affecting the ID, as a convenience to avoid using the
 	// ### operator. Also: tab is selected on closure and closure is deferred by one frame to allow code to undo it
 	// without flicker.
 	TabItemFlagsUnsavedDocument TabItemFlags = imgui.TabItemFlagsUnsavedDocument
-	// TabItemFlagsSetSelected Trigger flag to programmatically make the tab selected when calling BeginTabItem()
+	// TabItemFlagsSetSelected Trigger flag to programmatically make the tab selected when calling BeginTabItem().
 	TabItemFlagsSetSelected TabItemFlags = imgui.TabItemFlagsSetSelected
 	// TabItemFlagsNoCloseWithMiddleMouseButton  Disable behavior of closing tabs (that are submitted with
 	// p_open != NULL) with middle mouse button. You can still repro this behavior on user's side with if
 	// (IsItemHovered() && IsMouseClicked(2)) *p_open = false.
 	TabItemFlagsNoCloseWithMiddleMouseButton TabItemFlags = imgui.TabItemFlagsNoCloseWithMiddleMouseButton
-	// TabItemFlagsNoPushID Don't call PushID(tab->ID)/PopID() on BeginTabItem()/EndTabItem()
+	// TabItemFlagsNoPushID Don't call PushID(tab->ID)/PopID() on BeginTabItem()/EndTabItem().
 	TabItemFlagsNoPushID TabItemFlags = imgui.TabItemFlagsNoPushID
 )
 
@@ -175,37 +175,37 @@ type TabBarFlags int
 const (
 	// TabBarFlagsNone default = 0.
 	TabBarFlagsNone TabBarFlags = imgui.TabBarFlagsNone
-	// TabBarFlagsReorderable Allow manually dragging tabs to re-order them + New tabs are appended at the end of list
+	// TabBarFlagsReorderable Allow manually dragging tabs to re-order them + New tabs are appended at the end of list.
 	TabBarFlagsReorderable TabBarFlags = imgui.TabBarFlagsReorderable
-	// TabBarFlagsAutoSelectNewTabs Automatically select new tabs when they appear
+	// TabBarFlagsAutoSelectNewTabs Automatically select new tabs when they appear.
 	TabBarFlagsAutoSelectNewTabs TabBarFlags = imgui.TabBarFlagsAutoSelectNewTabs
-	// TabBarFlagsTabListPopupButton Disable buttons to open the tab list popup
+	// TabBarFlagsTabListPopupButton Disable buttons to open the tab list popup.
 	TabBarFlagsTabListPopupButton TabBarFlags = imgui.TabBarFlagsTabListPopupButton
 	// TabBarFlagsNoCloseWithMiddleMouseButton Disable behavior of closing tabs (that are submitted with p_open != NULL)
 	// with middle mouse button. You can still repro this behavior on user's side with if
 	// (IsItemHovered() && IsMouseClicked(2)) *p_open = false.
 	TabBarFlagsNoCloseWithMiddleMouseButton TabBarFlags = imgui.TabBarFlagsNoCloseWithMiddleMouseButton
 	// TabBarFlagsNoTabListScrollingButtons Disable scrolling buttons (apply when fitting policy is
-	// TabBarFlagsFittingPolicyScroll)
+	// TabBarFlagsFittingPolicyScroll).
 	TabBarFlagsNoTabListScrollingButtons TabBarFlags = imgui.TabBarFlagsNoTabListScrollingButtons
-	// TabBarFlagsNoTooltip Disable tooltips when hovering a tab
+	// TabBarFlagsNoTooltip Disable tooltips when hovering a tab.
 	TabBarFlagsNoTooltip TabBarFlags = imgui.TabBarFlagsNoTooltip
-	// TabBarFlagsFittingPolicyResizeDown Resize tabs when they don't fit
+	// TabBarFlagsFittingPolicyResizeDown Resize tabs when they don't fit.
 	TabBarFlagsFittingPolicyResizeDown TabBarFlags = imgui.TabBarFlagsFittingPolicyResizeDown
-	// TabBarFlagsFittingPolicyScroll Add scroll buttons when tabs don't fit
+	// TabBarFlagsFittingPolicyScroll Add scroll buttons when tabs don't fit.
 	TabBarFlagsFittingPolicyScroll TabBarFlags = imgui.TabBarFlagsFittingPolicyScroll
 	// TabBarFlagsFittingPolicyMask combines
-	// TabBarFlagsFittingPolicyResizeDown and TabBarFlagsFittingPolicyScroll
+	// TabBarFlagsFittingPolicyResizeDown and TabBarFlagsFittingPolicyScroll.
 	TabBarFlagsFittingPolicyMask TabBarFlags = imgui.TabBarFlagsFittingPolicyMask
-	// TabBarFlagsFittingPolicyDefault alias for TabBarFlagsFittingPolicyResizeDown
+	// TabBarFlagsFittingPolicyDefault alias for TabBarFlagsFittingPolicyResizeDown.
 	TabBarFlagsFittingPolicyDefault TabBarFlags = imgui.TabBarFlagsFittingPolicyDefault
 )
 
-// TreeNodeFlags represents tree node widget flags
+// TreeNodeFlags represents tree node widget flags.
 type TreeNodeFlags int
 
 const (
-	// TreeNodeFlagsNone default = 0
+	// TreeNodeFlagsNone default = 0.
 	TreeNodeFlagsNone TreeNodeFlags = imgui.TreeNodeFlagsNone
 	// TreeNodeFlagsSelected draws as selected.
 	TreeNodeFlagsSelected TreeNodeFlags = imgui.TreeNodeFlagsSelected
@@ -241,21 +241,21 @@ const (
 	// TreeNodeFlagsSpanFullWidth extends hit box to the left-most and right-most edges (bypass the indented area).
 	TreeNodeFlagsSpanFullWidth TreeNodeFlags = imgui.TreeNodeFlagsSpanFullWidth
 	// TreeNodeFlagsNavLeftJumpsBackHere (WIP) Nav: left direction may move to this TreeNode() from any of its child
-	// (items submitted between TreeNode and TreePop)
+	// (items submitted between TreeNode and TreePop).
 	TreeNodeFlagsNavLeftJumpsBackHere TreeNodeFlags = imgui.TreeNodeFlagsNavLeftJumpsBackHere
 	// TreeNodeFlagsCollapsingHeader combines TreeNodeFlagsFramed and TreeNodeFlagsNoAutoOpenOnLog.
 	TreeNodeFlagsCollapsingHeader TreeNodeFlags = imgui.TreeNodeFlagsCollapsingHeader
 )
 
-// FocusedFlags represents imgui.FocusedFlags
+// FocusedFlags represents imgui.FocusedFlags.
 type FocusedFlags int
 
 const (
-	// FocusedFlagsNone default FocusedFlags = 0
+	// FocusedFlagsNone default FocusedFlags = 0.
 	FocusedFlagsNone FocusedFlags = 0
-	// FocusedFlagsChildWindows matches if any children of the window is focused
+	// FocusedFlagsChildWindows matches if any children of the window is focused.
 	FocusedFlagsChildWindows FocusedFlags = 1 << 0
-	// FocusedFlagsRootWindow tests from root window (top most parent of the current hierarchy)
+	// FocusedFlagsRootWindow tests from root window (top most parent of the current hierarchy).
 	FocusedFlagsRootWindow FocusedFlags = 1 << 1
 	// FocusedFlagsAnyWindow matches if any window is focused.
 	FocusedFlagsAnyWindow FocusedFlags = 1 << 2
@@ -263,7 +263,7 @@ const (
 	FocusedFlagsRootAndChildWindows = FocusedFlagsRootWindow | FocusedFlagsChildWindows
 )
 
-// HoveredFlags represents a hovered flags
+// HoveredFlags represents a hovered flags.
 type HoveredFlags int
 
 const (
@@ -281,9 +281,9 @@ const (
 	// HoveredFlagsAllowWhenBlockedByActiveItem Return true even if an active item is blocking access to this item/window.
 	// Useful for Drag and Drop patterns.
 	HoveredFlagsAllowWhenBlockedByActiveItem HoveredFlags = imgui.HoveredFlagsAllowWhenBlockedByActiveItem
-	// HoveredFlagsAllowWhenOverlapped Return true even if the position is overlapped by another window
+	// HoveredFlagsAllowWhenOverlapped Return true even if the position is overlapped by another window.
 	HoveredFlagsAllowWhenOverlapped HoveredFlags = imgui.HoveredFlagsAllowWhenOverlapped
-	// HoveredFlagsAllowWhenDisabled Return true even if the item is disabled
+	// HoveredFlagsAllowWhenDisabled Return true even if the item is disabled.
 	HoveredFlagsAllowWhenDisabled HoveredFlags = imgui.HoveredFlagsAllowWhenDisabled
 )
 
@@ -291,7 +291,7 @@ const (
 type ColorEditFlags int
 
 const (
-	// ColorEditFlagsNone default = 0
+	// ColorEditFlagsNone default = 0.
 	ColorEditFlagsNone ColorEditFlags = imgui.ColorEditFlagsNone
 	// ColorEditFlagsNoAlpha ignores Alpha component (read 3 components from the input pointer).
 	ColorEditFlagsNoAlpha ColorEditFlags = imgui.ColorEditFlagsNoAlpha
@@ -299,7 +299,7 @@ const (
 	ColorEditFlagsNoPicker ColorEditFlags = imgui.ColorEditFlagsNoPicker
 	// ColorEditFlagsNoOptions disables toggling options menu when right-clicking on inputs/small preview.
 	ColorEditFlagsNoOptions ColorEditFlags = imgui.ColorEditFlagsNoOptions
-	// ColorEditFlagsNoSmallPreview disables colored square preview next to the inputs. (e.g. to show only the inputs)
+	// ColorEditFlagsNoSmallPreview disables colored square preview next to the inputs. (e.g. to show only the inputs).
 	ColorEditFlagsNoSmallPreview ColorEditFlags = imgui.ColorEditFlagsNoSmallPreview
 	// ColorEditFlagsNoInputs disables inputs sliders/text widgets (e.g. to show only the small preview colored square).
 	ColorEditFlagsNoInputs ColorEditFlags = imgui.ColorEditFlagsNoInputs
@@ -323,11 +323,11 @@ const (
 	// ColorEditFlagsHDR = (WIP) surrently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use
 	// ImGuiColorEditFlags_Float flag as well).
 	ColorEditFlagsHDR ColorEditFlags = imgui.ColorEditFlagsHDR
-	// ColorEditFlagsRGB sets the format as RGB
+	// ColorEditFlagsRGB sets the format as RGB.
 	ColorEditFlagsRGB ColorEditFlags = imgui.ColorEditFlagsRGB
-	// ColorEditFlagsHSV sets the format as HSV
+	// ColorEditFlagsHSV sets the format as HSV.
 	ColorEditFlagsHSV ColorEditFlags = imgui.ColorEditFlagsHSV
-	// ColorEditFlagsHEX sets the format as HEX
+	// ColorEditFlagsHEX sets the format as HEX.
 	ColorEditFlagsHEX ColorEditFlags = imgui.ColorEditFlagsHEX
 	// ColorEditFlagsUint8 _display_ values formatted as 0..255.
 	ColorEditFlagsUint8 ColorEditFlags = imgui.ColorEditFlagsUint8
@@ -335,10 +335,10 @@ const (
 	ColorEditFlagsFloat ColorEditFlags = imgui.ColorEditFlagsFloat
 )
 
-// TableFlags represents table flags
+// TableFlags represents table flags.
 type TableFlags int
 
-// Table flags enum:
+// Table flags enum:.
 const (
 	TableFlagsNone                       TableFlags = TableFlags(imgui.TableFlags_None)
 	TableFlagsResizable                  TableFlags = TableFlags(imgui.TableFlags_Resizable)
@@ -382,14 +382,14 @@ type TableRowFlags int
 
 const (
 	TableRowFlagsNone TableRowFlags = TableRowFlags(imgui.TableRowFlags_None)
-	// Identify header row (set default background color + width of its contents accounted different for auto column width)
+	// Identify header row (set default background color + width of its contents accounted different for auto column width).
 	TableRowFlagsHeaders TableRowFlags = TableRowFlags(imgui.TableRowFlags_Headers)
 )
 
 type TableColumnFlags int
 
 const (
-	// Input configuration flags
+	// Input configuration flags.
 	TableColumnFlagsNone                 TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_None)
 	TableColumnFlagsDefaultHide          TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_DefaultHide)
 	TableColumnFlagsDefaultSort          TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_DefaultSort)
@@ -408,13 +408,13 @@ const (
 	TableColumnFlagsIndentEnable         TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IndentEnable)
 	TableColumnFlagsIndentDisable        TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IndentDisable)
 
-	// Output status flags read-only via TableGetColumnFlags()
+	// Output status flags read-only via TableGetColumnFlags().
 	TableColumnFlagsIsEnabled TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IsEnabled)
 	TableColumnFlagsIsVisible TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IsVisible)
 	TableColumnFlagsIsSorted  TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IsSorted)
 	TableColumnFlagsIsHovered TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IsHovered)
 
-	// [Internal] Combinations and masks
+	// [Internal] Combinations and masks.
 	TableColumnFlagsWidthMask_      TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_WidthMask_)
 	TableColumnFlagsIndentMask_     TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IndentMask_)
 	TableColumnFlagsStatusMask_     TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_StatusMask_)
@@ -430,9 +430,9 @@ const (
 	// Make the widget logarithmic (linear otherwise). Consider using ImGuiSliderFlagsNoRoundToFormat with this if using
 	// a format-string with small amount of digits.
 	SliderFlagsLogarithmic SliderFlags = 1 << 5
-	// Disable rounding underlying value to match precision of the display format string (e.g. %.3f values are rounded to those 3 digits)
+	// Disable rounding underlying value to match precision of the display format string (e.g. %.3f values are rounded to those 3 digits).
 	SliderFlagsNoRoundToFormat SliderFlags = 1 << 6
-	// Disable CTRL+Click or Enter key allowing to input text directly into the widget
+	// Disable CTRL+Click or Enter key allowing to input text directly into the widget.
 	SliderFlagsNoInput SliderFlags = 1 << 7
 	// [Internal] We treat using those bits as being potentially a 'float power' argument from the previous API that has got miscast
 	// to this enum, and will trigger an assert if needed.

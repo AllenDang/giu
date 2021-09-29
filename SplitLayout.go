@@ -20,7 +20,7 @@ type SplitLayoutState struct {
 	sashPos float32
 }
 
-// Dispose implements Disposable interface
+// Dispose implements Disposable interface.
 func (s *SplitLayoutState) Dispose() {
 	// Nothing to do here.
 }

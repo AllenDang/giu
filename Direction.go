@@ -1,9 +1,9 @@
 package giu
 
-// Direction represents a ArrowButton direction
+// Direction represents a ArrowButton direction.
 type Direction uint8
 
-// directions
+// directions.
 const (
 	DirectionLeft Direction = iota
 	DirectionRight

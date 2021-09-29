@@ -9,7 +9,7 @@ import (
 	"github.com/faiface/mainthread"
 )
 
-// MasterWindowFlags wrapps imgui.GLFWWindowFlags
+// MasterWindowFlags wrapps imgui.GLFWWindowFlags.
 type MasterWindowFlags imgui.GLFWWindowFlags
 
 const (
@@ -25,11 +25,11 @@ const (
 	MasterWindowFlagsTransparent MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsTransparent)
 )
 
-// DontCare could be used as an argument to (*MasterWindow).SetSizeLimits
+// DontCare could be used as an argument to (*MasterWindow).SetSizeLimits.
 var DontCare int = imgui.GlfwDontCare
 
 // MasterWindow represents a glfw master window
-// It is a base for a windows (see Window.go)
+// It is a base for a windows (see Window.go).
 type MasterWindow struct {
 	width      int
 	height     int
@@ -44,7 +44,7 @@ type MasterWindow struct {
 
 // NewMasterWindow creates a new master window and initializes GLFW.
 // it should be called in main function. For more details and use cases,
-// see examples/helloworld/
+// see examples/helloworld/.
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
 	context := imgui.CreateContext(nil)
 	imgui.ImPlotCreateContext()
@@ -246,7 +246,7 @@ func (w *MasterWindow) SetPos(x, y int) {
 	}
 }
 
-// SetSize sets size of master window
+// SetSize sets size of master window.
 func (w *MasterWindow) SetSize(x, y int) {
 	if w.platform != nil {
 		if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
@@ -299,7 +299,7 @@ func (w *MasterWindow) Run(loopFunc func()) {
 	})
 }
 
-// RegisterKeyboardShortcuts registers a global - master window - keyboard shortcuts
+// RegisterKeyboardShortcuts registers a global - master window - keyboard shortcuts.
 func (w *MasterWindow) RegisterKeyboardShortcuts(s ...WindowShortcut) *MasterWindow {
 	for _, shortcut := range s {
 		RegisterKeyboardShortcuts(Shortcut{
@@ -339,17 +339,17 @@ func (w *MasterWindow) SetSizeLimits(minw, minh, maxw, maxh int) {
 	w.platform.SetSizeLimits(minw, minh, maxw, maxh)
 }
 
-// SetTitle updates master window's title
+// SetTitle updates master window's title.
 func (w *MasterWindow) SetTitle(title string) {
 	w.platform.SetTitle(title)
 }
 
-// Close will savely close the master window
+// Close will savely close the master window.
 func (w *MasterWindow) Close() {
 	w.SetShouldClose(true)
 }
 
-// SetShouldClose sets whether master window should be closed
+// SetShouldClose sets whether master window should be closed.
 func (w *MasterWindow) SetShouldClose(v bool) {
 	w.platform.SetShouldStop(v)
 }

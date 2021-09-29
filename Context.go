@@ -81,7 +81,7 @@ func (c *context) GetState(id string) interface{} {
 	return nil
 }
 
-// Get widget index for current layout
+// Get widget index for current layout.
 func (c *context) GetWidgetIndex() int {
 	i := c.widgetIndexCounter
 	c.widgetIndexCounter++
