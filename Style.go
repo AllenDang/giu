@@ -29,49 +29,49 @@ func PopFont() {
 
 // PushStyleColor wrapps imgui.PushStyleColor
 // NOTE: don't forget to call PopStyleColor()!
-func PushStyleColor(id StyleColorID, col color.RGBA) {
+func PushStyleColor(id StyleColorID, col color.Color) {
 	imgui.PushStyleColor(imgui.StyleColorID(id), ToVec4Color(col))
 }
 
 // PushColorText calls PushStyleColor(StyleColorText,...)
 // NOTE: don't forget to call PopStyleColor()!
-func PushColorText(col color.RGBA) {
+func PushColorText(col color.Color) {
 	imgui.PushStyleColor(imgui.StyleColorText, ToVec4Color(col))
 }
 
 // PushColorTextDisabled calls PushStyleColor(StyleColorTextDisabled,...)
 // NOTE: don't forget to call PopStyleColor()!
-func PushColorTextDisabled(col color.RGBA) {
+func PushColorTextDisabled(col color.Color) {
 	imgui.PushStyleColor(imgui.StyleColorTextDisabled, ToVec4Color(col))
 }
 
 // PushColorWindowBg calls PushStyleColor(StyleColorWindowBg,...)
 // NOTE: don't forget to call PopStyleColor()!
-func PushColorWindowBg(col color.RGBA) {
+func PushColorWindowBg(col color.Color) {
 	imgui.PushStyleColor(imgui.StyleColorWindowBg, ToVec4Color(col))
 }
 
 // PushColorFrameBg calls PushStyleColor(StyleColorFrameBg,...)
 // NOTE: don't forget to call PopStyleColor()!
-func PushColorFrameBg(col color.RGBA) {
+func PushColorFrameBg(col color.Color) {
 	imgui.PushStyleColor(imgui.StyleColorFrameBg, ToVec4Color(col))
 }
 
 // PushColorButton calls PushStyleColor(StyleColorButton,...)
 // NOTE: don't forget to call PopStyleColor()!
-func PushColorButton(col color.RGBA) {
+func PushColorButton(col color.Color) {
 	imgui.PushStyleColor(imgui.StyleColorButton, ToVec4Color(col))
 }
 
 // PushColorButtonHovered calls PushStyleColor(StyleColorButtonHovered,...)
 // NOTE: don't forget to call PopStyleColor()!
-func PushColorButtonHovered(col color.RGBA) {
+func PushColorButtonHovered(col color.Color) {
 	imgui.PushStyleColor(imgui.StyleColorButtonHovered, ToVec4Color(col))
 }
 
 // PushColorButtonActive calls PushStyleColor(StyleColorButtonActive,...)
 // NOTE: don't forget to call PopStyleColor()!
-func PushColorButtonActive(col color.RGBA) {
+func PushColorButtonActive(col color.Color) {
 	imgui.PushStyleColor(imgui.StyleColorButtonActive, ToVec4Color(col))
 }
 
@@ -329,7 +329,7 @@ var _ Widget = &StyleSetter{}
 
 // StyleSetter is a user-friendly way to manage imgui styles
 type StyleSetter struct {
-	colors   map[StyleColorID]color.RGBA
+	colors   map[StyleColorID]color.Color
 	styles   map[StyleVarID]imgui.Vec2
 	font     *FontInfo
 	disabled bool
@@ -339,14 +339,14 @@ type StyleSetter struct {
 // Style initializes a style setter (see examples/setstyle)
 func Style() *StyleSetter {
 	var ss StyleSetter
-	ss.colors = make(map[StyleColorID]color.RGBA)
+	ss.colors = make(map[StyleColorID]color.Color)
 	ss.styles = make(map[StyleVarID]imgui.Vec2)
 
 	return &ss
 }
 
 // SetColor sets colorID's color
-func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.RGBA) *StyleSetter {
+func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.Color) *StyleSetter {
 	ss.colors[colorID] = col
 	return ss
 }

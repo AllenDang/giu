@@ -47,12 +47,13 @@ func ImageToRgba(img image.Image) *image.RGBA {
 }
 
 // ToVec4Color converts rgba color to imgui.Vec4
-func ToVec4Color(col color.RGBA) imgui.Vec4 {
+func ToVec4Color(col color.Color) imgui.Vec4 {
+	r, g, b, a := col.RGBA()
 	return imgui.Vec4{
-		X: float32(col.R) / 255,
-		Y: float32(col.G) / 255,
-		Z: float32(col.B) / 255,
-		W: float32(col.A) / 255,
+		X: float32(r) / 255,
+		Y: float32(g) / 255,
+		Z: float32(b) / 255,
+		W: float32(a) / 255,
 	}
 }
 
