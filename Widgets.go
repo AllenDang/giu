@@ -117,25 +117,25 @@ func (i *InputTextMultilineWidget) Build() {
 	}
 }
 
-// Flags sets InputTextFlags (see Flags.go)
+// Flags sets InputTextFlags (see Flags.go).
 func (i *InputTextMultilineWidget) Flags(flags InputTextFlags) *InputTextMultilineWidget {
 	i.flags = flags
 	return i
 }
 
-// Callback sets imgui.InputTextCallback
+// Callback sets imgui.InputTextCallback.
 func (i *InputTextMultilineWidget) Callback(cb imgui.InputTextCallback) *InputTextMultilineWidget {
 	i.cb = cb
 	return i
 }
 
-// OnChange set callback called when user action taken on input text field (when text was changed)
+// OnChange set callback called when user action taken on input text field (when text was changed).
 func (i *InputTextMultilineWidget) OnChange(onChange func()) *InputTextMultilineWidget {
 	i.onChange = onChange
 	return i
 }
 
-// Size sets input field size
+// Size sets input field size.
 func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultilineWidget {
 	i.width, i.height = width, height
 	return i
@@ -165,26 +165,26 @@ func (b *ButtonWidget) Build() {
 }
 
 // OnClick sets callback called when button is clicked
-// NOTE: to set double click, see EventHandler.go
+// NOTE: to set double click, see EventHandler.go.
 func (b *ButtonWidget) OnClick(onClick func()) *ButtonWidget {
 	b.onClick = onClick
 	return b
 }
 
 // Disabled sets button's disabled state
-// NOTE: same effect as Style().SetDisabled
+// NOTE: same effect as Style().SetDisabled.
 func (b *ButtonWidget) Disabled(d bool) *ButtonWidget {
 	b.disabled = d
 	return b
 }
 
-// Size sets button's size
+// Size sets button's size.
 func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 	b.width, b.height = width, height
 	return b
 }
 
-// Button creates a new button widget
+// Button creates a new button widget.
 func Button(label string) *ButtonWidget {
 	return &ButtonWidget{
 		id:      GenAutoID(label),
@@ -195,7 +195,7 @@ func Button(label string) *ButtonWidget {
 }
 
 // Buttonf creates button with formated label
-// NOTE: works like fmt.Sprintf (see `go doc fmt`)
+// NOTE: works like fmt.Sprintf (see `go doc fmt`).
 func Buttonf(format string, args ...interface{}) *ButtonWidget {
 	return Button(fmt.Sprintf(format, args...))
 }
@@ -206,7 +206,7 @@ var _ Widget = &BulletWidget{}
 // useful in enumerations.
 type BulletWidget struct{}
 
-// Bullet creates a bullet widget
+// Bullet creates a bullet widget.
 func Bullet() *BulletWidget {
 	return &BulletWidget{}
 }
@@ -224,14 +224,14 @@ type BulletTextWidget struct {
 	text string
 }
 
-// BulletText creates bulletTextWidget
+// BulletText creates bulletTextWidget.
 func BulletText(text string) *BulletTextWidget {
 	return &BulletTextWidget{
 		text: tStr(text),
 	}
 }
 
-// BulletTextf is a formatting version of BulletText
+// BulletTextf is a formatting version of BulletText.
 func BulletTextf(format string, args ...interface{}) *BulletTextWidget {
 	return BulletText(fmt.Sprintf(format, args...))
 }
@@ -243,17 +243,20 @@ func (bt *BulletTextWidget) Build() {
 
 var _ Widget = &ArrowButtonWidget{}
 
+// ArrowButtonWidget represents a square button with an arrow.
 type ArrowButtonWidget struct {
 	id      string
 	dir     Direction
 	onClick func()
 }
 
+// OnClick adds callback called when button is clicked.
 func (b *ArrowButtonWidget) OnClick(onClick func()) *ArrowButtonWidget {
 	b.onClick = onClick
 	return b
 }
 
+// ArrowButton creates ArrowButtonWidget.
 func ArrowButton(dir Direction) *ArrowButtonWidget {
 	return &ArrowButtonWidget{
 		id:      GenAutoID("ArrowButton"),
@@ -262,6 +265,7 @@ func ArrowButton(dir Direction) *ArrowButtonWidget {
 	}
 }
 
+// ID allows to manually set widget's id.
 func (b *ArrowButtonWidget) ID(id string) *ArrowButtonWidget {
 	b.id = id
 	return b
