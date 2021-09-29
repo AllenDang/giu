@@ -489,6 +489,7 @@ func (b *ImageButtonWithRgbaWidget) Build() {
 
 var _ Widget = &CheckboxWidget{}
 
+// CheckboxWidget adds a checkbox.
 type CheckboxWidget struct {
 	text     string
 	selected *bool
@@ -502,11 +503,13 @@ func (c *CheckboxWidget) Build() {
 	}
 }
 
+// OnChange adds callback called when checkbox's state was changed.
 func (c *CheckboxWidget) OnChange(onChange func()) *CheckboxWidget {
 	c.onChange = onChange
 	return c
 }
 
+// Checkbox creates a new CheckboxWidget.
 func Checkbox(text string, selected *bool) *CheckboxWidget {
 	return &CheckboxWidget{
 		text:     GenAutoID(text),
@@ -780,11 +783,12 @@ func (d *DragIntWidget) Build() {
 
 var _ Widget = &ColumnWidget{}
 
+// ColumnWidget will place all widgets one by one vertically.
 type ColumnWidget struct {
 	widgets Layout
 }
 
-// Column layout will place all widgets one by one vertically.
+// Column creates a new ColumnWidget.
 func Column(widgets ...Widget) *ColumnWidget {
 	return &ColumnWidget{
 		widgets: widgets,
