@@ -26,7 +26,7 @@ type AlignmentSetter struct {
 //
 // - BUG: DatePickerWidget doesn't work properly
 // - BUG: there is some bug with SelectableWidget
-// - BUG: ComboWidget and ComboCustomWidgets doesn't work properly
+// - BUG: ComboWidget and ComboCustomWidgets doesn't work properly.
 func Align(at AlignmentType) *AlignmentSetter {
 	return &AlignmentSetter{
 		alignType: at,
@@ -34,14 +34,14 @@ func Align(at AlignmentType) *AlignmentSetter {
 	}
 }
 
-// To sets a layout, alignment should be applied to
+// To sets a layout, alignment should be applied to.
 func (a *AlignmentSetter) To(widgets ...Widget) *AlignmentSetter {
 	a.layout = Layout(widgets)
 	return a
 }
 
 // ID allows to manually set AlignmentSetter ID (it shouldn't be used
-// in a normal conditions)
+// in a normal conditions).
 func (a *AlignmentSetter) ID(id string) *AlignmentSetter {
 	a.id = id
 	return a

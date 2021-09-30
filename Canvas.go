@@ -8,30 +8,30 @@ import (
 )
 
 // Canvas represents imgui.DrawList
-// for more details see examples/canvas
+// for more details see examples/canvas.
 type Canvas struct {
 	drawlist imgui.DrawList
 }
 
-// GetCanvas creates new Canvas
+// GetCanvas creates new Canvas.
 func GetCanvas() *Canvas {
 	return &Canvas{
 		drawlist: imgui.GetWindowDrawList(),
 	}
 }
 
-// AddLine draws a line (from p1 to p2)
+// AddLine draws a line (from p1 to p2).
 func (c *Canvas) AddLine(p1, p2 image.Point, col color.Color, thickness float32) {
 	c.drawlist.AddLine(ToVec2(p1), ToVec2(p2), ToVec4Color(col), thickness)
 }
 
-// DrawFlags represents imgui.DrawFlags
+// DrawFlags represents imgui.DrawFlags.
 type DrawFlags int
 
-// draw flags enum:
+// draw flags enum:.
 const (
 	DrawFlagsNone DrawFlags = 0
-	// PathStroke(), AddPolyline(): specify that shape should be closed (portant: this is always == 1 for legacy reason)
+	// PathStroke(), AddPolyline(): specify that shape should be closed (portant: this is always == 1 for legacy reason).
 	DrawFlagsClosed DrawFlags = 1 << 0
 	// AddRect(), AddRectFilled(), PathRect(): enable rounding top-left corner only (when rounding > 0.0f, we default to all corners).
 	// Was 0x01.
@@ -58,52 +58,52 @@ const (
 	DrawFlagsRoundCornersMask    DrawFlags = DrawFlagsRoundCornersAll | DrawFlagsRoundCornersNone
 )
 
-// AddRect draws a rectangle
+// AddRect draws a rectangle.
 func (c *Canvas) AddRect(pMin, pMax image.Point, col color.Color, rounding float32, roundingCorners DrawFlags, thickness float32) {
 	c.drawlist.AddRect(ToVec2(pMin), ToVec2(pMax), ToVec4Color(col), rounding, int(roundingCorners), thickness)
 }
 
-// AddRectFilled draws a rectangle filled with `col`
+// AddRectFilled draws a rectangle filled with `col`.
 func (c *Canvas) AddRectFilled(pMin, pMax image.Point, col color.Color, rounding float32, roundingCorners DrawFlags) {
 	c.drawlist.AddRectFilled(ToVec2(pMin), ToVec2(pMax), ToVec4Color(col), rounding, int(roundingCorners))
 }
 
-// AddText draws text
+// AddText draws text.
 func (c *Canvas) AddText(pos image.Point, col color.Color, text string) {
 	c.drawlist.AddText(ToVec2(pos), ToVec4Color(col), tStr(text))
 }
 
-// AddBezierCubic draws bezier cubic
+// AddBezierCubic draws bezier cubic.
 func (c *Canvas) AddBezierCubic(pos0, cp0, cp1, pos1 image.Point, col color.Color, thickness float32, numSegments int) {
 	c.drawlist.AddBezierCubic(ToVec2(pos0), ToVec2(cp0), ToVec2(cp1), ToVec2(pos1), ToVec4Color(col), thickness, numSegments)
 }
 
-// AddTriangle draws a triangle
+// AddTriangle draws a triangle.
 func (c *Canvas) AddTriangle(p1, p2, p3 image.Point, col color.Color, thickness float32) {
 	c.drawlist.AddTriangle(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec4Color(col), thickness)
 }
 
-// AddTriangleFilled draws a filled triangle
+// AddTriangleFilled draws a filled triangle.
 func (c *Canvas) AddTriangleFilled(p1, p2, p3 image.Point, col color.Color) {
 	c.drawlist.AddTriangleFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec4Color(col))
 }
 
-// AddCircle draws a circle
+// AddCircle draws a circle.
 func (c *Canvas) AddCircle(center image.Point, radius float32, col color.Color, segments int, thickness float32) {
 	c.drawlist.AddCircle(ToVec2(center), radius, ToVec4Color(col), segments, thickness)
 }
 
-// AddCircleFilled draws a filled circle
+// AddCircleFilled draws a filled circle.
 func (c *Canvas) AddCircleFilled(center image.Point, radius float32, col color.Color) {
 	c.drawlist.AddCircleFilled(ToVec2(center), radius, ToVec4Color(col))
 }
 
-// AddQuad draws a quad
+// AddQuad draws a quad.
 func (c *Canvas) AddQuad(p1, p2, p3, p4 image.Point, col color.Color, thickness float32) {
 	c.drawlist.AddQuad(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec4Color(col), thickness)
 }
 
-// AddQuadFilled draws a filled quad
+// AddQuadFilled draws a filled quad.
 func (c *Canvas) AddQuadFilled(p1, p2, p3, p4 image.Point, col color.Color) {
 	c.drawlist.AddQuadFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec4Color(col))
 }

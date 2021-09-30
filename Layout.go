@@ -1,7 +1,7 @@
 package giu
 
 const (
-	// Auto is used to widget.Size to indicate height or width to occupy available spaces
+	// Auto is used to widget.Size to indicate height or width to occupy available spaces.
 	Auto float32 = -1
 )
 
@@ -21,7 +21,7 @@ var (
 // Layout can be used as a widget.
 type Layout []Widget
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (l Layout) Build() {
 	for _, w := range l {
 		if w != nil {

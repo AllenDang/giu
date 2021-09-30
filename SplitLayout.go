@@ -20,7 +20,7 @@ type SplitLayoutState struct {
 	sashPos float32
 }
 
-// Dispose implements Disposable interface
+// Dispose implements Disposable interface.
 func (s *SplitLayoutState) Dispose() {
 	// Nothing to do here.
 }
@@ -96,7 +96,9 @@ func (s *SplitLayoutWidget) Build() {
 		splitLayoutState = &SplitLayoutState{delta: 0.0, sashPos: s.sashPos}
 		Context.SetState(stateID, splitLayoutState)
 	} else {
-		splitLayoutState = state.(*SplitLayoutState)
+		var isOk bool
+		splitLayoutState, isOk = state.(*SplitLayoutState)
+		Assert(isOk, "SplitLayoutWidget", "Build", "got unexpected type of widget's state")
 	}
 
 	itemSpacingX, itemSpacingY := GetItemInnerSpacing()
