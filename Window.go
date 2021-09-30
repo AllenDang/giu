@@ -123,7 +123,7 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 		Custom(func() {
 			hasFocus := IsWindowFocused(0)
 			if !hasFocus && ws.hasFocus {
-				unregisterWindowShortcuts()
+				Context.InputHandler.UnregisterWindowShortcuts()
 			}
 
 			ws.hasFocus = hasFocus
@@ -169,7 +169,7 @@ func (w *WindowWidget) HasFocus() bool {
 func (w *WindowWidget) RegisterKeyboardShortcuts(s ...WindowShortcut) *WindowWidget {
 	if w.HasFocus() {
 		for _, shortcut := range s {
-			RegisterKeyboardShortcuts(Shortcut{
+			Context.InputHandler.RegisterKeyboardShortcuts(Shortcut{
 				Key:      shortcut.Key,
 				Modifier: shortcut.Modifier,
 				Callback: shortcut.Callback,

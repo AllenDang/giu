@@ -7,6 +7,7 @@ import (
 
 	"github.com/AllenDang/imgui-go"
 	"github.com/faiface/mainthread"
+	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
 // MasterWindowFlags wrapps imgui.GLFWWindowFlags.
@@ -94,7 +95,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		renderer:   r,
 	}
 
-	mw.platform.SetInputCallback(handler)
+	mw.SetInputHandler(newInputHandler())
 
 	p.SetSizeChangeCallback(mw.sizeChange)
 
@@ -303,7 +304,7 @@ func (w *MasterWindow) Run(loopFunc func()) {
 // RegisterKeyboardShortcuts registers a global - master window - keyboard shortcuts.
 func (w *MasterWindow) RegisterKeyboardShortcuts(s ...WindowShortcut) *MasterWindow {
 	for _, shortcut := range s {
-		RegisterKeyboardShortcuts(Shortcut{
+		Context.InputHandler.RegisterKeyboardShortcuts(Shortcut{
 			Key:      shortcut.Key,
 			Modifier: shortcut.Modifier,
 			Callback: shortcut.Callback,
@@ -353,4 +354,13 @@ func (w *MasterWindow) Close() {
 // SetShouldClose sets whether master window should be closed.
 func (w *MasterWindow) SetShouldClose(v bool) {
 	w.platform.SetShouldStop(v)
+}
+
+func (w *MasterWindow) SetInputHandler(handler InputHandler) {
+	Context.InputHandler = handler
+	w.platform.SetInputCallback(func(key glfw.Key, modifier glfw.ModifierKey, action glfw.Action) {
+		if action == glfw.Press {
+			handler.Handle(Key(key), Modifier(modifier))
+		}
+	})
 }
