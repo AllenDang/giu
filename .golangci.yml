@@ -41,17 +41,16 @@ linters:
     - errcheck
     - errorlint
     - exportloopref
-    #- forcetypeassert
+    - forcetypeassert
     #- funlen
     - gci
-    #- godot
+    - godot
     #- gochecknoglobals
     #- gochecknoinits
     - gocognit
     - goconst
     - gocritic
     - gocyclo
-      #- godox
     - goerr113
     - gofmt
     - gofumpt
@@ -74,7 +73,7 @@ linters:
     - prealloc
     - predeclared
     - promlinter
-      #- revive
+    #- revive
     - rowserrcheck
     - staticcheck
     - structcheck
@@ -86,7 +85,7 @@ linters:
     - varcheck
     - wastedassign
     - whitespace
-    #- wrapcheck
+    - wrapcheck
     #- wsl
 
 run:

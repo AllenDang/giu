@@ -1,25 +1,25 @@
 package giu
 
-// input menager is used to register a keyboard shortcuts in an app
+// input menager is used to register a keyboard shortcuts in an app.
 import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
-// store keyboard shortcuts
+// store keyboard shortcuts.
 var shortcuts map[keyCombo]*callbacks
 
 func init() {
 	shortcuts = make(map[keyCombo]*callbacks)
 }
 
-// ShortcutType represens a type of shortcut (global or local)
+// ShortcutType represens a type of shortcut (global or local).
 type ShortcutType bool
 
 const (
-	// GlobalShortcut is registered for all the app
+	// GlobalShortcut is registered for all the app.
 	GlobalShortcut ShortcutType = true
 
-	// LocLShortcut is registered for current window only
+	// LocLShortcut is registered for current window only.
 	LocalShortcut ShortcutType = false
 )
 
@@ -84,7 +84,7 @@ func handler(key glfw.Key, mod glfw.ModifierKey, action glfw.Action) {
 }
 
 // WindowShortcut represents a window-level shortcut
-// could be used as an argument to (*Window).RegisterKeyboardShortcuts
+// could be used as an argument to (*Window).RegisterKeyboardShortcuts.
 type WindowShortcut struct {
 	Key      Key
 	Modifier Modifier
