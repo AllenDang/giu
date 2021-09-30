@@ -12,6 +12,7 @@ import (
 	"github.com/AllenDang/imgui-go"
 	resty "github.com/go-resty/resty/v2"
 	"github.com/sahilm/fuzzy"
+	"golang.org/x/image/colornames"
 )
 
 // GenAutoID automatically generates fidget's id.
@@ -357,8 +358,8 @@ type ImageButtonWidget struct {
 	uv0          image.Point
 	uv1          image.Point
 	framePadding int
-	bgColor      color.RGBA
-	tintColor    color.RGBA
+	bgColor      color.Color
+	tintColor    color.Color
 	onClick      func()
 }
 
@@ -394,12 +395,12 @@ func (b *ImageButtonWidget) UV(uv0, uv1 image.Point) *ImageButtonWidget {
 	return b
 }
 
-func (b *ImageButtonWidget) BgColor(bgColor color.RGBA) *ImageButtonWidget {
+func (b *ImageButtonWidget) BgColor(bgColor color.Color) *ImageButtonWidget {
 	b.bgColor = bgColor
 	return b
 }
 
-func (b *ImageButtonWidget) TintColor(tintColor color.RGBA) *ImageButtonWidget {
+func (b *ImageButtonWidget) TintColor(tintColor color.Color) *ImageButtonWidget {
 	b.tintColor = tintColor
 	return b
 }
@@ -417,8 +418,8 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 		uv0:          image.Point{X: 0, Y: 0},
 		uv1:          image.Point{X: 1, Y: 1},
 		framePadding: -1,
-		bgColor:      color.RGBA{0, 0, 0, 0},
-		tintColor:    color.RGBA{255, 255, 255, 255},
+		bgColor:      colornames.Black,
+		tintColor:    colornames.White,
 		onClick:      nil,
 	}
 }
@@ -454,12 +455,12 @@ func (b *ImageButtonWithRgbaWidget) UV(uv0, uv1 image.Point) *ImageButtonWithRgb
 	return b
 }
 
-func (b *ImageButtonWithRgbaWidget) BgColor(bgColor color.RGBA) *ImageButtonWithRgbaWidget {
+func (b *ImageButtonWithRgbaWidget) BgColor(bgColor color.Color) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.BgColor(bgColor)
 	return b
 }
 
-func (b *ImageButtonWithRgbaWidget) TintColor(tintColor color.RGBA) *ImageButtonWithRgbaWidget {
+func (b *ImageButtonWithRgbaWidget) TintColor(tintColor color.Color) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.TintColor(tintColor)
 	return b
 }
@@ -826,7 +827,7 @@ type ImageWidget struct {
 	width                  float32
 	height                 float32
 	uv0, uv1               image.Point
-	tintColor, borderColor color.RGBA
+	tintColor, borderColor color.Color
 	onClick                func()
 }
 
@@ -848,13 +849,13 @@ func (i *ImageWidget) Uv(uv0, uv1 image.Point) *ImageWidget {
 	return i
 }
 
-func (i *ImageWidget) TintColor(tintColor color.RGBA) *ImageWidget {
+func (i *ImageWidget) TintColor(tintColor color.Color) *ImageWidget {
 	i.tintColor = tintColor
 	return i
 }
 
 // BorderCol sets color of the border.
-func (i *ImageWidget) BorderCol(borderColor color.RGBA) *ImageWidget {
+func (i *ImageWidget) BorderCol(borderColor color.Color) *ImageWidget {
 	i.borderColor = borderColor
 	return i
 }
@@ -2240,7 +2241,7 @@ type TableRowWidget struct {
 	flags        TableRowFlags
 	minRowHeight float64
 	layout       Layout
-	bgColor      *color.RGBA
+	bgColor      color.Color
 }
 
 func TableRow(widgets ...Widget) *TableRowWidget {
@@ -2252,7 +2253,7 @@ func TableRow(widgets ...Widget) *TableRowWidget {
 	}
 }
 
-func (r *TableRowWidget) BgColor(c *color.RGBA) *TableRowWidget {
+func (r *TableRowWidget) BgColor(c color.Color) *TableRowWidget {
 	r.bgColor = c
 	return r
 }
@@ -2284,7 +2285,7 @@ func (r *TableRowWidget) Build() {
 	}
 
 	if r.bgColor != nil {
-		imgui.TableSetBgColor(imgui.TableBgTarget_RowBg0, uint32(imgui.GetColorU32(ToVec4Color(*(r.bgColor)))), -1)
+		imgui.TableSetBgColor(imgui.TableBgTarget_RowBg0, uint32(imgui.GetColorU32(ToVec4Color(r.bgColor))), -1)
 	}
 }
 
