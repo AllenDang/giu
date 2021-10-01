@@ -12,9 +12,10 @@ import (
 	"github.com/AllenDang/imgui-go"
 	resty "github.com/go-resty/resty/v2"
 	"github.com/sahilm/fuzzy"
+	"golang.org/x/image/colornames"
 )
 
-// GenAutoID automatically generates fidget's id
+// GenAutoID automatically generates fidget's id.
 func GenAutoID(id string) string {
 	return fmt.Sprintf("%s##%d", id, Context.GetWidgetIndex())
 }
@@ -22,19 +23,19 @@ func GenAutoID(id string) string {
 var _ Widget = &RowWidget{}
 
 // RowWidget joins a layout into one line
-// calls imgui.SameLine()
+// calls imgui.SameLine().
 type RowWidget struct {
 	widgets Layout
 }
 
-// Row creates RowWidget
+// Row creates RowWidget.
 func Row(widgets ...Widget) *RowWidget {
 	return &RowWidget{
 		widgets: widgets,
 	}
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (l *RowWidget) Build() {
 	isFirst := true
 	l.widgets.Range(func(w Widget) {
@@ -60,7 +61,7 @@ func (l *RowWidget) Build() {
 }
 
 // SameLine wrapps imgui.SomeLine
-// Don't use if you don't have to (use RowWidget instead)
+// Don't use if you don't have to (use RowWidget instead).
 func SameLine() {
 	imgui.SameLine()
 }
@@ -68,7 +69,7 @@ func SameLine() {
 var _ Widget = &InputTextMultilineWidget{}
 
 // InputTextMultilineWidget represents multiline text input widget
-// see examples/widgets/
+// see examples/widgets/.
 type InputTextMultilineWidget struct {
 	label         string
 	text          *string
@@ -78,7 +79,7 @@ type InputTextMultilineWidget struct {
 	onChange      func()
 }
 
-// InputTextMultiline creates InputTextMultilineWidget
+// InputTextMultiline creates InputTextMultilineWidget.
 func InputTextMultiline(text *string) *InputTextMultilineWidget {
 	return &InputTextMultilineWidget{
 		text:     text,
@@ -91,18 +92,18 @@ func InputTextMultiline(text *string) *InputTextMultilineWidget {
 	}
 }
 
-// Label sets input field label
+// Label sets input field label.
 func (i *InputTextMultilineWidget) Label(label string) *InputTextMultilineWidget {
 	i.label = label
 	return i
 }
 
-// Labelf is formatting version of Label
+// Labelf is formatting version of Label.
 func (i *InputTextMultilineWidget) Labelf(format string, args ...interface{}) *InputTextMultilineWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (i *InputTextMultilineWidget) Build() {
 	if imgui.InputTextMultilineV(
 		tStr(i.label),
@@ -117,21 +118,25 @@ func (i *InputTextMultilineWidget) Build() {
 	}
 }
 
+// Flags sets InputTextFlags (see Flags.go).
 func (i *InputTextMultilineWidget) Flags(flags InputTextFlags) *InputTextMultilineWidget {
 	i.flags = flags
 	return i
 }
 
+// Callback sets imgui.InputTextCallback.
 func (i *InputTextMultilineWidget) Callback(cb imgui.InputTextCallback) *InputTextMultilineWidget {
 	i.cb = cb
 	return i
 }
 
+// OnChange set callback called when user action taken on input text field (when text was changed).
 func (i *InputTextMultilineWidget) OnChange(onChange func()) *InputTextMultilineWidget {
 	i.onChange = onChange
 	return i
 }
 
+// Size sets input field size.
 func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultilineWidget {
 	i.width, i.height = width, height
 	return i
@@ -139,6 +144,7 @@ func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultili
 
 var _ Widget = &ButtonWidget{}
 
+// ButtonWidget represents a ImGui button widget.
 type ButtonWidget struct {
 	id       string
 	width    float32
@@ -147,7 +153,7 @@ type ButtonWidget struct {
 	onClick  func()
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (b *ButtonWidget) Build() {
 	if b.disabled {
 		imgui.BeginDisabled(true)
@@ -159,81 +165,99 @@ func (b *ButtonWidget) Build() {
 	}
 }
 
+// OnClick sets callback called when button is clicked
+// NOTE: to set double click, see EventHandler.go.
 func (b *ButtonWidget) OnClick(onClick func()) *ButtonWidget {
 	b.onClick = onClick
 	return b
 }
 
+// Disabled sets button's disabled state
+// NOTE: same effect as Style().SetDisabled.
 func (b *ButtonWidget) Disabled(d bool) *ButtonWidget {
 	b.disabled = d
 	return b
 }
 
+// Size sets button's size.
 func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 	b.width, b.height = width, height
 	return b
 }
 
-func Button(id string) *ButtonWidget {
+// Button creates a new button widget.
+func Button(label string) *ButtonWidget {
 	return &ButtonWidget{
-		id:      GenAutoID(id),
+		id:      GenAutoID(label),
 		width:   0,
 		height:  0,
 		onClick: nil,
 	}
 }
 
+// Buttonf creates button with formated label
+// NOTE: works like fmt.Sprintf (see `go doc fmt`).
 func Buttonf(format string, args ...interface{}) *ButtonWidget {
 	return Button(fmt.Sprintf(format, args...))
 }
 
 var _ Widget = &BulletWidget{}
 
+// BulletWidget adds a small, white dot (bullet).
+// useful in enumerations.
 type BulletWidget struct{}
 
+// Bullet creates a bullet widget.
 func Bullet() *BulletWidget {
 	return &BulletWidget{}
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (b *BulletWidget) Build() {
 	imgui.Bullet()
 }
 
 var _ Widget = &BulletTextWidget{}
 
+// BulletTextWidget does similar to BulletWidget, but allows
+// to add a text after a bullet. Very useful to create lists.
 type BulletTextWidget struct {
 	text string
 }
 
+// BulletText creates bulletTextWidget.
 func BulletText(text string) *BulletTextWidget {
 	return &BulletTextWidget{
 		text: tStr(text),
 	}
 }
 
+// BulletTextf is a formatting version of BulletText.
 func BulletTextf(format string, args ...interface{}) *BulletTextWidget {
 	return BulletText(fmt.Sprintf(format, args...))
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (bt *BulletTextWidget) Build() {
 	imgui.BulletText(bt.text)
 }
 
 var _ Widget = &ArrowButtonWidget{}
 
+// ArrowButtonWidget represents a square button with an arrow.
 type ArrowButtonWidget struct {
 	id      string
 	dir     Direction
 	onClick func()
 }
 
+// OnClick adds callback called when button is clicked.
 func (b *ArrowButtonWidget) OnClick(onClick func()) *ArrowButtonWidget {
 	b.onClick = onClick
 	return b
 }
 
+// ArrowButton creates ArrowButtonWidget.
 func ArrowButton(dir Direction) *ArrowButtonWidget {
 	return &ArrowButtonWidget{
 		id:      GenAutoID("ArrowButton"),
@@ -242,12 +266,13 @@ func ArrowButton(dir Direction) *ArrowButtonWidget {
 	}
 }
 
+// ID allows to manually set widget's id.
 func (b *ArrowButtonWidget) ID(id string) *ArrowButtonWidget {
 	b.id = id
 	return b
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (b *ArrowButtonWidget) Build() {
 	if imgui.ArrowButton(b.id, uint8(b.dir)) && b.onClick != nil {
 		b.onClick()
@@ -277,7 +302,7 @@ func SmallButtonf(format string, args ...interface{}) *SmallButtonWidget {
 	return SmallButton(fmt.Sprintf(format, args...))
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (b *SmallButtonWidget) Build() {
 	if imgui.SmallButton(tStr(b.id)) && b.onClick != nil {
 		b.onClick()
@@ -317,7 +342,7 @@ func InvisibleButton() *InvisibleButtonWidget {
 	}
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (b *InvisibleButtonWidget) Build() {
 	if imgui.InvisibleButton(tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
@@ -333,12 +358,12 @@ type ImageButtonWidget struct {
 	uv0          image.Point
 	uv1          image.Point
 	framePadding int
-	bgColor      color.RGBA
-	tintColor    color.RGBA
+	bgColor      color.Color
+	tintColor    color.Color
 	onClick      func()
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (b *ImageButtonWidget) Build() {
 	if b.texture == nil && b.texture.id == 0 {
 		return
@@ -370,12 +395,12 @@ func (b *ImageButtonWidget) UV(uv0, uv1 image.Point) *ImageButtonWidget {
 	return b
 }
 
-func (b *ImageButtonWidget) BgColor(bgColor color.RGBA) *ImageButtonWidget {
+func (b *ImageButtonWidget) BgColor(bgColor color.Color) *ImageButtonWidget {
 	b.bgColor = bgColor
 	return b
 }
 
-func (b *ImageButtonWidget) TintColor(tintColor color.RGBA) *ImageButtonWidget {
+func (b *ImageButtonWidget) TintColor(tintColor color.Color) *ImageButtonWidget {
 	b.tintColor = tintColor
 	return b
 }
@@ -393,8 +418,8 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 		uv0:          image.Point{X: 0, Y: 0},
 		uv1:          image.Point{X: 1, Y: 1},
 		framePadding: -1,
-		bgColor:      color.RGBA{0, 0, 0, 0},
-		tintColor:    color.RGBA{255, 255, 255, 255},
+		bgColor:      colornames.Black,
+		tintColor:    colornames.White,
 		onClick:      nil,
 	}
 }
@@ -430,12 +455,12 @@ func (b *ImageButtonWithRgbaWidget) UV(uv0, uv1 image.Point) *ImageButtonWithRgb
 	return b
 }
 
-func (b *ImageButtonWithRgbaWidget) BgColor(bgColor color.RGBA) *ImageButtonWithRgbaWidget {
+func (b *ImageButtonWithRgbaWidget) BgColor(bgColor color.Color) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.BgColor(bgColor)
 	return b
 }
 
-func (b *ImageButtonWithRgbaWidget) TintColor(tintColor color.RGBA) *ImageButtonWithRgbaWidget {
+func (b *ImageButtonWithRgbaWidget) TintColor(tintColor color.Color) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.TintColor(tintColor)
 	return b
 }
@@ -445,7 +470,7 @@ func (b *ImageButtonWithRgbaWidget) FramePadding(padding int) *ImageButtonWithRg
 	return b
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (b *ImageButtonWithRgbaWidget) Build() {
 	if state := Context.GetState(b.id); state == nil {
 		Context.SetState(b.id, &ImageState{})
@@ -454,7 +479,9 @@ func (b *ImageButtonWithRgbaWidget) Build() {
 			Context.SetState(b.id, &ImageState{texture: tex})
 		})
 	} else {
-		imgState := state.(*ImageState)
+		var isOk bool
+		imgState, isOk := state.(*ImageState)
+		Assert(isOk, "ImageButtonWithRgbaWidget", "Build", "got unexpected type of widget's state")
 		b.ImageButtonWidget.texture = imgState.texture
 	}
 
@@ -463,24 +490,27 @@ func (b *ImageButtonWithRgbaWidget) Build() {
 
 var _ Widget = &CheckboxWidget{}
 
+// CheckboxWidget adds a checkbox.
 type CheckboxWidget struct {
 	text     string
 	selected *bool
 	onChange func()
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (c *CheckboxWidget) Build() {
 	if imgui.Checkbox(tStr(c.text), c.selected) && c.onChange != nil {
 		c.onChange()
 	}
 }
 
+// OnChange adds callback called when checkbox's state was changed.
 func (c *CheckboxWidget) OnChange(onChange func()) *CheckboxWidget {
 	c.onChange = onChange
 	return c
 }
 
+// Checkbox creates a new CheckboxWidget.
 func Checkbox(text string, selected *bool) *CheckboxWidget {
 	return &CheckboxWidget{
 		text:     GenAutoID(text),
@@ -497,7 +527,7 @@ type RadioButtonWidget struct {
 	onChange func()
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (r *RadioButtonWidget) Build() {
 	if imgui.RadioButton(tStr(r.text), r.active) && r.onChange != nil {
 		r.onChange()
@@ -528,7 +558,7 @@ type ChildWidget struct {
 	layout Layout
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (c *ChildWidget) Build() {
 	if imgui.BeginChildV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, int(c.flags)) {
 		c.layout.Build()
@@ -570,6 +600,7 @@ func Child() *ChildWidget {
 
 var _ Widget = &ComboCustomWidget{}
 
+// ComboCustomWidget represents a combo with custom layout when opened.
 type ComboCustomWidget struct {
 	label        string
 	previewValue string
@@ -578,6 +609,7 @@ type ComboCustomWidget struct {
 	layout       Layout
 }
 
+// ComboCustom creates a new combo custom widget.
 func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	return &ComboCustomWidget{
 		label:        GenAutoID(label),
@@ -588,22 +620,25 @@ func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	}
 }
 
+// Layout add combo's layout.
 func (cc *ComboCustomWidget) Layout(widgets ...Widget) *ComboCustomWidget {
 	cc.layout = Layout(widgets)
 	return cc
 }
 
+// Flags allows to set combo flags (see Flags.go).
 func (cc *ComboCustomWidget) Flags(flags ComboFlags) *ComboCustomWidget {
 	cc.flags = flags
 	return cc
 }
 
+// Size sets combo preiview width.
 func (cc *ComboCustomWidget) Size(width float32) *ComboCustomWidget {
 	cc.width = width
 	return cc
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (cc *ComboCustomWidget) Build() {
 	if cc.width > 0 {
 		imgui.PushItemWidth(cc.width)
@@ -618,6 +653,8 @@ func (cc *ComboCustomWidget) Build() {
 
 var _ Widget = &ComboWidget{}
 
+// ComboWidget is a wrapper of ComboCustomWidget.
+// It creates a combo of selectables. (it is the most frequently used).
 type ComboWidget struct {
 	label        string
 	previewValue string
@@ -628,6 +665,7 @@ type ComboWidget struct {
 	onChange     func()
 }
 
+// Combo creates a new ComboWidget.
 func Combo(label, previewValue string, items []string, selected *int32) *ComboWidget {
 	return &ComboWidget{
 		label:        GenAutoID(label),
@@ -640,12 +678,7 @@ func Combo(label, previewValue string, items []string, selected *int32) *ComboWi
 	}
 }
 
-func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
-	c.flags = flags
-	return c
-}
-
-// Build implements Widget interface
+// Build implements Widget interface.
 func (c *ComboWidget) Build() {
 	if c.width > 0 {
 		imgui.PushItemWidth(c.width)
@@ -666,11 +699,19 @@ func (c *ComboWidget) Build() {
 	}
 }
 
+// Flags allows to set combo flags (see Flags.go).
+func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
+	c.flags = flags
+	return c
+}
+
+// Size sets combo's width.
 func (c *ComboWidget) Size(width float32) *ComboWidget {
 	c.width = width
 	return c
 }
 
+// OnChange sets callback when combo value gets changed.
 func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 	c.onChange = onChange
 	return c
@@ -707,7 +748,7 @@ func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
 	return c
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (c *ContextMenuWidget) Build() {
 	if imgui.BeginPopupContextItemV(c.id, int(c.mouseButton)) {
 		c.layout.Build()
@@ -747,25 +788,26 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 	return d
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (d *DragIntWidget) Build() {
 	imgui.DragIntV(tStr(d.label), d.value, d.speed, d.min, d.max, d.format)
 }
 
 var _ Widget = &ColumnWidget{}
 
+// ColumnWidget will place all widgets one by one vertically.
 type ColumnWidget struct {
 	widgets Layout
 }
 
-// Column layout will place all widgets one by one vertically.
+// Column creates a new ColumnWidget.
 func Column(widgets ...Widget) *ColumnWidget {
 	return &ColumnWidget{
 		widgets: widgets,
 	}
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (g *ColumnWidget) Build() {
 	imgui.BeginGroup()
 
@@ -776,15 +818,20 @@ func (g *ColumnWidget) Build() {
 
 var _ Widget = &ImageWidget{}
 
+// ImageWidget adds an image.
+// NOTE: ImageWidget is going to be deprecated. ImageWithRGBAWidget
+// should be used instead, however, because it is a native
+// imgui's solution it is still there.
 type ImageWidget struct {
 	texture                *Texture
 	width                  float32
 	height                 float32
 	uv0, uv1               image.Point
-	tintColor, borderColor color.RGBA
+	tintColor, borderColor color.Color
 	onClick                func()
 }
 
+// Image adds an image from giu.Texture.
 func Image(texture *Texture) *ImageWidget {
 	return &ImageWidget{
 		texture:     texture,
@@ -802,27 +849,30 @@ func (i *ImageWidget) Uv(uv0, uv1 image.Point) *ImageWidget {
 	return i
 }
 
-func (i *ImageWidget) TintColor(tintColor color.RGBA) *ImageWidget {
+func (i *ImageWidget) TintColor(tintColor color.Color) *ImageWidget {
 	i.tintColor = tintColor
 	return i
 }
 
-func (i *ImageWidget) BorderCol(borderColor color.RGBA) *ImageWidget {
+// BorderCol sets color of the border.
+func (i *ImageWidget) BorderCol(borderColor color.Color) *ImageWidget {
 	i.borderColor = borderColor
 	return i
 }
 
+// OnClick adds on-click-callback.
 func (i *ImageWidget) OnClick(cb func()) *ImageWidget {
 	i.onClick = cb
 	return i
 }
 
+// Size sets image size.
 func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 	i.width, i.height = width, height
 	return i
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (i *ImageWidget) Build() {
 	size := imgui.Vec2{X: i.width, Y: i.height}
 	rect := imgui.ContentRegionAvail()
@@ -893,7 +943,7 @@ func (i *ImageWithRgbaWidget) OnClick(cb func()) *ImageWithRgbaWidget {
 	return i
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (i *ImageWithRgbaWidget) Build() {
 	if i.rgba != nil {
 		var imgState *ImageState
@@ -905,7 +955,9 @@ func (i *ImageWithRgbaWidget) Build() {
 				imgState.texture = tex
 			})
 		} else {
-			imgState = state.(*ImageState)
+			var isOk bool
+			imgState, isOk = state.(*ImageState)
+			Assert(isOk, "ImageWithRgbaWidget", "Build", "unexpected type of widget's state recovered")
 		}
 
 		i.img.texture = imgState.texture
@@ -940,7 +992,7 @@ func (i *ImageWithFileWidget) OnClick(cb func()) *ImageWithFileWidget {
 	return i
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (i *ImageWithFileWidget) Build() {
 	imgState := &ImageState{}
 	if state := Context.GetState(i.id); state == nil {
@@ -954,7 +1006,9 @@ func (i *ImageWithFileWidget) Build() {
 			})
 		}
 	} else {
-		imgState = state.(*ImageState)
+		var isOk bool
+		imgState, isOk = state.(*ImageState)
+		Assert(isOk, "ImageWithFileWidget", "Build", "wrong type of widget's state got")
 	}
 
 	i.img.texture = imgState.texture
@@ -1021,7 +1075,7 @@ func (i *ImageWithURLWidget) LayoutForFailure(widgets ...Widget) *ImageWithURLWi
 	return i
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (i *ImageWithURLWidget) Build() {
 	imgState := &ImageState{}
 
@@ -1076,7 +1130,9 @@ func (i *ImageWithURLWidget) Build() {
 			}
 		}()
 	} else {
-		imgState = state.(*ImageState)
+		var isOk bool
+		imgState, isOk = state.(*ImageState)
+		Assert(isOk, "ImageWithURLWidget", "Build", "wrong type of widget's state recovered.")
 	}
 
 	switch {
@@ -1133,7 +1189,7 @@ func (i *InputTextWidget) Labelf(format string, args ...interface{}) *InputTextW
 }
 
 // AutoComplete enables auto complete popup by using fuzzy search of current value against candidates
-// Press enter to confirm the first candidate
+// Press enter to confirm the first candidate.
 func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
 	i.candidates = candidates
 	return i
@@ -1164,7 +1220,7 @@ func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 	return i
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (i *InputTextWidget) Build() {
 	// Get state
 	var state *inputTextState
@@ -1172,7 +1228,9 @@ func (i *InputTextWidget) Build() {
 		state = &inputTextState{}
 		Context.SetState(i.label, state)
 	} else {
-		state = s.(*inputTextState)
+		var isOk bool
+		state, isOk = s.(*inputTextState)
+		Assert(isOk, "InputTextWidget", "Build", "wrong state type recovered.")
 	}
 
 	if i.width != 0 {
@@ -1263,7 +1321,7 @@ func (i *InputIntWidget) OnChange(onChange func()) *InputIntWidget {
 	return i
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (i *InputIntWidget) Build() {
 	if i.width != 0 {
 		PushItemWidth(i.width)
@@ -1326,7 +1384,7 @@ func (i *InputFloatWidget) OnChange(onChange func()) *InputFloatWidget {
 	return i
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (i *InputFloatWidget) Build() {
 	if i.width != 0 {
 		PushItemWidth(i.width)
@@ -1367,7 +1425,7 @@ func (l *LabelWidget) Font(font *FontInfo) *LabelWidget {
 	return l
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (l *LabelWidget) Build() {
 	if l.wrapped {
 		PushTextWrapPos()
@@ -1400,7 +1458,7 @@ func (m *MainMenuBarWidget) Layout(widgets ...Widget) *MainMenuBarWidget {
 	return m
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (m *MainMenuBarWidget) Build() {
 	if imgui.BeginMainMenuBar() {
 		m.layout.Build()
@@ -1425,7 +1483,7 @@ func (m *MenuBarWidget) Layout(widgets ...Widget) *MenuBarWidget {
 	return m
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (m *MenuBarWidget) Build() {
 	if imgui.BeginMenuBar() {
 		m.layout.Build()
@@ -1470,7 +1528,7 @@ func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 	return m
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (m *MenuItemWidget) Build() {
 	if imgui.MenuItemV(tStr(m.label), "", m.selected, m.enabled) && m.onClick != nil {
 		m.onClick()
@@ -1507,7 +1565,7 @@ func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
 	return m
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (m *MenuWidget) Build() {
 	if imgui.BeginMenuV(tStr(m.label), m.enabled) {
 		m.layout.Build()
@@ -1541,7 +1599,7 @@ func (p *PopupWidget) Layout(widgets ...Widget) *PopupWidget {
 	return p
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (p *PopupWidget) Build() {
 	if imgui.BeginPopup(p.name, int(p.flags)) {
 		p.layout.Build()
@@ -1582,7 +1640,7 @@ func (p *PopupModalWidget) Layout(widgets ...Widget) *PopupModalWidget {
 	return p
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (p *PopupModalWidget) Build() {
 	if imgui.BeginPopupModalV(p.name, p.open, int(p.flags)) {
 		p.layout.Build()
@@ -1630,7 +1688,7 @@ func (p *ProgressBarWidget) Overlayf(format string, args ...interface{}) *Progre
 	return p.Overlay(fmt.Sprintf(format, args...))
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (p *ProgressBarWidget) Build() {
 	imgui.ProgressBarV(p.fraction, imgui.Vec2{X: p.width, Y: p.height}, p.overlay)
 }
@@ -1683,13 +1741,13 @@ func (s *SelectableWidget) OnClick(onClick func()) *SelectableWidget {
 }
 
 // OnDClick handles mouse left button's double click event.
-// SelectableFlagsAllowDoubleClick will set once tonDClick callback is notnull
+// SelectableFlagsAllowDoubleClick will set once tonDClick callback is notnull.
 func (s *SelectableWidget) OnDClick(onDClick func()) *SelectableWidget {
 	s.onDClick = onDClick
 	return s
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (s *SelectableWidget) Build() {
 	// If onDClick is set, check flags and set related flag when necessary
 	if s.onDClick != nil && s.flags&SelectableFlagsAllowDoubleClick != 0 {
@@ -1709,7 +1767,7 @@ var _ Widget = &SeparatorWidget{}
 
 type SeparatorWidget struct{}
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (s *SeparatorWidget) Build() {
 	imgui.Separator()
 }
@@ -1767,7 +1825,7 @@ func (s *SliderIntWidget) Labelf(format string, args ...interface{}) *SliderIntW
 	return s.Label(fmt.Sprintf(format, args...))
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (s *SliderIntWidget) Build() {
 	if s.width != 0 {
 		PushItemWidth(s.width)
@@ -1835,7 +1893,7 @@ func (vs *VSliderIntWidget) Labelf(format string, args ...interface{}) *VSliderI
 	return vs.Label(fmt.Sprintf(format, args...))
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (vs *VSliderIntWidget) Build() {
 	if imgui.VSliderIntV(
 		tStr(vs.label),
@@ -1899,7 +1957,7 @@ func (sf *SliderFloatWidget) Labelf(format string, args ...interface{}) *SliderF
 	return sf.Label(fmt.Sprintf(format, args...))
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (sf *SliderFloatWidget) Build() {
 	if sf.width != 0 {
 		PushItemWidth(sf.width)
@@ -1918,7 +1976,7 @@ type DummyWidget struct {
 	height float32
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (d *DummyWidget) Build() {
 	w, h := GetAvailableRegion()
 
@@ -2129,7 +2187,7 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 	return t
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (t *TabItemWidget) Build() {
 	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
 		t.layout.Build()
@@ -2167,7 +2225,7 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 	return t
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (t *TabBarWidget) Build() {
 	if imgui.BeginTabBarV(t.id, int(t.flags)) {
 		for _, ti := range t.tabItems {
@@ -2183,7 +2241,7 @@ type TableRowWidget struct {
 	flags        TableRowFlags
 	minRowHeight float64
 	layout       Layout
-	bgColor      *color.RGBA
+	bgColor      color.Color
 }
 
 func TableRow(widgets ...Widget) *TableRowWidget {
@@ -2195,7 +2253,7 @@ func TableRow(widgets ...Widget) *TableRowWidget {
 	}
 }
 
-func (r *TableRowWidget) BgColor(c *color.RGBA) *TableRowWidget {
+func (r *TableRowWidget) BgColor(c color.Color) *TableRowWidget {
 	r.bgColor = c
 	return r
 }
@@ -2210,7 +2268,7 @@ func (r *TableRowWidget) MinHeight(height float64) *TableRowWidget {
 	return r
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (r *TableRowWidget) Build() {
 	imgui.TableNextRow(imgui.TableRowFlags(r.flags), r.minRowHeight)
 
@@ -2227,7 +2285,7 @@ func (r *TableRowWidget) Build() {
 	}
 
 	if r.bgColor != nil {
-		imgui.TableSetBgColor(imgui.TableBgTarget_RowBg0, uint32(imgui.GetColorU32(ToVec4Color(*(r.bgColor)))), -1)
+		imgui.TableSetBgColor(imgui.TableBgTarget_RowBg0, uint32(imgui.GetColorU32(ToVec4Color(r.bgColor))), -1)
 	}
 }
 
@@ -2264,7 +2322,7 @@ func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
 	return c
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (c *TableColumnWidget) Build() {
 	imgui.TableSetupColumn(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
 }
@@ -2333,7 +2391,7 @@ func (t *TableWidget) Flags(flags TableFlags) *TableWidget {
 	return t
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (t *TableWidget) Build() {
 	if len(t.rows) == 0 {
 		return
@@ -2404,7 +2462,7 @@ func (ttr *TreeTableRowWidget) Flags(flags TreeNodeFlags) *TreeTableRowWidget {
 	return ttr
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (ttr *TreeTableRowWidget) Build() {
 	imgui.TableNextRow(0, 0)
 	imgui.TableNextColumn()
@@ -2486,7 +2544,7 @@ func (tt *TreeTableWidget) Rows(rows ...*TreeTableRowWidget) *TreeTableWidget {
 	return tt
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (tt *TreeTableWidget) Build() {
 	if len(tt.rows) == 0 {
 		return
@@ -2524,7 +2582,7 @@ type TooltipWidget struct {
 	layout Layout
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (t *TooltipWidget) Build() {
 	if imgui.IsItemHovered() {
 		if t.layout != nil {
@@ -2581,7 +2639,7 @@ func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
 }
 
 // Event create TreeNode with eventHandler
-// You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler
+// You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler.
 func (t *TreeNodeWidget) Event(handler func()) *TreeNodeWidget {
 	t.eventHandler = handler
 	return t
@@ -2592,7 +2650,7 @@ func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
 	return t
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (t *TreeNodeWidget) Build() {
 	open := imgui.TreeNodeV(t.label, int(t.flags))
 
@@ -2612,7 +2670,7 @@ var _ Widget = &SpacingWidget{}
 
 type SpacingWidget struct{}
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (s *SpacingWidget) Build() {
 	imgui.Spacing()
 }
@@ -2627,7 +2685,7 @@ type CustomWidget struct {
 	builder func()
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (c *CustomWidget) Build() {
 	if c.builder != nil {
 		c.builder()
@@ -2656,7 +2714,7 @@ func Condition(cond bool, layoutIf, layoutElse Layout) *ConditionWidget {
 	}
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (c *ConditionWidget) Build() {
 	if c.cond {
 		if c.layoutIf != nil {
@@ -2762,7 +2820,9 @@ func (l *ListBoxWidget) Build() {
 		state = &ListBoxState{selectedIndex: 0}
 		Context.SetState(l.id, state)
 	} else {
-		state = s.(*ListBoxState)
+		var isOk bool
+		state, isOk = s.(*ListBoxState)
+		Assert(isOk, "ListBoxWidget", "Build", "wrong state type recovered")
 	}
 
 	child := Child().Border(l.border).Size(l.width, l.height).Layout(Layout{
@@ -2842,7 +2902,7 @@ func (d *DatePickerWidget) OnChange(onChange func()) *DatePickerWidget {
 	return d
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (d *DatePickerWidget) Build() {
 	if d.date == nil {
 		return
@@ -2928,7 +2988,7 @@ func (d *DatePickerWidget) Build() {
 	}
 }
 
-// store month days sorted in weeks
+// store month days sorted in weeks.
 func (d *DatePickerWidget) getDaysGroups() (days [][]int) {
 	firstDay := time.Date(d.date.Year(), d.date.Month(), 1, 0, 0, 0, 0, time.Local)
 	lastDay := firstDay.AddDate(0, 1, 0).Add(time.Nanosecond * -1)
@@ -3030,7 +3090,7 @@ func (ce *ColorEditWidget) Size(width float32) *ColorEditWidget {
 	return ce
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (ce *ColorEditWidget) Build() {
 	c := ToVec4Color(*ce.color)
 	col := [4]float32{

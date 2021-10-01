@@ -23,8 +23,7 @@ const (
 	preRegisterString = "\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 )
 
-// FontInfo represents a the font.
-//
+// FontInfo represents a giu implementation of imgui font.
 type FontInfo struct {
 	fontName string
 	fontPath string
@@ -78,7 +77,7 @@ func init() {
 	}
 }
 
-// SetDefaultFont changes default font
+// SetDefaultFont changes default font.
 func SetDefaultFont(fontName string, size float32) {
 	fontPath, err := findfont.Find(fontName)
 	if err != nil {
@@ -120,7 +119,7 @@ func AddFont(fontName string, size float32) *FontInfo {
 	return &fi
 }
 
-// AddFontFromBytes does similar to AddFont, but using data from memory
+// AddFontFromBytes does similar to AddFont, but using data from memory.
 func AddFontFromBytes(fontName string, fontBytes []byte, size float32) *FontInfo {
 	fi := FontInfo{
 		fontName: fontName,

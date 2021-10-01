@@ -3,12 +3,13 @@ package giu
 import (
 	"testing"
 
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_InputHandler_init(t *testing.T) {
-	assert.NotNil(t, shortcuts, "shortcuts cache wasn't set up")
+func Test_InputHandler_new(t *testing.T) {
+	i := newInputHandler()
+	assert.NotNil(t, i, "input handler wasn't created")
+	assert.NotNil(t, i.shortcuts, "input handler wasn't created")
 }
 
 func Test_InputHandle_RegisterKeyboardShortcuts(t *testing.T) {
@@ -26,18 +27,19 @@ func Test_InputHandle_RegisterKeyboardShortcuts(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.id, func(lt *testing.T) {
 			a := assert.New(lt)
-			RegisterKeyboardShortcuts(Shortcut{
+			i := newInputHandler()
+			i.RegisterKeyboardShortcuts(Shortcut{
 				Key:      tt.key,
 				Modifier: tt.mod,
 				Callback: tt.cb,
 				IsGlobal: tt.isGlobal,
 			})
 			combo := keyCombo{
-				key:      glfw.Key(tt.key),
-				modifier: glfw.ModifierKey(tt.mod),
+				key:      tt.key,
+				modifier: tt.mod,
 			}
 
-			shortcut, exist := shortcuts[combo]
+			shortcut, exist := i.shortcuts[combo]
 
 			a.True(exist, "shortcut wasn't registered in input manager")
 			if tt.isGlobal {
@@ -56,16 +58,17 @@ func Test_InputHandle_RegisterKeyboardShortcuts(t *testing.T) {
 }
 
 func Test_InputHandler_unregisterWindowShortcuts(t *testing.T) {
+	i := newInputHandler()
 	sh := []Shortcut{
 		{Key(5), Modifier(0), func() {}, true},
 		{Key(8), Modifier(2), func() {}, false},
 	}
 
-	RegisterKeyboardShortcuts(sh...)
+	i.RegisterKeyboardShortcuts(sh...)
 
-	unregisterWindowShortcuts()
+	i.UnregisterWindowShortcuts()
 
-	for _, s := range shortcuts {
+	for _, s := range i.shortcuts {
 		assert.Nil(t, s.window, "some window shortcuts wasn't unregistered")
 	}
 }

@@ -43,7 +43,7 @@ type windowState struct {
 	currentSize imgui.Vec2
 }
 
-// Dispose implements Disposable interface
+// Dispose implements Disposable interface.
 func (s *windowState) Dispose() {
 	// noop
 }
@@ -51,7 +51,7 @@ func (s *windowState) Dispose() {
 // WindowWidget represents imgui.Window
 // Windows are used to display ui widgets.
 // They are in second place in the giu hierarchy (after the MasterWindow)
-// NOTE: to disable multiple window, use SingleWindow
+// NOTE: to disable multiple window, use SingleWindow.
 type WindowWidget struct {
 	title         string
 	open          *bool
@@ -61,20 +61,20 @@ type WindowWidget struct {
 	bringToFront  bool
 }
 
-// Window creates a WindowWidget
+// Window creates a WindowWidget.
 func Window(title string) *WindowWidget {
 	return &WindowWidget{
 		title: title,
 	}
 }
 
-// IsOpen sets if window widget is `opened` (minimalized)
+// IsOpen sets if window widget is `opened` (minimalized).
 func (w *WindowWidget) IsOpen(open *bool) *WindowWidget {
 	w.open = open
 	return w
 }
 
-// Flags sets window flags
+// Flags sets window flags.
 func (w *WindowWidget) Flags(flags WindowFlags) *WindowWidget {
 	w.flags = flags
 	return w
@@ -82,7 +82,7 @@ func (w *WindowWidget) Flags(flags WindowFlags) *WindowWidget {
 
 // Size sets window size
 // NOTE: size can be changed by user, if you want to prevent
-// user from changing window size, use NoResize flag
+// user from changing window size, use NoResize flag.
 func (w *WindowWidget) Size(width, height float32) *WindowWidget {
 	w.width, w.height = width, height
 	return w
@@ -91,7 +91,7 @@ func (w *WindowWidget) Size(width, height float32) *WindowWidget {
 // Pos sets the window start position
 // NOTE: The position could be changed by user later.
 // To prevent user from changin window position use
-// WIndowFlagsNoMove
+// WIndowFlagsNoMove.
 func (w *WindowWidget) Pos(x, y float32) *WindowWidget {
 	w.x, w.y = x, y
 	return w
@@ -123,7 +123,7 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 		Custom(func() {
 			hasFocus := IsWindowFocused(0)
 			if !hasFocus && ws.hasFocus {
-				unregisterWindowShortcuts()
+				Context.InputHandler.UnregisterWindowShortcuts()
 			}
 
 			ws.hasFocus = hasFocus
@@ -142,34 +142,34 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 	imgui.End()
 }
 
-// CurrentPosition returns a current position of the window
+// CurrentPosition returns a current position of the window.
 func (w *WindowWidget) CurrentPosition() (x, y float32) {
 	pos := w.getState().currentPosition
 	return pos.X, pos.Y
 }
 
-// CurrentSize returns current size of the window
+// CurrentSize returns current size of the window.
 func (w *WindowWidget) CurrentSize() (width, height float32) {
 	size := w.getState().currentSize
 	return size.X, size.Y
 }
 
-// BringToFront sets window focused
+// BringToFront sets window focused.
 func (w *WindowWidget) BringToFront() {
 	w.bringToFront = true
 }
 
-// HasFocus returns true if window is focused
+// HasFocus returns true if window is focused.
 func (w *WindowWidget) HasFocus() bool {
 	return w.getState().hasFocus
 }
 
 // RegisterKeyboardShortcuts adds local (window-level) keyboard shortcuts
-// see InputHandler.go
+// see InputHandler.go.
 func (w *WindowWidget) RegisterKeyboardShortcuts(s ...WindowShortcut) *WindowWidget {
 	if w.HasFocus() {
 		for _, shortcut := range s {
-			RegisterKeyboardShortcuts(Shortcut{
+			Context.InputHandler.RegisterKeyboardShortcuts(Shortcut{
 				Key:      shortcut.Key,
 				Modifier: shortcut.Modifier,
 				Callback: shortcut.Callback,
@@ -185,12 +185,12 @@ func (w *WindowWidget) getStateID() string {
 	return fmt.Sprintf("%s_windowState", w.title)
 }
 
-// returns window state
+// returns window state.
 func (w *WindowWidget) getState() (state *windowState) {
-	s := Context.GetState(w.getStateID())
-
-	if s != nil {
-		state = s.(*windowState)
+	if s := Context.GetState(w.getStateID()); s != nil {
+		var isOk bool
+		state, isOk = s.(*windowState)
+		Assert(isOk, "WindowWidget", "getState", "unexpected state recovered.")
 	} else {
 		state = &windowState{}
 
