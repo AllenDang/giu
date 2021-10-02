@@ -18,9 +18,9 @@ func loop() {
 					g.SplitLayout(g.DirectionVertical, 100,
 						g.Layout{},
 						g.Layout{},
-					).Border(true),
+					),
 				),
-			).Border(true),
+			),
 		),
 	)
 }
