@@ -50,7 +50,7 @@ func (eh *EventHandler) OnHover(onHover func()) *EventHandler {
 	return eh
 }
 
-// OnActive sets a callback when ite IS ACTIVE (not activated)
+// OnActive sets a callback when ite IS ACTIVE (not activated).
 func (eh *EventHandler) OnActive(cb func()) *EventHandler {
 	eh.onActive = cb
 	return eh
@@ -120,7 +120,6 @@ func (eh *EventHandler) Build() {
 	isActive := IsItemActive()
 
 	if eh.onActivate != nil || eh.onDeactivate != nil {
-
 		var state *eventHandlerState
 		stateID := GenAutoID("eventHandlerState")
 		if s := Context.GetState(stateID); s != nil {

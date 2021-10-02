@@ -16,7 +16,7 @@ type SplitLayoutState struct {
 	sashPos float32
 }
 
-// Dispose implements disposable interface
+// Dispose implements disposable interface.
 func (s *SplitLayoutState) Dispose() {
 	// noop
 }
