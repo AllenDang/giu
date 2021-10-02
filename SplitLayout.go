@@ -96,9 +96,16 @@ func (s *SplitLayoutWidget) Build() {
 	var layout Layout
 
 	splitLayoutState.sashPos += splitLayoutState.delta
+	if splitLayoutState.sashPos < 1 {
+		splitLayoutState.sashPos = 1
+	}
 
 	switch s.direction {
 	case DirectionHorizontal:
+		availableW, _ := GetAvailableRegion()
+		if splitLayoutState.sashPos >= availableW {
+			splitLayoutState.sashPos = availableW
+		}
 		layout = Layout{
 			Row(
 				s.buildChild(splitLayoutState.sashPos, 0, s.layout1),
@@ -107,6 +114,10 @@ func (s *SplitLayoutWidget) Build() {
 			),
 		}
 	case DirectionVertical:
+		_, availableH := GetAvailableRegion()
+		if splitLayoutState.sashPos >= availableH {
+			splitLayoutState.sashPos = availableH
+		}
 		layout = Layout{
 			Column(
 				s.buildChild(Auto, splitLayoutState.sashPos, s.layout1),

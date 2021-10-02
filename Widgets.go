@@ -2140,12 +2140,14 @@ func (v *VSplitterWidget) Build() {
 	} else {
 		*(v.delta) = 0
 	}
+
 	if imgui.IsItemHovered() {
 		imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
 		c = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
 	}
 
 	// Draw a line in the very center
+	_, _, _, _ = pt, ptMin, ptMax, c
 	canvas := GetCanvas()
 	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), c, 0, 0)
 }
