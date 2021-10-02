@@ -2147,7 +2147,6 @@ func (v *VSplitterWidget) Build() {
 	}
 
 	// Draw a line in the very center
-	_, _, _, _ = pt, ptMin, ptMax, c
 	canvas := GetCanvas()
 	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), c, 0, 0)
 }
