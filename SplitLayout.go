@@ -68,19 +68,22 @@ func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 
 // Build Child panel. If layout is a SplitLayout, set the frame padding to zero.
 func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Widget {
-	_, isSplitLayoutWidget := layout.(*SplitLayoutWidget)
-	hasFramePadding := isSplitLayoutWidget || !s.border
-	hasBorder := !isSplitLayoutWidget && s.border
-
 	return Layout{
 		Custom(func() {
+			_, isSplitLayoutWidget := layout.(*SplitLayoutWidget)
+			hasFramePadding := isSplitLayoutWidget || !s.border
+			hasBorder := !isSplitLayoutWidget && s.border
+
 			if hasFramePadding {
 				PushFramePadding(0, 0)
 			}
-		}),
-		Child().Border(hasBorder).Size(width, height).
-			Layout(s.restoreItemSpacing(layout)),
-		Custom(func() {
+
+			Child().
+				Border(hasBorder).
+				Size(width, height).
+				Layout(s.restoreItemSpacing(layout)).
+				Build()
+
 			if hasFramePadding {
 				PopStyle()
 			}
@@ -106,6 +109,7 @@ func (s *SplitLayoutWidget) Build() {
 		if splitLayoutState.sashPos >= availableW {
 			splitLayoutState.sashPos = availableW
 		}
+
 		layout = Layout{
 			Row(
 				s.buildChild(splitLayoutState.sashPos, 0, s.layout1),
