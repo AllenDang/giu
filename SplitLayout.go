@@ -1,5 +1,7 @@
 package giu
 
+import "github.com/AllenDang/imgui-go"
+
 type SplitDirection uint8
 
 const (
@@ -58,9 +60,13 @@ func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 		Custom(func() {
 			PushItemSpacing(s.originItemSpacingX, s.originItemSpacingY)
 			PushFramePadding(s.originFramePaddingX, s.originFramePaddingY)
+			// Restore Child bg color
+			bgColor := imgui.CurrentStyle().GetColor(imgui.StyleColorChildBg)
+			PushStyleColor(StyleColorChildBg, Vec4ToRGBA(bgColor))
 		}),
 		layout,
 		Custom(func() {
+			PopStyleColor()
 			PopStyleV(2)
 		}),
 	}
