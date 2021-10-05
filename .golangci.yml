@@ -73,7 +73,7 @@ linters:
     - prealloc
     - predeclared
     - promlinter
-    #- revive
+    - revive
     - rowserrcheck
     - staticcheck
     - structcheck

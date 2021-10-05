@@ -8,12 +8,17 @@ import (
 )
 
 // Canvas represents imgui.DrawList
-// for more details see examples/canvas.
+// from imgui.h:
+//       A single draw command list (generally one per window,
+//       conceptually you may see this as a dynamic "mesh" builder)
+//
+// for more details and use cases see examples/canvas.
 type Canvas struct {
 	drawlist imgui.DrawList
 }
 
-// GetCanvas creates new Canvas.
+// GetCanvas returns current draw list (for current window).
+// it will fail if called out of window's layout
 func GetCanvas() *Canvas {
 	return &Canvas{
 		drawlist: imgui.GetWindowDrawList(),

@@ -380,12 +380,14 @@ const (
 
 type TableRowFlags int
 
+// table row flags:
 const (
 	TableRowFlagsNone TableRowFlags = TableRowFlags(imgui.TableRowFlags_None)
 	// Identify header row (set default background color + width of its contents accounted different for auto column width).
 	TableRowFlagsHeaders TableRowFlags = TableRowFlags(imgui.TableRowFlags_Headers)
 )
 
+// TableColumnFlags represents a flags for table column (see (*TableColumnWidget).Flags())
 type TableColumnFlags int
 
 const (
