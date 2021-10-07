@@ -271,58 +271,58 @@ const (
 )
 
 // StyleVarID identifies a style variable in the UI style.
-type StyleVarID int
+type StyleVarID imgui.StyleVarID
 
 // Style IDs.
 const (
 	// StyleVarAlpha is a float.
-	StyleVarAlpha StyleVarID = iota
+	StyleVarAlpha StyleVarID = StyleVarID(imgui.StyleVarAlpha)
 	// float     DisabledAlpha.
-	StyleVarDisabledAlpha
+	StyleVarDisabledAlpha StyleVarID = StyleVarID(imgui.StyleVarDisabledAlpha)
 	// StyleVarWindowPadding is a Vec2.
-	StyleVarWindowPadding
+	StyleVarWindowPadding StyleVarID = StyleVarID(imgui.StyleVarWindowPadding)
 	// StyleVarWindowRounding is a float.
-	StyleVarWindowRounding
+	StyleVarWindowRounding StyleVarID = StyleVarID(imgui.StyleVarWindowRounding)
 	// StyleVarWindowBorderSize is a float.
-	StyleVarWindowBorderSize
+	StyleVarWindowBorderSize StyleVarID = StyleVarID(imgui.StyleVarWindowBorderSize)
 	// StyleVarWindowMinSize is a Vec2.
-	StyleVarWindowMinSize
+	StyleVarWindowMinSize StyleVarID = StyleVarID(imgui.StyleVarWindowMinSize)
 	// StyleVarWindowTitleAlign is a Vec2.
-	StyleVarWindowTitleAlign
+	StyleVarWindowTitleAlign StyleVarID = StyleVarID(imgui.StyleVarWindowTitleAlign)
 	// StyleVarChildRounding is a float.
-	StyleVarChildRounding
+	StyleVarChildRounding StyleVarID = StyleVarID(imgui.StyleVarChildRounding)
 	// StyleVarChildBorderSize is a float.
-	StyleVarChildBorderSize
+	StyleVarChildBorderSize StyleVarID = StyleVarID(imgui.StyleVarChildBorderSize)
 	// StyleVarPopupRounding is a float.
-	StyleVarPopupRounding
+	StyleVarPopupRounding StyleVarID = StyleVarID(imgui.StyleVarPopupRounding)
 	// StyleVarPopupBorderSize is a float.
-	StyleVarPopupBorderSize
+	StyleVarPopupBorderSize StyleVarID = StyleVarID(imgui.StyleVarPopupBorderSize)
 	// StyleVarFramePadding is a Vec2.
-	StyleVarFramePadding
+	StyleVarFramePadding StyleVarID = StyleVarID(imgui.StyleVarFramePadding)
 	// StyleVarFrameRounding is a float.
-	StyleVarFrameRounding
+	StyleVarFrameRounding StyleVarID = StyleVarID(imgui.StyleVarFrameRounding)
 	// StyleVarFrameBorderSize is a float.
-	StyleVarFrameBorderSize
+	StyleVarFrameBorderSize StyleVarID = StyleVarID(imgui.StyleVarFrameBorderSize)
 	// StyleVarItemSpacing is a Vec2.
-	StyleVarItemSpacing
+	StyleVarItemSpacing StyleVarID = StyleVarID(imgui.StyleVarItemSpacing)
 	// StyleVarItemInnerSpacing is a Vec2.
-	StyleVarItemInnerSpacing
+	StyleVarItemInnerSpacing StyleVarID = StyleVarID(imgui.StyleVarItemInnerSpacing)
 	// StyleVarIndentSpacing is a float.
-	StyleVarIndentSpacing
+	StyleVarIndentSpacing StyleVarID = StyleVarID(imgui.StyleVarIndentSpacing)
 	// StyleVarScrollbarSize is a float.
-	StyleVarScrollbarSize
+	StyleVarScrollbarSize StyleVarID = StyleVarID(imgui.StyleVarScrollbarSize)
 	// StyleVarScrollbarRounding is a float.
-	StyleVarScrollbarRounding
+	StyleVarScrollbarRounding StyleVarID = StyleVarID(imgui.StyleVarScrollbarRounding)
 	// StyleVarGrabMinSize is a float.
-	StyleVarGrabMinSize
+	StyleVarGrabMinSize StyleVarID = StyleVarID(imgui.StyleVarGrabMinSize)
 	// StyleVarGrabRounding is a float.
-	StyleVarGrabRounding
+	StyleVarGrabRounding StyleVarID = StyleVarID(imgui.StyleVarGrabRounding)
 	// StyleVarTabRounding is a float.
-	StyleVarTabRounding
+	StyleVarTabRounding StyleVarID = StyleVarID(imgui.StyleVarTabRounding)
 	// StyleVarButtonTextAlign is a Vec2.
-	StyleVarButtonTextAlign
+	StyleVarButtonTextAlign StyleVarID = StyleVarID(imgui.StyleVarButtonTextAlign)
 	// StyleVarSelectableTextAlign is a Vec2.
-	StyleVarSelectableTextAlign
+	StyleVarSelectableTextAlign StyleVarID = StyleVarID(imgui.StyleVarSelectableTextAlign)
 )
 
 var _ Widget = &StyleSetter{}
