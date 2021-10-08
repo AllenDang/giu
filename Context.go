@@ -29,6 +29,8 @@ type context struct {
 
 	// States will used by custom widget to store data
 	state sync.Map
+
+	InputHandler InputHandler
 }
 
 func (c *context) GetRenderer() imgui.Renderer {
