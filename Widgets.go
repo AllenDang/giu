@@ -2140,6 +2140,7 @@ func (v *VSplitterWidget) Build() {
 	} else {
 		*(v.delta) = 0
 	}
+
 	if imgui.IsItemHovered() {
 		imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
 		c = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
