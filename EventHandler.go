@@ -32,7 +32,8 @@ type EventHandler struct {
 	mouseEvents []mouseEvent
 	keyEvents   []keyEvent
 	onActivate,
-	onDeactivate func()
+	onDeactivate,
+	onActive func()
 }
 
 // Event adds a new event to widget above.
@@ -46,6 +47,12 @@ func Event() *EventHandler {
 // OnHover sets callback when item gets hovered.
 func (eh *EventHandler) OnHover(onHover func()) *EventHandler {
 	eh.hover = onHover
+	return eh
+}
+
+// OnActive sets a callback when ite IS ACTIVE (not activated).
+func (eh *EventHandler) OnActive(cb func()) *EventHandler {
+	eh.onActive = cb
 	return eh
 }
 
@@ -110,9 +117,9 @@ func (eh *EventHandler) OnMouseReleased(mouseButton MouseButton, callback func()
 // Build implements Widget interface
 // nolint:gocognit,gocyclo // will fix later
 func (eh *EventHandler) Build() {
-	if eh.onActivate != nil || eh.onDeactivate != nil {
-		isActive := IsItemActive()
+	isActive := IsItemActive()
 
+	if eh.onActivate != nil || eh.onDeactivate != nil {
 		var state *eventHandlerState
 		stateID := GenAutoID("eventHandlerState")
 		if s := Context.GetState(stateID); s != nil {
@@ -134,6 +141,10 @@ func (eh *EventHandler) Build() {
 			state.isActive = false
 			eh.onDeactivate()
 		}
+	}
+
+	if isActive && eh.onActive != nil {
+		eh.onActive()
 	}
 
 	if !IsItemHovered() {
