@@ -164,12 +164,14 @@ func (w *MasterWindow) setTheme() {
 
 // SetBgColor sets background color of master window.
 func (w *MasterWindow) SetBgColor(bgColor color.Color) {
+	const mask = 0xffff
+
 	r, g, b, a := bgColor.RGBA()
 	w.clearColor = [4]float32{
-		float32(r) / 255.0,
-		float32(g) / 255.0,
-		float32(b) / 255.0,
-		float32(a) / 255.0,
+		float32(r) / mask,
+		float32(g) / mask,
+		float32(b) / mask,
+		float32(a) / mask,
 	}
 }
 
