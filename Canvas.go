@@ -18,7 +18,7 @@ type Canvas struct {
 }
 
 // GetCanvas returns current draw list (for current window).
-// it will fail if called out of window's layout
+// it will fail if called out of window's layout.
 func GetCanvas() *Canvas {
 	return &Canvas{
 		drawlist: imgui.GetWindowDrawList(),
