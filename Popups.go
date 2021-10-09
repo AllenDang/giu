@@ -4,10 +4,14 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
+// OpenPopup opens a popup with specified id.
+// NOTE: you need to build this popup first (see Pop(Modal)Widget)
 func OpenPopup(name string) {
 	imgui.OpenPopup(name)
 }
 
+// CloseCurrentPopup closes currently opened popup.
+// If no popups opened, no action will be taken.
 func CloseCurrentPopup() {
 	imgui.CloseCurrentPopup()
 }

@@ -13,6 +13,7 @@ import (
 // MasterWindowFlags wrapps imgui.GLFWWindowFlags.
 type MasterWindowFlags imgui.GLFWWindowFlags
 
+// master window flags
 const (
 	// Specifies the window will be fixed size.
 	MasterWindowFlagsNotResizable MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsNotResizable)
