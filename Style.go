@@ -325,12 +325,33 @@ const (
 	StyleVarSelectableTextAlign StyleVarID = StyleVarID(imgui.StyleVarSelectableTextAlign)
 )
 
+// IsVec2 returns true if the style var id should be processed as imgui.Vec2
+// if not, it is interpreted as float32.
+func (s StyleVarID) IsVec2() bool {
+	lookup := map[StyleVarID]bool{
+		// StyleVarWindowPadding is a Vec2.
+		StyleVarWindowPadding:    true,
+		StyleVarWindowMinSize:    true,
+		StyleVarWindowTitleAlign: true,
+		StyleVarFramePadding:     true,
+		StyleVarItemSpacing:      true,
+		// StyleVarItemInnerSpacing is a Vec2.
+		StyleVarItemInnerSpacing:    true,
+		StyleVarButtonTextAlign:     true,
+		StyleVarSelectableTextAlign: true,
+	}
+
+	result, ok := lookup[s]
+
+	return result && ok
+}
+
 var _ Widget = &StyleSetter{}
 
 // StyleSetter is a user-friendly way to manage imgui styles.
 type StyleSetter struct {
 	colors   map[StyleColorID]color.Color
-	styles   map[StyleVarID]imgui.Vec2
+	styles   map[StyleVarID]interface{}
 	font     *FontInfo
 	disabled bool
 	layout   Layout
@@ -340,7 +361,7 @@ type StyleSetter struct {
 func Style() *StyleSetter {
 	var ss StyleSetter
 	ss.colors = make(map[StyleColorID]color.Color)
-	ss.styles = make(map[StyleVarID]imgui.Vec2)
+	ss.styles = make(map[StyleVarID]interface{})
 
 	return &ss
 }
@@ -354,6 +375,14 @@ func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.Color) *StyleSet
 // SetStyle sets styleVarID to width and height.
 func (ss *StyleSetter) SetStyle(varID StyleVarID, width, height float32) *StyleSetter {
 	ss.styles[varID] = imgui.Vec2{X: width, Y: height}
+	return ss
+}
+
+// SetStyleFloat sets styleVarID to float value.
+// NOTE: for float typed values see above in comments over
+// StyleVarID's comments.
+func (ss *StyleSetter) SetStyleFloat(varID StyleVarID, value float32) *StyleSetter {
+	ss.styles[varID] = value
 	return ss
 }
 
@@ -403,7 +432,27 @@ func (ss *StyleSetter) Build() {
 	}
 
 	for k, v := range ss.styles {
-		imgui.PushStyleVarVec2(imgui.StyleVarID(k), v)
+		if k.IsVec2() {
+			var value imgui.Vec2
+			switch typed := v.(type) {
+			case imgui.Vec2:
+				value = typed
+			case float32:
+				value = imgui.Vec2{X: typed, Y: typed}
+			}
+
+			imgui.PushStyleVarVec2(imgui.StyleVarID(k), value)
+		} else {
+			var value float32
+			switch typed := v.(type) {
+			case float32:
+				value = typed
+			case imgui.Vec2:
+				value = typed.X
+			}
+
+			imgui.PushStyleVarFloat(imgui.StyleVarID(k), value)
+		}
 	}
 
 	isFontPushed := false
