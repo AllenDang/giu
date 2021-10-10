@@ -5,7 +5,7 @@ import (
 )
 
 // OpenPopup opens a popup with specified id.
-// NOTE: you need to build this popup first (see Pop(Modal)Widget)
+// NOTE: you need to build this popup first (see Pop(Modal)Widget).
 func OpenPopup(name string) {
 	imgui.OpenPopup(name)
 }

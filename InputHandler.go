@@ -2,7 +2,7 @@ package giu
 
 // input menager is used to register a keyboard shortcuts in an app.
 
-// Shortcut represents a keyboard shortcut
+// Shortcut represents a keyboard shortcut.
 type Shortcut struct {
 	Key      Key
 	Modifier Modifier

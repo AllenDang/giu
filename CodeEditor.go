@@ -39,7 +39,7 @@ type CodeEditorWidget struct {
 	border bool
 }
 
-// CodeEditor creates new code editor widget
+// CodeEditor creates new code editor widget.
 func CodeEditor() *CodeEditorWidget {
 	return &CodeEditorWidget{
 		title: GenAutoID("##CodeEditor"),
@@ -136,7 +136,7 @@ func (ce *CodeEditorWidget) GetCurrentLineText() string {
 }
 
 // GetCursorPos returns cursor position.
-// (in characters)
+// (in characters).
 func (ce *CodeEditorWidget) GetCursorPos() (x, y int) {
 	return ce.getState().editor.GetCursorPos()
 }
@@ -167,7 +167,7 @@ func (ce *CodeEditorWidget) IsTextChanged() bool {
 }
 
 // GetScreenCursorPos returns cursor position on the screen.
-// (in pixels)
+// (in pixels).
 func (ce *CodeEditorWidget) GetScreenCursorPos() (x, y int) {
 	return ce.getState().editor.GetScreenCursorPos()
 }

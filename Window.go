@@ -22,7 +22,7 @@ func SingleWindow() *WindowWidget {
 		Size(size[0], size[1])
 }
 
-// SingleWindowWithMenuBar creates a SingleWindow and allows to add menubar on its top
+// SingleWindowWithMenuBar creates a SingleWindow and allows to add menubar on its top.
 func SingleWindowWithMenuBar() *WindowWidget {
 	size := Context.platform.DisplaySize()
 	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())

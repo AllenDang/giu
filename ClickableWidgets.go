@@ -113,7 +113,7 @@ type SmallButtonWidget struct {
 	onClick func()
 }
 
-// SmallButton constructs a new small button widget
+// SmallButton constructs a new small button widget.
 func SmallButton(id string) *SmallButtonWidget {
 	return &SmallButtonWidget{
 		id:      GenAutoID(id),
@@ -122,7 +122,7 @@ func SmallButton(id string) *SmallButtonWidget {
 }
 
 // SmallButtonf allows to set formated label for small button.
-// It calls SmallButton(fmt.Sprintf(label, args...))
+// It calls SmallButton(fmt.Sprintf(label, args...)).
 func SmallButtonf(format string, args ...interface{}) *SmallButtonWidget {
 	return SmallButton(fmt.Sprintf(format, args...))
 }
@@ -144,7 +144,7 @@ var _ Widget = &InvisibleButtonWidget{}
 
 // InvisibleButtonWidget is a clickable region.
 // NOTE: you may want to display other widgets on this button.
-// to do so, you may move drawing cursor back by Get/SetCursor(Screen)Pos
+// to do so, you may move drawing cursor back by Get/SetCursor(Screen)Pos.
 type InvisibleButtonWidget struct {
 	id      string
 	width   float32
@@ -162,7 +162,7 @@ func InvisibleButton() *InvisibleButtonWidget {
 	}
 }
 
-// Size sets button's size
+// Size sets button's size.
 func (b *InvisibleButtonWidget) Size(width, height float32) *InvisibleButtonWidget {
 	b.width, b.height = width, height
 	return b
@@ -174,7 +174,7 @@ func (b *InvisibleButtonWidget) OnClick(onClick func()) *InvisibleButtonWidget {
 	return b
 }
 
-// ID allows to manually set widget's id (no need to use in normal conditions)
+// ID allows to manually set widget's id (no need to use in normal conditions).
 func (b *InvisibleButtonWidget) ID(id string) *InvisibleButtonWidget {
 	b.id = id
 	return b
@@ -202,7 +202,7 @@ type ImageButtonWidget struct {
 	onClick      func()
 }
 
-// ImageButton  constructs image buton widget
+// ImageButton  constructs image buton widget.
 func ImageButton(texture *Texture) *ImageButtonWidget {
 	return &ImageButtonWidget{
 		texture:      texture,
@@ -235,7 +235,7 @@ func (b *ImageButtonWidget) Build() {
 }
 
 // Size sets BUTTONS size.
-// NOTE: image size is button size - 2 * frame padding
+// NOTE: image size is button size - 2 * frame padding.
 func (b *ImageButtonWidget) Size(width, height float32) *ImageButtonWidget {
 	b.width, b.height = width, height
 	return b
@@ -247,25 +247,25 @@ func (b *ImageButtonWidget) OnClick(onClick func()) *ImageButtonWidget {
 	return b
 }
 
-// UV sets image's uv
+// UV sets image's uv.
 func (b *ImageButtonWidget) UV(uv0, uv1 image.Point) *ImageButtonWidget {
 	b.uv0, b.uv1 = uv0, uv1
 	return b
 }
 
-// BgColor sets button's background color
+// BgColor sets button's background color.
 func (b *ImageButtonWidget) BgColor(bgColor color.Color) *ImageButtonWidget {
 	b.bgColor = bgColor
 	return b
 }
 
-// TintColor sets tit color for image
+// TintColor sets tit color for image.
 func (b *ImageButtonWidget) TintColor(tintColor color.Color) *ImageButtonWidget {
 	b.tintColor = tintColor
 	return b
 }
 
-// FramePadding sets button's frame padding (set 0 to fit image to the frame)
+// FramePadding sets button's frame padding (set 0 to fit image to the frame).
 func (b *ImageButtonWidget) FramePadding(padding int) *ImageButtonWidget {
 	b.framePadding = padding
 	return b
@@ -282,7 +282,7 @@ type ImageButtonWithRgbaWidget struct {
 	id   string
 }
 
-// ImageButtonWithRgba creates a new widget
+// ImageButtonWithRgba creates a new widget.
 func ImageButtonWithRgba(rgba image.Image) *ImageButtonWithRgbaWidget {
 	return &ImageButtonWithRgbaWidget{
 		id:                GenAutoID("ImageButtonWithRgba"),
@@ -291,7 +291,7 @@ func ImageButtonWithRgba(rgba image.Image) *ImageButtonWithRgbaWidget {
 	}
 }
 
-// Size sets button's size
+// Size sets button's size.
 func (b *ImageButtonWithRgbaWidget) Size(width, height float32) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.Size(width, height)
 	return b
@@ -303,25 +303,25 @@ func (b *ImageButtonWithRgbaWidget) OnClick(onClick func()) *ImageButtonWithRgba
 	return b
 }
 
-// UV sets image's uv color
+// UV sets image's uv color.
 func (b *ImageButtonWithRgbaWidget) UV(uv0, uv1 image.Point) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.UV(uv0, uv1)
 	return b
 }
 
-// BgColor sets button's background color
+// BgColor sets button's background color.
 func (b *ImageButtonWithRgbaWidget) BgColor(bgColor color.Color) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.BgColor(bgColor)
 	return b
 }
 
-// TintColor sets image's tint color
+// TintColor sets image's tint color.
 func (b *ImageButtonWithRgbaWidget) TintColor(tintColor color.Color) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.TintColor(tintColor)
 	return b
 }
 
-// FramePadding sets frame padding (see (*ImageButtonWidget).TintColor)
+// FramePadding sets frame padding (see (*ImageButtonWidget).TintColor).
 func (b *ImageButtonWithRgbaWidget) FramePadding(padding int) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.FramePadding(padding)
 	return b
@@ -380,7 +380,7 @@ var _ Widget = &RadioButtonWidget{}
 
 // RadioButtonWidget is a small, round button.
 // It is common to use it for single-choice questions.
-// see examples/widgets
+// see examples/widgets.
 type RadioButtonWidget struct {
 	text     string
 	active   bool
@@ -423,7 +423,7 @@ type SelectableWidget struct {
 	onDClick func()
 }
 
-// Selectable constructs a selectable widget
+// Selectable constructs a selectable widget.
 func Selectable(label string) *SelectableWidget {
 	return &SelectableWidget{
 		label:    GenAutoID(label),
@@ -446,19 +446,19 @@ func (s *SelectableWidget) Selected(selected bool) *SelectableWidget {
 	return s
 }
 
-// Flags add flags
+// Flags add flags.
 func (s *SelectableWidget) Flags(flags SelectableFlags) *SelectableWidget {
 	s.flags = flags
 	return s
 }
 
-// Size sets selectable's size
+// Size sets selectable's size.
 func (s *SelectableWidget) Size(width, height float32) *SelectableWidget {
 	s.width, s.height = width, height
 	return s
 }
 
-// OnClick sets on click event
+// OnClick sets on click event.
 func (s *SelectableWidget) OnClick(onClick func()) *SelectableWidget {
 	s.onClick = onClick
 	return s
@@ -500,7 +500,7 @@ type TreeNodeWidget struct {
 	eventHandler func()
 }
 
-// TreeNode creates a new tree node widget
+// TreeNode creates a new tree node widget.
 func TreeNode(label string) *TreeNodeWidget {
 	return &TreeNodeWidget{
 		label:        tStr(label),
@@ -510,7 +510,7 @@ func TreeNode(label string) *TreeNodeWidget {
 	}
 }
 
-// TreeNodef adds TreeNode with formatted label
+// TreeNodef adds TreeNode with formatted label.
 func TreeNodef(format string, args ...interface{}) *TreeNodeWidget {
 	return TreeNode(fmt.Sprintf(format, args...))
 }
