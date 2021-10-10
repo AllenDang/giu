@@ -151,7 +151,7 @@ func PopItemWidth() {
 // use PushTextWrapPos, render text. If text reaches frame end,
 // rendering will be continued at the start pos in line below.
 // NOTE: Don't forget to call PopWrapTextPos
-// NOTE: it is done automatically in LabelWidget (see (*LabelWIdget).Wrapped())
+// NOTE: it is done automatically in LabelWidget (see (*LabelWIdget).Wrapped()).
 func PushTextWrapPos() {
 	imgui.PushTextWrapPos()
 }
@@ -165,7 +165,7 @@ func PopTextWrapPos() {
 // MouseCursorType represents a type (layout) of mouse cursor.
 type MouseCursorType int
 
-// cursor types
+// cursor types.
 const (
 	// MouseCursorNone no mouse cursor.
 	MouseCursorNone MouseCursorType = -1

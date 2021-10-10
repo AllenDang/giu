@@ -14,9 +14,9 @@ const (
 	// AlignLeft is here just for clearity.
 	// if set, no action is taken so don't use it.
 	AlignLeft AlignmentType = iota
-	// AlignCenter centers widget
+	// AlignCenter centers widget.
 	AlignCenter
-	// AlignRight aligns a widget to right side of window
+	// AlignRight aligns a widget to right side of window.
 	AlignRight
 )
 
@@ -54,13 +54,13 @@ func (a *AlignmentSetter) To(widgets ...Widget) *AlignmentSetter {
 // ID allows to manually set AlignmentSetter ID
 // NOTE: there isn't any known reason to use this method, however
 // it is here for some random cases. YOU DON'T NEED TO USE IT
-// in normal conditions
+// in normal conditions.
 func (a *AlignmentSetter) ID(id string) *AlignmentSetter {
 	a.id = id
 	return a
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (a *AlignmentSetter) Build() {
 	if a.layout == nil {
 		return

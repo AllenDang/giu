@@ -2,10 +2,10 @@ package giu
 
 import "github.com/AllenDang/imgui-go"
 
-// InputTextFlags represents input text flags
+// InputTextFlags represents input text flags.
 type InputTextFlags int
 
-// input text flags
+// input text flags.
 const (
 	// InputTextFlagsNone sets everything default.
 	InputTextFlagsNone InputTextFlags = imgui.InputTextFlagsNone
@@ -50,10 +50,10 @@ const (
 	InputTextFlagsCharsScientific InputTextFlags = imgui.InputTextFlagsCharsScientific
 )
 
-// WindowFlags represents a window flags (see (*WindowWidget).Flags
+// WindowFlags represents a window flags (see (*WindowWidget).Flags.
 type WindowFlags int
 
-// window flags
+// window flags.
 const (
 	// WindowFlagsNone default = 0.
 	WindowFlagsNone WindowFlags = imgui.WindowFlagsNone
@@ -116,10 +116,10 @@ const (
 	WindowFlagsNoInputs WindowFlags = imgui.WindowFlagsNoInputs
 )
 
-// ComboFlags represents imgui.ComboFlags
+// ComboFlags represents imgui.ComboFlags.
 type ComboFlags int
 
-// combo flags list
+// combo flags list.
 const (
 	// ComboFlagNone default = 0.
 	ComboFlagNone ComboFlags = imgui.ComboFlagNone
@@ -143,7 +143,7 @@ const (
 // SelectableFlags represents imgui.SelectableFlags.
 type SelectableFlags int
 
-// selectable flags list
+// selectable flags list.
 const (
 	// SelectableFlagsNone default = 0.
 	SelectableFlagsNone SelectableFlags = imgui.SelectableFlagsNone
@@ -160,7 +160,7 @@ const (
 // TabItemFlags represents tab item flags.
 type TabItemFlags int
 
-// tab item flags list
+// tab item flags list.
 const (
 	// TabItemFlagsNone default = 0.
 	TabItemFlagsNone TabItemFlags = imgui.TabItemFlagsNone
@@ -178,10 +178,10 @@ const (
 	TabItemFlagsNoPushID TabItemFlags = imgui.TabItemFlagsNoPushID
 )
 
-// TabBarFlags represents imgui.TabBarFlags
+// TabBarFlags represents imgui.TabBarFlags.
 type TabBarFlags int
 
-// tab bar flags list
+// tab bar flags list.
 const (
 	// TabBarFlagsNone default = 0.
 	TabBarFlagsNone TabBarFlags = imgui.TabBarFlagsNone
@@ -214,7 +214,7 @@ const (
 // TreeNodeFlags represents tree node widget flags.
 type TreeNodeFlags int
 
-// tree node flags list
+// tree node flags list.
 const (
 	// TreeNodeFlagsNone default = 0.
 	TreeNodeFlagsNone TreeNodeFlags = imgui.TreeNodeFlagsNone
@@ -261,7 +261,7 @@ const (
 // FocusedFlags represents imgui.FocusedFlags.
 type FocusedFlags int
 
-// focused flags list
+// focused flags list.
 const (
 	// FocusedFlagsNone default FocusedFlags = 0.
 	FocusedFlagsNone FocusedFlags = 0
@@ -278,7 +278,7 @@ const (
 // HoveredFlags represents a hovered flags.
 type HoveredFlags int
 
-// hovered flags list
+// hovered flags list.
 const (
 	// HoveredFlagsNone Return true if directly over the item/window, not obstructed by another window,
 	// not obstructed by an active popup or modal blocking inputs under them.
@@ -303,7 +303,7 @@ const (
 // ColorEditFlags for ColorEdit3V(), etc.
 type ColorEditFlags int
 
-// list of color edit flags
+// list of color edit flags.
 const (
 	// ColorEditFlagsNone default = 0.
 	ColorEditFlagsNone ColorEditFlags = imgui.ColorEditFlagsNone
@@ -392,7 +392,7 @@ const (
 	TableFlagsSizingMask                 TableFlags = TableFlags(imgui.TableFlags_SizingMask_)
 )
 
-// TableRowFlags represents table row flags
+// TableRowFlags represents table row flags.
 type TableRowFlags int
 
 // table row flags:.
@@ -405,7 +405,7 @@ const (
 // TableColumnFlags represents a flags for table column (see (*TableColumnWidget).Flags()).
 type TableColumnFlags int
 
-// table column flags list
+// table column flags list.
 const (
 	// Input configuration flags.
 	TableColumnFlagsNone                 TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_None)
@@ -440,10 +440,10 @@ const (
 )
 
 // SliderFlags represents imgui.SliderFlags
-// TODO: Hard-reffer to these constants
+// TODO: Hard-reffer to these constants.
 type SliderFlags int
 
-// slider flags
+// slider flags.
 const (
 	SliderFlagsNone SliderFlags = 0
 	// Clamp value to min/max bounds when input manually with CTRL+Click. By default CTRL+Click allows going out of bounds.
@@ -460,10 +460,10 @@ const (
 	SliderFlagsInvalidMask SliderFlags = 0x7000000F
 )
 
-// PlotFlags represents imgui.ImPlotFlags
+// PlotFlags represents imgui.ImPlotFlags.
 type PlotFlags int
 
-// plot flags
+// plot flags.
 const (
 	PlotFlagsNone        = PlotFlags(imgui.ImPlotFlags_None)
 	PlotFlagsNoTitle     = PlotFlags(imgui.ImPlotFlags_NoTitle)
@@ -482,10 +482,10 @@ const (
 	PlotFlagsCanvasOnly  = PlotFlags(imgui.ImPlotFlags_CanvasOnly)
 )
 
-// PlotAxisFlags represents imgui.ImPlotAxisFlags
+// PlotAxisFlags represents imgui.ImPlotAxisFlags.
 type PlotAxisFlags int
 
-// plot axis flags
+// plot axis flags.
 const (
 	PlotAxisFlagsNone          PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_None)
 	PlotAxisFlagsNoLabel       PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_NoLabel)

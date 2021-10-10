@@ -20,7 +20,7 @@ func Stack(visible int32, layouts ...Widget) *StackWidget {
 	}
 }
 
-// Build implements widget interface
+// Build implements widget interface.
 func (s *StackWidget) Build() {
 	// save visible cursor position
 	visiblePos := GetCursorScreenPos()

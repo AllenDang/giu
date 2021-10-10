@@ -131,7 +131,7 @@ type inputTextState struct {
 	autoCompleteCandidates fuzzy.Matches
 }
 
-// Dispose implements disposable interface
+// Dispose implements disposable interface.
 func (s *inputTextState) Dispose() {
 	s.autoCompleteCandidates = nil
 }
@@ -150,7 +150,7 @@ type InputTextWidget struct {
 	onChange   func()
 }
 
-// InputText creates new input text widget
+// InputText creates new input text widget.
 func InputText(value *string) *InputTextWidget {
 	return &InputTextWidget{
 		label:    GenAutoID("##InputText"),
@@ -163,13 +163,13 @@ func InputText(value *string) *InputTextWidget {
 	}
 }
 
-// Label adds label (alternatively you can use it to set widget's id)
+// Label adds label (alternatively you can use it to set widget's id).
 func (i *InputTextWidget) Label(label string) *InputTextWidget {
 	i.label = tStr(label)
 	return i
 }
 
-// Labelf adds formatted label
+// Labelf adds formatted label.
 func (i *InputTextWidget) Labelf(format string, args ...interface{}) *InputTextWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
@@ -181,31 +181,31 @@ func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
 	return i
 }
 
-// Hint sets hint text
+// Hint sets hint text.
 func (i *InputTextWidget) Hint(hint string) *InputTextWidget {
 	i.hint = tStr(hint)
 	return i
 }
 
-// Size sets field's width
+// Size sets field's width.
 func (i *InputTextWidget) Size(width float32) *InputTextWidget {
 	i.width = width
 	return i
 }
 
-// Flags sets flags
+// Flags sets flags.
 func (i *InputTextWidget) Flags(flags InputTextFlags) *InputTextWidget {
 	i.flags = flags
 	return i
 }
 
-// Callback sets input text callback
+// Callback sets input text callback.
 func (i *InputTextWidget) Callback(cb imgui.InputTextCallback) *InputTextWidget {
 	i.cb = cb
 	return i
 }
 
-// OnChange sets callback when text was changed
+// OnChange sets callback when text was changed.
 func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 	i.onChange = onChange
 	return i
@@ -270,7 +270,7 @@ func (i *InputTextWidget) Build() {
 
 var _ Widget = &InputIntWidget{}
 
-// InputIntWidget is an input text field acceptiong intager values only
+// InputIntWidget is an input text field acceptiong intager values only.
 type InputIntWidget struct {
 	label    string
 	value    *int32
@@ -293,30 +293,30 @@ func InputInt(value *int32) *InputIntWidget {
 	}
 }
 
-// Label sets label (id)
+// Label sets label (id).
 func (i *InputIntWidget) Label(label string) *InputIntWidget {
 	i.label = tStr(label)
 	return i
 }
 
-// Labelf sets formatted label
+// Labelf sets formatted label.
 func (i *InputIntWidget) Labelf(format string, args ...interface{}) *InputIntWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
-// Size sets input's width
+// Size sets input's width.
 func (i *InputIntWidget) Size(width float32) *InputIntWidget {
 	i.width = width
 	return i
 }
 
-// Flags sets flags
+// Flags sets flags.
 func (i *InputIntWidget) Flags(flags InputTextFlags) *InputIntWidget {
 	i.flags = flags
 	return i
 }
 
-// OnChange adds on change callback
+// OnChange adds on change callback.
 func (i *InputIntWidget) OnChange(onChange func()) *InputIntWidget {
 	i.onChange = onChange
 	return i
@@ -336,7 +336,7 @@ func (i *InputIntWidget) Build() {
 
 var _ Widget = &InputFloatWidget{}
 
-// InputFloatWidget does similar to InputIntWIdget, but accepts float numbers
+// InputFloatWidget does similar to InputIntWIdget, but accepts float numbers.
 type InputFloatWidget struct {
 	label    string
 	value    *float32
@@ -346,7 +346,7 @@ type InputFloatWidget struct {
 	onChange func()
 }
 
-// InputFloat constructs InputFloatWidget
+// InputFloat constructs InputFloatWidget.
 func InputFloat(value *float32) *InputFloatWidget {
 	return &InputFloatWidget{
 		label:    GenAutoID("##InputFloatWidget"),
@@ -358,36 +358,36 @@ func InputFloat(value *float32) *InputFloatWidget {
 	}
 }
 
-// Label sets label of input field
+// Label sets label of input field.
 func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
 	i.label = tStr(label)
 	return i
 }
 
-// Labelf sets formatted label
+// Labelf sets formatted label.
 func (i *InputFloatWidget) Labelf(format string, args ...interface{}) *InputFloatWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
-// Size sets input field's width
+// Size sets input field's width.
 func (i *InputFloatWidget) Size(width float32) *InputFloatWidget {
 	i.width = width
 	return i
 }
 
-// Flags sets flags
+// Flags sets flags.
 func (i *InputFloatWidget) Flags(flags InputTextFlags) *InputFloatWidget {
 	i.flags = flags
 	return i
 }
 
-// Format sets data format (e.g. %.3f)
+// Format sets data format (e.g. %.3f).
 func (i *InputFloatWidget) Format(format string) *InputFloatWidget {
 	i.format = format
 	return i
 }
 
-// OnChange sets callback called when text is changed
+// OnChange sets callback called when text is changed.
 func (i *InputFloatWidget) OnChange(onChange func()) *InputFloatWidget {
 	i.onChange = onChange
 	return i
@@ -407,14 +407,14 @@ func (i *InputFloatWidget) Build() {
 
 var _ Widget = &LabelWidget{}
 
-// LabelWidget is a plain text label
+// LabelWidget is a plain text label.
 type LabelWidget struct {
 	label    string
 	fontInfo *FontInfo
 	wrapped  bool
 }
 
-// Label constructs label widget
+// Label constructs label widget.
 func Label(label string) *LabelWidget {
 	return &LabelWidget{
 		label:   tStr(label),
@@ -422,18 +422,18 @@ func Label(label string) *LabelWidget {
 	}
 }
 
-// Labelf allows to add formatted label
+// Labelf allows to add formatted label.
 func Labelf(format string, args ...interface{}) *LabelWidget {
 	return Label(fmt.Sprintf(format, args...))
 }
 
-// Wrapped determinates if label is frapped
+// Wrapped determinates if label is frapped.
 func (l *LabelWidget) Wrapped(wrapped bool) *LabelWidget {
 	l.wrapped = wrapped
 	return l
 }
 
-// Font sets specific font (does like Style().SetFont)
+// Font sets specific font (does like Style().SetFont).
 func (l *LabelWidget) Font(font *FontInfo) *LabelWidget {
 	l.fontInfo = font
 	return l

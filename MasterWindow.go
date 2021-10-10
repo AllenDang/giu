@@ -13,7 +13,7 @@ import (
 // MasterWindowFlags wrapps imgui.GLFWWindowFlags.
 type MasterWindowFlags imgui.GLFWWindowFlags
 
-// master window flags
+// master window flags.
 const (
 	// Specifies the window will be fixed size.
 	MasterWindowFlagsNotResizable MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsNotResizable)
@@ -361,7 +361,7 @@ func (w *MasterWindow) SetShouldClose(v bool) {
 }
 
 // SetInputHandler allows to change default input handler.
-// see InputHandler.go
+// see InputHandler.go.
 func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 	Context.InputHandler = handler
 	w.platform.SetInputCallback(func(key glfw.Key, modifier glfw.ModifierKey, action glfw.Action) {
