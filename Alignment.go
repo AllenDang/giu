@@ -24,7 +24,7 @@ var _ Widget = &AlignmentSetter{}
 
 // AlignmentSetter allows to align to right / center a widget or widgets group.
 // NOTE: Because of AlignSetter uses experimental GetWidgetWidth,
-// it is experimantal too.
+// it is experimental too.
 // usage: see examples/align
 //
 // list of known bugs:

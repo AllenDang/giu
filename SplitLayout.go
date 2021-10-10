@@ -2,13 +2,13 @@ package giu
 
 import "github.com/AllenDang/imgui-go"
 
-// SplitDirection represents a direction (vertical/horizontal) of splitting layout
+// SplitDirection represents a direction (vertical/horizontal) of splitting layout.
 type SplitDirection uint8
 
 const (
-	// DirectionHorizontal is a horizontal line
+	// DirectionHorizontal is a horizontal line.
 	DirectionHorizontal SplitDirection = 1 << iota
-	// DirectionVertical is a vertical line
+	// DirectionVertical is a vertical line.
 	DirectionVertical
 )
 
@@ -39,7 +39,7 @@ type SplitLayoutWidget struct {
 	border              bool
 }
 
-// SplitLayout creates split layout widget
+// SplitLayout creates split layout widget.
 func SplitLayout(direction SplitDirection, sashPos float32, layout1, layout2 Widget) *SplitLayoutWidget {
 	return &SplitLayoutWidget{
 		direction: direction,
@@ -51,19 +51,19 @@ func SplitLayout(direction SplitDirection, sashPos float32, layout1, layout2 Wid
 	}
 }
 
-// Border sets if childs should have borders
+// Border sets if childs should have borders.
 func (s *SplitLayoutWidget) Border(b bool) *SplitLayoutWidget {
 	s.border = b
 	return s
 }
 
-// ID allows to manually set splitter's id
+// ID allows to manually set splitter's id.
 func (s *SplitLayoutWidget) ID(id string) *SplitLayoutWidget {
 	s.id = id
 	return s
 }
 
-// Build implements widget interface
+// Build implements widget interface.
 func (s *SplitLayoutWidget) Build() {
 	splitLayoutState := s.getState()
 	s.originItemSpacingX, s.originItemSpacingY = GetItemInnerSpacing()
