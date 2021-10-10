@@ -90,9 +90,10 @@ func loop() {
 				fmt.Println(checked2)
 			}),
 			g.Dummy(30, 0),
-			g.RadioButton("Radio 1", radioOp == 0).OnChange(func() { radioOp = 0 }),
-			g.RadioButton("Radio 2", radioOp == 1).OnChange(func() { radioOp = 1 }),
-			g.RadioButton("Radio 3", radioOp == 2).OnChange(func() { radioOp = 2 }),
+			g.Label("Do you like giu?"),
+			g.RadioButton("Yes, of course", radioOp == 0).OnChange(func() { radioOp = 0 }),
+			g.RadioButton("I'm going to test it now", radioOp == 1).OnChange(func() { radioOp = 1 }),
+			g.RadioButton("No", false),
 		),
 
 		g.ProgressBar(0.8).Size(g.Auto, 0).Overlay("Progress"),
