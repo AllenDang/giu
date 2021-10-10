@@ -275,6 +275,7 @@ func (w *MasterWindow) SetCloseCallback(cb func() bool) {
 	w.platform.SetCloseCallback(cb)
 }
 
+// SetDropCallback sets callback when file was droppend into the window.
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
 }
@@ -359,6 +360,8 @@ func (w *MasterWindow) SetShouldClose(v bool) {
 	w.platform.SetShouldStop(v)
 }
 
+// SetInputHandler allows to change default input handler.
+// see InputHandler.go
 func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 	Context.InputHandler = handler
 	w.platform.SetInputCallback(func(key glfw.Key, modifier glfw.ModifierKey, action glfw.Action) {
