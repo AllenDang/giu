@@ -20,16 +20,20 @@ type ButtonWidget struct {
 	onClick  func()
 }
 
-// Build implements Widget interface.
-func (b *ButtonWidget) Build() {
-	if b.disabled {
-		imgui.BeginDisabled(true)
-		defer imgui.EndDisabled()
+// Button creates a new button widget.
+func Button(label string) *ButtonWidget {
+	return &ButtonWidget{
+		id:      GenAutoID(label),
+		width:   0,
+		height:  0,
+		onClick: nil,
 	}
+}
 
-	if imgui.ButtonV(tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
-		b.onClick()
-	}
+// Buttonf creates button with formated label
+// NOTE: works like fmt.Sprintf (see `go doc fmt`).
+func Buttonf(format string, args ...interface{}) *ButtonWidget {
+	return Button(fmt.Sprintf(format, args...))
 }
 
 // OnClick sets callback called when button is clicked
@@ -52,20 +56,16 @@ func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 	return b
 }
 
-// Button creates a new button widget.
-func Button(label string) *ButtonWidget {
-	return &ButtonWidget{
-		id:      GenAutoID(label),
-		width:   0,
-		height:  0,
-		onClick: nil,
+// Build implements Widget interface.
+func (b *ButtonWidget) Build() {
+	if b.disabled {
+		imgui.BeginDisabled(true)
+		defer imgui.EndDisabled()
 	}
-}
 
-// Buttonf creates button with formated label
-// NOTE: works like fmt.Sprintf (see `go doc fmt`).
-func Buttonf(format string, args ...interface{}) *ButtonWidget {
-	return Button(fmt.Sprintf(format, args...))
+	if imgui.ButtonV(tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+		b.onClick()
+	}
 }
 
 var _ Widget = &ArrowButtonWidget{}
@@ -77,12 +77,6 @@ type ArrowButtonWidget struct {
 	onClick func()
 }
 
-// OnClick adds callback called when button is clicked.
-func (b *ArrowButtonWidget) OnClick(onClick func()) *ArrowButtonWidget {
-	b.onClick = onClick
-	return b
-}
-
 // ArrowButton creates ArrowButtonWidget.
 func ArrowButton(dir Direction) *ArrowButtonWidget {
 	return &ArrowButtonWidget{
@@ -90,6 +84,12 @@ func ArrowButton(dir Direction) *ArrowButtonWidget {
 		dir:     dir,
 		onClick: nil,
 	}
+}
+
+// OnClick adds callback called when button is clicked.
+func (b *ArrowButtonWidget) OnClick(onClick func()) *ArrowButtonWidget {
+	b.onClick = onClick
+	return b
 }
 
 // ID allows to manually set widget's id.
@@ -107,16 +107,13 @@ func (b *ArrowButtonWidget) Build() {
 
 var _ Widget = &SmallButtonWidget{}
 
+// SmallButtonWidget is like a button but without frame padding.
 type SmallButtonWidget struct {
 	id      string
 	onClick func()
 }
 
-func (b *SmallButtonWidget) OnClick(onClick func()) *SmallButtonWidget {
-	b.onClick = onClick
-	return b
-}
-
+// SmallButton constructs a new small button widget
 func SmallButton(id string) *SmallButtonWidget {
 	return &SmallButtonWidget{
 		id:      GenAutoID(id),
@@ -124,8 +121,16 @@ func SmallButton(id string) *SmallButtonWidget {
 	}
 }
 
+// SmallButtonf allows to set formated label for small button.
+// It calls SmallButton(fmt.Sprintf(label, args...))
 func SmallButtonf(format string, args ...interface{}) *SmallButtonWidget {
 	return SmallButton(fmt.Sprintf(format, args...))
+}
+
+// OnClick adds OnClick event.
+func (b *SmallButtonWidget) OnClick(onClick func()) *SmallButtonWidget {
+	b.onClick = onClick
+	return b
 }
 
 // Build implements Widget interface.
@@ -137,6 +142,9 @@ func (b *SmallButtonWidget) Build() {
 
 var _ Widget = &InvisibleButtonWidget{}
 
+// InvisibleButtonWidget is a clickable region.
+// NOTE: you may want to display other widgets on this button.
+// to do so, you may move drawing cursor back by Get/SetCursor(Screen)Pos
 type InvisibleButtonWidget struct {
 	id      string
 	width   float32
@@ -144,21 +152,7 @@ type InvisibleButtonWidget struct {
 	onClick func()
 }
 
-func (b *InvisibleButtonWidget) Size(width, height float32) *InvisibleButtonWidget {
-	b.width, b.height = width, height
-	return b
-}
-
-func (b *InvisibleButtonWidget) OnClick(onClick func()) *InvisibleButtonWidget {
-	b.onClick = onClick
-	return b
-}
-
-func (b *InvisibleButtonWidget) ID(id string) *InvisibleButtonWidget {
-	b.id = id
-	return b
-}
-
+// InvisibleButton constructs a new invisible button widget.
 func InvisibleButton() *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
 		id:      GenAutoID("InvisibleButton"),
@@ -166,6 +160,24 @@ func InvisibleButton() *InvisibleButtonWidget {
 		height:  0,
 		onClick: nil,
 	}
+}
+
+// Size sets button's size
+func (b *InvisibleButtonWidget) Size(width, height float32) *InvisibleButtonWidget {
+	b.width, b.height = width, height
+	return b
+}
+
+// OnClick sets click event.
+func (b *InvisibleButtonWidget) OnClick(onClick func()) *InvisibleButtonWidget {
+	b.onClick = onClick
+	return b
+}
+
+// ID allows to manually set widget's id (no need to use in normal conditions)
+func (b *InvisibleButtonWidget) ID(id string) *InvisibleButtonWidget {
+	b.id = id
+	return b
 }
 
 // Build implements Widget interface.
@@ -177,6 +189,7 @@ func (b *InvisibleButtonWidget) Build() {
 
 var _ Widget = &ImageButtonWidget{}
 
+// ImageButtonWidget is similar to ButtonWidget but with image texture instead of text label.
 type ImageButtonWidget struct {
 	texture      *Texture
 	width        float32
@@ -187,6 +200,21 @@ type ImageButtonWidget struct {
 	bgColor      color.Color
 	tintColor    color.Color
 	onClick      func()
+}
+
+// ImageButton  constructs image buton widget
+func ImageButton(texture *Texture) *ImageButtonWidget {
+	return &ImageButtonWidget{
+		texture:      texture,
+		width:        50,
+		height:       50,
+		uv0:          image.Point{X: 0, Y: 0},
+		uv1:          image.Point{X: 1, Y: 1},
+		framePadding: -1,
+		bgColor:      colornames.Black,
+		tintColor:    colornames.White,
+		onClick:      nil,
+	}
 }
 
 // Build implements Widget interface.
@@ -206,58 +234,55 @@ func (b *ImageButtonWidget) Build() {
 	}
 }
 
+// Size sets BUTTONS size.
+// NOTE: image size is button size - 2 * frame padding
 func (b *ImageButtonWidget) Size(width, height float32) *ImageButtonWidget {
 	b.width, b.height = width, height
 	return b
 }
 
+// OnClick sets click event.
 func (b *ImageButtonWidget) OnClick(onClick func()) *ImageButtonWidget {
 	b.onClick = onClick
 	return b
 }
 
+// UV sets image's uv
 func (b *ImageButtonWidget) UV(uv0, uv1 image.Point) *ImageButtonWidget {
 	b.uv0, b.uv1 = uv0, uv1
 	return b
 }
 
+// BgColor sets button's background color
 func (b *ImageButtonWidget) BgColor(bgColor color.Color) *ImageButtonWidget {
 	b.bgColor = bgColor
 	return b
 }
 
+// TintColor sets tit color for image
 func (b *ImageButtonWidget) TintColor(tintColor color.Color) *ImageButtonWidget {
 	b.tintColor = tintColor
 	return b
 }
 
+// FramePadding sets button's frame padding (set 0 to fit image to the frame)
 func (b *ImageButtonWidget) FramePadding(padding int) *ImageButtonWidget {
 	b.framePadding = padding
 	return b
 }
 
-func ImageButton(texture *Texture) *ImageButtonWidget {
-	return &ImageButtonWidget{
-		texture:      texture,
-		width:        50,
-		height:       50,
-		uv0:          image.Point{X: 0, Y: 0},
-		uv1:          image.Point{X: 1, Y: 1},
-		framePadding: -1,
-		bgColor:      colornames.Black,
-		tintColor:    colornames.White,
-		onClick:      nil,
-	}
-}
-
 var _ Widget = &ImageButtonWithRgbaWidget{}
 
+// ImageButtonWithRgbaWidget does similar to ImageButtonWIdget,
+// but implements image.Image instead of giu.Texture. It is probably
+// more useful than the original ImageButtonWIdget.
 type ImageButtonWithRgbaWidget struct {
 	*ImageButtonWidget
 	rgba image.Image
 	id   string
 }
 
+// ImageButtonWithRgba creates a new widget
 func ImageButtonWithRgba(rgba image.Image) *ImageButtonWithRgbaWidget {
 	return &ImageButtonWithRgbaWidget{
 		id:                GenAutoID("ImageButtonWithRgba"),
@@ -266,31 +291,37 @@ func ImageButtonWithRgba(rgba image.Image) *ImageButtonWithRgbaWidget {
 	}
 }
 
+// Size sets button's size
 func (b *ImageButtonWithRgbaWidget) Size(width, height float32) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.Size(width, height)
 	return b
 }
 
+// OnClick sets click events.
 func (b *ImageButtonWithRgbaWidget) OnClick(onClick func()) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.OnClick(onClick)
 	return b
 }
 
+// UV sets image's uv color
 func (b *ImageButtonWithRgbaWidget) UV(uv0, uv1 image.Point) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.UV(uv0, uv1)
 	return b
 }
 
+// BgColor sets button's background color
 func (b *ImageButtonWithRgbaWidget) BgColor(bgColor color.Color) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.BgColor(bgColor)
 	return b
 }
 
+// TintColor sets image's tint color
 func (b *ImageButtonWithRgbaWidget) TintColor(tintColor color.Color) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.TintColor(tintColor)
 	return b
 }
 
+// FramePadding sets frame padding (see (*ImageButtonWidget).TintColor)
 func (b *ImageButtonWithRgbaWidget) FramePadding(padding int) *ImageButtonWithRgbaWidget {
 	b.ImageButtonWidget.FramePadding(padding)
 	return b
@@ -323,19 +354,6 @@ type CheckboxWidget struct {
 	onChange func()
 }
 
-// Build implements Widget interface.
-func (c *CheckboxWidget) Build() {
-	if imgui.Checkbox(tStr(c.text), c.selected) && c.onChange != nil {
-		c.onChange()
-	}
-}
-
-// OnChange adds callback called when checkbox's state was changed.
-func (c *CheckboxWidget) OnChange(onChange func()) *CheckboxWidget {
-	c.onChange = onChange
-	return c
-}
-
 // Checkbox creates a new CheckboxWidget.
 func Checkbox(text string, selected *bool) *CheckboxWidget {
 	return &CheckboxWidget{
@@ -345,12 +363,43 @@ func Checkbox(text string, selected *bool) *CheckboxWidget {
 	}
 }
 
+// OnChange adds callback called when checkbox's state was changed.
+func (c *CheckboxWidget) OnChange(onChange func()) *CheckboxWidget {
+	c.onChange = onChange
+	return c
+}
+
+// Build implements Widget interface.
+func (c *CheckboxWidget) Build() {
+	if imgui.Checkbox(tStr(c.text), c.selected) && c.onChange != nil {
+		c.onChange()
+	}
+}
+
 var _ Widget = &RadioButtonWidget{}
 
+// RadioButtonWidget is a small, round button.
+// It is common to use it for single-choice questions.
+// see examples/widgets
 type RadioButtonWidget struct {
 	text     string
 	active   bool
 	onChange func()
+}
+
+// RadioButton creates a radio buton.
+func RadioButton(text string, active bool) *RadioButtonWidget {
+	return &RadioButtonWidget{
+		text:     GenAutoID(text),
+		active:   active,
+		onChange: nil,
+	}
+}
+
+// OnChange adds callback when button's state gets changed.
+func (r *RadioButtonWidget) OnChange(onChange func()) *RadioButtonWidget {
+	r.onChange = onChange
+	return r
 }
 
 // Build implements Widget interface.
@@ -360,21 +409,10 @@ func (r *RadioButtonWidget) Build() {
 	}
 }
 
-func (r *RadioButtonWidget) OnChange(onChange func()) *RadioButtonWidget {
-	r.onChange = onChange
-	return r
-}
-
-func RadioButton(text string, active bool) *RadioButtonWidget {
-	return &RadioButtonWidget{
-		text:     GenAutoID(text),
-		active:   active,
-		onChange: nil,
-	}
-}
-
 var _ Widget = &SelectableWidget{}
 
+// SelectableWidget is a window-width button with a label which can get selected (highlighted).
+// useful for certain lists.
 type SelectableWidget struct {
 	label    string
 	selected bool
@@ -385,6 +423,7 @@ type SelectableWidget struct {
 	onDClick func()
 }
 
+// Selectable constructs a selectable widget
 func Selectable(label string) *SelectableWidget {
 	return &SelectableWidget{
 		label:    GenAutoID(label),
@@ -396,25 +435,30 @@ func Selectable(label string) *SelectableWidget {
 	}
 }
 
+// Selectablef creates a selectable widget with formated label.
 func Selectablef(format string, args ...interface{}) *SelectableWidget {
 	return Selectable(fmt.Sprintf(format, args...))
 }
 
+// Selected sets if selectable widget is selected.
 func (s *SelectableWidget) Selected(selected bool) *SelectableWidget {
 	s.selected = selected
 	return s
 }
 
+// Flags add flags
 func (s *SelectableWidget) Flags(flags SelectableFlags) *SelectableWidget {
 	s.flags = flags
 	return s
 }
 
+// Size sets selectable's size
 func (s *SelectableWidget) Size(width, height float32) *SelectableWidget {
 	s.width, s.height = width, height
 	return s
 }
 
+// OnClick sets on click event
 func (s *SelectableWidget) OnClick(onClick func()) *SelectableWidget {
 	s.onClick = onClick
 	return s
@@ -422,6 +466,7 @@ func (s *SelectableWidget) OnClick(onClick func()) *SelectableWidget {
 
 // OnDClick handles mouse left button's double click event.
 // SelectableFlagsAllowDoubleClick will set once tonDClick callback is notnull.
+// NOTE: IT IS DEPRECATED and could be removed. Use EventHandler instead.
 func (s *SelectableWidget) OnDClick(onDClick func()) *SelectableWidget {
 	s.onDClick = onDClick
 	return s
@@ -445,6 +490,9 @@ func (s *SelectableWidget) Build() {
 
 var _ Widget = &TreeNodeWidget{}
 
+// TreeNodeWidget is a a wide button with open/close state.
+// if is opened, the `layout` is displayed below the widget.
+// It can be used to create certain lists, advanced settings sections e.t.c.
 type TreeNodeWidget struct {
 	label        string
 	flags        TreeNodeFlags
@@ -452,6 +500,7 @@ type TreeNodeWidget struct {
 	eventHandler func()
 }
 
+// TreeNode creates a new tree node widget
 func TreeNode(label string) *TreeNodeWidget {
 	return &TreeNodeWidget{
 		label:        tStr(label),
@@ -461,10 +510,12 @@ func TreeNode(label string) *TreeNodeWidget {
 	}
 }
 
+// TreeNodef adds TreeNode with formatted label
 func TreeNodef(format string, args ...interface{}) *TreeNodeWidget {
 	return TreeNode(fmt.Sprintf(format, args...))
 }
 
+// Flags sets flags.
 func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
 	t.flags = flags
 	return t
@@ -472,11 +523,13 @@ func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
 
 // Event create TreeNode with eventHandler
 // You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler.
+// NOTE: DEPRECATED. use EventHandler instead!
 func (t *TreeNodeWidget) Event(handler func()) *TreeNodeWidget {
 	t.eventHandler = handler
 	return t
 }
 
+// Layout sets layout to be displayed when tree node is opened.
 func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
 	t.layout = Layout(widgets)
 	return t
