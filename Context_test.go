@@ -51,8 +51,10 @@ func Test_invalidState(t *testing.T) {
 
 	ctx.cleanState()
 
-	assert.NotNil(t, ctx.GetState(state2ID), "altought state has been accessed during the frame, it has ben deleted by invalidAllState/cleanState")
-	assert.Nil(t, ctx.GetState(state1ID), "altought state hasn't been accessed during the frame, it hasn't ben deleted by invalidAllState/cleanState")
+	assert.NotNil(t, ctx.GetState(state2ID),
+		"altought state has been accessed during the frame, it has ben deleted by invalidAllState/cleanState")
+	assert.Nil(t, ctx.GetState(state1ID),
+		"altought state hasn't been accessed during the frame, it hasn't ben deleted by invalidAllState/cleanState")
 }
 
 func Test_GetWidgetIndex(t *testing.T) {
