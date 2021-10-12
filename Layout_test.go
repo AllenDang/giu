@@ -7,7 +7,6 @@ import (
 )
 
 type testwidget struct {
-	id      string
 	counter *int
 }
 
