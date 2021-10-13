@@ -57,7 +57,7 @@ func Test_InputHandle_RegisterKeyboardShortcuts(t *testing.T) {
 	}
 }
 
-func Test_InputHandler_unregisterWindowShortcuts(t *testing.T) {
+func Test_InputHandler_UnregisterWindowShortcuts(t *testing.T) {
 	i := newInputHandler()
 	sh := []Shortcut{
 		{Key(5), Modifier(0), func() {}, true},
@@ -71,4 +71,28 @@ func Test_InputHandler_unregisterWindowShortcuts(t *testing.T) {
 	for _, s := range i.shortcuts {
 		assert.Nil(t, s.window, "some window shortcuts wasn't unregistered")
 	}
+}
+
+func Test_InputHandler_Handle(t *testing.T) {
+	a := assert.New(t)
+	i := newInputHandler()
+
+	var shortcut1, shortcut2 bool
+
+	sh := []Shortcut{
+		{Key(5), Modifier(0), func() { shortcut1 = true }, true},
+		{Key(8), Modifier(2), func() { shortcut2 = true }, false},
+	}
+
+	i.RegisterKeyboardShortcuts(sh...)
+
+	i.Handle(Key(0), Modifier(0))
+	a.False(shortcut1, "Shortcut 1 was handled, but shouldn't.")
+	a.False(shortcut2, "Shortcut 2 was handled, but shouldn't.")
+	i.Handle(Key(5), Modifier(0))
+	a.True(shortcut1, "Shortcut 1 was not handled, but shouldn be.")
+	a.False(shortcut2, "Shortcut 2 was handled, but shouldn't.")
+	i.Handle(Key(8), Modifier(2))
+	a.True(shortcut1, "Shortcut 1 was not handled, but shouldn be.")
+	a.True(shortcut2, "Shortcut 2 was not handled, but shouldn be.")
 }
