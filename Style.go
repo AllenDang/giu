@@ -279,66 +279,87 @@ const (
 )
 
 // StyleVarID identifies a style variable in the UI style.
-type StyleVarID int
+type StyleVarID imgui.StyleVarID
 
 // Style IDs.
 const (
 	// StyleVarAlpha is a float.
-	StyleVarAlpha StyleVarID = iota
+	StyleVarAlpha StyleVarID = StyleVarID(imgui.StyleVarAlpha)
 	// float     DisabledAlpha.
-	StyleVarDisabledAlpha
+	StyleVarDisabledAlpha StyleVarID = StyleVarID(imgui.StyleVarDisabledAlpha)
 	// StyleVarWindowPadding is a Vec2.
-	StyleVarWindowPadding
+	StyleVarWindowPadding StyleVarID = StyleVarID(imgui.StyleVarWindowPadding)
 	// StyleVarWindowRounding is a float.
-	StyleVarWindowRounding
+	StyleVarWindowRounding StyleVarID = StyleVarID(imgui.StyleVarWindowRounding)
 	// StyleVarWindowBorderSize is a float.
-	StyleVarWindowBorderSize
+	StyleVarWindowBorderSize StyleVarID = StyleVarID(imgui.StyleVarWindowBorderSize)
 	// StyleVarWindowMinSize is a Vec2.
-	StyleVarWindowMinSize
+	StyleVarWindowMinSize StyleVarID = StyleVarID(imgui.StyleVarWindowMinSize)
 	// StyleVarWindowTitleAlign is a Vec2.
-	StyleVarWindowTitleAlign
+	StyleVarWindowTitleAlign StyleVarID = StyleVarID(imgui.StyleVarWindowTitleAlign)
 	// StyleVarChildRounding is a float.
-	StyleVarChildRounding
+	StyleVarChildRounding StyleVarID = StyleVarID(imgui.StyleVarChildRounding)
 	// StyleVarChildBorderSize is a float.
-	StyleVarChildBorderSize
+	StyleVarChildBorderSize StyleVarID = StyleVarID(imgui.StyleVarChildBorderSize)
 	// StyleVarPopupRounding is a float.
-	StyleVarPopupRounding
+	StyleVarPopupRounding StyleVarID = StyleVarID(imgui.StyleVarPopupRounding)
 	// StyleVarPopupBorderSize is a float.
-	StyleVarPopupBorderSize
+	StyleVarPopupBorderSize StyleVarID = StyleVarID(imgui.StyleVarPopupBorderSize)
 	// StyleVarFramePadding is a Vec2.
-	StyleVarFramePadding
+	StyleVarFramePadding StyleVarID = StyleVarID(imgui.StyleVarFramePadding)
 	// StyleVarFrameRounding is a float.
-	StyleVarFrameRounding
+	StyleVarFrameRounding StyleVarID = StyleVarID(imgui.StyleVarFrameRounding)
 	// StyleVarFrameBorderSize is a float.
-	StyleVarFrameBorderSize
+	StyleVarFrameBorderSize StyleVarID = StyleVarID(imgui.StyleVarFrameBorderSize)
 	// StyleVarItemSpacing is a Vec2.
-	StyleVarItemSpacing
+	StyleVarItemSpacing StyleVarID = StyleVarID(imgui.StyleVarItemSpacing)
 	// StyleVarItemInnerSpacing is a Vec2.
-	StyleVarItemInnerSpacing
+	StyleVarItemInnerSpacing StyleVarID = StyleVarID(imgui.StyleVarItemInnerSpacing)
 	// StyleVarIndentSpacing is a float.
-	StyleVarIndentSpacing
+	StyleVarIndentSpacing StyleVarID = StyleVarID(imgui.StyleVarIndentSpacing)
 	// StyleVarScrollbarSize is a float.
-	StyleVarScrollbarSize
+	StyleVarScrollbarSize StyleVarID = StyleVarID(imgui.StyleVarScrollbarSize)
 	// StyleVarScrollbarRounding is a float.
-	StyleVarScrollbarRounding
+	StyleVarScrollbarRounding StyleVarID = StyleVarID(imgui.StyleVarScrollbarRounding)
 	// StyleVarGrabMinSize is a float.
-	StyleVarGrabMinSize
+	StyleVarGrabMinSize StyleVarID = StyleVarID(imgui.StyleVarGrabMinSize)
 	// StyleVarGrabRounding is a float.
-	StyleVarGrabRounding
+	StyleVarGrabRounding StyleVarID = StyleVarID(imgui.StyleVarGrabRounding)
 	// StyleVarTabRounding is a float.
-	StyleVarTabRounding
+	StyleVarTabRounding StyleVarID = StyleVarID(imgui.StyleVarTabRounding)
 	// StyleVarButtonTextAlign is a Vec2.
-	StyleVarButtonTextAlign
+	StyleVarButtonTextAlign StyleVarID = StyleVarID(imgui.StyleVarButtonTextAlign)
 	// StyleVarSelectableTextAlign is a Vec2.
-	StyleVarSelectableTextAlign
+	StyleVarSelectableTextAlign StyleVarID = StyleVarID(imgui.StyleVarSelectableTextAlign)
 )
+
+// IsVec2 returns true if the style var id should be processed as imgui.Vec2
+// if not, it is interpreted as float32.
+func (s StyleVarID) IsVec2() bool {
+	lookup := map[StyleVarID]bool{
+		// StyleVarWindowPadding is a Vec2.
+		StyleVarWindowPadding:    true,
+		StyleVarWindowMinSize:    true,
+		StyleVarWindowTitleAlign: true,
+		StyleVarFramePadding:     true,
+		StyleVarItemSpacing:      true,
+		// StyleVarItemInnerSpacing is a Vec2.
+		StyleVarItemInnerSpacing:    true,
+		StyleVarButtonTextAlign:     true,
+		StyleVarSelectableTextAlign: true,
+	}
+
+	result, ok := lookup[s]
+
+	return result && ok
+}
 
 var _ Widget = &StyleSetter{}
 
 // StyleSetter is a user-friendly way to manage imgui styles.
 type StyleSetter struct {
 	colors   map[StyleColorID]color.Color
-	styles   map[StyleVarID]imgui.Vec2
+	styles   map[StyleVarID]interface{}
 	font     *FontInfo
 	disabled bool
 	layout   Layout
@@ -348,7 +369,7 @@ type StyleSetter struct {
 func Style() *StyleSetter {
 	var ss StyleSetter
 	ss.colors = make(map[StyleColorID]color.Color)
-	ss.styles = make(map[StyleVarID]imgui.Vec2)
+	ss.styles = make(map[StyleVarID]interface{})
 
 	return &ss
 }
@@ -362,6 +383,14 @@ func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.Color) *StyleSet
 // SetStyle sets styleVarID to width and height.
 func (ss *StyleSetter) SetStyle(varID StyleVarID, width, height float32) *StyleSetter {
 	ss.styles[varID] = imgui.Vec2{X: width, Y: height}
+	return ss
+}
+
+// SetStyleFloat sets styleVarID to float value.
+// NOTE: for float typed values see above in comments over
+// StyleVarID's comments.
+func (ss *StyleSetter) SetStyleFloat(varID StyleVarID, value float32) *StyleSetter {
+	ss.styles[varID] = value
 	return ss
 }
 
@@ -414,7 +443,27 @@ func (ss *StyleSetter) Build() {
 	}
 
 	for k, v := range ss.styles {
-		imgui.PushStyleVarVec2(imgui.StyleVarID(k), v)
+		if k.IsVec2() {
+			var value imgui.Vec2
+			switch typed := v.(type) {
+			case imgui.Vec2:
+				value = typed
+			case float32:
+				value = imgui.Vec2{X: typed, Y: typed}
+			}
+
+			imgui.PushStyleVarVec2(imgui.StyleVarID(k), value)
+		} else {
+			var value float32
+			switch typed := v.(type) {
+			case float32:
+				value = typed
+			case imgui.Vec2:
+				value = typed.X
+			}
+
+			imgui.PushStyleVarFloat(imgui.StyleVarID(k), value)
+		}
 	}
 
 	isFontPushed := false
