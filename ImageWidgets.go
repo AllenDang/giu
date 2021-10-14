@@ -45,6 +45,7 @@ func (i *ImageWidget) Uv(uv0, uv1 image.Point) *ImageWidget {
 	return i
 }
 
+// TintColor sets image's tint color
 func (i *ImageWidget) TintColor(tintColor color.Color) *ImageWidget {
 	i.tintColor = tintColor
 	return i
@@ -98,14 +99,14 @@ func (i *ImageWidget) Build() {
 	imgui.ImageV(i.texture.id, size, ToVec2(i.uv0), ToVec2(i.uv1), ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
 }
 
-type ImageState struct {
+type imageState struct {
 	loading bool
 	failure bool
 	cancel  ctx.CancelFunc
 	texture *Texture
 }
 
-func (is *ImageState) Dispose() {
+func (is *imageState) Dispose() {
 	is.texture = nil
 	// Cancel ongoing image downloaidng
 	if is.loading && is.cancel != nil {
@@ -142,9 +143,9 @@ func (i *ImageWithRgbaWidget) OnClick(cb func()) *ImageWithRgbaWidget {
 // Build implements Widget interface.
 func (i *ImageWithRgbaWidget) Build() {
 	if i.rgba != nil {
-		var imgState *ImageState
+		var imgState *imageState
 		if state := Context.GetState(i.id); state == nil {
-			imgState = &ImageState{}
+			imgState = &imageState{}
 			Context.SetState(i.id, imgState)
 
 			NewTextureFromRgba(i.rgba, func(tex *Texture) {
@@ -152,7 +153,7 @@ func (i *ImageWithRgbaWidget) Build() {
 			})
 		} else {
 			var isOk bool
-			imgState, isOk = state.(*ImageState)
+			imgState, isOk = state.(*imageState)
 			Assert(isOk, "ImageWithRgbaWidget", "Build", "unexpected type of widget's state recovered")
 		}
 
@@ -190,7 +191,7 @@ func (i *ImageWithFileWidget) OnClick(cb func()) *ImageWithFileWidget {
 
 // Build implements Widget interface.
 func (i *ImageWithFileWidget) Build() {
-	imgState := &ImageState{}
+	imgState := &imageState{}
 	if state := Context.GetState(i.id); state == nil {
 		// Prevent multiple invocation to LoadImage.
 		Context.SetState(i.id, imgState)
@@ -203,7 +204,7 @@ func (i *ImageWithFileWidget) Build() {
 		}
 	} else {
 		var isOk bool
-		imgState, isOk = state.(*ImageState)
+		imgState, isOk = state.(*imageState)
 		Assert(isOk, "ImageWithFileWidget", "Build", "wrong type of widget's state got")
 	}
 
@@ -273,14 +274,14 @@ func (i *ImageWithURLWidget) LayoutForFailure(widgets ...Widget) *ImageWithURLWi
 
 // Build implements Widget interface.
 func (i *ImageWithURLWidget) Build() {
-	imgState := &ImageState{}
+	imgState := &imageState{}
 
 	if state := Context.GetState(i.id); state == nil {
 		Context.SetState(i.id, imgState)
 
 		// Prevent multiple invocation to download image.
 		downloadContext, cancalFunc := ctx.WithCancel(ctx.Background())
-		Context.SetState(i.id, &ImageState{loading: true, cancel: cancalFunc})
+		Context.SetState(i.id, &imageState{loading: true, cancel: cancalFunc})
 
 		go func() {
 			// Load image from url
@@ -288,7 +289,7 @@ func (i *ImageWithURLWidget) Build() {
 			client.SetTimeout(i.downloadTimeout)
 			resp, err := client.R().SetContext(downloadContext).Get(i.imgURL)
 			if err != nil {
-				Context.SetState(i.id, &ImageState{failure: true})
+				Context.SetState(i.id, &imageState{failure: true})
 
 				// Trigger onFailure event
 				if i.onFailure != nil {
@@ -300,7 +301,7 @@ func (i *ImageWithURLWidget) Build() {
 
 			img, _, err := image.Decode(bytes.NewReader(resp.Body()))
 			if err != nil {
-				Context.SetState(i.id, &ImageState{failure: true})
+				Context.SetState(i.id, &imageState{failure: true})
 
 				// Trigger onFailure event
 				if i.onFailure != nil {
@@ -313,7 +314,7 @@ func (i *ImageWithURLWidget) Build() {
 			rgba := ImageToRgba(img)
 
 			NewTextureFromRgba(rgba, func(tex *Texture) {
-				Context.SetState(i.id, &ImageState{
+				Context.SetState(i.id, &imageState{
 					loading: false,
 					failure: false,
 					texture: tex,
@@ -327,7 +328,7 @@ func (i *ImageWithURLWidget) Build() {
 		}()
 	} else {
 		var isOk bool
-		imgState, isOk = state.(*ImageState)
+		imgState, isOk = state.(*imageState)
 		Assert(isOk, "ImageWithURLWidget", "Build", "wrong type of widget's state recovered.")
 	}
 
