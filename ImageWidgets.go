@@ -40,12 +40,13 @@ func Image(texture *Texture) *ImageWidget {
 	}
 }
 
+// Uv allows to specify uv parameters.
 func (i *ImageWidget) Uv(uv0, uv1 image.Point) *ImageWidget {
 	i.uv0, i.uv1 = uv0, uv1
 	return i
 }
 
-// TintColor sets image's tint color
+// TintColor sets image's tint color.
 func (i *ImageWidget) TintColor(tintColor color.Color) *ImageWidget {
 	i.tintColor = tintColor
 	return i
@@ -106,6 +107,7 @@ type imageState struct {
 	texture *Texture
 }
 
+// Dispose cleans imageState (implements Disposable interface).
 func (is *imageState) Dispose() {
 	is.texture = nil
 	// Cancel ongoing image downloaidng
@@ -116,12 +118,17 @@ func (is *imageState) Dispose() {
 
 var _ Widget = &ImageWithRgbaWidget{}
 
+// ImageWithRgbaWidget wrapps ImageWidget.
+// It is more useful because it doesn't make you to care about
+// imgui textures. You can just pass golang-native image.Image and
+// display it in giu.
 type ImageWithRgbaWidget struct {
 	id   string
 	rgba image.Image
 	img  *ImageWidget
 }
 
+// ImageWithRgba creates ImageWithRgbaWidget.
 func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 	return &ImageWithRgbaWidget{
 		id:   GenAutoID("ImageWithRgba"),
@@ -130,11 +137,13 @@ func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 	}
 }
 
+// Size sets image's size.
 func (i *ImageWithRgbaWidget) Size(width, height float32) *ImageWithRgbaWidget {
 	i.img.Size(width, height)
 	return i
 }
 
+// OnClick sets click callback.
 func (i *ImageWithRgbaWidget) OnClick(cb func()) *ImageWithRgbaWidget {
 	i.img.OnClick(cb)
 	return i
@@ -165,12 +174,18 @@ func (i *ImageWithRgbaWidget) Build() {
 
 var _ Widget = &ImageWithFileWidget{}
 
+// ImageWithFileWidget allows to display an image directly
+// from .png file.
+// NOTE: Be aware that project using this solution may not be portable
+// because files are not included in executable binaries!
+// You may want to use "embed" package and ImageWithRgba instead.
 type ImageWithFileWidget struct {
 	id      string
 	imgPath string
 	img     *ImageWidget
 }
 
+// ImageWithFile constructs a new ImageWithFileWidget.
 func ImageWithFile(imgPath string) *ImageWithFileWidget {
 	return &ImageWithFileWidget{
 		id:      fmt.Sprintf("ImageWithFile_%s", imgPath),
@@ -179,11 +194,13 @@ func ImageWithFile(imgPath string) *ImageWithFileWidget {
 	}
 }
 
+// Size sets image's size.
 func (i *ImageWithFileWidget) Size(width, height float32) *ImageWithFileWidget {
 	i.img.Size(width, height)
 	return i
 }
 
+// OnClick sets click callback.
 func (i *ImageWithFileWidget) OnClick(cb func()) *ImageWithFileWidget {
 	i.img.OnClick(cb)
 	return i
@@ -214,6 +231,8 @@ func (i *ImageWithFileWidget) Build() {
 
 var _ Widget = &ImageWithURLWidget{}
 
+// ImageWithURLWidget allows to display an image using
+// an URL as image source.
 type ImageWithURLWidget struct {
 	id              string
 	imgURL          string
@@ -225,6 +244,7 @@ type ImageWithURLWidget struct {
 	img             *ImageWidget
 }
 
+// ImageWithURL creates ImageWithURLWidget.
 func ImageWithURL(url string) *ImageWithURLWidget {
 	return &ImageWithURLWidget{
 		id:              fmt.Sprintf("ImageWithURL_%s", url),
@@ -242,31 +262,37 @@ func (i *ImageWithURLWidget) OnReady(onReady func()) *ImageWithURLWidget {
 	return i
 }
 
+// OnFailure sets event trigger when image failed to download/load.
 func (i *ImageWithURLWidget) OnFailure(onFailure func(error)) *ImageWithURLWidget {
 	i.onFailure = onFailure
 	return i
 }
 
+// OnClick sets click callback.
 func (i *ImageWithURLWidget) OnClick(cb func()) *ImageWithURLWidget {
 	i.img.OnClick(cb)
 	return i
 }
 
+// Timeout sets download timeout.
 func (i *ImageWithURLWidget) Timeout(downloadTimeout time.Duration) *ImageWithURLWidget {
 	i.downloadTimeout = downloadTimeout
 	return i
 }
 
+// Size sets image's size.
 func (i *ImageWithURLWidget) Size(width, height float32) *ImageWithURLWidget {
 	i.img.Size(width, height)
 	return i
 }
 
+// LayoutForLoading allows to set layout rendered while loading an image.
 func (i *ImageWithURLWidget) LayoutForLoading(widgets ...Widget) *ImageWithURLWidget {
 	i.whenLoading = Layout(widgets)
 	return i
 }
 
+// LayoutForFailure allows to specify layout when image failed to download.
 func (i *ImageWithURLWidget) LayoutForFailure(widgets ...Widget) *ImageWithURLWidget {
 	i.whenFailure = Layout(widgets)
 	return i
