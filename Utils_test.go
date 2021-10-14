@@ -18,7 +18,7 @@ func Test_ToVec4(t *testing.T) {
 		{
 			name:     "Red - RGBA",
 			source:   &color.RGBA{R: 255, G: 0, B: 0, A: 255},
-			expected: imgui.Vec4{1, 0, 0, 1},
+			expected: imgui.Vec4{X: 1, Y: 0, Z: 0, W: 1},
 		},
 		{
 			name:     "Purple - RGBA",
@@ -65,12 +65,12 @@ func Test_Vec4ToRGBA(t *testing.T) {
 	}{
 		{
 			name:     "Red",
-			source:   imgui.Vec4{1, 0, 0, 1},
+			source:   imgui.Vec4{X: 1, Y: 0, Z: 0, W: 1},
 			expected: color.RGBA{R: 255, G: 0, B: 0, A: 255},
 		},
 		{
 			name:     "Red - with 20% alpha",
-			source:   imgui.Vec4{1, 0, 0, 0.2},
+			source:   imgui.Vec4{X: 1, Y: 0, Z: 0, W: 0.2},
 			expected: color.RGBA{R: 255, G: 0, B: 0, A: 51},
 		},
 		{
@@ -94,7 +94,7 @@ func Test_Assert(t *testing.T) {
 		shouldPanic bool
 	}{
 		{"expected behavior - no panic", true, false},
-		{"something happend - panic", false, true},
+		{"something happened - panic", false, true},
 	}
 
 	for _, test := range tests {
