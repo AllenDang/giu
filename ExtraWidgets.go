@@ -537,7 +537,7 @@ func (d *DatePickerWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.BeginComboV(d.id+"##Combo", d.date.Format("2006-01-02"), imgui.ComboFlagHeightLargest) {
+	if imgui.BeginComboV(d.id+"##Combo", d.date.Format("2006-01-02"), imgui.ComboFlagsHeightLargest) {
 		// --- [Build year widget] ---
 		imgui.AlignTextToFramePadding()
 

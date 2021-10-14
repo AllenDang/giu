@@ -115,23 +115,23 @@ const (
 type ComboFlags int
 
 const (
-	// ComboFlagNone default = 0.
-	ComboFlagNone ComboFlags = imgui.ComboFlagNone
-	// ComboFlagPopupAlignLeft aligns the popup toward the left by default.
-	ComboFlagPopupAlignLeft ComboFlags = imgui.ComboFlagPopupAlignLeft
-	// ComboFlagHeightSmall has max ~4 items visible.
+	// ComboFlagsNone default = 0.
+	ComboFlagsNone ComboFlags = imgui.ComboFlagsNone
+	// ComboFlagsPopupAlignLeft aligns the popup toward the left by default.
+	ComboFlagsPopupAlignLeft ComboFlags = imgui.ComboFlagsPopupAlignLeft
+	// ComboFlagsHeightSmall has max ~4 items visible.
 	// Tip: If you want your combo popup to be a specific size you can use SetNextWindowSizeConstraints() prior to calling BeginCombo().
-	ComboFlagHeightSmall ComboFlags = imgui.ComboFlagHeightSmall
-	// ComboFlagHeightRegular has max ~8 items visible (default).
-	ComboFlagHeightRegular ComboFlags = imgui.ComboFlagHeightRegular
-	// ComboFlagHeightLarge has max ~20 items visible.
-	ComboFlagHeightLarge ComboFlags = imgui.ComboFlagHeightLarge
-	// ComboFlagHeightLargest has as many fitting items as possible.
-	ComboFlagHeightLargest ComboFlags = imgui.ComboFlagHeightLargest
-	// ComboFlagNoArrowButton displays on the preview box without the square arrow button.
-	ComboFlagNoArrowButton ComboFlags = imgui.ComboFlagNoArrowButton
-	// ComboFlagNoPreview displays only a square arrow button.
-	ComboFlagNoPreview ComboFlags = imgui.ComboFlagNoPreview
+	ComboFlagsHeightSmall ComboFlags = imgui.ComboFlagsHeightSmall
+	// ComboFlagsHeightRegular has max ~8 items visible (default).
+	ComboFlagsHeightRegular ComboFlags = imgui.ComboFlagsHeightRegular
+	// ComboFlagsHeightLarge has max ~20 items visible.
+	ComboFlagsHeightLarge ComboFlags = imgui.ComboFlagsHeightLarge
+	// ComboFlagsHeightLargest has as many fitting items as possible.
+	ComboFlagsHeightLargest ComboFlags = imgui.ComboFlagsHeightLargest
+	// ComboFlagsNoArrowButton displays on the preview box without the square arrow button.
+	ComboFlagsNoArrowButton ComboFlags = imgui.ComboFlagsNoArrowButton
+	// ComboFlagsNoPreview displays only a square arrow button.
+	ComboFlagsNoPreview ComboFlags = imgui.ComboFlagsNoPreview
 )
 
 // SelectableFlags represents imgui.SelectableFlags.
@@ -251,16 +251,13 @@ const (
 type FocusedFlags int
 
 const (
-	// FocusedFlagsNone default FocusedFlags = 0.
-	FocusedFlagsNone FocusedFlags = 0
-	// FocusedFlagsChildWindows matches if any children of the window is focused.
-	FocusedFlagsChildWindows FocusedFlags = 1 << 0
-	// FocusedFlagsRootWindow tests from root window (top most parent of the current hierarchy).
-	FocusedFlagsRootWindow FocusedFlags = 1 << 1
-	// FocusedFlagsAnyWindow matches if any window is focused.
-	FocusedFlagsAnyWindow FocusedFlags = 1 << 2
-	// FocusedFlagsRootAndChildWindows combines FocusedFlagsRootWindow and FocusedFlagsChildWindows.
-	FocusedFlagsRootAndChildWindows = FocusedFlagsRootWindow | FocusedFlagsChildWindows
+	FocusedFlagsNone             = imgui.FocusedFlagsNone
+	FocusedFlagsChildWindows     = imgui.FocusedFlagsChildWindows     // Return true if any children of the window is focused
+	FocusedFlagsRootWindow       = imgui.FocusedFlagsRootWindow       // Test from root window (top most parent of the current hierarchy)
+	FocusedFlagsAnyWindow        = imgui.FocusedFlagsAnyWindow        // Return true if any window is focused. Important: If you are trying to tell how to dispatch your low-level inputs do NOT use this. Use 'io.WantCaptureMouse' instead! Please read the FAQ!
+	FocusedFlagsNoPopupHierarchy = imgui.FocusedFlagsNoPopupHierarchy // Do not consider popup hierarchy (do not treat popup emitter as parent of popup) (when used with ChildWindows or RootWindow)
+	//FocusedFlagsDockHierarchy               = 1 << 4   // Consider docking hierarchy (treat dockspace host as parent of docked window) (when used with ChildWindows or RootWindow)
+	FocusedFlagsRootAndChildWindows = imgui.FocusedFlagsRootAndChildWindows
 )
 
 // HoveredFlags represents a hovered flags.
