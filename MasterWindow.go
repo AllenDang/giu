@@ -3,6 +3,7 @@ package giu
 import (
 	"image"
 	"image/color"
+	"runtime"
 	"time"
 
 	"github.com/AllenDang/imgui-go"
@@ -106,6 +107,11 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 func (w *MasterWindow) setTheme() {
 	style := imgui.CurrentStyle()
+
+	// Scale DPI in windows
+	if runtime.GOOS == "windows" {
+		style.ScaleAllSizes(Context.GetPlatform().GetContentScale())
+	}
 
 	imgui.PushStyleVarFloat(imgui.StyleVarWindowRounding, 2)
 	imgui.PushStyleVarFloat(imgui.StyleVarFrameRounding, 4)
