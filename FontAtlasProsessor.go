@@ -228,6 +228,11 @@ func rebuildFontAtlas() {
 				fontConfig.SetMergeMode(true)
 			}
 
+			// Scale font size with DPI scale factor
+			if runtime.GOOS == "windows" {
+				fontInfo.size *= Context.GetPlatform().GetContentScale()
+			}
+
 			if len(fontInfo.fontByte) == 0 {
 				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			} else {
@@ -245,6 +250,11 @@ func rebuildFontAtlas() {
 
 	// Add extra fonts
 	for _, fontInfo := range extraFonts {
+		// Scale font size with DPI scale factor
+		if runtime.GOOS == "windows" {
+			fontInfo.size *= Context.GetPlatform().GetContentScale()
+		}
+
 		// Store imgui.Font for PushFont
 		var f imgui.Font
 		if len(fontInfo.fontByte) == 0 {
