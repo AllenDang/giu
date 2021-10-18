@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Checkout out source code
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.3.5
         with:
           fetch-depth: 0
           submodules: 'true'
