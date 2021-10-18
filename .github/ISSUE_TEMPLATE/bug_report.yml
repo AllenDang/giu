@@ -25,7 +25,7 @@ body:
         In worst case, link to public repo when the behavior could be noticed.
       placeholder: code / URL
       value: |
-        <details><summary>my code</summary>
+        <details><summary><code>main.go</code></summary>
 
         ```golang
         // put your code here!
