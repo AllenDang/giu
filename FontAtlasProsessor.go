@@ -21,6 +21,7 @@ var (
 
 const (
 	preRegisterString = " \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+	windows           = "windows"
 )
 
 // FontInfo represents a giu implementation of imgui font.
@@ -53,7 +54,7 @@ func init() {
 		registerDefaultFont("ヒラギノ角ゴシック W0", 17)
 		// Korean font
 		registerDefaultFont("AppleSDGothicNeo", 16)
-	case "windows":
+	case windows:
 		// English font
 		registerDefaultFont("Calibri", 16)
 		// Chinese font
@@ -229,7 +230,7 @@ func rebuildFontAtlas() {
 			}
 
 			// Scale font size with DPI scale factor
-			if runtime.GOOS == "windows" {
+			if runtime.GOOS == windows {
 				fontInfo.size *= Context.GetPlatform().GetContentScale()
 			}
 
@@ -251,7 +252,7 @@ func rebuildFontAtlas() {
 	// Add extra fonts
 	for _, fontInfo := range extraFonts {
 		// Scale font size with DPI scale factor
-		if runtime.GOOS == "windows" {
+		if runtime.GOOS == windows {
 			fontInfo.size *= Context.GetPlatform().GetContentScale()
 		}
 
