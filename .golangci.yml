@@ -22,8 +22,8 @@ linters-settings:
     local-prefixes: github.com/AllenDang/giu
   govet:
     check-shadowing: true
-  lll:
-    line-length: 140
+  # lll:
+  #   line-length: 140
   maligned:
     suggest-new: true
   misspell:
