@@ -1,0 +1,65 @@
+name: Bug report
+description: Create a report to help us improve
+title: '[bug]'
+labels: ["bug"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: what-happend
+    attributes:
+      label: What happend?
+      description: Also tell us, what did you expect to happen?
+      placeholder: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: code-example
+    attributes:
+      label: Code example
+      description: |
+        A minimalistic code example which allows to reproduce the behavior.
+        In worst case, link to public repo when the behavior could be noticed.
+      placeholder: code / URL
+      value: |
+        <details><summary><code>main.go</code></summary>
+
+        ```golang
+        // put your code here!
+        ```
+
+        </details>
+    validations:
+      required: true
+  - type: textarea
+    id: to-reproduce
+    attributes:
+      label: To Reproduce
+      description: What should we do to reproduce the behavior?
+      placeholder: Steps which allows to reproduce the behavior
+      value: |
+        1. Run my demo
+        2. will see the crash...
+    validations:
+      required: true
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version of giu are you running?
+      options:
+        - master
+        - v0.5.6 (latest)
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      description: What operating system are you useing?
+      placeholder: windows 10, Ubuntu...
+    validations:
+      required: true
