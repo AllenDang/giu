@@ -71,7 +71,7 @@ type TableColumnWidget struct {
 
 func TableColumn(label string) *TableColumnWidget {
 	return &TableColumnWidget{
-		label:              tStr(label),
+		label:              Context.FontAtlas.tStr(label),
 		flags:              0,
 		innerWidthOrWeight: 0,
 		userID:             0,

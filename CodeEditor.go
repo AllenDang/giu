@@ -192,7 +192,7 @@ func (ce *CodeEditorWidget) Build() {
 	s := ce.getState()
 
 	// register text in font atlas
-	tStr(s.editor.GetText())
+	Context.FontAtlas.tStr(s.editor.GetText())
 
 	// build editor
 	s.editor.Render(ce.title, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)

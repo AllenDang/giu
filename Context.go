@@ -31,6 +31,7 @@ type context struct {
 	state sync.Map
 
 	InputHandler InputHandler
+	FontAtlas    FontAtlas
 }
 
 func (c *context) GetRenderer() imgui.Renderer {

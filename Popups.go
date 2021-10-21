@@ -22,7 +22,7 @@ type PopupWidget struct {
 
 func Popup(name string) *PopupWidget {
 	return &PopupWidget{
-		name:   tStr(name),
+		name:   Context.FontAtlas.tStr(name),
 		flags:  0,
 		layout: nil,
 	}
@@ -57,7 +57,7 @@ type PopupModalWidget struct {
 
 func PopupModal(name string) *PopupModalWidget {
 	return &PopupModalWidget{
-		name:   tStr(name),
+		name:   Context.FontAtlas.tStr(name),
 		open:   nil,
 		flags:  WindowFlagsNoResize,
 		layout: nil,

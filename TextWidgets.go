@@ -48,8 +48,8 @@ func (i *InputTextMultilineWidget) Labelf(format string, args ...interface{}) *I
 // Build implements Widget interface.
 func (i *InputTextMultilineWidget) Build() {
 	if imgui.InputTextMultilineV(
-		tStr(i.label),
-		tStrPtr(i.text),
+		Context.FontAtlas.tStr(i.label),
+		Context.FontAtlas.tStrPtr(i.text),
 		imgui.Vec2{
 			X: i.width,
 			Y: i.height,
@@ -111,7 +111,7 @@ type BulletTextWidget struct {
 // BulletText creates bulletTextWidget.
 func BulletText(text string) *BulletTextWidget {
 	return &BulletTextWidget{
-		text: tStr(text),
+		text: Context.FontAtlas.tStr(text),
 	}
 }
 
@@ -159,7 +159,7 @@ func InputText(value *string) *InputTextWidget {
 }
 
 func (i *InputTextWidget) Label(label string) *InputTextWidget {
-	i.label = tStr(label)
+	i.label = Context.FontAtlas.tStr(label)
 	return i
 }
 
@@ -175,7 +175,7 @@ func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
 }
 
 func (i *InputTextWidget) Hint(hint string) *InputTextWidget {
-	i.hint = tStr(hint)
+	i.hint = Context.FontAtlas.tStr(hint)
 	return i
 }
 
@@ -217,7 +217,7 @@ func (i *InputTextWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	isChanged := imgui.InputTextWithHint(i.label, i.hint, tStrPtr(i.value), int(i.flags), i.cb)
+	isChanged := imgui.InputTextWithHint(i.label, i.hint, Context.FontAtlas.tStrPtr(i.value), int(i.flags), i.cb)
 
 	if isChanged && i.onChange != nil {
 		i.onChange()
@@ -277,7 +277,7 @@ func InputInt(value *int32) *InputIntWidget {
 }
 
 func (i *InputIntWidget) Label(label string) *InputIntWidget {
-	i.label = tStr(label)
+	i.label = Context.FontAtlas.tStr(label)
 	return i
 }
 
@@ -335,7 +335,7 @@ func InputFloat(value *float32) *InputFloatWidget {
 }
 
 func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
-	i.label = tStr(label)
+	i.label = Context.FontAtlas.tStr(label)
 	return i
 }
 
@@ -385,7 +385,7 @@ type LabelWidget struct {
 
 func Label(label string) *LabelWidget {
 	return &LabelWidget{
-		label:   tStr(label),
+		label:   Context.FontAtlas.tStr(label),
 		wrapped: false,
 	}
 }

@@ -75,7 +75,7 @@ func (c *Canvas) AddRectFilled(pMin, pMax image.Point, col color.Color, rounding
 
 // AddText draws text.
 func (c *Canvas) AddText(pos image.Point, col color.Color, text string) {
-	c.drawlist.AddText(ToVec2(pos), ToVec4Color(col), tStr(text))
+	c.drawlist.AddText(ToVec2(pos), ToVec4Color(col), Context.FontAtlas.tStr(text))
 }
 
 // AddBezierCubic draws bezier cubic.

@@ -27,7 +27,7 @@ func (b *ButtonWidget) Build() {
 		defer imgui.EndDisabled()
 	}
 
-	if imgui.ButtonV(tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.ButtonV(Context.FontAtlas.tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -130,7 +130,7 @@ func SmallButtonf(format string, args ...interface{}) *SmallButtonWidget {
 
 // Build implements Widget interface.
 func (b *SmallButtonWidget) Build() {
-	if imgui.SmallButton(tStr(b.id)) && b.onClick != nil {
+	if imgui.SmallButton(Context.FontAtlas.tStr(b.id)) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -170,7 +170,7 @@ func InvisibleButton() *InvisibleButtonWidget {
 
 // Build implements Widget interface.
 func (b *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.InvisibleButton(Context.FontAtlas.tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -325,7 +325,7 @@ type CheckboxWidget struct {
 
 // Build implements Widget interface.
 func (c *CheckboxWidget) Build() {
-	if imgui.Checkbox(tStr(c.text), c.selected) && c.onChange != nil {
+	if imgui.Checkbox(Context.FontAtlas.tStr(c.text), c.selected) && c.onChange != nil {
 		c.onChange()
 	}
 }
@@ -355,7 +355,7 @@ type RadioButtonWidget struct {
 
 // Build implements Widget interface.
 func (r *RadioButtonWidget) Build() {
-	if imgui.RadioButton(tStr(r.text), r.active) && r.onChange != nil {
+	if imgui.RadioButton(Context.FontAtlas.tStr(r.text), r.active) && r.onChange != nil {
 		r.onChange()
 	}
 }
@@ -434,7 +434,7 @@ func (s *SelectableWidget) Build() {
 		s.flags |= SelectableFlagsAllowDoubleClick
 	}
 
-	if imgui.SelectableV(tStr(s.label), s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.SelectableV(Context.FontAtlas.tStr(s.label), s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 
@@ -454,7 +454,7 @@ type TreeNodeWidget struct {
 
 func TreeNode(label string) *TreeNodeWidget {
 	return &TreeNodeWidget{
-		label:        tStr(label),
+		label:        Context.FontAtlas.tStr(label),
 		flags:        0,
 		layout:       nil,
 		eventHandler: nil,

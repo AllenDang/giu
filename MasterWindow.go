@@ -75,14 +75,16 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	// Create context
 	Context.renderer = r
 
+	Context.FontAtlas = newFontAtlas()
+
 	// Create font
-	if len(defaultFonts) == 0 {
+	if len(Context.FontAtlas.defaultFonts) == 0 {
 		io.Fonts().AddFontDefault()
 		fontAtlas := io.Fonts().TextureDataRGBA32()
 		r.SetFontTexture(fontAtlas)
 	} else {
-		shouldRebuildFontAtlas = true
-		rebuildFontAtlas()
+		Context.FontAtlas.shouldRebuildFontAtlas = true
+		Context.FontAtlas.rebuildFontAtlas()
 	}
 
 	mw := &MasterWindow{
@@ -189,7 +191,7 @@ func (w *MasterWindow) sizeChange(width, height int) {
 func (w *MasterWindow) render() {
 	Context.invalidAllState()
 
-	rebuildFontAtlas()
+	Context.FontAtlas.rebuildFontAtlas()
 
 	p := w.platform
 	r := w.renderer
