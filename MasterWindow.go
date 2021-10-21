@@ -64,28 +64,12 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		panic(err)
 	}
 
-	// Assign platform to contex
-	Context.platform = p
-
 	r, err := imgui.NewOpenGL3(io, 1.0)
 	if err != nil {
 		panic(err)
 	}
 
-	// Create context
-	Context.renderer = r
-
-	Context.FontAtlas = newFontAtlas()
-
-	// Create font
-	if len(Context.FontAtlas.defaultFonts) == 0 {
-		io.Fonts().AddFontDefault()
-		fontAtlas := io.Fonts().TextureDataRGBA32()
-		r.SetFontTexture(fontAtlas)
-	} else {
-		Context.FontAtlas.shouldRebuildFontAtlas = true
-		Context.FontAtlas.rebuildFontAtlas()
-	}
+	Context = CreateContext(p, r)
 
 	mw := &MasterWindow{
 		clearColor: [4]float32{0, 0, 0, 1},

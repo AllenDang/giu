@@ -34,6 +34,28 @@ type context struct {
 	FontAtlas    FontAtlas
 }
 
+func CreateContext(p imgui.Platform, r imgui.Renderer) context {
+	result := context{
+		platform: p,
+		renderer: r,
+	}
+
+	result.FontAtlas = newFontAtlas()
+
+	// Create font
+	if len(result.FontAtlas.defaultFonts) == 0 {
+		io := result.IO()
+		io.Fonts().AddFontDefault()
+		fontAtlas := io.Fonts().TextureDataRGBA32()
+		r.SetFontTexture(fontAtlas)
+	} else {
+		result.FontAtlas.shouldRebuildFontAtlas = true
+		// result.FontAtlas.rebuildFontAtlas()
+	}
+
+	return result
+}
+
 func (c *context) GetRenderer() imgui.Renderer {
 	return c.renderer
 }
