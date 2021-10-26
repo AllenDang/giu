@@ -26,7 +26,7 @@ func (m *MarkdownWidget) OnLink(cb func(url string)) *MarkdownWidget {
 }
 
 // Header sets header formatting
-// NOTE: level (counting from 0!) is header level. (for instance, header `# H1` will have level 0)
+// NOTE: level (counting from 0!) is header level. (for instance, header `# H1` will have level 0).
 func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *MarkdownWidget {
 	// ensure if header data are at least as long as level
 	if m.headers == nil {
