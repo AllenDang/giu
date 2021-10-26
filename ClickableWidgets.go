@@ -191,7 +191,7 @@ type ImageButtonWidget struct {
 
 // Build implements Widget interface.
 func (b *ImageButtonWidget) Build() {
-	if b.texture == nil && b.texture.id == 0 {
+	if b.texture == nil || b.texture.id == 0 {
 		return
 	}
 
