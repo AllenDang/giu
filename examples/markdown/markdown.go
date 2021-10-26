@@ -3,10 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/pkg/browser"
-
 	"github.com/AllenDang/giu"
-	"github.com/AllenDang/imgui-go"
 )
 
 var markdown string = getExampleMarkdownText()
@@ -64,11 +61,7 @@ func loop() {
 					giu.InputTextMultiline(&markdown).Size(availableW, availableH).Build()
 				}),
 			},
-			giu.Custom(func() {
-				imgui.Markdown(&markdown, func(s string) {
-					browser.OpenURL(s)
-				})
-			}),
+			giu.Markdown(&markdown),
 		),
 	)
 }

@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 
 	"github.com/AllenDang/imgui-go"
+	"github.com/pkg/browser"
 )
 
 // LoadImage loads image from file and returns *image.RGBA.
@@ -200,4 +201,11 @@ func fatal(widgetName, method, message string, args ...interface{}) {
 	}
 
 	log.Panicf("giu: %s.%s: %s", widgetName, method, fmt.Sprintf(message, args...))
+}
+
+// OpenURL opens `url` in default browser.
+func OpenURL(url string) {
+	if err := browser.OpenURL(url); err != nil {
+		log.Printf("Error opening %s: %v", url, err)
+	}
 }
