@@ -64,7 +64,9 @@ func (i *ImageWidget) OnClick(cb func()) *ImageWidget {
 
 // Size sets image size.
 func (i *ImageWidget) Size(width, height float32) *ImageWidget {
-	i.width, i.height = width, height
+	// Size image with DPI scaling
+	factor := Context.GetPlatform().GetContentScale()
+	i.width, i.height = width*factor, height*factor
 	return i
 }
 
