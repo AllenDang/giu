@@ -15,6 +15,8 @@ github.com/go-resty/resty/v2 v2.6.0 h1:joIR5PNLM2EFqqESUjCMGXrWmXNHEU9CEiK813oKY
 github.com/go-resty/resty/v2 v2.6.0/go.mod h1:PwvJS6hvaPkjtjNg9ph+VrSD92bi5Zq73w/BIH7cC3Q=
 github.com/gucio321/imgui-go v1.12.1-0.20211026154309-1943678b2f14 h1:qb6cwYmsNef/LK5bvmiH3nm8kJV+bBAf7TwB9Z6/MmU=
 github.com/gucio321/imgui-go v1.12.1-0.20211026154309-1943678b2f14/go.mod h1:2jS7bvvG+PejKdNu4eg2UYqx7Ky8IXGAhxOfjq9qTNk=
+github.com/gucio321/imgui-go v1.12.1-0.20211027162455-36eca3ee76db h1:1lTZG3lg8j1x3ULBDzE3oAcmuvmqHmOgI41c8QklVA0=
+github.com/gucio321/imgui-go v1.12.1-0.20211027162455-36eca3ee76db/go.mod h1:2jS7bvvG+PejKdNu4eg2UYqx7Ky8IXGAhxOfjq9qTNk=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 h1:KoWmjvw+nsYOo29YJK9vDA65RGE3NrOnUtO7a+RF9HU=

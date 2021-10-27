@@ -1,6 +1,8 @@
 package giu
 
-import "github.com/AllenDang/imgui-go"
+import (
+	"github.com/AllenDang/imgui-go"
+)
 
 // MarkdownWidget implements DearImGui markdown extension
 // https://github.com/juliettef/imgui_markdown
@@ -50,5 +52,37 @@ func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *Mark
 
 // Build implements Widget interface.
 func (m *MarkdownWidget) Build() {
-	imgui.Markdown(m.md, m.linkCb, m.headers)
+	imgui.Markdown(m.md, m.linkCb, loadImage, m.headers)
+}
+
+func loadImage(path string) imgui.MarkdownImageData {
+	img, err := LoadImage(path)
+	if err != nil {
+		return imgui.MarkdownImageData{}
+	}
+
+	size := img.Bounds()
+
+	// TODO: figure out, why it doesn't work as expected and consider
+	// if current workaround is save
+	/*
+		tex := &Texture{}
+		NewTextureFromRgba(img, func(t *Texture) {
+			fmt.Println("creating texture")
+			tex.id = t.id
+		})
+	*/
+
+	id, err := Context.renderer.LoadImage(img)
+	if err != nil {
+		return imgui.MarkdownImageData{}
+	}
+
+	return imgui.MarkdownImageData{
+		TextureID: &id,
+		Size: imgui.Vec2{
+			X: float32(size.Dx()),
+			Y: float32(size.Dy()),
+		},
+	}
 }
