@@ -1,6 +1,8 @@
 package giu
 
 import (
+	"image"
+
 	"github.com/AllenDang/imgui-go"
 )
 
@@ -62,6 +64,14 @@ func loadImage(path string) imgui.MarkdownImageData {
 	}
 
 	size := img.Bounds()
+	// scale image to not exceed available region
+	availableW, _ := GetAvailableRegion()
+	if x := float32(size.Dx()); x > availableW {
+		size = image.Rect(0, 0,
+			int(availableW),
+			int(float32(size.Dy())*availableW/x),
+		)
+	}
 
 	// TODO: figure out, why it doesn't work as expected and consider
 	// if current workaround is save
