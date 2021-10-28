@@ -36,6 +36,14 @@ func (f *FontInfo) String() string {
 	return fmt.Sprintf("%s:%.2f", f.fontName, f.size)
 }
 
+func (f *FontInfo) SetSize(size float32) *FontInfo {
+	result := *f
+	result.size = size
+	extraFonts = append(extraFonts, result)
+
+	return &result
+}
+
 func init() {
 	extraFontMap = make(map[string]*imgui.Font)
 
@@ -98,6 +106,10 @@ func SetDefaultFontFromBytes(fontBytes []byte, size float32) {
 			size:     size,
 		},
 	}, defaultFonts...)
+}
+
+func GetDefaultFonts() []FontInfo {
+	return defaultFonts
 }
 
 // AddFont adds font by name, if the font is found, return *FontInfo, otherwise return nil.
