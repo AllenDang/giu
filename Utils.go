@@ -118,6 +118,8 @@ func GetMousePos() image.Point {
 	return image.Pt(int(pos.X), int(pos.Y))
 }
 
+// GetAvailableRegion returns region available for rendering.
+// it is always WindowSize-WindowPadding*2.
 func GetAvailableRegion() (width, height float32) {
 	region := imgui.ContentRegionAvail()
 	return region.X, region.Y
@@ -176,18 +178,22 @@ func SetKeyboardFocusHere() {
 	SetKeyboardFocusHereV(0)
 }
 
+// SetKeyboardFocusHereV gives keyboard focus to next item.
 func SetKeyboardFocusHereV(i int) {
 	imgui.SetKeyboardFocusHereV(i)
 }
 
+// PushClipRect pushes a clipping rectangle for both ImGui logic (hit-testing etc.) and low-level ImDrawList rendering.
 func PushClipRect(clipRectMin, clipRectMax image.Point, intersectWithClipRect bool) {
 	imgui.PushClipRect(ToVec2(clipRectMin), ToVec2(clipRectMax), intersectWithClipRect)
 }
 
+// PopClipRect should be called to end PushClipRect.
 func PopClipRect() {
 	imgui.PopClipRect()
 }
 
+// Assert checks if cond. If not cond, it alls golang panic.
 func Assert(cond bool, t, method, msg string, args ...interface{}) {
 	if !cond {
 		fatal(t, method, msg, args...)

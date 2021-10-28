@@ -7,14 +7,30 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
+// AlignmentType represents a bype of alignment to use with AlignSetter.
 type AlignmentType byte
 
 const (
+	// AlignLeft is here just for clearity.
+	// if set, no action is taken so don't use it.
 	AlignLeft AlignmentType = iota
+	// AlignCenter centers widget.
 	AlignCenter
+	// AlignRight aligns a widget to right side of window.
 	AlignRight
 )
 
+var _ Widget = &AlignmentSetter{}
+
+// AlignmentSetter allows to align to right / center a widget or widgets group.
+// NOTE: Because of AlignSetter uses experimental GetWidgetWidth,
+// it is experimental too.
+// usage: see examples/align
+//
+// list of known bugs:
+// - BUG: DatePickerWidget doesn't work properly
+// - BUG: there is some bug with SelectableWidget
+// - BUG: ComboWidget and ComboCustomWidgets doesn't work properly.
 type AlignmentSetter struct {
 	alignType AlignmentType
 	layout    Layout
@@ -22,11 +38,6 @@ type AlignmentSetter struct {
 }
 
 // Align sets widgets alignment.
-// usage: see examples/align
-//
-// - BUG: DatePickerWidget doesn't work properly
-// - BUG: there is some bug with SelectableWidget
-// - BUG: ComboWidget and ComboCustomWidgets doesn't work properly.
 func Align(at AlignmentType) *AlignmentSetter {
 	return &AlignmentSetter{
 		alignType: at,
@@ -40,13 +51,16 @@ func (a *AlignmentSetter) To(widgets ...Widget) *AlignmentSetter {
 	return a
 }
 
-// ID allows to manually set AlignmentSetter ID (it shouldn't be used
-// in a normal conditions).
+// ID allows to manually set AlignmentSetter ID
+// NOTE: there isn't any known reason to use this method, however
+// it is here for some random cases. YOU DON'T NEED TO USE IT
+// in normal conditions.
 func (a *AlignmentSetter) ID(id string) *AlignmentSetter {
 	a.id = id
 	return a
 }
 
+// Build implements Widget interface.
 func (a *AlignmentSetter) Build() {
 	if a.layout == nil {
 		return

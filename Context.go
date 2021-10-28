@@ -9,6 +9,8 @@ import (
 // Context represents a giu context.
 var Context context
 
+// Disposable should be implemented by all states stored in context.
+// Dispose method is called when state is removed from context.
 type Disposable interface {
 	Dispose()
 }

@@ -9,6 +9,8 @@ import (
 	"github.com/faiface/mainthread"
 )
 
+// Texture represents imgui.TextureID.
+// It is base unit of images in imgui.
 type Texture struct {
 	id imgui.TextureID
 }

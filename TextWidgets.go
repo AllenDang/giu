@@ -10,7 +10,7 @@ import (
 
 var _ Widget = &InputTextMultilineWidget{}
 
-// InputTextMultilineWidget represents multiline text input widget
+// InputTextMultilineWidget is a large (multiline) text input
 // see examples/widgets/.
 type InputTextMultilineWidget struct {
 	label         string
@@ -45,21 +45,6 @@ func (i *InputTextMultilineWidget) Labelf(format string, args ...interface{}) *I
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
-// Build implements Widget interface.
-func (i *InputTextMultilineWidget) Build() {
-	if imgui.InputTextMultilineV(
-		tStr(i.label),
-		tStrPtr(i.text),
-		imgui.Vec2{
-			X: i.width,
-			Y: i.height,
-		},
-		int(i.flags), i.cb,
-	) && i.onChange != nil {
-		i.onChange()
-	}
-}
-
 // Flags sets InputTextFlags (see Flags.go).
 func (i *InputTextMultilineWidget) Flags(flags InputTextFlags) *InputTextMultilineWidget {
 	i.flags = flags
@@ -82,6 +67,21 @@ func (i *InputTextMultilineWidget) OnChange(onChange func()) *InputTextMultiline
 func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultilineWidget {
 	i.width, i.height = width, height
 	return i
+}
+
+// Build implements Widget interface.
+func (i *InputTextMultilineWidget) Build() {
+	if imgui.InputTextMultilineV(
+		tStr(i.label),
+		tStrPtr(i.text),
+		imgui.Vec2{
+			X: i.width,
+			Y: i.height,
+		},
+		int(i.flags), i.cb,
+	) && i.onChange != nil {
+		i.onChange()
+	}
 }
 
 var _ Widget = &BulletWidget{}
@@ -125,8 +125,20 @@ func (bt *BulletTextWidget) Build() {
 	imgui.BulletText(bt.text)
 }
 
+var _ Disposable = &inputTextState{}
+
+type inputTextState struct {
+	autoCompleteCandidates fuzzy.Matches
+}
+
+// Dispose implements disposable interface.
+func (s *inputTextState) Dispose() {
+	s.autoCompleteCandidates = nil
+}
+
 var _ Widget = &InputTextWidget{}
 
+// InputTextWidget is a single-line text iinput.
 type InputTextWidget struct {
 	label      string
 	hint       string
@@ -138,14 +150,7 @@ type InputTextWidget struct {
 	onChange   func()
 }
 
-type inputTextState struct {
-	autoCompleteCandidates fuzzy.Matches
-}
-
-func (s *inputTextState) Dispose() {
-	s.autoCompleteCandidates = nil
-}
-
+// InputText creates new input text widget.
 func InputText(value *string) *InputTextWidget {
 	return &InputTextWidget{
 		label:    GenAutoID("##InputText"),
@@ -158,11 +163,13 @@ func InputText(value *string) *InputTextWidget {
 	}
 }
 
+// Label adds label (alternatively you can use it to set widget's id).
 func (i *InputTextWidget) Label(label string) *InputTextWidget {
 	i.label = tStr(label)
 	return i
 }
 
+// Labelf adds formatted label.
 func (i *InputTextWidget) Labelf(format string, args ...interface{}) *InputTextWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
@@ -174,26 +181,31 @@ func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
 	return i
 }
 
+// Hint sets hint text.
 func (i *InputTextWidget) Hint(hint string) *InputTextWidget {
 	i.hint = tStr(hint)
 	return i
 }
 
+// Size sets field's width.
 func (i *InputTextWidget) Size(width float32) *InputTextWidget {
 	i.width = width
 	return i
 }
 
+// Flags sets flags.
 func (i *InputTextWidget) Flags(flags InputTextFlags) *InputTextWidget {
 	i.flags = flags
 	return i
 }
 
+// Callback sets input text callback.
 func (i *InputTextWidget) Callback(cb imgui.InputTextCallback) *InputTextWidget {
 	i.cb = cb
 	return i
 }
 
+// OnChange sets callback when text was changed.
 func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 	i.onChange = onChange
 	return i
@@ -258,6 +270,7 @@ func (i *InputTextWidget) Build() {
 
 var _ Widget = &InputIntWidget{}
 
+// InputIntWidget is an input text field acceptiong intager values only.
 type InputIntWidget struct {
 	label    string
 	value    *int32
@@ -266,6 +279,10 @@ type InputIntWidget struct {
 	onChange func()
 }
 
+// InputInt creates input int widget
+// NOTE: value is int32, so its size is up to 10^32-1.
+// to process greater values, you need to use InputTextWidget
+// with InputTextFlagsCharsDecimal and strconv.ParseInt in OnChange callback.
 func InputInt(value *int32) *InputIntWidget {
 	return &InputIntWidget{
 		label:    GenAutoID("##InputInt"),
@@ -276,25 +293,30 @@ func InputInt(value *int32) *InputIntWidget {
 	}
 }
 
+// Label sets label (id).
 func (i *InputIntWidget) Label(label string) *InputIntWidget {
 	i.label = tStr(label)
 	return i
 }
 
+// Labelf sets formatted label.
 func (i *InputIntWidget) Labelf(format string, args ...interface{}) *InputIntWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
+// Size sets input's width.
 func (i *InputIntWidget) Size(width float32) *InputIntWidget {
 	i.width = width
 	return i
 }
 
+// Flags sets flags.
 func (i *InputIntWidget) Flags(flags InputTextFlags) *InputIntWidget {
 	i.flags = flags
 	return i
 }
 
+// OnChange adds on change callback.
 func (i *InputIntWidget) OnChange(onChange func()) *InputIntWidget {
 	i.onChange = onChange
 	return i
@@ -314,6 +336,7 @@ func (i *InputIntWidget) Build() {
 
 var _ Widget = &InputFloatWidget{}
 
+// InputFloatWidget does similar to InputIntWIdget, but accepts float numbers.
 type InputFloatWidget struct {
 	label    string
 	value    *float32
@@ -323,6 +346,7 @@ type InputFloatWidget struct {
 	onChange func()
 }
 
+// InputFloat constructs InputFloatWidget.
 func InputFloat(value *float32) *InputFloatWidget {
 	return &InputFloatWidget{
 		label:    GenAutoID("##InputFloatWidget"),
@@ -334,30 +358,36 @@ func InputFloat(value *float32) *InputFloatWidget {
 	}
 }
 
+// Label sets label of input field.
 func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
 	i.label = tStr(label)
 	return i
 }
 
+// Labelf sets formatted label.
 func (i *InputFloatWidget) Labelf(format string, args ...interface{}) *InputFloatWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
+// Size sets input field's width.
 func (i *InputFloatWidget) Size(width float32) *InputFloatWidget {
 	i.width = width
 	return i
 }
 
+// Flags sets flags.
 func (i *InputFloatWidget) Flags(flags InputTextFlags) *InputFloatWidget {
 	i.flags = flags
 	return i
 }
 
+// Format sets data format (e.g. %.3f).
 func (i *InputFloatWidget) Format(format string) *InputFloatWidget {
 	i.format = format
 	return i
 }
 
+// OnChange sets callback called when text is changed.
 func (i *InputFloatWidget) OnChange(onChange func()) *InputFloatWidget {
 	i.onChange = onChange
 	return i
@@ -377,12 +407,14 @@ func (i *InputFloatWidget) Build() {
 
 var _ Widget = &LabelWidget{}
 
+// LabelWidget is a plain text label.
 type LabelWidget struct {
 	label    string
 	fontInfo *FontInfo
 	wrapped  bool
 }
 
+// Label constructs label widget.
 func Label(label string) *LabelWidget {
 	return &LabelWidget{
 		label:   tStr(label),
@@ -390,15 +422,18 @@ func Label(label string) *LabelWidget {
 	}
 }
 
+// Labelf allows to add formatted label.
 func Labelf(format string, args ...interface{}) *LabelWidget {
 	return Label(fmt.Sprintf(format, args...))
 }
 
+// Wrapped determinates if label is frapped.
 func (l *LabelWidget) Wrapped(wrapped bool) *LabelWidget {
 	l.wrapped = wrapped
 	return l
 }
 
+// Font sets specific font (does like Style().SetFont).
 func (l *LabelWidget) Font(font *FontInfo) *LabelWidget {
 	l.fontInfo = font
 	return l
