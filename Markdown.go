@@ -73,7 +73,7 @@ func loadImage(path string) imgui.MarkdownImageData {
 		)
 	}
 
-	// TODO: figure out, why it doesn't work as expected and consider
+	// nolint:gocritic // TODO: figure out, why it doesn't work as expected and consider
 	// if current workaround is save
 	/*
 		tex := &Texture{}
