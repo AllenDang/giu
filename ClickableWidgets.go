@@ -523,7 +523,7 @@ func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
 
 // Event create TreeNode with eventHandler
 // You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler.
-// NOTE: DEPRECATED. use EventHandler instead!
+// Deprecated: Use EventHandler instead!
 func (t *TreeNodeWidget) Event(handler func()) *TreeNodeWidget {
 	t.eventHandler = handler
 	return t
