@@ -18,7 +18,7 @@ func CloseCurrentPopup() {
 
 var _ Widget = &PopupWidget{}
 
-// PopupWidget  is a window wich appears next to the mouse cursor.
+// PopupWidget  is a window which appears next to the mouse cursor.
 // For instance it is used to display color palette in ColorSelectWidget.
 type PopupWidget struct {
 	name   string
@@ -26,7 +26,7 @@ type PopupWidget struct {
 	layout Layout
 }
 
-// Popup creates new popup widget
+// Popup creates new popup widget.
 func Popup(name string) *PopupWidget {
 	return &PopupWidget{
 		name:   tStr(name),
@@ -35,13 +35,13 @@ func Popup(name string) *PopupWidget {
 	}
 }
 
-// Flags sets pupup's flags
+// Flags sets pupup's flags.
 func (p *PopupWidget) Flags(flags WindowFlags) *PopupWidget {
 	p.flags = flags
 	return p
 }
 
-// Layout sets popup's layout
+// Layout sets popup's layout.
 func (p *PopupWidget) Layout(widgets ...Widget) *PopupWidget {
 	p.layout = Layout(widgets)
 	return p
@@ -66,7 +66,7 @@ type PopupModalWidget struct {
 	layout Layout
 }
 
-// PopupModal creates new popup modal widget
+// PopupModal creates new popup modal widget.
 func PopupModal(name string) *PopupModalWidget {
 	return &PopupModalWidget{
 		name:   tStr(name),
@@ -84,13 +84,13 @@ func (p *PopupModalWidget) IsOpen(open *bool) *PopupModalWidget {
 	return p
 }
 
-// Flags allows to specify popup's flags
+// Flags allows to specify popup's flags.
 func (p *PopupModalWidget) Flags(flags WindowFlags) *PopupModalWidget {
 	p.flags = flags
 	return p
 }
 
-// Layout sets layout
+// Layout sets layout.
 func (p *PopupModalWidget) Layout(widgets ...Widget) *PopupModalWidget {
 	p.layout = Layout(widgets)
 	return p
