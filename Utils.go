@@ -174,12 +174,12 @@ func SetItemDefaultFocus() {
 	imgui.SetItemDefaultFocus()
 }
 
-// SetKeyboardFocusHere sets keyboard focus at the widget.
+// SetKeyboardFocusHere sets keyboard focus at *NEXT* widget.
 func SetKeyboardFocusHere() {
 	SetKeyboardFocusHereV(0)
 }
 
-// SetKeyboardFocusHereV gives keyboard focus to next item.
+// SetKeyboardFocusHereV sets keyboard on the next widget. Use positive 'offset' to access sub components of a multiple component widget. Use -1 to access previous widget.
 func SetKeyboardFocusHereV(i int) {
 	imgui.SetKeyboardFocusHereV(i)
 }
