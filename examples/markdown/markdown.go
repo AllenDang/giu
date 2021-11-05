@@ -39,6 +39,7 @@ func getExampleMarkdownText() string {
 		"Here is [a link to some cool website!](https://github.com/AllenDang/giu) you must click it!",
 		"Image:",
 		"![gopher image](./gopher.png)",
+		"![gopher image link](https://raw.githubusercontent.com/AllenDang/giu/master/examples/loadimage/gopher.png)",
 		"",
 		"Horizontal Rule:",
 		"***",

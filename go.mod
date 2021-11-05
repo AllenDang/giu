@@ -15,3 +15,5 @@ require (
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d
 )
+
+replace github.com/AllenDang/imgui-go => github.com/gucio321/imgui-go v1.12.1-0.20211105072213-652fdf090bb8
