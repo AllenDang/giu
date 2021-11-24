@@ -93,15 +93,6 @@ func loadImage(path string) imgui.MarkdownImageData {
 	}
 
 	size := img.Bounds()
-	// scale image to not exceed available region
-	// BUG: it causes crash because imgui runs it in goroutine!
-	availableW, _ := GetAvailableRegion()
-	if x := float32(size.Dx()); x > availableW {
-		size = image.Rect(0, 0,
-			int(availableW),
-			int(float32(size.Dy())*availableW/x),
-		)
-	}
 
 	// nolint:gocritic // TODO/BUG: figure out, why it doesn't work as expected and consider
 	// if current workaround is save
