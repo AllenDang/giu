@@ -116,6 +116,7 @@ func loadImage(path string) imgui.MarkdownImageData {
 
 	return imgui.MarkdownImageData{
 		TextureID: &id,
+		Scale:     true,
 		Size: imgui.Vec2{
 			X: float32(size.Dx()),
 			Y: float32(size.Dy()),
