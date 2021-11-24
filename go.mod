@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8
-	github.com/AllenDang/imgui-go v1.12.1-0.20211028065201-6f37894affd3
+	github.com/AllenDang/imgui-go v1.12.1-0.20211124112227-66310b6107e8
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
 	github.com/go-gl/gl v0.0.0-20211025173605-bda47ffaa784 // indirect
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20211024062804-40e447a793be
@@ -15,5 +15,3 @@ require (
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d
 )
-
-replace github.com/AllenDang/imgui-go => github.com/gucio321/imgui-go v1.12.1-0.20211124105641-59084587ca5c
