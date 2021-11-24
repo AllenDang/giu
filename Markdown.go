@@ -4,6 +4,7 @@ import (
 	"bytes"
 	ctx "context"
 	"image"
+	"image/color"
 	"strings"
 	"time"
 
@@ -120,5 +121,10 @@ func loadImage(path string) imgui.MarkdownImageData {
 			Y: float32(size.Dy()),
 		},
 		UseLinkCallback: true,
+		// default values
+		Uv0:         ToVec2(image.Point{0, 0}),
+		Uv1:         ToVec2(image.Point{1, 1}),
+		TintColor:   ToVec4Color(color.RGBA{255, 255, 255, 255}),
+		BorderColor: ToVec4Color(color.RGBA{0, 0, 0, 0}),
 	}
 }

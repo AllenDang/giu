@@ -18,6 +18,8 @@ github.com/gucio321/imgui-go v1.12.1-0.20211105072213-652fdf090bb8 h1:N+tZUf/CQA
 github.com/gucio321/imgui-go v1.12.1-0.20211105072213-652fdf090bb8/go.mod h1:2jS7bvvG+PejKdNu4eg2UYqx7Ky8IXGAhxOfjq9qTNk=
 github.com/gucio321/imgui-go v1.12.1-0.20211124071324-882ba5229b7f h1:jB976PjzEyjYxO9RJMwyEMhoVGedRNOqtlClYFddYuE=
 github.com/gucio321/imgui-go v1.12.1-0.20211124071324-882ba5229b7f/go.mod h1:2jS7bvvG+PejKdNu4eg2UYqx7Ky8IXGAhxOfjq9qTNk=
+github.com/gucio321/imgui-go v1.12.1-0.20211124105641-59084587ca5c h1:8pMemr8S3Ya7cQ+XDlM2QfQvIht+2N/nkJEoi00UG9Y=
+github.com/gucio321/imgui-go v1.12.1-0.20211124105641-59084587ca5c/go.mod h1:2jS7bvvG+PejKdNu4eg2UYqx7Ky8IXGAhxOfjq9qTNk=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 h1:KoWmjvw+nsYOo29YJK9vDA65RGE3NrOnUtO7a+RF9HU=
