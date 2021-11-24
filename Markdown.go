@@ -75,13 +75,13 @@ func loadImage(path string) imgui.MarkdownImageData {
 		// Load image from url
 		client := resty.New()
 		client.SetTimeout(5 * time.Second)
-		resp, err := client.R().SetContext(downloadContext).Get(path)
-		if err != nil {
+		resp, respErr := client.R().SetContext(downloadContext).Get(path)
+		if respErr != nil {
 			return imgui.MarkdownImageData{}
 		}
 
-		rgba, _, err := image.Decode(bytes.NewReader(resp.Body()))
-		if err != nil {
+		rgba, _, imgErr := image.Decode(bytes.NewReader(resp.Body()))
+		if imgErr != nil {
 			return imgui.MarkdownImageData{}
 		}
 
