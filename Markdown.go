@@ -1,9 +1,16 @@
 package giu
 
 import (
+	"bytes"
+	ctx "context"
 	"image"
+	"image/color"
+	"strings"
+	"time"
 
 	"github.com/AllenDang/imgui-go"
+	"github.com/faiface/mainthread"
+	resty "github.com/go-resty/resty/v2"
 )
 
 // MarkdownWidget implements DearImGui markdown extension
@@ -58,22 +65,37 @@ func (m *MarkdownWidget) Build() {
 }
 
 func loadImage(path string) imgui.MarkdownImageData {
-	img, err := LoadImage(path)
-	if err != nil {
-		return imgui.MarkdownImageData{}
+	var img *image.RGBA
+	var err error
+
+	switch {
+	case strings.HasPrefix(path, "http://") || strings.HasPrefix(path, "https://"):
+		downloadContext := ctx.Background()
+
+		// Load image from url
+		client := resty.New()
+		client.SetTimeout(5 * time.Second)
+		resp, respErr := client.R().SetContext(downloadContext).Get(path)
+		if respErr != nil {
+			return imgui.MarkdownImageData{}
+		}
+
+		rgba, _, imgErr := image.Decode(bytes.NewReader(resp.Body()))
+		if imgErr != nil {
+			return imgui.MarkdownImageData{}
+		}
+
+		img = ImageToRgba(rgba)
+	default:
+		img, err = LoadImage(path)
+		if err != nil {
+			return imgui.MarkdownImageData{}
+		}
 	}
 
 	size := img.Bounds()
-	// scale image to not exceed available region
-	availableW, _ := GetAvailableRegion()
-	if x := float32(size.Dx()); x > availableW {
-		size = image.Rect(0, 0,
-			int(availableW),
-			int(float32(size.Dy())*availableW/x),
-		)
-	}
 
-	// nolint:gocritic // TODO: figure out, why it doesn't work as expected and consider
+	// nolint:gocritic // TODO/BUG: figure out, why it doesn't work as expected and consider
 	// if current workaround is save
 	/*
 		tex := &Texture{}
@@ -83,17 +105,27 @@ func loadImage(path string) imgui.MarkdownImageData {
 		})
 	*/
 
-	id, err := Context.renderer.LoadImage(img)
-	if err != nil {
-		return imgui.MarkdownImageData{}
-	}
+	var id imgui.TextureID
+	mainthread.Call(func() {
+		var err error
+		id, err = Context.renderer.LoadImage(img)
+		if err != nil {
+			return
+		}
+	})
 
 	return imgui.MarkdownImageData{
 		TextureID: &id,
+		Scale:     true,
 		Size: imgui.Vec2{
 			X: float32(size.Dx()),
 			Y: float32(size.Dy()),
 		},
 		UseLinkCallback: true,
+		// default values
+		Uv0:         ToVec2(image.Point{0, 0}),
+		Uv1:         ToVec2(image.Point{1, 1}),
+		TintColor:   ToVec4Color(color.RGBA{255, 255, 255, 255}),
+		BorderColor: ToVec4Color(color.RGBA{0, 0, 0, 0}),
 	}
 }
