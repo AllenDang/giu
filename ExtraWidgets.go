@@ -161,8 +161,6 @@ func (v *VSplitterWidget) Build() {
 	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), c, 0, 0)
 }
 
-var _ Widget = &TreeTableRowWidget{}
-
 type TreeTableRowWidget struct {
 	label    string
 	flags    TreeNodeFlags
@@ -188,7 +186,7 @@ func (ttr *TreeTableRowWidget) Flags(flags TreeNodeFlags) *TreeTableRowWidget {
 }
 
 // Build implements Widget interface.
-func (ttr *TreeTableRowWidget) Build() {
+func (ttr *TreeTableRowWidget) buildTreeTableRow() {
 	imgui.TableNextRow(0, 0)
 	imgui.TableNextColumn()
 
@@ -214,7 +212,7 @@ func (ttr *TreeTableRowWidget) Build() {
 
 	if len(ttr.children) > 0 && open {
 		for _, c := range ttr.children {
-			c.Build()
+			c.buildTreeTableRow()
 		}
 
 		imgui.TreePop()
@@ -287,13 +285,13 @@ func (tt *TreeTableWidget) Build() {
 
 		if len(tt.columns) > 0 {
 			for _, col := range tt.columns {
-				col.Build()
+				col.buildTableColumn()
 			}
 			imgui.TableHeadersRow()
 		}
 
 		for _, row := range tt.rows {
-			row.Build()
+			row.buildTreeTableRow()
 		}
 
 		imgui.EndTable()
