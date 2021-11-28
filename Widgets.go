@@ -573,7 +573,8 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 	return t
 }
 
-func (t *TabItemWidget) buildTabItem() {
+// BuildTabItem executes tab item build steps.
+func (t *TabItemWidget) BuildTabItem() {
 	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
 		t.layout.Build()
 		imgui.EndTabItem()
@@ -614,7 +615,7 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 func (t *TabBarWidget) Build() {
 	if imgui.BeginTabBarV(t.id, int(t.flags)) {
 		for _, ti := range t.tabItems {
-			ti.buildTabItem()
+			ti.BuildTabItem()
 		}
 		imgui.EndTabBar()
 	}

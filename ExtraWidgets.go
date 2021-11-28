@@ -185,8 +185,8 @@ func (ttr *TreeTableRowWidget) Flags(flags TreeNodeFlags) *TreeTableRowWidget {
 	return ttr
 }
 
-// Build implements Widget interface.
-func (ttr *TreeTableRowWidget) buildTreeTableRow() {
+// BuildTreeTableRow executes table row building steps.
+func (ttr *TreeTableRowWidget) BuildTreeTableRow() {
 	imgui.TableNextRow(0, 0)
 	imgui.TableNextColumn()
 
@@ -212,7 +212,7 @@ func (ttr *TreeTableRowWidget) buildTreeTableRow() {
 
 	if len(ttr.children) > 0 && open {
 		for _, c := range ttr.children {
-			c.buildTreeTableRow()
+			c.BuildTreeTableRow()
 		}
 
 		imgui.TreePop()
@@ -285,13 +285,13 @@ func (tt *TreeTableWidget) Build() {
 
 		if len(tt.columns) > 0 {
 			for _, col := range tt.columns {
-				col.buildTableColumn()
+				col.BuildTableColumn()
 			}
 			imgui.TableHeadersRow()
 		}
 
 		for _, row := range tt.rows {
-			row.buildTreeTableRow()
+			row.BuildTreeTableRow()
 		}
 
 		imgui.EndTable()

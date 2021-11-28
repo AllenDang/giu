@@ -37,7 +37,8 @@ func (r *TableRowWidget) MinHeight(height float64) *TableRowWidget {
 	return r
 }
 
-func (r *TableRowWidget) buildTableRow() {
+// BuildTableRow executes table row build steps.
+func (r *TableRowWidget) BuildTableRow() {
 	imgui.TableNextRow(imgui.TableRowFlags(r.flags), r.minRowHeight)
 
 	for _, w := range r.layout {
@@ -88,7 +89,8 @@ func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
 	return c
 }
 
-func (c *TableColumnWidget) buildTableColumn() {
+// BuildTableColumn executes table column build steps.
+func (c *TableColumnWidget) BuildTableColumn() {
 	imgui.TableSetupColumn(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
 }
 
@@ -174,7 +176,7 @@ func (t *TableWidget) Build() {
 
 		if len(t.columns) > 0 {
 			for _, col := range t.columns {
-				col.buildTableColumn()
+				col.BuildTableColumn()
 			}
 			imgui.TableHeadersRow()
 		}
@@ -186,14 +188,14 @@ func (t *TableWidget) Build() {
 			for clipper.Step() {
 				for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
 					row := t.rows[i]
-					row.buildTableRow()
+					row.BuildTableRow()
 				}
 			}
 
 			clipper.End()
 		} else {
 			for _, row := range t.rows {
-				row.buildTableRow()
+				row.BuildTableRow()
 			}
 		}
 
