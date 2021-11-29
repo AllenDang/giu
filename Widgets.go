@@ -34,7 +34,7 @@ func (l *RowWidget) Build() {
 		switch w.(type) {
 		case *TooltipWidget,
 			*ContextMenuWidget, *PopupModalWidget,
-			*PopupWidget, *TabItemWidget:
+			*PopupWidget:
 			// noop
 		default:
 			if _, isLabel := w.(*LabelWidget); isLabel {
@@ -538,8 +538,6 @@ func Dummy(width, height float32) *DummyWidget {
 	}
 }
 
-var _ Widget = &TabItemWidget{}
-
 type TabItemWidget struct {
 	label  string
 	open   *bool
@@ -575,8 +573,8 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 	return t
 }
 
-// Build implements Widget interface.
-func (t *TabItemWidget) Build() {
+// BuildTabItem executes tab item build steps.
+func (t *TabItemWidget) BuildTabItem() {
 	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
 		t.layout.Build()
 		imgui.EndTabItem()
@@ -617,7 +615,7 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 func (t *TabBarWidget) Build() {
 	if imgui.BeginTabBarV(t.id, int(t.flags)) {
 		for _, ti := range t.tabItems {
-			ti.Build()
+			ti.BuildTabItem()
 		}
 		imgui.EndTabBar()
 	}
