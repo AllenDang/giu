@@ -13,6 +13,7 @@ import (
 
 var (
 	shouldRebuildFontAtlas bool
+	defaultFontSize        float32  = 14
 	stringMap              sync.Map // key is rune, value indicates whether it's a new rune.
 	defaultFonts           []FontInfo
 	extraFonts             []FontInfo
@@ -44,7 +45,7 @@ func (f *FontInfo) SetSize(size float32) *FontInfo {
 	return &result
 }
 
-func init() {
+func initFontAtlasProcessor() {
 	extraFontMap = make(map[string]*imgui.Font)
 
 	// Pre register numbers
@@ -55,35 +56,40 @@ func init() {
 	switch os {
 	case "darwin":
 		// English font
-		registerDefaultFont("Menlo", 14)
+		registerDefaultFont("Menlo", defaultFontSize)
 		// Chinese font
-		registerDefaultFont("STHeiti", 13)
+		registerDefaultFont("STHeiti", defaultFontSize-1)
 		// Jananese font
-		registerDefaultFont("ヒラギノ角ゴシック W0", 17)
+		registerDefaultFont("ヒラギノ角ゴシック W0", defaultFontSize+3)
 		// Korean font
-		registerDefaultFont("AppleSDGothicNeo", 16)
+		registerDefaultFont("AppleSDGothicNeo", defaultFontSize+2)
 	case windows:
 		// English font
-		registerDefaultFont("Calibri", 16)
+		registerDefaultFont("Calibri", defaultFontSize+2)
 		// Chinese font
-		registerDefaultFont("MSYH", 16)
+		registerDefaultFont("MSYH", defaultFontSize+2)
 		// Japanese font
-		registerDefaultFont("MSGOTHIC", 16)
+		registerDefaultFont("MSGOTHIC", defaultFontSize+2)
 		// Korean font
-		registerDefaultFont("MALGUNSL", 16)
+		registerDefaultFont("MALGUNSL", defaultFontSize+2)
 	case "linux":
 		// English fonts
 		registerDefaultFonts([]FontInfo{
 			{
 				fontName: "FreeSans.ttf",
-				size:     15,
+				size:     defaultFontSize + 1,
 			},
 			{
 				fontName: "FiraCode-Medium",
-				size:     15,
+				size:     defaultFontSize + 1,
 			},
 		})
 	}
+}
+
+// Set the default font size. Invoke this before MasterWindow.NewMasterWindow(..).
+func SetDefaultFontSize(size float32) {
+	defaultFontSize = size
 }
 
 // SetDefaultFont changes default font.

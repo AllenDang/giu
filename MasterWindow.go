@@ -49,6 +49,8 @@ type MasterWindow struct {
 // it should be called in main function. For more details and use cases,
 // see examples/helloworld/.
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
+	initFontAtlasProcessor()
+
 	context := imgui.CreateContext(nil)
 	imgui.ImPlotCreateContext()
 	imgui.ImNodesCreateContext()
