@@ -121,18 +121,16 @@ func (a *AlignmentSetter) Build() {
 // widget will be processed)
 //
 // here is a list of known bugs:
-// - BUG: clicking bug - when widget is clickable, it is unable to be
-// clicked see:
+// - BUG: user can interact with invisible widget (created by GetWidgetWidth)
 //   - https://github.com/AllenDang/giu/issues/341
 //   - https://github.com/ocornut/imgui/issues/4588
-// - BUG: text pasted into input text is pasted twice
-//   (see: https://github.com/AllenDang/giu/issues/340)
 //
 // if you find anything else, please report it on
 // https://github.com/AllenDang/giu Any contribution is appreciated!
 func GetWidgetWidth(w Widget) (result float32) {
 	imgui.PushID(GenAutoID("GetWIdgetWidthMeasurement"))
 	defer imgui.PopID()
+
 	// save cursor position before rendering
 	currentPos := GetCursorPos()
 
