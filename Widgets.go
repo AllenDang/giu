@@ -98,6 +98,12 @@ func (c *ChildWidget) Layout(widgets ...Widget) *ChildWidget {
 	return c
 }
 
+// ID sets the interval id of child widgets.
+func (c *ChildWidget) ID(id string) *ChildWidget {
+	c.id = id
+	return c
+}
+
 func Child() *ChildWidget {
 	return &ChildWidget{
 		id:     GenAutoID("Child"),

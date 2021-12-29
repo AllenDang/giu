@@ -120,6 +120,12 @@ func Table() *TableWidget {
 	}
 }
 
+// ID sets the internal id of table widget.
+func (t *TableWidget) ID(id string) *TableWidget {
+	t.id = id
+	return t
+}
+
 // FastMode Displays visible rows only to boost performance.
 func (t *TableWidget) FastMode(b bool) *TableWidget {
 	t.fastMode = b
