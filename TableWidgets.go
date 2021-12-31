@@ -188,11 +188,13 @@ func (t *TableWidget) Build() {
 		}
 
 		if t.fastMode {
-			var clipper imgui.ListClipper
+			clipper := imgui.NewListClipper()
+			defer clipper.Delete()
+
 			clipper.Begin(len(t.rows))
 
 			for clipper.Step() {
-				for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
+				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
 					row := t.rows[i]
 					row.BuildTableRow()
 				}

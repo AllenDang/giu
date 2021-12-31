@@ -32,11 +32,13 @@ func (l *ListClipperWrapper) Build() {
 		layout = append(layout, w)
 	})
 
-	var clipper imgui.ListClipper
+	clipper := imgui.NewListClipper()
+	defer clipper.Delete()
+
 	clipper.Begin(len(layout))
 
 	for clipper.Step() {
-		for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
+		for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
 			layout[i].Build()
 		}
 	}

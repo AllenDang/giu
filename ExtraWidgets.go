@@ -446,11 +446,13 @@ func (l *ListBoxWidget) Build() {
 
 	child := Child().Border(l.border).Size(l.width, l.height).Layout(Layout{
 		Custom(func() {
-			var clipper imgui.ListClipper
+			clipper := imgui.NewListClipper()
+			defer clipper.Delete()
+
 			clipper.Begin(len(l.items))
 
 			for clipper.Step() {
-				for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
+				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
 					selected := i == state.selectedIndex
 					item := l.items[i]
 					Selectable(item).Selected(selected).Flags(SelectableFlagsAllowDoubleClick).OnClick(func() {
