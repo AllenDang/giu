@@ -1,6 +1,10 @@
 package giu
 
-import "github.com/AllenDang/imgui-go"
+import (
+	"image/color"
+
+	"github.com/AllenDang/imgui-go"
+)
 
 // SplitDirection represents a direction (vertical/horizontal) of splitting layout.
 type SplitDirection uint8
@@ -138,11 +142,15 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 				PushFramePadding(0, 0)
 			}
 
+			PushStyleColor(StyleColorChildBg, color.RGBA{R: 0, G: 0, B: 0, A: 0})
+
 			Child().
 				Border(hasBorder).
 				Size(width, height).
 				Layout(s.restoreItemSpacing(layout)).
 				Build()
+
+			PopStyleColor()
 
 			if hasFramePadding {
 				PopStyle()
