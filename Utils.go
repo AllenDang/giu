@@ -81,13 +81,13 @@ func Vec4ToRGBA(vec4 imgui.Vec4) color.RGBA {
 
 // Update updates giu app
 // it is done by default after each frame.
-// Hoeever because frames stops rendering, when no user
+// However because frames stops rendering, when no user
 // action is done, it may be necessary to
 // Update ui manually at some point.
 func Update() {
 	if Context.isAlive {
 		Context.platform.Update()
-		Context.IO().SetFrameCountSinceLastInput(0)
+		// Context.IO().SetFrameCountSinceLastInput(0)
 	}
 }
 
