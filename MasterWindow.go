@@ -190,8 +190,9 @@ func (w *MasterWindow) sizeChange(width, height int) {
 }
 
 func (w *MasterWindow) render() {
-	if !w.platform.IsMinimized() {
+	if !w.platform.IsVisible() {
 		Context.invalidAllState()
+		defer Context.cleanState()
 	}
 
 	rebuildFontAtlas()
@@ -208,10 +209,6 @@ func (w *MasterWindow) render() {
 
 	r.Render(p.DisplaySize(), p.FramebufferSize(), imgui.RenderedDrawData())
 	p.PostRender()
-
-	if !w.platform.IsMinimized() {
-		Context.cleanState()
-	}
 }
 
 // Run the main loop to create new frame, process events and call update ui func.
