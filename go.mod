@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8
-	github.com/AllenDang/imgui-go v1.12.1-0.20220112081257-3c75746ab409
+	github.com/AllenDang/imgui-go v1.12.1-0.20220118043609-0be51e9a7c52
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20211213063430-748e38ca8aec
 	github.com/go-resty/resty/v2 v2.7.0
