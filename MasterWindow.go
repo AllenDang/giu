@@ -190,7 +190,7 @@ func (w *MasterWindow) sizeChange(width, height int) {
 }
 
 func (w *MasterWindow) render() {
-	if !w.platform.IsVisible() {
+	if !w.platform.IsMinimized() {
 		Context.invalidAllState()
 		defer Context.cleanState()
 	}
