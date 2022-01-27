@@ -3,6 +3,7 @@ package giu
 import (
 	"image"
 	"image/color"
+	"log"
 	"runtime"
 	"time"
 
@@ -190,10 +191,14 @@ func (w *MasterWindow) sizeChange(width, height int) {
 }
 
 func (w *MasterWindow) render() {
-	if !w.platform.IsMinimized() {
-		Context.invalidAllState()
-		defer Context.cleanState()
+	if !w.platform.IsVisible() {
+		return
 	}
+
+	Context.invalidAllState()
+	defer Context.cleanState()
+
+	log.Println("window visibility:", w.platform.IsVisible())
 
 	rebuildFontAtlas()
 
