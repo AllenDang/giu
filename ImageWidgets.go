@@ -321,8 +321,7 @@ func (i *ImageWithURLWidget) Build() {
 
 		go func() {
 			// Load image from url
-			client := &http.Client{}
-			client.Timeout = i.downloadTimeout
+			client := &http.Client{Timeout: i.downloadTimeout}
 			req, err := http.NewRequestWithContext(downloadContext, "GET", i.imgURL, nil)
 			if err != nil {
 				errorFn(err)

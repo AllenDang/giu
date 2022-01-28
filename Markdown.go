@@ -69,8 +69,7 @@ func loadImage(path string) imgui.MarkdownImageData {
 	switch {
 	case strings.HasPrefix(path, "http://") || strings.HasPrefix(path, "https://"):
 		// Load image from url
-		client := &http.Client{}
-		client.Timeout = 5 * time.Second
+		client := &http.Client{Timeout: 5 * time.Second}
 		resp, respErr := client.Get(path)
 		if respErr != nil {
 			return imgui.MarkdownImageData{}
