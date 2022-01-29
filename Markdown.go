@@ -1,16 +1,14 @@
 package giu
 
 import (
-	"bytes"
-	ctx "context"
 	"image"
 	"image/color"
+	"net/http"
 	"strings"
 	"time"
 
 	"github.com/AllenDang/imgui-go"
 	"github.com/faiface/mainthread"
-	resty "github.com/go-resty/resty/v2"
 )
 
 // MarkdownWidget implements DearImGui markdown extension
@@ -70,17 +68,15 @@ func loadImage(path string) imgui.MarkdownImageData {
 
 	switch {
 	case strings.HasPrefix(path, "http://") || strings.HasPrefix(path, "https://"):
-		downloadContext := ctx.Background()
-
 		// Load image from url
-		client := resty.New()
-		client.SetTimeout(5 * time.Second)
-		resp, respErr := client.R().SetContext(downloadContext).Get(path)
+		client := &http.Client{Timeout: 5 * time.Second}
+		resp, respErr := client.Get(path)
 		if respErr != nil {
 			return imgui.MarkdownImageData{}
 		}
+		defer resp.Body.Close()
 
-		rgba, _, imgErr := image.Decode(bytes.NewReader(resp.Body()))
+		rgba, _, imgErr := image.Decode(resp.Body)
 		if imgErr != nil {
 			return imgui.MarkdownImageData{}
 		}

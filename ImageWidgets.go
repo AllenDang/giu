@@ -1,15 +1,14 @@
 package giu
 
 import (
-	"bytes"
 	ctx "context"
 	"fmt"
 	"image"
 	"image/color"
+	"net/http"
 	"time"
 
 	"github.com/AllenDang/imgui-go"
-	resty "github.com/go-resty/resty/v2"
 )
 
 var _ Widget = &ImageWidget{}
@@ -311,31 +310,34 @@ func (i *ImageWithURLWidget) Build() {
 		downloadContext, cancalFunc := ctx.WithCancel(ctx.Background())
 		Context.SetState(i.id, &imageState{loading: true, cancel: cancalFunc})
 
+		errorFn := func(err error) {
+			Context.SetState(i.id, &imageState{failure: true})
+
+			// Trigger onFailure event
+			if i.onFailure != nil {
+				i.onFailure(err)
+			}
+		}
+
 		go func() {
 			// Load image from url
-			client := resty.New()
-			client.SetTimeout(i.downloadTimeout)
-			resp, err := client.R().SetContext(downloadContext).Get(i.imgURL)
+			client := &http.Client{Timeout: i.downloadTimeout}
+			req, err := http.NewRequestWithContext(downloadContext, "GET", i.imgURL, nil)
 			if err != nil {
-				Context.SetState(i.id, &imageState{failure: true})
-
-				// Trigger onFailure event
-				if i.onFailure != nil {
-					i.onFailure(err)
-				}
-
+				errorFn(err)
 				return
 			}
 
-			img, _, err := image.Decode(bytes.NewReader(resp.Body()))
+			resp, err := client.Do(req)
 			if err != nil {
-				Context.SetState(i.id, &imageState{failure: true})
+				errorFn(err)
+				return
+			}
+			defer resp.Body.Close()
 
-				// Trigger onFailure event
-				if i.onFailure != nil {
-					i.onFailure(err)
-				}
-
+			img, _, err := image.Decode(resp.Body)
+			if err != nil {
+				errorFn(err)
 				return
 			}
 
