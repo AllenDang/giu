@@ -83,6 +83,10 @@ func initFontAtlasProcessor() {
 				fontName: "FiraCode-Medium",
 				size:     defaultFontSize + 1,
 			},
+			{
+				fontName: "sans",
+				size:     defaultFontSize + 1,
+			},
 		})
 	}
 }
