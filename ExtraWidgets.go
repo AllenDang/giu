@@ -500,6 +500,7 @@ type DatePickerWidget struct {
 	date     *time.Time
 	width    float32
 	onChange func()
+	format   string
 }
 
 func DatePicker(id string, date *time.Time) *DatePickerWidget {
@@ -523,6 +524,18 @@ func (d *DatePickerWidget) OnChange(onChange func()) *DatePickerWidget {
 	return d
 }
 
+func (d *DatePickerWidget) Format(format string) *DatePickerWidget {
+	d.format = format
+	return d
+}
+
+func (d *DatePickerWidget) getFormat() string {
+	if d.format == "" {
+		return "2006-01-02" // default
+	}
+	return d.format
+}
+
 // Build implements Widget interface.
 func (d *DatePickerWidget) Build() {
 	if d.date == nil {
@@ -537,7 +550,7 @@ func (d *DatePickerWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.BeginComboV(d.id+"##Combo", d.date.Format("2006-01-02"), imgui.ComboFlagsHeightLargest) {
+	if imgui.BeginComboV(d.id+"##Combo", d.date.Format(d.getFormat()), imgui.ComboFlagsHeightLargest) {
 		// --- [Build year widget] ---
 		imgui.AlignTextToFramePadding()
 
@@ -660,7 +673,7 @@ func (d *DatePickerWidget) calendarField(day int) Widget {
 
 		Selectable(fmt.Sprintf("%02d", day)).Selected(isToday).OnClick(func() {
 			*d.date, _ = time.ParseInLocation(
-				"2006-01-02",
+				d.getFormat(),
 				fmt.Sprintf("%d-%02d-%02d",
 					d.date.Year(),
 					d.date.Month(),
