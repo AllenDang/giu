@@ -496,18 +496,21 @@ func (l *ListBoxWidget) Build() {
 var _ Widget = &DatePickerWidget{}
 
 type DatePickerWidget struct {
-	id       string
-	date     *time.Time
-	width    float32
-	onChange func()
+	id          string
+	date        *time.Time
+	width       float32
+	onChange    func()
+	format      string
+	startOfWeek time.Weekday
 }
 
 func DatePicker(id string, date *time.Time) *DatePickerWidget {
 	return &DatePickerWidget{
-		id:       GenAutoID(id),
-		date:     date,
-		width:    100,
-		onChange: func() {}, // small hack - prevent giu from setting nil cb (skip nil check later)
+		id:          GenAutoID(id),
+		date:        date,
+		width:       100,
+		startOfWeek: time.Sunday,
+		onChange:    func() {}, // small hack - prevent giu from setting nil cb (skip nil check later)
 	}
 }
 
@@ -521,6 +524,30 @@ func (d *DatePickerWidget) OnChange(onChange func()) *DatePickerWidget {
 		d.onChange = onChange
 	}
 	return d
+}
+
+func (d *DatePickerWidget) Format(format string) *DatePickerWidget {
+	d.format = format
+	return d
+}
+
+func (d *DatePickerWidget) StartOfWeek(weekday time.Weekday) *DatePickerWidget {
+	d.startOfWeek = weekday
+	return d
+}
+
+func (d *DatePickerWidget) getFormat() string {
+	if d.format == "" {
+		return "2006-01-02" // default
+	}
+	return d.format
+}
+
+func (d *DatePickerWidget) offsetDay(offset int) time.Weekday {
+	day := (int(d.startOfWeek) + offset) % 7
+	// offset may be negative, thus day can be negative
+	day = (day + 7) % 7
+	return time.Weekday(day)
 }
 
 // Build implements Widget interface.
@@ -537,7 +564,7 @@ func (d *DatePickerWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.BeginComboV(d.id+"##Combo", d.date.Format("2006-01-02"), imgui.ComboFlagsHeightLargest) {
+	if imgui.BeginComboV(d.id+"##Combo", d.date.Format(d.getFormat()), imgui.ComboFlagsHeightLargest) {
 		// --- [Build year widget] ---
 		imgui.AlignTextToFramePadding()
 
@@ -574,14 +601,11 @@ func (d *DatePickerWidget) Build() {
 		days := d.getDaysGroups()
 
 		// Create calendar (widget)
-		columns := []*TableColumnWidget{
-			TableColumn("S"),
-			TableColumn("M"),
-			TableColumn("T"),
-			TableColumn("W"),
-			TableColumn("T"),
-			TableColumn("F"),
-			TableColumn("S"),
+		columns := make([]*TableColumnWidget, 7)
+
+		for i := 0; i < 7; i++ {
+			firstChar := d.offsetDay(i).String()[0:1]
+			columns[i] = TableColumn(firstChar)
 		}
 
 		// Build day widgets
@@ -615,17 +639,12 @@ func (d *DatePickerWidget) getDaysGroups() (days [][]int) {
 	lastDay := firstDay.AddDate(0, 1, 0).Add(time.Nanosecond * -1)
 
 	// calculate first week
-	days = append(days, []int{})
+	days = append(days, make([]int, 7))
 
 	monthDay := 1
-	for i := 0; i < 7; i++ {
-		// check for the first month weekday
-		if i < int(firstDay.Weekday()) {
-			days[0] = append(days[0], 0)
-			continue
-		}
-
-		days[0] = append(days[0], monthDay)
+	emptyDaysInFirstWeek := (int(firstDay.Weekday()) - int(d.startOfWeek) + 7) % 7
+	for i := emptyDaysInFirstWeek; i < 7; i++ {
+		days[0][i] = monthDay
 		monthDay++
 	}
 
@@ -660,7 +679,7 @@ func (d *DatePickerWidget) calendarField(day int) Widget {
 
 		Selectable(fmt.Sprintf("%02d", day)).Selected(isToday).OnClick(func() {
 			*d.date, _ = time.ParseInLocation(
-				"2006-01-02",
+				d.getFormat(),
 				fmt.Sprintf("%d-%02d-%02d",
 					d.date.Year(),
 					d.date.Month(),
