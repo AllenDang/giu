@@ -322,7 +322,7 @@ func (i *ImageWithURLWidget) Build() {
 		go func() {
 			// Load image from url
 			client := &http.Client{Timeout: i.downloadTimeout}
-			req, err := http.NewRequestWithContext(downloadContext, "GET", i.imgURL, nil)
+			req, err := http.NewRequestWithContext(downloadContext, "GET", i.imgURL, http.NoBody)
 			if err != nil {
 				errorFn(err)
 				return
@@ -333,7 +333,12 @@ func (i *ImageWithURLWidget) Build() {
 				errorFn(err)
 				return
 			}
-			defer resp.Body.Close()
+
+			defer func() {
+				if closeErr := resp.Body.Close(); closeErr != nil {
+					errorFn(closeErr)
+				}
+			}()
 
 			img, _, err := image.Decode(resp.Body)
 			if err != nil {

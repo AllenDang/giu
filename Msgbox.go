@@ -140,7 +140,10 @@ func (m *MsgboxWidget) getState() *msgboxState {
 		panic("Msgbox is not prepared. Invoke giu.PrepareMsgbox in the end of the layout.")
 	}
 
-	return stateRaw.(*msgboxState)
+	result, isOk := stateRaw.(*msgboxState)
+	Assert(isOk, "MsgboxWidget", "getState", "unexpected type of widget's state recovered")
+
+	return result
 }
 
 // Msgbox opens message box.

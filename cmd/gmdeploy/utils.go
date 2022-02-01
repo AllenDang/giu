@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -9,7 +8,7 @@ import (
 
 func save(name, data string) {
 	const newFileMode = 0o644
-	if err := ioutil.WriteFile(name, []byte(data), newFileMode); err != nil {
+	if err := os.WriteFile(name, []byte(data), newFileMode); err != nil {
 		log.Fatalf("Failed to save %s:%v\n", name, err)
 	}
 }

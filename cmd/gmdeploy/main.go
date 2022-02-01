@@ -90,7 +90,7 @@ func main() {
 		fmt.Printf("%s.app is generated at %s/build/%s/\n", appName, projectPath, targetOS)
 	case "linux":
 		// nolint:gosec // Compile: cannot fix
-		cmd := exec.Command("bash", "-c", fmt.Sprintf("go build -ldflags='-s -w' -o %s", filepath.Join(appName)))
+		cmd := exec.Command("bash", "-c", fmt.Sprintf("go build -ldflags='-s -w' -o %s", appName))
 		cmd.Dir = projectPath
 		runCmd(cmd)
 
