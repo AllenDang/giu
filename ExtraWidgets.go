@@ -678,16 +678,10 @@ func (d *DatePickerWidget) calendarField(day int) Widget {
 		}
 
 		Selectable(fmt.Sprintf("%02d", day)).Selected(isToday).OnClick(func() {
-			*d.date, _ = time.ParseInLocation(
-				d.getFormat(),
-				fmt.Sprintf("%d-%02d-%02d",
-					d.date.Year(),
-					d.date.Month(),
-					day,
-				),
-				time.Local,
-			)
-
+			*d.date = time.Date(
+				d.date.Year(), d.date.Month(), day,
+				0, 0, 0, 0,
+				d.date.Location())
 			d.onChange()
 		}).Build()
 
