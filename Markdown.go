@@ -74,7 +74,11 @@ func loadImage(path string) imgui.MarkdownImageData {
 		if respErr != nil {
 			return imgui.MarkdownImageData{}
 		}
-		defer resp.Body.Close()
+
+		defer func() {
+			closeErr := resp.Body.Close()
+			Assert((closeErr == nil), "MarkdownWidget", "loadImage", "Could not close http request!")
+		}()
 
 		rgba, _, imgErr := image.Decode(resp.Body)
 		if imgErr != nil {

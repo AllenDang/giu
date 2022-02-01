@@ -91,7 +91,7 @@ func initFontAtlasProcessor() {
 	}
 }
 
-// Set the default font size. Invoke this before MasterWindow.NewMasterWindow(..).
+// SetDefaultFontSize sets the default font size. Invoke this before MasterWindow.NewMasterWindow(..).
 func SetDefaultFontSize(size float32) {
 	defaultFontSize = size
 }
