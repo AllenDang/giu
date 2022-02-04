@@ -2,13 +2,16 @@ package main
 
 import (
 	"bytes"
+	_ "embed"
 	"image/gif"
 	"log"
-	"os"
 	"time"
 
 	"github.com/AllenDang/giu"
 )
+
+//go:embed golang.gif
+var gifFileData []byte
 
 const gifFilepath = "./golang.gif"
 
@@ -36,12 +39,9 @@ func loop() {
 }
 
 func main() {
-	wnd := giu.NewMasterWindow("GIF renderer [example]", 640, 480, 0)
+	var err error
 
-	gifFileData, err := os.ReadFile(gifFilepath)
-	if err != nil {
-		log.Fatal(err)
-	}
+	wnd := giu.NewMasterWindow("GIF renderer [example]", 640, 480, 0)
 
 	gifImg, err = gif.DecodeAll(bytes.NewReader(gifFileData))
 	if err != nil {
