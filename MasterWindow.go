@@ -57,7 +57,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 	io := imgui.CurrentIO()
 
-	io.SetConfigFlags(imgui.ConfigFlagEnablePowerSavingMode)
+	io.SetConfigFlags(imgui.ConfigFlagEnablePowerSavingMode | imgui.BackendFlagsRendererHasVtxOffset)
 
 	// Disable imgui.ini
 	io.SetIniFilename("")
