@@ -9,6 +9,7 @@ import (
 	"github.com/AllenDang/imgui-go"
 	"github.com/faiface/mainthread"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"gopkg.in/eapache/queue.v1"
 )
 
 // MasterWindowFlags wrapps imgui.GLFWWindowFlags.
@@ -87,6 +88,9 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		shouldRebuildFontAtlas = true
 		rebuildFontAtlas()
 	}
+
+	// init texture loading queue
+	Context.textureLoadingQueue = queue.New()
 
 	mw := &MasterWindow{
 		clearColor: [4]float32{0, 0, 0, 1},
@@ -215,7 +219,6 @@ func (w *MasterWindow) render() {
 
 // Run the main loop to create new frame, process events and call update ui func.
 func (w *MasterWindow) run() {
-	Context.isRunning = true
 	p := w.platform
 
 	ticker := time.NewTicker(time.Second / time.Duration(p.GetTPS()))
@@ -300,9 +303,18 @@ func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 // up the master window.
 func (w *MasterWindow) Run(loopFunc func()) {
 	mainthread.Run(func() {
+		Context.isRunning = true
 		w.updateFunc = loopFunc
 
 		Context.isAlive = true
+
+		// process texture load requests
+		if Context.textureLoadingQueue != nil && Context.textureLoadingQueue.Length() > 0 {
+			for Context.textureLoadingQueue.Length() > 0 {
+				request := Context.textureLoadingQueue.Remove().(textureLoadRequest)
+				NewTextureFromRgba(request.img, request.cb)
+			}
+		}
 
 		w.run()
 

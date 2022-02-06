@@ -10,10 +10,15 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
-var rgba *image.RGBA
+var (
+	rgba *image.RGBA
+	tex  *g.Texture
+)
 
 func loop() {
 	g.SingleWindow().Layout(
+		g.Label("Display image from texture"),
+		g.Image(tex),
 		g.Label("Display image from rgba"),
 		g.ImageWithRgba(rgba).OnClick(func() {
 			fmt.Println("rgba image was clicked")
@@ -63,5 +68,8 @@ func main() {
 
 	wnd := g.NewMasterWindow("Load Image", 600, 500, g.MasterWindowFlagsNotResizable)
 	wnd.SetIcon([]image.Image{rgba})
+	g.EnqueueNewTextureFromRgba(rgba, func(t *g.Texture) {
+		tex = t
+	})
 	wnd.Run(loop)
 }

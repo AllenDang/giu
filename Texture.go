@@ -15,9 +15,18 @@ type Texture struct {
 	id imgui.TextureID
 }
 
+type textureLoadRequest struct {
+	img image.Image
+	cb  func(*Texture)
+}
+
 type loadImageResult struct {
 	id  imgui.TextureID
 	err error
+}
+
+func EnqueueNewTextureFromRgba(rgba image.Image, loadCb func(t *Texture)) {
+	Context.textureLoadingQueue.Add(textureLoadRequest{rgba, loadCb})
 }
 
 // NewTextureFromRgba creates a new texture from image.Image and, when it is done, calls loadCallback(loadedTexture).
