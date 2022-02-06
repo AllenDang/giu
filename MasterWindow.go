@@ -309,7 +309,8 @@ func (w *MasterWindow) Run(loopFunc func()) {
 		// process texture load requests
 		if Context.textureLoadingQueue != nil && Context.textureLoadingQueue.Length() > 0 {
 			for Context.textureLoadingQueue.Length() > 0 {
-				request := Context.textureLoadingQueue.Remove().(textureLoadRequest)
+				request, ok := Context.textureLoadingQueue.Remove().(textureLoadRequest)
+				Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
 				NewTextureFromRgba(request.img, request.cb)
 			}
 		}
