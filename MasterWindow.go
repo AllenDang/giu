@@ -225,6 +225,15 @@ func (w *MasterWindow) run() {
 	shouldQuit := false
 	for !shouldQuit {
 		mainthread.Call(func() {
+			// process texture load requests
+			if Context.textureLoadingQueue != nil && Context.textureLoadingQueue.Length() > 0 {
+				for Context.textureLoadingQueue.Length() > 0 {
+					request, ok := Context.textureLoadingQueue.Remove().(textureLoadRequest)
+					Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
+					NewTextureFromRgba(request.img, request.cb)
+				}
+			}
+
 			p.ProcessEvents()
 			w.render()
 
@@ -305,15 +314,6 @@ func (w *MasterWindow) Run(loopFunc func()) {
 		w.updateFunc = loopFunc
 
 		Context.isAlive = true
-
-		// process texture load requests
-		if Context.textureLoadingQueue != nil && Context.textureLoadingQueue.Length() > 0 {
-			for Context.textureLoadingQueue.Length() > 0 {
-				request, ok := Context.textureLoadingQueue.Remove().(textureLoadRequest)
-				Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
-				NewTextureFromRgba(request.img, request.cb)
-			}
-		}
 
 		w.run()
 
