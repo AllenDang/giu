@@ -22,6 +22,11 @@ type loadImageResult struct {
 
 // NewTextureFromRgba creates a new texture from image.Image and, when it is done, calls loadCallback(loadedTexture).
 func NewTextureFromRgba(rgba image.Image, loadCallback func(*Texture)) {
+	Assert(Context.isRunning, "", "NewTextureFromRgba", "cannot load texture befor (*MasterWindow).Run call!")
+	loadTexture(rgba, loadCallback)
+}
+
+func loadTexture(rgba image.Image, loadCallback func(*Texture)) {
 	go func() {
 		Update()
 		result := mainthread.CallVal(func() interface{} {

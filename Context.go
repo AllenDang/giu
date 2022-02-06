@@ -21,6 +21,10 @@ type state struct {
 }
 
 type context struct {
+	// TODO: should be handled by mainthread tbh
+	// see https://github.com/faiface/mainthread/pull/4
+	isRunning bool
+
 	renderer imgui.Renderer
 	platform imgui.Platform
 

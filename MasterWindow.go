@@ -215,6 +215,7 @@ func (w *MasterWindow) render() {
 
 // Run the main loop to create new frame, process events and call update ui func.
 func (w *MasterWindow) run() {
+	Context.isRunning = true
 	p := w.platform
 
 	ticker := time.NewTicker(time.Second / time.Duration(p.GetTPS()))
@@ -229,6 +230,8 @@ func (w *MasterWindow) run() {
 
 		<-ticker.C
 	}
+
+	Context.isRunning = false
 }
 
 // GetSize return size of master window.
