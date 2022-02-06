@@ -233,8 +233,6 @@ func (w *MasterWindow) run() {
 
 		<-ticker.C
 	}
-
-	Context.isRunning = false
 }
 
 // GetSize return size of master window.
@@ -328,6 +326,8 @@ func (w *MasterWindow) Run(loopFunc func()) {
 			imgui.ImPlotDestroyContext()
 			w.context.Destroy()
 		})
+
+		Context.isRunning = false
 	})
 }
 

@@ -25,7 +25,11 @@ type loadImageResult struct {
 	err error
 }
 
+// EnqueueNewTextureFromRgba adds loading texture request to loading queue
+// it allows us to run this method in main loop
+// NOTE: remember to call it after NewMasterWindow!
 func EnqueueNewTextureFromRgba(rgba image.Image, loadCb func(t *Texture)) {
+	Assert((Context.textureLoadingQueue != nil), "", "EnqueueNewTextureFromRgba", "you need to call EnqueueNewTextureFromRgba after giu.NewMasterWindow call!")
 	Context.textureLoadingQueue.Add(textureLoadRequest{rgba, loadCb})
 }
 

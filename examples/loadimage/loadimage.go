@@ -67,9 +67,9 @@ func main() {
 	rgba, _ = g.LoadImage("./fallback.png")
 
 	wnd := g.NewMasterWindow("Load Image", 600, 500, g.MasterWindowFlagsNotResizable)
-	wnd.SetIcon([]image.Image{rgba})
 	g.EnqueueNewTextureFromRgba(rgba, func(t *g.Texture) {
 		tex = t
 	})
+	wnd.SetIcon([]image.Image{rgba})
 	wnd.Run(loop)
 }
