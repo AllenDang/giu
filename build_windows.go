@@ -1,5 +1,6 @@
 //go:build windows
-//+build windows
+// +build windows
+
 package giu
 
 // #cgo LDFLAGS: -static
