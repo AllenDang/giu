@@ -11,6 +11,7 @@ require (
 	github.com/sahilm/fuzzy v0.1.0
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d
+	gopkg.in/eapache/queue.v1 v1.1.0
 )
 
 require (

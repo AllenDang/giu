@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"github.com/AllenDang/imgui-go"
+	"gopkg.in/eapache/queue.v1"
 )
 
 // Context represents a giu context.
@@ -21,6 +22,10 @@ type state struct {
 }
 
 type context struct {
+	// TODO: should be handled by mainthread tbh
+	// see https://github.com/faiface/mainthread/pull/4
+	isRunning bool
+
 	renderer imgui.Renderer
 	platform imgui.Platform
 
@@ -33,6 +38,8 @@ type context struct {
 	state sync.Map
 
 	InputHandler InputHandler
+
+	textureLoadingQueue *queue.Queue
 }
 
 func (c *context) GetRenderer() imgui.Renderer {
