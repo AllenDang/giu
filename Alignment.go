@@ -31,7 +31,7 @@ const (
 // NOTE that forcing width doesn't work for each widget type! For example
 // Button won't work because its size is set by argument to imgui call
 // not PushWidth api.
-func AlignManually(alignmentType AlignmentType, widget Widget, widgetW float32, forceApplyWidth bool) Widget {
+func AlignManually(alignmentType AlignmentType, widget Widget, widgetWidth float32, forceApplyWidth bool) Widget {
 	return Custom(func() {
 		spacingX, _ := GetItemSpacing()
 		availableW, _ := GetAvailableRegion()
@@ -43,15 +43,15 @@ func AlignManually(alignmentType AlignmentType, widget Widget, widgetW float32, 
 			widget.Build()
 			return
 		case AlignCenter:
-			dummyX = (availableW-widgetW)/2 - spacingX
+			dummyX = (availableW-widgetWidth)/2 - spacingX
 		case AlignRight:
-			dummyX = availableW - widgetW - spacingX
+			dummyX = availableW - widgetWidth - spacingX
 		}
 
 		Dummy(dummyX, 0).Build()
 
 		if forceApplyWidth {
-			PushItemWidth(widgetW)
+			PushItemWidth(widgetWidth)
 			defer PopItemWidth()
 		}
 
