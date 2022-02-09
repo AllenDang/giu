@@ -26,7 +26,12 @@ const (
 // always work, as long as you set it up correctly.
 // To use it just pass a single widget with its exact width.
 // be sure to apply widget's size by using "Size" method!
-func AlignManually(alignmentType AlignmentType, widget Widget, widgetW float32) Widget {
+// forceApplyWidth argument allows you to ask giu to force-set width
+// of `widget`
+// NOTE that it doesn't work for each widget type! FOr example
+// Button won't work because its size is set by argument to imgui call
+// not PUshWidth api
+func AlignManually(alignmentType AlignmentType, widget Widget, widgetW float32, forceApplyWidth bool) Widget {
 	return Custom(func() {
 		spacingX, _ := GetItemSpacing()
 		availableW, _ := GetAvailableRegion()
@@ -43,10 +48,18 @@ func AlignManually(alignmentType AlignmentType, widget Widget, widgetW float32) 
 			dummyX = availableW - widgetW - spacingX
 		}
 
-		Row(
-			Dummy(dummyX, 0),
-			widget,
-		).Build()
+		Dummy(dummyX, 0).Build()
+
+		if forceApplyWidth {
+			PushItemWidth(widgetW)
+		}
+
+		imgui.SameLine()
+		widget.Build()
+
+		if forceApplyWidth {
+			PopItemWidth()
+		}
 	})
 }
 
