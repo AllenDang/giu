@@ -20,6 +20,36 @@ const (
 	AlignRight
 )
 
+// AlignManually allows to apply alignment manually.
+// As long as AlignSetter is really EXPERIMENTAL feature
+// and may fail randomly, the following method is supposed to
+// always work, as long as you set it up correctly.
+// To use it just pass a single widget with its exact width.
+// be sure to apply widget's size by using "Size" method!
+func AlignManually(alignmentType AlignmentType, widget Widget, widgetW float32) Widget {
+	return Custom(func() {
+		spacingX, _ := GetItemSpacing()
+		availableW, _ := GetAvailableRegion()
+
+		var dummyX float32
+
+		switch alignmentType {
+		case AlignLeft:
+			widget.Build()
+			return
+		case AlignCenter:
+			dummyX = (availableW-widgetW)/2 - spacingX
+		case AlignRight:
+			dummyX = availableW - widgetW - spacingX
+		}
+
+		Row(
+			Dummy(dummyX, 0),
+			widget,
+		).Build()
+	})
+}
+
 var _ Widget = &AlignmentSetter{}
 
 // AlignmentSetter allows to align to right / center a widget or widgets group.
