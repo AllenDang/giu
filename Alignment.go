@@ -30,7 +30,7 @@ const (
 // of `widget`
 // NOTE that forcing width doesn't work for each widget type! FOr example
 // Button won't work because its size is set by argument to imgui call
-// not PUshWidth api.
+// not PushWidth api.
 func AlignManually(alignmentType AlignmentType, widget Widget, widgetW float32, forceApplyWidth bool) Widget {
 	return Custom(func() {
 		spacingX, _ := GetItemSpacing()
