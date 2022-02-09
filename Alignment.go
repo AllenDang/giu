@@ -28,7 +28,7 @@ const (
 // be sure to apply widget's size by using "Size" method!
 // forceApplyWidth argument allows you to ask giu to force-set width
 // of `widget`
-// NOTE that it doesn't work for each widget type! FOr example
+// NOTE that forcing width doesn't work for each widget type! FOr example
 // Button won't work because its size is set by argument to imgui call
 // not PUshWidth api
 func AlignManually(alignmentType AlignmentType, widget Widget, widgetW float32, forceApplyWidth bool) Widget {
