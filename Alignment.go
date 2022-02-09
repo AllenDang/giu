@@ -52,14 +52,11 @@ func AlignManually(alignmentType AlignmentType, widget Widget, widgetW float32, 
 
 		if forceApplyWidth {
 			PushItemWidth(widgetW)
+			defer PopItemWidth()
 		}
 
 		imgui.SameLine()
 		widget.Build()
-
-		if forceApplyWidth {
-			PopItemWidth()
-		}
 	})
 }
 
