@@ -147,6 +147,13 @@ First you need to install the required dependencies:
 # apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libglx-dev libgl1-mesa-dev libxxf86vm-dev
 ```
 
+on Red Hat based distributions:
+```bash
+sudo dnf install libX11-devel libXcursor-devel libXrandr-devel libXinerama-devel libXi-devel libGL-devel libXxf86vm-devel
+```
+
+you may also need to install C/C++ compiller (like g++) if it isn't already installed. Follow go compilator prompts.
+
 Then, a simple `go build` will work.
 
 Cross-compiling is a bit more complicated. Let's say that you want to build for arm64. This is what you would need to do:
