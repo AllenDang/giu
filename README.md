@@ -88,7 +88,7 @@ Here is the result:
 
 ### What is immediate mode GUI?
 
-Immediate mode GUI system means the UI control doesn't retain its state and value. For example, calling `giu.InputText("ID", &str)` will display a input text box on screen, and the user entered value will be stored in `&str`. Input text box doesn't know anything about it.
+Immediate mode GUI system means the UI control doesn't retain its state and value. For example, calling `giu.InputText(&str)` will display a input text box on screen, and the user entered value will be stored in `&str`. Input text box doesn't know anything about it.
 
 And the `loop` method in the _Hello world_ example is in charge of **drawing** all widgets based on the parameters passed into them. This method will be invoked 30 times per second to reflect interactive states (like clicked, hovered, value-changed, etc.). It will be the place you define the UI structure.
 
@@ -144,7 +144,7 @@ Or, install [TDM-GCC](https://jmeubank.github.io/tdm-gcc/).
 First you need to install the required dependencies:
 
 ```bash
-# apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libglx-dev libgl1-mesa-dev libxxf86vm-dev
+sudo apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libglx-dev libgl1-mesa-dev libxxf86vm-dev
 ```
 
 on Red Hat based distributions:
@@ -159,11 +159,11 @@ Then, a simple `go build` will work.
 Cross-compiling is a bit more complicated. Let's say that you want to build for arm64. This is what you would need to do:
 
 ```bash
-# dpkg --add-architecture arm64
-# apt update
-# apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
+sudo dpkg --add-architecture arm64
+sudo apt update
+sudo apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
     libx11-dev:arm64 libxcursor-dev:arm64 libxrandr-dev:arm64 libxinerama-dev:arm64 libxi-dev:arm64 libglx-dev:arm64 libgl1-mesa-dev:arm64 libxxf86vm-dev:arm64
-$ GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ HOST=aarch64-linux-gnu go build -v
+GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ HOST=aarch64-linux-gnu go build -v
 ```
 
 ## Deploying
