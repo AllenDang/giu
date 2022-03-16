@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/setup-go@v3
         with:
-          go-version: '1.17.x'
+          go-version: '1.18.x'
       - name: Set up LibGL, Mesa & X11 libraries
         run: |
           sudo apt-get --allow-releaseinfo-change update
