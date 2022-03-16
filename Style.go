@@ -359,7 +359,7 @@ var _ Widget = &StyleSetter{}
 // StyleSetter is a user-friendly way to manage imgui styles.
 type StyleSetter struct {
 	colors   map[StyleColorID]color.Color
-	styles   map[StyleVarID]interface{}
+	styles   map[StyleVarID]any
 	font     *FontInfo
 	disabled bool
 	layout   Layout
@@ -369,7 +369,7 @@ type StyleSetter struct {
 func Style() *StyleSetter {
 	var ss StyleSetter
 	ss.colors = make(map[StyleColorID]color.Color)
-	ss.styles = make(map[StyleVarID]interface{})
+	ss.styles = make(map[StyleVarID]any)
 
 	return &ss
 }

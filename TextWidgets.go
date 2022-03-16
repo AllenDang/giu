@@ -41,7 +41,7 @@ func (i *InputTextMultilineWidget) Label(label string) *InputTextMultilineWidget
 }
 
 // Labelf is formatting version of Label.
-func (i *InputTextMultilineWidget) Labelf(format string, args ...interface{}) *InputTextMultilineWidget {
+func (i *InputTextMultilineWidget) Labelf(format string, args ...any) *InputTextMultilineWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
@@ -116,7 +116,7 @@ func BulletText(text string) *BulletTextWidget {
 }
 
 // BulletTextf is a formatting version of BulletText.
-func BulletTextf(format string, args ...interface{}) *BulletTextWidget {
+func BulletTextf(format string, args ...any) *BulletTextWidget {
 	return BulletText(fmt.Sprintf(format, args...))
 }
 
@@ -170,7 +170,7 @@ func (i *InputTextWidget) Label(label string) *InputTextWidget {
 }
 
 // Labelf adds formatted label.
-func (i *InputTextWidget) Labelf(format string, args ...interface{}) *InputTextWidget {
+func (i *InputTextWidget) Labelf(format string, args ...any) *InputTextWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
@@ -300,7 +300,7 @@ func (i *InputIntWidget) Label(label string) *InputIntWidget {
 }
 
 // Labelf sets formatted label.
-func (i *InputIntWidget) Labelf(format string, args ...interface{}) *InputIntWidget {
+func (i *InputIntWidget) Labelf(format string, args ...any) *InputIntWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
@@ -365,7 +365,7 @@ func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
 }
 
 // Labelf sets formatted label.
-func (i *InputFloatWidget) Labelf(format string, args ...interface{}) *InputFloatWidget {
+func (i *InputFloatWidget) Labelf(format string, args ...any) *InputFloatWidget {
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
@@ -423,7 +423,7 @@ func Label(label string) *LabelWidget {
 }
 
 // Labelf allows to add formatted label.
-func Labelf(format string, args ...interface{}) *LabelWidget {
+func Labelf(format string, args ...any) *LabelWidget {
 	return Label(fmt.Sprintf(format, args...))
 }
 

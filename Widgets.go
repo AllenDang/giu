@@ -401,7 +401,7 @@ func MenuItem(label string) *MenuItemWidget {
 	}
 }
 
-func MenuItemf(format string, args ...interface{}) *MenuItemWidget {
+func MenuItemf(format string, args ...any) *MenuItemWidget {
 	return MenuItem(fmt.Sprintf(format, args...))
 }
 
@@ -443,7 +443,7 @@ func Menu(label string) *MenuWidget {
 	}
 }
 
-func Menuf(format string, args ...interface{}) *MenuWidget {
+func Menuf(format string, args ...any) *MenuWidget {
 	return Menu(fmt.Sprintf(format, args...))
 }
 
@@ -493,7 +493,7 @@ func (p *ProgressBarWidget) Overlay(overlay string) *ProgressBarWidget {
 	return p
 }
 
-func (p *ProgressBarWidget) Overlayf(format string, args ...interface{}) *ProgressBarWidget {
+func (p *ProgressBarWidget) Overlayf(format string, args ...any) *ProgressBarWidget {
 	return p.Overlay(fmt.Sprintf(format, args...))
 }
 
@@ -560,7 +560,7 @@ func TabItem(label string) *TabItemWidget {
 	}
 }
 
-func TabItemf(format string, args ...interface{}) *TabItemWidget {
+func TabItemf(format string, args ...any) *TabItemWidget {
 	return TabItem(fmt.Sprintf(format, args...))
 }
 
@@ -654,7 +654,7 @@ func Tooltip(tip string) *TooltipWidget {
 	}
 }
 
-func Tooltipf(format string, args ...interface{}) *TooltipWidget {
+func Tooltipf(format string, args ...any) *TooltipWidget {
 	return Tooltip(fmt.Sprintf(format, args...))
 }
 
