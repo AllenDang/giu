@@ -180,12 +180,19 @@ go build -ldflags "-s -w" .
 go build -ldflags "-s -w -H=windowsgui -extldflags=-static" .
 ```
 
-### Build Windows version on MacOS.
+### Build Windows version on MacOS/Linux.
 
 1. Install mingw-64.
 
+on Mac:
 ```sh
 brew install mingw-w64
+```
+
+on Linux:
+
+```sh
+sudo dnf install mingw64-gcc mingw64-gcc-c++ mingw-winpthreads-static
 ```
 
 2. Prepare and embed the application icon into the executable and build.
