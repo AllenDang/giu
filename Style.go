@@ -411,11 +411,7 @@ func (ss *StyleSetter) SetFontSize(size float32) *StyleSetter {
 		font = defaultFonts[0]
 	}
 
-	font.size = size
-
-	extraFonts = append(extraFonts, font)
-
-	ss.font = &font
+	ss.font = font.SetSize(size)
 
 	return ss
 }
@@ -466,9 +462,10 @@ func (ss *StyleSetter) Build() {
 		}
 	}
 
-	isFontPushed := false
 	if ss.font != nil {
-		isFontPushed = PushFont(ss.font)
+		if PushFont(ss.font) {
+			defer PopFont()
+		}
 	}
 
 	imgui.BeginDisabled(ss.disabled)
@@ -476,10 +473,6 @@ func (ss *StyleSetter) Build() {
 	ss.layout.Build()
 
 	imgui.EndDisabled()
-
-	if isFontPushed {
-		PopFont()
-	}
 
 	imgui.PopStyleColorV(len(ss.colors))
 	imgui.PopStyleVarV(len(ss.styles))
