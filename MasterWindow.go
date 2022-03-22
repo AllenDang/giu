@@ -9,11 +9,13 @@ import (
 	"github.com/AllenDang/imgui-go"
 	"github.com/faiface/mainthread"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"gopkg.in/eapache/queue.v1"
 )
 
 // MasterWindowFlags wrapps imgui.GLFWWindowFlags.
 type MasterWindowFlags imgui.GLFWWindowFlags
 
+// master window flags.
 const (
 	// Specifies the window will be fixed size.
 	MasterWindowFlagsNotResizable MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsNotResizable)
@@ -54,7 +56,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 	io := imgui.CurrentIO()
 
-	io.SetConfigFlags(imgui.ConfigFlagEnablePowerSavingMode)
+	io.SetConfigFlags(imgui.ConfigFlagEnablePowerSavingMode | imgui.BackendFlagsRendererHasVtxOffset)
 
 	// Disable imgui.ini
 	io.SetIniFilename("")
@@ -70,6 +72,9 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	}
 
 	Context = CreateContext(p, r)
+
+	// init texture loading queue
+	Context.textureLoadingQueue = queue.New()
 
 	mw := &MasterWindow{
 		clearColor: [4]float32{0, 0, 0, 1},
@@ -173,7 +178,12 @@ func (w *MasterWindow) sizeChange(width, height int) {
 }
 
 func (w *MasterWindow) render() {
+	if !w.platform.IsVisible() || w.platform.IsMinimized() {
+		return
+	}
+
 	Context.invalidAllState()
+	defer Context.cleanState()
 
 	Context.FontAtlas.rebuildFontAtlas()
 
@@ -189,8 +199,6 @@ func (w *MasterWindow) render() {
 
 	r.Render(p.DisplaySize(), p.FramebufferSize(), imgui.RenderedDrawData())
 	p.PostRender()
-
-	Context.cleanState()
 }
 
 // Run the main loop to create new frame, process events and call update ui func.
@@ -201,6 +209,15 @@ func (w *MasterWindow) run() {
 	shouldQuit := false
 	for !shouldQuit {
 		mainthread.Call(func() {
+			// process texture load requests
+			if Context.textureLoadingQueue != nil && Context.textureLoadingQueue.Length() > 0 {
+				for Context.textureLoadingQueue.Length() > 0 {
+					request, ok := Context.textureLoadingQueue.Remove().(textureLoadRequest)
+					Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
+					NewTextureFromRgba(request.img, request.cb)
+				}
+			}
+
 			p.ProcessEvents()
 			w.render()
 
@@ -266,6 +283,7 @@ func (w *MasterWindow) SetCloseCallback(cb func() bool) {
 	w.platform.SetCloseCallback(cb)
 }
 
+// SetDropCallback sets callback when file was droppend into the window.
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
 }
@@ -276,6 +294,7 @@ func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 // up the master window.
 func (w *MasterWindow) Run(loopFunc func()) {
 	mainthread.Run(func() {
+		Context.isRunning = true
 		w.updateFunc = loopFunc
 
 		Context.isAlive = true
@@ -292,6 +311,8 @@ func (w *MasterWindow) Run(loopFunc func()) {
 			imgui.ImPlotDestroyContext()
 			w.context.Destroy()
 		})
+
+		Context.isRunning = false
 	})
 }
 
@@ -350,6 +371,8 @@ func (w *MasterWindow) SetShouldClose(v bool) {
 	w.platform.SetShouldStop(v)
 }
 
+// SetInputHandler allows to change default input handler.
+// see InputHandler.go.
 func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 	Context.InputHandler = handler
 	w.platform.SetInputCallback(func(key glfw.Key, modifier glfw.ModifierKey, action glfw.Action) {

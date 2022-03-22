@@ -52,7 +52,10 @@ body:
       description: What version of giu are you running?
       options:
         - master
-        - v0.5.6 (latest)
+        - (latest)
+        - v0.6.1
+        - v0.6
+        - v0.5.6
     validations:
       required: true
   - type: input

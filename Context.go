@@ -4,11 +4,14 @@ import (
 	"sync"
 
 	"github.com/AllenDang/imgui-go"
+	"gopkg.in/eapache/queue.v1"
 )
 
 // Context represents a giu context.
 var Context context
 
+// Disposable should be implemented by all states stored in context.
+// Dispose method is called when state is removed from context.
 type Disposable interface {
 	Dispose()
 }
@@ -19,6 +22,10 @@ type state struct {
 }
 
 type context struct {
+	// TODO: should be handled by mainthread tbh
+	// see https://github.com/faiface/mainthread/pull/4
+	isRunning bool
+
 	renderer imgui.Renderer
 	platform imgui.Platform
 
@@ -32,6 +39,8 @@ type context struct {
 
 	InputHandler InputHandler
 	FontAtlas    FontAtlas
+
+	textureLoadingQueue *queue.Queue
 }
 
 func CreateContext(p imgui.Platform, r imgui.Renderer) context {
@@ -69,7 +78,7 @@ func (c *context) IO() imgui.IO {
 }
 
 func (c *context) invalidAllState() {
-	c.state.Range(func(k, v interface{}) bool {
+	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
 			s.valid = false
 		}
@@ -78,7 +87,7 @@ func (c *context) invalidAllState() {
 }
 
 func (c *context) cleanState() {
-	c.state.Range(func(k, v interface{}) bool {
+	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
 			if !s.valid {
 				c.state.Delete(k)
@@ -96,7 +105,7 @@ func (c *context) SetState(id string, data Disposable) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
-func (c *context) GetState(id string) interface{} {
+func (c *context) GetState(id string) any {
 	if v, ok := c.state.Load(id); ok {
 		if s, ok := v.(*state); ok {
 			s.valid = true

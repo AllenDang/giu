@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 
 	"github.com/AllenDang/imgui-go"
+	"github.com/pkg/browser"
 )
 
 // LoadImage loads image from file and returns *image.RGBA.
@@ -80,13 +81,12 @@ func Vec4ToRGBA(vec4 imgui.Vec4) color.RGBA {
 
 // Update updates giu app
 // it is done by default after each frame.
-// Hoeever because frames stops rendering, when no user
+// However because frames stops rendering, when no user
 // action is done, it may be necessary to
 // Update ui manually at some point.
 func Update() {
 	if Context.isAlive {
 		Context.platform.Update()
-		Context.IO().SetFrameCountSinceLastInput(0)
 	}
 }
 
@@ -118,6 +118,8 @@ func GetMousePos() image.Point {
 	return image.Pt(int(pos.X), int(pos.Y))
 }
 
+// GetAvailableRegion returns region available for rendering.
+// it is always WindowSize-WindowPadding*2.
 func GetAvailableRegion() (width, height float32) {
 	region := imgui.ContentRegionAvail()
 	return region.X, region.Y
@@ -171,33 +173,44 @@ func SetItemDefaultFocus() {
 	imgui.SetItemDefaultFocus()
 }
 
-// SetKeyboardFocusHere sets keyboard focus at the widget.
+// SetKeyboardFocusHere sets keyboard focus at *NEXT* widget.
 func SetKeyboardFocusHere() {
 	SetKeyboardFocusHereV(0)
 }
 
+// SetKeyboardFocusHereV sets keyboard on the next widget. Use positive 'offset' to access sub components of a multiple component widget. Use -1 to access previous widget.
 func SetKeyboardFocusHereV(i int) {
 	imgui.SetKeyboardFocusHereV(i)
 }
 
+// PushClipRect pushes a clipping rectangle for both ImGui logic (hit-testing etc.) and low-level ImDrawList rendering.
 func PushClipRect(clipRectMin, clipRectMax image.Point, intersectWithClipRect bool) {
 	imgui.PushClipRect(ToVec2(clipRectMin), ToVec2(clipRectMax), intersectWithClipRect)
 }
 
+// PopClipRect should be called to end PushClipRect.
 func PopClipRect() {
 	imgui.PopClipRect()
 }
 
-func Assert(cond bool, t, method, msg string, args ...interface{}) {
+// Assert checks if cond. If not cond, it alls golang panic.
+func Assert(cond bool, t, method, msg string, args ...any) {
 	if !cond {
 		fatal(t, method, msg, args...)
 	}
 }
 
-func fatal(widgetName, method, message string, args ...interface{}) {
+func fatal(widgetName, method, message string, args ...any) {
 	if widgetName != "" {
 		widgetName = fmt.Sprintf("(*%s)", widgetName)
 	}
 
 	log.Panicf("giu: %s.%s: %s", widgetName, method, fmt.Sprintf(message, args...))
+}
+
+// OpenURL opens `url` in default browser.
+func OpenURL(url string) {
+	if err := browser.OpenURL(url); err != nil {
+		log.Printf("Error opening %s: %v", url, err)
+	}
 }

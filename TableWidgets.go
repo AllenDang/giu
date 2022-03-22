@@ -6,8 +6,6 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
-var _ Widget = &TableRowWidget{}
-
 type TableRowWidget struct {
 	flags        TableRowFlags
 	minRowHeight float64
@@ -39,8 +37,8 @@ func (r *TableRowWidget) MinHeight(height float64) *TableRowWidget {
 	return r
 }
 
-// Build implements Widget interface.
-func (r *TableRowWidget) Build() {
+// BuildTableRow executes table row build steps.
+func (r *TableRowWidget) BuildTableRow() {
 	imgui.TableNextRow(imgui.TableRowFlags(r.flags), r.minRowHeight)
 
 	for _, w := range r.layout {
@@ -59,8 +57,6 @@ func (r *TableRowWidget) Build() {
 		imgui.TableSetBgColor(imgui.TableBgTarget_RowBg0, uint32(imgui.GetColorU32(ToVec4Color(r.bgColor))), -1)
 	}
 }
-
-var _ Widget = &TableColumnWidget{}
 
 type TableColumnWidget struct {
 	label              string
@@ -93,8 +89,8 @@ func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
 	return c
 }
 
-// Build implements Widget interface.
-func (c *TableColumnWidget) Build() {
+// BuildTableColumn executes table column build steps.
+func (c *TableColumnWidget) BuildTableColumn() {
 	imgui.TableSetupColumn(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
 }
 
@@ -122,6 +118,12 @@ func Table() *TableWidget {
 		freezeRow:    -1,
 		freezeColumn: -1,
 	}
+}
+
+// ID sets the internal id of table widget.
+func (t *TableWidget) ID(id string) *TableWidget {
+	t.id = id
+	return t
 }
 
 // FastMode Displays visible rows only to boost performance.
@@ -180,26 +182,28 @@ func (t *TableWidget) Build() {
 
 		if len(t.columns) > 0 {
 			for _, col := range t.columns {
-				col.Build()
+				col.BuildTableColumn()
 			}
 			imgui.TableHeadersRow()
 		}
 
 		if t.fastMode {
-			var clipper imgui.ListClipper
+			clipper := imgui.NewListClipper()
+			defer clipper.Delete()
+
 			clipper.Begin(len(t.rows))
 
 			for clipper.Step() {
-				for i := clipper.DisplayStart; i < clipper.DisplayEnd; i++ {
+				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
 					row := t.rows[i]
-					row.Build()
+					row.BuildTableRow()
 				}
 			}
 
 			clipper.End()
 		} else {
 			for _, row := range t.rows {
-				row.Build()
+				row.BuildTableRow()
 			}
 		}
 

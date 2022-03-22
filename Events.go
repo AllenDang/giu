@@ -2,14 +2,17 @@ package giu
 
 import "github.com/AllenDang/imgui-go"
 
+// MouseButton represents imgui.MoseButton.
 type MouseButton int
 
+// mouse buttons.
 const (
 	MouseButtonLeft   MouseButton = 0
 	MouseButtonRight  MouseButton = 1
 	MouseButtonMiddle MouseButton = 2
 )
 
+// IsItemHovered returns true if mouse is over the item.
 func IsItemHovered() bool {
 	return imgui.IsItemHovered()
 }

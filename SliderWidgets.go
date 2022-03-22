@@ -8,6 +8,7 @@ import (
 
 var _ Widget = &SliderIntWidget{}
 
+// SliderIntWidget is a slider around int32 values.
 type SliderIntWidget struct {
 	label    string
 	value    *int32
@@ -18,6 +19,7 @@ type SliderIntWidget struct {
 	onChange func()
 }
 
+// SliderInt constructs new SliderIntWidget.
 func SliderInt(value *int32, min, max int32) *SliderIntWidget {
 	return &SliderIntWidget{
 		label:    GenAutoID("##SliderInt"),
@@ -30,28 +32,35 @@ func SliderInt(value *int32, min, max int32) *SliderIntWidget {
 	}
 }
 
+// Format sets data format displayed on the slider
+// NOTE: on C side of imgui, it will be processed like:
+// fmt.Sprintf(format, currentValue) so you can do e.g.
+// SLiderInt(...).Format("My age is %d") and %d will be replaced with current value.
 func (s *SliderIntWidget) Format(format string) *SliderIntWidget {
 	s.format = format
 	return s
 }
 
+// Size sets slider's width.
 func (s *SliderIntWidget) Size(width float32) *SliderIntWidget {
 	s.width = width
 	return s
 }
 
+// OnChange sets callback when slider's position gets changed.
 func (s *SliderIntWidget) OnChange(onChange func()) *SliderIntWidget {
 	s.onChange = onChange
-
 	return s
 }
 
+// Label sets slider label (id).
 func (s *SliderIntWidget) Label(label string) *SliderIntWidget {
 	s.label = Context.FontAtlas.tStr(label)
 	return s
 }
 
-func (s *SliderIntWidget) Labelf(format string, args ...interface{}) *SliderIntWidget {
+// Labelf sets formated label.
+func (s *SliderIntWidget) Labelf(format string, args ...any) *SliderIntWidget {
 	return s.Label(fmt.Sprintf(format, args...))
 }
 
@@ -69,6 +78,7 @@ func (s *SliderIntWidget) Build() {
 
 var _ Widget = &VSliderIntWidget{}
 
+// VSliderIntWidget stands from Vertical SliderIntWidget.
 type VSliderIntWidget struct {
 	label    string
 	width    float32
@@ -81,6 +91,7 @@ type VSliderIntWidget struct {
 	onChange func()
 }
 
+// VSliderInt creates new vslider int.
 func VSliderInt(value *int32, min, max int32) *VSliderIntWidget {
 	return &VSliderIntWidget{
 		label:  GenAutoID("##VSliderInt"),
@@ -94,32 +105,38 @@ func VSliderInt(value *int32, min, max int32) *VSliderIntWidget {
 	}
 }
 
+// Size sets slider's size.
 func (vs *VSliderIntWidget) Size(width, height float32) *VSliderIntWidget {
 	vs.width, vs.height = width, height
 	return vs
 }
 
+// Flags sets flags.
 func (vs *VSliderIntWidget) Flags(flags SliderFlags) *VSliderIntWidget {
 	vs.flags = flags
 	return vs
 }
 
+// Format sets format (see comment on (*SliderIntWidget).Format).
 func (vs *VSliderIntWidget) Format(format string) *VSliderIntWidget {
 	vs.format = format
 	return vs
 }
 
+// OnChange sets callback called when slider's position gets changed.
 func (vs *VSliderIntWidget) OnChange(onChange func()) *VSliderIntWidget {
 	vs.onChange = onChange
 	return vs
 }
 
+// Label sets slider's label (id).
 func (vs *VSliderIntWidget) Label(label string) *VSliderIntWidget {
 	vs.label = Context.FontAtlas.tStr(label)
 	return vs
 }
 
-func (vs *VSliderIntWidget) Labelf(format string, args ...interface{}) *VSliderIntWidget {
+// Labelf sets formated label.
+func (vs *VSliderIntWidget) Labelf(format string, args ...any) *VSliderIntWidget {
 	return vs.Label(fmt.Sprintf(format, args...))
 }
 
@@ -140,6 +157,8 @@ func (vs *VSliderIntWidget) Build() {
 
 var _ Widget = &SliderFloatWidget{}
 
+// SliderFloatWidget does similar to SliderIntWidget but slides around
+// float32 values.
 type SliderFloatWidget struct {
 	label    string
 	value    *float32
@@ -150,6 +169,7 @@ type SliderFloatWidget struct {
 	onChange func()
 }
 
+// SliderFloat creates new slider float widget.
 func SliderFloat(value *float32, min, max float32) *SliderFloatWidget {
 	return &SliderFloatWidget{
 		label:    GenAutoID("##SliderFloat"),
@@ -162,28 +182,34 @@ func SliderFloat(value *float32, min, max float32) *SliderFloatWidget {
 	}
 }
 
+// Format sets format of text displayed on the slider.
+// default is %.3f.
 func (sf *SliderFloatWidget) Format(format string) *SliderFloatWidget {
 	sf.format = format
 	return sf
 }
 
+// OnChange is callback called when slider's position gets changed.
 func (sf *SliderFloatWidget) OnChange(onChange func()) *SliderFloatWidget {
 	sf.onChange = onChange
 
 	return sf
 }
 
+// Size sets slider's width.
 func (sf *SliderFloatWidget) Size(width float32) *SliderFloatWidget {
 	sf.width = width
 	return sf
 }
 
+// Label sets slider's label (id).
 func (sf *SliderFloatWidget) Label(label string) *SliderFloatWidget {
 	sf.label = Context.FontAtlas.tStr(label)
 	return sf
 }
 
-func (sf *SliderFloatWidget) Labelf(format string, args ...interface{}) *SliderFloatWidget {
+// Labelf sets formated label.
+func (sf *SliderFloatWidget) Labelf(format string, args ...any) *SliderFloatWidget {
 	return sf.Label(fmt.Sprintf(format, args...))
 }
 

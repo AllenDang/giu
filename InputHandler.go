@@ -2,6 +2,7 @@ package giu
 
 // input menager is used to register a keyboard shortcuts in an app.
 
+// Shortcut represents a keyboard shortcut.
 type Shortcut struct {
 	Key      Key
 	Modifier Modifier
@@ -24,7 +25,7 @@ const (
 	// GlobalShortcut is registered for all the app.
 	GlobalShortcut ShortcutType = true
 
-	// LocLShortcut is registered for current window only.
+	// LocalShortcut is registered for current window only.
 	LocalShortcut ShortcutType = false
 )
 

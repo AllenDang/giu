@@ -31,6 +31,19 @@ func loop() {
 				giu.Button("button 2"),
 			),
 		),
+
+		giu.Label("manual alignment"),
+		giu.AlignManually(
+			giu.AlignCenter,
+			giu.Button("I'm button with 100 width").
+				Size(100, 30),
+			100, false,
+		),
+		giu.AlignManually(
+			giu.AlignCenter,
+			giu.InputText(&text),
+			100, true,
+		),
 	)
 }
 

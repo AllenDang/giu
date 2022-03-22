@@ -34,7 +34,7 @@ func (l *RowWidget) Build() {
 		switch w.(type) {
 		case *TooltipWidget,
 			*ContextMenuWidget, *PopupModalWidget,
-			*PopupWidget, *TabItemWidget:
+			*PopupWidget:
 			// noop
 		default:
 			if _, isLabel := w.(*LabelWidget); isLabel {
@@ -95,6 +95,12 @@ func (c *ChildWidget) Flags(flags WindowFlags) *ChildWidget {
 
 func (c *ChildWidget) Layout(widgets ...Widget) *ChildWidget {
 	c.layout = Layout(widgets)
+	return c
+}
+
+// ID sets the interval id of child widgets.
+func (c *ChildWidget) ID(id string) *ChildWidget {
+	c.id = id
 	return c
 }
 
@@ -395,7 +401,7 @@ func MenuItem(label string) *MenuItemWidget {
 	}
 }
 
-func MenuItemf(format string, args ...interface{}) *MenuItemWidget {
+func MenuItemf(format string, args ...any) *MenuItemWidget {
 	return MenuItem(fmt.Sprintf(format, args...))
 }
 
@@ -437,7 +443,7 @@ func Menu(label string) *MenuWidget {
 	}
 }
 
-func Menuf(format string, args ...interface{}) *MenuWidget {
+func Menuf(format string, args ...any) *MenuWidget {
 	return Menu(fmt.Sprintf(format, args...))
 }
 
@@ -487,7 +493,7 @@ func (p *ProgressBarWidget) Overlay(overlay string) *ProgressBarWidget {
 	return p
 }
 
-func (p *ProgressBarWidget) Overlayf(format string, args ...interface{}) *ProgressBarWidget {
+func (p *ProgressBarWidget) Overlayf(format string, args ...any) *ProgressBarWidget {
 	return p.Overlay(fmt.Sprintf(format, args...))
 }
 
@@ -538,8 +544,6 @@ func Dummy(width, height float32) *DummyWidget {
 	}
 }
 
-var _ Widget = &TabItemWidget{}
-
 type TabItemWidget struct {
 	label  string
 	open   *bool
@@ -556,7 +560,7 @@ func TabItem(label string) *TabItemWidget {
 	}
 }
 
-func TabItemf(format string, args ...interface{}) *TabItemWidget {
+func TabItemf(format string, args ...any) *TabItemWidget {
 	return TabItem(fmt.Sprintf(format, args...))
 }
 
@@ -575,8 +579,8 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 	return t
 }
 
-// Build implements Widget interface.
-func (t *TabItemWidget) Build() {
+// BuildTabItem executes tab item build steps.
+func (t *TabItemWidget) BuildTabItem() {
 	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
 		t.layout.Build()
 		imgui.EndTabItem()
@@ -617,7 +621,7 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 func (t *TabBarWidget) Build() {
 	if imgui.BeginTabBarV(t.id, int(t.flags)) {
 		for _, ti := range t.tabItems {
-			ti.Build()
+			ti.BuildTabItem()
 		}
 		imgui.EndTabBar()
 	}
@@ -650,7 +654,7 @@ func Tooltip(tip string) *TooltipWidget {
 	}
 }
 
-func Tooltipf(format string, args ...interface{}) *TooltipWidget {
+func Tooltipf(format string, args ...any) *TooltipWidget {
 	return Tooltip(fmt.Sprintf(format, args...))
 }
 

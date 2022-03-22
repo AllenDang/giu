@@ -147,10 +147,17 @@ func PopItemWidth() {
 	imgui.PopItemWidth()
 }
 
+// PushTextWrapPos adds the position, where the text should be frapped.
+// use PushTextWrapPos, render text. If text reaches frame end,
+// rendering will be continued at the start pos in line below.
+// NOTE: Don't forget to call PopWrapTextPos
+// NOTE: it is done automatically in LabelWidget (see (*LabelWIdget).Wrapped()).
 func PushTextWrapPos() {
 	imgui.PushTextWrapPos()
 }
 
+// PopTextWrapPos should be caled as many times as PushTextWrapPos
+// on each frame.
 func PopTextWrapPos() {
 	imgui.PopTextWrapPos()
 }
@@ -158,6 +165,7 @@ func PopTextWrapPos() {
 // MouseCursorType represents a type (layout) of mouse cursor.
 type MouseCursorType int
 
+// cursor types.
 const (
 	// MouseCursorNone no mouse cursor.
 	MouseCursorNone MouseCursorType = -1
@@ -210,64 +218,64 @@ func GetFramePadding() (x, y float32) {
 }
 
 // StyleColorID identifies a color in the UI style.
-type StyleColorID int
+type StyleColorID imgui.StyleColorID
 
 // StyleColor identifier.
 const (
-	StyleColorText                  StyleColorID = 0
-	StyleColorTextDisabled          StyleColorID = 1
-	StyleColorWindowBg              StyleColorID = 2
-	StyleColorChildBg               StyleColorID = 3
-	StyleColorPopupBg               StyleColorID = 4
-	StyleColorBorder                StyleColorID = 5
-	StyleColorBorderShadow          StyleColorID = 6
-	StyleColorFrameBg               StyleColorID = 7
-	StyleColorFrameBgHovered        StyleColorID = 8
-	StyleColorFrameBgActive         StyleColorID = 9
-	StyleColorTitleBg               StyleColorID = 10
-	StyleColorTitleBgActive         StyleColorID = 11
-	StyleColorTitleBgCollapsed      StyleColorID = 12
-	StyleColorMenuBarBg             StyleColorID = 13
-	StyleColorScrollbarBg           StyleColorID = 14
-	StyleColorScrollbarGrab         StyleColorID = 15
-	StyleColorScrollbarGrabHovered  StyleColorID = 16
-	StyleColorScrollbarGrabActive   StyleColorID = 17
-	StyleColorCheckMark             StyleColorID = 18
-	StyleColorSliderGrab            StyleColorID = 19
-	StyleColorSliderGrabActive      StyleColorID = 20
-	StyleColorButton                StyleColorID = 21
-	StyleColorButtonHovered         StyleColorID = 22
-	StyleColorButtonActive          StyleColorID = 23
-	StyleColorHeader                StyleColorID = 24
-	StyleColorHeaderHovered         StyleColorID = 25
-	StyleColorHeaderActive          StyleColorID = 26
-	StyleColorSeparator             StyleColorID = 27
-	StyleColorSeparatorHovered      StyleColorID = 28
-	StyleColorSeparatorActive       StyleColorID = 29
-	StyleColorResizeGrip            StyleColorID = 30
-	StyleColorResizeGripHovered     StyleColorID = 31
-	StyleColorResizeGripActive      StyleColorID = 32
-	StyleColorTab                   StyleColorID = 33
-	StyleColorTabHovered            StyleColorID = 34
-	StyleColorTabActive             StyleColorID = 35
-	StyleColorTabUnfocused          StyleColorID = 36
-	StyleColorTabUnfocusedActive    StyleColorID = 37
-	StyleColorPlotLines             StyleColorID = 38
-	StyleColorPlotLinesHovered      StyleColorID = 39
-	StyleColorProgressBarActive     StyleColorID = 40
-	StyleColorPlotHistogram         StyleColorID = 40
-	StyleColorPlotHistogramHovered  StyleColorID = 41
-	StyleColorTableHeaderBg         StyleColorID = 42
-	StyleColorTableBorderStrong     StyleColorID = 43
-	StyleColorTableBorderLight      StyleColorID = 44
-	StyleColorTableRowBg            StyleColorID = 45
-	StyleColorTableRowBgAlt         StyleColorID = 46
-	StyleColorTextSelectedBg        StyleColorID = 47
-	StyleColorDragDropTarget        StyleColorID = 48
-	StyleColorNavHighlight          StyleColorID = 49
-	StyleColorNavWindowingHighlight StyleColorID = 50
-	StyleColorNavWindowingDimBg     StyleColorID = 51
-	StyleColorModalWindowDimBg      StyleColorID = 52
+	StyleColorText                  StyleColorID = StyleColorID(imgui.StyleColorText)
+	StyleColorTextDisabled          StyleColorID = StyleColorID(imgui.StyleColorTextDisabled)
+	StyleColorWindowBg              StyleColorID = StyleColorID(imgui.StyleColorWindowBg)
+	StyleColorChildBg               StyleColorID = StyleColorID(imgui.StyleColorChildBg)
+	StyleColorPopupBg               StyleColorID = StyleColorID(imgui.StyleColorPopupBg)
+	StyleColorBorder                StyleColorID = StyleColorID(imgui.StyleColorBorder)
+	StyleColorBorderShadow          StyleColorID = StyleColorID(imgui.StyleColorBorderShadow)
+	StyleColorFrameBg               StyleColorID = StyleColorID(imgui.StyleColorFrameBg)
+	StyleColorFrameBgHovered        StyleColorID = StyleColorID(imgui.StyleColorFrameBgHovered)
+	StyleColorFrameBgActive         StyleColorID = StyleColorID(imgui.StyleColorFrameBgActive)
+	StyleColorTitleBg               StyleColorID = StyleColorID(imgui.StyleColorTitleBg)
+	StyleColorTitleBgActive         StyleColorID = StyleColorID(imgui.StyleColorTitleBgActive)
+	StyleColorTitleBgCollapsed      StyleColorID = StyleColorID(imgui.StyleColorTitleBgCollapsed)
+	StyleColorMenuBarBg             StyleColorID = StyleColorID(imgui.StyleColorMenuBarBg)
+	StyleColorScrollbarBg           StyleColorID = StyleColorID(imgui.StyleColorScrollbarBg)
+	StyleColorScrollbarGrab         StyleColorID = StyleColorID(imgui.StyleColorScrollbarGrab)
+	StyleColorScrollbarGrabHovered  StyleColorID = StyleColorID(imgui.StyleColorScrollbarGrabHovered)
+	StyleColorScrollbarGrabActive   StyleColorID = StyleColorID(imgui.StyleColorScrollbarGrabActive)
+	StyleColorCheckMark             StyleColorID = StyleColorID(imgui.StyleColorCheckMark)
+	StyleColorSliderGrab            StyleColorID = StyleColorID(imgui.StyleColorSliderGrab)
+	StyleColorSliderGrabActive      StyleColorID = StyleColorID(imgui.StyleColorSliderGrabActive)
+	StyleColorButton                StyleColorID = StyleColorID(imgui.StyleColorButton)
+	StyleColorButtonHovered         StyleColorID = StyleColorID(imgui.StyleColorButtonHovered)
+	StyleColorButtonActive          StyleColorID = StyleColorID(imgui.StyleColorButtonActive)
+	StyleColorHeader                StyleColorID = StyleColorID(imgui.StyleColorHeader)
+	StyleColorHeaderHovered         StyleColorID = StyleColorID(imgui.StyleColorHeaderHovered)
+	StyleColorHeaderActive          StyleColorID = StyleColorID(imgui.StyleColorHeaderActive)
+	StyleColorSeparator             StyleColorID = StyleColorID(imgui.StyleColorSeparator)
+	StyleColorSeparatorHovered      StyleColorID = StyleColorID(imgui.StyleColorSeparatorHovered)
+	StyleColorSeparatorActive       StyleColorID = StyleColorID(imgui.StyleColorSeparatorActive)
+	StyleColorResizeGrip            StyleColorID = StyleColorID(imgui.StyleColorResizeGrip)
+	StyleColorResizeGripHovered     StyleColorID = StyleColorID(imgui.StyleColorResizeGripHovered)
+	StyleColorResizeGripActive      StyleColorID = StyleColorID(imgui.StyleColorResizeGripActive)
+	StyleColorTab                   StyleColorID = StyleColorID(imgui.StyleColorTab)
+	StyleColorTabHovered            StyleColorID = StyleColorID(imgui.StyleColorTabHovered)
+	StyleColorTabActive             StyleColorID = StyleColorID(imgui.StyleColorTabActive)
+	StyleColorTabUnfocused          StyleColorID = StyleColorID(imgui.StyleColorTabUnfocused)
+	StyleColorTabUnfocusedActive    StyleColorID = StyleColorID(imgui.StyleColorTabUnfocusedActive)
+	StyleColorPlotLines             StyleColorID = StyleColorID(imgui.StyleColorPlotLines)
+	StyleColorPlotLinesHovered      StyleColorID = StyleColorID(imgui.StyleColorPlotLinesHovered)
+	StyleColorProgressBarActive     StyleColorID = StyleColorPlotLinesHovered
+	StyleColorPlotHistogram         StyleColorID = StyleColorID(imgui.StyleColorPlotHistogram)
+	StyleColorPlotHistogramHovered  StyleColorID = StyleColorID(imgui.StyleColorPlotHistogramHovered)
+	StyleColorTableHeaderBg         StyleColorID = StyleColorID(imgui.StyleColorTableHeaderBg)
+	StyleColorTableBorderStrong     StyleColorID = StyleColorID(imgui.StyleColorTableBorderStrong)
+	StyleColorTableBorderLight      StyleColorID = StyleColorID(imgui.StyleColorTableBorderLight)
+	StyleColorTableRowBg            StyleColorID = StyleColorID(imgui.StyleColorTableRowBg)
+	StyleColorTableRowBgAlt         StyleColorID = StyleColorID(imgui.StyleColorTableRowBgAlt)
+	StyleColorTextSelectedBg        StyleColorID = StyleColorID(imgui.StyleColorTextSelectedBg)
+	StyleColorDragDropTarget        StyleColorID = StyleColorID(imgui.StyleColorDragDropTarget)
+	StyleColorNavHighlight          StyleColorID = StyleColorID(imgui.StyleColorNavHighlight)
+	StyleColorNavWindowingHighlight StyleColorID = StyleColorID(imgui.StyleColorNavWindowingHighlight)
+	StyleColorNavWindowingDimBg     StyleColorID = StyleColorID(imgui.StyleColorNavWindowingDimBg)
+	StyleColorModalWindowDimBg      StyleColorID = StyleColorID(imgui.StyleColorModalWindowDimBg)
 )
 
 // StyleVarID identifies a style variable in the UI style.
@@ -351,7 +359,7 @@ var _ Widget = &StyleSetter{}
 // StyleSetter is a user-friendly way to manage imgui styles.
 type StyleSetter struct {
 	colors   map[StyleColorID]color.Color
-	styles   map[StyleVarID]interface{}
+	styles   map[StyleVarID]any
 	font     *FontInfo
 	disabled bool
 	layout   Layout
@@ -361,7 +369,7 @@ type StyleSetter struct {
 func Style() *StyleSetter {
 	var ss StyleSetter
 	ss.colors = make(map[StyleColorID]color.Color)
-	ss.styles = make(map[StyleVarID]interface{})
+	ss.styles = make(map[StyleVarID]any)
 
 	return &ss
 }
@@ -392,6 +400,9 @@ func (ss *StyleSetter) SetFont(font *FontInfo) *StyleSetter {
 	return ss
 }
 
+// SetFontSize sets size of the font.
+// NOTE: Be aware, that StyleSetter needs to add a new font to font atlas for
+// each font's size.
 func (ss *StyleSetter) SetFontSize(size float32) *StyleSetter {
 	var font FontInfo
 	if ss.font != nil {
@@ -400,11 +411,7 @@ func (ss *StyleSetter) SetFontSize(size float32) *StyleSetter {
 		font = Context.FontAtlas.defaultFonts[0]
 	}
 
-	font.size = size
-
-	Context.FontAtlas.extraFonts = append(Context.FontAtlas.extraFonts, font)
-
-	ss.font = &font
+	ss.font = font.SetSize(size)
 
 	return ss
 }
@@ -455,9 +462,10 @@ func (ss *StyleSetter) Build() {
 		}
 	}
 
-	isFontPushed := false
 	if ss.font != nil {
-		isFontPushed = PushFont(ss.font)
+		if PushFont(ss.font) {
+			defer PopFont()
+		}
 	}
 
 	imgui.BeginDisabled(ss.disabled)
@@ -465,10 +473,6 @@ func (ss *StyleSetter) Build() {
 	ss.layout.Build()
 
 	imgui.EndDisabled()
-
-	if isFontPushed {
-		PopFont()
-	}
 
 	imgui.PopStyleColorV(len(ss.colors))
 	imgui.PopStyleVarV(len(ss.styles))

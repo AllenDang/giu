@@ -113,7 +113,7 @@ func (c *Canvas) AddQuadFilled(p1, p2, p3, p4 image.Point, col color.Color) {
 	c.drawlist.AddQuadFilled(ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec4Color(col))
 }
 
-// Stateful path API, add points then finish with PathFillConvex() or PathStroke()
+// Stateful path API, add points then finish with PathFillConvex() or PathStroke().
 
 func (c *Canvas) PathClear() {
 	c.drawlist.PathClear()

@@ -14,6 +14,7 @@ import (
 const (
 	preRegisterString = " \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 	windows           = "windows"
+	defaultFontSize   = 14
 )
 
 // FontInfo represents a giu implementation of imgui font.
@@ -28,17 +29,35 @@ func (f *FontInfo) String() string {
 	return fmt.Sprintf("%s:%.2f", f.fontName, f.size)
 }
 
+func (f *FontInfo) SetSize(size float32) *FontInfo {
+	result := *f
+	result.size = size
+
+	for _, i := range Context.FontAtlas.extraFonts {
+		if i.String() == result.String() {
+			return &result
+		}
+	}
+
+	Context.FontAtlas.extraFonts = append(Context.FontAtlas.extraFonts, result)
+	Context.FontAtlas.shouldRebuildFontAtlas = true
+
+	return &result
+}
+
 type FontAtlas struct {
 	shouldRebuildFontAtlas bool
 	stringMap              sync.Map // key is rune, value indicates whether it's a new rune.
 	defaultFonts           []FontInfo
 	extraFonts             []FontInfo
 	extraFontMap           map[string]*imgui.Font
+	fontSize               float32
 }
 
 func newFontAtlas() FontAtlas {
 	result := FontAtlas{
 		extraFontMap: make(map[string]*imgui.Font),
+		fontSize:     defaultFontSize,
 	}
 
 	// Pre register numbers
@@ -48,37 +67,46 @@ func newFontAtlas() FontAtlas {
 	switch runtime.GOOS {
 	case "darwin":
 		// English font
-		result.registerDefaultFont("Menlo", 14)
+		result.registerDefaultFont("Menlo", result.fontSize)
 		// Chinese font
-		result.registerDefaultFont("STHeiti", 13)
+		result.registerDefaultFont("STHeiti", result.fontSize-1)
 		// Jananese font
-		result.registerDefaultFont("ヒラギノ角ゴシック W0", 17)
+		result.registerDefaultFont("ヒラギノ角ゴシック W0", result.fontSize+3)
 		// Korean font
-		result.registerDefaultFont("AppleSDGothicNeo", 16)
+		result.registerDefaultFont("AppleSDGothicNeo", result.fontSize+2)
 	case windows:
 		// English font
-		result.registerDefaultFont("Calibri", 16)
+		result.registerDefaultFont("Calibri", result.fontSize+2)
 		// Chinese font
-		result.registerDefaultFont("MSYH", 16)
+		result.registerDefaultFont("MSYH", result.fontSize+2)
 		// Japanese font
-		result.registerDefaultFont("MSGOTHIC", 16)
+		result.registerDefaultFont("MSGOTHIC", result.fontSize+2)
 		// Korean font
-		result.registerDefaultFont("MALGUNSL", 16)
+		result.registerDefaultFont("MALGUNSL", result.fontSize+2)
 	case "linux":
 		// English fonts
 		result.registerDefaultFonts([]FontInfo{
 			{
 				fontName: "FreeSans.ttf",
-				size:     15,
+				size:     result.fontSize + 1,
 			},
 			{
 				fontName: "FiraCode-Medium",
-				size:     15,
+				size:     result.fontSize + 1,
+			},
+			{
+				fontName: "sans",
+				size:     result.fontSize + 1,
 			},
 		})
 	}
 
 	return result
+}
+
+// SetDefaultFontSize sets the default font size. Invoke this before MasterWindow.NewMasterWindow(..).
+func (a *FontAtlas) SetDefaultFontSize(size float32) {
+	a.fontSize = size
 }
 
 // SetDefaultFont changes default font.
@@ -101,6 +129,10 @@ func (a *FontAtlas) SetDefaultFontFromBytes(fontBytes []byte, size float32) {
 			size:     size,
 		},
 	}, a.defaultFonts...)
+}
+
+func (a *FontAtlas) GetDefaultFonts() []FontInfo {
+	return a.defaultFonts
 }
 
 // AddFont adds font by name, if the font is found, return *FontInfo, otherwise return nil.
@@ -200,7 +232,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 
 	var sb strings.Builder
 
-	a.stringMap.Range(func(k, v interface{}) bool {
+	a.stringMap.Range(func(k, v any) bool {
 		a.stringMap.Store(k, true)
 		if ks, ok := k.(rune); ok {
 			sb.WriteRune(ks)
@@ -266,6 +298,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 		} else {
 			f = fonts.AddFontFromMemoryTTFV(fontInfo.fontByte, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
 		}
+
 		a.extraFontMap[fontInfo.String()] = &f
 	}
 
