@@ -227,7 +227,7 @@ func rebuildFontAtlas() {
 
 	var sb strings.Builder
 
-	stringMap.Range(func(k, v interface{}) bool {
+	stringMap.Range(func(k, v any) bool {
 		stringMap.Store(k, true)
 		if ks, ok := k.(rune); ok {
 			sb.WriteRune(ks)

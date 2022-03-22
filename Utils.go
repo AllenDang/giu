@@ -194,13 +194,13 @@ func PopClipRect() {
 }
 
 // Assert checks if cond. If not cond, it alls golang panic.
-func Assert(cond bool, t, method, msg string, args ...interface{}) {
+func Assert(cond bool, t, method, msg string, args ...any) {
 	if !cond {
 		fatal(t, method, msg, args...)
 	}
 }
 
-func fatal(widgetName, method, message string, args ...interface{}) {
+func fatal(widgetName, method, message string, args ...any) {
 	if widgetName != "" {
 		widgetName = fmt.Sprintf("(*%s)", widgetName)
 	}

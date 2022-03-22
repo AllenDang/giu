@@ -55,7 +55,7 @@ func (c *context) IO() imgui.IO {
 }
 
 func (c *context) invalidAllState() {
-	c.state.Range(func(k, v interface{}) bool {
+	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
 			s.valid = false
 		}
@@ -64,7 +64,7 @@ func (c *context) invalidAllState() {
 }
 
 func (c *context) cleanState() {
-	c.state.Range(func(k, v interface{}) bool {
+	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
 			if !s.valid {
 				c.state.Delete(k)
@@ -82,7 +82,7 @@ func (c *context) SetState(id string, data Disposable) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
-func (c *context) GetState(id string) interface{} {
+func (c *context) GetState(id string) any {
 	if v, ok := c.state.Load(id); ok {
 		if s, ok := v.(*state); ok {
 			s.valid = true

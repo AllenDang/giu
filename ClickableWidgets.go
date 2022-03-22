@@ -32,7 +32,7 @@ func Button(label string) *ButtonWidget {
 
 // Buttonf creates button with formated label
 // NOTE: works like fmt.Sprintf (see `go doc fmt`).
-func Buttonf(format string, args ...interface{}) *ButtonWidget {
+func Buttonf(format string, args ...any) *ButtonWidget {
 	return Button(fmt.Sprintf(format, args...))
 }
 
@@ -123,7 +123,7 @@ func SmallButton(id string) *SmallButtonWidget {
 
 // SmallButtonf allows to set formated label for small button.
 // It calls SmallButton(fmt.Sprintf(label, args...)).
-func SmallButtonf(format string, args ...interface{}) *SmallButtonWidget {
+func SmallButtonf(format string, args ...any) *SmallButtonWidget {
 	return SmallButton(fmt.Sprintf(format, args...))
 }
 
@@ -436,7 +436,7 @@ func Selectable(label string) *SelectableWidget {
 }
 
 // Selectablef creates a selectable widget with formated label.
-func Selectablef(format string, args ...interface{}) *SelectableWidget {
+func Selectablef(format string, args ...any) *SelectableWidget {
 	return Selectable(fmt.Sprintf(format, args...))
 }
 
@@ -511,7 +511,7 @@ func TreeNode(label string) *TreeNodeWidget {
 }
 
 // TreeNodef adds TreeNode with formatted label.
-func TreeNodef(format string, args ...interface{}) *TreeNodeWidget {
+func TreeNodef(format string, args ...any) *TreeNodeWidget {
 	return TreeNode(fmt.Sprintf(format, args...))
 }
 
