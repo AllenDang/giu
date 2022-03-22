@@ -40,7 +40,15 @@ func (f *FontInfo) String() string {
 func (f *FontInfo) SetSize(size float32) *FontInfo {
 	result := *f
 	result.size = size
+
+	for _, i := range extraFonts {
+		if i.String() == result.String() {
+			return &result
+		}
+	}
+
 	extraFonts = append(extraFonts, result)
+	shouldRebuildFontAtlas = true
 
 	return &result
 }
@@ -219,7 +227,7 @@ func rebuildFontAtlas() {
 
 	var sb strings.Builder
 
-	stringMap.Range(func(k, v interface{}) bool {
+	stringMap.Range(func(k, v any) bool {
 		stringMap.Store(k, true)
 		if ks, ok := k.(rune); ok {
 			sb.WriteRune(ks)
@@ -285,6 +293,7 @@ func rebuildFontAtlas() {
 		} else {
 			f = fonts.AddFontFromMemoryTTFV(fontInfo.fontByte, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
 		}
+
 		extraFontMap[fontInfo.String()] = &f
 	}
 

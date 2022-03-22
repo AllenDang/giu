@@ -359,7 +359,7 @@ var _ Widget = &StyleSetter{}
 // StyleSetter is a user-friendly way to manage imgui styles.
 type StyleSetter struct {
 	colors   map[StyleColorID]color.Color
-	styles   map[StyleVarID]interface{}
+	styles   map[StyleVarID]any
 	font     *FontInfo
 	disabled bool
 	layout   Layout
@@ -369,7 +369,7 @@ type StyleSetter struct {
 func Style() *StyleSetter {
 	var ss StyleSetter
 	ss.colors = make(map[StyleColorID]color.Color)
-	ss.styles = make(map[StyleVarID]interface{})
+	ss.styles = make(map[StyleVarID]any)
 
 	return &ss
 }
@@ -411,11 +411,7 @@ func (ss *StyleSetter) SetFontSize(size float32) *StyleSetter {
 		font = defaultFonts[0]
 	}
 
-	font.size = size
-
-	extraFonts = append(extraFonts, font)
-
-	ss.font = &font
+	ss.font = font.SetSize(size)
 
 	return ss
 }
@@ -466,9 +462,10 @@ func (ss *StyleSetter) Build() {
 		}
 	}
 
-	isFontPushed := false
 	if ss.font != nil {
-		isFontPushed = PushFont(ss.font)
+		if PushFont(ss.font) {
+			defer PopFont()
+		}
 	}
 
 	imgui.BeginDisabled(ss.disabled)
@@ -476,10 +473,6 @@ func (ss *StyleSetter) Build() {
 	ss.layout.Build()
 
 	imgui.EndDisabled()
-
-	if isFontPushed {
-		PopFont()
-	}
 
 	imgui.PopStyleColorV(len(ss.colors))
 	imgui.PopStyleVarV(len(ss.styles))

@@ -8,6 +8,9 @@
 # vim cache files
 *.swp
 
+# JetBrains idea configuration
+.idea
+
 # Test binary, built with `go test -c`
 *.test
 
