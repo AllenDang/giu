@@ -88,7 +88,7 @@ func (i *ImageWidget) Build() {
 	}
 
 	// trick: detect click event
-	if i.onClick != nil && IsMouseClicked(MouseButtonLeft) {
+	if i.onClick != nil && IsMouseClicked(MouseButtonLeft) && IsWindowFocused(0) {
 		cursorPos := GetCursorScreenPos()
 		mousePos := GetMousePos()
 		mousePos.Add(cursorPos)
