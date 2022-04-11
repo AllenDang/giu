@@ -81,27 +81,27 @@ func (s *SplitLayoutWidget) Build() {
 
 	switch s.direction {
 	case DirectionHorizontal:
-		availableW, _ := GetAvailableRegion()
-		if *s.sashPos >= availableW {
-			*s.sashPos = availableW
-		}
-
-		layout = Layout{
-			Row(
-				s.buildChild(*s.sashPos, 0, s.layout1),
-				VSplitter(&(splitLayoutState.delta)).Size(s.originItemSpacingX, 0),
-				s.buildChild(Auto, Auto, s.layout2),
-			),
-		}
-	case DirectionVertical:
 		_, availableH := GetAvailableRegion()
 		if *s.sashPos >= availableH {
 			*s.sashPos = availableH
 		}
+
 		layout = Layout{
 			Column(
 				s.buildChild(Auto, *s.sashPos, s.layout1),
 				HSplitter(&(splitLayoutState.delta)).Size(0, s.originItemSpacingY),
+				s.buildChild(Auto, Auto, s.layout2),
+			),
+		}
+	case DirectionVertical:
+		availableW, _ := GetAvailableRegion()
+		if *s.sashPos >= availableW {
+			*s.sashPos = availableW
+		}
+		layout = Layout{
+			Row(
+				s.buildChild(*s.sashPos, 0, s.layout1),
+				VSplitter(&(splitLayoutState.delta)).Size(s.originItemSpacingX, 0),
 				s.buildChild(Auto, Auto, s.layout2),
 			),
 		}
