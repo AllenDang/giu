@@ -29,6 +29,8 @@ const (
 	LocalShortcut ShortcutType = false
 )
 
+type InputHandlerHandleCallback func(Key, Modifier, Action)
+
 // InputHandler is an interface which needs to be implemented
 // by user-definied input handlers.
 type InputHandler interface {
@@ -37,7 +39,7 @@ type InputHandler interface {
 	// UnregisterKeyboardShortcuts removes iwndow shourtcuts from input handler
 	UnregisterWindowShortcuts()
 	// Handle handles a shortcut
-	Handle(Key, Modifier)
+	Handle(Key, Modifier, Action)
 }
 
 // --- Default implementation of giu input manager ---
@@ -79,7 +81,11 @@ func (i *inputHandler) UnregisterWindowShortcuts() {
 	}
 }
 
-func (i *inputHandler) Handle(key Key, mod Modifier) {
+func (i *inputHandler) Handle(key Key, mod Modifier, a Action) {
+	if a != Press {
+		return
+	}
+
 	for combo, cb := range i.shortcuts {
 		if combo.key != key || combo.modifier != mod {
 			continue
