@@ -405,6 +405,7 @@ func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 }
 
 // SetAdditionalInputHandlerCallback allows to set an input callback to handle more events (not only these from giu.inputHandler)
+// see examples/issue-501
 func (w *MasterWindow) SetAdditionalInputHandlerCallback(cb InputHandlerHandleCallback) {
 	w.additionalInputCallback = cb
 }
