@@ -67,7 +67,7 @@ type TableColumnWidget struct {
 
 func TableColumn(label string) *TableColumnWidget {
 	return &TableColumnWidget{
-		label:              tStr(label),
+		label:              RegisterString(label),
 		flags:              0,
 		innerWidthOrWeight: 0,
 		userID:             0,

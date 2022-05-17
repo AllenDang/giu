@@ -63,7 +63,7 @@ func (b *ButtonWidget) Build() {
 		defer imgui.EndDisabled()
 	}
 
-	if imgui.ButtonV(tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.ButtonV(RegisterString(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -135,7 +135,7 @@ func (b *SmallButtonWidget) OnClick(onClick func()) *SmallButtonWidget {
 
 // Build implements Widget interface.
 func (b *SmallButtonWidget) Build() {
-	if imgui.SmallButton(tStr(b.id)) && b.onClick != nil {
+	if imgui.SmallButton(RegisterString(b.id)) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -182,7 +182,7 @@ func (b *InvisibleButtonWidget) ID(id string) *InvisibleButtonWidget {
 
 // Build implements Widget interface.
 func (b *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(tStr(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.InvisibleButton(RegisterString(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -371,7 +371,7 @@ func (c *CheckboxWidget) OnChange(onChange func()) *CheckboxWidget {
 
 // Build implements Widget interface.
 func (c *CheckboxWidget) Build() {
-	if imgui.Checkbox(tStr(c.text), c.selected) && c.onChange != nil {
+	if imgui.Checkbox(RegisterString(c.text), c.selected) && c.onChange != nil {
 		c.onChange()
 	}
 }
@@ -404,7 +404,7 @@ func (r *RadioButtonWidget) OnChange(onChange func()) *RadioButtonWidget {
 
 // Build implements Widget interface.
 func (r *RadioButtonWidget) Build() {
-	if imgui.RadioButton(tStr(r.text), r.active) && r.onChange != nil {
+	if imgui.RadioButton(RegisterString(r.text), r.active) && r.onChange != nil {
 		r.onChange()
 	}
 }
@@ -479,7 +479,7 @@ func (s *SelectableWidget) Build() {
 		s.flags |= SelectableFlagsAllowDoubleClick
 	}
 
-	if imgui.SelectableV(tStr(s.label), s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.SelectableV(RegisterString(s.label), s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 
@@ -503,7 +503,7 @@ type TreeNodeWidget struct {
 // TreeNode creates a new tree node widget.
 func TreeNode(label string) *TreeNodeWidget {
 	return &TreeNodeWidget{
-		label:        tStr(label),
+		label:        RegisterString(label),
 		flags:        0,
 		layout:       nil,
 		eventHandler: nil,
