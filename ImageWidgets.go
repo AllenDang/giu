@@ -21,7 +21,7 @@ type ImageWidget struct {
 	texture                *Texture
 	width                  float32
 	height                 float32
-	uv0, uv1               image.Point
+	uv0, uv1               imgui.Vec2
 	tintColor, borderColor color.Color
 	onClick                func()
 }
@@ -32,16 +32,16 @@ func Image(texture *Texture) *ImageWidget {
 		texture:     texture,
 		width:       100,
 		height:      100,
-		uv0:         image.Point{X: 0, Y: 0},
-		uv1:         image.Point{X: 1, Y: 1},
+		uv0:         imgui.Vec2{X: 0, Y: 0},
+		uv1:         imgui.Vec2{X: 1, Y: 1},
 		tintColor:   color.RGBA{255, 255, 255, 255},
 		borderColor: color.RGBA{0, 0, 0, 0},
 	}
 }
 
 // Uv allows to specify uv parameters.
-func (i *ImageWidget) Uv(uv0, uv1 image.Point) *ImageWidget {
-	i.uv0, i.uv1 = uv0, uv1
+func (i *ImageWidget) Uv(uv0X, uv0Y, uv1X, uv1Y float32) *ImageWidget {
+	i.uv0.X, i.uv0.Y, i.uv1.X, i.uv1.Y = uv0X, uv0Y, uv1X, uv1Y
 	return i
 }
 
@@ -98,7 +98,7 @@ func (i *ImageWidget) Build() {
 		}
 	}
 
-	imgui.ImageV(i.texture.id, size, ToVec2(i.uv0), ToVec2(i.uv1), ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
+	imgui.ImageV(i.texture.id, size, i.uv0, i.uv1, ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
 }
 
 type imageState struct {
