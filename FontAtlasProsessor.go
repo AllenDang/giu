@@ -57,7 +57,7 @@ func initFontAtlasProcessor() {
 	extraFontMap = make(map[string]*imgui.Font)
 
 	// Pre register numbers
-	tStr(preRegisterString)
+	RegisterString(preRegisterString)
 
 	// Pre-register fonts
 	os := runtime.GOOS
@@ -188,9 +188,9 @@ func registerDefaultFonts(fontInfos []FontInfo) {
 	}
 }
 
-// Register string to font atlas builder.
+// RegisterString register string to font atlas builder.
 // Note only register strings that will be displayed on the UI.
-func tStr(str string) string {
+func RegisterString(str string) string {
 	for _, s := range str {
 		if _, ok := stringMap.Load(s); !ok {
 			stringMap.Store(s, false)
@@ -201,16 +201,17 @@ func tStr(str string) string {
 	return str
 }
 
-// Register string pointer to font atlas builder.
+// RegisterStringPointer registers string pointer to font atlas builder.
 // Note only register strings that will be displayed on the UI.
-func tStrPtr(str *string) *string {
-	tStr(*str)
+func RegisterStringPointer(str *string) *string {
+	RegisterString(*str)
 	return str
 }
 
-func tStrSlice(str []string) []string {
+// RegisterStringSlice calls RegisterString for each slice element
+func RegisterStringSlice(str []string) []string {
 	for _, s := range str {
-		tStr(s)
+		RegisterString(s)
 	}
 
 	return str

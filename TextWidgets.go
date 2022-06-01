@@ -72,8 +72,8 @@ func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultili
 // Build implements Widget interface.
 func (i *InputTextMultilineWidget) Build() {
 	if imgui.InputTextMultilineV(
-		tStr(i.label),
-		tStrPtr(i.text),
+		RegisterString(i.label),
+		RegisterStringPointer(i.text),
 		imgui.Vec2{
 			X: i.width,
 			Y: i.height,
@@ -111,7 +111,7 @@ type BulletTextWidget struct {
 // BulletText creates bulletTextWidget.
 func BulletText(text string) *BulletTextWidget {
 	return &BulletTextWidget{
-		text: tStr(text),
+		text: RegisterString(text),
 	}
 }
 
@@ -165,7 +165,7 @@ func InputText(value *string) *InputTextWidget {
 
 // Label adds label (alternatively you can use it to set widget's id).
 func (i *InputTextWidget) Label(label string) *InputTextWidget {
-	i.label = tStr(label)
+	i.label = RegisterString(label)
 	return i
 }
 
@@ -183,7 +183,7 @@ func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
 
 // Hint sets hint text.
 func (i *InputTextWidget) Hint(hint string) *InputTextWidget {
-	i.hint = tStr(hint)
+	i.hint = RegisterString(hint)
 	return i
 }
 
@@ -229,7 +229,7 @@ func (i *InputTextWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	isChanged := imgui.InputTextWithHint(i.label, i.hint, tStrPtr(i.value), int(i.flags), i.cb)
+	isChanged := imgui.InputTextWithHint(i.label, i.hint, RegisterStringPointer(i.value), int(i.flags), i.cb)
 
 	if isChanged && i.onChange != nil {
 		i.onChange()
@@ -295,7 +295,7 @@ func InputInt(value *int32) *InputIntWidget {
 
 // Label sets label (id).
 func (i *InputIntWidget) Label(label string) *InputIntWidget {
-	i.label = tStr(label)
+	i.label = RegisterString(label)
 	return i
 }
 
@@ -360,7 +360,7 @@ func InputFloat(value *float32) *InputFloatWidget {
 
 // Label sets label of input field.
 func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
-	i.label = tStr(label)
+	i.label = RegisterString(label)
 	return i
 }
 
@@ -417,7 +417,7 @@ type LabelWidget struct {
 // Label constructs label widget.
 func Label(label string) *LabelWidget {
 	return &LabelWidget{
-		label:   tStr(label),
+		label:   RegisterString(label),
 		wrapped: false,
 	}
 }

@@ -29,7 +29,7 @@ type PopupWidget struct {
 // Popup creates new popup widget.
 func Popup(name string) *PopupWidget {
 	return &PopupWidget{
-		name:   tStr(name),
+		name:   RegisterString(name),
 		flags:  0,
 		layout: nil,
 	}
@@ -69,7 +69,7 @@ type PopupModalWidget struct {
 // PopupModal creates new popup modal widget.
 func PopupModal(name string) *PopupModalWidget {
 	return &PopupModalWidget{
-		name:   tStr(name),
+		name:   RegisterString(name),
 		open:   nil,
 		flags:  WindowFlagsNoResize,
 		layout: nil,

@@ -134,7 +134,7 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 		}),
 	)
 
-	showed := imgui.BeginV(tStr(w.title), w.open, int(w.flags))
+	showed := imgui.BeginV(RegisterString(w.title), w.open, int(w.flags))
 
 	if showed {
 		Layout(widgets).Build()
