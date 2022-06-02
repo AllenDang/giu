@@ -138,6 +138,12 @@ func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 	}
 }
 
+// ID sets the interval id of ImageWithRgba widgets.
+func (i *ImageWithRgbaWidget) ID(id string) *ImageWithRgbaWidget {
+	i.id = id
+	return i
+}
+
 // Size sets image's size.
 func (i *ImageWithRgbaWidget) Size(width, height float32) *ImageWithRgbaWidget {
 	i.img.Size(width, height)
