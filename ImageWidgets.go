@@ -201,6 +201,12 @@ func ImageWithFile(imgPath string) *ImageWithFileWidget {
 	}
 }
 
+// ID sets the interval id of ImageWithFile widgets.
+func (i *ImageWithFileWidget) ID(id string) *ImageWithFileWidget {
+	i.id = id
+	return i
+}
+
 // Size sets image's size.
 func (i *ImageWithFileWidget) Size(width, height float32) *ImageWithFileWidget {
 	i.img.Size(width, height)
