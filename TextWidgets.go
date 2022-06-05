@@ -73,7 +73,7 @@ func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultili
 func (i *InputTextMultilineWidget) Build() {
 	if imgui.InputTextMultilineV(
 		Context.FontAtlas.RegisterString(i.label),
-		Context.FontAtlas.RegisterStringPtr(i.text),
+		Context.FontAtlas.RegisterStringPointer(i.text),
 		imgui.Vec2{
 			X: i.width,
 			Y: i.height,
@@ -229,7 +229,7 @@ func (i *InputTextWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	isChanged := imgui.InputTextWithHint(i.label, i.hint, Context.FontAtlas.RegisterStringPtr(i.value), int(i.flags), i.cb)
+	isChanged := imgui.InputTextWithHint(i.label, i.hint, Context.FontAtlas.RegisterStringPointer(i.value), int(i.flags), i.cb)
 
 	if isChanged && i.onChange != nil {
 		i.onChange()

@@ -392,8 +392,8 @@ func (p *PlotPieChartWidget) Normalize(n bool) *PlotPieChartWidget {
 }
 
 // LabelFormat sets format of labels.
-func (p *PlotPieChartWidget) LabelFormat(fmContext.FontAtlas.RegisterString string) *PlotPieChartWidget {
-	p.labelFormat = fmContext.FontAtlas.RegisterString
+func (p *PlotPieChartWidget) LabelFormat(fmtStr string) *PlotPieChartWidget {
+	p.labelFormat = fmtStr
 	return p
 }
 

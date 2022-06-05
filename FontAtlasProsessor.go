@@ -14,6 +14,7 @@ import (
 const (
 	preRegisterString = " \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 	windows           = "windows"
+	defaultFontSize   = 14
 )
 
 // FontInfo represents a giu implementation of imgui font.
