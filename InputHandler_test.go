@@ -86,13 +86,13 @@ func Test_InputHandler_Handle(t *testing.T) {
 
 	i.RegisterKeyboardShortcuts(sh...)
 
-	i.Handle(Key(0), Modifier(0))
+	i.Handle(Key(0), Modifier(0), Press)
 	a.False(shortcut1, "Shortcut 1 was handled, but shouldn't.")
 	a.False(shortcut2, "Shortcut 2 was handled, but shouldn't.")
-	i.Handle(Key(5), Modifier(0))
+	i.Handle(Key(5), Modifier(0), Press)
 	a.True(shortcut1, "Shortcut 1 was not handled, but shouldn be.")
 	a.False(shortcut2, "Shortcut 2 was handled, but shouldn't.")
-	i.Handle(Key(8), Modifier(2))
+	i.Handle(Key(8), Modifier(2), Press)
 	a.True(shortcut1, "Shortcut 1 was not handled, but shouldn be.")
 	a.True(shortcut2, "Shortcut 2 was not handled, but shouldn be.")
 }

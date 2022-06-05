@@ -14,7 +14,6 @@ import (
 const (
 	preRegisterString = " \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 	windows           = "windows"
-	defaultFontSize   = 14
 )
 
 // FontInfo represents a giu implementation of imgui font.
@@ -61,7 +60,7 @@ func newFontAtlas() FontAtlas {
 	}
 
 	// Pre register numbers
-	result.tStr(preRegisterString)
+	result.RegisterString(preRegisterString)
 
 	// Pre-register fonts
 	switch runtime.GOOS {
@@ -193,9 +192,9 @@ func (a *FontAtlas) registerDefaultFonts(fontInfos []FontInfo) {
 	}
 }
 
-// Register string to font atlas builder.
+// RegisterString register string to font atlas builder.
 // Note only register strings that will be displayed on the UI.
-func (a *FontAtlas) tStr(str string) string {
+func (a *FontAtlas) RegisterString(str string) string {
 	for _, s := range str {
 		if _, ok := a.stringMap.Load(s); !ok {
 			a.stringMap.Store(s, false)
@@ -206,16 +205,17 @@ func (a *FontAtlas) tStr(str string) string {
 	return str
 }
 
-// Register string pointer to font atlas builder.
+// RegisterStringPointer registers string pointer to font atlas builder.
 // Note only register strings that will be displayed on the UI.
-func (a *FontAtlas) tStrPtr(str *string) *string {
-	a.tStr(*str)
+func (a *FontAtlas) RegisterStringPointer(str *string) *string {
+	a.RegisterString(*str)
 	return str
 }
 
-func (a *FontAtlas) tStrSlice(str []string) []string {
+// RegisterStringSlice calls RegisterString for each slice element
+func (a *FontAtlas) RegisterStringSlice(str []string) []string {
 	for _, s := range str {
-		a.tStr(s)
+		a.RegisterString(s)
 	}
 
 	return str

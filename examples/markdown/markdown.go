@@ -6,7 +6,10 @@ import (
 	"github.com/AllenDang/giu"
 )
 
-var markdown string = getExampleMarkdownText()
+var (
+	markdown       string  = getExampleMarkdownText()
+	splitLayoutPos float32 = 320
+)
 
 func getExampleMarkdownText() string {
 	return strings.Join([]string{
@@ -49,7 +52,7 @@ func getExampleMarkdownText() string {
 
 func loop() {
 	giu.SingleWindow().Layout(
-		giu.SplitLayout(giu.DirectionHorizontal, 320,
+		giu.SplitLayout(giu.DirectionHorizontal, &splitLayoutPos,
 			giu.Layout{
 				giu.Row(
 					giu.Label("Markdown Edition:"),

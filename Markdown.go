@@ -59,7 +59,7 @@ func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *Mark
 
 // Build implements Widget interface.
 func (m *MarkdownWidget) Build() {
-	imgui.Markdown(Context.FontAtlas.tStrPtr(m.md), m.linkCb, loadImage, m.headers)
+	imgui.Markdown(Context.FontAtlas.RegisterStringPointer(m.md), m.linkCb, loadImage, m.headers)
 }
 
 func loadImage(path string) imgui.MarkdownImageData {

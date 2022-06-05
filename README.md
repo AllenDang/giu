@@ -192,7 +192,7 @@ brew install mingw-w64
 on Linux:
 
 ```sh
-sudo dnf install mingw64-gcc mingw64-gcc-c++ mingw-winpthreads-static
+sudo dnf install mingw64-gcc mingw64-gcc-c++ mingw64-winpthreads-static
 ```
 
 2. Prepare and embed the application icon into the executable and build.

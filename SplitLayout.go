@@ -19,8 +19,7 @@ const (
 var _ Disposable = &splitLayoutState{}
 
 type splitLayoutState struct {
-	delta   float32
-	sashPos float32
+	delta float32
 }
 
 // Dispose implements disposable interface.
@@ -39,12 +38,12 @@ type SplitLayoutWidget struct {
 	originItemSpacingY  float32
 	originFramePaddingX float32
 	originFramePaddingY float32
-	sashPos             float32
+	sashPos             *float32
 	border              bool
 }
 
 // SplitLayout creates split layout widget.
-func SplitLayout(direction SplitDirection, sashPos float32, layout1, layout2 Widget) *SplitLayoutWidget {
+func SplitLayout(direction SplitDirection, sashPos *float32, layout1, layout2 Widget) *SplitLayoutWidget {
 	return &SplitLayoutWidget{
 		direction: direction,
 		sashPos:   sashPos,
@@ -75,34 +74,34 @@ func (s *SplitLayoutWidget) Build() {
 
 	var layout Layout
 
-	splitLayoutState.sashPos += splitLayoutState.delta
-	if splitLayoutState.sashPos < 1 {
-		splitLayoutState.sashPos = 1
+	*s.sashPos += splitLayoutState.delta
+	if *s.sashPos < 1 {
+		*s.sashPos = 1
 	}
 
 	switch s.direction {
 	case DirectionHorizontal:
-		availableW, _ := GetAvailableRegion()
-		if splitLayoutState.sashPos >= availableW {
-			splitLayoutState.sashPos = availableW
+		_, availableH := GetAvailableRegion()
+		if *s.sashPos >= availableH {
+			*s.sashPos = availableH
 		}
 
 		layout = Layout{
-			Row(
-				s.buildChild(splitLayoutState.sashPos, 0, s.layout1),
-				VSplitter(&(splitLayoutState.delta)).Size(s.originItemSpacingX, 0),
+			Column(
+				s.buildChild(Auto, *s.sashPos, s.layout1),
+				HSplitter(&(splitLayoutState.delta)).Size(0, s.originItemSpacingY),
 				s.buildChild(Auto, Auto, s.layout2),
 			),
 		}
 	case DirectionVertical:
-		_, availableH := GetAvailableRegion()
-		if splitLayoutState.sashPos >= availableH {
-			splitLayoutState.sashPos = availableH
+		availableW, _ := GetAvailableRegion()
+		if *s.sashPos >= availableW {
+			*s.sashPos = availableW
 		}
 		layout = Layout{
-			Column(
-				s.buildChild(Auto, splitLayoutState.sashPos, s.layout1),
-				HSplitter(&(splitLayoutState.delta)).Size(0, s.originItemSpacingY),
+			Row(
+				s.buildChild(*s.sashPos, 0, s.layout1),
+				VSplitter(&(splitLayoutState.delta)).Size(s.originItemSpacingX, 0),
 				s.buildChild(Auto, Auto, s.layout2),
 			),
 		}
@@ -161,7 +160,7 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 
 func (s *SplitLayoutWidget) getState() (state *splitLayoutState) {
 	if st := Context.GetState(s.id); st == nil {
-		state = &splitLayoutState{delta: 0.0, sashPos: s.sashPos}
+		state = &splitLayoutState{delta: 0.0}
 		Context.SetState(s.id, state)
 	} else {
 		var isOk bool

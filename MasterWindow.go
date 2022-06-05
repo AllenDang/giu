@@ -44,6 +44,10 @@ type MasterWindow struct {
 	context    *imgui.Context
 	io         *imgui.IO
 	updateFunc func()
+
+	// possibility to expend InputHandler's stuff
+	// See SetAdditionalInputHandler
+	additionalInputCallback InputHandlerHandleCallback
 }
 
 // NewMasterWindow creates a new master window and initializes GLFW.
@@ -376,8 +380,16 @@ func (w *MasterWindow) SetShouldClose(v bool) {
 func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 	Context.InputHandler = handler
 	w.platform.SetInputCallback(func(key glfw.Key, modifier glfw.ModifierKey, action glfw.Action) {
-		if action == glfw.Press {
-			handler.Handle(Key(key), Modifier(modifier))
+		k, m, a := Key(key), Modifier(modifier), Action(action)
+		handler.Handle(k, m, a)
+		if w.additionalInputCallback != nil {
+			w.additionalInputCallback(k, m, a)
 		}
 	})
+}
+
+// SetAdditionalInputHandlerCallback allows to set an input callback to handle more events (not only these from giu.inputHandler).
+// See examples/issue-501.
+func (w *MasterWindow) SetAdditionalInputHandlerCallback(cb InputHandlerHandleCallback) {
+	w.additionalInputCallback = cb
 }

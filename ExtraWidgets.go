@@ -192,10 +192,10 @@ func (ttr *TreeTableRowWidget) BuildTreeTableRow() {
 
 	open := false
 	if len(ttr.children) > 0 {
-		open = imgui.TreeNodeV(Context.FontAtlas.tStr(ttr.label), int(ttr.flags))
+		open = imgui.TreeNodeV(Context.FontAtlas.RegisterString(ttr.label), int(ttr.flags))
 	} else {
 		ttr.flags |= TreeNodeFlagsLeaf | TreeNodeFlagsNoTreePushOnOpen
-		imgui.TreeNodeV(Context.FontAtlas.tStr(ttr.label), int(ttr.flags))
+		imgui.TreeNodeV(Context.FontAtlas.RegisterString(ttr.label), int(ttr.flags))
 	}
 
 	for _, w := range ttr.layout {
@@ -571,7 +571,7 @@ func (d *DatePickerWidget) Build() {
 		const yearButtonSize = 25
 
 		Row(
-			Label(Context.FontAtlas.tStr(" Year")),
+			Label(Context.FontAtlas.RegisterString(" Year")),
 			Labelf("%14d", d.date.Year()),
 			Button("-##"+d.id+"year").OnClick(func() {
 				*d.date = d.date.AddDate(-1, 0, 0)

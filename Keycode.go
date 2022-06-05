@@ -146,3 +146,11 @@ const (
 	ModCapsLock Modifier = Modifier(glfw.ModCapsLock)
 	ModNumLock  Modifier = Modifier(glfw.ModNumLock)
 )
+
+type Action glfw.Action
+
+const (
+	Release Action = Action(glfw.Release)
+	Press   Action = Action(glfw.Press)
+	Repeat  Action = Action(glfw.Repeat)
+)
