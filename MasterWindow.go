@@ -54,8 +54,6 @@ type MasterWindow struct {
 // it should be called in main function. For more details and use cases,
 // see examples/helloworld/.
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
-	initFontAtlasProcessor()
-
 	context := imgui.CreateContext(nil)
 	imgui.ImPlotCreateContext()
 	imgui.ImNodesCreateContext()
@@ -72,26 +70,12 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		panic(err)
 	}
 
-	// Assign platform to contex
-	Context.platform = p
-
 	r, err := imgui.NewOpenGL3(io, 1.0)
 	if err != nil {
 		panic(err)
 	}
 
-	// Create context
-	Context.renderer = r
-
-	// Create font
-	if len(defaultFonts) == 0 {
-		io.Fonts().AddFontDefault()
-		fontAtlas := io.Fonts().TextureDataRGBA32()
-		r.SetFontTexture(fontAtlas)
-	} else {
-		shouldRebuildFontAtlas = true
-		rebuildFontAtlas()
-	}
+	Context = CreateContext(p, r)
 
 	// init texture loading queue
 	Context.textureLoadingQueue = queue.New()
@@ -205,7 +189,7 @@ func (w *MasterWindow) render() {
 	Context.invalidAllState()
 	defer Context.cleanState()
 
-	rebuildFontAtlas()
+	Context.FontAtlas.rebuildFontAtlas()
 
 	p := w.platform
 	r := w.renderer

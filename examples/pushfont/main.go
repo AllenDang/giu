@@ -25,7 +25,7 @@ func loop() {
 
 func main() {
 	wnd := giu.NewMasterWindow("example", 640, 480, 0)
-	font = giu.AddFont("NotoSansSinhala-Regular.ttf", 20)
+	font = giu.Context.FontAtlas.AddFont("NotoSansSinhala-Regular.ttf", 20)
 	fmt.Println(font)
 	wnd.Run(loop)
 }

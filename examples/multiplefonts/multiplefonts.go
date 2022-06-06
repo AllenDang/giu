@@ -33,10 +33,10 @@ func loop() {
 
 func main() {
 	// Change the default font
-	g.SetDefaultFont("Arial.ttf", 12)
+	g.Context.FontAtlas.SetDefaultFont("Arial.ttf", 12)
 
 	// Add a new font and manually set it when needed
-	bigFont = g.AddFont("Menlo.ttc", 24)
+	bigFont = g.Context.FontAtlas.AddFont("Menlo.ttc", 24)
 
 	wnd := g.NewMasterWindow("Multiple fonts", 600, 400, g.MasterWindowFlagsNotResizable)
 	wnd.Run(loop)

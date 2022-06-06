@@ -47,7 +47,7 @@ func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *Mark
 	}
 
 	if font != nil {
-		if f, ok := extraFontMap[font.String()]; ok {
+		if f, ok := Context.FontAtlas.extraFontMap[font.String()]; ok {
 			m.headers[level].Font = *f
 		}
 	}
@@ -59,7 +59,7 @@ func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *Mark
 
 // Build implements Widget interface.
 func (m *MarkdownWidget) Build() {
-	imgui.Markdown(RegisterStringPointer(m.md), m.linkCb, loadImage, m.headers)
+	imgui.Markdown(Context.FontAtlas.RegisterStringPointer(m.md), m.linkCb, loadImage, m.headers)
 }
 
 func loadImage(path string) imgui.MarkdownImageData {

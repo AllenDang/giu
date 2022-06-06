@@ -130,7 +130,7 @@ type ComboCustomWidget struct {
 func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	return &ComboCustomWidget{
 		label:        GenAutoID(label),
-		previewValue: RegisterString(previewValue),
+		previewValue: Context.FontAtlas.RegisterString(previewValue),
 		width:        0,
 		flags:        0,
 		layout:       nil,
@@ -162,7 +162,7 @@ func (cc *ComboCustomWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginComboV(RegisterString(cc.label), cc.previewValue, int(cc.flags)) {
+	if imgui.BeginComboV(Context.FontAtlas.RegisterString(cc.label), cc.previewValue, int(cc.flags)) {
 		cc.layout.Build()
 		imgui.EndCombo()
 	}
@@ -186,8 +186,8 @@ type ComboWidget struct {
 func Combo(label, previewValue string, items []string, selected *int32) *ComboWidget {
 	return &ComboWidget{
 		label:        GenAutoID(label),
-		previewValue: RegisterString(previewValue),
-		items:        RegisterStringSlice(items),
+		previewValue: Context.FontAtlas.RegisterString(previewValue),
+		items:        Context.FontAtlas.RegisterStringSlice(items),
 		selected:     selected,
 		flags:        0,
 		width:        0,
@@ -202,7 +202,7 @@ func (c *ComboWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginComboV(RegisterString(c.label), c.previewValue, int(c.flags)) {
+	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label), c.previewValue, int(c.flags)) {
 		for i, item := range c.items {
 			if imgui.Selectable(item) {
 				*c.selected = int32(i)
@@ -307,7 +307,7 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
-	imgui.DragIntV(RegisterString(d.label), d.value, d.speed, d.min, d.max, d.format)
+	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label), d.value, d.speed, d.min, d.max, d.format)
 }
 
 var _ Widget = &ColumnWidget{}
@@ -422,7 +422,7 @@ func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 
 // Build implements Widget interface.
 func (m *MenuItemWidget) Build() {
-	if imgui.MenuItemV(RegisterString(m.label), "", m.selected, m.enabled) && m.onClick != nil {
+	if imgui.MenuItemV(Context.FontAtlas.RegisterString(m.label), "", m.selected, m.enabled) && m.onClick != nil {
 		m.onClick()
 	}
 }
@@ -459,7 +459,7 @@ func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
 
 // Build implements Widget interface.
 func (m *MenuWidget) Build() {
-	if imgui.BeginMenuV(RegisterString(m.label), m.enabled) {
+	if imgui.BeginMenuV(Context.FontAtlas.RegisterString(m.label), m.enabled) {
 		m.layout.Build()
 		imgui.EndMenu()
 	}
@@ -489,7 +489,7 @@ func (p *ProgressBarWidget) Size(width, height float32) *ProgressBarWidget {
 }
 
 func (p *ProgressBarWidget) Overlay(overlay string) *ProgressBarWidget {
-	p.overlay = RegisterString(overlay)
+	p.overlay = Context.FontAtlas.RegisterString(overlay)
 	return p
 }
 
@@ -553,7 +553,7 @@ type TabItemWidget struct {
 
 func TabItem(label string) *TabItemWidget {
 	return &TabItemWidget{
-		label:  RegisterString(label),
+		label:  Context.FontAtlas.RegisterString(label),
 		open:   nil,
 		flags:  0,
 		layout: nil,
@@ -649,7 +649,7 @@ func (t *TooltipWidget) Build() {
 
 func Tooltip(tip string) *TooltipWidget {
 	return &TooltipWidget{
-		tip:    RegisterString(tip),
+		tip:    Context.FontAtlas.RegisterString(tip),
 		layout: nil,
 	}
 }
@@ -724,7 +724,7 @@ func (ce *ColorEditWidget) Build() {
 	}
 
 	if imgui.ColorEdit4V(
-		RegisterString(ce.label),
+		Context.FontAtlas.RegisterString(ce.label),
 		&col,
 		int(ce.flags),
 	) {

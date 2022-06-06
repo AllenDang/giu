@@ -14,7 +14,7 @@ func PushFont(font *FontInfo) bool {
 		return false
 	}
 
-	if f, ok := extraFontMap[font.String()]; ok {
+	if f, ok := Context.FontAtlas.extraFontMap[font.String()]; ok {
 		imgui.PushFont(*f)
 		return true
 	}
@@ -408,7 +408,7 @@ func (ss *StyleSetter) SetFontSize(size float32) *StyleSetter {
 	if ss.font != nil {
 		font = *ss.font
 	} else {
-		font = defaultFonts[0]
+		font = Context.FontAtlas.defaultFonts[0]
 	}
 
 	ss.font = font.SetSize(size)
