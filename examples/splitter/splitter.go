@@ -13,16 +13,16 @@ var (
 
 func loop() {
 	g.SingleWindow().Layout(
-		g.SplitLayout(g.DirectionHorizontal, &sashPos1,
+		g.SplitLayout(g.DirectionHorizontal, sashPos1,
 			g.Layout{
 				g.Label("Left panel"),
 				g.Row(g.Button("Button1"), g.Button("Button2")),
 			},
-			g.SplitLayout(g.DirectionVertical, &sashPos2,
+			g.SplitLayout(g.DirectionVertical, sashPos2,
 				g.Layout{},
-				g.SplitLayout(g.DirectionHorizontal, &sashPos3,
+				g.SplitLayout(g.DirectionHorizontal, sashPos3,
 					g.Layout{},
-					g.SplitLayout(g.DirectionVertical, &sashPos4,
+					g.SplitLayout(g.DirectionVertical, sashPos4,
 						g.Layout{},
 						g.Layout{},
 					),
