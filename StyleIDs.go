@@ -2,6 +2,31 @@ package giu
 
 import "github.com/AllenDang/imgui-go"
 
+// Here are the style IDs for styling imgui apps.
+// For details about each of attributes read comment above them.
+// You have two ways to apply style to a widget:
+// 1. Use the StyleSetter e.g.:
+//   giu.Style().
+//  	SetStyle(giu.StyleVarWindowPadding, imgui.Vec2{10, 10})
+//  	SetStyleFloat(giu.StyleVarGrabRounding, 5)
+//  	SetColor(giu.StyleColorButton, colornames.Red).
+// 		To(/*your widgets here*/),
+// NOTE/TODO: style variables could be Vec2 or float32 for details see comments
+// 2. use PushStyle/PushStyleColor in giu.Custom widget
+//    NOTE: remember about calling PopStyle/PopStyleColor at the end of styled section!
+//    example:
+//    ```golang
+// 	  	giu.Custom(func() {
+// 		  	imgui.PushStyleVarFlot(giu.StyleVarFrameRounding, 2)
+//    	}),
+// 		/*your widgets here*/
+//   	giu.Custom(func() {
+//   		imgui.PopStyleVar()
+//   	}),
+//    ```
+//
+// for more details, see examples/setstyle
+
 // StyleColorID identifies a color in the UI style.
 type StyleColorID imgui.StyleColorID
 
