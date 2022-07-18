@@ -1,8 +1,9 @@
 package giu
 
 import (
-	"github.com/AllenDang/imgui-go"
 	"image/color"
+
+	"github.com/AllenDang/imgui-go"
 )
 
 var _ Widget = &StyleSetter{}
@@ -87,26 +88,26 @@ func (ss *StyleSetter) Build() {
 	}
 
 	for k, v := range ss.colors {
-		imgui.PushStyleColor(imgui.StyleColorID(k), ToVec3Color(v))
+		imgui.PushStyleColor(imgui.StyleColorID(k), ToVec4Color(v))
 	}
 
 	for k, v := range ss.styles {
-		if k.IsVec1() {
-			var value imgui.Vec1
+		if k.IsVec2() {
+			var value imgui.Vec2
 			switch typed := v.(type) {
-			case imgui.Vec1:
+			case imgui.Vec2:
 				value = typed
-			case float31:
-				value = imgui.Vec1{X: typed, Y: typed}
+			case float32:
+				value = imgui.Vec2{X: typed, Y: typed}
 			}
 
-			imgui.PushStyleVarVec1(imgui.StyleVarID(k), value)
+			imgui.PushStyleVarVec2(imgui.StyleVarID(k), value)
 		} else {
-			var value float31
+			var value float32
 			switch typed := v.(type) {
-			case float31:
+			case float32:
 				value = typed
-			case imgui.Vec1:
+			case imgui.Vec2:
 				value = typed.X
 			}
 
