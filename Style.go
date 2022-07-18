@@ -6,6 +6,37 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
+// You may want to use styles in order to make your app looking more beautiful.
+// You have two ways to apply style to a widget:
+// 1. Use the StyleSetter e.g.:
+//    ```golang
+//   	giu.Style().
+//  		SetStyle(giu.StyleVarWindowPadding, imgui.Vec2{10, 10})
+//  		SetStyleFloat(giu.StyleVarGrabRounding, 5)
+//  		SetColor(giu.StyleColorButton, colornames.Red).
+// 			To(/*your widgets here*/),
+//   ```
+// NOTE/TODO: style variables could be Vec2 or float32 for details see comments
+// 2. use PushStyle/PushStyleColor in giu.Custom widget
+//    NOTE: remember about calling PopStyle/PopStyleColor at the end of styled section!
+//    example:
+//    ```golang
+// 	  	giu.Custom(func() {
+// 		  	imgui.PushStyleVarFlot(giu.StyleVarFrameRounding, 2)
+//    	}),
+// 		/*your widgets here*/
+//   	giu.Custom(func() {
+//   		imgui.PopStyleVar()
+//   	}),
+//    ```
+// below, you can find a few giu wrappers like PushItemSpacing PushColorFrameBG that
+// can be used in a similar way as shown above but without specifying style ID.
+//
+// See also:
+// - examples/setstyle for code example
+// - StyleIDs.go for list of all style/color IDs
+// - StyleSetter.go for user-friendly giu api for styles
+
 // PushFont sets font to "font"
 // NOTE: PopFont has to be called
 // NOTE: Don't use PushFont. use StyleSetter instead.
@@ -27,7 +58,7 @@ func PopFont() {
 	imgui.PopFont()
 }
 
-// PushStyleColor wrapps imgui.PushStyleColor
+// PushStyleColor wraps imgui.PushStyleColor
 // NOTE: don't forget to call PopStyleColor()!
 func PushStyleColor(id StyleColorID, col color.Color) {
 	imgui.PushStyleColor(imgui.StyleColorID(id), ToVec4Color(col))
@@ -101,7 +132,7 @@ func PushSelectableTextAlign(width, height float32) {
 }
 
 // PopStyle should be called to stop applying style.
-// It should be called as much times, as you Called PushStyle...
+// It should be called as many times, as you called PushStyle...
 // NOTE: If you don't call PopStyle imgui will panic.
 func PopStyle() {
 	imgui.PopStyleVar()
@@ -116,7 +147,7 @@ func PopStyleV(count int) {
 // PopStyleColor is used to stop applying colors styles.
 // It should be called after each PushStyleColor... (for each push)
 // If PopStyleColor wasn't called after PushColor... or was called
-// inproperly, imgui will panic.
+// improperly, imgui will panic.
 func PopStyleColor() {
 	imgui.PopStyleColor()
 }
@@ -147,16 +178,16 @@ func PopItemWidth() {
 	imgui.PopItemWidth()
 }
 
-// PushTextWrapPos adds the position, where the text should be frapped.
+// PushTextWrapPos adds the position, where the text should be wrapped.
 // use PushTextWrapPos, render text. If text reaches frame end,
 // rendering will be continued at the start pos in line below.
 // NOTE: Don't forget to call PopWrapTextPos
-// NOTE: it is done automatically in LabelWidget (see (*LabelWIdget).Wrapped()).
+// NOTE: it is done automatically in LabelWidget (see (*LabelWidget).Wrapped()).
 func PushTextWrapPos() {
 	imgui.PushTextWrapPos()
 }
 
-// PopTextWrapPos should be caled as many times as PushTextWrapPos
+// PopTextWrapPos should be called as many times as PushTextWrapPos
 // on each frame.
 func PopTextWrapPos() {
 	imgui.PopTextWrapPos()
@@ -215,128 +246,4 @@ func GetItemInnerSpacing() (w, h float32) {
 func GetFramePadding() (x, y float32) {
 	vec2 := imgui.CurrentStyle().FramePadding()
 	return vec2.X, vec2.Y
-}
-
-var _ Widget = &StyleSetter{}
-
-// StyleSetter is a user-friendly way to manage imgui styles.
-type StyleSetter struct {
-	colors   map[StyleColorID]color.Color
-	styles   map[StyleVarID]any
-	font     *FontInfo
-	disabled bool
-	layout   Layout
-}
-
-// Style initializes a style setter (see examples/setstyle).
-func Style() *StyleSetter {
-	var ss StyleSetter
-	ss.colors = make(map[StyleColorID]color.Color)
-	ss.styles = make(map[StyleVarID]any)
-
-	return &ss
-}
-
-// SetColor sets colorID's color.
-func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.Color) *StyleSetter {
-	ss.colors[colorID] = col
-	return ss
-}
-
-// SetStyle sets styleVarID to width and height.
-func (ss *StyleSetter) SetStyle(varID StyleVarID, width, height float32) *StyleSetter {
-	ss.styles[varID] = imgui.Vec2{X: width, Y: height}
-	return ss
-}
-
-// SetStyleFloat sets styleVarID to float value.
-// NOTE: for float typed values see above in comments over
-// StyleVarID's comments.
-func (ss *StyleSetter) SetStyleFloat(varID StyleVarID, value float32) *StyleSetter {
-	ss.styles[varID] = value
-	return ss
-}
-
-// SetFont sets font.
-func (ss *StyleSetter) SetFont(font *FontInfo) *StyleSetter {
-	ss.font = font
-	return ss
-}
-
-// SetFontSize sets size of the font.
-// NOTE: Be aware, that StyleSetter needs to add a new font to font atlas for
-// each font's size.
-func (ss *StyleSetter) SetFontSize(size float32) *StyleSetter {
-	var font FontInfo
-	if ss.font != nil {
-		font = *ss.font
-	} else {
-		font = Context.FontAtlas.defaultFonts[0]
-	}
-
-	ss.font = font.SetSize(size)
-
-	return ss
-}
-
-// SetDisabled sets if items are disabled.
-func (ss *StyleSetter) SetDisabled(d bool) *StyleSetter {
-	ss.disabled = d
-	return ss
-}
-
-// To allows to specify a layout, StyleSetter should apply style for.
-func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
-	ss.layout = widgets
-	return ss
-}
-
-// Build implements Widget.
-func (ss *StyleSetter) Build() {
-	if ss.layout == nil || len(ss.layout) == 0 {
-		return
-	}
-
-	for k, v := range ss.colors {
-		imgui.PushStyleColor(imgui.StyleColorID(k), ToVec4Color(v))
-	}
-
-	for k, v := range ss.styles {
-		if k.IsVec2() {
-			var value imgui.Vec2
-			switch typed := v.(type) {
-			case imgui.Vec2:
-				value = typed
-			case float32:
-				value = imgui.Vec2{X: typed, Y: typed}
-			}
-
-			imgui.PushStyleVarVec2(imgui.StyleVarID(k), value)
-		} else {
-			var value float32
-			switch typed := v.(type) {
-			case float32:
-				value = typed
-			case imgui.Vec2:
-				value = typed.X
-			}
-
-			imgui.PushStyleVarFloat(imgui.StyleVarID(k), value)
-		}
-	}
-
-	if ss.font != nil {
-		if PushFont(ss.font) {
-			defer PopFont()
-		}
-	}
-
-	imgui.BeginDisabled(ss.disabled)
-
-	ss.layout.Build()
-
-	imgui.EndDisabled()
-
-	imgui.PopStyleColorV(len(ss.colors))
-	imgui.PopStyleVarV(len(ss.styles))
 }
