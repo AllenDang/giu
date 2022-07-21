@@ -105,13 +105,13 @@ func _() {
 }
 
 const (
-	_StyleVarID_name_0 = "StyleVarAlphaStyleVarDisabledAlphaStyleVarWindowPaddingStyleVarWindowRoundingStyleVarWindowBorderSizeStyleVarWindowMinSizeStyleVarWindowTitleAlignStyleVarChildRoundingStyleVarChildBorderSizeStyleVarPopupRoundingStyleVarPopupBorderSizeStyleVarFramePaddingStyleVarFrameRoundingStyleVarFrameBorderSizeStyleVarItemSpacingStyleVarItemInnerSpacingStyleVarIndentSpacing"
-	_StyleVarID_name_1 = "StyleVarScrollbarSizeStyleVarScrollbarRoundingStyleVarGrabMinSizeStyleVarGrabRoundingStyleVarTabRoundingStyleVarButtonTextAlignStyleVarSelectableTextAlign"
+	_StyleVarID_name_0 = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-min-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacing"
+	_StyleVarID_name_1 = "scrollbar-sizescrollbar-roundinggrab-min-sizegrab-roundingtab-roundingbutton-text-alignselectable-text-align"
 )
 
 var (
-	_StyleVarID_index_0 = [...]uint16{0, 13, 34, 55, 77, 101, 122, 146, 167, 190, 211, 234, 254, 275, 298, 317, 341, 362}
-	_StyleVarID_index_1 = [...]uint8{0, 21, 46, 65, 85, 104, 127, 154}
+	_StyleVarID_index_0 = [...]uint8{0, 5, 19, 33, 48, 66, 81, 99, 113, 130, 144, 161, 174, 188, 205, 217, 235, 249}
+	_StyleVarID_index_1 = [...]uint8{0, 14, 32, 45, 58, 70, 87, 108}
 )
 
 func (i StyleVarID) String() string {
