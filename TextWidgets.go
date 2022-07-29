@@ -13,12 +13,13 @@ var _ Widget = &InputTextMultilineWidget{}
 // InputTextMultilineWidget is a large (multiline) text input
 // see examples/widgets/.
 type InputTextMultilineWidget struct {
-	label         string
-	text          *string
-	width, height float32
-	flags         InputTextFlags
-	cb            imgui.InputTextCallback
-	onChange      func()
+	label          string
+	text           *string
+	width, height  float32
+	flags          InputTextFlags
+	cb             imgui.InputTextCallback
+	scrollToBottom bool
+	onChange       func()
 }
 
 // InputTextMultiline creates InputTextMultilineWidget.
@@ -69,6 +70,12 @@ func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultili
 	return i
 }
 
+// Enable/Disable auto scroll to bottoim.
+func (i *InputTextMultilineWidget) AutoScrollToBottom(b bool) *InputTextMultilineWidget {
+	i.scrollToBottom = b
+	return i
+}
+
 // Build implements Widget interface.
 func (i *InputTextMultilineWidget) Build() {
 	if imgui.InputTextMultilineV(
@@ -81,6 +88,12 @@ func (i *InputTextMultilineWidget) Build() {
 		int(i.flags), i.cb,
 	) && i.onChange != nil {
 		i.onChange()
+	}
+
+	if i.scrollToBottom {
+		imgui.BeginChild(i.label)
+		imgui.SetScrollHereY(1.0)
+		imgui.EndChild()
 	}
 }
 
