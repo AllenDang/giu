@@ -217,9 +217,10 @@ func (i *ImageWithFileWidget) OnClick(cb func()) *ImageWithFileWidget {
 
 // Build implements Widget interface.
 func (i *ImageWithFileWidget) Build() {
-	imgState := &imageState{}
-	if imgState := GetState[imageState](Context, i.id); imgState == nil {
+	var imgState *imageState
+	if imgState = GetState[imageState](Context, i.id); imgState == nil {
 		// Prevent multiple invocation to LoadImage.
+		imgState = &imageState{}
 		SetState(&Context, i.id, imgState)
 
 		img, err := LoadImage(i.imgPath)
@@ -305,9 +306,9 @@ func (i *ImageWithURLWidget) LayoutForFailure(widgets ...Widget) *ImageWithURLWi
 
 // Build implements Widget interface.
 func (i *ImageWithURLWidget) Build() {
-	imgState := &imageState{}
-
-	if imgState := GetState[imageState](Context, i.id); imgState == nil {
+	var imgState *imageState
+	if imgState = GetState[imageState](Context, i.id); imgState == nil {
+		imgState = &imageState{}
 		SetState(&Context, i.id, imgState)
 
 		// Prevent multiple invocation to download image.
