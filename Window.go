@@ -188,15 +188,9 @@ func (w *WindowWidget) getStateID() string {
 
 // returns window state.
 func (w *WindowWidget) getState() (state *windowState) {
-	if s := Context.GetState(w.getStateID()); s != nil {
-		var isOk bool
-		state, isOk = s.(*windowState)
-		Assert(isOk, "WindowWidget", "getState", "unexpected state recovered.")
-	} else {
+	if state = GetState[windowState](Context, w.getStateID()); state == nil {
 		state = &windowState{}
-
-		Context.SetState(w.getStateID(), state)
+		SetState(&Context, w.getStateID(), state)
 	}
-
 	return state
 }

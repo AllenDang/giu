@@ -44,16 +44,12 @@ func (me *MemoryEditorWidget) Build() {
 }
 
 func (me *MemoryEditorWidget) getState() (state *memoryEditorState) {
-	if s := Context.GetState(me.id); s == nil {
+	if state = GetState[memoryEditorState](Context, me.id); state == nil {
 		state = &memoryEditorState{
 			editor: imgui.NewMemoryEditor(),
 		}
 
-		Context.SetState(me.id, state)
-	} else {
-		var ok bool
-		state, ok = s.(*memoryEditorState)
-		Assert(ok, "MemoryEditorWidget", "getState", "incorrect state type recovered.")
+		SetState(&Context, me.id, state)
 	}
 
 	return state

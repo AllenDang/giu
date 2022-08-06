@@ -329,17 +329,14 @@ func (b *ImageButtonWithRgbaWidget) FramePadding(padding int) *ImageButtonWithRg
 
 // Build implements Widget interface.
 func (b *ImageButtonWithRgbaWidget) Build() {
-	if state := Context.GetState(b.id); state == nil {
-		Context.SetState(b.id, &imageState{})
+	if state := GetState[imageState](Context, b.id); state == nil {
+		SetState(&Context, b.id, &imageState{})
 
 		NewTextureFromRgba(b.rgba, func(tex *Texture) {
-			Context.SetState(b.id, &imageState{texture: tex})
+			SetState(&Context, b.id, &imageState{texture: tex})
 		})
 	} else {
-		var isOk bool
-		imgState, isOk := state.(*imageState)
-		Assert(isOk, "ImageButtonWithRgbaWidget", "Build", "got unexpected type of widget's state")
-		b.ImageButtonWidget.texture = imgState.texture
+		b.ImageButtonWidget.texture = state.texture
 	}
 
 	b.ImageButtonWidget.Build()
