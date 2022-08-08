@@ -122,14 +122,9 @@ func (eh *EventHandler) Build() {
 	if eh.onActivate != nil || eh.onDeactivate != nil {
 		var state *eventHandlerState
 		stateID := GenAutoID("eventHandlerState")
-		if s := Context.GetState(stateID); s != nil {
-			var isOk bool
-			state, isOk = s.(*eventHandlerState)
-			Assert(isOk, "EventHandler", "Build", "unexpected type of state received")
-		} else {
-			newState := &eventHandlerState{}
-			Context.SetState(stateID, newState)
-			state = newState
+		if state = GetState[eventHandlerState](Context, stateID); state == nil {
+			state = &eventHandlerState{}
+			SetState(&Context, stateID, state)
 		}
 
 		if eh.onActivate != nil && isActive && !state.isActive {

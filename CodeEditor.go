@@ -204,17 +204,12 @@ func (ce *CodeEditorWidget) Build() {
 }
 
 func (ce *CodeEditorWidget) getState() (state *codeEditorState) {
-	if s := Context.GetState(ce.title); s == nil {
+	if state = GetState[codeEditorState](Context, ce.title); state == nil {
 		state = &codeEditorState{
 			editor: imgui.NewTextEditor(),
 		}
 
-		Context.SetState(ce.title, state)
-	} else {
-		var isOk bool
-		state, isOk = s.(*codeEditorState)
-		Assert(isOk, "CodeEditorWidget", "getState", "unexpected widget's state type")
+		SetState(&Context, ce.title, state)
 	}
-
 	return state
 }

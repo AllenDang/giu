@@ -159,14 +159,9 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 }
 
 func (s *SplitLayoutWidget) getState() (state *splitLayoutState) {
-	if st := Context.GetState(s.id); st == nil {
+	if state = GetState[splitLayoutState](Context, s.id); state == nil {
 		state = &splitLayoutState{delta: 0.0}
-		Context.SetState(s.id, state)
-	} else {
-		var isOk bool
-		state, isOk = st.(*splitLayoutState)
-		Assert(isOk, "SplitLayoutWidget", "Build", "got unexpected type of widget's state")
+		SetState(&Context, s.id, state)
 	}
-
 	return state
 }
