@@ -99,6 +99,17 @@ func newFontAtlas() FontAtlas {
 				size:     result.fontSize + 1,
 			},
 		})
+		// Chinese fonts
+		result.registerDefaultFonts([]FontInfo{
+			{
+				fontName: "wqy-microhei",
+				size:     result.fontSize + 1,
+			},
+			{
+				fontName: "SourceHanSansCN",
+				size:     result.fontSize + 3,
+			},
+		})
 	}
 
 	return result
