@@ -8,7 +8,7 @@ var content string
 
 func loop() {
 	g.SingleWindow().Layout(
-		g.Label("Hello world from giu"),
+		g.Label("Test"),
 		g.InputTextMultiline(&content).Size(g.Auto, g.Auto),
 	)
 }

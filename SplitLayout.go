@@ -1,9 +1,8 @@
 package giu
 
 import (
-	"image/color"
-
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // SplitDirection represents a direction (vertical/horizontal) of splitting layout.
@@ -107,24 +106,24 @@ func (s *SplitLayoutWidget) Build() {
 		}
 	}
 
-	PushItemSpacing(0, 0)
+	imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_ItemSpacing, imgui.NewImVec2(0, 0))
 	layout.Build()
-	PopStyle()
+	imgui.PopStyleVar(1)
 }
 
 func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 	return Layout{
 		Custom(func() {
-			PushItemSpacing(s.originItemSpacingX, s.originItemSpacingY)
-			PushFramePadding(s.originFramePaddingX, s.originFramePaddingY)
+			imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_ItemSpacing, imgui.NewImVec2(s.originItemSpacingX, s.originItemSpacingY))
+			imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_FramePadding, imgui.NewImVec2(s.originFramePaddingX, s.originFramePaddingY))
 			// Restore Child bg color
-			bgColor := imgui.CurrentStyle().GetColor(imgui.StyleColorChildBg)
-			PushStyleColor(StyleColorChildBg, Vec4ToRGBA(bgColor))
+			bgColor := imgui.GetStyleColorVec4(imgui.ImGuiCol_ChildBg)
+			imgui.PushStyleColor_Vec4(imgui.ImGuiCol_ChildBg, bgColor)
 		}),
 		layout,
 		Custom(func() {
-			PopStyleColor()
-			PopStyleV(2)
+			imgui.PopStyleColor(1)
+			imgui.PopStyleVar(2)
 		}),
 	}
 }
@@ -138,10 +137,10 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 			hasBorder := !isSplitLayoutWidget && s.border
 
 			if hasFramePadding {
-				PushFramePadding(0, 0)
+        imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_FramePadding, imgui.NewImVec2(0, 0))
 			}
 
-			PushStyleColor(StyleColorChildBg, color.RGBA{R: 0, G: 0, B: 0, A: 0})
+			imgui.PushStyleColor_Vec4(cimgui.ImGuiCol_ChildBg, imgui.NewImVec4(0, 0, 0, 0))
 
 			Child().
 				Border(hasBorder).
@@ -149,10 +148,10 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 				Layout(s.restoreItemSpacing(layout)).
 				Build()
 
-			PopStyleColor()
+			imgui.PopStyleColor(1)
 
 			if hasFramePadding {
-				PopStyle()
+				imgui.PopStyleVar(1)
 			}
 		}),
 	}

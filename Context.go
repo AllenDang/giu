@@ -1,10 +1,9 @@
 package giu
 
 import (
-	"fmt"
 	"sync"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	"gopkg.in/eapache/queue.v1"
 )
 
@@ -28,13 +27,6 @@ type state struct {
 }
 
 type context struct {
-	// TODO: should be handled by mainthread tbh
-	// see https://github.com/faiface/mainthread/pull/4
-	isRunning bool
-
-	renderer imgui.Renderer
-	platform imgui.Platform
-
 	widgetIndexCounter int
 
 	// Indicate whether current application is running
@@ -43,16 +35,16 @@ type context struct {
 	// States will used by custom widget to store data
 	state sync.Map
 
-	InputHandler InputHandler
-	FontAtlas    FontAtlas
+	FontAtlas FontAtlas
 
 	textureLoadingQueue *queue.Queue
+
+	window imgui.GLFWwindow
 }
 
-func CreateContext(p imgui.Platform, r imgui.Renderer) context {
+func CreateContext(window imgui.GLFWwindow) context {
 	result := context{
-		platform: p,
-		renderer: r,
+		window: window,
 	}
 
 	result.FontAtlas = newFontAtlas()
@@ -60,27 +52,21 @@ func CreateContext(p imgui.Platform, r imgui.Renderer) context {
 	// Create font
 	if len(result.FontAtlas.defaultFonts) == 0 {
 		io := result.IO()
-		io.Fonts().AddFontDefault()
-		fontAtlas := io.Fonts().TextureDataRGBA32()
-		r.SetFontTexture(fontAtlas)
+		fonts := io.GetFonts()
+		fonts.AddFontDefault(0)
+		fontAtlas, width, height, _ := fonts.GetTextureDataAsRGBA32()
+		texId := imgui.CreateTexture(fontAtlas, int(width), int(height))
+		fonts.SetTexID(texId)
 	} else {
 		result.FontAtlas.shouldRebuildFontAtlas = true
-		// result.FontAtlas.rebuildFontAtlas()
+		result.FontAtlas.rebuildFontAtlas()
 	}
 
 	return result
 }
 
-func (c *context) GetRenderer() imgui.Renderer {
-	return c.renderer
-}
-
-func (c *context) GetPlatform() imgui.Platform {
-	return c.platform
-}
-
-func (c *context) IO() imgui.IO {
-	return imgui.CurrentIO()
+func (c *context) IO() imgui.ImGuiIO {
+	return imgui.GetIO()
 }
 
 func (c *context) invalidAllState() {
@@ -118,8 +104,7 @@ func (c *context) SetState(id string, data Disposable) {
 func GetState[T any, PT genericDisposable[T]](c context, id string) PT {
 	if s, ok := c.load(id); ok {
 		s.valid = true
-		data, isOk := s.data.(PT)
-		Assert(isOk, "Context", "GetState", fmt.Sprintf("got state of unexpected type: expected %T, instead found %T", new(T), s.data))
+		data, _ := s.data.(PT)
 		return data
 
 	}

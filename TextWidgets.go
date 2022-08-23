@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/sahilm/fuzzy"
 )
 
@@ -16,8 +16,8 @@ type InputTextMultilineWidget struct {
 	label          string
 	text           *string
 	width, height  float32
-	flags          InputTextFlags
-	cb             imgui.InputTextCallback
+	flags          imgui.ImGuiInputTextFlags
+	cb             imgui.ImGuiInputTextCallback
 	scrollToBottom bool
 	onChange       func()
 }
@@ -47,13 +47,13 @@ func (i *InputTextMultilineWidget) Labelf(format string, args ...any) *InputText
 }
 
 // Flags sets InputTextFlags (see Flags.go).
-func (i *InputTextMultilineWidget) Flags(flags InputTextFlags) *InputTextMultilineWidget {
+func (i *InputTextMultilineWidget) Flags(flags imgui.ImGuiInputTextFlags) *InputTextMultilineWidget {
 	i.flags = flags
 	return i
 }
 
 // Callback sets imgui.InputTextCallback.
-func (i *InputTextMultilineWidget) Callback(cb imgui.InputTextCallback) *InputTextMultilineWidget {
+func (i *InputTextMultilineWidget) Callback(cb imgui.ImGuiInputTextCallback) *InputTextMultilineWidget {
 	i.cb = cb
 	return i
 }
@@ -78,22 +78,22 @@ func (i *InputTextMultilineWidget) AutoScrollToBottom(b bool) *InputTextMultilin
 
 // Build implements Widget interface.
 func (i *InputTextMultilineWidget) Build() {
-	if imgui.InputTextMultilineV(
+	if imgui.InputTextMultiline(
 		Context.FontAtlas.RegisterString(i.label),
 		Context.FontAtlas.RegisterStringPointer(i.text),
-		imgui.Vec2{
+		imgui.ImVec2{
 			X: i.width,
 			Y: i.height,
 		},
-		int(i.flags), i.cb,
+		i.flags, i.cb,
 	) && i.onChange != nil {
 		i.onChange()
 	}
 
 	if i.scrollToBottom {
-		imgui.BeginChild(i.label)
+		imgui.BeginChild_Str(i.label, imgui.NewImVec2(0, 0), false, 0)
 		imgui.SetScrollHereY(1.0)
-		imgui.EndChild()
+		imgui.End()
 	}
 }
 
@@ -158,8 +158,8 @@ type InputTextWidget struct {
 	value      *string
 	width      float32
 	candidates []string
-	flags      InputTextFlags
-	cb         imgui.InputTextCallback
+	flags      imgui.ImGuiInputTextFlags
+	cb         imgui.ImGuiInputTextCallback
 	onChange   func()
 }
 
@@ -207,13 +207,13 @@ func (i *InputTextWidget) Size(width float32) *InputTextWidget {
 }
 
 // Flags sets flags.
-func (i *InputTextWidget) Flags(flags InputTextFlags) *InputTextWidget {
+func (i *InputTextWidget) Flags(flags imgui.ImGuiInputTextFlags) *InputTextWidget {
 	i.flags = flags
 	return i
 }
 
 // Callback sets input text callback.
-func (i *InputTextWidget) Callback(cb imgui.InputTextCallback) *InputTextWidget {
+func (i *InputTextWidget) Callback(cb imgui.ImGuiInputTextCallback) *InputTextWidget {
 	i.cb = cb
 	return i
 }
@@ -234,11 +234,11 @@ func (i *InputTextWidget) Build() {
 	}
 
 	if i.width != 0 {
-		PushItemWidth(i.width)
-		defer PopItemWidth()
+		imgui.PushItemWidth(i.width)
+		defer imgui.PopItemWidth()
 	}
 
-	isChanged := imgui.InputTextWithHint(i.label, i.hint, Context.FontAtlas.RegisterStringPointer(i.value), int(i.flags), i.cb)
+	isChanged := imgui.InputTextWithHint(i.label, i.hint, Context.FontAtlas.RegisterStringPointer(i.value), i.flags, i.cb)
 
 	if isChanged && i.onChange != nil {
 		i.onChange()
@@ -256,25 +256,6 @@ func (i *InputTextWidget) Build() {
 			}
 		}
 	}
-
-	// Draw autocomplete list
-	if len(state.autoCompleteCandidates) > 0 {
-		labels := make(Layout, len(state.autoCompleteCandidates))
-		for i, m := range state.autoCompleteCandidates {
-			labels[i] = Label(m.Str)
-		}
-
-		SetNextWindowPos(imgui.GetItemRectMin().X, imgui.GetItemRectMax().Y)
-		imgui.BeginTooltip()
-		labels.Build()
-		imgui.EndTooltip()
-
-		// Press enter will replace value string with first match candidate
-		if IsKeyPressed(KeyEnter) {
-			*i.value = state.autoCompleteCandidates[0].Str
-			state.autoCompleteCandidates = nil
-		}
-	}
 }
 
 var _ Widget = &InputIntWidget{}
@@ -284,7 +265,7 @@ type InputIntWidget struct {
 	label    string
 	value    *int32
 	width    float32
-	flags    InputTextFlags
+	flags    imgui.ImGuiInputTextFlags
 	onChange func()
 }
 
@@ -320,7 +301,7 @@ func (i *InputIntWidget) Size(width float32) *InputIntWidget {
 }
 
 // Flags sets flags.
-func (i *InputIntWidget) Flags(flags InputTextFlags) *InputIntWidget {
+func (i *InputIntWidget) Flags(flags imgui.ImGuiInputTextFlags) *InputIntWidget {
 	i.flags = flags
 	return i
 }
@@ -334,11 +315,11 @@ func (i *InputIntWidget) OnChange(onChange func()) *InputIntWidget {
 // Build implements Widget interface.
 func (i *InputIntWidget) Build() {
 	if i.width != 0 {
-		PushItemWidth(i.width)
-		defer PopItemWidth()
+		imgui.PushItemWidth(i.width)
+		defer imgui.PopItemWidth()
 	}
 
-	if imgui.InputIntV(i.label, i.value, 0, 100, int(i.flags)) && i.onChange != nil {
+	if imgui.InputInt(i.label, i.value, 0, 100, i.flags) && i.onChange != nil {
 		i.onChange()
 	}
 }
@@ -350,7 +331,7 @@ type InputFloatWidget struct {
 	label    string
 	value    *float32
 	width    float32
-	flags    InputTextFlags
+	flags    imgui.ImGuiInputTextFlags
 	format   string
 	onChange func()
 }
@@ -385,7 +366,7 @@ func (i *InputFloatWidget) Size(width float32) *InputFloatWidget {
 }
 
 // Flags sets flags.
-func (i *InputFloatWidget) Flags(flags InputTextFlags) *InputFloatWidget {
+func (i *InputFloatWidget) Flags(flags imgui.ImGuiInputTextFlags) *InputFloatWidget {
 	i.flags = flags
 	return i
 }
@@ -405,16 +386,14 @@ func (i *InputFloatWidget) OnChange(onChange func()) *InputFloatWidget {
 // Build implements Widget interface.
 func (i *InputFloatWidget) Build() {
 	if i.width != 0 {
-		PushItemWidth(i.width)
-		defer PopItemWidth()
+		imgui.PushItemWidth(i.width)
+		defer imgui.PopItemWidth()
 	}
 
-	if imgui.InputFloatV(i.label, i.value, 0, 0, i.format, int(i.flags)) && i.onChange != nil {
+	if imgui.InputFloat(i.label, i.value, 0, 0, i.format, i.flags) && i.onChange != nil {
 		i.onChange()
 	}
 }
-
-var _ Widget = &LabelWidget{}
 
 // LabelWidget is a plain text label.
 type LabelWidget struct {
@@ -442,23 +421,11 @@ func (l *LabelWidget) Wrapped(wrapped bool) *LabelWidget {
 	return l
 }
 
-// Font sets specific font (does like Style().SetFont).
-func (l *LabelWidget) Font(font *FontInfo) *LabelWidget {
-	l.fontInfo = font
-	return l
-}
-
 // Build implements Widget interface.
 func (l *LabelWidget) Build() {
 	if l.wrapped {
-		PushTextWrapPos()
-		defer PopTextWrapPos()
-	}
-
-	if l.fontInfo != nil {
-		if PushFont(l.fontInfo) {
-			defer PopFont()
-		}
+		imgui.PushTextWrapPos(0)
+		defer imgui.PopTextWrapPos()
 	}
 
 	imgui.Text(l.label)

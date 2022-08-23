@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"image/color"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // GenAutoID automatically generates fidget's id.
@@ -38,11 +38,11 @@ func (l *RowWidget) Build() {
 			// noop
 		default:
 			if _, isLabel := w.(*LabelWidget); isLabel {
-				AlignTextToFramePadding()
+				imgui.AlignTextToFramePadding()
 			}
 
 			if !isFirst {
-				imgui.SameLine()
+				SameLine()
 			} else {
 				isFirst = false
 			}
@@ -55,7 +55,7 @@ func (l *RowWidget) Build() {
 // SameLine wrapps imgui.SomeLine
 // Don't use if you don't have to (use RowWidget instead).
 func SameLine() {
-	imgui.SameLine()
+	imgui.SameLine(0, 0)
 }
 
 var _ Widget = &ChildWidget{}
@@ -65,13 +65,13 @@ type ChildWidget struct {
 	width  float32
 	height float32
 	border bool
-	flags  WindowFlags
+	flags  imgui.ImGuiWindowFlags
 	layout Layout
 }
 
 // Build implements Widget interface.
 func (c *ChildWidget) Build() {
-	if imgui.BeginChildV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, int(c.flags)) {
+	if imgui.BeginChild_Str(c.id, imgui.ImVec2{X: c.width, Y: c.height}, c.border, c.flags) {
 		c.layout.Build()
 	}
 
@@ -88,7 +88,7 @@ func (c *ChildWidget) Size(width, height float32) *ChildWidget {
 	return c
 }
 
-func (c *ChildWidget) Flags(flags WindowFlags) *ChildWidget {
+func (c *ChildWidget) Flags(flags imgui.ImGuiWindowFlags) *ChildWidget {
 	c.flags = flags
 	return c
 }
@@ -122,7 +122,7 @@ type ComboCustomWidget struct {
 	label        string
 	previewValue string
 	width        float32
-	flags        ComboFlags
+	flags        imgui.ImGuiComboFlags
 	layout       Layout
 }
 
@@ -144,7 +144,7 @@ func (cc *ComboCustomWidget) Layout(widgets ...Widget) *ComboCustomWidget {
 }
 
 // Flags allows to set combo flags (see Flags.go).
-func (cc *ComboCustomWidget) Flags(flags ComboFlags) *ComboCustomWidget {
+func (cc *ComboCustomWidget) Flags(flags imgui.ImGuiComboFlags) *ComboCustomWidget {
 	cc.flags = flags
 	return cc
 }
@@ -162,7 +162,7 @@ func (cc *ComboCustomWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginComboV(Context.FontAtlas.RegisterString(cc.label), cc.previewValue, int(cc.flags)) {
+	if imgui.BeginCombo(Context.FontAtlas.RegisterString(cc.label), cc.previewValue, cc.flags) {
 		cc.layout.Build()
 		imgui.EndCombo()
 	}
@@ -178,7 +178,7 @@ type ComboWidget struct {
 	items        []string
 	selected     *int32
 	width        float32
-	flags        ComboFlags
+	flags        imgui.ImGuiComboFlags
 	onChange     func()
 }
 
@@ -202,9 +202,9 @@ func (c *ComboWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label), c.previewValue, int(c.flags)) {
+	if imgui.BeginCombo(Context.FontAtlas.RegisterString(c.label), c.previewValue, c.flags) {
 		for i, item := range c.items {
-			if imgui.Selectable(item) {
+			if imgui.Selectable_BoolPtr(item, nil, 0, imgui.NewImVec2(0, 0)) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
 					c.onChange()
@@ -217,7 +217,7 @@ func (c *ComboWidget) Build() {
 }
 
 // Flags allows to set combo flags (see Flags.go).
-func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
+func (c *ComboWidget) Flags(flags imgui.ImGuiComboFlags) *ComboWidget {
 	c.flags = flags
 	return c
 }
@@ -237,16 +237,16 @@ func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 var _ Widget = &ContextMenuWidget{}
 
 type ContextMenuWidget struct {
-	id          string
-	mouseButton MouseButton
-	layout      Layout
+	id     string
+	flags  imgui.ImGuiPopupFlags
+	layout Layout
 }
 
 func ContextMenu() *ContextMenuWidget {
 	return &ContextMenuWidget{
-		mouseButton: MouseButtonRight,
-		layout:      nil,
-		id:          GenAutoID("ContextMenu"),
+		flags:  imgui.ImGuiPopupFlags_MouseButtonRight,
+		layout: nil,
+		id:     GenAutoID("ContextMenu"),
 	}
 }
 
@@ -255,8 +255,8 @@ func (c *ContextMenuWidget) Layout(widgets ...Widget) *ContextMenuWidget {
 	return c
 }
 
-func (c *ContextMenuWidget) MouseButton(mouseButton MouseButton) *ContextMenuWidget {
-	c.mouseButton = mouseButton
+func (c *ContextMenuWidget) Flags(flags imgui.ImGuiPopupFlags) *ContextMenuWidget {
+	c.flags = flags
 	return c
 }
 
@@ -267,7 +267,7 @@ func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
 
 // Build implements Widget interface.
 func (c *ContextMenuWidget) Build() {
-	if imgui.BeginPopupContextItemV(c.id, int(c.mouseButton)) {
+	if imgui.BeginPopupContextItem(c.id, c.flags) {
 		c.layout.Build()
 		imgui.EndPopup()
 	}
@@ -282,6 +282,7 @@ type DragIntWidget struct {
 	min    int32
 	max    int32
 	format string
+	flags  imgui.ImGuiSliderFlags
 }
 
 func DragInt(label string, value *int32, min, max int32) *DragIntWidget {
@@ -307,7 +308,7 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
-	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label), d.value, d.speed, d.min, d.max, d.format)
+	imgui.DragInt(Context.FontAtlas.RegisterString(d.label), d.value, d.speed, d.min, d.max, d.format, imgui.ImGuiSliderFlags_None)
 }
 
 var _ Widget = &ColumnWidget{}
@@ -422,7 +423,7 @@ func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 
 // Build implements Widget interface.
 func (m *MenuItemWidget) Build() {
-	if imgui.MenuItemV(Context.FontAtlas.RegisterString(m.label), "", m.selected, m.enabled) && m.onClick != nil {
+	if imgui.MenuItem_Bool(Context.FontAtlas.RegisterString(m.label), "", m.selected, m.enabled) && m.onClick != nil {
 		m.onClick()
 	}
 }
@@ -459,7 +460,7 @@ func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
 
 // Build implements Widget interface.
 func (m *MenuWidget) Build() {
-	if imgui.BeginMenuV(Context.FontAtlas.RegisterString(m.label), m.enabled) {
+	if imgui.BeginMenu(Context.FontAtlas.RegisterString(m.label), m.enabled) {
 		m.layout.Build()
 		imgui.EndMenu()
 	}
@@ -499,7 +500,7 @@ func (p *ProgressBarWidget) Overlayf(format string, args ...any) *ProgressBarWid
 
 // Build implements Widget interface.
 func (p *ProgressBarWidget) Build() {
-	imgui.ProgressBarV(p.fraction, imgui.Vec2{X: p.width, Y: p.height}, p.overlay)
+	imgui.ProgressBar(p.fraction, imgui.ImVec2{X: p.width, Y: p.height}, p.overlay)
 }
 
 var _ Widget = &SeparatorWidget{}
@@ -534,7 +535,7 @@ func (d *DummyWidget) Build() {
 		d.height = h + d.height
 	}
 
-	imgui.Dummy(imgui.Vec2{X: d.width, Y: d.height})
+	imgui.Dummy(imgui.ImVec2{X: d.width, Y: d.height})
 }
 
 func Dummy(width, height float32) *DummyWidget {
@@ -547,7 +548,7 @@ func Dummy(width, height float32) *DummyWidget {
 type TabItemWidget struct {
 	label  string
 	open   *bool
-	flags  TabItemFlags
+	flags  imgui.ImGuiTabItemFlags
 	layout Layout
 }
 
@@ -569,7 +570,7 @@ func (t *TabItemWidget) IsOpen(open *bool) *TabItemWidget {
 	return t
 }
 
-func (t *TabItemWidget) Flags(flags TabItemFlags) *TabItemWidget {
+func (t *TabItemWidget) Flags(flags imgui.ImGuiTabItemFlags) *TabItemWidget {
 	t.flags = flags
 	return t
 }
@@ -581,7 +582,7 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 
 // BuildTabItem executes tab item build steps.
 func (t *TabItemWidget) BuildTabItem() {
-	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
+	if imgui.BeginTabItem(t.label, t.open, t.flags) {
 		t.layout.Build()
 		imgui.EndTabItem()
 	}
@@ -591,7 +592,7 @@ var _ Widget = &TabBarWidget{}
 
 type TabBarWidget struct {
 	id       string
-	flags    TabBarFlags
+	flags    imgui.ImGuiTabBarFlags
 	tabItems []*TabItemWidget
 }
 
@@ -602,7 +603,7 @@ func TabBar() *TabBarWidget {
 	}
 }
 
-func (t *TabBarWidget) Flags(flags TabBarFlags) *TabBarWidget {
+func (t *TabBarWidget) Flags(flags imgui.ImGuiTabBarFlags) *TabBarWidget {
 	t.flags = flags
 	return t
 }
@@ -619,7 +620,7 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 
 // Build implements Widget interface.
 func (t *TabBarWidget) Build() {
-	if imgui.BeginTabBarV(t.id, int(t.flags)) {
+	if imgui.BeginTabBar(t.id, t.flags) {
 		for _, ti := range t.tabItems {
 			ti.BuildTabItem()
 		}
@@ -636,7 +637,7 @@ type TooltipWidget struct {
 
 // Build implements Widget interface.
 func (t *TooltipWidget) Build() {
-	if imgui.IsItemHovered() {
+	if imgui.IsItemHovered(imgui.ImGuiHoveredFlags_None) {
 		if t.layout != nil {
 			imgui.BeginTooltip()
 			t.layout.Build()
@@ -681,7 +682,7 @@ var _ Widget = &ColorEditWidget{}
 type ColorEditWidget struct {
 	label    string
 	color    *color.RGBA
-	flags    ColorEditFlags
+	flags    imgui.ImGuiColorEditFlags
 	width    float32
 	onChange func()
 }
@@ -690,7 +691,7 @@ func ColorEdit(label string, c *color.RGBA) *ColorEditWidget {
 	return &ColorEditWidget{
 		label: GenAutoID(label),
 		color: c,
-		flags: ColorEditFlagsNone,
+		flags: imgui.ImGuiColorEditFlags_None,
 	}
 }
 
@@ -699,7 +700,7 @@ func (ce *ColorEditWidget) OnChange(cb func()) *ColorEditWidget {
 	return ce
 }
 
-func (ce *ColorEditWidget) Flags(f ColorEditFlags) *ColorEditWidget {
+func (ce *ColorEditWidget) Flags(f imgui.ImGuiColorEditFlags) *ColorEditWidget {
 	ce.flags = f
 	return ce
 }
@@ -712,27 +713,27 @@ func (ce *ColorEditWidget) Size(width float32) *ColorEditWidget {
 // Build implements Widget interface.
 func (ce *ColorEditWidget) Build() {
 	c := ToVec4Color(*ce.color)
-	col := [4]float32{
-		c.X,
-		c.Y,
-		c.Z,
-		c.W,
+	col := [4]*float32{
+		&c.X,
+		&c.Y,
+		&c.Z,
+		&c.W,
 	}
 
 	if ce.width > 0 {
 		imgui.PushItemWidth(ce.width)
 	}
 
-	if imgui.ColorEdit4V(
+	if imgui.ColorEdit4(
 		Context.FontAtlas.RegisterString(ce.label),
-		&col,
-		int(ce.flags),
+		col,
+		ce.flags,
 	) {
-		*ce.color = Vec4ToRGBA(imgui.Vec4{
-			X: col[0],
-			Y: col[1],
-			Z: col[2],
-			W: col[3],
+		*ce.color = Vec4ToRGBA(imgui.ImVec4{
+			X: *col[0],
+			Y: *col[1],
+			Z: *col[2],
+			W: *col[3],
 		})
 		if ce.onChange != nil {
 			ce.onChange()

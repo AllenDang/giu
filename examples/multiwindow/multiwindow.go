@@ -36,7 +36,7 @@ func loop() {
 	)
 
 	if showWindow2 {
-		g.Window("Window 2").IsOpen(&showWindow2).Flags(g.WindowFlagsNone).Pos(250, 30).Size(200, 100).Layout(
+		g.Window("Window 2").IsOpen(&showWindow2).Flags(0).Pos(250, 30).Size(200, 100).Layout(
 			g.Label("I'm a label in window 2"),
 			g.Button("Hide me").OnClick(onHideWindow2),
 		)

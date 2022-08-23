@@ -3,12 +3,12 @@ package giu
 import (
 	"image/color"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 type TableRowWidget struct {
-	flags        TableRowFlags
-	minRowHeight float64
+	flags        imgui.ImGuiTableRowFlags
+	minRowHeight float32
 	layout       Layout
 	bgColor      color.Color
 }
@@ -27,19 +27,19 @@ func (r *TableRowWidget) BgColor(c color.Color) *TableRowWidget {
 	return r
 }
 
-func (r *TableRowWidget) Flags(flags TableRowFlags) *TableRowWidget {
+func (r *TableRowWidget) Flags(flags imgui.ImGuiTableRowFlags) *TableRowWidget {
 	r.flags = flags
 	return r
 }
 
-func (r *TableRowWidget) MinHeight(height float64) *TableRowWidget {
+func (r *TableRowWidget) MinHeight(height float32) *TableRowWidget {
 	r.minRowHeight = height
 	return r
 }
 
 // BuildTableRow executes table row build steps.
 func (r *TableRowWidget) BuildTableRow() {
-	imgui.TableNextRow(imgui.TableRowFlags(r.flags), r.minRowHeight)
+	imgui.TableNextRow(r.flags, r.minRowHeight)
 
 	for _, w := range r.layout {
 		switch w.(type) {
@@ -54,15 +54,15 @@ func (r *TableRowWidget) BuildTableRow() {
 	}
 
 	if r.bgColor != nil {
-		imgui.TableSetBgColor(imgui.TableBgTarget_RowBg0, uint32(imgui.GetColorU32(ToVec4Color(r.bgColor))), -1)
+		imgui.TableSetBgColor(imgui.ImGuiTableBgTarget_RowBg0, uint32(imgui.GetColorU32_Vec4(ToVec4Color(r.bgColor))), -1)
 	}
 }
 
 type TableColumnWidget struct {
 	label              string
-	flags              TableColumnFlags
+	flags              imgui.ImGuiTableColumnFlags
 	innerWidthOrWeight float32
-	userID             uint32
+	userID             imgui.ImGuiID
 }
 
 func TableColumn(label string) *TableColumnWidget {
@@ -74,7 +74,7 @@ func TableColumn(label string) *TableColumnWidget {
 	}
 }
 
-func (c *TableColumnWidget) Flags(flags TableColumnFlags) *TableColumnWidget {
+func (c *TableColumnWidget) Flags(flags imgui.ImGuiTableColumnFlags) *TableColumnWidget {
 	c.flags = flags
 	return c
 }
@@ -85,33 +85,33 @@ func (c *TableColumnWidget) InnerWidthOrWeight(w float32) *TableColumnWidget {
 }
 
 func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
-	c.userID = id
+	c.userID = imgui.ImGuiID(id)
 	return c
 }
 
 // BuildTableColumn executes table column build steps.
 func (c *TableColumnWidget) BuildTableColumn() {
-	imgui.TableSetupColumn(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
+	imgui.TableSetupColumn(c.label, imgui.ImGuiTableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
 }
 
 var _ Widget = &TableWidget{}
 
 type TableWidget struct {
 	id           string
-	flags        TableFlags
-	size         imgui.Vec2
-	innerWidth   float64
+	flags        imgui.ImGuiTableFlags
+	size         imgui.ImVec2
+	innerWidth   float32
 	rows         []*TableRowWidget
 	columns      []*TableColumnWidget
 	fastMode     bool
-	freezeRow    int
-	freezeColumn int
+	freezeRow    int32
+	freezeColumn int32
 }
 
 func Table() *TableWidget {
 	return &TableWidget{
 		id:           GenAutoID("Table"),
-		flags:        TableFlagsResizable | TableFlagsBorders | TableFlagsScrollY,
+		flags:        imgui.ImGuiTableFlags_Resizable | imgui.ImGuiTableFlags_Borders | imgui.ImGuiTableFlags_ScrollY,
 		rows:         nil,
 		columns:      nil,
 		fastMode:     false,
@@ -133,7 +133,7 @@ func (t *TableWidget) FastMode(b bool) *TableWidget {
 }
 
 // Freeze columns/rows so they stay visible when scrolled.
-func (t *TableWidget) Freeze(col, row int) *TableWidget {
+func (t *TableWidget) Freeze(col, row int32) *TableWidget {
 	t.freezeColumn = col
 	t.freezeRow = row
 	return t
@@ -150,16 +150,16 @@ func (t *TableWidget) Rows(rows ...*TableRowWidget) *TableWidget {
 }
 
 func (t *TableWidget) Size(width, height float32) *TableWidget {
-	t.size = imgui.Vec2{X: width, Y: height}
+	t.size = imgui.ImVec2{X: width, Y: height}
 	return t
 }
 
-func (t *TableWidget) InnerWidth(width float64) *TableWidget {
+func (t *TableWidget) InnerWidth(width float32) *TableWidget {
 	t.innerWidth = width
 	return t
 }
 
-func (t *TableWidget) Flags(flags TableFlags) *TableWidget {
+func (t *TableWidget) Flags(flags imgui.ImGuiTableFlags) *TableWidget {
 	t.flags = flags
 	return t
 }
@@ -175,7 +175,7 @@ func (t *TableWidget) Build() {
 		colCount = len(t.rows[0].layout)
 	}
 
-	if imgui.BeginTable(t.id, colCount, imgui.TableFlags(t.flags), t.size, t.innerWidth) {
+	if imgui.BeginTable(t.id, int32(colCount), t.flags, t.size, t.innerWidth) {
 		if t.freezeColumn >= 0 && t.freezeRow >= 0 {
 			imgui.TableSetupScrollFreeze(t.freezeColumn, t.freezeRow)
 		}
@@ -189,12 +189,12 @@ func (t *TableWidget) Build() {
 
 		if t.fastMode {
 			clipper := imgui.NewListClipper()
-			defer clipper.Delete()
+			defer clipper.Destroy()
 
-			clipper.Begin(len(t.rows))
+			clipper.Begin(int32(len(t.rows)), -1)
 
 			for clipper.Step() {
-				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
+				for i := clipper.GetDisplayStart(); i < clipper.GetDisplayEnd(); i++ {
 					row := t.rows[i]
 					row.BuildTableRow()
 				}

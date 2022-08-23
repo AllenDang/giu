@@ -1,13 +1,13 @@
 package giu
 
 import (
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // OpenPopup opens a popup with specified id.
 // NOTE: you need to build this popup first (see Pop(Modal)Widget).
 func OpenPopup(name string) {
-	imgui.OpenPopup(name)
+	imgui.OpenPopup_Str(name, imgui.ImGuiPopupFlags_None)
 }
 
 // CloseCurrentPopup closes currently opened popup.
@@ -22,7 +22,7 @@ var _ Widget = &PopupWidget{}
 // For instance it is used to display color palette in ColorSelectWidget.
 type PopupWidget struct {
 	name   string
-	flags  WindowFlags
+	flags  imgui.ImGuiWindowFlags
 	layout Layout
 }
 
@@ -36,7 +36,7 @@ func Popup(name string) *PopupWidget {
 }
 
 // Flags sets pupup's flags.
-func (p *PopupWidget) Flags(flags WindowFlags) *PopupWidget {
+func (p *PopupWidget) Flags(flags imgui.ImGuiWindowFlags) *PopupWidget {
 	p.flags = flags
 	return p
 }
@@ -49,7 +49,7 @@ func (p *PopupWidget) Layout(widgets ...Widget) *PopupWidget {
 
 // Build implements Widget interface.
 func (p *PopupWidget) Build() {
-	if imgui.BeginPopup(p.name, int(p.flags)) {
+	if imgui.BeginPopup(p.name, p.flags) {
 		p.layout.Build()
 		imgui.EndPopup()
 	}
@@ -62,7 +62,7 @@ var _ Widget = &PopupModalWidget{}
 type PopupModalWidget struct {
 	name   string
 	open   *bool
-	flags  WindowFlags
+	flags  imgui.ImGuiWindowFlags
 	layout Layout
 }
 
@@ -71,7 +71,7 @@ func PopupModal(name string) *PopupModalWidget {
 	return &PopupModalWidget{
 		name:   Context.FontAtlas.RegisterString(name),
 		open:   nil,
-		flags:  WindowFlagsNoResize,
+		flags:  imgui.ImGuiWindowFlags_NoResize,
 		layout: nil,
 	}
 }
@@ -85,7 +85,7 @@ func (p *PopupModalWidget) IsOpen(open *bool) *PopupModalWidget {
 }
 
 // Flags allows to specify popup's flags.
-func (p *PopupModalWidget) Flags(flags WindowFlags) *PopupModalWidget {
+func (p *PopupModalWidget) Flags(flags imgui.ImGuiWindowFlags) *PopupModalWidget {
 	p.flags = flags
 	return p
 }
@@ -98,7 +98,7 @@ func (p *PopupModalWidget) Layout(widgets ...Widget) *PopupModalWidget {
 
 // Build implements Widget interface.
 func (p *PopupModalWidget) Build() {
-	if imgui.BeginPopupModalV(p.name, p.open, int(p.flags)) {
+	if imgui.BeginPopupModal(p.name, p.open, p.flags) {
 		p.layout.Build()
 		imgui.EndPopup()
 	}

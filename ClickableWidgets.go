@@ -2,11 +2,8 @@ package giu
 
 import (
 	"fmt"
-	"image"
-	"image/color"
 
-	"github.com/AllenDang/imgui-go"
-	"golang.org/x/image/colornames"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var _ Widget = &ButtonWidget{}
@@ -63,7 +60,7 @@ func (b *ButtonWidget) Build() {
 		defer imgui.EndDisabled()
 	}
 
-	if imgui.ButtonV(Context.FontAtlas.RegisterString(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.Button(Context.FontAtlas.RegisterString(b.id), imgui.ImVec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -73,12 +70,12 @@ var _ Widget = &ArrowButtonWidget{}
 // ArrowButtonWidget represents a square button with an arrow.
 type ArrowButtonWidget struct {
 	id      string
-	dir     Direction
+	dir     imgui.ImGuiDir
 	onClick func()
 }
 
 // ArrowButton creates ArrowButtonWidget.
-func ArrowButton(dir Direction) *ArrowButtonWidget {
+func ArrowButton(dir imgui.ImGuiDir) *ArrowButtonWidget {
 	return &ArrowButtonWidget{
 		id:      GenAutoID("ArrowButton"),
 		dir:     dir,
@@ -100,7 +97,7 @@ func (b *ArrowButtonWidget) ID(id string) *ArrowButtonWidget {
 
 // Build implements Widget interface.
 func (b *ArrowButtonWidget) Build() {
-	if imgui.ArrowButton(b.id, uint8(b.dir)) && b.onClick != nil {
+	if imgui.ArrowButton(b.id, b.dir) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -182,164 +179,9 @@ func (b *InvisibleButtonWidget) ID(id string) *InvisibleButtonWidget {
 
 // Build implements Widget interface.
 func (b *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(Context.FontAtlas.RegisterString(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.InvisibleButton(Context.FontAtlas.RegisterString(b.id), imgui.ImVec2{X: b.width, Y: b.height}, 0) && b.onClick != nil {
 		b.onClick()
 	}
-}
-
-var _ Widget = &ImageButtonWidget{}
-
-// ImageButtonWidget is similar to ButtonWidget but with image texture instead of text label.
-type ImageButtonWidget struct {
-	texture      *Texture
-	width        float32
-	height       float32
-	uv0          image.Point
-	uv1          image.Point
-	framePadding int
-	bgColor      color.Color
-	tintColor    color.Color
-	onClick      func()
-}
-
-// ImageButton  constructs image buton widget.
-func ImageButton(texture *Texture) *ImageButtonWidget {
-	return &ImageButtonWidget{
-		texture:      texture,
-		width:        50,
-		height:       50,
-		uv0:          image.Point{X: 0, Y: 0},
-		uv1:          image.Point{X: 1, Y: 1},
-		framePadding: -1,
-		bgColor:      colornames.Black,
-		tintColor:    colornames.White,
-		onClick:      nil,
-	}
-}
-
-// Build implements Widget interface.
-func (b *ImageButtonWidget) Build() {
-	if b.texture == nil || b.texture.id == 0 {
-		return
-	}
-
-	if imgui.ImageButtonV(
-		b.texture.id,
-		imgui.Vec2{X: b.width, Y: b.height},
-		ToVec2(b.uv0), ToVec2(b.uv1),
-		b.framePadding, ToVec4Color(b.bgColor),
-		ToVec4Color(b.tintColor),
-	) && b.onClick != nil {
-		b.onClick()
-	}
-}
-
-// Size sets BUTTONS size.
-// NOTE: image size is button size - 2 * frame padding.
-func (b *ImageButtonWidget) Size(width, height float32) *ImageButtonWidget {
-	b.width, b.height = width, height
-	return b
-}
-
-// OnClick sets click event.
-func (b *ImageButtonWidget) OnClick(onClick func()) *ImageButtonWidget {
-	b.onClick = onClick
-	return b
-}
-
-// UV sets image's uv.
-func (b *ImageButtonWidget) UV(uv0, uv1 image.Point) *ImageButtonWidget {
-	b.uv0, b.uv1 = uv0, uv1
-	return b
-}
-
-// BgColor sets button's background color.
-func (b *ImageButtonWidget) BgColor(bgColor color.Color) *ImageButtonWidget {
-	b.bgColor = bgColor
-	return b
-}
-
-// TintColor sets tit color for image.
-func (b *ImageButtonWidget) TintColor(tintColor color.Color) *ImageButtonWidget {
-	b.tintColor = tintColor
-	return b
-}
-
-// FramePadding sets button's frame padding (set 0 to fit image to the frame).
-func (b *ImageButtonWidget) FramePadding(padding int) *ImageButtonWidget {
-	b.framePadding = padding
-	return b
-}
-
-var _ Widget = &ImageButtonWithRgbaWidget{}
-
-// ImageButtonWithRgbaWidget does similar to ImageButtonWIdget,
-// but implements image.Image instead of giu.Texture. It is probably
-// more useful than the original ImageButtonWIdget.
-type ImageButtonWithRgbaWidget struct {
-	*ImageButtonWidget
-	rgba image.Image
-	id   string
-}
-
-// ImageButtonWithRgba creates a new widget.
-func ImageButtonWithRgba(rgba image.Image) *ImageButtonWithRgbaWidget {
-	return &ImageButtonWithRgbaWidget{
-		id:                GenAutoID("ImageButtonWithRgba"),
-		ImageButtonWidget: ImageButton(nil),
-		rgba:              rgba,
-	}
-}
-
-// Size sets button's size.
-func (b *ImageButtonWithRgbaWidget) Size(width, height float32) *ImageButtonWithRgbaWidget {
-	b.ImageButtonWidget.Size(width, height)
-	return b
-}
-
-// OnClick sets click events.
-func (b *ImageButtonWithRgbaWidget) OnClick(onClick func()) *ImageButtonWithRgbaWidget {
-	b.ImageButtonWidget.OnClick(onClick)
-	return b
-}
-
-// UV sets image's uv color.
-func (b *ImageButtonWithRgbaWidget) UV(uv0, uv1 image.Point) *ImageButtonWithRgbaWidget {
-	b.ImageButtonWidget.UV(uv0, uv1)
-	return b
-}
-
-// BgColor sets button's background color.
-func (b *ImageButtonWithRgbaWidget) BgColor(bgColor color.Color) *ImageButtonWithRgbaWidget {
-	b.ImageButtonWidget.BgColor(bgColor)
-	return b
-}
-
-// TintColor sets image's tint color.
-func (b *ImageButtonWithRgbaWidget) TintColor(tintColor color.Color) *ImageButtonWithRgbaWidget {
-	b.ImageButtonWidget.TintColor(tintColor)
-	return b
-}
-
-// FramePadding sets frame padding (see (*ImageButtonWidget).TintColor).
-func (b *ImageButtonWithRgbaWidget) FramePadding(padding int) *ImageButtonWithRgbaWidget {
-	b.ImageButtonWidget.FramePadding(padding)
-	return b
-}
-
-// Build implements Widget interface.
-func (b *ImageButtonWithRgbaWidget) Build() {
-	if state := GetState[imageState](Context, b.id); state == nil {
-		SetState(&Context, b.id, &imageState{})
-
-		NewTextureFromRgba(b.rgba, func(tex *Texture) {
-			SetState(&Context, b.id, &imageState{texture: tex})
-		})
-	} else {
-		b.ImageButtonWidget.texture = state.texture
-	}
-
-	b.ImageButtonWidget.Build()
 }
 
 var _ Widget = &CheckboxWidget{}
@@ -401,7 +243,7 @@ func (r *RadioButtonWidget) OnChange(onChange func()) *RadioButtonWidget {
 
 // Build implements Widget interface.
 func (r *RadioButtonWidget) Build() {
-	if imgui.RadioButton(Context.FontAtlas.RegisterString(r.text), r.active) && r.onChange != nil {
+	if imgui.RadioButton_Bool(Context.FontAtlas.RegisterString(r.text), r.active) && r.onChange != nil {
 		r.onChange()
 	}
 }
@@ -413,7 +255,7 @@ var _ Widget = &SelectableWidget{}
 type SelectableWidget struct {
 	label    string
 	selected bool
-	flags    SelectableFlags
+	flags    imgui.ImGuiSelectableFlags
 	width    float32
 	height   float32
 	onClick  func()
@@ -444,7 +286,7 @@ func (s *SelectableWidget) Selected(selected bool) *SelectableWidget {
 }
 
 // Flags add flags.
-func (s *SelectableWidget) Flags(flags SelectableFlags) *SelectableWidget {
+func (s *SelectableWidget) Flags(flags imgui.ImGuiSelectableFlags) *SelectableWidget {
 	s.flags = flags
 	return s
 }
@@ -472,15 +314,15 @@ func (s *SelectableWidget) OnDClick(onDClick func()) *SelectableWidget {
 // Build implements Widget interface.
 func (s *SelectableWidget) Build() {
 	// If onDClick is set, check flags and set related flag when necessary
-	if s.onDClick != nil && s.flags&SelectableFlagsAllowDoubleClick != 0 {
-		s.flags |= SelectableFlagsAllowDoubleClick
+	if s.onDClick != nil && s.flags&imgui.ImGuiSelectableFlags_AllowDoubleClick != 0 {
+		s.flags |= imgui.ImGuiSelectableFlags_AllowDoubleClick
 	}
 
-	if imgui.SelectableV(Context.FontAtlas.RegisterString(s.label), s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.Selectable_Bool(Context.FontAtlas.RegisterString(s.label), s.selected, s.flags, imgui.ImVec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 
-	if s.onDClick != nil && IsItemActive() && IsMouseDoubleClicked(MouseButtonLeft) {
+	if s.onDClick != nil && imgui.IsItemActive() && imgui.IsMouseDoubleClicked(imgui.ImGuiMouseButton_Left) {
 		s.onDClick()
 	}
 }
@@ -492,7 +334,7 @@ var _ Widget = &TreeNodeWidget{}
 // It can be used to create certain lists, advanced settings sections e.t.c.
 type TreeNodeWidget struct {
 	label        string
-	flags        TreeNodeFlags
+	flags        imgui.ImGuiTreeNodeFlags
 	layout       Layout
 	eventHandler func()
 }
@@ -513,7 +355,7 @@ func TreeNodef(format string, args ...any) *TreeNodeWidget {
 }
 
 // Flags sets flags.
-func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
+func (t *TreeNodeWidget) Flags(flags imgui.ImGuiTreeNodeFlags) *TreeNodeWidget {
 	t.flags = flags
 	return t
 }
@@ -534,7 +376,7 @@ func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
 
 // Build implements Widget interface.
 func (t *TreeNodeWidget) Build() {
-	open := imgui.TreeNodeV(t.label, int(t.flags))
+	open := imgui.TreeNodeEx_Str(t.label, t.flags)
 
 	if t.eventHandler != nil {
 		t.eventHandler()
@@ -542,7 +384,7 @@ func (t *TreeNodeWidget) Build() {
 
 	if open {
 		t.layout.Build()
-		if (t.flags & imgui.TreeNodeFlagsNoTreePushOnOpen) == 0 {
+		if (t.flags & imgui.ImGuiTreeNodeFlags_NoTreePushOnOpen) == 0 {
 			imgui.TreePop()
 		}
 	}
