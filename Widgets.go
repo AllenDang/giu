@@ -204,7 +204,7 @@ func (c *ComboWidget) Build() {
 
 	if imgui.BeginCombo(Context.FontAtlas.RegisterString(c.label), c.previewValue, c.flags) {
 		for i, item := range c.items {
-			if imgui.Selectable_BoolPtr(item, nil, 0, imgui.NewImVec2(0, 0)) {
+			if imgui.Selectable_Bool(item, false, 0, imgui.NewImVec2(0, 0)) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
 					c.onChange()
