@@ -137,7 +137,7 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 			hasBorder := !isSplitLayoutWidget && s.border
 
 			if hasFramePadding {
-        imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_FramePadding, imgui.NewImVec2(0, 0))
+				imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_FramePadding, imgui.NewImVec2(0, 0))
 			}
 
 			imgui.PushStyleColor_Vec4(cimgui.ImGuiCol_ChildBg, imgui.NewImVec4(0, 0, 0, 0))
@@ -158,7 +158,7 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 }
 
 func (s *SplitLayoutWidget) getState() (state *splitLayoutState) {
-	if state = GetState[splitLayoutState](Context, s.id); state == nil {
+	if state = GetState[splitLayoutState](&Context, s.id); state == nil {
 		state = &splitLayoutState{delta: 0.0}
 		SetState(&Context, s.id, state)
 	}

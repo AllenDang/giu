@@ -34,7 +34,7 @@ type MasterWindow struct {
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
 	window := imgui.CreateGlfwWindow(title, width, height, imgui.GLFWWindowFlags(flags))
 
-	Context = CreateContext(window)
+	Context = *CreateContext(window)
 
 	mw := &MasterWindow{
 		title:  title,

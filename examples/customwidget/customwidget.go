@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 
+	"github.com/AllenDang/cimgui-go"
 	g "github.com/AllenDang/giu"
 )
 
@@ -21,10 +22,13 @@ func CircleButton(id string, clicked func()) *CircleButtonWidget {
 }
 
 func (c *CircleButtonWidget) Build() {
-	width, height := g.CalcTextSize(c.id)
+	var size cimgui.ImVec2
+	cimgui.CalcTextSize(&size, c.id, false, -1)
+	width, height := size.X, size.Y
 	var padding float32 = 8.0
 
-	pos := g.GetCursorPos()
+	basePos := cimgui.GetMainViewport().GetPos()
+	pos := g.GetDrawCursorPos().Add(image.Pt(int(basePos.X), int(basePos.Y)))
 
 	// Calcuate the center point
 	radius := int(width/2 + padding*2)
@@ -41,9 +45,9 @@ func (c *CircleButtonWidget) Build() {
 
 	canvas := g.GetCanvas()
 	if drawActive {
-		canvas.AddCircleFilled(center, float32(radius), color.RGBA{12, 12, 200, 255})
+		canvas.AddCircleFilled(center, float32(radius), color.RGBA{12, 12, 200, 255}, 20)
 	}
-	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, radius, 2)
+	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, int32(radius), 2)
 
 	// Draw text
 	canvas.AddText(center.Sub(image.Pt(int((width)/2), int(height/2))), color.RGBA{255, 255, 255, 255}, c.id)

@@ -433,7 +433,7 @@ func (l *ListBoxWidget) OnMenu(onMenu func(selectedIndex int, menu string)) *Lis
 // nolint:gocognit // will fix later
 func (l *ListBoxWidget) Build() {
 	var state *ListBoxState
-	if state = GetState[ListBoxState](Context, l.id); state == nil {
+	if state = GetState[ListBoxState](&Context, l.id); state == nil {
 		state = &ListBoxState{selectedIndex: 0}
 		SetState(&Context, l.id, state)
 	}

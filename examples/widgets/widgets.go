@@ -5,6 +5,7 @@ import (
 	"image/color"
 	"time"
 
+	imgui "github.com/AllenDang/cimgui-go"
 	g "github.com/AllenDang/giu"
 )
 
@@ -60,10 +61,10 @@ func loop() {
 		g.Label("Auto wrapped label with very long line...............................................this line should be wrapped.").Wrapped(true),
 		g.Label("right/left click me"),
 		g.Event().
-			OnClick(g.MouseButtonLeft, func() { fmt.Println("I was left-clicked") }).
-			OnClick(g.MouseButtonRight, func() { fmt.Println("I was right-clicked") }).
-			OnDClick(g.MouseButtonLeft, func() { fmt.Println("I was left-double-clicked") }).
-			OnDClick(g.MouseButtonRight, func() { fmt.Println("I was right-double-clicked") }),
+			OnClick(imgui.ImGuiMouseButton_Left, func() { fmt.Println("I was left-clicked") }).
+			OnClick(imgui.ImGuiMouseButton_Right, func() { fmt.Println("I was right-clicked") }).
+			OnDClick(imgui.ImGuiMouseButton_Left, func() { fmt.Println("I was left-double-clicked") }).
+			OnDClick(imgui.ImGuiMouseButton_Right, func() { fmt.Println("I was right-double-clicked") }),
 		g.Row(
 			g.InputText(&name),
 			g.Event().OnActivate(func() { fmt.Println("input text focused") }).
@@ -111,7 +112,7 @@ func loop() {
 
 		g.ColorEdit("<- Click the black square. I'm changing a color for you##colorChanger", col).
 			Size(100).
-			Flags(g.ColorEditFlagsHEX).
+			Flags(imgui.ImGuiColorEditFlags_DisplayHex).
 			OnChange(func() {
 				fmt.Println(col)
 			}),
@@ -128,10 +129,10 @@ func loop() {
 		g.Row(
 			g.Label("Arrow buttons: "),
 
-			g.ArrowButton(g.DirectionLeft),
-			g.ArrowButton(g.DirectionRight),
-			g.ArrowButton(g.DirectionUp),
-			g.ArrowButton(g.DirectionDown),
+			g.ArrowButton(imgui.ImGuiDir_Left),
+			g.ArrowButton(imgui.ImGuiDir_Right),
+			g.ArrowButton(imgui.ImGuiDir_Up),
+			g.ArrowButton(imgui.ImGuiDir_Down),
 		),
 
 		g.Row(
@@ -156,9 +157,9 @@ func loop() {
 				g.InputTextMultiline(&multiline).Size(g.Auto, g.Auto),
 			),
 			g.TabItem("Tree").Layout(
-				g.TreeNode("TreeNode1").Flags(g.TreeNodeFlagsCollapsingHeader|g.TreeNodeFlagsDefaultOpen).Layout(
+				g.TreeNode("TreeNode1").Flags(imgui.ImGuiTreeNodeFlags_CollapsingHeader|imgui.ImGuiTreeNodeFlags_DefaultOpen).Layout(
 					g.Custom(func() {
-						if g.IsItemActive() && g.IsMouseClicked(g.MouseButtonLeft) {
+						if g.IsItemActive() && g.IsMouseClicked(imgui.ImGuiMouseButton_Left) {
 							fmt.Println("Tree node clicked")
 						}
 					}),
@@ -173,7 +174,7 @@ func loop() {
 					g.Selectable("Selectable 1").OnClick(func() { fmt.Println(1) }),
 					g.Selectable("Selectable 2").OnClick(func() { fmt.Println(2) }),
 				).Event(func() {
-					if g.IsItemClicked(g.MouseButtonLeft) {
+					if g.IsItemClicked(imgui.ImGuiMouseButton_Left) {
 						fmt.Println("Clicked")
 					}
 				}),
@@ -191,7 +192,7 @@ func loop() {
 								g.TreeTableRow("File1", g.Label("1MB")),
 								g.TreeTableRow("File2", g.Label("2MB")),
 							),
-							g.TreeTableRow("Folder3", g.Label("")).Flags(g.TreeNodeFlagsDefaultOpen).Children(
+							g.TreeTableRow("Folder3", g.Label("")).Flags(imgui.ImGuiTreeNodeFlags_DefaultOpen).Children(
 								g.TreeTableRow("File1", g.Label("1MB")),
 								g.TreeTableRow("File2", g.Label("2MB")),
 								g.TreeTableRow("File2", g.Label("2MB")),

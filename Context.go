@@ -4,7 +4,6 @@ import (
 	"sync"
 
 	imgui "github.com/AllenDang/cimgui-go"
-	"gopkg.in/eapache/queue.v1"
 )
 
 // Context represents a giu context.
@@ -37,12 +36,10 @@ type context struct {
 
 	FontAtlas FontAtlas
 
-	textureLoadingQueue *queue.Queue
-
 	window imgui.GLFWwindow
 }
 
-func CreateContext(window imgui.GLFWwindow) context {
+func CreateContext(window imgui.GLFWwindow) *context {
 	result := context{
 		window: window,
 	}
@@ -55,14 +52,14 @@ func CreateContext(window imgui.GLFWwindow) context {
 		fonts := io.GetFonts()
 		fonts.AddFontDefault(0)
 		fontAtlas, width, height, _ := fonts.GetTextureDataAsRGBA32()
-		texId := imgui.CreateTexture(fontAtlas, int(width), int(height))
-		fonts.SetTexID(texId)
+		texID := imgui.CreateTexture(fontAtlas, int(width), int(height))
+		fonts.SetTexID(texID)
 	} else {
 		result.FontAtlas.shouldRebuildFontAtlas = true
 		result.FontAtlas.rebuildFontAtlas()
 	}
 
-	return result
+	return &result
 }
 
 func (c *context) IO() imgui.ImGuiIO {
@@ -101,7 +98,7 @@ func (c *context) SetState(id string, data Disposable) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
-func GetState[T any, PT genericDisposable[T]](c context, id string) PT {
+func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 	if s, ok := c.load(id); ok {
 		s.valid = true
 		data, _ := s.data.(PT)
