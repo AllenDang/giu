@@ -46,7 +46,7 @@ func loop() {
 	g.SingleWindowWithMenuBar().Layout(
 		g.MenuBar().Layout(
 			g.Menu("File").Layout(
-				g.MenuItem("Open"),
+				g.MenuItem("Open").Shortcut("Ctrl+O"),
 				g.MenuItem("Save"),
 				// You could add any kind of widget here, not just menu item.
 				g.Menu("Save as ...").Layout(
