@@ -77,7 +77,7 @@ func (s *SliderIntWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.SliderInt(Context.FontAtlas.RegisterString(s.label), s.value, s.min, s.max, s.format, s.flags) && s.onChange != nil {
+	if imgui.SliderIntV(Context.FontAtlas.RegisterString(s.label), s.value, s.min, s.max, s.format, s.flags) && s.onChange != nil {
 		s.onChange()
 	}
 }
@@ -148,7 +148,7 @@ func (vs *VSliderIntWidget) Labelf(format string, args ...any) *VSliderIntWidget
 
 // Build implements Widget interface.
 func (vs *VSliderIntWidget) Build() {
-	if imgui.VSliderInt(
+	if imgui.VSliderIntV(
 		Context.FontAtlas.RegisterString(vs.label),
 		imgui.ImVec2{X: vs.width, Y: vs.height},
 		vs.value,
@@ -232,7 +232,7 @@ func (sf *SliderFloatWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.SliderFloat(Context.FontAtlas.RegisterString(sf.label), sf.value, sf.min, sf.max, sf.format, sf.flags) && sf.onChange != nil {
+	if imgui.SliderFloatV(Context.FontAtlas.RegisterString(sf.label), sf.value, sf.min, sf.max, sf.format, sf.flags) && sf.onChange != nil {
 		sf.onChange()
 	}
 }

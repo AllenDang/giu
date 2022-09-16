@@ -7,7 +7,7 @@ import (
 // OpenPopup opens a popup with specified id.
 // NOTE: you need to build this popup first (see Pop(Modal)Widget).
 func OpenPopup(name string) {
-	imgui.OpenPopup_Str(name, imgui.ImGuiPopupFlags_None)
+	imgui.OpenPopup_Str(name)
 }
 
 // CloseCurrentPopup closes currently opened popup.
@@ -49,7 +49,7 @@ func (p *PopupWidget) Layout(widgets ...Widget) *PopupWidget {
 
 // Build implements Widget interface.
 func (p *PopupWidget) Build() {
-	if imgui.BeginPopup(p.name, p.flags) {
+	if imgui.BeginPopupV(p.name, p.flags) {
 		p.layout.Build()
 		imgui.EndPopup()
 	}
@@ -98,7 +98,7 @@ func (p *PopupModalWidget) Layout(widgets ...Widget) *PopupModalWidget {
 
 // Build implements Widget interface.
 func (p *PopupModalWidget) Build() {
-	if imgui.BeginPopupModal(p.name, p.open, p.flags) {
+	if imgui.BeginPopupModalV(p.name, p.open, p.flags) {
 		p.layout.Build()
 		imgui.EndPopup()
 	}

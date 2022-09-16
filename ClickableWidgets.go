@@ -56,11 +56,11 @@ func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 // Build implements Widget interface.
 func (b *ButtonWidget) Build() {
 	if b.disabled {
-		imgui.BeginDisabled(true)
+		imgui.BeginDisabled()
 		defer imgui.EndDisabled()
 	}
 
-	if imgui.Button(Context.FontAtlas.RegisterString(b.id), imgui.ImVec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.ButtonV(Context.FontAtlas.RegisterString(b.id), imgui.ImVec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -179,7 +179,7 @@ func (b *InvisibleButtonWidget) ID(id string) *InvisibleButtonWidget {
 
 // Build implements Widget interface.
 func (b *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(Context.FontAtlas.RegisterString(b.id), imgui.ImVec2{X: b.width, Y: b.height}, 0) && b.onClick != nil {
+	if imgui.InvisibleButtonV(Context.FontAtlas.RegisterString(b.id), imgui.ImVec2{X: b.width, Y: b.height}, 0) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -318,7 +318,7 @@ func (s *SelectableWidget) Build() {
 		s.flags |= imgui.ImGuiSelectableFlags_AllowDoubleClick
 	}
 
-	if imgui.Selectable_Bool(Context.FontAtlas.RegisterString(s.label), s.selected, s.flags, imgui.ImVec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.Selectable_BoolV(Context.FontAtlas.RegisterString(s.label), s.selected, s.flags, imgui.ImVec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 
@@ -376,7 +376,7 @@ func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
 
 // Build implements Widget interface.
 func (t *TreeNodeWidget) Build() {
-	open := imgui.TreeNodeEx_Str(t.label, t.flags)
+	open := imgui.TreeNodeEx_StrV(t.label, t.flags)
 
 	if t.eventHandler != nil {
 		t.eventHandler()

@@ -92,7 +92,7 @@ func (p *ProgressIndicatorWidget) Build() {
 				// Draw text
 				if len(p.label) > 0 {
 					var size imgui.ImVec2
-					imgui.CalcTextSize(&size, Context.FontAtlas.RegisterString(p.label), false, -1)
+					imgui.CalcTextSize(&size, Context.FontAtlas.RegisterString(p.label))
 					labelWidth := size.X
 					labelPos := centerPt.Add(image.Pt(-1*int(labelWidth/2), int(p.radius+p.radius/5+8)))
 					canvas.AddText(labelPos, rgba, p.label)

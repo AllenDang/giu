@@ -96,11 +96,11 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 	basePos := viewport.GetPos()
 
 	if w.flags&imgui.ImGuiWindowFlags_NoMove != 0 && w.flags&imgui.ImGuiWindowFlags_NoResize != 0 {
-		imgui.SetNextWindowPos(imgui.ImVec2{X: basePos.X + w.x, Y: basePos.Y + w.y}, 0, imgui.NewImVec2(0, 0))
-		imgui.SetNextWindowSize(imgui.ImVec2{X: w.width, Y: w.height}, 0)
+		imgui.SetNextWindowPos(imgui.ImVec2{X: basePos.X + w.x, Y: basePos.Y + w.y})
+		imgui.SetNextWindowSize(imgui.ImVec2{X: w.width, Y: w.height})
 	} else {
-		imgui.SetNextWindowPos(imgui.ImVec2{X: basePos.X + w.x, Y: basePos.Y + w.y}, imgui.ImGuiCond_FirstUseEver, imgui.ImVec2{X: 0, Y: 0})
-		imgui.SetNextWindowSize(imgui.ImVec2{X: w.width, Y: w.height}, imgui.ImGuiCond_FirstUseEver)
+		imgui.SetNextWindowPosV(imgui.ImVec2{X: basePos.X + w.x, Y: basePos.Y + w.y}, imgui.ImGuiCond_FirstUseEver, imgui.ImVec2{X: 0, Y: 0})
+		imgui.SetNextWindowSizeV(imgui.ImVec2{X: w.width, Y: w.height}, imgui.ImGuiCond_FirstUseEver)
 	}
 
 	if w.bringToFront {
@@ -108,7 +108,7 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 		w.bringToFront = false
 	}
 
-	showed := imgui.Begin(Context.FontAtlas.RegisterString(w.title), w.open, w.flags)
+	showed := imgui.BeginV(Context.FontAtlas.RegisterString(w.title), w.open, w.flags)
 
 	if showed {
 		Layout(widgets).Build()

@@ -7,12 +7,13 @@ import (
 	_ "image/png"
 	"time"
 
+	imgui "github.com/AllenDang/cimgui-go"
 	g "github.com/AllenDang/giu"
 )
 
 var (
 	rgba *image.RGBA
-	tex  *g.Texture
+	tex  *imgui.Texture
 )
 
 func loop() {
@@ -64,12 +65,11 @@ func loop() {
 }
 
 func main() {
-	rgba, _ = g.LoadImage("./fallback.png")
+	rgba, _ = imgui.LoadImage("./fallback.png")
 
 	wnd := g.NewMasterWindow("Load Image", 600, 500, g.MasterWindowFlagsNotResizable)
-	g.EnqueueNewTextureFromRgba(rgba, func(t *g.Texture) {
-		tex = t
-	})
-	wnd.SetIcon([]image.Image{rgba})
+
+	tex = imgui.NewTextureFromRgba(rgba)
+
 	wnd.Run(loop)
 }

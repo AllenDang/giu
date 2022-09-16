@@ -50,7 +50,7 @@ func CreateContext(window imgui.GLFWwindow) *context {
 	if len(result.FontAtlas.defaultFonts) == 0 {
 		io := result.IO()
 		fonts := io.GetFonts()
-		fonts.AddFontDefault(0)
+		fonts.AddFontDefault()
 		fontAtlas, width, height, _ := fonts.GetTextureDataAsRGBA32()
 		texID := imgui.CreateTexture(fontAtlas, int(width), int(height))
 		fonts.SetTexID(texID)

@@ -55,7 +55,7 @@ func (l *RowWidget) Build() {
 // SameLine wrapps imgui.SomeLine
 // Don't use if you don't have to (use RowWidget instead).
 func SameLine() {
-	imgui.SameLine(0, 0)
+	imgui.SameLine()
 }
 
 var _ Widget = &ChildWidget{}
@@ -71,7 +71,7 @@ type ChildWidget struct {
 
 // Build implements Widget interface.
 func (c *ChildWidget) Build() {
-	if imgui.BeginChild_Str(c.id, imgui.ImVec2{X: c.width, Y: c.height}, c.border, c.flags) {
+	if imgui.BeginChild_StrV(c.id, imgui.ImVec2{X: c.width, Y: c.height}, c.border, c.flags) {
 		c.layout.Build()
 	}
 
@@ -162,7 +162,7 @@ func (cc *ComboCustomWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginCombo(Context.FontAtlas.RegisterString(cc.label), cc.previewValue, cc.flags) {
+	if imgui.BeginComboV(Context.FontAtlas.RegisterString(cc.label), cc.previewValue, cc.flags) {
 		cc.layout.Build()
 		imgui.EndCombo()
 	}
@@ -202,9 +202,9 @@ func (c *ComboWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginCombo(Context.FontAtlas.RegisterString(c.label), c.previewValue, c.flags) {
+	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label), c.previewValue, c.flags) {
 		for i, item := range c.items {
-			if imgui.Selectable_Bool(item, false, 0, imgui.NewImVec2(0, 0)) {
+			if imgui.Selectable_Bool(item) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
 					c.onChange()
@@ -267,7 +267,7 @@ func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
 
 // Build implements Widget interface.
 func (c *ContextMenuWidget) Build() {
-	if imgui.BeginPopupContextItem(c.id, c.flags) {
+	if imgui.BeginPopupContextItemV(c.id, c.flags) {
 		c.layout.Build()
 		imgui.EndPopup()
 	}
@@ -308,7 +308,7 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
-	imgui.DragInt(Context.FontAtlas.RegisterString(d.label), d.value, d.speed, d.min, d.max, d.format, imgui.ImGuiSliderFlags_None)
+	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label), d.value, d.speed, d.min, d.max, d.format, imgui.ImGuiSliderFlags_None)
 }
 
 var _ Widget = &ColumnWidget{}
@@ -423,7 +423,7 @@ func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 
 // Build implements Widget interface.
 func (m *MenuItemWidget) Build() {
-	if imgui.MenuItem_Bool(Context.FontAtlas.RegisterString(m.label), "", m.selected, m.enabled) && m.onClick != nil {
+	if imgui.MenuItem_BoolV(Context.FontAtlas.RegisterString(m.label), "", m.selected, m.enabled) && m.onClick != nil {
 		m.onClick()
 	}
 }
@@ -460,7 +460,7 @@ func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
 
 // Build implements Widget interface.
 func (m *MenuWidget) Build() {
-	if imgui.BeginMenu(Context.FontAtlas.RegisterString(m.label), m.enabled) {
+	if imgui.BeginMenuV(Context.FontAtlas.RegisterString(m.label), m.enabled) {
 		m.layout.Build()
 		imgui.EndMenu()
 	}
@@ -500,7 +500,7 @@ func (p *ProgressBarWidget) Overlayf(format string, args ...any) *ProgressBarWid
 
 // Build implements Widget interface.
 func (p *ProgressBarWidget) Build() {
-	imgui.ProgressBar(p.fraction, imgui.ImVec2{X: p.width, Y: p.height}, p.overlay)
+	imgui.ProgressBarV(p.fraction, imgui.ImVec2{X: p.width, Y: p.height}, p.overlay)
 }
 
 var _ Widget = &SeparatorWidget{}
@@ -582,7 +582,7 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 
 // BuildTabItem executes tab item build steps.
 func (t *TabItemWidget) BuildTabItem() {
-	if imgui.BeginTabItem(t.label, t.open, t.flags) {
+	if imgui.BeginTabItemV(t.label, t.open, t.flags) {
 		t.layout.Build()
 		imgui.EndTabItem()
 	}
@@ -620,7 +620,7 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 
 // Build implements Widget interface.
 func (t *TabBarWidget) Build() {
-	if imgui.BeginTabBar(t.id, t.flags) {
+	if imgui.BeginTabBarV(t.id, t.flags) {
 		for _, ti := range t.tabItems {
 			ti.BuildTabItem()
 		}
@@ -637,7 +637,7 @@ type TooltipWidget struct {
 
 // Build implements Widget interface.
 func (t *TooltipWidget) Build() {
-	if imgui.IsItemHovered(imgui.ImGuiHoveredFlags_None) {
+	if imgui.IsItemHovered() {
 		if t.layout != nil {
 			imgui.BeginTooltip()
 			t.layout.Build()
@@ -724,7 +724,7 @@ func (ce *ColorEditWidget) Build() {
 		imgui.PushItemWidth(ce.width)
 	}
 
-	if imgui.ColorEdit4(
+	if imgui.ColorEdit4V(
 		Context.FontAtlas.RegisterString(ce.label),
 		col,
 		ce.flags,

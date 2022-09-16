@@ -91,8 +91,8 @@ func (i *InputTextMultilineWidget) Build() {
 	}
 
 	if i.scrollToBottom {
-		imgui.BeginChild_Str(i.label, imgui.NewImVec2(0, 0), false, 0)
-		imgui.SetScrollHereY(1.0)
+		imgui.BeginChild_Str(i.label)
+		imgui.SetScrollHereY()
 		imgui.End()
 	}
 }
@@ -319,7 +319,7 @@ func (i *InputIntWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.InputInt(i.label, i.value, 0, 100, i.flags) && i.onChange != nil {
+	if imgui.InputIntV(i.label, i.value, 0, 100, i.flags) && i.onChange != nil {
 		i.onChange()
 	}
 }
@@ -390,7 +390,7 @@ func (i *InputFloatWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.InputFloat(i.label, i.value, 0, 0, i.format, i.flags) && i.onChange != nil {
+	if imgui.InputFloatV(i.label, i.value, 0, 0, i.format, i.flags) && i.onChange != nil {
 		i.onChange()
 	}
 }
@@ -424,7 +424,7 @@ func (l *LabelWidget) Wrapped(wrapped bool) *LabelWidget {
 // Build implements Widget interface.
 func (l *LabelWidget) Build() {
 	if l.wrapped {
-		imgui.PushTextWrapPos(0)
+		imgui.PushTextWrapPos()
 		defer imgui.PopTextWrapPos()
 	}
 

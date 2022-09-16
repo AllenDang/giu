@@ -256,7 +256,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	ranges := imgui.NewGlyphRange()
 	defer ranges.Destroy()
 
-	builder := imgui.NewFontGlyphRangesBuilder()
+	builder := imgui.NewImFontGlyphRangesBuilder()
 
 	// Because we pre-regestered numbers, so default string map's length should greater then 11.
 	if sb.Len() > len(preRegisterString) {
@@ -268,7 +268,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	builder.BuildRanges(ranges)
 
 	if len(a.defaultFonts) > 0 {
-		fontConfig := imgui.NewFontConfig()
+		fontConfig := imgui.NewImFontConfig()
 		fontConfig.SetOversampleH(2)
 		fontConfig.SetOversampleV(2)
 		fontConfig.SetRasterizerMultiply(1.5)
@@ -279,7 +279,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			}
 
 			if len(fontInfo.fontByte) == 0 {
-				fonts.AddFontFromFileTTF(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
+				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			} else {
 				// FIXME:
 				// fonts.AddFontFromMemoryTTF(fontInfo.fontByte, fontInfo.size, fontConfig, ranges.Data())
@@ -288,10 +288,10 @@ func (a *FontAtlas) rebuildFontAtlas() {
 
 		// Fall back if no font is added
 		if fonts.GetFontCount() == 0 {
-			fonts.AddFontDefault(0)
+			fonts.AddFontDefault()
 		}
 	} else {
-		fonts.AddFontDefault(0)
+		fonts.AddFontDefault()
 	}
 
 	// Add extra fonts
@@ -299,7 +299,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 		// Store imgui.Font for PushFont
 		var f imgui.ImFont
 		if len(fontInfo.fontByte) == 0 {
-			f = fonts.AddFontFromFileTTF(fontInfo.fontPath, fontInfo.size, 0, ranges.Data())
+			f = fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, 0, ranges.Data())
 		} else {
 			// FIXME:
 			// f = fonts.AddFontFromMemoryTTF(fontInfo.fontByte, fontInfo.size, 0, ranges.Data())

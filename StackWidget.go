@@ -44,5 +44,5 @@ func (s *StackWidget) Build() {
 		SetDrawCursorScreenPos(visiblePos)
 		l.Build()
 	}
-	imgui.PopStyleVar(1)
+	imgui.PopStyleVar()
 }

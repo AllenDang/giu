@@ -108,7 +108,7 @@ func (s *SplitLayoutWidget) Build() {
 
 	imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_ItemSpacing, imgui.NewImVec2(0, 0))
 	layout.Build()
-	imgui.PopStyleVar(1)
+	imgui.PopStyleVar()
 }
 
 func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
@@ -122,8 +122,8 @@ func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 		}),
 		layout,
 		Custom(func() {
-			imgui.PopStyleColor(1)
-			imgui.PopStyleVar(2)
+			imgui.PopStyleColor()
+			imgui.PopStyleVarV(2)
 		}),
 	}
 }
@@ -148,10 +148,10 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 				Layout(s.restoreItemSpacing(layout)).
 				Build()
 
-			imgui.PopStyleColor(1)
+			imgui.PopStyleColor()
 
 			if hasFramePadding {
-				imgui.PopStyleVar(1)
+				imgui.PopStyleVar()
 			}
 		}),
 	}

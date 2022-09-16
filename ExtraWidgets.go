@@ -67,13 +67,13 @@ func (h *HSplitterWidget) Build() {
 	c := Vec4ToRGBA(imgui.GetStyleColorVec4(imgui.ImGuiCol_ScrollbarGrab))
 
 	// Place a invisible button to capture event.
-	imgui.InvisibleButton(h.id, imgui.ImVec2{X: h.width, Y: h.height}, imgui.ImGuiButtonFlags_None)
+	imgui.InvisibleButton(h.id, imgui.ImVec2{X: h.width, Y: h.height})
 	if imgui.IsItemActive() {
 		*(h.delta) = imgui.GetIO().GetMouseDelta().Y
 	} else {
 		*(h.delta) = 0
 	}
-	if imgui.IsItemHovered(0) {
+	if imgui.IsItemHovered() {
 		imgui.SetMouseCursor(imgui.ImGuiMouseCursor_ResizeNS)
 		c = Vec4ToRGBA(imgui.GetStyleColorVec4(imgui.ImGuiCol_ScrollbarGrabActive))
 	}
@@ -142,14 +142,14 @@ func (v *VSplitterWidget) Build() {
 	c := Vec4ToRGBA(imgui.GetStyleColorVec4(imgui.ImGuiCol_ScrollbarGrab))
 
 	// Place a invisible button to capture event.
-	imgui.InvisibleButton(v.id, imgui.ImVec2{X: v.width, Y: v.height}, 0)
+	imgui.InvisibleButton(v.id, imgui.ImVec2{X: v.width, Y: v.height})
 	if imgui.IsItemActive() {
 		*(v.delta) = imgui.GetIO().GetMouseDelta().X
 	} else {
 		*(v.delta) = 0
 	}
 
-	if imgui.IsItemHovered(0) {
+	if imgui.IsItemHovered() {
 		imgui.SetMouseCursor(imgui.ImGuiMouseCursor_ResizeEW)
 		c = Vec4ToRGBA(imgui.GetStyleColorVec4(imgui.ImGuiCol_ScrollbarGrabActive))
 	}
@@ -185,15 +185,15 @@ func (ttr *TreeTableRowWidget) Flags(flags imgui.ImGuiTreeNodeFlags) *TreeTableR
 
 // BuildTreeTableRow executes table row building steps.
 func (ttr *TreeTableRowWidget) BuildTreeTableRow() {
-	imgui.TableNextRow(0, 0)
+	imgui.TableNextRow()
 	imgui.TableNextColumn()
 
 	open := false
 	if len(ttr.children) > 0 {
-		open = imgui.TreeNodeEx_Str(Context.FontAtlas.RegisterString(ttr.label), ttr.flags)
+		open = imgui.TreeNodeEx_StrV(Context.FontAtlas.RegisterString(ttr.label), ttr.flags)
 	} else {
 		ttr.flags |= imgui.ImGuiTreeNodeFlags_Leaf | imgui.ImGuiTreeNodeFlags_NoTreePushOnOpen
-		imgui.TreeNodeEx_Str(Context.FontAtlas.RegisterString(ttr.label), ttr.flags)
+		imgui.TreeNodeEx_StrV(Context.FontAtlas.RegisterString(ttr.label), ttr.flags)
 	}
 
 	for _, w := range ttr.layout {
@@ -276,7 +276,7 @@ func (tt *TreeTableWidget) Build() {
 		colCount = len(tt.rows[0].layout) + 1
 	}
 
-	if imgui.BeginTable(tt.id, int32(colCount), tt.flags, tt.size, 0) {
+	if imgui.BeginTableV(tt.id, int32(colCount), tt.flags, tt.size, 0) {
 		if tt.freezeColumn >= 0 && tt.freezeRow >= 0 {
 			imgui.TableSetupScrollFreeze(tt.freezeColumn, tt.freezeRow)
 		}
@@ -440,10 +440,10 @@ func (l *ListBoxWidget) Build() {
 
 	child := Child().Border(l.border).Size(l.width, l.height).Layout(Layout{
 		Custom(func() {
-			clipper := imgui.NewListClipper()
+			clipper := imgui.NewImGuiListClipper()
 			defer clipper.Destroy()
 
-			clipper.Begin(int32(len(l.items)), -1)
+			clipper.Begin(int32(len(l.items)))
 
 			for clipper.Step() {
 				for i := clipper.GetDisplayStart(); i < clipper.GetDisplayEnd(); i++ {
@@ -458,7 +458,7 @@ func (l *ListBoxWidget) Build() {
 						}
 					}).Build()
 
-					if imgui.IsItemHovered(0) && imgui.IsMouseDoubleClicked(imgui.ImGuiMouseButton_Left) && l.onDClick != nil {
+					if imgui.IsItemHovered() && imgui.IsMouseDoubleClicked(imgui.ImGuiMouseButton_Left) && l.onDClick != nil {
 						l.onDClick(state.selectedIndex)
 					}
 
@@ -558,7 +558,7 @@ func (d *DatePickerWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginCombo(d.id+"##Combo", d.date.Format(d.getFormat()), imgui.ImGuiComboFlags_HeightLargest) {
+	if imgui.BeginComboV(d.id+"##Combo", d.date.Format(d.getFormat()), imgui.ImGuiComboFlags_HeightLargest) {
 		// --- [Build year widget] ---
 		imgui.AlignTextToFramePadding()
 
@@ -680,7 +680,7 @@ func (d *DatePickerWidget) calendarField(day int) Widget {
 		}).Build()
 
 		if isToday {
-			imgui.PopStyleColor(1)
+			imgui.PopStyleColor()
 		}
 	})
 }

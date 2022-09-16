@@ -4,7 +4,11 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"image/draw"
+	"image/png"
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/AllenDang/cimgui-go"
 	imgui "github.com/AllenDang/cimgui-go"
@@ -118,4 +122,44 @@ func GetItemInnerSpacing() (w, h float32) {
 func GetFramePadding() (x, y float32) {
 	vec2 := imgui.GetStyle().GetFramePadding()
 	return vec2.X, vec2.Y
+}
+
+// LoadImage loads image from file and returns *image.RGBA.
+func LoadImage(imgPath string) (*image.RGBA, error) {
+	imgFile, err := os.Open(filepath.Clean(imgPath))
+	if err != nil {
+		return nil, fmt.Errorf("LoadImage: error opening image file %s: %w", imgPath, err)
+	}
+
+	defer func() {
+		// nolint:govet // we want to reuse this err variable here
+		if err := imgFile.Close(); err != nil {
+			panic(fmt.Sprintf("error closing image file: %s", imgPath))
+		}
+	}()
+
+	img, err := png.Decode(imgFile)
+	if err != nil {
+		return nil, fmt.Errorf("LoadImage: error decoding png image: %w", err)
+	}
+
+	return ImageToRgba(img), nil
+}
+
+// ImageToRgba converts image.Image to *image.RGBA.
+func ImageToRgba(img image.Image) *image.RGBA {
+	switch trueImg := img.(type) {
+	case *image.RGBA:
+		return trueImg
+	default:
+		rgba := image.NewRGBA(trueImg.Bounds())
+		draw.Draw(rgba, trueImg.Bounds(), trueImg, image.Pt(0, 0), draw.Src)
+		return rgba
+	}
+}
+
+func GetMousePos() image.Point {
+	var pt imgui.ImVec2
+	imgui.GetMousePos(&pt)
+	return image.Pt(int(pt.X), int(pt.Y))
 }

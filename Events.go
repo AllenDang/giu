@@ -4,13 +4,13 @@ import imgui "github.com/AllenDang/cimgui-go"
 
 // IsItemHovered returns true if mouse is over the item.
 func IsItemHovered() bool {
-	return imgui.IsItemHovered(0)
+	return imgui.IsItemHovered()
 }
 
 // IsItemClicked returns true if mouse is clicked
 // NOTE: if you're looking for clicking detection, see EventHandler.go.
 func IsItemClicked(mouseButton imgui.ImGuiMouseButton) bool {
-	return imgui.IsItemClicked(mouseButton)
+	return imgui.IsItemClickedV(mouseButton)
 }
 
 // IsItemActive returns true if item is active.
@@ -25,7 +25,7 @@ func IsKeyDown(key imgui.ImGuiKey) bool {
 
 // IsKeyPressed returns true if key `key` is pressed.
 func IsKeyPressed(key imgui.ImGuiKey) bool {
-	return imgui.IsKeyPressed(key, false)
+	return imgui.IsKeyPressedV(key, false)
 }
 
 // IsKeyReleased returns true if key `key` is released.
@@ -41,7 +41,7 @@ func IsMouseDown(button imgui.ImGuiMouseButton) bool {
 // IsMouseClicked returns true if mouse button `button` is clicked
 // NOTE: if you're looking for clicking detection, see EventHandler.go.
 func IsMouseClicked(button imgui.ImGuiMouseButton) bool {
-	return imgui.IsMouseClicked(button, false)
+	return imgui.IsMouseClickedV(button, false)
 }
 
 // IsMouseReleased returns true if mouse button `button` is released.
@@ -67,10 +67,10 @@ func IsWindowCollapsed() bool {
 // IsWindowFocused returns true if window is focused
 // NOTE: see also (*Window).HasFocus and (*Window).BringToFront.
 func IsWindowFocused(flags imgui.ImGuiFocusedFlags) bool {
-	return imgui.IsWindowFocused(flags)
+	return imgui.IsWindowFocusedV(flags)
 }
 
 // IsWindowHovered returns true if the window is hovered.
 func IsWindowHovered(flags imgui.ImGuiHoveredFlags) bool {
-	return imgui.IsWindowHovered(flags)
+	return imgui.IsWindowHoveredV(flags)
 }
