@@ -24,3 +24,5 @@ require (
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/napsy/go-css => github.com/gucio321/go-css v0.0.0-20220927183634-22e6096f036e

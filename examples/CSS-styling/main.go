@@ -11,9 +11,9 @@ var cssStyle []byte
 
 func loop() {
 	giu.Window("Window").Layout(
-		// giu.CSSTag("button").To(
-		giu.Button("HI! I'm a button styled with CSS"),
-		//),
+		giu.CSSTag("button").To(
+			giu.Button("HI! I'm a button styled with CSS"),
+		),
 		giu.CSSTag("label").To(
 			giu.Label("I'ma  normal label"),
 		),
