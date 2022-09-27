@@ -1,5 +1,9 @@
 main {
-        color: red;
+        background-color: blue;
+}
+
+label {
+        color: black;
 }
 
 button {

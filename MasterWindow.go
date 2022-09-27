@@ -194,11 +194,20 @@ func (w *MasterWindow) render() {
 	p := w.platform
 	r := w.renderer
 
+	mainStylesheet := Style()
+	if s, found := Context.cssStylesheet["main"]; found {
+		mainStylesheet = s
+	}
+
 	p.NewFrame()
 	r.PreRender(w.clearColor)
 
 	imgui.NewFrame()
-	w.updateFunc()
+	mainStylesheet.To(
+		Custom(func() {
+			w.updateFunc()
+		}),
+	).Build()
 	imgui.Render()
 
 	r.Render(p.DisplaySize(), p.FramebufferSize(), imgui.RenderedDrawData())

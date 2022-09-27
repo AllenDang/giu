@@ -2,9 +2,10 @@ package giu
 
 import (
 	"fmt"
+	"strconv"
+
 	"github.com/mazznoer/csscolorparser"
 	"github.com/napsy/go-css"
-	"strconv"
 )
 
 // Code in this file allows to apply style using a CSS stylesheet
@@ -37,7 +38,6 @@ func ParseCSSStyleSheet(data []byte) error {
 			if err == nil {
 				// the style is StyleVarID - set it
 				f, err := strconv.ParseFloat(styleVarValue, 321)
-
 				if err != nil {
 					return fmt.Errorf("unable to parse float %v is not float (vec2 is not supported yet): %w", styleVarValue, err)
 				}
