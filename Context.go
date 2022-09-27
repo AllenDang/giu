@@ -1,6 +1,7 @@
 package giu
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/AllenDang/imgui-go"
@@ -14,6 +15,11 @@ var Context context
 // Dispose method is called when state is removed from context.
 type Disposable interface {
 	Dispose()
+}
+
+type genericDisposable[T any] interface {
+	Disposable
+	*T
 }
 
 type state struct {
@@ -104,19 +110,40 @@ func (c *context) cleanState() {
 	c.widgetIndexCounter = 0
 }
 
+func SetState[T any, PT genericDisposable[T]](c *context, id string, data PT) {
+	c.state.Store(id, &state{valid: true, data: data})
+}
+
 func (c *context) SetState(id string, data Disposable) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
+func GetState[T any, PT genericDisposable[T]](c context, id string) PT {
+	if s, ok := c.load(id); ok {
+		s.valid = true
+		data, isOk := s.data.(PT)
+		Assert(isOk, "Context", "GetState", fmt.Sprintf("got state of unexpected type: expected %T, instead found %T", new(T), s.data))
+		return data
+
+	}
+	return nil
+}
+
 func (c *context) GetState(id string) any {
+	if s, ok := c.load(id); ok {
+		s.valid = true
+		return s.data
+	}
+	return nil
+}
+
+func (c *context) load(id any) (*state, bool) {
 	if v, ok := c.state.Load(id); ok {
 		if s, ok := v.(*state); ok {
-			s.valid = true
-			return s.data
+			return s, true
 		}
 	}
-
-	return nil
+	return nil, false
 }
 
 // Get widget index for current layout.

@@ -435,13 +435,9 @@ func (l *ListBoxWidget) OnMenu(onMenu func(selectedIndex int, menu string)) *Lis
 // nolint:gocognit // will fix later
 func (l *ListBoxWidget) Build() {
 	var state *ListBoxState
-	if s := Context.GetState(l.id); s == nil {
+	if state = GetState[ListBoxState](Context, l.id); state == nil {
 		state = &ListBoxState{selectedIndex: 0}
-		Context.SetState(l.id, state)
-	} else {
-		var isOk bool
-		state, isOk = s.(*ListBoxState)
-		Assert(isOk, "ListBoxWidget", "Build", "wrong state type recovered")
+		SetState(&Context, l.id, state)
 	}
 
 	child := Child().Border(l.border).Size(l.width, l.height).Layout(Layout{

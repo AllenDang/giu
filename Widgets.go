@@ -387,6 +387,7 @@ var _ Widget = &MenuItemWidget{}
 
 type MenuItemWidget struct {
 	label    string
+	shortcut string
 	selected bool
 	enabled  bool
 	onClick  func()
@@ -395,6 +396,7 @@ type MenuItemWidget struct {
 func MenuItem(label string) *MenuItemWidget {
 	return &MenuItemWidget{
 		label:    GenAutoID(label),
+		shortcut: "",
 		selected: false,
 		enabled:  true,
 		onClick:  nil,
@@ -403,6 +405,11 @@ func MenuItem(label string) *MenuItemWidget {
 
 func MenuItemf(format string, args ...any) *MenuItemWidget {
 	return MenuItem(fmt.Sprintf(format, args...))
+}
+
+func (m *MenuItemWidget) Shortcut(s string) *MenuItemWidget {
+	m.shortcut = s
+	return m
 }
 
 func (m *MenuItemWidget) Selected(s bool) *MenuItemWidget {
@@ -422,7 +429,7 @@ func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 
 // Build implements Widget interface.
 func (m *MenuItemWidget) Build() {
-	if imgui.MenuItemV(Context.FontAtlas.RegisterString(m.label), "", m.selected, m.enabled) && m.onClick != nil {
+	if imgui.MenuItemV(Context.FontAtlas.RegisterString(m.label), m.shortcut, m.selected, m.enabled) && m.onClick != nil {
 		m.onClick()
 	}
 }

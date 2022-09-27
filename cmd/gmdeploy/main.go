@@ -28,6 +28,9 @@ func main() {
 	var upx bool
 	flag.BoolVar(&upx, "upx", false, "use upx to compress executable")
 
+	var createUniversalBinaryForMacOS bool
+	flag.BoolVar(&createUniversalBinaryForMacOS, "ub", false, "create universal binary for macOS")
+
 	flag.Parse()
 
 	if targetOS == "" {
@@ -52,6 +55,24 @@ func main() {
 		cmd := exec.Command("bash", "-c", fmt.Sprintf("go build -ldflags='-s -w' -o %s", appName))
 		cmd.Dir = projectPath
 		runCmd(cmd)
+
+		// Create universal binary for macOS
+		// Build for arm64
+		cmd = exec.Command("bash", "-c", fmt.Sprintf("CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -o %s_binary_arm64 -ldflags '-s -w' .", appName))
+		cmd.Dir = projectPath
+		runCmd(cmd)
+
+		// Build for amd64
+		cmd = exec.Command("bash", "-c", fmt.Sprintf("CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -o %s_binary_amd64 -ldflags '-s -w' .", appName))
+		runCmd(cmd)
+
+		// Merge them together with lipo
+		cmd = exec.Command("bash", "-c", fmt.Sprintf("lipo -create -output %[1]s %[1]s_binary_amd64 %[1]s_binary_arm64", appName))
+		runCmd(cmd)
+
+		// Clean up
+		_ = os.Remove(filepath.Join(projectPath, fmt.Sprintf("%s_binary_arm64", appName)))
+		_ = os.Remove(filepath.Join(projectPath, fmt.Sprintf("%s_binary_amd64", appName)))
 
 		// Upx
 		if upx {

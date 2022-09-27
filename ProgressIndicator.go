@@ -62,16 +62,12 @@ func ProgressIndicator(label string, width, height, radius float32) *ProgressInd
 // Build implements Widget interface.
 func (p *ProgressIndicatorWidget) Build() {
 	// State exists
-	if s := Context.GetState(p.internalID); s == nil {
+	if state := GetState[progressIndicatorState](Context, p.internalID); state == nil {
 		// Register state and start go routine
 		ps := progressIndicatorState{angle: 0.0, stop: false}
-		Context.SetState(p.internalID, &ps)
+		SetState(&Context, p.internalID, &ps)
 		go ps.update()
 	} else {
-		var isOk bool
-		state, isOk := s.(*progressIndicatorState)
-		Assert(isOk, "ProgressIndicatorWidget", "Build", "got unexpected type of widget's sate")
-
 		child := Child().Border(false).Size(p.width, p.height).Layout(Layout{
 			Custom(func() {
 				// Process width and height

@@ -103,15 +103,9 @@ func PrepareMsgbox() Layout {
 			var state *msgboxState
 
 			// Register state.
-			stateRaw := Context.GetState(msgboxID)
-
-			if stateRaw == nil {
+			if state = GetState[msgboxState](Context, msgboxID); state == nil {
 				state = &msgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
-				Context.SetState(msgboxID, state)
-			} else {
-				var isOk bool
-				state, isOk = stateRaw.(*msgboxState)
-				Assert(isOk, "MsgboxWidget", "PrepareMsgbox", "got state of unexpected type")
+				SetState(&Context, msgboxID, state)
 			}
 
 			if state.open {
@@ -122,7 +116,7 @@ func PrepareMsgbox() Layout {
 			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxID)).Layout(
 				Custom(func() {
 					// Ensure the state is valid.
-					Context.GetState(msgboxID)
+					GetState[msgboxState](Context, msgboxID)
 				}),
 				Label(state.content).Wrapped(true),
 				buildMsgboxButtons(state.buttons, state.resultCallback),
@@ -135,15 +129,12 @@ func PrepareMsgbox() Layout {
 type MsgboxWidget struct{}
 
 func (m *MsgboxWidget) getState() *msgboxState {
-	stateRaw := Context.GetState(msgboxID)
-	if stateRaw == nil {
+	state := GetState[msgboxState](Context, msgboxID)
+	if state == nil {
 		panic("Msgbox is not prepared. Invoke giu.PrepareMsgbox in the end of the layout.")
 	}
 
-	result, isOk := stateRaw.(*msgboxState)
-	Assert(isOk, "MsgboxWidget", "getState", "unexpected type of widget's state recovered")
-
-	return result
+	return state
 }
 
 // Msgbox opens message box.
