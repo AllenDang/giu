@@ -43,6 +43,8 @@ func ParseCSSStyleSheet(data []byte) error {
 				}
 
 				setter.SetStyleFloat(styleVarID, float32(f))
+
+				continue
 			}
 
 			var styleColorID StyleColorID
