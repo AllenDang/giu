@@ -1,6 +1,8 @@
 package giu
 
 import (
+	"image/color"
+
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
@@ -56,6 +58,10 @@ func (w *MasterWindow) beforeRender() {
 
 func (w *MasterWindow) afterRender() {
 	Context.cleanState()
+}
+
+func (w *MasterWindow) SetBgColor(col color.RGBA) {
+	imgui.SetBgColor(ToVec4Color(col))
 }
 
 // Run runs the main loop.
