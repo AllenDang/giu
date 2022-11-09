@@ -286,6 +286,8 @@ type InputIntWidget struct {
 	width    float32
 	flags    InputTextFlags
 	onChange func()
+	step     int
+	stepFast int
 }
 
 // InputInt creates input int widget
@@ -325,6 +327,18 @@ func (i *InputIntWidget) Flags(flags InputTextFlags) *InputIntWidget {
 	return i
 }
 
+// StepSize sets the step size.
+func (i *InputIntWidget) StepSize(step int) *InputIntWidget {
+	i.step = step
+	return i
+}
+
+// StepSizeFast sets the fast step size.
+func (i *InputIntWidget) StepSizeFast(stepFast int) *InputIntWidget {
+	i.stepFast = stepFast
+	return i
+}
+
 // OnChange adds on change callback.
 func (i *InputIntWidget) OnChange(onChange func()) *InputIntWidget {
 	i.onChange = onChange
@@ -338,7 +352,7 @@ func (i *InputIntWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.InputIntV(i.label, i.value, 0, 100, int(i.flags)) && i.onChange != nil {
+	if imgui.InputIntV(i.label, i.value, i.step, i.stepFast, int(i.flags)) && i.onChange != nil {
 		i.onChange()
 	}
 }
@@ -353,6 +367,8 @@ type InputFloatWidget struct {
 	flags    InputTextFlags
 	format   string
 	onChange func()
+	step     float32
+	stepFast float32
 }
 
 // InputFloat constructs InputFloatWidget.
@@ -402,6 +418,18 @@ func (i *InputFloatWidget) OnChange(onChange func()) *InputFloatWidget {
 	return i
 }
 
+// StepSize sets the step size.
+func (i *InputFloatWidget) StepSize(step float32) *InputFloatWidget {
+	i.step = step
+	return i
+}
+
+// StepSizeFast sets the fast step size.
+func (i *InputFloatWidget) StepSizeFast(stepFast float32) *InputFloatWidget {
+	i.stepFast = stepFast
+	return i
+}
+
 // Build implements Widget interface.
 func (i *InputFloatWidget) Build() {
 	if i.width != 0 {
@@ -409,7 +437,7 @@ func (i *InputFloatWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.InputFloatV(i.label, i.value, 0, 0, i.format, int(i.flags)) && i.onChange != nil {
+	if imgui.InputFloatV(i.label, i.value, i.step, i.stepFast, i.format, int(i.flags)) && i.onChange != nil {
 		i.onChange()
 	}
 }
