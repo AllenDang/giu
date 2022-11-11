@@ -16,6 +16,9 @@ type StyleSetter struct {
 	font     *FontInfo
 	disabled bool
 	layout   Layout
+
+	// set by imgui.PushFont inside ss.Push() method
+	isFontPushed bool
 }
 
 // Style initializes a style setter (see examples/setstyle).
@@ -87,10 +90,25 @@ func (ss *StyleSetter) Build() {
 		return
 	}
 
+	ss.Push()
+
+	ss.layout.Build()
+
+	ss.Pop()
+}
+
+// Push allows to manually activate Styles written inside of StyleSetter
+// it works like imgui.PushXXX() stuff, but for group of style variables,
+// just like StyleSetter.
+// NOTE: DO NOT ORGET to call ss.Pop() at the end of styled layout, because
+// else you'll get ImGui exception!
+func (ss *StyleSetter) Push() {
+	// Push colors
 	for k, v := range ss.colors {
 		imgui.PushStyleColor(imgui.StyleColorID(k), ToVec4Color(v))
 	}
 
+	// push style vars
 	for k, v := range ss.styles {
 		if k.IsVec2() {
 			var value imgui.Vec2
@@ -115,18 +133,21 @@ func (ss *StyleSetter) Build() {
 		}
 	}
 
+	// push font
 	if ss.font != nil {
-		if PushFont(ss.font) {
-			defer PopFont()
-		}
+		ss.isFontPushed = PushFont(ss.font)
 	}
 
 	imgui.BeginDisabled(ss.disabled)
+}
 
-	ss.layout.Build()
+// Pop
+func (ss *StyleSetter) Pop() {
+	if ss.isFontPushed {
+		imgui.PopFont()
+	}
 
 	imgui.EndDisabled()
-
 	imgui.PopStyleColorV(len(ss.colors))
 	imgui.PopStyleVarV(len(ss.styles))
 }
