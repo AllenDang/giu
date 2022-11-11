@@ -8,7 +8,7 @@ require (
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220806181222-55e207c401ad
 	github.com/mazznoer/csscolorparser v0.1.3
-	github.com/napsy/go-css v0.0.0-20180317163611-b251a459e17c
+	github.com/napsy/go-css v0.0.0-20221107082635-4ed403047a64
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/sahilm/fuzzy v0.1.0
 	github.com/stretchr/testify v1.8.1
@@ -24,5 +24,3 @@ require (
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/napsy/go-css => github.com/gucio321/go-css v0.0.0-20220927183634-22e6096f036e
