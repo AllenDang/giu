@@ -130,7 +130,7 @@ func (c *CSSTagWidget) Build() {
 	// get style from context.
 	// if it doesn't exist Assert.
 	style, exists := Context.cssStylesheet[c.tag]
-	Assert(exists, "CSSTagWidget", "Build", "CSS stylesheet doesn't contain tag: ", c.tag)
+	Assert(exists, "CSSTagWidget", "Build", "CSS stylesheet doesn't contain tag: %s", c.tag)
 
 	style.To(c.layout).Build()
 }
