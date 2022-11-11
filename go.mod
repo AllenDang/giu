@@ -9,7 +9,7 @@ require (
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220806181222-55e207c401ad
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/sahilm/fuzzy v0.1.0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 	golang.org/x/image v0.0.0-20220601225756-64ec528b34cd
 	gopkg.in/eapache/queue.v1 v1.1.0
 )
