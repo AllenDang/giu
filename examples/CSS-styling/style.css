@@ -1,5 +1,6 @@
 main {
         background-color: blue;
+        frame-padding: 80, 20;
 }
 
 label {

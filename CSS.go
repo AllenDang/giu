@@ -3,6 +3,7 @@ package giu
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/mazznoer/csscolorparser"
 	"github.com/napsy/go-css"
@@ -37,12 +38,33 @@ func ParseCSSStyleSheet(data []byte) error {
 
 			if err == nil {
 				// the style is StyleVarID - set it
-				f, err := strconv.ParseFloat(styleVarValue, 321)
-				if err != nil {
-					return fmt.Errorf("unable to parse float %v is not float (vec2 is not supported yet): %w", styleVarValue, err)
+				f, err := strconv.ParseFloat(styleVarValue, 32)
+				if err == nil {
+					setter.SetStyleFloat(styleVarID, float32(f))
 				}
 
-				setter.SetStyleFloat(styleVarID, float32(f))
+				// so maybe it is a vec2 value:
+				// var-name: x, y;
+				vec2 := strings.Split(styleVarValue, ",")
+				if len(vec2) != 2 {
+					return fmt.Errorf("unable to parse value %v is not float nor vec2: %w", styleVarValue, err)
+				}
+
+				for i, v := range vec2 {
+					vec2[i] = strings.ReplaceAll(v, " ", "")
+				}
+
+				x, err := strconv.ParseFloat(vec2[0], 32)
+				if err != nil {
+					return fmt.Errorf("unable to parse value %v is not float: %w", vec2[0], err)
+				}
+
+				y, err := strconv.ParseFloat(vec2[1], 32)
+				if err != nil {
+					return fmt.Errorf("unable to parse value %v is not float: %w", vec2[1], err)
+				}
+
+				setter.SetStyle(styleVarID, float32(x), float32(y))
 
 				continue
 			}
