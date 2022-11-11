@@ -203,11 +203,9 @@ func (w *MasterWindow) render() {
 	r.PreRender(w.clearColor)
 
 	imgui.NewFrame()
-	mainStylesheet.To(
-		Custom(func() {
-			w.updateFunc()
-		}),
-	).Build()
+	mainStylesheet.Push()
+	w.updateFunc()
+	mainStylesheet.Pop()
 	imgui.Render()
 
 	r.Render(p.DisplaySize(), p.FramebufferSize(), imgui.RenderedDrawData())
