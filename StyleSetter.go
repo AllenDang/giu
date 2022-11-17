@@ -155,7 +155,7 @@ func (ss *StyleSetter) Push() {
 	imgui.BeginDisabled(ss.disabled)
 }
 
-// Pop.
+// Pop allows to manually pop the whole StyleSetter (use after Push!)
 func (ss *StyleSetter) Pop() {
 	if ss.isFontPushed {
 		imgui.PopFont()

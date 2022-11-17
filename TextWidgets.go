@@ -70,7 +70,7 @@ func (i *InputTextMultilineWidget) Size(width, height float32) *InputTextMultili
 	return i
 }
 
-// Enable/Disable auto scroll to bottoim.
+// AutoScrollToBottom Enables/Disables auto scroll to bottoim.
 func (i *InputTextMultilineWidget) AutoScrollToBottom(b bool) *InputTextMultilineWidget {
 	i.scrollToBottom = b
 	return i
