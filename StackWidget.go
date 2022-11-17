@@ -34,7 +34,7 @@ func (s *StackWidget) Build() {
 	if s.visible >= 0 && s.visible < int32(len(s.layouts)) {
 		s.layouts[s.visible].Build()
 		// remove visible layout from layouts list
-		// nolint:gocritic // remove visible widget
+		//nolint:gocritic // remove visible widget
 		layouts = append(s.layouts[:s.visible], s.layouts[:s.visible+1]...)
 	}
 

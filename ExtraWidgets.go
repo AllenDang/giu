@@ -50,7 +50,7 @@ func (h *HSplitterWidget) ID(id string) *HSplitterWidget {
 }
 
 // Build implements Widget interface
-// nolint:dupl // will fix later
+//nolint:dupl // will fix later
 func (h *HSplitterWidget) Build() {
 	// Calc line position.
 	width := 40
@@ -126,7 +126,7 @@ func (v *VSplitterWidget) ID(id string) *VSplitterWidget {
 }
 
 // Build implements Widget interface
-// nolint:dupl // will fix later
+//nolint:dupl // will fix later
 func (v *VSplitterWidget) Build() {
 	// Calc line position.
 	width := 2
@@ -445,7 +445,7 @@ func (l *ListBoxWidget) OnMenu(onMenu func(selectedIndex int, menu string)) *Lis
 }
 
 // Build implements Widget interface
-// nolint:gocognit // will fix later
+//nolint:gocognit // will fix later
 func (l *ListBoxWidget) Build() {
 	var state *ListBoxState
 	if state = GetState[ListBoxState](Context, l.id); state == nil {

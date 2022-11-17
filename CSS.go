@@ -22,7 +22,7 @@ import (
 //
 // docs: docs/css.md
 
-// ParseCSSStyleSheet parses CSS stylesheet and stores the rules in giu context
+// ParseCSSStyleSheet parses CSS stylesheet and stores the rules in giu context.
 func ParseCSSStyleSheet(data []byte) error {
 	stylesheet, err := css.Unmarshal(data)
 	if err != nil {
@@ -105,29 +105,29 @@ func panicToErr(f func()) (err error) {
 	return err
 }
 
-// cssStylesheet is a map tag:StyleSetter
+// cssStylesheet is a map tag:StyleSetter.
 type cssStylesheet map[string]*StyleSetter
 
 var _ Widget = &CSSTagWidget{}
 
-// CSSTagWidget is a widget that allows to apply CSS style to a specified layout
+// CSSTagWidget is a widget that allows to apply CSS style to a specified layout.
 type CSSTagWidget struct {
 	tag    string
 	layout Layout
 }
 
-// CSSTag creates CSSTagWidget
+// CSSTag creates CSSTagWidget.
 func CSSTag(tag string) *CSSTagWidget {
 	return &CSSTagWidget{tag: tag}
 }
 
-// To specifies a layout to which the style will be applied
+// To specifies a layout to which the style will be applied.
 func (c *CSSTagWidget) To(layout ...Widget) *CSSTagWidget {
 	c.layout = layout
 	return c
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (c *CSSTagWidget) Build() {
 	// get style from context.
 	// if it doesn't exist Assert.
