@@ -43,6 +43,8 @@ func ParseCSSStyleSheet(data []byte) error {
 				f, err := strconv.ParseFloat(styleVarValue, 32)
 				if err == nil {
 					setter.SetStyleFloat(styleVarID, float32(f))
+
+					continue
 				}
 
 				// so maybe it is a vec2 value:
