@@ -190,8 +190,8 @@ func (p *PlotCanvasWidget) Build() {
 	}
 }
 
-// PlotBarWidget adds bar plot (column chart) to the canvas.
-type PlotBarWidget struct {
+// BarPlot adds bar plot (column chart) to the canvas.
+type BarPlot struct {
 	title  string
 	data   []float64
 	width  float64
@@ -199,9 +199,9 @@ type PlotBarWidget struct {
 	offset int
 }
 
-// PlotBar adds a plot bar (column chart).
-func PlotBar(title string, data []float64) *PlotBarWidget {
-	return &PlotBarWidget{
+// Bar adds a plot bar (column chart).
+func Bar(title string, data []float64) *BarPlot {
+	return &BarPlot{
 		title:  title,
 		data:   data,
 		width:  0.2,
@@ -211,30 +211,30 @@ func PlotBar(title string, data []float64) *PlotBarWidget {
 }
 
 // Width sets bar width.
-func (p *PlotBarWidget) Width(width float64) *PlotBarWidget {
+func (p *BarPlot) Width(width float64) *BarPlot {
 	p.width = width
 	return p
 }
 
 // Shift sets shift of the bar.
-func (p *PlotBarWidget) Shift(shift float64) *PlotBarWidget {
+func (p *BarPlot) Shift(shift float64) *BarPlot {
 	p.shift = shift
 	return p
 }
 
 // Offset sets bar's offset.
-func (p *PlotBarWidget) Offset(offset int) *PlotBarWidget {
+func (p *BarPlot) Offset(offset int) *BarPlot {
 	p.offset = offset
 	return p
 }
 
 // Plot implements Plot interface.
-func (p *PlotBarWidget) Plot() {
+func (p *BarPlot) Plot() {
 	imgui.ImPlotBars(p.title, p.data, p.width, p.shift, p.offset)
 }
 
-// PlotBarHWidget represents a column chart on Y axis.
-type PlotBarHWidget struct {
+// BarHPlot represents a column chart on Y axis.
+type BarHPlot struct {
 	title  string
 	data   []float64
 	height float64
@@ -242,9 +242,9 @@ type PlotBarHWidget struct {
 	offset int
 }
 
-// PlotBarH adds plot bars on y axis.
-func PlotBarH(title string, data []float64) *PlotBarHWidget {
-	return &PlotBarHWidget{
+// BarH adds plot bars on y axis.
+func BarH(title string, data []float64) *BarHPlot {
+	return &BarHPlot{
 		title:  title,
 		data:   data,
 		height: 0.2,
@@ -254,30 +254,30 @@ func PlotBarH(title string, data []float64) *PlotBarHWidget {
 }
 
 // Height sets bar height (in fact bars' width).
-func (p *PlotBarHWidget) Height(height float64) *PlotBarHWidget {
+func (p *BarHPlot) Height(height float64) *BarHPlot {
 	p.height = height
 	return p
 }
 
 // Shift sets shift.
-func (p *PlotBarHWidget) Shift(shift float64) *PlotBarHWidget {
+func (p *BarHPlot) Shift(shift float64) *BarHPlot {
 	p.shift = shift
 	return p
 }
 
 // Offset sets offset.
-func (p *PlotBarHWidget) Offset(offset int) *PlotBarHWidget {
+func (p *BarHPlot) Offset(offset int) *BarHPlot {
 	p.offset = offset
 	return p
 }
 
 // Plot implements plot interface.
-func (p *PlotBarHWidget) Plot() {
+func (p *BarHPlot) Plot() {
 	imgui.ImPlotBarsH(Context.FontAtlas.RegisterString(p.title), p.data, p.height, p.shift, p.offset)
 }
 
-// PlotLineWidget represents a plot line (linear chart).
-type PlotLineWidget struct {
+// LinePlot represents a plot line (linear chart).
+type LinePlot struct {
 	title      string
 	values     []float64
 	xScale, x0 float64
@@ -285,9 +285,9 @@ type PlotLineWidget struct {
 	yAxis      ImPlotYAxis
 }
 
-// PlotLine adds a new plot line to the canvas.
-func PlotLine(title string, values []float64) *PlotLineWidget {
-	return &PlotLineWidget{
+// Line adds a new plot line to the canvas.
+func Line(title string, values []float64) *LinePlot {
+	return &LinePlot{
 		title:  title,
 		values: values,
 		xScale: 1,
@@ -297,46 +297,46 @@ func PlotLine(title string, values []float64) *PlotLineWidget {
 }
 
 // SetPlotYAxis sets yAxis parameters.
-func (p *PlotLineWidget) SetPlotYAxis(yAxis ImPlotYAxis) *PlotLineWidget {
+func (p *LinePlot) SetPlotYAxis(yAxis ImPlotYAxis) *LinePlot {
 	p.yAxis = yAxis
 	return p
 }
 
 // XScale sets x-axis-scale.
-func (p *PlotLineWidget) XScale(scale float64) *PlotLineWidget {
+func (p *LinePlot) XScale(scale float64) *LinePlot {
 	p.xScale = scale
 	return p
 }
 
 // X0 sets a start position on x axis.
-func (p *PlotLineWidget) X0(x0 float64) *PlotLineWidget {
+func (p *LinePlot) X0(x0 float64) *LinePlot {
 	p.x0 = x0
 	return p
 }
 
 // Offset sets chart offset.
-func (p *PlotLineWidget) Offset(offset int) *PlotLineWidget {
+func (p *LinePlot) Offset(offset int) *LinePlot {
 	p.offset = offset
 	return p
 }
 
 // Plot implements Plot interface.
-func (p *PlotLineWidget) Plot() {
+func (p *LinePlot) Plot() {
 	imgui.ImPlotSetPlotYAxis(imgui.ImPlotYAxis(p.yAxis))
 	imgui.ImPlotLine(Context.FontAtlas.RegisterString(p.title), p.values, p.xScale, p.x0, p.offset)
 }
 
-// PlotLineXYWidget adds XY plot line.
-type PlotLineXYWidget struct {
+// LineXYPlot adds XY plot line.
+type LineXYPlot struct {
 	title  string
 	xs, ys []float64
 	offset int
 	yAxis  ImPlotYAxis
 }
 
-// PlotLineXY adds XY plot line to canvas.
-func PlotLineXY(title string, xvalues, yvalues []float64) *PlotLineXYWidget {
-	return &PlotLineXYWidget{
+// LineXY adds XY plot line to canvas.
+func LineXY(title string, xvalues, yvalues []float64) *LineXYPlot {
+	return &LineXYPlot{
 		title:  title,
 		xs:     xvalues,
 		ys:     yvalues,
@@ -345,25 +345,25 @@ func PlotLineXY(title string, xvalues, yvalues []float64) *PlotLineXYWidget {
 }
 
 // SetPlotYAxis sets yAxis parameters.
-func (p *PlotLineXYWidget) SetPlotYAxis(yAxis ImPlotYAxis) *PlotLineXYWidget {
+func (p *LineXYPlot) SetPlotYAxis(yAxis ImPlotYAxis) *LineXYPlot {
 	p.yAxis = yAxis
 	return p
 }
 
 // Offset sets chart's offset.
-func (p *PlotLineXYWidget) Offset(offset int) *PlotLineXYWidget {
+func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
 	p.offset = offset
 	return p
 }
 
 // Plot implements Plot interface.
-func (p *PlotLineXYWidget) Plot() {
+func (p *LineXYPlot) Plot() {
 	imgui.ImPlotSetPlotYAxis(imgui.ImPlotYAxis(p.yAxis))
 	imgui.ImPlotLineXY(Context.FontAtlas.RegisterString(p.title), p.xs, p.ys, p.offset)
 }
 
-// PlotPieChartWidget represents a pie chart.
-type PlotPieChartWidget struct {
+// PieChartPlot represents a pie chart.
+type PieChartPlot struct {
 	labels       []string
 	values       []float64
 	x, y, radius float64
@@ -372,9 +372,9 @@ type PlotPieChartWidget struct {
 	angle0       float64
 }
 
-// PlotPieChart adds pie chart to the canvas.
-func PlotPieChart(labels []string, values []float64, x, y, radius float64) *PlotPieChartWidget {
-	return &PlotPieChartWidget{
+// PieChart adds pie chart to the canvas.
+func PieChart(labels []string, values []float64, x, y, radius float64) *PieChartPlot {
+	return &PieChartPlot{
 		labels:      labels,
 		values:      values,
 		x:           x,
@@ -386,35 +386,35 @@ func PlotPieChart(labels []string, values []float64, x, y, radius float64) *Plot
 	}
 }
 
-func (p *PlotPieChartWidget) Normalize(n bool) *PlotPieChartWidget {
+func (p *PieChartPlot) Normalize(n bool) *PieChartPlot {
 	p.normalize = n
 	return p
 }
 
 // LabelFormat sets format of labels.
-func (p *PlotPieChartWidget) LabelFormat(fmtStr string) *PlotPieChartWidget {
+func (p *PieChartPlot) LabelFormat(fmtStr string) *PieChartPlot {
 	p.labelFormat = fmtStr
 	return p
 }
 
-func (p *PlotPieChartWidget) Angle0(a float64) *PlotPieChartWidget {
+func (p *PieChartPlot) Angle0(a float64) *PieChartPlot {
 	p.angle0 = a
 	return p
 }
 
-func (p *PlotPieChartWidget) Plot() {
+func (p *PieChartPlot) Plot() {
 	imgui.ImPlotPieChart(Context.FontAtlas.RegisterStringSlice(p.labels), p.values, p.x, p.y, p.radius, p.normalize, p.labelFormat, p.angle0)
 }
 
-type PlotScatterWidget struct {
+type ScatterPlot struct {
 	label      string
 	values     []float64
 	xscale, x0 float64
 	offset     int
 }
 
-func PlotScatter(label string, values []float64) *PlotScatterWidget {
-	return &PlotScatterWidget{
+func Scatter(label string, values []float64) *ScatterPlot {
+	return &ScatterPlot{
 		label:  label,
 		values: values,
 		xscale: 1,
@@ -423,33 +423,33 @@ func PlotScatter(label string, values []float64) *PlotScatterWidget {
 	}
 }
 
-func (p *PlotScatterWidget) XScale(s float64) *PlotScatterWidget {
+func (p *ScatterPlot) XScale(s float64) *ScatterPlot {
 	p.xscale = s
 	return p
 }
 
-func (p *PlotScatterWidget) X0(x float64) *PlotScatterWidget {
+func (p *ScatterPlot) X0(x float64) *ScatterPlot {
 	p.x0 = x
 	return p
 }
 
-func (p *PlotScatterWidget) Offset(offset int) *PlotScatterWidget {
+func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
 	p.offset = offset
 	return p
 }
 
-func (p *PlotScatterWidget) Plot() {
+func (p *ScatterPlot) Plot() {
 	imgui.ImPlotScatter(Context.FontAtlas.RegisterString(p.label), p.values, p.xscale, p.x0, p.offset)
 }
 
-type PlotScatterXYWidget struct {
+type ScatterXYPlot struct {
 	label  string
 	xs, ys []float64
 	offset int
 }
 
-func PlotScatterXY(label string, xs, ys []float64) *PlotScatterXYWidget {
-	return &PlotScatterXYWidget{
+func ScatterXY(label string, xs, ys []float64) *ScatterXYPlot {
+	return &ScatterXYPlot{
 		label:  label,
 		xs:     xs,
 		ys:     ys,
@@ -457,11 +457,11 @@ func PlotScatterXY(label string, xs, ys []float64) *PlotScatterXYWidget {
 	}
 }
 
-func (p *PlotScatterXYWidget) Offset(offset int) *PlotScatterXYWidget {
+func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
 	p.offset = offset
 	return p
 }
 
-func (p *PlotScatterXYWidget) Plot() {
+func (p *ScatterXYPlot) Plot() {
 	imgui.ImPlotScatterXY(Context.FontAtlas.RegisterString(p.label), p.xs, p.ys, p.offset)
 }
