@@ -15,60 +15,66 @@ For simple use-case see [examples/CSS-styling](../examples/CSS-styling/)
 
 ## Colors
 
-StyleColorText                  = StyleColorID(imgui.StyleColorText)                  // color
-StyleColorTextDisabled          = StyleColorID(imgui.StyleColorTextDisabled)          // disabled-color
-StyleColorWindowBg              = StyleColorID(imgui.StyleColorWindowBg)              // background-color
-StyleColorChildBg               = StyleColorID(imgui.StyleColorChildBg)               // child-background-color
-StyleColorPopupBg               = StyleColorID(imgui.StyleColorPopupBg)               // popup-background-color
-StyleColorBorder                = StyleColorID(imgui.StyleColorBorder)                // border-color
-StyleColorBorderShadow          = StyleColorID(imgui.StyleColorBorderShadow)          // border-shadow-color
-StyleColorFrameBg               = StyleColorID(imgui.StyleColorFrameBg)               // frame-background-color
-StyleColorFrameBgHovered        = StyleColorID(imgui.StyleColorFrameBgHovered)        // frame-background-hovered-color
-StyleColorFrameBgActive         = StyleColorID(imgui.StyleColorFrameBgActive)         // frame-background-active-color
-StyleColorTitleBg               = StyleColorID(imgui.StyleColorTitleBg)               // title-background-color
-StyleColorTitleBgActive         = StyleColorID(imgui.StyleColorTitleBgActive)         // title-background-active-color
-StyleColorTitleBgCollapsed      = StyleColorID(imgui.StyleColorTitleBgCollapsed)      // title-background-collapsed-color
-StyleColorMenuBarBg             = StyleColorID(imgui.StyleColorMenuBarBg)             // menu-bar-background-color
-StyleColorScrollbarBg           = StyleColorID(imgui.StyleColorScrollbarBg)           // scrollbar-background-color
-StyleColorScrollbarGrab         = StyleColorID(imgui.StyleColorScrollbarGrab)         // scrollbar-grab-color
-StyleColorScrollbarGrabHovered  = StyleColorID(imgui.StyleColorScrollbarGrabHovered)  // scrollbar-grab-hovered-color
-StyleColorScrollbarGrabActive   = StyleColorID(imgui.StyleColorScrollbarGrabActive)   // scrollbar-grab-active-color
-StyleColorCheckMark             = StyleColorID(imgui.StyleColorCheckMark)             // checkmark-color
-StyleColorSliderGrab            = StyleColorID(imgui.StyleColorSliderGrab)            // slider-grab-color
-StyleColorSliderGrabActive      = StyleColorID(imgui.StyleColorSliderGrabActive)      // slider-grab-active-color
-StyleColorButton                = StyleColorID(imgui.StyleColorButton)                // button-color
-StyleColorButtonHovered         = StyleColorID(imgui.StyleColorButtonHovered)         // button-hovered-color
-StyleColorButtonActive          = StyleColorID(imgui.StyleColorButtonActive)          // button-active-color
-StyleColorHeader                = StyleColorID(imgui.StyleColorHeader)                // header-color
-StyleColorHeaderHovered         = StyleColorID(imgui.StyleColorHeaderHovered)         // header-hovered-color
-StyleColorHeaderActive          = StyleColorID(imgui.StyleColorHeaderActive)          // header-active-color
-StyleColorSeparator             = StyleColorID(imgui.StyleColorSeparator)             // separator-color
-StyleColorSeparatorHovered      = StyleColorID(imgui.StyleColorSeparatorHovered)      // separator-hovered-color
-StyleColorSeparatorActive       = StyleColorID(imgui.StyleColorSeparatorActive)       // separator-active-color
-StyleColorResizeGrip            = StyleColorID(imgui.StyleColorResizeGrip)            // resize-grip-color
-StyleColorResizeGripHovered     = StyleColorID(imgui.StyleColorResizeGripHovered)     // resize-grip-hovered-color
-StyleColorResizeGripActive      = StyleColorID(imgui.StyleColorResizeGripActive)      // resize-grip-active-color
-StyleColorTab                   = StyleColorID(imgui.StyleColorTab)                   // tab-color
-StyleColorTabHovered            = StyleColorID(imgui.StyleColorTabHovered)            // tab-hovered-color
-StyleColorTabActive             = StyleColorID(imgui.StyleColorTabActive)             // tab-active-color
-StyleColorTabUnfocused          = StyleColorID(imgui.StyleColorTabUnfocused)          // tab-unfocused-color
-StyleColorTabUnfocusedActive    = StyleColorID(imgui.StyleColorTabUnfocusedActive)    // tab-unfocused-active-color
-StyleColorPlotLines             = StyleColorID(imgui.StyleColorPlotLines)             // plot-lines-color
-StyleColorPlotLinesHovered      = StyleColorID(imgui.StyleColorPlotLinesHovered)      // plot-lines-hovered-color
-StyleColorProgressBarActive     = StyleColorPlotLinesHovered                          // progress-bar-active-color
-StyleColorPlotHistogram         = StyleColorID(imgui.StyleColorPlotHistogram)         // plot-histogram-color
-StyleColorPlotHistogramHovered  = StyleColorID(imgui.StyleColorPlotHistogramHovered)  // plot-histogram-hovered-color
-StyleColorTableHeaderBg         = StyleColorID(imgui.StyleColorTableHeaderBg)         // table-header-background-color
-StyleColorTableBorderStrong     = StyleColorID(imgui.StyleColorTableBorderStrong)     // table-border-strong-color
-StyleColorTableBorderLight      = StyleColorID(imgui.StyleColorTableBorderLight)      // table-border-light-color
-StyleColorTableRowBg            = StyleColorID(imgui.StyleColorTableRowBg)            // table-row-background-color
-StyleColorTableRowBgAlt         = StyleColorID(imgui.StyleColorTableRowBgAlt)         // table-row-alternate-background-color
-StyleColorTextSelectedBg        = StyleColorID(imgui.StyleColorTextSelectedBg)        // text-selected-background-color
-StyleColorDragDropTarget        = StyleColorID(imgui.StyleColorDragDropTarget)        // drag-drop-target-color
-StyleColorNavHighlight          = StyleColorID(imgui.StyleColorNavHighlight)          // navigation-highlight-color
-StyleColorNavWindowingHighlight = StyleColorID(imgui.StyleColorNavWindowingHighlight) // windowing-highlight-color
-StyleColorNavWindowingDimBg     = StyleColorID(imgui.StyleColorNavWindowingDimBg)     // windowing-dim-background-color
-StyleColorModalWindowDimBg      = StyleColorID(imgui.StyleColorModalWindowDimBg)      // modal-window-dim-background-color
+<!--
+Here is my regex, I used to convert variables from StyleIDs.go
+18,71s/StyleColor\(\w\+\) \+= .*\/\/ \(.*\)/- `\2` - \1/g
+18,71s/\([A-Z][a-z]\+\)/\1 /g
+-->
+
+- `color` - Text 
+- `disabled-color` - Text Disabled 
+- `background-color` - Window Bg 
+- `child-background-color` - Child Bg 
+- `popup-background-color` - Popup Bg 
+- `border-color` - Border 
+- `border-shadow-color` - Border Shadow 
+- `frame-background-color` - Frame Bg 
+- `frame-background-hovered-color` - Frame Bg Hovered 
+- `frame-background-active-color` - Frame Bg Active 
+- `title-background-color` - Title Bg 
+- `title-background-active-color` - Title Bg Active 
+- `title-background-collapsed-color` - Title Bg Collapsed 
+- `menu-bar-background-color` - Menu Bar Bg 
+- `scrollbar-background-color` - Scrollbar Bg 
+- `scrollbar-grab-color` - Scrollbar Grab 
+- `scrollbar-grab-hovered-color` - Scrollbar Grab Hovered 
+- `scrollbar-grab-active-color` - Scrollbar Grab Active 
+- `checkmark-color` - Check Mark 
+- `slider-grab-color` - Slider Grab 
+- `slider-grab-active-color` - Slider Grab Active 
+- `button-color` - Button 
+- `button-hovered-color` - Button Hovered 
+- `button-active-color` - Button Active 
+- `header-color` - Header 
+- `header-hovered-color` - Header Hovered 
+- `header-active-color` - Header Active 
+- `separator-color` - Separator 
+- `separator-hovered-color` - Separator Hovered 
+- `separator-active-color` - Separator Active 
+- `resize-grip-color` - Resize Grip 
+- `resize-grip-hovered-color` - Resize Grip Hovered 
+- `resize-grip-active-color` - Resize Grip Active 
+- `tab-color` - Tab 
+- `tab-hovered-color` - Tab Hovered 
+- `tab-active-color` - Tab Active 
+- `tab-unfocused-color` - Tab Unfocused 
+- `tab-unfocused-active-color` - Tab Unfocused Active 
+- `plot-lines-color` - Plot Lines 
+- `plot-lines-hovered-color` - Plot Lines Hovered 
+- `progress-bar-active-color` - Progress Bar Active 
+- `plot-histogram-color` - Plot Histogram 
+- `plot-histogram-hovered-color` - Plot Histogram Hovered 
+- `table-header-background-color` - Table Header Bg 
+- `table-border-strong-color` - Table Border Strong 
+- `table-border-light-color` - Table Border Light 
+- `table-row-background-color` - Table Row Bg 
+- `table-row-alternate-background-color` - Table Row Bg Alt 
+- `text-selected-background-color` - Text Selected Bg 
+- `drag-drop-target-color` - Drag Drop Target 
+- `navigation-highlight-color` - Nav Highlight 
+- `windowing-highlight-color` - Nav Windowing Highlight 
+- `windowing-dim-background-color` - Nav Windowing Dim Bg 
+- `modal-window-dim-background-color` - Modal Window Dim Bg 
 
 ## Style Variables
 
