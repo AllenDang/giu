@@ -19,6 +19,8 @@ import (
 // tools:
 // css parser - for now github.com/napsy/go-css. it is a bit poor, but I don't think we need anything more
 // css colors - github.com/mazznoer/csscolorparser
+//
+// docs: docs/css.md
 
 // ParseCSSStyleSheet parses CSS stylesheet and stores the rules in giu context
 func ParseCSSStyleSheet(data []byte) error {
