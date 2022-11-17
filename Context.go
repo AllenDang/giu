@@ -47,12 +47,15 @@ type context struct {
 	FontAtlas    FontAtlas
 
 	textureLoadingQueue *queue.Queue
+
+	cssStylesheet cssStylesheet
 }
 
 func CreateContext(p imgui.Platform, r imgui.Renderer) context {
 	result := context{
-		platform: p,
-		renderer: r,
+		platform:      p,
+		renderer:      r,
+		cssStylesheet: make(cssStylesheet),
 	}
 
 	result.FontAtlas = newFontAtlas()

@@ -1,0 +1,13 @@
+main {
+        background-color: blue;
+        frame-padding: 80, 20;
+}
+
+label {
+        color: black;
+}
+
+button {
+        color: red;
+        button-color: yellow;
+}
