@@ -1,3 +1,3 @@
 ## Package documentation
 
-- [CSSWidget](./css.md]
+- [CSSWidget](./css.md)
