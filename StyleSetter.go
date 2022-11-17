@@ -84,6 +84,20 @@ func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
 	return ss
 }
 
+func (ss *StyleSetter) Range(rangeFunc func(w Widget)) {
+	if ss.layout != nil {
+		Layout{
+			Custom(func() {
+				ss.Push()
+			}),
+			ss.layout,
+			Custom(func() {
+				ss.Pop()
+			}),
+		}.Range(rangeFunc)
+	}
+}
+
 // Build implements Widget.
 func (ss *StyleSetter) Build() {
 	if ss.layout == nil || len(ss.layout) == -1 {

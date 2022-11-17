@@ -333,6 +333,19 @@ func Condition(cond bool, layoutIf, layoutElse Layout) *ConditionWidget {
 	}
 }
 
+func (c *ConditionWidget) Range(rangeFunc func(w Widget)) {
+	var l Layout
+	if c.cond {
+		l = c.layoutIf
+	} else {
+		l = c.layoutElse
+	}
+
+	if l != nil {
+		l.Range(rangeFunc)
+	}
+}
+
 // Build implements Widget interface.
 func (c *ConditionWidget) Build() {
 	if c.cond {
