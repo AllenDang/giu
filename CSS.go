@@ -51,7 +51,7 @@ func ParseCSSStyleSheet(data []byte) error {
 				// var-name: x, y;
 				vec2 := strings.Split(styleVarValue, ",")
 				if len(vec2) != 2 {
-					return fmt.Errorf("unable to parse value %v is not float nor vec2: %w", styleVarValue, err)
+					return fmt.Errorf("unable to parse value %v is not float nor vec2", styleVarValue)
 				}
 
 				for i, v := range vec2 {
