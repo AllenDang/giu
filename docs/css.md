@@ -137,7 +137,7 @@ main {
 CSS widget supports a **special tag** called `main`.
 This tag is automatically applied for the whole app and you don't need
 to perform any additional actions to add it.
-__There is **no** need to call giu.CSS("main")`__
+<ins>There is **no** need to call `giu.CSS("main")`</ins>
 
 # limitations
 
