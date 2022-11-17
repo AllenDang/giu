@@ -34,7 +34,6 @@ linters:
   enable:
     - asciicheck
     - bodyclose
-    - deadcode
     - depguard
     - dogsled
     - dupl
@@ -61,10 +60,8 @@ linters:
     - gosec
     - gosimple
     - govet
-    - ifshort
     - importas
     - ineffassign
-    # - lll
     - makezero
     - misspell
     - nakedret
@@ -73,20 +70,18 @@ linters:
     - prealloc
     - predeclared
     - promlinter
-      #- revive
+    #- revive
     - rowserrcheck
     - staticcheck
-    - structcheck
     - stylecheck
     - typecheck
     - unconvert
     - unparam
     - unused
-    - varcheck
     - wastedassign
     - whitespace
     - wrapcheck
-    #- wsl
+    - wsl
 
 run:
   timeout: 5m
