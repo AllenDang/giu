@@ -78,51 +78,70 @@ Here is my regex, I used to convert variables from StyleIDs.go
 
 ## Style Variables
 
-// StyleVarAlpha is a float.
-StyleVarAlpha = StyleVarID(imgui.StyleVarAlpha) // alpha
-// StyleVarDisabledAlpha is a float.
-StyleVarDisabledAlpha = StyleVarID(imgui.StyleVarDisabledAlpha) // disabled-alpha
-// StyleVarWindowPadding is a Vec2.
-StyleVarWindowPadding = StyleVarID(imgui.StyleVarWindowPadding) // window-padding
-// StyleVarWindowRounding is a float.
-StyleVarWindowRounding = StyleVarID(imgui.StyleVarWindowRounding) // window-rounding
-// StyleVarWindowBorderSize is a float.
-StyleVarWindowBorderSize = StyleVarID(imgui.StyleVarWindowBorderSize) // window-border-size
-// StyleVarWindowMinSize is a Vec2.
-StyleVarWindowMinSize = StyleVarID(imgui.StyleVarWindowMinSize) // window-min-size
-// StyleVarWindowTitleAlign is a Vec2.
-StyleVarWindowTitleAlign = StyleVarID(imgui.StyleVarWindowTitleAlign) // window-title-align
-// StyleVarChildRounding is a float.
-StyleVarChildRounding = StyleVarID(imgui.StyleVarChildRounding) // child-rounding
-// StyleVarChildBorderSize is a float.
-StyleVarChildBorderSize = StyleVarID(imgui.StyleVarChildBorderSize) // child-border-size
-// StyleVarPopupRounding is a float.
-StyleVarPopupRounding = StyleVarID(imgui.StyleVarPopupRounding) // popup-rounding
-// StyleVarPopupBorderSize is a float.
-StyleVarPopupBorderSize = StyleVarID(imgui.StyleVarPopupBorderSize) // popup-border-size
-// StyleVarFramePadding is a Vec2.
-StyleVarFramePadding = StyleVarID(imgui.StyleVarFramePadding) // frame-padding
-// StyleVarFrameRounding is a float.
-StyleVarFrameRounding = StyleVarID(imgui.StyleVarFrameRounding) // frame-rounding
-// StyleVarFrameBorderSize is a float.
-StyleVarFrameBorderSize = StyleVarID(imgui.StyleVarFrameBorderSize) // frame-border-size
-// StyleVarItemSpacing is a Vec2.
-StyleVarItemSpacing = StyleVarID(imgui.StyleVarItemSpacing) // item-spacing
-// StyleVarItemInnerSpacing is a Vec2.
-StyleVarItemInnerSpacing = StyleVarID(imgui.StyleVarItemInnerSpacing) // item-inner-spacing
-// StyleVarIndentSpacing is a float.
-StyleVarIndentSpacing = StyleVarID(imgui.StyleVarIndentSpacing) // indent-spacing
-// StyleVarScrollbarSize is a float.
-StyleVarScrollbarSize = StyleVarID(imgui.StyleVarScrollbarSize) // scrollbar-size
-// StyleVarScrollbarRounding is a float.
-StyleVarScrollbarRounding = StyleVarID(imgui.StyleVarScrollbarRounding) // scrollbar-rounding
-// StyleVarGrabMinSize is a float.
-StyleVarGrabMinSize = StyleVarID(imgui.StyleVarGrabMinSize) // grab-min-size
-// StyleVarGrabRounding is a float.
-StyleVarGrabRounding = StyleVarID(imgui.StyleVarGrabRounding) // grab-rounding
-// StyleVarTabRounding is a float.
-StyleVarTabRounding = StyleVarID(imgui.StyleVarTabRounding) // tab-rounding
-// StyleVarButtonTextAlign is a Vec2.
-StyleVarButtonTextAlign = StyleVarID(imgui.StyleVarButtonTextAlign) // button-text-align
-// StyleVarSelectableTextAlign is a Vec2.
-StyleVarSelectableTextAlign = StyleVarID(imgui.StyleVarSelectableTextAlign) // selectable-text-align
+<!--
+and regex here are:
+81,128s/\/\/.*\(float\|Vec2\).*\nStyleVar\(\w\+\).*\/\/ \(.*\)/- `\3` - \2 (\1)/g
+87,110s/\([A-Z][a-z]\+\)/\1 /g
+-->
+
+- `alpha` - Alpha  (float)
+- `disabled-alpha` - Disabled Alpha  (float)
+- `window-padding` - Window Padding  (Vec 2)
+- `window-rounding` - Window Rounding  (float)
+- `window-border-size` - Window Border Size  (float)
+- `window-min-size` - Window Min Size  (Vec 2)
+- `window-title-align` - Window Title Align  (Vec 2)
+- `child-rounding` - Child Rounding  (float)
+- `child-border-size` - Child Border Size  (float)
+- `popup-rounding` - Popup Rounding  (float)
+- `popup-border-size` - Popup Border Size  (float)
+- `frame-padding` - Frame Padding  (Vec 2)
+- `frame-rounding` - Frame Rounding  (float)
+- `frame-border-size` - Frame Border Size  (float)
+- `item-spacing` - Item Spacing  (Vec 2)
+- `item-inner-spacing` - Item Inner Spacing  (Vec 2)
+- `indent-spacing` - Indent Spacing  (float)
+- `scrollbar-size` - Scrollbar Size  (float)
+- `scrollbar-rounding` - Scrollbar Rounding  (float)
+- `grab-min-size` - Grab Min Size  (float)
+- `grab-rounding` - Grab Rounding  (float)
+- `tab-rounding` - Tab Rounding  (float)
+- `button-text-align` - Button Text Align  (Vec 2)
+- `selectable-text-align` - Selectable Text Align  (Vec 2)
+
+# Data types
+
+- color - supported types are:
+	* Named colors (e.g. red, yellow, e.t.c.)
+	* `rgb()` and `rgba()`
+	* `hsl()` and `hsla()`
+	* `hwb()` and `hwba()`
+	* `hsv()` and `hsva()`
+	* for more details about colors parsing visit [this repository](https://github.com/mazznoer/csscolorparser)
+- float in form of plain number
+- Vec2 - set of **exactly two** numbers, first for X and second for Y
+
+## example
+
+```css
+main {
+	color: rgba(50, 100, 150, 255);
+	background-color: yellow;
+	alpha: 100;
+	item-spacing: 80, 20;
+}
+```
+
+# special tags
+
+CSS widget supports a **special tag** called `main`.
+This tag is automatically applied for the whole app and you don't need
+to perform any additional actions to add it.
+__There is **no** need to call giu.CSS("main")`__
+
+# limitations
+
+- be careful with CSSS comments since they may not be parsed correctly :smile:
+  e.g. comments inside tags may not be supported, so if you need
+  comment out the whole tag, However feel free to play with that.
+- more complex rules are not supported, just the simpliest one (like ruleName {...})
