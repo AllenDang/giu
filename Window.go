@@ -192,5 +192,6 @@ func (w *WindowWidget) getState() (state *windowState) {
 		state = &windowState{}
 		SetState(&Context, w.getStateID(), state)
 	}
+
 	return state
 }

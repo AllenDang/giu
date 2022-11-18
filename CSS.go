@@ -22,11 +22,11 @@ import (
 //
 // docs: docs/css.md
 
-// ParseCSSStyleSheet parses CSS stylesheet and stores the rules in giu context
+// ParseCSSStyleSheet parses CSS stylesheet and stores the rules in giu context.
 func ParseCSSStyleSheet(data []byte) error {
 	stylesheet, err := css.Unmarshal(data)
 	if err != nil {
-		return err
+		return fmt.Errorf("error marshaling CSS file: %w", err)
 	}
 
 	for rule, style := range stylesheet {
@@ -40,8 +40,8 @@ func ParseCSSStyleSheet(data []byte) error {
 
 			if err == nil {
 				// the style is StyleVarID - set it
-				f, err := strconv.ParseFloat(styleVarValue, 32)
-				if err == nil {
+				f, err2 := strconv.ParseFloat(styleVarValue, 32)
+				if err2 == nil {
 					setter.SetStyleFloat(styleVarID, float32(f))
 
 					continue
@@ -58,14 +58,14 @@ func ParseCSSStyleSheet(data []byte) error {
 					vec2[i] = strings.ReplaceAll(v, " ", "")
 				}
 
-				x, err := strconv.ParseFloat(vec2[0], 32)
-				if err != nil {
-					return fmt.Errorf("unable to parse value %v is not float: %w", vec2[0], err)
+				x, err2 := strconv.ParseFloat(vec2[0], 32)
+				if err2 != nil {
+					return fmt.Errorf("unable to parse value %v is not float: %w", vec2[0], err2)
 				}
 
-				y, err := strconv.ParseFloat(vec2[1], 32)
-				if err != nil {
-					return fmt.Errorf("unable to parse value %v is not float: %w", vec2[1], err)
+				y, err2 := strconv.ParseFloat(vec2[1], 32)
+				if err2 != nil {
+					return fmt.Errorf("unable to parse value %v is not float: %w", vec2[1], err2)
 				}
 
 				setter.SetStyle(styleVarID, float32(x), float32(y))
@@ -107,29 +107,29 @@ func panicToErr(f func()) (err error) {
 	return err
 }
 
-// cssStylesheet is a map tag:StyleSetter
+// cssStylesheet is a map tag:StyleSetter.
 type cssStylesheet map[string]*StyleSetter
 
 var _ Widget = &CSSTagWidget{}
 
-// CSSTagWidget is a widget that allows to apply CSS style to a specified layout
+// CSSTagWidget is a widget that allows to apply CSS style to a specified layout.
 type CSSTagWidget struct {
 	tag    string
 	layout Layout
 }
 
-// CSSTag creates CSSTagWidget
+// CSSTag creates CSSTagWidget.
 func CSSTag(tag string) *CSSTagWidget {
 	return &CSSTagWidget{tag: tag}
 }
 
-// To specifies a layout to which the style will be applied
+// To specifies a layout to which the style will be applied.
 func (c *CSSTagWidget) To(layout ...Widget) *CSSTagWidget {
 	c.layout = layout
 	return c
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (c *CSSTagWidget) Build() {
 	// get style from context.
 	// if it doesn't exist Assert.

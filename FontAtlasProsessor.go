@@ -224,7 +224,7 @@ func (a *FontAtlas) RegisterStringPointer(str *string) *string {
 	return str
 }
 
-// RegisterStringSlice calls RegisterString for each slice element
+// RegisterStringSlice calls RegisterString for each slice element.
 func (a *FontAtlas) RegisterStringSlice(str []string) []string {
 	for _, s := range str {
 		a.RegisterString(s)

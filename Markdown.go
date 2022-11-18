@@ -95,7 +95,7 @@ func loadImage(path string) imgui.MarkdownImageData {
 
 	size := img.Bounds()
 
-	// nolint:gocritic // TODO/BUG: figure out, why it doesn't work as expected and consider
+	//nolint:gocritic // TODO/BUG: figure out, why it doesn't work as expected and consider
 	// if current workaround is save
 	/*
 		tex := &Texture{}

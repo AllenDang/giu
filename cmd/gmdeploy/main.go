@@ -51,7 +51,7 @@ func main() {
 	switch targetOS {
 	case "darwin":
 		const iconExtension = ".icns"
-		// nolint:gosec // Compile: cannot fix
+		//nolint:gosec // Compile: cannot fix
 		cmd := exec.Command("bash", "-c", fmt.Sprintf("go build -ldflags='-s -w' -o %s", appName))
 		cmd.Dir = projectPath
 		runCmd(cmd)
@@ -76,7 +76,7 @@ func main() {
 
 		// Upx
 		if upx {
-			// nolint:gosec // cannot fix
+			//nolint:gosec // cannot fix
 			cmd = exec.Command("upx", appName)
 			runCmd(cmd)
 		}
@@ -86,7 +86,7 @@ func main() {
 		mkdirAll(macOSPath)
 
 		// Copy compiled executable to build folder
-		// nolint:gosec // cannot fix
+		//nolint:gosec // cannot fix
 		cmd = exec.Command("mv", appName, macOSPath)
 		runCmd(cmd)
 
@@ -103,14 +103,14 @@ func main() {
 			mkdirAll(resourcesPath)
 
 			// Rename icon file name to [appName].icns
-			// nolint:gosec // cannot fix
+			//nolint:gosec // cannot fix
 			cmd = exec.Command("cp", iconPath, filepath.Join(resourcesPath, fmt.Sprintf("%s%s", appName, iconExtension)))
 			runCmd(cmd)
 		}
 
 		fmt.Printf("%s.app is generated at %s/build/%s/\n", appName, projectPath, targetOS)
 	case "linux":
-		// nolint:gosec // Compile: cannot fix
+		//nolint:gosec // Compile: cannot fix
 		cmd := exec.Command("bash", "-c", fmt.Sprintf("go build -ldflags='-s -w' -o %s", appName))
 		cmd.Dir = projectPath
 		runCmd(cmd)
@@ -121,7 +121,7 @@ func main() {
 		mkdirAll(binPath)
 
 		// Copy compiled executable to build folder
-		// nolint:gosec // rename command - cannot be fixed
+		//nolint:gosec // rename command - cannot be fixed
 		cmd = exec.Command("mv", appName, binPath)
 		runCmd(cmd)
 
@@ -140,7 +140,7 @@ func main() {
 
 			// Rename icon file name to [appName].icns
 			newIconName := filepath.Join(iconsPath, fmt.Sprintf("%s.icns", appName))
-			// nolint:gosec // cp comman - cannot fix
+			//nolint:gosec // cp comman - cannot fix
 			cmd = exec.Command("cp", iconPath, newIconName)
 			runCmd(cmd)
 		}

@@ -9,7 +9,7 @@ import (
 var _ Widget = &StyleSetter{}
 
 // StyleSetter is a user-friendly way to manage imgui styles.
-// For style IDs see StyleIDs.go, for detailed instruction of using styles, see Styles.go
+// For style IDs see StyleIDs.go, for detailed instruction of using styles, see Styles.go.
 type StyleSetter struct {
 	colors   map[StyleColorID]color.Color
 	styles   map[StyleVarID]any
@@ -155,7 +155,7 @@ func (ss *StyleSetter) Push() {
 	imgui.BeginDisabled(ss.disabled)
 }
 
-// Pop
+// Pop allows to manually pop the whole StyleSetter (use after Push!)
 func (ss *StyleSetter) Pop() {
 	if ss.isFontPushed {
 		imgui.PopFont()
