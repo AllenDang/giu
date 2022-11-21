@@ -37,11 +37,14 @@ type context struct {
 	FontAtlas FontAtlas
 
 	window imgui.GLFWwindow
+
+	cssStylesheet cssStylesheet
 }
 
 func CreateContext(window imgui.GLFWwindow) *context {
 	result := context{
-		window: window,
+		window:        window,
+		cssStylesheet: make(cssStylesheet),
 	}
 
 	result.FontAtlas = newFontAtlas()

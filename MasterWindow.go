@@ -6,6 +6,10 @@ import (
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
+const (
+	MainCSSTagName = "main"
+)
+
 // MasterWindowFlags wrapps imgui.GLFWWindowFlags.
 type MasterWindowFlags imgui.GLFWWindowFlags
 
@@ -54,9 +58,17 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 func (w *MasterWindow) beforeRender() {
 	Context.invalidAllState()
 	Context.FontAtlas.rebuildFontAtlas()
+
+	if s, found := Context.cssStylesheet[MainCSSTagName]; found {
+		s.Push()
+	}
 }
 
 func (w *MasterWindow) afterRender() {
+	if s, found := Context.cssStylesheet[MainCSSTagName]; found {
+		s.Pop()
+	}
+
 	Context.cleanState()
 }
 
