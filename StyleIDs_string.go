@@ -46,33 +46,43 @@ func _() {
 	_ = x[StyleColorTabActive-35]
 	_ = x[StyleColorTabUnfocused-36]
 	_ = x[StyleColorTabUnfocusedActive-37]
-	_ = x[StyleColorPlotLines-38]
-	_ = x[StyleColorPlotLinesHovered-39]
-	_ = x[StyleColorProgressBarActive-39]
-	_ = x[StyleColorPlotHistogram-40]
-	_ = x[StyleColorPlotHistogramHovered-41]
-	_ = x[StyleColorTableHeaderBg-42]
-	_ = x[StyleColorTableBorderStrong-43]
-	_ = x[StyleColorTableBorderLight-44]
-	_ = x[StyleColorTableRowBg-45]
-	_ = x[StyleColorTableRowBgAlt-46]
-	_ = x[StyleColorTextSelectedBg-47]
-	_ = x[StyleColorDragDropTarget-48]
-	_ = x[StyleColorNavHighlight-49]
-	_ = x[StyleColorNavWindowingHighlight-50]
-	_ = x[StyleColorNavWindowingDimBg-51]
-	_ = x[StyleColorModalWindowDimBg-52]
+	_ = x[StyleColorPlotLines-40]
+	_ = x[StyleColorPlotLinesHovered-41]
+	_ = x[StyleColorPlotHistogram-42]
+	_ = x[StyleColorPlotHistogramHovered-43]
+	_ = x[StyleColorTableHeaderBg-44]
+	_ = x[StyleColorTableBorderStrong-45]
+	_ = x[StyleColorTableBorderLight-46]
+	_ = x[StyleColorTableRowBg-47]
+	_ = x[StyleColorTableRowBgAlt-48]
+	_ = x[StyleColorTextSelectedBg-49]
+	_ = x[StyleColorDragDropTarget-50]
+	_ = x[StyleColorNavHighlight-51]
+	_ = x[StyleColorNavWindowingHighlight-52]
+	_ = x[StyleColorNavWindowingDimBg-53]
+	_ = x[StyleColorModalWindowDimBg-54]
 }
 
-const _StyleColorID_name = "colordisabled-colorbackground-colorchild-background-colorpopup-background-colorborder-colorborder-shadow-colorframe-background-colorframe-background-hovered-colorframe-background-active-colortitle-background-colortitle-background-active-colortitle-background-collapsed-colormenu-bar-background-colorscrollbar-background-colorscrollbar-grab-colorscrollbar-grab-hovered-colorscrollbar-grab-active-colorcheckmark-colorslider-grab-colorslider-grab-active-colorbutton-colorbutton-hovered-colorbutton-active-colorheader-colorheader-hovered-colorheader-active-colorseparator-colorseparator-hovered-colorseparator-active-colorresize-grip-colorresize-grip-hovered-colorresize-grip-active-colortab-colortab-hovered-colortab-active-colortab-unfocused-colortab-unfocused-active-colorplot-lines-colorplot-lines-hovered-colorplot-histogram-colorplot-histogram-hovered-colortable-header-background-colortable-border-strong-colortable-border-light-colortable-row-background-colortable-row-alternate-background-colortext-selected-background-colordrag-drop-target-colornavigation-highlight-colorwindowing-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
+const (
+	_StyleColorID_name_0 = "colordisabled-colorbackground-colorchild-background-colorpopup-background-colorborder-colorborder-shadow-colorframe-background-colorframe-background-hovered-colorframe-background-active-colortitle-background-colortitle-background-active-colortitle-background-collapsed-colormenu-bar-background-colorscrollbar-background-colorscrollbar-grab-colorscrollbar-grab-hovered-colorscrollbar-grab-active-colorcheckmark-colorslider-grab-colorslider-grab-active-colorbutton-colorbutton-hovered-colorbutton-active-colorheader-colorheader-hovered-colorheader-active-colorseparator-colorseparator-hovered-colorseparator-active-colorresize-grip-colorresize-grip-hovered-colorresize-grip-active-colortab-colortab-hovered-colortab-active-colortab-unfocused-colortab-unfocused-active-color"
+	_StyleColorID_name_1 = "plot-lines-colorplot-lines-hovered-colorplot-histogram-colorplot-histogram-hovered-colortable-header-background-colortable-border-strong-colortable-border-light-colortable-row-background-colortable-row-alternate-background-colortext-selected-background-colordrag-drop-target-colornavigation-highlight-colorwindowing-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
+)
 
-var _StyleColorID_index = [...]uint16{0, 5, 19, 35, 57, 79, 91, 110, 132, 162, 191, 213, 242, 274, 299, 325, 345, 373, 400, 415, 432, 456, 468, 488, 507, 519, 539, 558, 573, 596, 618, 635, 660, 684, 693, 710, 726, 745, 771, 787, 811, 831, 859, 888, 913, 937, 963, 999, 1029, 1051, 1077, 1102, 1132, 1165}
+var (
+	_StyleColorID_index_0 = [...]uint16{0, 5, 19, 35, 57, 79, 91, 110, 132, 162, 191, 213, 242, 274, 299, 325, 345, 373, 400, 415, 432, 456, 468, 488, 507, 519, 539, 558, 573, 596, 618, 635, 660, 684, 693, 710, 726, 745, 771}
+	_StyleColorID_index_1 = [...]uint16{0, 16, 40, 60, 88, 117, 142, 166, 192, 228, 258, 280, 306, 331, 361, 394}
+)
 
 func (i StyleColorID) String() string {
-	if i < 0 || i >= StyleColorID(len(_StyleColorID_index)-1) {
+	switch {
+	case 0 <= i && i <= 37:
+		return _StyleColorID_name_0[_StyleColorID_index_0[i]:_StyleColorID_index_0[i+1]]
+	case 40 <= i && i <= 54:
+		i -= 40
+		return _StyleColorID_name_1[_StyleColorID_index_1[i]:_StyleColorID_index_1[i+1]]
+	default:
 		return "StyleColorID(" + strconv.FormatInt(int64(i), 10) + ")"
 	}
-	return _StyleColorID_name[_StyleColorID_index[i]:_StyleColorID_index[i+1]]
 }
 func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.
