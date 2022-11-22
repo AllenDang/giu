@@ -145,3 +145,14 @@ func GetMousePos() image.Point {
 	imgui.GetMousePos(&pt)
 	return image.Pt(int(pt.X), int(pt.Y))
 }
+
+func GetCursorPos() image.Point {
+	var pt cimgui.ImVec2
+	cimgui.GetDrawCursorPos(&pt)
+	return image.Pt(int(pt.X), int(pt.Y))
+}
+
+func SetCursorPos(pos image.Point) {
+	cimgui.SetDrawCursorPosX(float32(pos.X))
+	cimgui.SetDrawCursorPosY(float32(pos.Y))
+}
