@@ -7,6 +7,10 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
+const (
+	getWidgetWidthTestingSpaceX, getWidgetWidthTestingSpaceY = -1000, -1000
+)
+
 // AlignmentType represents a bype of alignment to use with AlignSetter.
 type AlignmentType byte
 
@@ -168,11 +172,15 @@ func (a *AlignmentSetter) Build() {
 // if you find anything else, please report it on
 // https://github.com/AllenDang/giu Any contribution is appreciated!
 func GetWidgetWidth(w Widget) (result float32) {
-	imgui.PushID(GenAutoID("GetWIdgetWidthMeasurement"))
+	imgui.PushID(GenAutoID("GetWidgetWidthMeasurement"))
 	defer imgui.PopID()
 
-	// save cursor position before rendering
+	// save cursor position before doing anything
 	currentPos := GetCursorPos()
+
+	// set cursor position to something really out of working space
+	startPos := image.Pt(getWidgetWidthTestingSpaceX, getWidgetWidthTestingSpaceY)
+	SetCursorPos(startPos)
 
 	// render widget in `dry` mode
 	imgui.PushStyleVarFloat(imgui.StyleVarAlpha, 0)
@@ -183,8 +191,9 @@ func GetWidgetWidth(w Widget) (result float32) {
 	// check cursor position
 	imgui.SameLine()
 	spacingW, _ := GetItemSpacing()
-	result = float32(GetCursorPos().X-currentPos.X) - spacingW
+	result = float32(GetCursorPos().X-startPos.X) - spacingW
 
+	// reset drawing cursor position
 	SetCursorPos(currentPos)
 
 	return result
