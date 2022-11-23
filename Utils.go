@@ -106,24 +106,6 @@ func SetDrawCursorPos(pos image.Point) {
 	imgui.SetDrawCursorPos(imgui.ImVec2{X: float32(pos.X), Y: float32(pos.Y)})
 }
 
-// GetItemSpacing returns current item spacing.
-func GetItemSpacing() (w, h float32) {
-	vec2 := imgui.GetStyle().GetItemSpacing()
-	return vec2.X, vec2.Y
-}
-
-// GetItemInnerSpacing returns current item inner spacing.
-func GetItemInnerSpacing() (w, h float32) {
-	vec2 := imgui.GetStyle().GetItemInnerSpacing()
-	return vec2.X, vec2.Y
-}
-
-// GetFramePadding returns current frame padding.
-func GetFramePadding() (x, y float32) {
-	vec2 := imgui.GetStyle().GetFramePadding()
-	return vec2.X, vec2.Y
-}
-
 // LoadImage loads image from file and returns *image.RGBA.
 func LoadImage(imgPath string) (*image.RGBA, error) {
 	imgFile, err := os.Open(filepath.Clean(imgPath))
