@@ -35,9 +35,9 @@ func loop() {
 		giu.Label("manual alignment"),
 		giu.AlignManually(
 			giu.AlignCenter,
-			giu.Button("I'm button with 100 width").
-				Size(100, 30),
-			100, false,
+			giu.Button("I'm button with 200 width").
+				Size(200, 30),
+			200, false,
 		),
 		giu.AlignManually(
 			giu.AlignCenter,

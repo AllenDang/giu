@@ -48,8 +48,14 @@ func AlignManually(alignmentType AlignmentType, widget Widget, widgetWidth float
 			return
 		case AlignCenter:
 			dummyX = (availableW-widgetWidth)/2 - spacingX
+			if dummyX < 0 {
+				dummyX = 0
+			}
 		case AlignRight:
 			dummyX = availableW - widgetWidth - spacingX
+			if dummyX < 0 {
+				dummyX = 0
+			}
 		}
 
 		Dummy(dummyX, 0).Build()
