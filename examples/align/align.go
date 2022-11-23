@@ -1,8 +1,15 @@
 package main
 
-import "github.com/AllenDang/giu"
+import (
+	"time"
 
-var text string
+	"github.com/AllenDang/giu"
+)
+
+var (
+	text string
+	date time.Time
+)
 
 func loop() {
 	giu.Window("window").Layout(
@@ -43,6 +50,10 @@ func loop() {
 			giu.AlignCenter,
 			giu.InputText(&text),
 			100, true,
+		),
+
+		giu.Align(giu.AlignCenter).To(
+			giu.DatePicker("<- date picker centered", &date),
 		),
 	)
 }

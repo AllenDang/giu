@@ -82,9 +82,7 @@ var _ Widget = &AlignmentSetter{}
 // usage: see examples/align
 //
 // list of known bugs:
-// - BUG: DatePickerWidget doesn't work properly
 // - BUG: there is some bug with SelectableWidget
-// - BUG: ComboWidget and ComboCustomWidgets doesn't work properly.
 type AlignmentSetter struct {
 	alignType AlignmentType
 	layout    Layout
@@ -175,9 +173,6 @@ func (a *AlignmentSetter) Build() {
 // widget will be processed)
 //
 // here is a list of known bugs:
-// - BUG: user can interact with invisible widget (created by GetWidgetWidth)
-//   - https://github.com/AllenDang/giu/issues/341
-//   - https://github.com/ocornut/imgui/issues/4588
 //
 // if you find anything else, please report it on
 // https://github.com/AllenDang/giu Any contribution is appreciated!
