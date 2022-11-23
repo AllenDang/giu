@@ -24,3 +24,5 @@ require (
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace github.com/AllenDang/imgui-go => github.com/gucio321/imgui-go v1.12.1-0.20221121081111-52470813115c
