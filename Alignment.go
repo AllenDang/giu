@@ -7,6 +7,10 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
+// These constants holds information about where GetWidgetWidth should proceed their
+// measurements.
+//
+// It should be far away from our working space, -1000 seems to be good choice for now
 const (
 	getWidgetWidthTestingSpaceX, getWidgetWidthTestingSpaceY = -1000, -1000
 )
