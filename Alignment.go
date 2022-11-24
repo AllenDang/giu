@@ -7,6 +7,14 @@ import (
 	"github.com/AllenDang/imgui-go"
 )
 
+// These constants holds information about where GetWidgetWidth should proceed their
+// measurements.
+//
+// It should be far away from our working space, -1000 seems to be good choice for now
+const (
+	getWidgetWidthTestingSpaceX, getWidgetWidthTestingSpaceY = -1000, -1000
+)
+
 // AlignmentType represents a bype of alignment to use with AlignSetter.
 type AlignmentType byte
 
@@ -44,8 +52,14 @@ func AlignManually(alignmentType AlignmentType, widget Widget, widgetWidth float
 			return
 		case AlignCenter:
 			dummyX = (availableW-widgetWidth)/2 - spacingX
+			if dummyX < 0 {
+				dummyX = 0
+			}
 		case AlignRight:
 			dummyX = availableW - widgetWidth - spacingX
+			if dummyX < 0 {
+				dummyX = 0
+			}
 		}
 
 		Dummy(dummyX, 0).Build()
@@ -68,9 +82,7 @@ var _ Widget = &AlignmentSetter{}
 // usage: see examples/align
 //
 // list of known bugs:
-// - BUG: DatePickerWidget doesn't work properly
 // - BUG: there is some bug with SelectableWidget
-// - BUG: ComboWidget and ComboCustomWidgets doesn't work properly.
 type AlignmentSetter struct {
 	alignType AlignmentType
 	layout    Layout
@@ -161,18 +173,19 @@ func (a *AlignmentSetter) Build() {
 // widget will be processed)
 //
 // here is a list of known bugs:
-// - BUG: user can interact with invisible widget (created by GetWidgetWidth)
-//   - https://github.com/AllenDang/giu/issues/341
-//   - https://github.com/ocornut/imgui/issues/4588
 //
 // if you find anything else, please report it on
 // https://github.com/AllenDang/giu Any contribution is appreciated!
 func GetWidgetWidth(w Widget) (result float32) {
-	imgui.PushID(GenAutoID("GetWIdgetWidthMeasurement"))
+	imgui.PushID(GenAutoID("GetWidgetWidthMeasurement"))
 	defer imgui.PopID()
 
-	// save cursor position before rendering
+	// save cursor position before doing anything
 	currentPos := GetCursorPos()
+
+	// set cursor position to something really out of working space
+	startPos := image.Pt(getWidgetWidthTestingSpaceX, getWidgetWidthTestingSpaceY)
+	SetCursorPos(startPos)
 
 	// render widget in `dry` mode
 	imgui.PushStyleVarFloat(imgui.StyleVarAlpha, 0)
@@ -183,8 +196,9 @@ func GetWidgetWidth(w Widget) (result float32) {
 	// check cursor position
 	imgui.SameLine()
 	spacingW, _ := GetItemSpacing()
-	result = float32(GetCursorPos().X-currentPos.X) - spacingW
+	result = float32(GetCursorPos().X-startPos.X) - spacingW
 
+	// reset drawing cursor position
 	SetCursorPos(currentPos)
 
 	return result
