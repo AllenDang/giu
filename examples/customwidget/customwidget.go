@@ -26,7 +26,7 @@ func (c *CircleButtonWidget) Build() {
 
 	pos := g.GetCursorPos()
 
-	// Calcuate the center point
+	// Calculate the center point
 	radius := int(width/2 + padding*2)
 
 	// Place a invisible button to be a placeholder for events

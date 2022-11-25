@@ -1,6 +1,6 @@
 package giu
 
-// input menager is used to register a keyboard shortcuts in an app.
+// input manager is used to register a keyboard shortcuts in an app.
 
 // Shortcut represents a keyboard shortcut.
 type Shortcut struct {
@@ -18,7 +18,7 @@ type WindowShortcut struct {
 	Callback func()
 }
 
-// ShortcutType represens a type of shortcut (global or local).
+// ShortcutType represents a type of shortcut (global or local).
 type ShortcutType bool
 
 const (
@@ -32,11 +32,11 @@ const (
 type InputHandlerHandleCallback func(Key, Modifier, Action)
 
 // InputHandler is an interface which needs to be implemented
-// by user-definied input handlers.
+// by user-defined input handlers.
 type InputHandler interface {
 	// RegisterKeyboardShortcuts adds a specified shortcuts into input handler
 	RegisterKeyboardShortcuts(...Shortcut)
-	// UnregisterKeyboardShortcuts removes iwndow shourtcuts from input handler
+	// UnregisterKeyboardShortcuts removes window shortcuts from input handler
 	UnregisterWindowShortcuts()
 	// Handle handles a shortcut
 	Handle(Key, Modifier, Action)

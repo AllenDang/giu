@@ -12,7 +12,7 @@ import (
 
 func main() {
 	flag.Usage = func() {
-		fmt.Println("Usage: gmdeploy [os] [icon] [path/to/progject]")
+		fmt.Println("Usage: gmdeploy [os] [icon] [path/to/project]")
 		fmt.Println("Flags:")
 		flag.PrintDefaults()
 
@@ -23,7 +23,7 @@ func main() {
 	flag.StringVar(&targetOS, "os", runtime.GOOS, "target deploy os [windows, darwin, linux]")
 
 	var iconPath string
-	flag.StringVar(&iconPath, "icon", "", "applicatio icon file path")
+	flag.StringVar(&iconPath, "icon", "", "application icon file path")
 
 	var upx bool
 	flag.BoolVar(&upx, "upx", false, "use upx to compress executable")
@@ -140,7 +140,7 @@ func main() {
 
 			// Rename icon file name to [appName].icns
 			newIconName := filepath.Join(iconsPath, fmt.Sprintf("%s.icns", appName))
-			//nolint:gosec // cp comman - cannot fix
+			//nolint:gosec // cp command - cannot fix
 			cmd = exec.Command("cp", iconPath, newIconName)
 			runCmd(cmd)
 		}

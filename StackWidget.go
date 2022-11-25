@@ -26,8 +26,8 @@ func (s *StackWidget) Build() {
 	visiblePos := GetCursorScreenPos()
 
 	// build visible layout
-	// NOTE: it is important to build the visiblely showed layout before
-	// building another ones, because the interactive layout widgets
+	// NOTE: it is important to build the visible layout before
+	// building other ones, because the interactive layout widgets
 	// (e.g. buttons) should be rendered on top of `stack`
 	layouts := s.layouts
 

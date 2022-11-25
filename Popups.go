@@ -35,7 +35,7 @@ func Popup(name string) *PopupWidget {
 	}
 }
 
-// Flags sets pupup's flags.
+// Flags sets popup's flags.
 func (p *PopupWidget) Flags(flags WindowFlags) *PopupWidget {
 	p.flags = flags
 	return p

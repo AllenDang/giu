@@ -19,7 +19,7 @@ const (
 type AlignmentType byte
 
 const (
-	// AlignLeft is here just for clearity.
+	// AlignLeft is here just for clarity.
 	// if set, no action is taken so don't use it.
 	AlignLeft AlignmentType = iota
 	// AlignCenter centers widget.
@@ -119,7 +119,7 @@ func (a *AlignmentSetter) Build() {
 	}
 
 	a.layout.Range(func(item Widget) {
-		// if item is inil, just skip it
+		// if item is nil, just skip it
 		if item == nil {
 			return
 		}
@@ -168,7 +168,7 @@ func (a *AlignmentSetter) Build() {
 //
 // This function is just a workaround used in giu.
 //
-// NOTE: user-definied widgets, which contains more than one
+// NOTE: user-defined widgets, which contains more than one
 // giu widget will be processed incorrectly (only width of the last built
 // widget will be processed)
 //
