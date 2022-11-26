@@ -36,7 +36,7 @@ type Splitable interface {
 	Range(func(w Widget))
 }
 
-// Range ranges ofer the Layout, calling rangeFunc
+// Range ranges over the Layout, calling rangeFunc
 // on each loop iteration.
 func (l Layout) Range(rangeFunc func(Widget)) {
 	for _, w := range l {

@@ -256,7 +256,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	ranges := imgui.NewGlyphRanges()
 	builder := imgui.NewFontGlyphRangesBuilder()
 
-	// Because we pre-regestered numbers, so default string map's length should greater then 11.
+	// Because we pre-registered numbers, so default string map's length should greater then 11.
 	if sb.Len() > len(preRegisterString) {
 		builder.AddText(sb.String())
 	} else {

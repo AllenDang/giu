@@ -52,7 +52,7 @@ func (l *RowWidget) Build() {
 	})
 }
 
-// SameLine wrapps imgui.SomeLine
+// SameLine wraps imgui.SomeLine
 // Don't use if you don't have to (use RowWidget instead).
 func SameLine() {
 	imgui.SameLine()
@@ -149,7 +149,7 @@ func (cc *ComboCustomWidget) Flags(flags ComboFlags) *ComboCustomWidget {
 	return cc
 }
 
-// Size sets combo preiview width.
+// Size sets combo preview width.
 func (cc *ComboCustomWidget) Size(width float32) *ComboCustomWidget {
 	cc.width = width
 	return cc

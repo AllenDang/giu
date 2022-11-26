@@ -111,7 +111,7 @@ type imageState struct {
 // Dispose cleans imageState (implements Disposable interface).
 func (is *imageState) Dispose() {
 	is.texture = nil
-	// Cancel ongoing image downloaidng
+	// Cancel ongoing image downloading
 	if is.loading && is.cancel != nil {
 		is.cancel()
 	}
@@ -119,7 +119,7 @@ func (is *imageState) Dispose() {
 
 var _ Widget = &ImageWithRgbaWidget{}
 
-// ImageWithRgbaWidget wrapps ImageWidget.
+// ImageWithRgbaWidget wraps ImageWidget.
 // It is more useful because it doesn't make you to care about
 // imgui textures. You can just pass golang-native image.Image and
 // display it in giu.
@@ -312,8 +312,8 @@ func (i *ImageWithURLWidget) Build() {
 		SetState(&Context, i.id, imgState)
 
 		// Prevent multiple invocation to download image.
-		downloadContext, cancalFunc := ctx.WithCancel(ctx.Background())
-		SetState(&Context, i.id, &imageState{loading: true, cancel: cancalFunc})
+		downloadContext, cancelFunc := ctx.WithCancel(ctx.Background())
+		SetState(&Context, i.id, &imageState{loading: true, cancel: cancelFunc})
 
 		errorFn := func(err error) {
 			SetState(&Context, i.id, &imageState{failure: true})

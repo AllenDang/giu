@@ -7,7 +7,7 @@ import (
 var _ Widget = &ListClipperWrapper{}
 
 // ListClipperWrapper is a ImGuiListClipper implementation.
-// it can be used to diplay a large, vertical list of items and
+// it can be used to display a large, vertical list of items and
 // avoid rendering them.
 type ListClipperWrapper struct {
 	layout Layout
