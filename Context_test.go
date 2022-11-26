@@ -31,7 +31,7 @@ func Test_SetGetState(t *testing.T) {
 		t.Run(tc.id, func(t *testing.T) {
 			ctx := context{}
 			SetState(&ctx, tc.id, tc.data)
-			restored := GetState[teststate](ctx, tc.id)
+			restored := GetState[teststate](&ctx, tc.id)
 			assert.Equal(t, tc.data, restored, "unexpected state restored")
 		})
 	}
@@ -50,7 +50,7 @@ func Test_SetGetStateGeneric(t *testing.T) {
 		t.Run(tc.id, func(t *testing.T) {
 			ctx := context{}
 			SetState(&ctx, tc.id, tc.data)
-			restored := GetState[teststate](ctx, tc.id)
+			restored := GetState[teststate](&ctx, tc.id)
 			assert.Equal(t, tc.data, restored, "unexpected state restored")
 		})
 	}
@@ -67,7 +67,7 @@ func Test_SetGetWrongStateGeneric(t *testing.T) {
 		}
 	}()
 	SetState(&ctx, id, data)
-	GetState[teststate2](ctx, id)
+	GetState[teststate2](&ctx, id)
 }
 
 func Test_invalidState(t *testing.T) {
@@ -86,13 +86,13 @@ func Test_invalidState(t *testing.T) {
 
 	ctx.invalidAllState()
 
-	_ = GetState[teststate](ctx, state2ID)
+	_ = GetState[teststate](&ctx, state2ID)
 
 	ctx.cleanState()
 
-	assert.NotNil(t, GetState[teststate](ctx, state2ID),
+	assert.NotNil(t, GetState[teststate](&ctx, state2ID),
 		"although state has been accessed during the frame, it has ben deleted by invalidAllState/cleanState")
-	assert.Nil(t, GetState[teststate](ctx, state1ID),
+	assert.Nil(t, GetState[teststate](&ctx, state1ID),
 		"although state hasn't been accessed during the frame, it hasn't ben deleted by invalidAllState/cleanState")
 }
 

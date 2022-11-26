@@ -193,7 +193,7 @@ func (w *WindowWidget) getStateID() string {
 func (w *WindowWidget) getState() (state *windowState) {
 	if state = GetState[windowState](Context, w.getStateID()); state == nil {
 		state = &windowState{}
-		SetState(&Context, w.getStateID(), state)
+		SetState(Context, w.getStateID(), state)
 	}
 
 	return state

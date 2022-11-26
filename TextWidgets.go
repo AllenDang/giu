@@ -230,7 +230,7 @@ func (i *InputTextWidget) Build() {
 	var state *inputTextState
 	if state = GetState[inputTextState](Context, i.label); state == nil {
 		state = &inputTextState{}
-		SetState(&Context, i.label, state)
+		SetState(Context, i.label, state)
 	}
 
 	if i.width != 0 {

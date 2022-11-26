@@ -49,7 +49,7 @@ func (me *MemoryEditorWidget) getState() (state *memoryEditorState) {
 			editor: imgui.NewMemoryEditor(),
 		}
 
-		SetState(&Context, me.id, state)
+		SetState(Context, me.id, state)
 	}
 
 	return state

@@ -209,7 +209,7 @@ func (ce *CodeEditorWidget) getState() (state *codeEditorState) {
 			editor: imgui.NewTextEditor(),
 		}
 
-		SetState(&Context, ce.title, state)
+		SetState(Context, ce.title, state)
 	}
 
 	return state

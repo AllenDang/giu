@@ -126,7 +126,7 @@ func (eh *EventHandler) Build() {
 		stateID := GenAutoID("eventHandlerState")
 		if state = GetState[eventHandlerState](Context, stateID); state == nil {
 			state = &eventHandlerState{}
-			SetState(&Context, stateID, state)
+			SetState(Context, stateID, state)
 		}
 
 		if eh.onActivate != nil && isActive && !state.isActive {
