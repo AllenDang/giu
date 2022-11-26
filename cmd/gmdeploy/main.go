@@ -20,15 +20,19 @@ func main() {
 	}
 
 	var targetOS string
+
 	flag.StringVar(&targetOS, "os", runtime.GOOS, "target deploy os [windows, darwin, linux]")
 
 	var iconPath string
+
 	flag.StringVar(&iconPath, "icon", "", "application icon file path")
 
 	var upx bool
+
 	flag.BoolVar(&upx, "upx", false, "use upx to compress executable")
 
 	var createUniversalBinaryForMacOS bool
+
 	flag.BoolVar(&createUniversalBinaryForMacOS, "ub", false, "create universal binary for macOS")
 
 	flag.Parse()
@@ -58,15 +62,18 @@ func main() {
 
 		// Create universal binary for macOS
 		// Build for arm64
+		//nolint:gosec // cannot fix
 		cmd = exec.Command("bash", "-c", fmt.Sprintf("CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -o %s_binary_arm64 -ldflags '-s -w' .", appName))
 		cmd.Dir = projectPath
 		runCmd(cmd)
 
 		// Build for amd64
+		//nolint:gosec // cannot fix
 		cmd = exec.Command("bash", "-c", fmt.Sprintf("CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -o %s_binary_amd64 -ldflags '-s -w' .", appName))
 		runCmd(cmd)
 
 		// Merge them together with lipo
+		//nolint:gosec // cannot fix
 		cmd = exec.Command("bash", "-c", fmt.Sprintf("lipo -create -output %[1]s %[1]s_binary_amd64 %[1]s_binary_arm64", appName))
 		runCmd(cmd)
 
