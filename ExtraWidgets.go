@@ -304,6 +304,13 @@ type CustomWidget struct {
 	builder func()
 }
 
+// Custom creates a new custom widget
+func Custom(builder func()) *CustomWidget {
+	return &CustomWidget{
+		builder: builder,
+	}
+}
+
 // Build implements Widget interface.
 func (c *CustomWidget) Build() {
 	if c.builder != nil {
@@ -311,10 +318,9 @@ func (c *CustomWidget) Build() {
 	}
 }
 
-func Custom(builder func()) *CustomWidget {
-	return &CustomWidget{
-		builder: builder,
-	}
+// Plot implements Plot interface.
+func (c *CustomWidget) Plot() {
+	c.Build()
 }
 
 var _ Widget = &ConditionWidget{}
