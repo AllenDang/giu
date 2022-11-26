@@ -12,6 +12,7 @@ import (
 func SingleWindow() *WindowWidget {
 	size := Context.platform.DisplaySize()
 	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
+
 	return Window(title).
 		Flags(
 			imgui.WindowFlagsNoTitleBar|
@@ -26,6 +27,7 @@ func SingleWindow() *WindowWidget {
 func SingleWindowWithMenuBar() *WindowWidget {
 	size := Context.platform.DisplaySize()
 	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
+
 	return Window(title).
 		Flags(
 			imgui.WindowFlagsNoTitleBar|
@@ -117,6 +119,7 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 
 	if w.bringToFront {
 		imgui.SetNextWindowFocus()
+
 		w.bringToFront = false
 	}
 

@@ -48,6 +48,7 @@ func (ms *msgboxState) Dispose() {
 
 func msgboxInvokeCallback(result DialogResult, callback DialogResultCallback) {
 	CloseCurrentPopup()
+
 	if callback != nil {
 		callback(result)
 	}
@@ -159,6 +160,7 @@ func Msgbox(title, content string) *MsgboxWidget {
 func (m *MsgboxWidget) Buttons(buttons MsgboxButtons) *MsgboxWidget {
 	s := m.getState()
 	s.buttons = buttons
+
 	return m
 }
 
@@ -166,5 +168,6 @@ func (m *MsgboxWidget) Buttons(buttons MsgboxButtons) *MsgboxWidget {
 func (m *MsgboxWidget) ResultCallback(cb DialogResultCallback) *MsgboxWidget {
 	s := m.getState()
 	s.resultCallback = cb
+
 	return m
 }

@@ -68,6 +68,7 @@ func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 	// Size image with DPI scaling
 	factor := Context.GetPlatform().GetContentScale()
 	i.width, i.height = width*factor, height*factor
+
 	return i
 }
 
@@ -75,9 +76,11 @@ func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 func (i *ImageWidget) Build() {
 	size := imgui.Vec2{X: i.width, Y: i.height}
 	rect := imgui.ContentRegionAvail()
+
 	if size.X == -1 {
 		size.X = rect.X
 	}
+
 	if size.Y == -1 {
 		size.Y = rect.Y
 	}
@@ -92,6 +95,7 @@ func (i *ImageWidget) Build() {
 		cursorPos := GetCursorScreenPos()
 		mousePos := GetMousePos()
 		mousePos.Add(cursorPos)
+
 		if cursorPos.X <= mousePos.X && cursorPos.Y <= mousePos.Y &&
 			cursorPos.X+int(i.width) >= mousePos.X && cursorPos.Y+int(i.height) >= mousePos.Y {
 			i.onClick()
@@ -313,6 +317,7 @@ func (i *ImageWithURLWidget) Build() {
 
 		// Prevent multiple invocation to download image.
 		downloadContext, cancelFunc := ctx.WithCancel(ctx.Background())
+
 		SetState(&Context, i.id, &imageState{loading: true, cancel: cancelFunc})
 
 		errorFn := func(err error) {
@@ -328,6 +333,7 @@ func (i *ImageWithURLWidget) Build() {
 			// Load image from url
 			client := &http.Client{Timeout: i.downloadTimeout}
 			req, err := http.NewRequestWithContext(downloadContext, "GET", i.imgURL, http.NoBody)
+
 			if err != nil {
 				errorFn(err)
 				return

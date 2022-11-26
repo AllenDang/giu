@@ -98,6 +98,7 @@ func (s *SplitLayoutWidget) Build() {
 		if *s.sashPos >= availableW {
 			*s.sashPos = availableW
 		}
+
 		layout = Layout{
 			Row(
 				s.buildChild(*s.sashPos, 0, s.layout1),
@@ -163,5 +164,6 @@ func (s *SplitLayoutWidget) getState() (state *splitLayoutState) {
 		state = &splitLayoutState{delta: 0.0}
 		SetState(&Context, s.id, state)
 	}
+
 	return state
 }

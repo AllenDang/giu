@@ -218,6 +218,7 @@ func (w *MasterWindow) run() {
 
 	ticker := time.NewTicker(time.Second / time.Duration(p.GetTPS()))
 	shouldQuit := false
+
 	for !shouldQuit {
 		mainthread.Call(func() {
 			// process texture load requests
@@ -386,6 +387,7 @@ func (w *MasterWindow) SetShouldClose(v bool) {
 // see InputHandler.go.
 func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 	Context.InputHandler = handler
+
 	w.platform.SetInputCallback(func(key glfw.Key, modifier glfw.ModifierKey, action glfw.Action) {
 		k, m, a := Key(key), Modifier(modifier), Action(action)
 		handler.Handle(k, m, a)

@@ -41,12 +41,14 @@ func NewTextureFromRgba(rgba image.Image, loadCallback func(*Texture)) {
 func loadTexture(rgba image.Image, loadCallback func(*Texture)) {
 	go func() {
 		Update()
+
 		result := mainthread.CallVal(func() any {
 			texID, err := Context.renderer.LoadImage(ImageToRgba(rgba))
 			return &loadImageResult{id: texID, err: err}
 		})
 
 		tid, ok := result.(*loadImageResult)
+
 		switch {
 		case !ok:
 			panic("giu: NewTextureFromRgba: unexpected error occurred")

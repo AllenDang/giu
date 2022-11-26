@@ -28,6 +28,7 @@ func (l *ListClipperWrapper) Layout(layout ...Widget) *ListClipperWrapper {
 func (l *ListClipperWrapper) Build() {
 	// read all the layout widgets and (eventually) split nested layouts
 	var layout Layout
+
 	l.layout.Range(func(w Widget) {
 		layout = append(layout, w)
 	})

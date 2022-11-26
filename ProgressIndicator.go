@@ -17,10 +17,12 @@ type progressIndicatorState struct {
 
 func (ps *progressIndicatorState) update() {
 	ticker := time.NewTicker(time.Second / 60)
+
 	for !ps.stop {
 		if ps.angle > 6.2 {
 			ps.angle = 0
 		}
+
 		ps.angle += 0.1
 
 		Update()
@@ -65,7 +67,9 @@ func (p *ProgressIndicatorWidget) Build() {
 	if state := GetState[progressIndicatorState](Context, p.internalID); state == nil {
 		// Register state and start go routine
 		ps := progressIndicatorState{angle: 0.0, stop: false}
+
 		SetState(&Context, p.internalID, &ps)
+
 		go ps.update()
 	} else {
 		child := Child().Border(false).Size(p.width, p.height).Layout(Layout{

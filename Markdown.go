@@ -64,6 +64,7 @@ func (m *MarkdownWidget) Build() {
 
 func loadImage(path string) imgui.MarkdownImageData {
 	var img *image.RGBA
+
 	var err error
 
 	switch {
@@ -71,6 +72,7 @@ func loadImage(path string) imgui.MarkdownImageData {
 		// Load image from url
 		client := &http.Client{Timeout: 5 * time.Second}
 		resp, respErr := client.Get(path)
+
 		if respErr != nil {
 			return imgui.MarkdownImageData{}
 		}
@@ -106,6 +108,7 @@ func loadImage(path string) imgui.MarkdownImageData {
 	*/
 
 	var id imgui.TextureID
+
 	mainthread.Call(func() {
 		var err error
 		id, err = Context.renderer.LoadImage(img)

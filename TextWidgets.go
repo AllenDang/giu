@@ -235,6 +235,7 @@ func (i *InputTextWidget) Build() {
 
 	if i.width != 0 {
 		PushItemWidth(i.width)
+
 		defer PopItemWidth()
 	}
 
@@ -349,6 +350,7 @@ func (i *InputIntWidget) OnChange(onChange func()) *InputIntWidget {
 func (i *InputIntWidget) Build() {
 	if i.width != 0 {
 		PushItemWidth(i.width)
+
 		defer PopItemWidth()
 	}
 
@@ -434,6 +436,7 @@ func (i *InputFloatWidget) StepSizeFast(stepFast float32) *InputFloatWidget {
 func (i *InputFloatWidget) Build() {
 	if i.width != 0 {
 		PushItemWidth(i.width)
+
 		defer PopItemWidth()
 	}
 
@@ -480,6 +483,7 @@ func (l *LabelWidget) Font(font *FontInfo) *LabelWidget {
 func (l *LabelWidget) Build() {
 	if l.wrapped {
 		PushTextWrapPos()
+
 		defer PopTextWrapPos()
 	}
 
