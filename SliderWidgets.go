@@ -59,7 +59,7 @@ func (s *SliderIntWidget) Label(label string) *SliderIntWidget {
 	return s
 }
 
-// Labelf sets formated label.
+// Labelf sets formatted label.
 func (s *SliderIntWidget) Labelf(format string, args ...any) *SliderIntWidget {
 	return s.Label(fmt.Sprintf(format, args...))
 }
@@ -135,7 +135,7 @@ func (vs *VSliderIntWidget) Label(label string) *VSliderIntWidget {
 	return vs
 }
 
-// Labelf sets formated label.
+// Labelf sets formatted label.
 func (vs *VSliderIntWidget) Labelf(format string, args ...any) *VSliderIntWidget {
 	return vs.Label(fmt.Sprintf(format, args...))
 }
@@ -208,7 +208,7 @@ func (sf *SliderFloatWidget) Label(label string) *SliderFloatWidget {
 	return sf
 }
 
-// Labelf sets formated label.
+// Labelf sets formatted label.
 func (sf *SliderFloatWidget) Labelf(format string, args ...any) *SliderFloatWidget {
 	return sf.Label(fmt.Sprintf(format, args...))
 }

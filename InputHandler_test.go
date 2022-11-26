@@ -20,8 +20,8 @@ func Test_InputHandle_RegisterKeyboardShortcuts(t *testing.T) {
 		isGlobal ShortcutType
 		cb       func()
 	}{
-		{"global shourtcut", Key(1), Modifier(2), ShortcutType(true), func() {}},
-		{"window shourtcut", Key(9), Modifier(3), ShortcutType(false), func() {}},
+		{"global shortcut", Key(1), Modifier(2), ShortcutType(true), func() {}},
+		{"window shortcut", Key(9), Modifier(3), ShortcutType(false), func() {}},
 	}
 
 	for _, tt := range tests {
@@ -44,14 +44,14 @@ func Test_InputHandle_RegisterKeyboardShortcuts(t *testing.T) {
 			a.True(exist, "shortcut wasn't registered in input manager")
 			if tt.isGlobal {
 				// TODO: figure out why it doesn't work
-				// a.Equal(shortcut.global, tt.cb, "worng shortcut set in input manager")
-				a.NotNil(shortcut.global, "worng shortcut set in input manager")
-				a.Nil(shortcut.window, "worng shortcut set in input manager")
+				// a.Equal(shortcut.global, tt.cb, "wrong shortcut set in input manager")
+				a.NotNil(shortcut.global, "wrong shortcut set in input manager")
+				a.Nil(shortcut.window, "wrong shortcut set in input manager")
 			} else {
 				// TODO: figure out why it doesn't work
-				// a.Equal(shortcut.window, tt.cb, "worng shortcut set in input manager")
-				a.NotNil(shortcut.window, "worng shortcut set in input manager")
-				a.Nil(shortcut.global, "worng shortcut set in input manager")
+				// a.Equal(shortcut.window, tt.cb, "wrong shortcut set in input manager")
+				a.NotNil(shortcut.window, "wrong shortcut set in input manager")
+				a.Nil(shortcut.global, "wrong shortcut set in input manager")
 			}
 		})
 	}
@@ -90,9 +90,9 @@ func Test_InputHandler_Handle(t *testing.T) {
 	a.False(shortcut1, "Shortcut 1 was handled, but shouldn't.")
 	a.False(shortcut2, "Shortcut 2 was handled, but shouldn't.")
 	i.Handle(Key(5), Modifier(0), Press)
-	a.True(shortcut1, "Shortcut 1 was not handled, but shouldn be.")
+	a.True(shortcut1, "Shortcut 1 was not handled, but should be.")
 	a.False(shortcut2, "Shortcut 2 was handled, but shouldn't.")
 	i.Handle(Key(8), Modifier(2), Press)
-	a.True(shortcut1, "Shortcut 1 was not handled, but shouldn be.")
-	a.True(shortcut2, "Shortcut 2 was not handled, but shouldn be.")
+	a.True(shortcut1, "Shortcut 1 was not handled, but should be.")
+	a.True(shortcut2, "Shortcut 2 was not handled, but should be.")
 }

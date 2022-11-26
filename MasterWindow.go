@@ -12,7 +12,7 @@ import (
 	"gopkg.in/eapache/queue.v1"
 )
 
-// MasterWindowFlags wrapps imgui.GLFWWindowFlags.
+// MasterWindowFlags wraps imgui.GLFWWindowFlags.
 type MasterWindowFlags imgui.GLFWWindowFlags
 
 // master window flags.
@@ -294,7 +294,7 @@ func (w *MasterWindow) SetCloseCallback(cb func() bool) {
 	w.platform.SetCloseCallback(cb)
 }
 
-// SetDropCallback sets callback when file was droppend into the window.
+// SetDropCallback sets callback when file was dropped into the window.
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.platform.SetDropCallback(cb)
 }
@@ -372,7 +372,7 @@ func (w *MasterWindow) SetTitle(title string) {
 	w.platform.SetTitle(title)
 }
 
-// Close will savely close the master window.
+// Close will safely close the master window.
 func (w *MasterWindow) Close() {
 	w.SetShouldClose(true)
 }

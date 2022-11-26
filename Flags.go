@@ -331,7 +331,7 @@ const (
 	ColorEditFlagsAlphaPreview ColorEditFlags = imgui.ColorEditFlagsAlphaPreview
 	// ColorEditFlagsAlphaPreviewHalf displays half opaque / half checkerboard, instead of opaque.
 	ColorEditFlagsAlphaPreviewHalf ColorEditFlags = imgui.ColorEditFlagsAlphaPreviewHalf
-	// ColorEditFlagsHDR = (WIP) surrently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use
+	// ColorEditFlagsHDR = (WIP) currently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use
 	// ImGuiColorEditFlags_Float flag as well).
 	ColorEditFlagsHDR ColorEditFlags = imgui.ColorEditFlagsHDR
 	// ColorEditFlagsRGB sets the format as RGB.

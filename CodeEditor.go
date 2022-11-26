@@ -53,7 +53,7 @@ func (ce *CodeEditorWidget) ID(id string) *CodeEditorWidget {
 	return ce
 }
 
-// ShowWhitespaces sets if whitespaces are shown in code editor.
+// ShowWhitespaces sets if whitespace is shown in code editor.
 func (ce *CodeEditorWidget) ShowWhitespaces(s bool) *CodeEditorWidget {
 	ce.getState().editor.SetShowWhitespaces(s)
 	return ce

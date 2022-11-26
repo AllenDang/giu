@@ -3,7 +3,7 @@ package giu
 import "fmt"
 
 // DialogResult represents dialog result
-// dialog resullt is bool. if OK/Yes it is true, else (Cancel/No) - false.
+// dialog result is bool. if OK/Yes it is true, else (Cancel/No) - false.
 type DialogResult bool
 
 // dialog results.

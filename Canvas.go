@@ -37,7 +37,7 @@ type DrawFlags int
 // draw flags enum:.
 const (
 	DrawFlagsNone DrawFlags = 0
-	// PathStroke(), AddPolyline(): specify that shape should be closed (portant: this is always == 1 for legacy reason).
+	// PathStroke(), AddPolyline(): specify that shape should be closed (note: this is always == 1 for legacy reasons).
 	DrawFlagsClosed DrawFlags = 1 << 0
 	// AddRect(), AddRectFilled(), PathRect(): enable rounding top-left corner only (when rounding > 0.0f, we default to all corners).
 	// Was 0x01.

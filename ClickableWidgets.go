@@ -30,7 +30,7 @@ func Button(label string) *ButtonWidget {
 	}
 }
 
-// Buttonf creates button with formated label
+// Buttonf creates button with formatted label
 // NOTE: works like fmt.Sprintf (see `go doc fmt`).
 func Buttonf(format string, args ...any) *ButtonWidget {
 	return Button(fmt.Sprintf(format, args...))
@@ -121,7 +121,7 @@ func SmallButton(id string) *SmallButtonWidget {
 	}
 }
 
-// SmallButtonf allows to set formated label for small button.
+// SmallButtonf allows to set formatted label for small button.
 // It calls SmallButton(fmt.Sprintf(label, args...)).
 func SmallButtonf(format string, args ...any) *SmallButtonWidget {
 	return SmallButton(fmt.Sprintf(format, args...))
@@ -202,7 +202,7 @@ type ImageButtonWidget struct {
 	onClick      func()
 }
 
-// ImageButton  constructs image buton widget.
+// ImageButton  constructs image button widget.
 func ImageButton(texture *Texture) *ImageButtonWidget {
 	return &ImageButtonWidget{
 		texture:      texture,
@@ -384,7 +384,7 @@ type RadioButtonWidget struct {
 	onChange func()
 }
 
-// RadioButton creates a radio buton.
+// RadioButton creates a radio button.
 func RadioButton(text string, active bool) *RadioButtonWidget {
 	return &RadioButtonWidget{
 		text:     GenAutoID(text),
@@ -432,7 +432,7 @@ func Selectable(label string) *SelectableWidget {
 	}
 }
 
-// Selectablef creates a selectable widget with formated label.
+// Selectablef creates a selectable widget with formatted label.
 func Selectablef(format string, args ...any) *SelectableWidget {
 	return Selectable(fmt.Sprintf(format, args...))
 }

@@ -27,7 +27,7 @@ func (s *splitLayoutState) Dispose() {
 	// noop
 }
 
-// SplitLayoutWidget creates two childs with a line between them.
+// SplitLayoutWidget creates two children with a line between them.
 // This line can be moved by the user to adjust child sizes.
 type SplitLayoutWidget struct {
 	id                  string
@@ -54,7 +54,7 @@ func SplitLayout(direction SplitDirection, sashPos *float32, layout1, layout2 Wi
 	}
 }
 
-// Border sets if childs should have borders.
+// Border sets if children should have borders.
 func (s *SplitLayoutWidget) Border(b bool) *SplitLayoutWidget {
 	s.border = b
 	return s
