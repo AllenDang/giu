@@ -237,21 +237,28 @@ func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 var _ Widget = &ContextMenuWidget{}
 
 type ContextMenuWidget struct {
-	id     string
-	flags  imgui.ImGuiPopupFlags
-	layout Layout
+	id          string
+	flags       imgui.ImGuiPopupFlags
+	mouseButton MouseButton
+	layout      Layout
 }
 
 func ContextMenu() *ContextMenuWidget {
 	return &ContextMenuWidget{
-		flags:  imgui.ImGuiPopupFlags_MouseButtonRight,
-		layout: nil,
-		id:     GenAutoID("ContextMenu"),
+		mouseButton: MouseButtonRight,
+		flags:       imgui.ImGuiPopupFlags_MouseButtonRight,
+		layout:      nil,
+		id:          GenAutoID("ContextMenu"),
 	}
 }
 
 func (c *ContextMenuWidget) Layout(widgets ...Widget) *ContextMenuWidget {
 	c.layout = Layout(widgets)
+	return c
+}
+
+func (c *ContextMenuWidget) MouseButton(mouseButton MouseButton) *ContextMenuWidget {
+	c.mouseButton = mouseButton
 	return c
 }
 
