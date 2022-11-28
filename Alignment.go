@@ -10,7 +10,7 @@ import (
 // These constants holds information about where GetWidgetWidth should proceed their
 // measurements.
 //
-// It should be far away from our working space, -1000 seems to be good choice for now
+// It should be far away from our working space, -1000 seems to be good choice for now.
 const (
 	getWidgetWidthTestingSpaceX, getWidgetWidthTestingSpaceY = -1000, -1000
 )
@@ -82,7 +82,7 @@ var _ Widget = &AlignmentSetter{}
 // usage: see examples/align
 //
 // list of known bugs:
-// - BUG: there is some bug with SelectableWidget
+// - BUG: there is some bug with SelectableWidget.
 type AlignmentSetter struct {
 	alignType AlignmentType
 	layout    Layout
@@ -195,6 +195,7 @@ func GetWidgetWidth(w Widget) (result float32) {
 	// save widget's width
 	// check cursor position
 	imgui.SameLine()
+
 	spacingW, _ := GetItemSpacing()
 	result = float32(GetCursorPos().X-startPos.X) - spacingW
 

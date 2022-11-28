@@ -211,5 +211,6 @@ func (ce *CodeEditorWidget) getState() (state *codeEditorState) {
 
 		SetState(&Context, ce.title, state)
 	}
+
 	return state
 }

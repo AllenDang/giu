@@ -115,12 +115,14 @@ func (eh *EventHandler) OnMouseReleased(mouseButton MouseButton, callback func()
 }
 
 // Build implements Widget interface
+//
 //nolint:gocognit,gocyclo // will fix later
 func (eh *EventHandler) Build() {
 	isActive := IsItemActive()
 
 	if eh.onActivate != nil || eh.onDeactivate != nil {
 		var state *eventHandlerState
+
 		stateID := GenAutoID("eventHandlerState")
 		if state = GetState[eventHandlerState](Context, stateID); state == nil {
 			state = &eventHandlerState{}
@@ -129,11 +131,13 @@ func (eh *EventHandler) Build() {
 
 		if eh.onActivate != nil && isActive && !state.isActive {
 			state.isActive = true
+
 			eh.onActivate()
 		}
 
 		if eh.onDeactivate != nil && !isActive && state.isActive {
 			state.isActive = false
+
 			eh.onDeactivate()
 		}
 	}

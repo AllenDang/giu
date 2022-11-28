@@ -68,6 +68,7 @@ func (s *SliderIntWidget) Labelf(format string, args ...any) *SliderIntWidget {
 func (s *SliderIntWidget) Build() {
 	if s.width != 0 {
 		PushItemWidth(s.width)
+
 		defer PopItemWidth()
 	}
 
@@ -217,6 +218,7 @@ func (sf *SliderFloatWidget) Labelf(format string, args ...any) *SliderFloatWidg
 func (sf *SliderFloatWidget) Build() {
 	if sf.width != 0 {
 		PushItemWidth(sf.width)
+
 		defer PopItemWidth()
 	}
 

@@ -191,6 +191,7 @@ func (a *FontAtlas) registerDefaultFont(fontName string, size float32) {
 
 func (a *FontAtlas) registerDefaultFonts(fontInfos []FontInfo) {
 	var firstFoundFont *FontInfo
+
 	for _, fi := range fontInfos {
 		fontPath, err := findfont.Find(fi.fontName)
 		if err == nil {

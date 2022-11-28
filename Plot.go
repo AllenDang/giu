@@ -104,6 +104,7 @@ func (p *PlotCanvasWidget) XTicks(ticks []PlotTicker, showDefault bool) *PlotCan
 	p.xTicksValue = values
 	p.xTicksLabel = labels
 	p.xTicksShowDefault = showDefault
+
 	return p
 }
 
@@ -126,6 +127,7 @@ func (p *PlotCanvasWidget) YTicks(ticks []PlotTicker, showDefault bool, yAxis Im
 	p.yTicksLabel = labels
 	p.yTicksShowDefault = showDefault
 	p.yTicksYAxis = yAxis
+
 	return p
 }
 
@@ -146,6 +148,7 @@ func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags PlotAxisFlags) *Pl
 	p.yFlags = yFlags
 	p.y2Flags = y2Flags
 	p.y3Flags = y3Flags
+
 	return p
 }
 
@@ -159,6 +162,7 @@ func (p *PlotCanvasWidget) Plots(plots ...PlotWidget) *PlotCanvasWidget {
 func (p *PlotCanvasWidget) Size(width, height int) *PlotCanvasWidget {
 	p.width = width
 	p.height = height
+
 	return p
 }
 
@@ -185,6 +189,7 @@ func (p *PlotCanvasWidget) Build() {
 			for _, plot := range p.plots {
 				plot.Plot()
 			}
+
 			imgui.ImPlotEnd()
 		}
 	}

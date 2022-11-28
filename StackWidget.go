@@ -40,9 +40,11 @@ func (s *StackWidget) Build() {
 
 	// build invisible layouts with 0 alpha
 	imgui.PushStyleVarFloat(imgui.StyleVarAlpha, 0)
+
 	for _, l := range layouts {
 		SetCursorScreenPos(visiblePos)
 		l.Build()
 	}
+
 	imgui.PopStyleVar()
 }

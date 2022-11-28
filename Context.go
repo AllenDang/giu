@@ -68,7 +68,6 @@ func CreateContext(p imgui.Platform, r imgui.Renderer) context {
 		r.SetFontTexture(fontAtlas)
 	} else {
 		result.FontAtlas.shouldRebuildFontAtlas = true
-		// result.FontAtlas.rebuildFontAtlas()
 	}
 
 	return result
@@ -123,8 +122,10 @@ func GetState[T any, PT genericDisposable[T]](c context, id string) PT {
 		s.valid = true
 		data, isOk := s.data.(PT)
 		Assert(isOk, "Context", "GetState", fmt.Sprintf("got state of unexpected type: expected %T, instead found %T", new(T), s.data))
+
 		return data
 	}
+
 	return nil
 }
 
@@ -133,6 +134,7 @@ func (c *context) GetState(id string) any {
 		s.valid = true
 		return s.data
 	}
+
 	return nil
 }
 
@@ -142,6 +144,7 @@ func (c *context) load(id any) (*state, bool) {
 			return s, true
 		}
 	}
+
 	return nil, false
 }
 
@@ -149,5 +152,6 @@ func (c *context) load(id any) (*state, bool) {
 func (c *context) GetWidgetIndex() int {
 	i := c.widgetIndexCounter
 	c.widgetIndexCounter++
+
 	return i
 }

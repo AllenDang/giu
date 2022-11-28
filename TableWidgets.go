@@ -136,6 +136,7 @@ func (t *TableWidget) FastMode(b bool) *TableWidget {
 func (t *TableWidget) Freeze(col, row int) *TableWidget {
 	t.freezeColumn = col
 	t.freezeRow = row
+
 	return t
 }
 
@@ -184,6 +185,7 @@ func (t *TableWidget) Build() {
 			for _, col := range t.columns {
 				col.BuildTableColumn()
 			}
+
 			imgui.TableHeadersRow()
 		}
 

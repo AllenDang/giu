@@ -30,6 +30,7 @@ func Row(widgets ...Widget) *RowWidget {
 // Build implements Widget interface.
 func (l *RowWidget) Build() {
 	isFirst := true
+
 	l.widgets.Range(func(w Widget) {
 		switch w.(type) {
 		case *TooltipWidget,
@@ -630,6 +631,7 @@ func (t *TabBarWidget) Build() {
 		for _, ti := range t.tabItems {
 			ti.BuildTabItem()
 		}
+
 		imgui.EndTabBar()
 	}
 }

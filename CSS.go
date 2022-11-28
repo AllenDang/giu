@@ -31,9 +31,11 @@ func ParseCSSStyleSheet(data []byte) error {
 
 	for rule, style := range stylesheet {
 		setter := Style()
+
 		for styleVarName, styleVarValue := range style {
 			// convert style variable name to giu style variable name
 			var styleVarID StyleVarID
+
 			err := panicToErr(func() {
 				styleVarID = StyleVarIDFromString(styleVarName)
 			})
@@ -74,6 +76,7 @@ func ParseCSSStyleSheet(data []byte) error {
 			}
 
 			var styleColorID StyleColorID
+
 			err = panicToErr(func() {
 				styleColorID = StyleColorIDFromString(styleVarName)
 			})
@@ -104,6 +107,7 @@ func panicToErr(f func()) (err error) {
 	}()
 
 	f()
+
 	return err
 }
 
