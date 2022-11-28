@@ -1,7 +1,7 @@
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8 h1:dKZMqib/yUDoCFigmz2agG8geZ/e3iRq304/KJXqKyw=
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8/go.mod h1:b4uuDd0s6KRIPa84cEEchdQ9ICh7K0OryZHbSzMca9k=
-github.com/AllenDang/imgui-go v1.12.1-0.20220322114136-499bbf6a42ad h1:Kr961C2uEEAklK+jBRiZVnQH0AgS7o6pXrIgUTUUGiM=
-github.com/AllenDang/imgui-go v1.12.1-0.20220322114136-499bbf6a42ad/go.mod h1:kuPs9RWleaUuK7D49bE6HPxyRA36Lp4ICKGp+5OnnbY=
+github.com/AllenDang/imgui-go v1.12.1-0.20221124025851-59b862ca5a0c h1:kiXjH0n0KzOpvhgy3nDFkPmKfg4A+QWsEOwxwWy6yuI=
+github.com/AllenDang/imgui-go v1.12.1-0.20221124025851-59b862ca5a0c/go.mod h1:kuPs9RWleaUuK7D49bE6HPxyRA36Lp4ICKGp+5OnnbY=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -10,10 +10,8 @@ github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3/go.mod h1:VEPNJ
 github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6 h1:zDw5v7qm4yH7N8C8uWd+8Ii9rROdgWxQuGoJ9WDXxfk=
 github.com/go-gl/gl v0.0.0-20211210172815-726fda9656d6/go.mod h1:9YTyiznxEY1fVinfM7RvRcjRHbw2xLBJ3AAGIT0I4Nw=
 github.com/go-gl/glfw/v3.3/glfw v0.0.0-20211213063430-748e38ca8aec/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
-github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220806181222-55e207c401ad h1:kX51IjbsJPCvzV9jUoVQG9GEUqIq5hjfYzXTqQ52Rh8=
-github.com/go-gl/glfw/v3.3/glfw v0.0.0-20220806181222-55e207c401ad/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
-github.com/gucio321/go-css v0.0.0-20220927183634-22e6096f036e h1:5FrujxF+Hl8A1vKMb91jyswjspgiDVnkkyZ0xY/cQvY=
-github.com/gucio321/go-css v0.0.0-20220927183634-22e6096f036e/go.mod h1:HqZYcKcNnv50fgOTdGUn9YbJa2qC9oJ3kLnyrwwVzUI=
+github.com/go-gl/glfw/v3.3/glfw v0.0.0-20221017161538-93cebf72946b h1:GgabKamyOYguHqHjSkDACcgoPIz3w0Dis/zJ1wyHHHU=
+github.com/go-gl/glfw/v3.3/glfw v0.0.0-20221017161538-93cebf72946b/go.mod h1:tQ2UAYgL5IevRw8kRxooKSPJfGvJ9fJQFa0TUsXzTg8=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/mazznoer/csscolorparser v0.1.3 h1:vug4zh6loQxAUxfU1DZEu70gTPufDPspamZlHAkKcxE=
