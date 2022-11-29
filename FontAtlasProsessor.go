@@ -54,7 +54,7 @@ type FontAtlas struct {
 	fontSize               float32
 }
 
-func newFontAtlas() FontAtlas {
+func newFontAtlas() *FontAtlas {
 	result := FontAtlas{
 		extraFontMap: make(map[string]*imgui.Font),
 		fontSize:     defaultFontSize,
@@ -112,7 +112,7 @@ func newFontAtlas() FontAtlas {
 		})
 	}
 
-	return result
+	return &result
 }
 
 // SetDefaultFontSize sets the default font size. Invoke this before MasterWindow.NewMasterWindow(..).

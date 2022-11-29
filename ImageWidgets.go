@@ -166,7 +166,7 @@ func (i *ImageWithRgbaWidget) Build() {
 		var imgState *imageState
 		if imgState = GetState[imageState](Context, i.id); imgState == nil {
 			imgState = &imageState{}
-			SetState(&Context, i.id, imgState)
+			SetState(Context, i.id, imgState)
 
 			NewTextureFromRgba(i.rgba, func(tex *Texture) {
 				imgState.texture = tex
@@ -225,7 +225,7 @@ func (i *ImageWithFileWidget) Build() {
 	if imgState = GetState[imageState](Context, i.id); imgState == nil {
 		// Prevent multiple invocation to LoadImage.
 		imgState = &imageState{}
-		SetState(&Context, i.id, imgState)
+		SetState(Context, i.id, imgState)
 
 		img, err := LoadImage(i.imgPath)
 		if err == nil {
@@ -313,15 +313,15 @@ func (i *ImageWithURLWidget) Build() {
 	var imgState *imageState
 	if imgState = GetState[imageState](Context, i.id); imgState == nil {
 		imgState = &imageState{}
-		SetState(&Context, i.id, imgState)
+		SetState(Context, i.id, imgState)
 
 		// Prevent multiple invocation to download image.
 		downloadContext, cancelFunc := ctx.WithCancel(ctx.Background())
 
-		SetState(&Context, i.id, &imageState{loading: true, cancel: cancelFunc})
+		SetState(Context, i.id, &imageState{loading: true, cancel: cancelFunc})
 
 		errorFn := func(err error) {
-			SetState(&Context, i.id, &imageState{failure: true})
+			SetState(Context, i.id, &imageState{failure: true})
 
 			// Trigger onFailure event
 			if i.onFailure != nil {
@@ -360,7 +360,7 @@ func (i *ImageWithURLWidget) Build() {
 			rgba := ImageToRgba(img)
 
 			NewTextureFromRgba(rgba, func(tex *Texture) {
-				SetState(&Context, i.id, &imageState{
+				SetState(Context, i.id, &imageState{
 					loading: false,
 					failure: false,
 					texture: tex,

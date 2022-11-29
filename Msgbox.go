@@ -106,7 +106,7 @@ func PrepareMsgbox() Layout {
 			// Register state.
 			if state = GetState[msgboxState](Context, msgboxID); state == nil {
 				state = &msgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
-				SetState(&Context, msgboxID, state)
+				SetState(Context, msgboxID, state)
 			}
 
 			if state.open {

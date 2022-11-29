@@ -68,7 +68,7 @@ func (p *ProgressIndicatorWidget) Build() {
 		// Register state and start go routine
 		ps := progressIndicatorState{angle: 0.0, stop: false}
 
-		SetState(&Context, p.internalID, &ps)
+		SetState(Context, p.internalID, &ps)
 
 		go ps.update()
 	} else {

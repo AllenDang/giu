@@ -9,7 +9,7 @@ import (
 )
 
 // Context represents a giu context.
-var Context context
+var Context *context
 
 // Disposable should be implemented by all states stored in context.
 // Dispose method is called when state is removed from context.
@@ -44,14 +44,14 @@ type context struct {
 	state sync.Map
 
 	InputHandler InputHandler
-	FontAtlas    FontAtlas
+	FontAtlas    *FontAtlas
 
 	textureLoadingQueue *queue.Queue
 
 	cssStylesheet cssStylesheet
 }
 
-func CreateContext(p imgui.Platform, r imgui.Renderer) context {
+func CreateContext(p imgui.Platform, r imgui.Renderer) *context {
 	result := context{
 		platform:      p,
 		renderer:      r,
@@ -70,7 +70,7 @@ func CreateContext(p imgui.Platform, r imgui.Renderer) context {
 		result.FontAtlas.shouldRebuildFontAtlas = true
 	}
 
-	return result
+	return &result
 }
 
 func (c *context) GetRenderer() imgui.Renderer {
@@ -117,7 +117,7 @@ func (c *context) SetState(id string, data Disposable) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
-func GetState[T any, PT genericDisposable[T]](c context, id string) PT {
+func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 	if s, ok := c.load(id); ok {
 		s.valid = true
 		data, isOk := s.data.(PT)

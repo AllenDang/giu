@@ -464,7 +464,7 @@ func (l *ListBoxWidget) Build() {
 	var state *ListBoxState
 	if state = GetState[ListBoxState](Context, l.id); state == nil {
 		state = &ListBoxState{selectedIndex: 0}
-		SetState(&Context, l.id, state)
+		SetState(Context, l.id, state)
 	}
 
 	child := Child().Border(l.border).Size(l.width, l.height).Layout(Layout{
