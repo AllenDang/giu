@@ -17,7 +17,8 @@ import (
 // NOTE: GetCanvas() method returns a window-level canvas, however
 // you can convert any imgui.DrawList into this type.
 // The best example could be imgui.GetPlotDrawList()
-// 	c := &Canvas{imgui.GetXXXDrawList()}
+//
+//	c := &Canvas{imgui.GetXXXDrawList()}
 type Canvas struct {
 	DrawList imgui.DrawList
 }
