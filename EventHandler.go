@@ -1,7 +1,5 @@
 package giu
 
-import imgui "github.com/AllenDang/cimgui-go"
-
 var _ Disposable = &eventHandlerState{}
 
 type eventHandlerState struct {
@@ -14,15 +12,15 @@ func (s *eventHandlerState) Dispose() {
 }
 
 type mouseEvent struct {
-	mouseButton imgui.ImGuiMouseButton
+	mouseButton MouseButton
 	callback    func()
-	cond        func(imgui.ImGuiMouseButton) bool
+	cond        func(button MouseButton) bool
 }
 
 type keyEvent struct {
-	key      imgui.ImGuiKey
+	key      Key
 	callback func()
-	cond     func(imgui.ImGuiKey) bool
+	cond     func(key Key) bool
 }
 
 var _ Widget = &EventHandler{}
@@ -73,19 +71,19 @@ func (eh *EventHandler) OnDeactivate(cb func()) *EventHandler {
 // Key events
 
 // OnKeyDown sets callback when key `key` is down.
-func (eh *EventHandler) OnKeyDown(key imgui.ImGuiKey, cb func()) *EventHandler {
+func (eh *EventHandler) OnKeyDown(key Key, cb func()) *EventHandler {
 	eh.keyEvents = append(eh.keyEvents, keyEvent{key, cb, IsKeyDown})
 	return eh
 }
 
 // OnKeyPressed sets callback when key `key` is pressed.
-func (eh *EventHandler) OnKeyPressed(key imgui.ImGuiKey, cb func()) *EventHandler {
+func (eh *EventHandler) OnKeyPressed(key Key, cb func()) *EventHandler {
 	eh.keyEvents = append(eh.keyEvents, keyEvent{key, cb, IsKeyPressed})
 	return eh
 }
 
 // OnKeyReleased sets callback when key `key` is released.
-func (eh *EventHandler) OnKeyReleased(key imgui.ImGuiKey, cb func()) *EventHandler {
+func (eh *EventHandler) OnKeyReleased(key Key, cb func()) *EventHandler {
 	eh.keyEvents = append(eh.keyEvents, keyEvent{key, cb, IsKeyReleased})
 	return eh
 }
@@ -93,30 +91,31 @@ func (eh *EventHandler) OnKeyReleased(key imgui.ImGuiKey, cb func()) *EventHandl
 // Mouse events
 
 // OnClick sets callback when mouse button `mouseButton` is clicked.
-func (eh *EventHandler) OnClick(mouseButton imgui.ImGuiMouseButton, callback func()) *EventHandler {
+func (eh *EventHandler) OnClick(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseClicked})
 	return eh
 }
 
 // OnDClick sets callback when mouse button `mouseButton` is double-clicked.
-func (eh *EventHandler) OnDClick(mouseButton imgui.ImGuiMouseButton, callback func()) *EventHandler {
+func (eh *EventHandler) OnDClick(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseDoubleClicked})
 	return eh
 }
 
 // OnMouseDown sets callback when mouse button `mouseButton` is down.
-func (eh *EventHandler) OnMouseDown(mouseButton imgui.ImGuiMouseButton, callback func()) *EventHandler {
+func (eh *EventHandler) OnMouseDown(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseDown})
 	return eh
 }
 
 // OnMouseReleased sets callback when mouse button `mouseButton` is released.
-func (eh *EventHandler) OnMouseReleased(mouseButton imgui.ImGuiMouseButton, callback func()) *EventHandler {
+func (eh *EventHandler) OnMouseReleased(mouseButton MouseButton, callback func()) *EventHandler {
 	eh.mouseEvents = append(eh.mouseEvents, mouseEvent{mouseButton, callback, IsMouseReleased})
 	return eh
 }
 
 // Build implements Widget interface
+//
 //nolint:gocognit,gocyclo // will fix later
 func (eh *EventHandler) Build() {
 	isActive := IsItemActive()
