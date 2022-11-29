@@ -1,34 +1,4 @@
 ---
-linters-settings:
-  dupl:
-    threshold: 100
-  funlen:
-    lines: 100
-    statements: 50
-  goconst:
-    min-len: 2
-    min-occurrences: 2
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - experimental
-      - opinionated
-      - performance
-      - style
-    disabled-checks:
-  gocyclo:
-    min-complexity: 15
-  goimports:
-    local-prefixes: github.com/AllenDang/giu
-  govet:
-    check-shadowing: true
-  # lll:
-  #   line-length: 140
-  maligned:
-    suggest-new: true
-  misspell:
-    locale: US
-
 linters:
   disable-all: true
   enable:
@@ -42,7 +12,7 @@ linters:
     - exportloopref
     - forcetypeassert
     #- funlen
-    - gci
+    #- gci
     - godot
     #- gochecknoglobals
     #- gochecknoinits
@@ -52,7 +22,7 @@ linters:
     - gocyclo
     - goerr113
     - gofmt
-    - gofumpt
+    #- gofumpt
     - goheader
     - goimports
     #- gomnd
@@ -82,6 +52,31 @@ linters:
     - whitespace
     - wrapcheck
     - wsl
+
+linters-settings:
+  dupl:
+    threshold: 100
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    disabled-checks:
+  gocyclo:
+    min-complexity: 15
+  goimports:
+    local-prefixes: github.com/AllenDang/giu
+  govet:
+    check-shadowing: true
+  maligned:
+    suggest-new: true
+  misspell:
+    locale: US
 
 run:
   timeout: 5m
