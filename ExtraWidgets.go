@@ -311,7 +311,7 @@ type CustomWidget struct {
 	builder func()
 }
 
-// Custom creates a new custom widget
+// Custom creates a new custom widget.
 func Custom(builder func()) *CustomWidget {
 	return &CustomWidget{
 		builder: builder,
