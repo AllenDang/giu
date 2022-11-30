@@ -1,6 +1,5 @@
 # giu
 
-[![codecov](https://codecov.io/gh/AllenDang/giu/branch/master/graph/badge.svg)](https://codecov.io/gh/AllenDang/giu)
 [![Join the chat at https://gitter.im/AllenDang-giu/community](https://badges.gitter.im/AllenDang-giu/community.svg)](https://gitter.im/AllenDang-giu/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Go Report Card](https://goreportcard.com/badge/github.com/AllenDang/giu)](https://goreportcard.com/report/github.com/AllenDang/giu)
 ![Build Status](https://github.com/AllenDang/giu/actions/workflows/build.yml/badge.svg)
