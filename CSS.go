@@ -22,6 +22,23 @@ import (
 //
 // docs: docs/css.md
 
+// ErrCSSParse represents a CSS parsing error and includes details about what is failing.
+type ErrCSSParse struct {
+	What   string // description of what we are parsing
+	Value  string // the value which failed
+	Detail error  // (optional) error to add extra detail (i.e. result of calling another function like strconv.ParseFloat)
+}
+
+func (e ErrCSSParse) Error() string {
+	errStr := fmt.Sprintf("unable to parse %s: %q", e.What, e.Value)
+
+	if e.Detail != nil {
+		errStr += fmt.Sprintf(" - %s", e.Detail.Error())
+	}
+
+	return errStr
+}
+
 // ParseCSSStyleSheet parses CSS stylesheet and stores the rules in giu context.
 func ParseCSSStyleSheet(data []byte) error {
 	stylesheet, err := css.Unmarshal(data)
@@ -51,23 +68,21 @@ func ParseCSSStyleSheet(data []byte) error {
 
 				// so maybe it is a vec2 value:
 				// var-name: x, y;
+				styleVarValue = strings.ReplaceAll(styleVarValue, " ", "")
 				vec2 := strings.Split(styleVarValue, ",")
-				if len(vec2) != 2 {
-					return fmt.Errorf("unable to parse value %v is not float nor vec2", styleVarValue)
-				}
 
-				for i, v := range vec2 {
-					vec2[i] = strings.ReplaceAll(v, " ", "")
+				if len(vec2) != 2 {
+					return ErrCSSParse{What: "value (not float or vec2)", Value: styleVarValue}
 				}
 
 				x, err2 := strconv.ParseFloat(vec2[0], 32)
 				if err2 != nil {
-					return fmt.Errorf("unable to parse value %v is not float: %w", vec2[0], err2)
+					return ErrCSSParse{What: "value (not float)", Value: vec2[0], Detail: err2}
 				}
 
 				y, err2 := strconv.ParseFloat(vec2[1], 32)
 				if err2 != nil {
-					return fmt.Errorf("unable to parse value %v is not float: %w", vec2[1], err2)
+					return ErrCSSParse{What: "value (not float)", Value: vec2[1], Detail: err2}
 				}
 
 				setter.SetStyle(styleVarID, float32(x), float32(y))
@@ -82,12 +97,12 @@ func ParseCSSStyleSheet(data []byte) error {
 			})
 
 			if err != nil {
-				return fmt.Errorf("cannot parse style variable ID: %v", styleVarName)
+				return ErrCSSParse{What: "style variable ID", Value: styleVarName}
 			}
 
 			col, err := csscolorparser.Parse(styleVarValue)
 			if err != nil {
-				return fmt.Errorf("cannot parse color %v: %w", styleVarValue, err)
+				return ErrCSSParse{What: "color", Value: styleVarValue, Detail: err}
 			}
 
 			setter.SetColor(styleColorID, col)
@@ -102,6 +117,7 @@ func ParseCSSStyleSheet(data []byte) error {
 func panicToErr(f func()) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
+			//nolint:goerr113 // Not worth wrapping
 			err = fmt.Errorf("%v", r)
 		}
 	}()
