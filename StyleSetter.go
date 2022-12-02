@@ -86,15 +86,45 @@ func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
 
 func (ss *StyleSetter) Range(rangeFunc func(w Widget)) {
 	if ss.layout != nil {
-		Layout{
-			Custom(func() {
-				ss.Push()
-			}),
-			ss.layout,
-			Custom(func() {
-				ss.Pop()
-			}),
-		}.Range(rangeFunc)
+		var result Layout
+
+		// need to consider the following cases:
+		// if 0 - return
+		// if 1 - joing push/render/pop in one step
+		// else - join push with first widget, than render another
+		//        widgets and in the end render last widget with pop func
+		// it is, because Push/Pop don't move cursor so
+		// they doesn't exist for imgui in fact.
+		// It leads to problemms with RowWidget
+		//
+		// see: https://github.com/AllenDang/giu/issues/619
+		layoutLen := len(ss.layout)
+		switch layoutLen {
+		case 0:
+			return
+		case 1:
+			result = Layout{
+				Custom(func() {
+					ss.Push()
+					ss.layout.Build()
+					ss.Pop()
+				}),
+			}
+		default:
+			result = Layout{
+				Custom(func() {
+					ss.Push()
+					ss.layout[0].Build()
+				}),
+				ss.layout[1 : len(ss.layout)-1],
+				Custom(func() {
+					ss.layout[layoutLen-1].Build()
+					ss.Pop()
+				}),
+			}
+		}
+
+		result.Range(rangeFunc)
 	}
 }
 
