@@ -1,0 +1,4 @@
+API Changes:
+- remove InputTextFlagsAlwaysInsertMode
+- remove WindowFlagsNoTitleBar, WindowFlagsNoMove, WindowFlagsNoScrollbar, WindowFlagsNoScrollWithMouse
+- rename WindowFlagsNotResize -> WindowFlagsNoResizable
