@@ -123,3 +123,28 @@ sed -i -e 's/cimgui\.PushStyleVarFloat/cimgui\.PushStyleVar_Float/g' $files
 sed -i -e 's/\.AddLine/\.AddLineV/g' $files
 sed -i -e 's/\.AddRect/\.AddRectV/g' $files
 
+echo "
+// ColorToUint converts GO color into Uint32 color
+// it is 0xRRGGBBAA
+func ColorToUint(col color.Color) uint32 {
+        r, g, b, a := col.RGBA()
+        mask := uint32(0xff)
+        return r&mask<<24 + g&mask<<16 + b&mask<<8 + a&mask
+}
+
+// UintToColor converts uint32 of form 0xRRGGBB into color.RGBA
+func UintToColor(col uint32) *color.RGBA {
+        mask := 0xff
+        r := byte(col >> 24 & uint32(mask))
+        g := byte(col >> 16 & uint32(mask))
+        b := byte(col >> 8 & uint32(mask))
+        a := byte(col >> 0 & uint32(mask))
+        return &color.RGBA{
+                R: r,
+                G: g,
+                B: b,
+                A: a,
+        }
+}
+" >> Utils.go
+
