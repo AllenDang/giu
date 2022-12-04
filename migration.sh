@@ -11,6 +11,8 @@ go mod tidy
 # mainly StyleIDs.go
 sed -i -e 's/cimgui\.StyleColorID/cimgui\.ImGuiCol/g' $files
 sed -i -e 's/cimgui\.StyleVarID/cimgui\.ImGuiStyleVar/g' $files
+sed -i -e 's/\(cimgui\.StyleColor\)\(\w\+\)/cimgui\.ImGuiCol_\2/g' $files
+sed -i -e 's/\(cimgui\.StyleVar\)\(\w\+\)/cimgui\.ImGuiStyleVar_\2/g' $files
 
 # another types
 sed -i -e 's/cimgui\.DrawList/cimgui\.ImDrawList/g' $files
@@ -19,6 +21,7 @@ sed -i -e 's/cimgui\.Vec2/cimgui\.ImVec2/g' $files
 sed -i -e 's/cimgui\.Vec4/cimgui\.ImVec4/g' $files
 sed -i -e 's/cimgui\.Font/cimgui\.ImFont/g' $files
 sed -i -e 's/cimgui\.Condition/cimgui\.ImGuiCond/g' $files
+sed -i -e 's/cimgui\.ImGuiCond\(\w\+\)/cimgui\.ImGuiCond_\1/g' $files
 sed -i -e 's/cimgui\.InputTextCallback/cimgui\.ImGuiInputTextCallback/g' $files
 sed -i -e 's/cimgui\.Context/cimgui\.ImGuiContext/g' $files
 
@@ -89,6 +92,7 @@ sed -i -e 's/cimgui\.TableColumnFlags/cimgui\.ImGuiTableColumnFlags/g' $files
 
 # ImPlotFlags:
 # disable flags that are not present:
+# API CHANGE!
 sed -i -e 's/\(.*cimgui\.ImPlotFlags_NoMousePos.*\)/\/\/ \1/g' $files
 sed -i -e 's/\(.*cimgui\.ImPlotFlags_NoHighlight.*\)/\/\/ \1/g' $files
 sed -i -e 's/\(.*cimgui\.ImPlotFlags_YAxis2.*\)/\/\/ \1/g' $files
@@ -97,8 +101,13 @@ sed -i -e 's/\(.*cimgui\.ImPlotFlags_Query.*\)/\/\/ \1/g' $files
 sed -i -e 's/\(.*cimgui\.ImPlotFlags_AntiAliased.*\)/\/\/ \1/g' $files
 
 # Plot Axis Flags
+# API CHANGE!
 sed -i -e 's/\(.*cimgui\.ImPlotAxisFlags_LogScale.*\)/\/\/ \1/g' $files
 sed -i -e 's/\(.*cimgui\.ImPlotAxisFlags_Time.*\)/\/\/ \1/g' $files
+
+# master window
+# API CHANGE!
+sed -i -e 's/\(.*cimgui\.GlfwDontCare.*\)/\/\/ \1/g' $files
 
 sed -i -e 's/^/\/\/ /g' Markdown.go
 echo "package giu" >> Markdown.go
@@ -106,3 +115,11 @@ sed -i -e 's/^/\/\/ /g' CodeEditor.go
 echo "package giu" >> CodeEditor.go
 sed -i -e 's/^/\/\/ /g' MemoryEditor.go
 echo "package giu" >> MemoryEditor.go
+
+# methods:
+#
+sed -i -e 's/cimgui\.PushID/cimgui\.PushID_Str/g' $files
+sed -i -e 's/cimgui\.PushStyleVarFloat/cimgui\.PushStyleVar_Float/g' $files
+sed -i -e 's/\.AddLine/\.AddLineV/g' $files
+sed -i -e 's/\.AddRect/\.AddRectV/g' $files
+
