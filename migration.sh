@@ -4,44 +4,105 @@ git stash
 files=`find . -iname \*go`
 
 # switch to cimgui-go
-sed -ie 's/imgui/cimgui/g' $files
+sed -i -e 's/imgui/cimgui/g' $files
 go get github.com/AllenDang/cimgui-go@158164eb30c79c00a3c393a1d6642609f2f2e206
 go mod tidy
 
 # mainly StyleIDs.go
-sed -ie 's/cimgui\.StyleColorID/cimgui\.ImGuiCol/g' $files
-sed -ie 's/cimgui\.StyleVarID/cimgui\.ImGuiStyleVar/g' $files
+sed -i -e 's/cimgui\.StyleColorID/cimgui\.ImGuiCol/g' $files
+sed -i -e 's/cimgui\.StyleVarID/cimgui\.ImGuiStyleVar/g' $files
 
 # another types
-sed -ie 's/cimgui\.DrawList/cimgui\.ImDrawList/g' $files
-sed -ie 's/cimgui\.TextureID/cimgui\.ImTextureID/g' $files
-sed -ie 's/cimgui\.Vec2/cimgui\.ImVec2/g' $files
-sed -ie 's/cimgui\.Vec4/cimgui\.ImVec4/g' $files
-sed -ie 's/cimgui\.Font/cimgui\.ImFont/g' $files
-sed -ie 's/cimgui\.Condition/cimgui\.ImGuiCond/g' $files
-sed -ie 's/cimgui\.InputTextCallback/cimgui\.ImGuiInputTextCallback/g' $files
-sed -ie 's/cimgui\.Context/cimgui\.ImGuiContext/g' $files
+sed -i -e 's/cimgui\.DrawList/cimgui\.ImDrawList/g' $files
+sed -i -e 's/cimgui\.TextureID/cimgui\.ImTextureID/g' $files
+sed -i -e 's/cimgui\.Vec2/cimgui\.ImVec2/g' $files
+sed -i -e 's/cimgui\.Vec4/cimgui\.ImVec4/g' $files
+sed -i -e 's/cimgui\.Font/cimgui\.ImFont/g' $files
+sed -i -e 's/cimgui\.Condition/cimgui\.ImGuiCond/g' $files
+sed -i -e 's/cimgui\.InputTextCallback/cimgui\.ImGuiInputTextCallback/g' $files
+sed -i -e 's/cimgui\.Context/cimgui\.ImGuiContext/g' $files
 
 # Context; TODO - check if nothing else is changed
-sed -ie 's/cimgui\.IO()/cimgui\.GetIO()/g' $files
-sed -ie 's/cimgui\.IO/cimgui\.ImGuiIO/g' $files
+sed -i -e 's/cimgui\.IO()/cimgui\.GetIO()/g' $files
+sed -i -e 's/cimgui\.IO/cimgui\.ImGuiIO/g' $files
 
 # flags
 #
 # input text:
-sed -ie 's/cimgui\.InputTextFlags\(\w\+\)/cimgui\.ImGuiInputTextFlags_\1/g' $files
+sed -i -e 's/cimgui\.InputTextFlags\(\w\+\)/cimgui\.ImGuiInputTextFlags_\1/g' $files
 # API CHANGE!
-sed -ie 's/^.*cimgui\.ImGuiInputTextFlags_AlwaysInsertMode.*//g' $files
+sed -i -e 's/^.*cimgui\.ImGuiInputTextFlags_AlwaysInsertMode.*//g' $files
 
 # window flags
-sed -ie 's/cimgui\.WindowFlags/cimgui\.ImGuiWindowFlags/g' $files
+sed -i -e 's/cimgui\.WindowFlags/cimgui\.ImGuiWindowFlags/g' $files
 # type was int; change to cimgui.ImGuiWindowFlags
-sed -ie 's/\(type WindowFlags \)int/\1cimgui.GLFWWindowFlags/g' $files
-sed -ie 's/\(cimgui\.ImGuiWindowFlags\)\(\w\+\)/WindowFlags(\1_\2)/g' $files
+sed -i -e 's/\(type WindowFlags \)int/\1cimgui.GLFWWindowFlags/g' $files
+sed -i -e 's/\(cimgui\.ImGuiWindowFlags\)\(\w\+\)/WindowFlags(\1_\2)/g' $files
 
-sed -ie 's/^/\/\/ /g' Markdown.go
+# combo flags
+sed -i -e 's/cimgui\.ComboFlags/cimgui\.ImGuiComboFlags/g' $files
+sed -i -e 's/\(cimgui\.ImGuiComboFlags\)\(\w\+\)/\1_\2/g' $files
+
+# selectable flags
+sed -i -e 's/cimgui\.SelectableFlags/cimgui\.ImGuiSelectableFlags/g' $files
+sed -i -e 's/\(cimgui\.ImGuiSelectableFlags\)\(\w\+\)/\1_\2/g' $files
+
+# Tab Item Flags
+sed -i -e 's/cimgui\.TabItemFlags/cimgui\.ImGuiTabItemFlags/g' $files
+sed -i -e 's/\(cimgui\.ImGuiTabItemFlags\)\(\w\+\)/\1_\2/g' $files
+# remove TabItemFlagsNoPushID
+# API CHANGE!
+sed -i -e 's/^.*cimgui\.ImGuiTabItemFlags_NoPushID.*//g' $files
+
+# Tab Bar Flags
+sed -i -e 's/cimgui\.TabBarFlags/cimgui\.ImGuiTabBarFlags/g' $files
+sed -i -e 's/\(cimgui\.ImGuiTabBarFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/\(cimgui\.ImGuiTabBarFlags_FittingPolicyDefault\)/\1_/g' $files
+sed -i -e 's/\(cimgui\.ImGuiTabBarFlags_FittingPolicyMask\)/\1_/g' $files
+
+# Tree Node Flags
+sed -i -e 's/cimgui\.TreeNodeFlags/cimgui\.ImGuiTreeNodeFlags/g' $files
+sed -i -e 's/\(cimgui\.ImGuiTreeNodeFlags\)\(\w\+\)/\1_\2/g' $files
+
+# Focused Flags
+sed -i -e 's/cimgui\.FocusedFlags/cimgui\.ImGuiFocusedFlags/g' $files
+sed -i -e 's/\(cimgui\.ImGuiFocusedFlags\)\(\w\+\)/\1_\2/g' $files
+
+# Hovered Flags
+sed -i -e 's/cimgui\.HoveredFlags/cimgui\.ImGuiHoveredFlags/g' $files
+sed -i -e 's/\(cimgui\.ImGuiHoveredFlags\)\(\w\+\)/\1_\2/g' $files
+
+# Color Edit Flags
+# TODO: COPY-PASTE them again (many things has changed
+# API CHANGE!
+sed -i -e 's/\(.*ColorEditFlags.*=.*\)/\/\/ \1/g' $files
+
+# Table Flags
+sed -i -e 's/cimgui\.TableFlags/cimgui\.ImGuiTableFlags/g' $files
+sed -i -e 's/\(cimgui\.ImGuiTableFlags_NoBordersInBodyUntilResize\)TableFlags/\1/g' $files
+
+# Table Row Flags
+sed -i -e 's/cimgui\.TableRowFlags/cimgui\.ImGuiTableRowFlags/g' $files
+
+# Table Column Flags
+sed -i -e 's/cimgui\.TableColumnFlags/cimgui\.ImGuiTableColumnFlags/g' $files
+
+# ImPlotFlags:
+# disable flags that are not present:
+sed -i -e 's/\(.*cimgui\.ImPlotFlags_NoMousePos.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.ImPlotFlags_NoHighlight.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.ImPlotFlags_YAxis2.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.ImPlotFlags_YAxis3.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.ImPlotFlags_Query.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.ImPlotFlags_AntiAliased.*\)/\/\/ \1/g' $files
+
+# Plot Axis Flags
+sed -i -e 's/\(.*cimgui\.ImPlotAxisFlags_LogScale.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.ImPlotAxisFlags_Time.*\)/\/\/ \1/g' $files
+
+sed -i -e 's/^/\/\/ /g' Markdown.go
 echo "package giu" >> Markdown.go
-sed -ie 's/^/\/\/ /g' CodeEditor.go
+sed -i -e 's/^/\/\/ /g' CodeEditor.go
 echo "package giu" >> CodeEditor.go
-sed -ie 's/^/\/\/ /g' MemoryEditor.go
+sed -i -e 's/^/\/\/ /g' MemoryEditor.go
 echo "package giu" >> MemoryEditor.go
