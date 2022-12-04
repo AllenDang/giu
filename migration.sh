@@ -38,20 +38,6 @@ sed -ie 's/cimgui\.WindowFlags/cimgui\.ImGuiWindowFlags/g' $files
 # type was int; change to cimgui.ImGuiWindowFlags
 sed -ie 's/\(type WindowFlags \)int/\1cimgui.GLFWWindowFlags/g' $files
 sed -ie 's/\(cimgui\.ImGuiWindowFlags\)\(\w\+\)/WindowFlags(\1_\2)/g' $files
-# remove some flags as they are not present in cimgui-go
-# API CHANGE!
-#sed -ie 's/^.*WindowFlagsNoTitleBar.*//g' Flags.go
-#sed -ie 's/WindowFlagsNoResize/WindowFlagsNotResizable/g' Flags.go
-#sed -ie 's/^.*WindowFlagsNoMove.*//g' Flags.go
-#sed -ie 's/^.*WindowFlagsNoScrollbar.*//g' Flags.go
-#sed -ie 's/^.*WindowFlagsNoScrollWithMouse.*//g' Flags.go
-#sed -ie 's/^.*WindowFlagsNoCollapse.*//g' Flags.go
-#sed -ie 's/^.*WindowFlagsAlwaysAutoResize.*//g' Flags.go
-#sed -ie 's/^.*WindowFlagsNoBackground.*//g' Flags.go
-#sed -ie 's/^.*WindowFlagsNoSavedSettings.*//g' Flags.go
-#sed -ie 's/^.*WindowFlagsNoMouseInputs.*//g' Flags.go
-#sed -ie 's/^.*WindowFlagsMenuBar.*//g' Flags.go
-
 
 sed -ie 's/^/\/\/ /g' Markdown.go
 echo "package giu" >> Markdown.go
