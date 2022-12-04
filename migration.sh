@@ -9,3 +9,5 @@ sed -ie 's/cimgui\.DrawList/cimgui\.ImDrawList/g' $files
 sed -ie 's/cimgui\.TextureID/cimgui\.ImTextureID/g' $files
 sed -ie 's/cimgui\.Vec2/cimgui\.ImVec2/g' $files
 sed -ie 's/cimgui\.Vec4/cimgui\.ImVec4/g' $files
+
+sed -ie 's/^/\/\/ /g' Markdown.go
