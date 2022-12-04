@@ -1,4 +1,16 @@
 API Changes:
 - remove InputTextFlagsAlwaysInsertMode
-- remove WindowFlagsNoTitleBar, WindowFlagsNoMove, WindowFlagsNoScrollbar, WindowFlagsNoScrollWithMouse
+- remove:
+        - WindowFlagsNoTitleBar
+        - WindowFlagsNoMove
+        - WindowFlagsNoScrollbar
+        - WindowFlagsNoScrollWithMouse
+        - WindowFlagsNoCollapse
+        - WindowFlagsAlwaysAutoResize
+        - WindowFlagsNoBackground
+        - WindowFlagsNoSavedSettings
+        - WindowFlagsNoMouseInputs
+        - WindowFlagsMenuBar
+        - WindowFlagsHorizontalScrollbar
+        - WindowFlagsNoFocusOnAppearing
 - rename WindowFlagsNotResize -> WindowFlagsNoResizable
