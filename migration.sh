@@ -262,3 +262,9 @@ sed -i -e 's/\(cimgui\.OpenPopup\)/\1_Str/g' Popups.go
 sed -i -e 's/\(cimgui\.BeginPopup\)/\1V/g' Popups.go
 sed -i -e 's/\(cimgui\.BeginPopupVModalV\)/cimgui\.BeginPopupModalV/g' Popups.go
 sed -i -e 's/\(BeginPopup.*(.*\)int(\(p.flags\))/\1cimgui.ImGuiWindowFlags(\2)/g' Popups.go
+
+
+# Window.go
+#
+sed -i -e 's/\(.*\)= \(cimgui\.\)\(WindowPos\)()/\1= cimgui.ImVec2{};\2Get\3(\&\1)/g' Window.go
+sed -i -e 's/\(.*\)= \(cimgui\.\)\(WindowSize\)()/\1= cimgui.ImVec2{};\2Get\3(\&\1)/g' Window.go
