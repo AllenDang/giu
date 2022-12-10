@@ -120,6 +120,8 @@ echo "package giu" >> MemoryEditor.go
 #
 sed -i -e 's/cimgui\.PushID/cimgui\.PushID_Str/g' $files
 sed -i -e 's/cimgui\.PushStyleVarFloat/cimgui\.PushStyleVar_Float/g' $files
+sed -i -e 's/cimgui\.PushStyleVarVec2/cimgui\.PushStyleVar_Vec2/g' $files
+sed -i -e 's/cimgui\.PushStyleColor/cimgui\.PushStyleColor_Vec4/g' $files
 sed -i -e 's/\.AddLine/\.AddLineV/g' $files
 sed -i -e 's/\.AddRect/\.AddRectV/g' $files
 
@@ -175,3 +177,9 @@ sed -i -e 's/\(min12 int\)/\132/g' Canvas.go
 sed -i -e 's/\(max12 int\)/\132/g' Canvas.go
 sed -i -e 's/\(closed bool\)/flags DrawFlags/g' Canvas.go
 sed -i -e 's/\(closed\)/cimgui\.ImDrawFlags(flags)/g' Canvas.go
+
+# styles
+sed -i -e 's/\(cimgui\.PopStyle.*V(\)\(.*\))/\1int32(\2))/g' $files
+sed -i -e 's/\(cimgui\.BeginDisabled.*\)/if ss.disabled {\1}/g' $files
+sed -i -e 's/\(cimgui\.EndDisabled.*\)/if ss.disabled {\1}/g' $files
+sed -i -e 's/\(cimgui\.BeginDisabled\)(.*)/\1()/g' $files
