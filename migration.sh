@@ -139,8 +139,9 @@ sed -i -e 's/cimgui\.PushID/cimgui\.PushID_Str/g' $files
 sed -i -e 's/cimgui\.PushStyleVarFloat/cimgui\.PushStyleVar_Float/g' $files
 sed -i -e 's/cimgui\.PushStyleVarVec2/cimgui\.PushStyleVar_Vec2/g' $files
 sed -i -e 's/cimgui\.PushStyleColor/cimgui\.PushStyleColor_Vec4/g' $files
+sed -i -e 's/\(.*\):= \(cimgui\.\)\(ContentRegionAvail\)()/\1:= cimgui.ImVec2{};\2Get\3(\&\1)/g' ImageWidgets.go
 sed -i -e 's/\.AddLine/\.AddLineV/g' $files
-sed -i -e 's/\.AddRect/\.AddRectV/g' $files
+sed -i -e 's/\.AddRect/\.AddRectV/g' Canvas.go
 
 echo "
 // ColorToUint converts GO color into Uint32 color
@@ -232,7 +233,7 @@ sed -i -e 's/\(cimgui\.RadioButton\)/\1_Bool/g' $files
 # Events.go
 #
 sed -i -e 's/\(type MouseButton \)int/\1cimgui.ImGuiMouseButton/g' $files
-sed -i -e 's/\(MouseButton\)\(\w\+\).*=.*/\1\2 MouseButton = MouseButton(cimgui\.ImGuiMouseButton_\2)/g' $files
+sed -i -e 's/\(MouseButton\)\(\w\+\).*=.*/\1\2 MouseButton = MouseButton(cimgui\.ImGuiMouseButton_\2)/g' Events.go
 
 sed -i -e 's/\(int(mouseButton)\)/cimgui.ImGuiMouseButton(mouseButton)/g' Events.go
 sed -i -e 's/\(cimgui.IsItemClicked\)/\1V/g' $files
@@ -247,11 +248,11 @@ sed -i -e 's/\(IsWindowHoveredV(\)int(flags)/\1cimgui.ImGuiHoveredFlags(flags)/g
 
 # list clipper
 #
-sed -i -e 's/\(cimgui.NewListClipper\)/cimgui\.NewImGuiListClipper/g' ListClipper.go
-sed -i -e 's/\(clipper\.Delete\)/clipper\.Destroy/g' ListClipper.go
-sed -i -e 's/\(clipper\.Begin(\)\(.*\))/\1int32(\2))/g' ListClipper.go
-sed -i -e 's/\(clipper\.DisplayStart\)/clipper\.GetDisplayStart/g' ListClipper.go
-sed -i -e 's/\(clipper\.DisplayEnd\)/clipper\.GetDisplayEnd/g' ListClipper.go
+sed -i -e 's/\(cimgui.NewListClipper\)/cimgui\.NewImGuiListClipper/g' $files
+sed -i -e 's/\(clipper\.Delete\)/clipper\.Destroy/g' $files
+sed -i -e 's/\(clipper\.Begin(\)\(.*\))/\1int32(\2))/g' $files
+sed -i -e 's/\(clipper\.DisplayStart\)/clipper\.GetDisplayStart/g' $files
+sed -i -e 's/\(clipper\.DisplayEnd\)/clipper\.GetDisplayEnd/g' $files
 
 # ProgressIndicator.go
 sed -i -e 's/int(p.radius)/int32(p\.radius)/g' ProgressIndicator.go
@@ -278,3 +279,14 @@ sed -i -e 's/\(cimgui\.\)NewGlyphRanges/\1NewGlyphRange/g' $files
 sed -i -e 's/\(cimgui\.New\)\(FontGlyphRangesBuilder\)/\1Im\2/g' $files
 sed -i -e 's/\(fonts\.\)\(GlyphRangesDefault\)/\1Get\2/g' $files
 sed -i -e 's/\(cimgui\.New\)\(FontConfig\)/\1Im\2/g' $files
+
+# ExtraWidgets.go
+#
+sed -i -e 's/\(style\)\(\.GetColor\)/cimgui\.GetStyleColorVec4/g' $files
+sed -i -e 's/style := .*//g' ExtraWidgets.go
+sed -i -e 's/cimgui\.CurrentIO/cimgui\.GetIO/g' $files
+sed -i -e 's/cimgui\.\(MouseCursor\)\(\w\+\)/cimgui\.ImGui\1_\2/g' ExtraWidgets.go
+sed -i -e 's/\(cimgui\.TableNextRow\)/\1V/g' ExtraWidgets.go
+sed -i -e 's/\(cimgui\.BeginTable\)/\1V/g' ExtraWidgets.go
+sed -i -e 's/\(cimgui\.BeginTable.*\)\(colCount\)/\1int32(\2)/g' ExtraWidgets.go
+sed -i -e 's/\(cimgui\.TableSetupScrollFreeze(\)\(.*\), \(.*\))/\1int32(\2), int32(\3))/g' ExtraWidgets.go
