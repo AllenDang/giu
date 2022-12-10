@@ -227,3 +227,11 @@ sed -i -e 's/\(IsWindowFocusedV(\)int(flags)/\1cimgui.ImGuiFocusedFlags(flags)/g
 
 sed -i -e 's/\(cimgui.IsWindowHovered\)/\1V/g' $files
 sed -i -e 's/\(IsWindowHoveredV(\)int(flags)/\1cimgui.ImGuiHoveredFlags(flags)/g' Events.go
+
+# list clipper
+#
+sed -i -e 's/\(cimgui.NewListClipper\)/cimgui\.NewImGuiListClipper/g' ListClipper.go
+sed -i -e 's/\(clipper\.Delete\)/clipper\.Destroy/g' ListClipper.go
+sed -i -e 's/\(clipper\.Begin(\)\(.*\))/\1int32(\2))/g' ListClipper.go
+sed -i -e 's/\(clipper\.DisplayStart\)/clipper\.GetDisplayStart/g' ListClipper.go
+sed -i -e 's/\(clipper\.DisplayEnd\)/clipper\.GetDisplayEnd/g' ListClipper.go
