@@ -269,3 +269,12 @@ sed -i -e 's/\(BeginPopup.*(.*\)int(\(p.flags\))/\1cimgui.ImGuiWindowFlags(\2)/g
 sed -i -e 's/\(.*\)= \(cimgui\.\)\(WindowPos\)()/\1= cimgui.ImVec2{};\2Get\3(\&\1)/g' Window.go
 sed -i -e 's/\(.*\)= \(cimgui\.\)\(WindowSize\)()/\1= cimgui.ImVec2{};\2Get\3(\&\1)/g' Window.go
 sed -i -e 's/\(cimgui\.Begin.*\)int\((.*flags).*\)/\1cimgui\.ImGuiWindowFlags\2/g' Window.go
+
+# FontAtlasProcessor.go
+#
+sed -i -e 's/\(IO()\.\)\(Fonts()\)/\1Get\2/g' $files
+
+sed -i -e 's/\(cimgui\.\)NewGlyphRanges/\1NewGlyphRange/g' $files
+sed -i -e 's/\(cimgui\.New\)\(FontGlyphRangesBuilder\)/\1Im\2/g' $files
+sed -i -e 's/\(fonts\.\)\(GlyphRangesDefault\)/\1Get\2/g' $files
+sed -i -e 's/\(cimgui\.New\)\(FontConfig\)/\1Im\2/g' $files
