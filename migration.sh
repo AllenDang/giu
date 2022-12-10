@@ -193,3 +193,7 @@ sed -i -e 's/\(int(cursor)\)/cimgui.ImGuiMouseCursor(cursor)/g' $files
 
 sed -i -e 's/cimgui\.CurrentStyle/cimgui\.GetStyle/g' $files
 sed -i -e 's/\(cimgui\.GetStyle()\.\)\(\w\+()\)/\1Get\2/g' $files
+
+# split layout/style
+sed -i -e 's/\(cimgui\.GetStyle().GetColor\)/cimgui\.GetStyleColorVec4/g' $files
+
