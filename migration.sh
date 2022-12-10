@@ -148,3 +148,30 @@ func UintToColor(col uint32) *color.RGBA {
 }
 " >> Utils.go
 
+# so now, it seems that DrawList api changed so that it requires uint32 instead of Vec4
+# as colors.
+sed -i -e 's/ToVec4Color/ColorToUint/g' Canvas.go
+sed -i -e 's/DrawList\.AddRectVFilled/DrawList\.AddRectFilledV/g' Canvas.go
+sed -i -e 's/DrawList\.AddTriangle(/DrawList\.AddTriangleV(/g' Canvas.go
+sed -i -e 's/DrawList\.AddCircle(/DrawList\.AddCircleV(/g' Canvas.go
+sed -i -e 's/DrawList\.AddBezierCubic(/DrawList\.AddBezierCubicV(/g' Canvas.go
+sed -i -e 's/DrawList\.AddQuad(/DrawList\.AddQuadV(/g' Canvas.go
+sed -i -e 's/\(DrawList\.PathStroke\)(/\1V(/g' Canvas.go
+sed -i -e 's/\(DrawList\.PathArcTo\)(/\1V(/g' Canvas.go
+sed -i -e 's/\(DrawList\.PathBezierCubicCurveTo\)(/\1V(/g' Canvas.go
+
+sed -i -e 's/\(type DrawFlags.*\)int/\1 cimgui\.ImDrawFlags/g' $files
+sed -i -e 's/\(DrawFlags\)\(\w\+\).*=.*/\1\2 DrawFlags = DrawFlags(cimgui\.ImDrawFlags_\2)/g' $files
+# TODO: 
+sed -i -e 's/\(cimgui\.ImDrawFlags_RoundCornersDefault\)/\1_/g' Canvas.go
+sed -i -e 's/\(cimgui\.ImDrawFlags_RoundCornersMask\)/\1_/g' Canvas.go
+sed -i -e 's/		DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersBottomRight//g' Canvas.go
+
+sed -i -e 's/int(\(roundingCorners\))/cimgui\.ImDrawFlags(\1)/g' Canvas.go
+sed -i -e 's/\(DrawList\.AddText\)/\1_Vec2/g' Canvas.go
+sed -i -e 's/\(numSegments int\)/\132/g' Canvas.go
+sed -i -e 's/\(segments int\)/\132/g' Canvas.go
+sed -i -e 's/\(min12 int\)/\132/g' Canvas.go
+sed -i -e 's/\(max12 int\)/\132/g' Canvas.go
+sed -i -e 's/\(closed bool\)/flags DrawFlags/g' Canvas.go
+sed -i -e 's/\(closed\)/cimgui\.ImDrawFlags(flags)/g' Canvas.go
