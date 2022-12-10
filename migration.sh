@@ -183,3 +183,13 @@ sed -i -e 's/\(cimgui\.PopStyle.*V(\)\(.*\))/\1int32(\2))/g' $files
 sed -i -e 's/\(cimgui\.BeginDisabled.*\)/if ss.disabled {\1}/g' $files
 sed -i -e 's/\(cimgui\.EndDisabled.*\)/if ss.disabled {\1}/g' $files
 sed -i -e 's/\(cimgui\.BeginDisabled\)(.*)/\1()/g' $files
+
+# Style.go
+## Mouse Cursor
+sed -i -e 's/\(type MouseCursorType\).*/\1 cimgui\.ImGuiMouseCursor/g' $files
+sed -i -e 's/\(MouseCursor\)\(\w\+\)\( \+MouseCursorType = \).*/\1\2\3 cimgui\.ImGuiMouseCursor_\2/g' $files
+sed -i -e 's/\(cimgui\.ImGuiMouseCursor_\)Count/\1COUNT/g' $files
+sed -i -e 's/\(int(cursor)\)/cimgui.ImGuiMouseCursor(cursor)/g' $files
+
+sed -i -e 's/cimgui\.CurrentStyle/cimgui\.GetStyle/g' $files
+sed -i -e 's/\(cimgui\.GetStyle()\.\)\(\w\+()\)/\1Get\2/g' $files
