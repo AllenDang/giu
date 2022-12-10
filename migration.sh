@@ -200,3 +200,14 @@ sed -i -e 's/\(cimgui\.GetStyle().GetColor\)/cimgui\.GetStyleColorVec4/g' $files
 # Direction.go
 sed -i -e 's/\(type Direction\) uint8/\1 cimgui.ImGuiDir/g' $files
 sed -i -e 's/\(Direction\)\(\w\+\).*/\1\2 Direction = cimgui.ImGuiDir_\2/g' $files
+
+# ClickableWidgets.go
+sed -i -e 's/\(uint8(b\.dir)\)/cimgui.ImGuiDir(b\.dir)/g' $files
+
+sed -i -e 's/\(cimgui\.TreeNode\)V/\1Ex_StrV/g' $files
+sed -i -e 's/\(cimgui\.TreeNodeEx_StrV.*\)int(\(.*\))/\1cimgui\.ImGuiTreeNodeFlags(\2)/g' $files
+
+sed -i -e 's/\(cimgui\.Selectable\)V/\1_BoolV/g' $files
+sed -i -e 's/\(cimgui\.Selectable_BoolV.*\)int(\(.*\))/\1cimgui\.ImGuiSelectableFlags(\2)/g' $files
+
+sed -i -e 's/\(cimgui\.RadioButton\)/\1_Bool/g' $files
