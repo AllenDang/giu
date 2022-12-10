@@ -25,6 +25,25 @@ sed -i -e 's/cimgui\.ImGuiCond\(\w\+\)/cimgui\.ImGuiCond_\1/g' $files
 sed -i -e 's/cimgui\.InputTextCallback/cimgui\.ImGuiInputTextCallback/g' $files
 sed -i -e 's/cimgui\.Context/cimgui\.ImGuiContext/g' $files
 
+sed -i -e 's/\(type InputTextFlags \)int/\1cimgui.ImGuiInputTextFlags/g' $files
+sed -i -e 's/\(type ComboFlags \)int/\1cimgui.ImGuiComboFlags/g' $files
+sed -i -e 's/\(type SelectableFlags \)int/\1cimgui.ImGuiSelectableFlags/g' $files
+sed -i -e 's/\(type TabItemFlags \)int/\1cimgui.ImGuiTabItemFlags/g' $files
+sed -i -e 's/\(type TabBarFlags \)int/\1cimgui.ImGuiTabBarFlags/g' $files
+sed -i -e 's/\(type TreeNodeFlags \)int/\1cimgui.ImGuiTreeNodeFlags/g' $files
+sed -i -e 's/\(type FocusedFlags \)int/\1cimgui.ImGuiFocusedFlags/g' $files
+sed -i -e 's/\(type HoveredFlags \)int/\1cimgui.ImGuiHoveredFlags/g' $files
+sed -i -e 's/\(cimgui\.\)\(HoveredFlags\)\(\w\+\)/\1ImGui\2_\3/g' $files
+sed -i -e 's/\(type TableFlags \)int/\1cimgui.ImGuiTableFlags/g' $files
+sed -i -e 's/\(type TableRowFlags \)int/\1cimgui.ImGuiTableRowFlags/g' $files
+sed -i -e 's/\(type TableColumnFlags \)int/\1cimgui.ImGuiTableColumnFlags/g' $files
+sed -i -e 's/\(type SliderFlags \)int/\1cimgui.ImGuiSliderFlags/g' $files
+sed -i -e 's/\(SliderFlags\)\(\w\+\).*/\1\2 SliderFlags = cimgui.ImGuiSliderFlags_\2/g' $files
+sed -i -e 's/\(cimgui\.ImGuiSliderFlags_InvalidMask\)/\1_/g' $files
+sed -i -e 's/\(type PlotFlags \)int/\1cimgui.ImPlotFlags/g' $files
+sed -i -e 's/\(type PlotAxisFlags \)int/\1cimgui.ImPlotAxisFlags/g' $files
+#sed -i -e 's/\(type \)\(.*Flags\) int/\1 \2 cimgui.ImGui\2/g' $files
+
 # Context; TODO - check if nothing else is changed
 sed -i -e 's/cimgui\.IO()/cimgui\.GetIO()/g' $files
 sed -i -e 's/cimgui\.IO/cimgui\.ImGuiIO/g' $files
@@ -72,8 +91,6 @@ sed -i -e 's/cimgui\.FocusedFlags/cimgui\.ImGuiFocusedFlags/g' $files
 sed -i -e 's/\(cimgui\.ImGuiFocusedFlags\)\(\w\+\)/\1_\2/g' $files
 
 # Hovered Flags
-sed -i -e 's/cimgui\.HoveredFlags/cimgui\.ImGuiHoveredFlags/g' $files
-sed -i -e 's/\(cimgui\.ImGuiHoveredFlags\)\(\w\+\)/\1_\2/g' $files
 
 # Color Edit Flags
 # TODO: COPY-PASTE them again (many things has changed
@@ -238,3 +255,10 @@ sed -i -e 's/\(clipper\.DisplayEnd\)/clipper\.GetDisplayEnd/g' ListClipper.go
 
 # ProgressIndicator.go
 sed -i -e 's/int(p.radius)/int32(p\.radius)/g' ProgressIndicator.go
+
+# Popups.go
+#
+sed -i -e 's/\(cimgui\.OpenPopup\)/\1_Str/g' Popups.go
+sed -i -e 's/\(cimgui\.BeginPopup\)/\1V/g' Popups.go
+sed -i -e 's/\(cimgui\.BeginPopupVModalV\)/cimgui\.BeginPopupModalV/g' Popups.go
+sed -i -e 's/\(BeginPopup.*(.*\)int(\(p.flags\))/\1cimgui.ImGuiWindowFlags(\2)/g' Popups.go
