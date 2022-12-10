@@ -235,3 +235,6 @@ sed -i -e 's/\(clipper\.Delete\)/clipper\.Destroy/g' ListClipper.go
 sed -i -e 's/\(clipper\.Begin(\)\(.*\))/\1int32(\2))/g' ListClipper.go
 sed -i -e 's/\(clipper\.DisplayStart\)/clipper\.GetDisplayStart/g' ListClipper.go
 sed -i -e 's/\(clipper\.DisplayEnd\)/clipper\.GetDisplayEnd/g' ListClipper.go
+
+# ProgressIndicator.go
+sed -i -e 's/int(p.radius)/int32(p\.radius)/g' ProgressIndicator.go
