@@ -211,3 +211,19 @@ sed -i -e 's/\(cimgui\.Selectable\)V/\1_BoolV/g' $files
 sed -i -e 's/\(cimgui\.Selectable_BoolV.*\)int(\(.*\))/\1cimgui\.ImGuiSelectableFlags(\2)/g' $files
 
 sed -i -e 's/\(cimgui\.RadioButton\)/\1_Bool/g' $files
+
+# Events.go
+#
+sed -i -e 's/\(type MouseButton \)int/\1cimgui.ImGuiMouseButton/g' $files
+sed -i -e 's/\(MouseButton\)\(\w\+\).*=.*/\1\2 MouseButton = MouseButton(cimgui\.ImGuiMouseButton_\2)/g' $files
+
+sed -i -e 's/\(int(mouseButton)\)/cimgui.ImGuiMouseButton(mouseButton)/g' Events.go
+sed -i -e 's/\(cimgui.IsItemClicked\)/\1V/g' $files
+
+sed -i -e 's/\(int(button)\)/cimgui.ImGuiMouseButton(button)/g' Events.go
+
+sed -i -e 's/\(cimgui.IsWindowFocused\)/\1V/g' $files
+sed -i -e 's/\(IsWindowFocusedV(\)int(flags)/\1cimgui.ImGuiFocusedFlags(flags)/g' Events.go
+
+sed -i -e 's/\(cimgui.IsWindowHovered\)/\1V/g' $files
+sed -i -e 's/\(IsWindowHoveredV(\)int(flags)/\1cimgui.ImGuiHoveredFlags(flags)/g' Events.go
