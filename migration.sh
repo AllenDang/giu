@@ -180,8 +180,8 @@ sed -i -e 's/\(closed\)/cimgui\.ImDrawFlags(flags)/g' Canvas.go
 
 # styles
 sed -i -e 's/\(cimgui\.PopStyle.*V(\)\(.*\))/\1int32(\2))/g' $files
-sed -i -e 's/\(cimgui\.BeginDisabled.*\)/if ss.disabled {\1}/g' $files
-sed -i -e 's/\(cimgui\.EndDisabled.*\)/if ss.disabled {\1}/g' $files
+sed -i -e 's/\(cimgui\.BeginDisabled.*\)/if ss.disabled {\1}/g' StyleSetter.go
+sed -i -e 's/\(cimgui\.EndDisabled.*\)/if ss.disabled {\1}/g' StyleSetter.go
 sed -i -e 's/\(cimgui\.BeginDisabled\)(.*)/\1()/g' $files
 
 # Style.go
@@ -197,3 +197,6 @@ sed -i -e 's/\(cimgui\.GetStyle()\.\)\(\w\+()\)/\1Get\2/g' $files
 # split layout/style
 sed -i -e 's/\(cimgui\.GetStyle().GetColor\)/cimgui\.GetStyleColorVec4/g' $files
 
+# Direction.go
+sed -i -e 's/\(type Direction\) uint8/\1 cimgui.ImGuiDir/g' $files
+sed -i -e 's/\(Direction\)\(\w\+\).*/\1\2 Direction = cimgui.ImGuiDir_\2/g' $files
