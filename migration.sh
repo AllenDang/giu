@@ -289,9 +289,22 @@ sed -i -e 's/cimgui\.\(MouseCursor\)\(\w\+\)/cimgui\.ImGui\1_\2/g' ExtraWidgets.
 sed -i -e 's/\(cimgui\.TableNextRow\)/\1V/g' ExtraWidgets.go
 sed -i -e 's/\(cimgui\.BeginTable\)/\1V/g' ExtraWidgets.go
 sed -i -e 's/\(cimgui\.BeginTable.*\)\(colCount\)/\1int32(\2)/g' ExtraWidgets.go
-sed -i -e 's/\(cimgui\.TableSetupScrollFreeze(\)\(.*\), \(.*\))/\1int32(\2), int32(\3))/g' ExtraWidgets.go
+sed -i -e 's/\(cimgui\.TableSetupScrollFreeze(\)\(.*\), \(.*\))/\1int32(\2), int32(\3))/g' ExtraWidgets.go TableWidgets.go
 
 # SliderWidget.go
 #
 sed -i -e 's/\(cimgui\.SliderIntV(.*\)\() \)/\1, 0\2/g' SliderWidgets.go
 sed -i -e 's/int\((vs\.flags)\)/cimgui\.ImGuiSliderFlags\1/g' SliderWidgets.go
+
+# TableWidgets.go
+#
+sed -i -e 's/\(cimgui\.TableNextRow\)/\1V/g' TableWidgets.go
+# TODO - converting to float32 is wrong idea since wi're converting from float64 :-)
+sed -i -e 's/\(cimgui\.TableNextRowV(.*, \)\(.*\))/\1float32(\2))/g' TableWidgets.go
+sed -i -e 's/\(cimgui\.TableSetBgColor\)/\1V/g' TableWidgets.go
+sed -i -e 's/\(cimgui\.TableSetupColumn\)/\1V/g' TableWidgets.go
+sed -i -e 's/\(cimgui\.BeginTable\)/\1V/g' TableWidgets.go
+sed -i -e 's/\(cimgui\.\)\(TableBgTarget\)/\1ImGui\2/g' TableWidgets.go
+sed -i -e 's/\(cimgui\.GetColorU32\)/\1_Vec4/g' TableWidgets.go
+# TODO - converting to float32 is wrong idea since wi're converting from float64 :-)
+sed -i -e 's/\(cimgui\.BeginTableV(\)\(.*\), \(.*\), \(.*\), \(.*\), \(.*\))/\1\2, int32(\3\), \4, \5, float32(\6))/g' TableWidgets.go
