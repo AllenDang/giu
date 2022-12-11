@@ -38,7 +38,7 @@ sed -i -e 's/\(type TableFlags \)int/\1cimgui.ImGuiTableFlags/g' $files
 sed -i -e 's/\(type TableRowFlags \)int/\1cimgui.ImGuiTableRowFlags/g' $files
 sed -i -e 's/\(type TableColumnFlags \)int/\1cimgui.ImGuiTableColumnFlags/g' $files
 sed -i -e 's/\(type SliderFlags \)int/\1cimgui.ImGuiSliderFlags/g' $files
-sed -i -e 's/\(SliderFlags\)\(\w\+\).*/\1\2 SliderFlags = cimgui.ImGuiSliderFlags_\2/g' $files
+sed -i -e 's/\(SliderFlags\)\(\w\+\).*/\1\2 SliderFlags = cimgui.ImGuiSliderFlags_\2/g' Flags.go
 sed -i -e 's/\(cimgui\.ImGuiSliderFlags_InvalidMask\)/\1_/g' $files
 sed -i -e 's/\(type PlotFlags \)int/\1cimgui.ImPlotFlags/g' $files
 sed -i -e 's/\(type PlotAxisFlags \)int/\1cimgui.ImPlotAxisFlags/g' $files
@@ -290,3 +290,8 @@ sed -i -e 's/\(cimgui\.TableNextRow\)/\1V/g' ExtraWidgets.go
 sed -i -e 's/\(cimgui\.BeginTable\)/\1V/g' ExtraWidgets.go
 sed -i -e 's/\(cimgui\.BeginTable.*\)\(colCount\)/\1int32(\2)/g' ExtraWidgets.go
 sed -i -e 's/\(cimgui\.TableSetupScrollFreeze(\)\(.*\), \(.*\))/\1int32(\2), int32(\3))/g' ExtraWidgets.go
+
+# SliderWidget.go
+#
+sed -i -e 's/\(cimgui\.SliderIntV(.*\)\() \)/\1, 0\2/g' SliderWidgets.go
+sed -i -e 's/int\((vs\.flags)\)/cimgui\.ImGuiSliderFlags\1/g' SliderWidgets.go
