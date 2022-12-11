@@ -217,7 +217,7 @@ sed -i -e 's/\(cimgui\.GetStyle().GetColor\)/cimgui\.GetStyleColorVec4/g' $files
 
 # Direction.go
 sed -i -e 's/\(type Direction\) uint8/\1 cimgui.ImGuiDir/g' $files
-sed -i -e 's/\(Direction\)\(\w\+\).*/\1\2 Direction = cimgui.ImGuiDir_\2/g' $files
+sed -i -e 's/\(Direction\)\(\w\+\).*/\1\2 Direction = cimgui.ImGuiDir_\2/g' Direction.go
 
 # ClickableWidgets.go
 sed -i -e 's/\(uint8(b\.dir)\)/cimgui.ImGuiDir(b\.dir)/g' $files
@@ -327,3 +327,6 @@ sed -i -e 's/\(cimgui\.BeginTabBarV(.*, \)int\((.*)\))/\1cimgui.ImGuiTabBarFlags
 
 # TODO: color edit flags are disabled now
 sed -i -e 's/\(flags: ColorEditFlagsNone\)/\/\/ \1/g' Widgets.go
+
+# gofmt
+gofmt -w -s $files
