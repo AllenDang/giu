@@ -308,3 +308,22 @@ sed -i -e 's/\(cimgui\.\)\(TableBgTarget\)/\1ImGui\2/g' TableWidgets.go
 sed -i -e 's/\(cimgui\.GetColorU32\)/\1_Vec4/g' TableWidgets.go
 # TODO - converting to float32 is wrong idea since wi're converting from float64 :-)
 sed -i -e 's/\(cimgui\.BeginTableV(\)\(.*\), \(.*\), \(.*\), \(.*\), \(.*\))/\1\2, int32(\3\), \4, \5, float32(\6))/g' TableWidgets.go
+
+# Widgets.go
+#
+sed -i -e 's/\(cimgui\.BeginChild\)V/\1_StrV/g' Widgets.go
+sed -i -e 's/\(cimgui\.BeginChild_StrV(.*, \)int\((.*)\))/\1cimgui.ImGuiWindowFlags\2)/g' Widgets.go
+sed -i -e 's/\(cimgui\.BeginComboV(.*, \)int\((.*)\))/\1cimgui.ImGuiComboFlags\2)/g' Widgets.go
+sed -i -e 's/\(cimgui\.Selectable\)/\1_Bool/g' Widgets.go
+# TODO: mouse button here is PopupFlags in fact - need to update stuff manually
+sed -i -e 's/int(\(.*mouseButton\))/cimgui\.ImGuiPopupFlags(\1)/g' Widgets.go
+
+# TODO: add possibility to specify flags here
+sed -i -e 's/\(cimgui\.DragIntV(.*\))/\1, 0)/g' Widgets.go
+
+sed -i -e 's/\(cimgui\.MenuItem\)V/\1_BoolV/g' $files
+sed -i -e 's/\(cimgui\.BeginTabItemV(.*, \)int\((.*)\))/\1cimgui.ImGuiTabItemFlags\2)/g' Widgets.go
+sed -i -e 's/\(cimgui\.BeginTabBarV(.*, \)int\((.*)\))/\1cimgui.ImGuiTabBarFlags\2)/g' Widgets.go
+
+# TODO: color edit flags are disabled now
+sed -i -e 's/\(flags: ColorEditFlagsNone\)/\/\/ \1/g' Widgets.go
