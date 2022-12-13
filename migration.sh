@@ -5,7 +5,7 @@ files=`find . -iname \*go`
 
 # switch to cimgui-go
 sed -i -e 's/imgui/cimgui/g' $files
-go get github.com/AllenDang/cimgui-go@158164eb30c79c00a3c393a1d6642609f2f2e206
+go get github.com/AllenDang/cimgui-go@12c2785a38e9f644c4c6124914dd4d056effacc5
 go mod tidy
 
 # mainly StyleIDs.go
