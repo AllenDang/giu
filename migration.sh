@@ -5,14 +5,33 @@ files=`find . -iname \*go`
 
 # switch to cimgui-go
 sed -i -e 's/imgui/cimgui/g' $files
-go get github.com/AllenDang/cimgui-go@12c2785a38e9f644c4c6124914dd4d056effacc5
+go get github.com/AllenDang/cimgui-go@5d9a1f0b1f727e23d05bc0ecb1f381d548b21c34
 go mod tidy
 
-# mainly StyleIDs.go
-sed -i -e 's/cimgui\.StyleColorID/cimgui\.ImGuiCol/g' $files
-sed -i -e 's/cimgui\.StyleVarID/cimgui\.ImGuiStyleVar/g' $files
-sed -i -e 's/\(cimgui\.StyleColor\)\(\w\+\)/cimgui\.ImGuiCol_\2/g' $files
-sed -i -e 's/\(cimgui\.StyleVar\)\(\w\+\)/cimgui\.ImGuiStyleVar_\2/g' $files
+# Types and constants:
+sed -i -e 's/cimgui\.StyleColorID/cimgui\.Col/g' $files
+sed -i -e 's/\(cimgui\.StyleColor\)\(\w\+\)/cimgui\.Col_\2/g' $files
+
+sed -i -e 's/cimgui\.StyleVarID/cimgui\.StyleVar/g' $files
+sed -i -e 's/\(cimgui\.StyleVar\)\(\w\+\)/cimgui\.StyleVar_\2/g' $files
+
+sed -i -e 's/\(type MouseCursorType\).*/\1 cimgui\.MouseCursor/g' $files
+sed -i -e 's/\(MouseCursor\)\(\w\+\)\( \+MouseCursorType = \).*/\1\2\3 cimgui\.MouseCursor_\2/g' $files
+sed -i -e 's/\(cimgui\.MouseCursor_\)Count/\1COUNT/g' $files
+sed -i -e 's/\(int(cursor)\)/cimgui.MouseCursor(cursor)/g' $files
+
+sed -i -e 's/\(type DrawFlags.*\)int/\1 cimgui\.DrawFlags/g' $files
+sed -i -e 's/\(DrawFlags\)\(\w\+\).*=.*/\1\2 DrawFlags = DrawFlags(cimgui\.DrawFlags_\2)/g' $files
+sed -i -e 's/int(\(roundingCorners\))/cimgui\.DrawFlags(\1)/g' Canvas.go
+sed -i -e 's/\(closed\),/cimgui\.DrawFlags(flags),/g' Canvas.go
+# TODO: 
+sed -i -e 's/\(cimgui\.DrawFlags_RoundCornersDefault\)/\1_/g' Canvas.go
+sed -i -e 's/\(cimgui\.DrawFlags_RoundCornersMask\)/\1_/g' Canvas.go
+sed -i -e 's/		DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersBottomRight//g' Canvas.go
+
+sed -i -e 's/\(type Direction\) uint8/\1 cimgui.Dir/g' $files
+sed -i -e 's/\(Direction\)\(\w\+\).*/\1\2 Direction = cimgui.Dir_\2/g' Direction.go
+sed -i -e 's/\(uint8(b\.dir)\)/cimgui.Dir(b\.dir)/g' $files
 
 # another types
 sed -i -e 's/cimgui\.DrawList/cimgui\.ImDrawList/g' $files
@@ -22,25 +41,25 @@ sed -i -e 's/cimgui\.Vec4/cimgui\.ImVec4/g' $files
 sed -i -e 's/cimgui\.Font/cimgui\.ImFont/g' $files
 sed -i -e 's/cimgui\.Condition/cimgui\.ImGuiCond/g' $files
 sed -i -e 's/cimgui\.ImGuiCond\(\w\+\)/cimgui\.ImGuiCond_\1/g' $files
-sed -i -e 's/cimgui\.InputTextCallback/cimgui\.ImGuiInputTextCallback/g' $files
+sed -i -e 's/cimgui\.InputTextCallback/cimgui\.InputTextCallback/g' $files
 sed -i -e 's/cimgui\.Context/cimgui\.ImGuiContext/g' $files
 
-sed -i -e 's/\(type InputTextFlags \)int/\1cimgui.ImGuiInputTextFlags/g' $files
-sed -i -e 's/\(type ComboFlags \)int/\1cimgui.ImGuiComboFlags/g' $files
-sed -i -e 's/\(type SelectableFlags \)int/\1cimgui.ImGuiSelectableFlags/g' $files
-sed -i -e 's/\(type TabItemFlags \)int/\1cimgui.ImGuiTabItemFlags/g' $files
-sed -i -e 's/\(type TabBarFlags \)int/\1cimgui.ImGuiTabBarFlags/g' $files
-sed -i -e 's/\(type TreeNodeFlags \)int/\1cimgui.ImGuiTreeNodeFlags/g' $files
-sed -i -e 's/\(type FocusedFlags \)int/\1cimgui.ImGuiFocusedFlags/g' $files
-sed -i -e 's/\(type HoveredFlags \)int/\1cimgui.ImGuiHoveredFlags/g' $files
-sed -i -e 's/\(cimgui\.\)\(HoveredFlags\)\(\w\+\)/\1ImGui\2_\3/g' $files
-sed -i -e 's/\(type TableFlags \)int/\1cimgui.ImGuiTableFlags/g' $files
-sed -i -e 's/\(type TableRowFlags \)int/\1cimgui.ImGuiTableRowFlags/g' $files
-sed -i -e 's/\(type TableColumnFlags \)int/\1cimgui.ImGuiTableColumnFlags/g' $files
-sed -i -e 's/\(type SliderFlags \)int/\1cimgui.ImGuiSliderFlags/g' $files
-sed -i -e 's/\(SliderFlags\)\(\w\+\).*/\1\2 SliderFlags = cimgui.ImGuiSliderFlags_\2/g' Flags.go
-sed -i -e 's/\(cimgui\.ImGuiSliderFlags_InvalidMask\)/\1_/g' $files
-sed -i -e 's/\(type PlotFlags \)int/\1cimgui.ImPlotFlags/g' $files
+sed -i -e 's/\(type InputTextFlags \)int/\1cimgui.InputTextFlags/g' $files
+sed -i -e 's/\(type ComboFlags \)int/\1cimgui.ComboFlags/g' $files
+sed -i -e 's/\(type SelectableFlags \)int/\1cimgui.SelectableFlags/g' $files
+sed -i -e 's/\(type TabItemFlags \)int/\1cimgui.TabItemFlags/g' $files
+sed -i -e 's/\(type TabBarFlags \)int/\1cimgui.TabBarFlags/g' $files
+sed -i -e 's/\(type TreeNodeFlags \)int/\1cimgui.TreeNodeFlags/g' $files
+sed -i -e 's/\(type FocusedFlags \)int/\1cimgui.FocusedFlags/g' $files
+sed -i -e 's/\(type HoveredFlags \)int/\1cimgui.HoveredFlags/g' $files
+sed -i -e 's/\(cimgui\.\)\(HoveredFlags\)\(\w\+\)/\1\2_\3/g' $files
+sed -i -e 's/\(type TableFlags \)int/\1cimgui.TableFlags/g' $files
+sed -i -e 's/\(type TableRowFlags \)int/\1cimgui.TableRowFlags/g' $files
+sed -i -e 's/\(type TableColumnFlags \)int/\1cimgui.TableColumnFlags/g' $files
+sed -i -e 's/\(type SliderFlags \)int/\1cimgui.SliderFlags/g' $files
+sed -i -e 's/\(SliderFlags\)\(\w\+\).*/\1\2 SliderFlags = cimgui.SliderFlags_\2/g' Flags.go
+sed -i -e 's/\(cimgui\.SliderFlags_InvalidMask\)/\1_/g' $files
+sed -i -e 's/\(type PlotFlags \)int/\1cimgui.PlotFlags/g' $files
 sed -i -e 's/\(type PlotAxisFlags \)int/\1cimgui.ImPlotAxisFlags/g' $files
 #sed -i -e 's/\(type \)\(.*Flags\) int/\1 \2 cimgui.ImGui\2/g' $files
 
@@ -51,44 +70,44 @@ sed -i -e 's/cimgui\.IO/cimgui\.ImGuiIO/g' $files
 # flags
 #
 # input text:
-sed -i -e 's/cimgui\.InputTextFlags\(\w\+\)/cimgui\.ImGuiInputTextFlags_\1/g' $files
+sed -i -e 's/cimgui\.InputTextFlags\(\w\+\)/cimgui\.InputTextFlags_\1/g' $files
 # API CHANGE!
-sed -i -e 's/^.*cimgui\.ImGuiInputTextFlags_AlwaysInsertMode.*//g' $files
+sed -i -e 's/^.*cimgui\.InputTextFlags_AlwaysInsertMode.*//g' $files
 
 # window flags
-sed -i -e 's/cimgui\.WindowFlags/cimgui\.ImGuiWindowFlags/g' $files
-# type was int; change to cimgui.ImGuiWindowFlags
+sed -i -e 's/cimgui\.WindowFlags/cimgui\.WindowFlags/g' $files
+# type was int; change to cimgui.mGuiWindowFlags
 sed -i -e 's/\(type WindowFlags \)int/\1cimgui.GLFWWindowFlags/g' $files
-sed -i -e 's/\(cimgui\.ImGuiWindowFlags\)\(\w\+\)/WindowFlags(\1_\2)/g' $files
+sed -i -e 's/\(cimgui\.WindowFlags\)\(\w\+\)/WindowFlags(\1_\2)/g' $files
 
 # combo flags
-sed -i -e 's/cimgui\.ComboFlags/cimgui\.ImGuiComboFlags/g' $files
-sed -i -e 's/\(cimgui\.ImGuiComboFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/cimgui\.ComboFlags/cimgui\.ComboFlags/g' $files
+sed -i -e 's/\(cimgui\.ComboFlags\)\(\w\+\)/\1_\2/g' $files
 
 # selectable flags
-sed -i -e 's/cimgui\.SelectableFlags/cimgui\.ImGuiSelectableFlags/g' $files
-sed -i -e 's/\(cimgui\.ImGuiSelectableFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/cimgui\.SelectableFlags/cimgui\.SelectableFlags/g' $files
+sed -i -e 's/\(cimgui\.SelectableFlags\)\(\w\+\)/\1_\2/g' $files
 
 # Tab Item Flags
-sed -i -e 's/cimgui\.TabItemFlags/cimgui\.ImGuiTabItemFlags/g' $files
-sed -i -e 's/\(cimgui\.ImGuiTabItemFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/cimgui\.TabItemFlags/cimgui\.TabItemFlags/g' $files
+sed -i -e 's/\(cimgui\.TabItemFlags\)\(\w\+\)/\1_\2/g' $files
 # remove TabItemFlagsNoPushID
 # API CHANGE!
-sed -i -e 's/^.*cimgui\.ImGuiTabItemFlags_NoPushID.*//g' $files
+sed -i -e 's/^.*cimgui\.TabItemFlags_NoPushID.*//g' $files
 
 # Tab Bar Flags
-sed -i -e 's/cimgui\.TabBarFlags/cimgui\.ImGuiTabBarFlags/g' $files
-sed -i -e 's/\(cimgui\.ImGuiTabBarFlags\)\(\w\+\)/\1_\2/g' $files
-sed -i -e 's/\(cimgui\.ImGuiTabBarFlags_FittingPolicyDefault\)/\1_/g' $files
-sed -i -e 's/\(cimgui\.ImGuiTabBarFlags_FittingPolicyMask\)/\1_/g' $files
+sed -i -e 's/cimgui\.TabBarFlags/cimgui\.TabBarFlags/g' $files
+sed -i -e 's/\(cimgui\.TabBarFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/\(cimgui\.TabBarFlags_FittingPolicyDefault\)/\1_/g' $files
+sed -i -e 's/\(cimgui\.TabBarFlags_FittingPolicyMask\)/\1_/g' $files
 
 # Tree Node Flags
-sed -i -e 's/cimgui\.TreeNodeFlags/cimgui\.ImGuiTreeNodeFlags/g' $files
-sed -i -e 's/\(cimgui\.ImGuiTreeNodeFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/cimgui\.TreeNodeFlags/cimgui\.TreeNodeFlags/g' $files
+sed -i -e 's/\(cimgui\.TreeNodeFlags\)\(\w\+\)/\1_\2/g' $files
 
 # Focused Flags
-sed -i -e 's/cimgui\.FocusedFlags/cimgui\.ImGuiFocusedFlags/g' $files
-sed -i -e 's/\(cimgui\.ImGuiFocusedFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/cimgui\.FocusedFlags/cimgui\.FocusedFlags/g' $files
+sed -i -e 's/\(cimgui\.FocusedFlags\)\(\w\+\)/\1_\2/g' $files
 
 # Hovered Flags
 
@@ -98,29 +117,31 @@ sed -i -e 's/\(cimgui\.ImGuiFocusedFlags\)\(\w\+\)/\1_\2/g' $files
 sed -i -e 's/\(.*ColorEditFlags.*=.*\)/\/\/ \1/g' $files
 
 # Table Flags
-sed -i -e 's/cimgui\.TableFlags/cimgui\.ImGuiTableFlags/g' $files
-sed -i -e 's/\(cimgui\.ImGuiTableFlags_NoBordersInBodyUntilResize\)TableFlags/\1/g' $files
+sed -i -e 's/cimgui\.TableFlags/cimgui\.TableFlags/g' $files
+sed -i -e 's/\(cimgui\.TableFlags_NoBordersInBodyUntilResize\)TableFlags/\1/g' $files
 
 # Table Row Flags
-sed -i -e 's/cimgui\.TableRowFlags/cimgui\.ImGuiTableRowFlags/g' $files
+sed -i -e 's/cimgui\.TableRowFlags/cimgui\.TableRowFlags/g' $files
 
 # Table Column Flags
-sed -i -e 's/cimgui\.TableColumnFlags/cimgui\.ImGuiTableColumnFlags/g' $files
+sed -i -e 's/cimgui\.TableColumnFlags/cimgui\.TableColumnFlags/g' $files
 
 # ImPlotFlags:
 # disable flags that are not present:
 # API CHANGE!
-sed -i -e 's/\(.*cimgui\.ImPlotFlags_NoMousePos.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*cimgui\.ImPlotFlags_NoHighlight.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*cimgui\.ImPlotFlags_YAxis2.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*cimgui\.ImPlotFlags_YAxis3.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*cimgui\.ImPlotFlags_Query.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*cimgui\.ImPlotFlags_AntiAliased.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(cimgui\.\)Im\(PlotFlags\)/\1\2/g' $files
+sed -i -e 's/\(.*cimgui\.PlotFlags_NoMousePos.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.PlotFlags_NoHighlight.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.PlotFlags_YAxis2.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.PlotFlags_YAxis3.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.PlotFlags_Query.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*cimgui\.PlotFlags_AntiAliased.*\)/\/\/ \1/g' $files
 
 # Plot Axis Flags
 # API CHANGE!
 sed -i -e 's/\(.*cimgui\.ImPlotAxisFlags_LogScale.*\)/\/\/ \1/g' $files
 sed -i -e 's/\(.*cimgui\.ImPlotAxisFlags_Time.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(cimgui\.\)Im\(PlotAxisFlags\)/\1\2/g' $files
 
 # master window
 # API CHANGE!
@@ -180,21 +201,13 @@ sed -i -e 's/\(DrawList\.PathStroke\)(/\1V(/g' Canvas.go
 sed -i -e 's/\(DrawList\.PathArcTo\)(/\1V(/g' Canvas.go
 sed -i -e 's/\(DrawList\.PathBezierCubicCurveTo\)(/\1V(/g' Canvas.go
 
-sed -i -e 's/\(type DrawFlags.*\)int/\1 cimgui\.ImDrawFlags/g' $files
-sed -i -e 's/\(DrawFlags\)\(\w\+\).*=.*/\1\2 DrawFlags = DrawFlags(cimgui\.ImDrawFlags_\2)/g' $files
-# TODO: 
-sed -i -e 's/\(cimgui\.ImDrawFlags_RoundCornersDefault\)/\1_/g' Canvas.go
-sed -i -e 's/\(cimgui\.ImDrawFlags_RoundCornersMask\)/\1_/g' Canvas.go
-sed -i -e 's/		DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersBottomRight//g' Canvas.go
 
-sed -i -e 's/int(\(roundingCorners\))/cimgui\.ImDrawFlags(\1)/g' Canvas.go
 sed -i -e 's/\(DrawList\.AddText\)/\1_Vec2/g' Canvas.go
 sed -i -e 's/\(numSegments int\)/\132/g' Canvas.go
 sed -i -e 's/\(segments int\)/\132/g' Canvas.go
 sed -i -e 's/\(min12 int\)/\132/g' Canvas.go
 sed -i -e 's/\(max12 int\)/\132/g' Canvas.go
 sed -i -e 's/\(closed bool\)/flags DrawFlags/g' Canvas.go
-sed -i -e 's/\(closed\)/cimgui\.ImDrawFlags(flags)/g' Canvas.go
 
 # styles
 sed -i -e 's/\(cimgui\.PopStyle.*V(\)\(.*\))/\1int32(\2))/g' $files
@@ -204,10 +217,6 @@ sed -i -e 's/\(cimgui\.BeginDisabled\)(.*)/\1()/g' $files
 
 # Style.go
 ## Mouse Cursor
-sed -i -e 's/\(type MouseCursorType\).*/\1 cimgui\.ImGuiMouseCursor/g' $files
-sed -i -e 's/\(MouseCursor\)\(\w\+\)\( \+MouseCursorType = \).*/\1\2\3 cimgui\.ImGuiMouseCursor_\2/g' $files
-sed -i -e 's/\(cimgui\.ImGuiMouseCursor_\)Count/\1COUNT/g' $files
-sed -i -e 's/\(int(cursor)\)/cimgui.ImGuiMouseCursor(cursor)/g' $files
 
 sed -i -e 's/cimgui\.CurrentStyle/cimgui\.GetStyle/g' $files
 sed -i -e 's/\(cimgui\.GetStyle()\.\)\(\w\+()\)/\1Get\2/g' $files
@@ -215,36 +224,32 @@ sed -i -e 's/\(cimgui\.GetStyle()\.\)\(\w\+()\)/\1Get\2/g' $files
 # split layout/style
 sed -i -e 's/\(cimgui\.GetStyle().GetColor\)/cimgui\.GetStyleColorVec4/g' $files
 
-# Direction.go
-sed -i -e 's/\(type Direction\) uint8/\1 cimgui.ImGuiDir/g' $files
-sed -i -e 's/\(Direction\)\(\w\+\).*/\1\2 Direction = cimgui.ImGuiDir_\2/g' Direction.go
 
 # ClickableWidgets.go
-sed -i -e 's/\(uint8(b\.dir)\)/cimgui.ImGuiDir(b\.dir)/g' $files
 
 sed -i -e 's/\(cimgui\.TreeNode\)V/\1Ex_StrV/g' $files
-sed -i -e 's/\(cimgui\.TreeNodeEx_StrV.*\)int(\(.*\))/\1cimgui\.ImGuiTreeNodeFlags(\2)/g' $files
+sed -i -e 's/\(cimgui\.TreeNodeEx_StrV.*\)int(\(.*\))/\1cimgui\.TreeNodeFlags(\2)/g' $files
 
 sed -i -e 's/\(cimgui\.Selectable\)V/\1_BoolV/g' $files
-sed -i -e 's/\(cimgui\.Selectable_BoolV.*\)int(\(.*\))/\1cimgui\.ImGuiSelectableFlags(\2)/g' $files
+sed -i -e 's/\(cimgui\.Selectable_BoolV.*\)int(\(.*\))/\1cimgui\.SelectableFlags(\2)/g' $files
 
 sed -i -e 's/\(cimgui\.RadioButton\)/\1_Bool/g' $files
 
 # Events.go
 #
-sed -i -e 's/\(type MouseButton \)int/\1cimgui.ImGuiMouseButton/g' $files
-sed -i -e 's/\(MouseButton\)\(\w\+\).*=.*/\1\2 MouseButton = MouseButton(cimgui\.ImGuiMouseButton_\2)/g' Events.go
+sed -i -e 's/\(type MouseButton \)int/\1cimgui.MouseButton/g' $files
+sed -i -e 's/\(MouseButton\)\(\w\+\).*=.*/\1\2 MouseButton = MouseButton(cimgui\.MouseButton_\2)/g' Events.go
 
-sed -i -e 's/\(int(mouseButton)\)/cimgui.ImGuiMouseButton(mouseButton)/g' Events.go
+sed -i -e 's/\(int(mouseButton)\)/cimgui.MouseButton(mouseButton)/g' Events.go
 sed -i -e 's/\(cimgui.IsItemClicked\)/\1V/g' $files
 
-sed -i -e 's/\(int(button)\)/cimgui.ImGuiMouseButton(button)/g' Events.go
+sed -i -e 's/\(int(button)\)/cimgui.MouseButton(button)/g' Events.go
 
 sed -i -e 's/\(cimgui.IsWindowFocused\)/\1V/g' $files
-sed -i -e 's/\(IsWindowFocusedV(\)int(flags)/\1cimgui.ImGuiFocusedFlags(flags)/g' Events.go
+sed -i -e 's/\(IsWindowFocusedV(\)int(flags)/\1cimgui.FocusedFlags(flags)/g' Events.go
 
 sed -i -e 's/\(cimgui.IsWindowHovered\)/\1V/g' $files
-sed -i -e 's/\(IsWindowHoveredV(\)int(flags)/\1cimgui.ImGuiHoveredFlags(flags)/g' Events.go
+sed -i -e 's/\(IsWindowHoveredV(\)int(flags)/\1cimgui.HoveredFlags(flags)/g' Events.go
 
 # list clipper
 #
@@ -262,18 +267,19 @@ sed -i -e 's/int(p.radius)/int32(p\.radius)/g' ProgressIndicator.go
 sed -i -e 's/\(cimgui\.OpenPopup\)/\1_Str/g' Popups.go
 sed -i -e 's/\(cimgui\.BeginPopup\)/\1V/g' Popups.go
 sed -i -e 's/\(cimgui\.BeginPopupVModalV\)/cimgui\.BeginPopupModalV/g' Popups.go
-sed -i -e 's/\(BeginPopup.*(.*\)int(\(p.flags\))/\1cimgui.ImGuiWindowFlags(\2)/g' Popups.go
+sed -i -e 's/\(BeginPopup.*(.*\)int(\(p.flags\))/\1cimgui.WindowFlags(\2)/g' Popups.go
 
 
 # Window.go
 #
 sed -i -e 's/\(.*\)= \(cimgui\.\)\(WindowPos\)()/\1= cimgui.ImVec2{};\2Get\3(\&\1)/g' Window.go
 sed -i -e 's/\(.*\)= \(cimgui\.\)\(WindowSize\)()/\1= cimgui.ImVec2{};\2Get\3(\&\1)/g' Window.go
-sed -i -e 's/\(cimgui\.Begin.*\)int\((.*flags).*\)/\1cimgui\.ImGuiWindowFlags\2/g' Window.go
+sed -i -e 's/\(cimgui\.Begin.*\)int\((.*flags).*\)/\1cimgui\.WindowFlags\2/g' Window.go
 
 # FontAtlasProcessor.go
 #
 sed -i -e 's/\(IO()\.\)\(Fonts()\)/\1Get\2/g' $files
+sed -i -e 's/\(io\.\)\(Fonts()\)/\1Get\2/g' $files
 
 sed -i -e 's/\(cimgui\.\)NewGlyphRanges/\1NewGlyphRange/g' $files
 sed -i -e 's/\(cimgui\.New\)\(FontGlyphRangesBuilder\)/\1Im\2/g' $files
@@ -285,7 +291,7 @@ sed -i -e 's/\(cimgui\.New\)\(FontConfig\)/\1Im\2/g' $files
 sed -i -e 's/\(style\)\(\.GetColor\)/cimgui\.GetStyleColorVec4/g' $files
 sed -i -e 's/style := .*//g' ExtraWidgets.go
 sed -i -e 's/cimgui\.CurrentIO/cimgui\.GetIO/g' $files
-sed -i -e 's/cimgui\.\(MouseCursor\)\(\w\+\)/cimgui\.ImGui\1_\2/g' ExtraWidgets.go
+sed -i -e 's/cimgui\.\(MouseCursor\)\(\w\+\)/cimgui\.\1_\2/g' ExtraWidgets.go
 sed -i -e 's/\(cimgui\.TableNextRow\)/\1V/g' ExtraWidgets.go
 sed -i -e 's/\(cimgui\.BeginTable\)/\1V/g' ExtraWidgets.go
 sed -i -e 's/\(cimgui\.BeginTable.*\)\(colCount\)/\1int32(\2)/g' ExtraWidgets.go
@@ -294,7 +300,7 @@ sed -i -e 's/\(cimgui\.TableSetupScrollFreeze(\)\(.*\), \(.*\))/\1int32(\2), int
 # SliderWidget.go
 #
 sed -i -e 's/\(cimgui\.SliderIntV(.*\)\() \)/\1, 0\2/g' SliderWidgets.go
-sed -i -e 's/int\((vs\.flags)\)/cimgui\.ImGuiSliderFlags\1/g' SliderWidgets.go
+sed -i -e 's/int\((vs\.flags)\)/cimgui\.SliderFlags\1/g' SliderWidgets.go
 
 # TableWidgets.go
 #
@@ -312,8 +318,8 @@ sed -i -e 's/\(cimgui\.BeginTableV(\)\(.*\), \(.*\), \(.*\), \(.*\), \(.*\))/\1\
 # Widgets.go
 #
 sed -i -e 's/\(cimgui\.BeginChild\)V/\1_StrV/g' Widgets.go
-sed -i -e 's/\(cimgui\.BeginChild_StrV(.*, \)int\((.*)\))/\1cimgui.ImGuiWindowFlags\2)/g' Widgets.go
-sed -i -e 's/\(cimgui\.BeginComboV(.*, \)int\((.*)\))/\1cimgui.ImGuiComboFlags\2)/g' Widgets.go
+sed -i -e 's/\(cimgui\.BeginChild_StrV(.*, \)int\((.*)\))/\1cimgui.WindowFlags\2)/g' Widgets.go
+sed -i -e 's/\(cimgui\.BeginComboV(.*, \)int\((.*)\))/\1cimgui.ComboFlags\2)/g' Widgets.go
 sed -i -e 's/\(cimgui\.Selectable\)/\1_Bool/g' Widgets.go
 # TODO: mouse button here is PopupFlags in fact - need to update stuff manually
 sed -i -e 's/int(\(.*mouseButton\))/cimgui\.ImGuiPopupFlags(\1)/g' Widgets.go
@@ -322,8 +328,8 @@ sed -i -e 's/int(\(.*mouseButton\))/cimgui\.ImGuiPopupFlags(\1)/g' Widgets.go
 sed -i -e 's/\(cimgui\.DragIntV(.*\))/\1, 0)/g' Widgets.go
 
 sed -i -e 's/\(cimgui\.MenuItem\)V/\1_BoolV/g' $files
-sed -i -e 's/\(cimgui\.BeginTabItemV(.*, \)int\((.*)\))/\1cimgui.ImGuiTabItemFlags\2)/g' Widgets.go
-sed -i -e 's/\(cimgui\.BeginTabBarV(.*, \)int\((.*)\))/\1cimgui.ImGuiTabBarFlags\2)/g' Widgets.go
+sed -i -e 's/\(cimgui\.BeginTabItemV(.*, \)int\((.*)\))/\1cimgui.TabItemFlags\2)/g' Widgets.go
+sed -i -e 's/\(cimgui\.BeginTabBarV(.*, \)int\((.*)\))/\1cimgui.TabBarFlags\2)/g' Widgets.go
 
 # TODO: color edit flags are disabled now
 sed -i -e 's/\(flags: ColorEditFlagsNone\)/\/\/ \1/g' Widgets.go
