@@ -1,3 +1,4 @@
+#!/bin/bash
 git add migration.*
 git commit --amend
 git stash
@@ -39,8 +40,8 @@ sed -i -e 's/cimgui\.TextureID/cimgui\.ImTextureID/g' $files
 sed -i -e 's/cimgui\.Vec2/cimgui\.ImVec2/g' $files
 sed -i -e 's/cimgui\.Vec4/cimgui\.ImVec4/g' $files
 sed -i -e 's/cimgui\.Font/cimgui\.ImFont/g' $files
-sed -i -e 's/cimgui\.Condition/cimgui\.ImGuiCond/g' $files
-sed -i -e 's/cimgui\.ImGuiCond\(\w\+\)/cimgui\.ImGuiCond_\1/g' $files
+sed -i -e 's/cimgui\.Condition/cimgui\.Cond/g' $files
+sed -i -e 's/cimgui\.Cond\(\w\+\)/cimgui\.Cond_\1/g' $files
 sed -i -e 's/cimgui\.InputTextCallback/cimgui\.InputTextCallback/g' $files
 sed -i -e 's/cimgui\.Context/cimgui\.ImGuiContext/g' $files
 
@@ -272,8 +273,8 @@ sed -i -e 's/\(BeginPopup.*(.*\)int(\(p.flags\))/\1cimgui.WindowFlags(\2)/g' Pop
 
 # Window.go
 #
-sed -i -e 's/\(.*\)= \(cimgui\.\)\(WindowPos\)()/\1= cimgui.ImVec2{};\2Get\3(\&\1)/g' Window.go
-sed -i -e 's/\(.*\)= \(cimgui\.\)\(WindowSize\)()/\1= cimgui.ImVec2{};\2Get\3(\&\1)/g' Window.go
+sed -i -e 's/\(cimgui\.\)\(WindowPos\)/\1Get\2/g' Window.go
+sed -i -e 's/\(cimgui\.\)\(WindowSize\)/\1Get\2/g' Window.go
 sed -i -e 's/\(cimgui\.Begin.*\)int\((.*flags).*\)/\1cimgui\.WindowFlags\2/g' Window.go
 
 # FontAtlasProcessor.go
