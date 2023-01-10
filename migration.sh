@@ -12,37 +12,31 @@ go mod tidy
 
 # Types and constants:
 sed -i -e 's/imgui\.StyleColorID/imgui\.Col/g' $files
-sed -i -e 's/\(imgui\.StyleColor\)\(\w\+\)/imgui\.Col_\2/g' $files
+sed -i -e 's/\(imgui\.StyleColor\)\(\w\+\)/imgui\.Col\2/g' $files
 
 sed -i -e 's/imgui\.StyleVarID/imgui\.StyleVar/g' $files
-sed -i -e 's/\(imgui\.StyleVar\)\(\w\+\)/imgui\.StyleVar_\2/g' $files
+sed -i -e 's/\(imgui\.StyleVar\)\(\w\+\)/imgui\.StyleVar\2/g' $files
 
 sed -i -e 's/\(type MouseCursorType\).*/\1 imgui\.MouseCursor/g' $files
-sed -i -e 's/\(MouseCursor\)\(\w\+\)\( \+MouseCursorType = \).*/\1\2\3 imgui\.MouseCursor_\2/g' $files
-sed -i -e 's/\(imgui\.MouseCursor_\)Count/\1COUNT/g' $files
+sed -i -e 's/\(MouseCursor\)\(\w\+\)\( \+MouseCursorType = \).*/\1\2\3 imgui\.MouseCursor\2/g' $files
+sed -i -e 's/\(imgui\.MouseCursor\)Count/\1COUNT/g' $files
 sed -i -e 's/\(int(cursor)\)/imgui.MouseCursor(cursor)/g' $files
 
 sed -i -e 's/\(type DrawFlags.*\)int/\1 imgui\.DrawFlags/g' $files
-sed -i -e 's/\(DrawFlags\)\(\w\+\).*=.*/\1\2 DrawFlags = DrawFlags(imgui\.DrawFlags_\2)/g' $files
+sed -i -e 's/\(DrawFlags\)\(\w\+\).*=.*/\1\2 DrawFlags = DrawFlags(imgui\.DrawFlags\2)/g' $files
 sed -i -e 's/int(\(roundingCorners\))/imgui\.DrawFlags(\1)/g' Canvas.go
 sed -i -e 's/\(closed\),/imgui\.DrawFlags(flags),/g' Canvas.go
 # TODO:
 sed -i -e 's/		DrawFlagsRoundCornersBottomLeft | DrawFlagsRoundCornersBottomRight//g' Canvas.go
 
 sed -i -e 's/\(type Direction\) uint8/\1 imgui.Dir/g' $files
-sed -i -e 's/\(Direction\)\(\w\+\).*/\1\2 Direction = imgui.Dir_\2/g' Direction.go
+sed -i -e 's/\(Direction\)\(\w\+\).*/\1\2 Direction = imgui.Dir\2/g' Direction.go
 sed -i -e 's/\(uint8(b\.dir)\)/imgui.Dir(b\.dir)/g' $files
 
 # another types
-sed -i -e 's/imgui\.DrawList/imgui\.ImDrawList/g' $files
-sed -i -e 's/imgui\.TextureID/imgui\.ImTextureID/g' $files
-sed -i -e 's/imgui\.Vec2/imgui\.ImVec2/g' $files
-sed -i -e 's/imgui\.Vec4/imgui\.ImVec4/g' $files
-sed -i -e 's/imgui\.Font/imgui\.ImFont/g' $files
 sed -i -e 's/imgui\.Condition/imgui\.Cond/g' $files
-sed -i -e 's/imgui\.Cond\(\w\+\)/imgui\.Cond_\1/g' $files
+sed -i -e 's/imgui\.Cond\(\w\+\)/imgui\.Cond\1/g' $files
 sed -i -e 's/imgui\.InputTextCallback/imgui\.InputTextCallback/g' $files
-sed -i -e 's/imgui\.Context/imgui\.ImGuiContext/g' $files
 
 sed -i -e 's/\(type InputTextFlags \)int/\1imgui.InputTextFlags/g' $files
 sed -i -e 's/\(type ComboFlags \)int/\1imgui.ComboFlags/g' $files
@@ -52,14 +46,14 @@ sed -i -e 's/\(type TabBarFlags \)int/\1imgui.TabBarFlags/g' $files
 sed -i -e 's/\(type TreeNodeFlags \)int/\1imgui.TreeNodeFlags/g' $files
 sed -i -e 's/\(type FocusedFlags \)int/\1imgui.FocusedFlags/g' $files
 sed -i -e 's/\(type HoveredFlags \)int/\1imgui.HoveredFlags/g' $files
-sed -i -e 's/\(imgui\.\)\(HoveredFlags\)\(\w\+\)/\1\2_\3/g' $files
+sed -i -e 's/\(imgui\.\)\(HoveredFlags\)\(\w\+\)/\1\2\3/g' $files
 sed -i -e 's/\(type TableFlags \)int/\1imgui.TableFlags/g' $files
 sed -i -e 's/\(type TableRowFlags \)int/\1imgui.TableRowFlags/g' $files
 sed -i -e 's/\(type TableColumnFlags \)int/\1imgui.TableColumnFlags/g' $files
 sed -i -e 's/\(type SliderFlags \)int/\1imgui.SliderFlags/g' $files
-sed -i -e 's/\(SliderFlags\)\(\w\+\).*/\1\2 SliderFlags = imgui.SliderFlags_\2/g' Flags.go
+sed -i -e 's/\(SliderFlags\)\(\w\+\).*/\1\2 SliderFlags = imgui.SliderFlags\2/g' Flags.go
 sed -i -e 's/\(type PlotFlags \)int/\1imgui.PlotFlags/g' $files
-sed -i -e 's/\(type PlotAxisFlags \)int/\1imgui.ImPlotAxisFlags/g' $files
+sed -i -e 's/\(type PlotAxisFlags \)int/\1imgui.PlotAxisFlags/g' $files
 #sed -i -e 's/\(type \)\(.*Flags\) int/\1 \2 imgui.ImGui\2/g' $files
 
 # Context; TODO - check if nothing else is changed
@@ -69,42 +63,42 @@ sed -i -e 's/imgui\.IO/imgui\.ImGuiIO/g' $files
 # flags
 #
 # input text:
-sed -i -e 's/imgui\.InputTextFlags\(\w\+\)/imgui\.InputTextFlags_\1/g' $files
+sed -i -e 's/imgui\.InputTextFlags\(\w\+\)/imgui\.InputTextFlags\1/g' $files
 # API CHANGE!
-sed -i -e 's/^.*imgui\.InputTextFlags_AlwaysInsertMode.*//g' $files
+sed -i -e 's/^.*imgui\.InputTextFlagsAlwaysInsertMode.*//g' $files
 
 # window flags
 sed -i -e 's/imgui\.WindowFlags/imgui\.WindowFlags/g' $files
 # type was int; change to imgui.mGuiWindowFlags
 sed -i -e 's/\(type WindowFlags \)int/\1imgui.GLFWWindowFlags/g' $files
-sed -i -e 's/\(imgui\.WindowFlags\)\(\w\+\)/WindowFlags(\1_\2)/g' $files
+sed -i -e 's/\(imgui\.WindowFlags\)\(\w\+\)/WindowFlags(\1\2)/g' $files
 
 # combo flags
 sed -i -e 's/imgui\.ComboFlags/imgui\.ComboFlags/g' $files
-sed -i -e 's/\(imgui\.ComboFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/\(imgui\.ComboFlags\)\(\w\+\)/\1\2/g' $files
 
 # selectable flags
 sed -i -e 's/imgui\.SelectableFlags/imgui\.SelectableFlags/g' $files
-sed -i -e 's/\(imgui\.SelectableFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/\(imgui\.SelectableFlags\)\(\w\+\)/\1\2/g' $files
 
 # Tab Item Flags
 sed -i -e 's/imgui\.TabItemFlags/imgui\.TabItemFlags/g' $files
-sed -i -e 's/\(imgui\.TabItemFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/\(imgui\.TabItemFlags\)\(\w\+\)/\1\2/g' $files
 # remove TabItemFlagsNoPushID
 # API CHANGE!
-sed -i -e 's/^.*imgui\.TabItemFlags_NoPushID.*//g' $files
+sed -i -e 's/^.*imgui\.TabItemFlagsNoPushID.*//g' $files
 
 # Tab Bar Flags
 sed -i -e 's/imgui\.TabBarFlags/imgui\.TabBarFlags/g' $files
-sed -i -e 's/\(imgui\.TabBarFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/\(imgui\.TabBarFlags\)\(\w\+\)/\1\2/g' $files
 
 # Tree Node Flags
 sed -i -e 's/imgui\.TreeNodeFlags/imgui\.TreeNodeFlags/g' $files
-sed -i -e 's/\(imgui\.TreeNodeFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/\(imgui\.TreeNodeFlags\)\(\w\+\)/\1\2/g' $files
 
 # Focused Flags
 sed -i -e 's/imgui\.FocusedFlags/imgui\.FocusedFlags/g' $files
-sed -i -e 's/\(imgui\.FocusedFlags\)\(\w\+\)/\1_\2/g' $files
+sed -i -e 's/\(imgui\.FocusedFlags\)\(\w\+\)/\1\2/g' $files
 
 # Hovered Flags
 
@@ -114,30 +108,32 @@ sed -i -e 's/\(imgui\.FocusedFlags\)\(\w\+\)/\1_\2/g' $files
 sed -i -e 's/\(.*ColorEditFlags.*=.*\)/\/\/ \1/g' $files
 
 # Table Flags
-sed -i -e 's/imgui\.TableFlags/imgui\.TableFlags/g' $files
-sed -i -e 's/\(imgui\.TableFlags_NoBordersInBodyUntilResize\)TableFlags/\1/g' $files
+sed -i -e 's/imgui\.TableFlags_/imgui\.TableFlags/g' $files
+sed -i -e 's/\(imgui\.TableFlagsNoBordersInBodyUntilResize\)TableFlags/\1/g' $files
 
 # Table Row Flags
-sed -i -e 's/imgui\.TableRowFlags/imgui\.TableRowFlags/g' $files
+sed -i -e 's/imgui\.TableRowFlags_/imgui\.TableRowFlags/g' $files
 
 # Table Column Flags
-sed -i -e 's/imgui\.TableColumnFlags/imgui\.TableColumnFlags/g' $files
+sed -i -e 's/imgui\.TableColumnFlags_/imgui\.TableColumnFlags/g' $files
+sed -i -e 's/\(imgui\.TableColumnFlags.*\)_/\1/g' $files
 
+sed -i -e 's/imgui\.PlotFlags_/imgui\.PlotFlags/g' $files
 # ImPlotFlags:
 # disable flags that are not present:
 # API CHANGE!
 sed -i -e 's/\(imgui\.\)Im\(PlotFlags\)/\1\2/g' $files
-sed -i -e 's/\(.*imgui\.PlotFlags_NoMousePos.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*imgui\.PlotFlags_NoHighlight.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*imgui\.PlotFlags_YAxis2.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*imgui\.PlotFlags_YAxis3.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*imgui\.PlotFlags_Query.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*imgui\.PlotFlags_AntiAliased.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*imgui\.PlotFlagsNoMousePos.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*imgui\.PlotFlagsNoHighlight.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*imgui\.PlotFlagsYAxis2.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*imgui\.PlotFlagsYAxis3.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*imgui\.PlotFlagsQuery.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*imgui\.PlotFlagsAntiAliased.*\)/\/\/ \1/g' $files
 
 # Plot Axis Flags
 # API CHANGE!
-sed -i -e 's/\(.*imgui\.ImPlotAxisFlags_LogScale.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*imgui\.ImPlotAxisFlags_Time.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*imgui\.ImPlotAxisFlagsLogScale.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*imgui\.ImPlotAxisFlagsTime.*\)/\/\/ \1/g' $files
 sed -i -e 's/\(imgui\.\)Im\(PlotAxisFlags\)/\1\2/g' $files
 
 # master window
@@ -154,9 +150,9 @@ echo "package giu" >> MemoryEditor.go
 # methods:
 #
 sed -i -e 's/imgui\.PushID/imgui\.PushIDStr/g' $files
-sed -i -e 's/imgui\.PushStyleVarFloat/imgui\.PushStyleVar_Float/g' $files
-sed -i -e 's/imgui\.PushStyleVarVec2/imgui\.PushStyleVar_Vec2/g' $files
-sed -i -e 's/imgui\.PushStyleColor/imgui\.PushStyleColor_Vec4/g' $files
+sed -i -e 's/imgui\.PushStyleVarFloat/imgui\.PushStyleVarFloat/g' $files
+sed -i -e 's/imgui\.PushStyleVarVec2/imgui\.PushStyleVarVec2/g' $files
+sed -i -e 's/imgui\.PushStyleColor/imgui\.PushStyleColorVec4/g' $files
 sed -i -e 's/\(.*\):= \(imgui\.\)\(ContentRegionAvail\)()/\1:= imgui.ImVec2{};\2Get\3(\&\1)/g' ImageWidgets.go
 sed -i -e 's/\.AddLine/\.AddLineV/g' $files
 sed -i -e 's/\.AddRect/\.AddRectV/g' Canvas.go
@@ -199,7 +195,7 @@ sed -i -e 's/\(DrawList\.PathArcTo\)(/\1V(/g' Canvas.go
 sed -i -e 's/\(DrawList\.PathBezierCubicCurveTo\)(/\1V(/g' Canvas.go
 
 
-sed -i -e 's/\(DrawList\.AddText\)/\1_Vec2/g' Canvas.go
+sed -i -e 's/\(DrawList\.AddText\)/\1Vec2/g' Canvas.go
 sed -i -e 's/\(numSegments int\)/\132/g' Canvas.go
 sed -i -e 's/\(segments int\)/\132/g' Canvas.go
 sed -i -e 's/\(min12 int\)/\132/g' Canvas.go
@@ -215,27 +211,27 @@ sed -i -e 's/\(imgui\.BeginDisabled\)(.*)/\1()/g' $files
 # Style.go
 ## Mouse Cursor
 
-sed -i -e 's/imgui\.CurrentStyle/imgui\.GetStyle/g' $files
-sed -i -e 's/\(imgui\.GetStyle()\.\)\(\w\+()\)/\1Get\2/g' $files
+sed -i -e 's/imgui\.CurrentStyle/imgui\.Style/g' $files
+sed -i -e 's/\(imgui\.Style()\.\)\(\w\+()\)/\1Get\2/g' $files
 
 # split layout/style
-sed -i -e 's/\(imgui\.GetStyle().GetColor\)/imgui\.GetStyleColorVec4/g' $files
+sed -i -e 's/\(imgui\.Style().GetColor\)/imgui\.StyleColorVec4/g' $files
 
 
 # ClickableWidgets.go
 
-sed -i -e 's/\(imgui\.TreeNode\)V/\1Ex_StrV/g' $files
-sed -i -e 's/\(imgui\.TreeNodeEx_StrV.*\)int(\(.*\))/\1imgui\.TreeNodeFlags(\2)/g' $files
+sed -i -e 's/\(imgui\.TreeNode\)V/\1ExStrV/g' $files
+sed -i -e 's/\(imgui\.TreeNodeExStrV.*\)int(\(.*\))/\1imgui\.TreeNodeFlags(\2)/g' $files
 
-sed -i -e 's/\(imgui\.Selectable\)V/\1_BoolV/g' $files
-sed -i -e 's/\(imgui\.Selectable_BoolV.*\)int(\(.*\))/\1imgui\.SelectableFlags(\2)/g' $files
+sed -i -e 's/\(imgui\.Selectable\)V/\1BoolV/g' $files
+sed -i -e 's/\(imgui\.SelectableBoolV.*\)int(\(.*\))/\1imgui\.SelectableFlags(\2)/g' $files
 
-sed -i -e 's/\(imgui\.RadioButton\)/\1_Bool/g' $files
+sed -i -e 's/\(imgui\.RadioButton\)/\1Bool/g' $files
 
 # Events.go
 #
 sed -i -e 's/\(type MouseButton \)int/\1imgui.MouseButton/g' $files
-sed -i -e 's/\(MouseButton\)\(\w\+\).*=.*/\1\2 MouseButton = MouseButton(imgui\.MouseButton_\2)/g' Events.go
+sed -i -e 's/\(MouseButton\)\(\w\+\).*=.*/\1\2 MouseButton = MouseButton(imgui\.MouseButton\2)/g' Events.go
 
 sed -i -e 's/\(int(mouseButton)\)/imgui.MouseButton(mouseButton)/g' Events.go
 sed -i -e 's/\(imgui.IsItemClicked\)/\1V/g' $files
@@ -261,7 +257,7 @@ sed -i -e 's/int(p.radius)/int32(p\.radius)/g' ProgressIndicator.go
 
 # Popups.go
 #
-sed -i -e 's/\(imgui\.OpenPopup\)/\1_Str/g' Popups.go
+sed -i -e 's/\(imgui\.OpenPopup\)/\1Str/g' Popups.go
 sed -i -e 's/\(imgui\.BeginPopup\)/\1V/g' Popups.go
 sed -i -e 's/\(imgui\.BeginPopupVModalV\)/imgui\.BeginPopupModalV/g' Popups.go
 sed -i -e 's/\(BeginPopup.*(.*\)int(\(p.flags\))/\1imgui.WindowFlags(\2)/g' Popups.go
@@ -275,7 +271,7 @@ sed -i -e 's/\(imgui\.Begin.*\)int\((.*flags).*\)/\1imgui\.WindowFlags\2/g' Wind
 
 # FontAtlasProcessor.go
 #
-sed -i -e 's/\(IO()\.\)\(Fonts()\)/\1Get\2/g' $files
+#sed -i -e 's/\(IO()\.\)\(Fonts()\)/\1Get\2/g' $files
 sed -i -e 's/\(io\.\)\(Fonts()\)/\1Get\2/g' $files
 
 sed -i -e 's/\(imgui\.\)NewGlyphRanges/\1NewGlyphRange/g' $files
@@ -285,10 +281,10 @@ sed -i -e 's/\(imgui\.New\)\(FontConfig\)/\1Im\2/g' $files
 
 # ExtraWidgets.go
 #
-sed -i -e 's/\(style\)\(\.GetColor\)/imgui\.GetStyleColorVec4/g' $files
+sed -i -e 's/\(style\)\(\.GetColor\)/imgui\.StyleColorVec4/g' $files
 sed -i -e 's/style := .*//g' ExtraWidgets.go
 sed -i -e 's/imgui\.CurrentIO/imgui\.GetIO/g' $files
-sed -i -e 's/imgui\.\(MouseCursor\)\(\w\+\)/imgui\.\1_\2/g' ExtraWidgets.go
+sed -i -e 's/imgui\.\(MouseCursor\)\(\w\+\)/imgui\.\1\2/g' ExtraWidgets.go
 sed -i -e 's/\(imgui\.TableNextRow\)/\1V/g' ExtraWidgets.go
 sed -i -e 's/\(imgui\.BeginTable\)/\1V/g' ExtraWidgets.go
 sed -i -e 's/\(imgui\.BeginTable.*\)\(colCount\)/\1int32(\2)/g' ExtraWidgets.go
@@ -308,28 +304,30 @@ sed -i -e 's/\(imgui\.TableSetBgColor\)/\1V/g' TableWidgets.go
 sed -i -e 's/\(imgui\.TableSetupColumn\)/\1V/g' TableWidgets.go
 sed -i -e 's/\(imgui\.BeginTable\)/\1V/g' TableWidgets.go
 sed -i -e 's/\(imgui\.\)\(TableBgTarget\)/\1ImGui\2/g' TableWidgets.go
-sed -i -e 's/\(imgui\.GetColorU32\)/\1_Vec4/g' TableWidgets.go
+sed -i -e 's/\(imgui\.GetColorU32\)/\1Vec4/g' TableWidgets.go
 # TODO - converting to float32 is wrong idea since wi're converting from float64 :-)
 sed -i -e 's/\(imgui\.BeginTableV(\)\(.*\), \(.*\), \(.*\), \(.*\), \(.*\))/\1\2, int32(\3\), \4, \5, float32(\6))/g' TableWidgets.go
 
 # Widgets.go
 #
-sed -i -e 's/\(imgui\.BeginChild\)V/\1_StrV/g' Widgets.go
-sed -i -e 's/\(imgui\.BeginChild_StrV(.*, \)int\((.*)\))/\1imgui.WindowFlags\2)/g' Widgets.go
+sed -i -e 's/\(imgui\.BeginChild\)V/\1StrV/g' Widgets.go
+sed -i -e 's/\(imgui\.BeginChildStrV(.*, \)int\((.*)\))/\1imgui.WindowFlags\2)/g' Widgets.go
 sed -i -e 's/\(imgui\.BeginComboV(.*, \)int\((.*)\))/\1imgui.ComboFlags\2)/g' Widgets.go
-sed -i -e 's/\(imgui\.Selectable\)/\1_Bool/g' Widgets.go
+sed -i -e 's/\(imgui\.Selectable\)/\1Bool/g' Widgets.go
 # TODO: mouse button here is PopupFlags in fact - need to update stuff manually
 sed -i -e 's/int(\(.*mouseButton\))/imgui\.ImGuiPopupFlags(\1)/g' Widgets.go
 
 # TODO: add possibility to specify flags here
 sed -i -e 's/\(imgui\.DragIntV(.*\))/\1, 0)/g' Widgets.go
 
-sed -i -e 's/\(imgui\.MenuItem\)V/\1_BoolV/g' $files
+sed -i -e 's/\(imgui\.MenuItem\)V/\1BoolV/g' $files
 sed -i -e 's/\(imgui\.BeginTabItemV(.*, \)int\((.*)\))/\1imgui.TabItemFlags\2)/g' Widgets.go
 sed -i -e 's/\(imgui\.BeginTabBarV(.*, \)int\((.*)\))/\1imgui.TabBarFlags\2)/g' Widgets.go
 
 # TODO: color edit flags are disabled now
 sed -i -e 's/\(flags: ColorEditFlagsNone\)/\/\/ \1/g' Widgets.go
+
+sed -i -e 's/\(imgui\.\)Get\(WindowDrawList\)/\1\2/g' $files
 
 # gofmt
 gofmt -w -s $files
