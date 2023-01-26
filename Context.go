@@ -49,6 +49,8 @@ type context struct {
 	textureLoadingQueue *queue.Queue
 
 	cssStylesheet cssStylesheet
+
+	m *sync.Mutex
 }
 
 func CreateContext(p imgui.Platform, r imgui.Renderer) *context {
@@ -56,6 +58,7 @@ func CreateContext(p imgui.Platform, r imgui.Renderer) *context {
 		platform:      p,
 		renderer:      r,
 		cssStylesheet: make(cssStylesheet),
+		m:             &sync.Mutex{},
 	}
 
 	result.FontAtlas = newFontAtlas()
@@ -88,7 +91,9 @@ func (c *context) IO() imgui.IO {
 func (c *context) invalidAllState() {
 	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
+			c.m.Lock()
 			s.valid = false
+			c.m.Unlock()
 		}
 		return true
 	})
@@ -97,7 +102,10 @@ func (c *context) invalidAllState() {
 func (c *context) cleanState() {
 	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
-			if !s.valid {
+			c.m.Lock()
+			valid := s.valid
+			c.m.Unlock()
+			if !valid {
 				c.state.Delete(k)
 				s.data.Dispose()
 			}
@@ -131,7 +139,9 @@ func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 
 func (c *context) GetState(id string) any {
 	if s, ok := c.load(id); ok {
+		c.m.Lock()
 		s.valid = true
+		c.m.Unlock()
 		return s.data
 	}
 
