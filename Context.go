@@ -127,7 +127,10 @@ func (c *context) SetState(id string, data Disposable) {
 
 func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 	if s, ok := c.load(id); ok {
+		c.m.Lock()
 		s.valid = true
+		c.m.Unlock()
+
 		data, isOk := s.data.(PT)
 		Assert(isOk, "Context", "GetState", fmt.Sprintf("got state of unexpected type: expected %T, instead found %T", new(T), s.data))
 
