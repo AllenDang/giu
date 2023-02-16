@@ -3,6 +3,7 @@ package giu
 import (
 	"image"
 	"math"
+	"sync"
 	"time"
 
 	"github.com/AllenDang/imgui-go"
@@ -13,17 +14,21 @@ var _ Disposable = &progressIndicatorState{}
 type progressIndicatorState struct {
 	angle float64
 	stop  bool
+	m     *sync.Mutex
 }
 
 func (ps *progressIndicatorState) update() {
 	ticker := time.NewTicker(time.Second / 60)
 
 	for !ps.stop {
+		ps.m.Lock()
 		if ps.angle > 6.2 {
 			ps.angle = 0
 		}
 
 		ps.angle += 0.1
+
+		ps.m.Unlock()
 
 		Update()
 		<-ticker.C
@@ -66,7 +71,11 @@ func (p *ProgressIndicatorWidget) Build() {
 	// State exists
 	if state := GetState[progressIndicatorState](Context, p.internalID); state == nil {
 		// Register state and start go routine
-		ps := progressIndicatorState{angle: 0.0, stop: false}
+		ps := progressIndicatorState{
+			angle: 0.0,
+			stop:  false,
+			m:     &sync.Mutex{},
+		}
 
 		SetState(Context, p.internalID, &ps)
 
@@ -82,9 +91,14 @@ func (p *ProgressIndicatorWidget) Build() {
 				pos := GetCursorScreenPos()
 
 				centerPt := pos.Add(image.Pt(int(width/2), int(height/2)))
+
+				state.m.Lock()
+				angle := state.angle
+				state.m.Unlock()
+
 				centerPt2 := image.Pt(
-					int(float64(p.radius)*math.Sin(state.angle)+float64(centerPt.X)),
-					int(float64(p.radius)*math.Cos(state.angle)+float64(centerPt.Y)),
+					int(float64(p.radius)*math.Sin(angle)+float64(centerPt.X)),
+					int(float64(p.radius)*math.Cos(angle)+float64(centerPt.Y)),
 				)
 
 				color := imgui.CurrentStyle().GetColor(imgui.StyleColorText)
