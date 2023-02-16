@@ -87,6 +87,9 @@ func Vec4ToRGBA(vec4 imgui.Vec4) color.RGBA {
 // action is done, it may be necessary to
 // Update ui manually at some point.
 func Update() {
+	Context.m.Lock()
+	defer Context.m.Unlock()
+
 	if Context.isAlive {
 		Context.platform.Update()
 	}
