@@ -20,8 +20,13 @@ type progressIndicatorState struct {
 func (ps *progressIndicatorState) update() {
 	ticker := time.NewTicker(time.Second / 60)
 
-	for !ps.stop {
+	for {
 		ps.m.Lock()
+		if ps.stop {
+			ps.m.Unlock()
+			break
+		}
+
 		if ps.angle > 6.2 {
 			ps.angle = 0
 		}
@@ -39,7 +44,9 @@ func (ps *progressIndicatorState) update() {
 
 // Dispose implements Disposable interface.
 func (ps *progressIndicatorState) Dispose() {
+	ps.m.Lock()
 	ps.stop = true
+	ps.m.Unlock()
 }
 
 // static check to ensure if ProgressIndicatorWidget implements Widget interface.
