@@ -10,7 +10,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/AllenDang/cimgui-go"
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
@@ -32,16 +31,15 @@ func Assert(cond bool, t, method, msg string, args ...any) {
 // GetAvailableRegion returns region available for rendering.
 // it is always WindowSize-WindowPadding*2.
 func GetAvailableRegion() (width, height float32) {
-	var region imgui.ImVec2
-	imgui.GetContentRegionAvail(&region)
+	region := imgui.ContentRegionAvail()
 	return region.X, region.Y
 }
 
-func ToVec4Color(col color.Color) imgui.ImVec4 {
+func ToVec4Color(col color.Color) imgui.Vec4 {
 	const mask = 0xffff
 
 	r, g, b, a := col.RGBA()
-	return imgui.ImVec4{
+	return imgui.Vec4{
 		X: float32(r) / mask,
 		Y: float32(g) / mask,
 		Z: float32(b) / mask,
@@ -50,19 +48,19 @@ func ToVec4Color(col color.Color) imgui.ImVec4 {
 }
 
 func ToU32(col color.Color) uint32 {
-	return imgui.GetColorU32_Vec4(ToVec4Color(col))
+	return imgui.ColorU32Vec4(ToVec4Color(col))
 }
 
 // ToVec2 converts image.Point to imgui.Vec2.
-func ToVec2(pt image.Point) imgui.ImVec2 {
-	return imgui.ImVec2{
+func ToVec2(pt image.Point) imgui.Vec2 {
+	return imgui.Vec2{
 		X: float32(pt.X),
 		Y: float32(pt.Y),
 	}
 }
 
 // Vec4ToRGBA converts imgui's Vec4 to golang rgba color.
-func Vec4ToRGBA(vec4 imgui.ImVec4) color.RGBA {
+func Vec4ToRGBA(vec4 *imgui.Vec4) color.RGBA {
 	return color.RGBA{
 		R: uint8(vec4.X * 255),
 		G: uint8(vec4.Y * 255),
@@ -78,32 +76,30 @@ func Vec4ToRGBA(vec4 imgui.ImVec4) color.RGBA {
 // Update ui manually at some point.
 func Update() {
 	if Context.isAlive {
-		cimgui.Refresh()
+		imgui.Refresh()
 	}
 }
 
 // GetDrawCursorScreenPos returns imgui drawing cursor on the screen.
 func GetDrawCursorScreenPos() image.Point {
-	var pos imgui.ImVec2
-	imgui.GetDrawCursorScreenPos(&pos)
+	pos := imgui.CursorScreenPos()
 	return image.Pt(int(pos.X), int(pos.Y))
 }
 
 // SetDrawCursorScreenPos sets imgui drawing cursor on the screen.
 func SetDrawCursorScreenPos(pos image.Point) {
-	imgui.SetDrawCursorScreenPos(imgui.ImVec2{X: float32(pos.X), Y: float32(pos.Y)})
+	imgui.SetCursorScreenPos(imgui.Vec2{X: float32(pos.X), Y: float32(pos.Y)})
 }
 
 // GetDrawCursorPos gets imgui drawing cursor inside of current window.
 func GetDrawCursorPos() image.Point {
-	var pos imgui.ImVec2
-	imgui.GetDrawCursorPos(&pos)
+	pos := imgui.CursorPos()
 	return image.Pt(int(pos.X), int(pos.Y))
 }
 
 // SetDrawCursorPos sets imgui drawing cursor inside of current window.
 func SetDrawCursorPos(pos image.Point) {
-	imgui.SetDrawCursorPos(imgui.ImVec2{X: float32(pos.X), Y: float32(pos.Y)})
+	imgui.SetCursorPos(imgui.Vec2{X: float32(pos.X), Y: float32(pos.Y)})
 }
 
 // LoadImage loads image from file and returns *image.RGBA.
@@ -141,18 +137,16 @@ func ImageToRgba(img image.Image) *image.RGBA {
 }
 
 func GetMousePos() image.Point {
-	var pt imgui.ImVec2
-	imgui.GetMousePos(&pt)
+	pt := imgui.MousePos()
 	return image.Pt(int(pt.X), int(pt.Y))
 }
 
 func GetCursorPos() image.Point {
-	var pt cimgui.ImVec2
-	cimgui.GetDrawCursorPos(&pt)
+	pt := imgui.CursorPos()
 	return image.Pt(int(pt.X), int(pt.Y))
 }
 
 func SetCursorPos(pos image.Point) {
-	cimgui.SetDrawCursorPosX(float32(pos.X))
-	cimgui.SetDrawCursorPosY(float32(pos.Y))
+	imgui.SetCursorPosX(float32(pos.X))
+	imgui.SetCursorPosY(float32(pos.Y))
 }

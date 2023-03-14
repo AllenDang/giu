@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var _ Widget = &StyleSetter{}
@@ -38,7 +38,7 @@ func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.Color) *StyleSet
 
 // SetStyle sets styleVarID to width and height.
 func (ss *StyleSetter) SetStyle(varID StyleVarID, width, height float32) *StyleSetter {
-	ss.styles[varID] = cimgui.ImVec2{X: width, Y: height}
+	ss.styles[varID] = imgui.Vec2{X: width, Y: height}
 	return ss
 }
 
@@ -115,35 +115,35 @@ func (ss *StyleSetter) Build() {
 // it works like imgui.PushXXX() stuff, but for group of style variables,
 // just like StyleSetter.
 // NOTE: DO NOT FORGET to call ss.Pop() at the end of styled layout, because
-// else you'll get ImGui exception!
+// else you'll get  exception!
 func (ss *StyleSetter) Push() {
 	// Push colors
 	for k, v := range ss.colors {
-		cimgui.PushStyleColor_Vec4(cimgui.ImGuiCol(k), ToVec4Color(v))
+		imgui.PushStyleColorVec4(imgui.Col(k), ToVec4Color(v))
 	}
 
 	// push style vars
 	for k, v := range ss.styles {
 		if k.IsVec2() {
-			var value cimgui.ImVec2
+			var value imgui.Vec2
 			switch typed := v.(type) {
-			case cimgui.ImVec2:
+			case imgui.Vec2:
 				value = typed
 			case float32:
-				value = cimgui.ImVec2{X: typed, Y: typed}
+				value = imgui.Vec2{X: typed, Y: typed}
 			}
 
-			cimgui.PushStyleVar_Vec2(cimgui.ImGuiStyleVar(k), value)
+			imgui.PushStyleVarVec2(imgui.StyleVar(k), value)
 		} else {
 			var value float32
 			switch typed := v.(type) {
 			case float32:
 				value = typed
-			case cimgui.ImVec2:
+			case imgui.Vec2:
 				value = typed.X
 			}
 
-			cimgui.PushStyleVar_Float(cimgui.ImGuiStyleVar(k), value)
+			imgui.PushStyleVarFloat(imgui.StyleVar(k), value)
 		}
 	}
 
@@ -152,16 +152,16 @@ func (ss *StyleSetter) Push() {
 		ss.isFontPushed = PushFont(ss.font)
 	}
 
-	cimgui.BeginDisabledV(ss.disabled)
+	imgui.BeginDisabledV(ss.disabled)
 }
 
 // Pop allows to manually pop the whole StyleSetter (use after Push!)
 func (ss *StyleSetter) Pop() {
 	if ss.isFontPushed {
-		cimgui.PopFont()
+		imgui.PopFont()
 	}
 
-	cimgui.EndDisabled()
-	cimgui.PopStyleColorV(int32(len(ss.colors)))
-	cimgui.PopStyleVarV(int32(len(ss.styles)))
+	imgui.EndDisabled()
+	imgui.PopStyleColorV(int32(len(ss.colors)))
+	imgui.PopStyleVarV(int32(len(ss.styles)))
 }

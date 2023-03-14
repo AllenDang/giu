@@ -52,7 +52,7 @@ func CreateContext(window imgui.GLFWwindow) *context {
 	// Create font
 	if len(result.FontAtlas.defaultFonts) == 0 {
 		io := result.IO()
-		fonts := io.GetFonts()
+		fonts := io.Fonts()
 		fonts.AddFontDefault()
 		fontAtlas, width, height, _ := fonts.GetTextureDataAsRGBA32()
 		texID := imgui.CreateTexture(fontAtlas, int(width), int(height))
@@ -65,8 +65,8 @@ func CreateContext(window imgui.GLFWwindow) *context {
 	return &result
 }
 
-func (c *context) IO() imgui.ImGuiIO {
-	return imgui.GetIO()
+func (c *context) IO() imgui.IO {
+	return imgui.CurrentIO()
 }
 
 func (c *context) invalidAllState() {

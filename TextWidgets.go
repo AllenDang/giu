@@ -16,8 +16,8 @@ type InputTextMultilineWidget struct {
 	label          string
 	text           *string
 	width, height  float32
-	flags          imgui.ImGuiInputTextFlags
-	cb             imgui.ImGuiInputTextCallback
+	flags          imgui.InputTextFlags
+	cb             imgui.InputTextCallback
 	scrollToBottom bool
 	onChange       func()
 }
@@ -47,13 +47,13 @@ func (i *InputTextMultilineWidget) Labelf(format string, args ...any) *InputText
 }
 
 // Flags sets InputTextFlags (see Flags.go).
-func (i *InputTextMultilineWidget) Flags(flags imgui.ImGuiInputTextFlags) *InputTextMultilineWidget {
+func (i *InputTextMultilineWidget) Flags(flags imgui.InputTextFlags) *InputTextMultilineWidget {
 	i.flags = flags
 	return i
 }
 
 // Callback sets imgui.InputTextCallback.
-func (i *InputTextMultilineWidget) Callback(cb imgui.ImGuiInputTextCallback) *InputTextMultilineWidget {
+func (i *InputTextMultilineWidget) Callback(cb imgui.InputTextCallback) *InputTextMultilineWidget {
 	i.cb = cb
 	return i
 }
@@ -81,7 +81,7 @@ func (i *InputTextMultilineWidget) Build() {
 	if imgui.InputTextMultiline(
 		Context.FontAtlas.RegisterString(i.label),
 		Context.FontAtlas.RegisterStringPointer(i.text),
-		imgui.ImVec2{
+		imgui.Vec2{
 			X: i.width,
 			Y: i.height,
 		},
@@ -91,7 +91,7 @@ func (i *InputTextMultilineWidget) Build() {
 	}
 
 	if i.scrollToBottom {
-		imgui.BeginChild_Str(i.label)
+		imgui.BeginChildStr(i.label)
 		imgui.SetScrollHereY()
 		imgui.End()
 	}
@@ -158,8 +158,8 @@ type InputTextWidget struct {
 	value      *string
 	width      float32
 	candidates []string
-	flags      imgui.ImGuiInputTextFlags
-	cb         imgui.ImGuiInputTextCallback
+	flags      imgui.InputTextFlags
+	cb         imgui.InputTextCallback
 	onChange   func()
 }
 
@@ -207,13 +207,13 @@ func (i *InputTextWidget) Size(width float32) *InputTextWidget {
 }
 
 // Flags sets flags.
-func (i *InputTextWidget) Flags(flags imgui.ImGuiInputTextFlags) *InputTextWidget {
+func (i *InputTextWidget) Flags(flags imgui.InputTextFlags) *InputTextWidget {
 	i.flags = flags
 	return i
 }
 
 // Callback sets input text callback.
-func (i *InputTextWidget) Callback(cb imgui.ImGuiInputTextCallback) *InputTextWidget {
+func (i *InputTextWidget) Callback(cb imgui.InputTextCallback) *InputTextWidget {
 	i.cb = cb
 	return i
 }
@@ -265,7 +265,7 @@ type InputIntWidget struct {
 	label    string
 	value    *int32
 	width    float32
-	flags    imgui.ImGuiInputTextFlags
+	flags    imgui.InputTextFlags
 	onChange func()
 }
 
@@ -301,7 +301,7 @@ func (i *InputIntWidget) Size(width float32) *InputIntWidget {
 }
 
 // Flags sets flags.
-func (i *InputIntWidget) Flags(flags imgui.ImGuiInputTextFlags) *InputIntWidget {
+func (i *InputIntWidget) Flags(flags imgui.InputTextFlags) *InputIntWidget {
 	i.flags = flags
 	return i
 }
@@ -331,7 +331,7 @@ type InputFloatWidget struct {
 	label    string
 	value    *float32
 	width    float32
-	flags    imgui.ImGuiInputTextFlags
+	flags    imgui.InputTextFlags
 	format   string
 	onChange func()
 }
@@ -366,7 +366,7 @@ func (i *InputFloatWidget) Size(width float32) *InputFloatWidget {
 }
 
 // Flags sets flags.
-func (i *InputFloatWidget) Flags(flags imgui.ImGuiInputTextFlags) *InputFloatWidget {
+func (i *InputFloatWidget) Flags(flags imgui.InputTextFlags) *InputFloatWidget {
 	i.flags = flags
 	return i
 }

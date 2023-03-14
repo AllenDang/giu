@@ -16,7 +16,7 @@ type SliderIntWidget struct {
 	max      int32
 	format   string
 	width    float32
-	flags    imgui.ImGuiSliderFlags
+	flags    imgui.SliderFlags
 	onChange func()
 }
 
@@ -48,7 +48,7 @@ func (s *SliderIntWidget) Size(width float32) *SliderIntWidget {
 	return s
 }
 
-func (s *SliderIntWidget) Flags(flags imgui.ImGuiSliderFlags) *SliderIntWidget {
+func (s *SliderIntWidget) Flags(flags imgui.SliderFlags) *SliderIntWidget {
 	s.flags = flags
 	return s
 }
@@ -93,7 +93,7 @@ type VSliderIntWidget struct {
 	min      int32
 	max      int32
 	format   string
-	flags    imgui.ImGuiSliderFlags
+	flags    imgui.SliderFlags
 	onChange func()
 }
 
@@ -107,7 +107,7 @@ func VSliderInt(value *int32, min, max int32) *VSliderIntWidget {
 		min:    min,
 		max:    max,
 		format: "%d",
-		flags:  imgui.ImGuiSliderFlags_None,
+		flags:  imgui.SliderFlagsNone,
 	}
 }
 
@@ -118,7 +118,7 @@ func (vs *VSliderIntWidget) Size(width, height float32) *VSliderIntWidget {
 }
 
 // Flags sets flags.
-func (vs *VSliderIntWidget) Flags(flags imgui.ImGuiSliderFlags) *VSliderIntWidget {
+func (vs *VSliderIntWidget) Flags(flags imgui.SliderFlags) *VSliderIntWidget {
 	vs.flags = flags
 	return vs
 }
@@ -150,7 +150,7 @@ func (vs *VSliderIntWidget) Labelf(format string, args ...any) *VSliderIntWidget
 func (vs *VSliderIntWidget) Build() {
 	if imgui.VSliderIntV(
 		Context.FontAtlas.RegisterString(vs.label),
-		imgui.ImVec2{X: vs.width, Y: vs.height},
+		imgui.Vec2{X: vs.width, Y: vs.height},
 		vs.value,
 		vs.min,
 		vs.max,
@@ -172,7 +172,7 @@ type SliderFloatWidget struct {
 	max      float32
 	format   string
 	width    float32
-	flags    imgui.ImGuiSliderFlags
+	flags    imgui.SliderFlags
 	onChange func()
 }
 
@@ -220,7 +220,7 @@ func (sf *SliderFloatWidget) Labelf(format string, args ...any) *SliderFloatWidg
 	return sf.Label(fmt.Sprintf(format, args...))
 }
 
-func (sf *SliderFloatWidget) Flags(flags imgui.ImGuiSliderFlags) *SliderFloatWidget {
+func (sf *SliderFloatWidget) Flags(flags imgui.SliderFlags) *SliderFloatWidget {
 	sf.flags = flags
 	return sf
 }

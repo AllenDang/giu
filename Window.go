@@ -14,11 +14,11 @@ func SingleWindow() *WindowWidget {
 	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
 	return Window(title).
 		Flags(
-			imgui.ImGuiWindowFlags_NoTitleBar|
-				imgui.ImGuiWindowFlags_NoCollapse|
-				imgui.ImGuiWindowFlags_NoScrollbar|
-				imgui.ImGuiWindowFlags_NoMove|
-				imgui.ImGuiWindowFlags_NoResize).
+			imgui.WindowFlagsNoTitleBar|
+				imgui.WindowFlagsNoCollapse|
+				imgui.WindowFlagsNoScrollbar|
+				imgui.WindowFlagsNoMove|
+				imgui.WindowFlagsNoResize).
 		Size(float32(width), float32(height))
 }
 
@@ -28,12 +28,12 @@ func SingleWindowWithMenuBar() *WindowWidget {
 	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
 	return Window(title).
 		Flags(
-			imgui.ImGuiWindowFlags_NoTitleBar|
-				imgui.ImGuiWindowFlags_NoCollapse|
-				imgui.ImGuiWindowFlags_NoScrollbar|
-				imgui.ImGuiWindowFlags_NoMove|
-				imgui.ImGuiWindowFlags_MenuBar|
-				imgui.ImGuiWindowFlags_NoResize).Size(float32(width), float32(height))
+			imgui.WindowFlagsNoTitleBar|
+				imgui.WindowFlagsNoCollapse|
+				imgui.WindowFlagsNoScrollbar|
+				imgui.WindowFlagsNoMove|
+				imgui.WindowFlagsMenuBar|
+				imgui.WindowFlagsNoResize).Size(float32(width), float32(height))
 }
 
 // WindowWidget represents imgui.Window
@@ -43,7 +43,7 @@ func SingleWindowWithMenuBar() *WindowWidget {
 type WindowWidget struct {
 	title         string
 	open          *bool
-	flags         imgui.ImGuiWindowFlags
+	flags         imgui.WindowFlags
 	x, y          float32
 	width, height float32
 	bringToFront  bool
@@ -63,7 +63,7 @@ func (w *WindowWidget) IsOpen(open *bool) *WindowWidget {
 }
 
 // Flags sets window flags.
-func (w *WindowWidget) Flags(flags imgui.ImGuiWindowFlags) *WindowWidget {
+func (w *WindowWidget) Flags(flags imgui.WindowFlags) *WindowWidget {
 	w.flags = flags
 	return w
 }
@@ -92,15 +92,15 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 		return
 	}
 
-	viewport := imgui.GetMainViewport()
-	basePos := viewport.GetPos()
+	viewport := imgui.MainViewport()
+	basePos := viewport.Pos()
 
-	if w.flags&imgui.ImGuiWindowFlags_NoMove != 0 && w.flags&imgui.ImGuiWindowFlags_NoResize != 0 {
-		imgui.SetNextWindowPos(imgui.ImVec2{X: basePos.X + w.x, Y: basePos.Y + w.y})
-		imgui.SetNextWindowSize(imgui.ImVec2{X: w.width, Y: w.height})
+	if w.flags&imgui.WindowFlagsNoMove != 0 && w.flags&imgui.WindowFlagsNoResize != 0 {
+		imgui.SetNextWindowPos(imgui.Vec2{X: basePos.X + w.x, Y: basePos.Y + w.y})
+		imgui.SetNextWindowSize(imgui.Vec2{X: w.width, Y: w.height})
 	} else {
-		imgui.SetNextWindowPosV(imgui.ImVec2{X: basePos.X + w.x, Y: basePos.Y + w.y}, imgui.ImGuiCond_FirstUseEver, imgui.ImVec2{X: 0, Y: 0})
-		imgui.SetNextWindowSizeV(imgui.ImVec2{X: w.width, Y: w.height}, imgui.ImGuiCond_FirstUseEver)
+		imgui.SetNextWindowPosV(imgui.Vec2{X: basePos.X + w.x, Y: basePos.Y + w.y}, imgui.CondFirstUseEver, imgui.Vec2{X: 0, Y: 0})
+		imgui.SetNextWindowSizeV(imgui.Vec2{X: w.width, Y: w.height}, imgui.CondFirstUseEver)
 	}
 
 	if w.bringToFront {
@@ -119,15 +119,13 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 
 // CurrentPosition returns a current position of the window.
 func (w *WindowWidget) CurrentPosition() (x, y float32) {
-	var pos imgui.ImVec2
-	imgui.GetWindowPos(&pos)
+	pos := imgui.WindowPos()
 	return pos.X, pos.Y
 }
 
 // CurrentSize returns current size of the window.
 func (w *WindowWidget) CurrentSize() (width, height float32) {
-	var size imgui.ImVec2
-	imgui.GetWindowPos(&size)
+	size := imgui.WindowPos()
 	return size.X, size.Y
 }
 

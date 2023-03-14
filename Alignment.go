@@ -2,8 +2,9 @@ package giu
 
 import (
 	"fmt"
-	"github.com/AllenDang/cimgui-go"
 	"image"
+
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // AlignmentType represents a bype of alignment to use with AlignSetter.
@@ -54,7 +55,7 @@ func AlignManually(alignmentType AlignmentType, widget Widget, widgetWidth float
 			defer PopItemWidth()
 		}
 
-		cimgui.SameLine()
+		imgui.SameLine()
 		widget.Build()
 	})
 }
@@ -167,8 +168,8 @@ func (a *AlignmentSetter) Build() {
 // if you find anything else, please report it on
 // https://github.com/AllenDang/giu Any contribution is appreciated!
 func GetWidgetWidth(w Widget) (result float32) {
-	cimgui.PushID_Str(GenAutoID("GetWIdgetWidthMeasurement"))
-	defer cimgui.PopID()
+	imgui.PushIDStr(GenAutoID("GetWIdgetWidthMeasurement"))
+	defer imgui.PopID()
 
 	// save cursor position before rendering
 	currentPos := GetCursorPos()
@@ -180,7 +181,7 @@ func GetWidgetWidth(w Widget) (result float32) {
 
 	// save widget's width
 	// check cursor position
-	cimgui.SameLine()
+	imgui.SameLine()
 	spacingW, _ := GetItemSpacing()
 	result = float32(GetCursorPos().X-currentPos.X) - spacingW
 

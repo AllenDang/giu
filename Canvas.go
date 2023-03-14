@@ -9,19 +9,20 @@ import (
 
 // Canvas represents imgui.DrawList
 // from imgui.h:
-//       A single draw command list (generally one per window,
-//       conceptually you may see this as a dynamic "mesh" builder)
+//
+//	A single draw command list (generally one per window,
+//	conceptually you may see this as a dynamic "mesh" builder)
 //
 // for more details and use cases see examples/canvas.
 type Canvas struct {
-	drawlist imgui.ImDrawList
+	drawlist imgui.DrawList
 }
 
 // GetCanvas returns current draw list (for current window).
 // it will fail if called out of window's layout.
 func GetCanvas() *Canvas {
 	return &Canvas{
-		drawlist: imgui.GetWindowDrawList(),
+		drawlist: imgui.WindowDrawList(),
 	}
 }
 
@@ -31,18 +32,18 @@ func (c *Canvas) AddLine(p1, p2 image.Point, col color.Color, thickness float32)
 }
 
 // AddRect draws a rectangle.
-func (c *Canvas) AddRect(pMin, pMax image.Point, col color.Color, rounding float32, flags imgui.ImDrawFlags, thickness float32) {
+func (c *Canvas) AddRect(pMin, pMax image.Point, col color.Color, rounding float32, flags imgui.DrawFlags, thickness float32) {
 	c.drawlist.AddRectV(ToVec2(pMin), ToVec2(pMax), ToU32(col), rounding, flags, thickness)
 }
 
 // AddRectFilled draws a rectangle filled with `col`.
-func (c *Canvas) AddRectFilled(pMin, pMax image.Point, col color.Color, rounding float32, flags imgui.ImDrawFlags) {
+func (c *Canvas) AddRectFilled(pMin, pMax image.Point, col color.Color, rounding float32, flags imgui.DrawFlags) {
 	c.drawlist.AddRectFilledV(ToVec2(pMin), ToVec2(pMax), ToU32(col), rounding, flags)
 }
 
 // AddText draws text.
 func (c *Canvas) AddText(pos image.Point, col color.Color, text string) {
-	c.drawlist.AddText_Vec2(ToVec2(pos), ToU32(col), Context.FontAtlas.RegisterString(text))
+	c.drawlist.AddTextVec2(ToVec2(pos), ToU32(col), Context.FontAtlas.RegisterString(text))
 }
 
 // AddBezierCubic draws bezier cubic.
@@ -98,7 +99,7 @@ func (c *Canvas) PathFillConvex(col color.Color) {
 	c.drawlist.PathFillConvex(ToU32(col))
 }
 
-func (c *Canvas) PathStroke(col color.Color, flags imgui.ImDrawFlags, thickness float32) {
+func (c *Canvas) PathStroke(col color.Color, flags imgui.DrawFlags, thickness float32) {
 	c.drawlist.PathStrokeV(ToU32(col), flags, thickness)
 }
 
@@ -114,6 +115,6 @@ func (c *Canvas) PathBezierCubicCurveTo(p1, p2, p3 image.Point, numSegments int3
 	c.drawlist.PathBezierCubicCurveToV(ToVec2(p1), ToVec2(p2), ToVec2(p3), numSegments)
 }
 
-func (c *Canvas) AddImage(texture imgui.ImTextureID, pMin, pMax, uvMin, uvMax image.Point, col color.Color) {
+func (c *Canvas) AddImage(texture imgui.TextureID, pMin, pMax, uvMin, uvMax image.Point, col color.Color) {
 	c.drawlist.AddImageV(texture, ToVec2(pMin), ToVec2(pMax), ToVec2(uvMin), ToVec2(uvMax), ToU32(col))
 }

@@ -1,177 +1,175 @@
 package giu
 
-import (
-	"github.com/AllenDang/cimgui-go"
-)
+import imgui "github.com/AllenDang/cimgui-go"
 
 // HoveredFlags represents a hovered flags.
-type HoveredFlags cimgui.ImGuiHoveredFlags
+type HoveredFlags imgui.HoveredFlags
 
 // hovered flags list.
 const (
 	// HoveredFlagsNone Return true if directly over the item/window, not obstructed by another window,
 	// not obstructed by an active popup or modal blocking inputs under them.
-	HoveredFlagsNone HoveredFlags = cimgui.ImGuiHoveredFlags_None
+	HoveredFlagsNone HoveredFlags = imgui.HoveredFlagsNone
 	// HoveredFlagsChildWindows IsWindowHovered() only: Return true if any children of the window is hovered.
-	HoveredFlagsChildWindows HoveredFlags = cimgui.ImGuiHoveredFlags_ChildWindows
+	HoveredFlagsChildWindows HoveredFlags = imgui.HoveredFlagsChildWindows
 	// HoveredFlagsRootWindow IsWindowHovered() only: Test from root window (top most parent of the current hierarchy).
-	HoveredFlagsRootWindow HoveredFlags = cimgui.ImGuiHoveredFlags_RootWindow
+	HoveredFlagsRootWindow HoveredFlags = imgui.HoveredFlagsRootWindow
 	// HoveredFlagsAnyWindow IsWindowHovered() only: Return true if any window is hovered.
-	HoveredFlagsAnyWindow HoveredFlags = cimgui.ImGuiHoveredFlags_AnyWindow
+	HoveredFlagsAnyWindow HoveredFlags = imgui.HoveredFlagsAnyWindow
 	// HoveredFlagsAllowWhenBlockedByPopup Return true even if a popup window is normally blocking access to this item/window.
-	HoveredFlagsAllowWhenBlockedByPopup HoveredFlags = cimgui.ImGuiHoveredFlags_AllowWhenBlockedByPopup
+	HoveredFlagsAllowWhenBlockedByPopup HoveredFlags = imgui.HoveredFlagsAllowWhenBlockedByPopup
 	// HoveredFlagsAllowWhenBlockedByActiveItem Return true even if an active item is blocking access to this item/window.
 	// Useful for Drag and Drop patterns.
-	HoveredFlagsAllowWhenBlockedByActiveItem HoveredFlags = cimgui.ImGuiHoveredFlags_AllowWhenBlockedByActiveItem
+	HoveredFlagsAllowWhenBlockedByActiveItem HoveredFlags = imgui.HoveredFlagsAllowWhenBlockedByActiveItem
 	// HoveredFlagsAllowWhenOverlapped Return true even if the position is overlapped by another window.
-	HoveredFlagsAllowWhenOverlapped HoveredFlags = cimgui.ImGuiHoveredFlags_AllowWhenOverlapped
+	HoveredFlagsAllowWhenOverlapped HoveredFlags = imgui.HoveredFlagsAllowWhenOverlapped
 	// HoveredFlagsAllowWhenDisabled Return true even if the item is disabled.
-	HoveredFlagsAllowWhenDisabled HoveredFlags = cimgui.ImGuiHoveredFlags_AllowWhenDisabled
+	HoveredFlagsAllowWhenDisabled HoveredFlags = imgui.HoveredFlagsAllowWhenDisabled
 )
 
 // FocusedFlags represents imgui.FocusedFlags.
-type FocusedFlags cimgui.ImGuiFocusedFlags
+type FocusedFlags imgui.FocusedFlags
 
 // focused flags list.
 const (
-	FocusedFlagsNone             = cimgui.ImGuiFocusedFlags_None
-	FocusedFlagsChildWindows     = cimgui.ImGuiFocusedFlags_ChildWindows     // Return true if any children of the window is focused
-	FocusedFlagsRootWindow       = cimgui.ImGuiFocusedFlags_RootWindow       // Test from root window (top most parent of the current hierarchy)
-	FocusedFlagsAnyWindow        = cimgui.ImGuiFocusedFlags_AnyWindow        // Return true if any window is focused. Important: If you are trying to tell how to
-	FocusedFlagsNoPopupHierarchy = cimgui.ImGuiFocusedFlags_NoPopupHierarchy // Do not consider popup hierarchy (do not treat popup emitter as parent of popup) (
+	FocusedFlagsNone             = imgui.FocusedFlagsNone
+	FocusedFlagsChildWindows     = imgui.FocusedFlagsChildWindows     // Return true if any children of the window is focused
+	FocusedFlagsRootWindow       = imgui.FocusedFlagsRootWindow       // Test from root window (top most parent of the current hierarchy)
+	FocusedFlagsAnyWindow        = imgui.FocusedFlagsAnyWindow        // Return true if any window is focused. Important: If you are trying to tell how to
+	FocusedFlagsNoPopupHierarchy = imgui.FocusedFlagsNoPopupHierarchy // Do not consider popup hierarchy (do not treat popup emitter as parent of popup) (
 	// FocusedFlagsDockHierarchy               = 1 << 4   // Consider docking hierarchy (treat dockspace host as parent of docked window) (when used with
-	FocusedFlagsRootAndChildWindows = cimgui.ImGuiFocusedFlags_RootAndChildWindows
+	FocusedFlagsRootAndChildWindows = imgui.FocusedFlagsRootAndChildWindows
 )
 
 // Key represents a glfw key.
-type Key cimgui.ImGuiKey
+type Key imgui.Key
 
 // These key codes are inspired by the USB HID Usage Tables v1.12 (p. 53-60),
 // but re-arranged to map to 7-bit ASCII for printable keys (function keys are
 // put in the 256+ range).
 const (
 	// KeyUnknown      Key = Key(glfw.KeyUnknown)
-	KeySpace        Key = cimgui.ImGuiKey_Space
-	KeyApostrophe   Key = cimgui.ImGuiKey_Apostrophe
-	KeyComma        Key = cimgui.ImGuiKey_Comma
-	KeyMinus        Key = cimgui.ImGuiKey_Minus
-	KeyPeriod       Key = cimgui.ImGuiKey_Period
-	KeySlash        Key = cimgui.ImGuiKey_Slash
-	Key0            Key = cimgui.ImGuiKey_0
-	Key1            Key = cimgui.ImGuiKey_1
-	Key2            Key = cimgui.ImGuiKey_2
-	Key3            Key = cimgui.ImGuiKey_3
-	Key4            Key = cimgui.ImGuiKey_4
-	Key5            Key = cimgui.ImGuiKey_5
-	Key6            Key = cimgui.ImGuiKey_6
-	Key7            Key = cimgui.ImGuiKey_7
-	Key8            Key = cimgui.ImGuiKey_8
-	Key9            Key = cimgui.ImGuiKey_9
-	KeySemicolon    Key = cimgui.ImGuiKey_Semicolon
-	KeyEqual        Key = cimgui.ImGuiKey_Equal
-	KeyA            Key = cimgui.ImGuiKey_A
-	KeyB            Key = cimgui.ImGuiKey_B
-	KeyC            Key = cimgui.ImGuiKey_C
-	KeyD            Key = cimgui.ImGuiKey_D
-	KeyE            Key = cimgui.ImGuiKey_E
-	KeyF            Key = cimgui.ImGuiKey_F
-	KeyG            Key = cimgui.ImGuiKey_G
-	KeyH            Key = cimgui.ImGuiKey_H
-	KeyI            Key = cimgui.ImGuiKey_I
-	KeyJ            Key = cimgui.ImGuiKey_J
-	KeyK            Key = cimgui.ImGuiKey_K
-	KeyL            Key = cimgui.ImGuiKey_L
-	KeyM            Key = cimgui.ImGuiKey_M
-	KeyN            Key = cimgui.ImGuiKey_N
-	KeyO            Key = cimgui.ImGuiKey_O
-	KeyP            Key = cimgui.ImGuiKey_P
-	KeyQ            Key = cimgui.ImGuiKey_Q
-	KeyR            Key = cimgui.ImGuiKey_R
-	KeyS            Key = cimgui.ImGuiKey_S
-	KeyT            Key = cimgui.ImGuiKey_T
-	KeyU            Key = cimgui.ImGuiKey_U
-	KeyV            Key = cimgui.ImGuiKey_V
-	KeyW            Key = cimgui.ImGuiKey_W
-	KeyX            Key = cimgui.ImGuiKey_X
-	KeyY            Key = cimgui.ImGuiKey_Y
-	KeyZ            Key = cimgui.ImGuiKey_Z
-	KeyLeftBracket  Key = cimgui.ImGuiKey_LeftBracket
-	KeyBackslash    Key = cimgui.ImGuiKey_Backslash
-	KeyRightBracket Key = cimgui.ImGuiKey_RightBracket
-	KeyGraveAccent  Key = cimgui.ImGuiKey_GraveAccent
-	// KeyWorld1       Key = cimgui.ImGuiKey_World1
-	// KeyWorld2       Key = cimgui.ImGuiKey_World2
-	KeyEscape      Key = cimgui.ImGuiKey_Escape
-	KeyEnter       Key = cimgui.ImGuiKey_Enter
-	KeyTab         Key = cimgui.ImGuiKey_Tab
-	KeyBackspace   Key = cimgui.ImGuiKey_Backspace
-	KeyInsert      Key = cimgui.ImGuiKey_Insert
-	KeyDelete      Key = cimgui.ImGuiKey_Delete
-	KeyRight       Key = cimgui.ImGuiKey_RightArrow
-	KeyLeft        Key = cimgui.ImGuiKey_LeftArrow
-	KeyDown        Key = cimgui.ImGuiKey_DownArrow
-	KeyUp          Key = cimgui.ImGuiKey_UpArrow
-	KeyPageUp      Key = cimgui.ImGuiKey_PageUp
-	KeyPageDown    Key = cimgui.ImGuiKey_PageDown
-	KeyHome        Key = cimgui.ImGuiKey_Home
-	KeyEnd         Key = cimgui.ImGuiKey_End
-	KeyCapsLock    Key = cimgui.ImGuiKey_CapsLock
-	KeyScrollLock  Key = cimgui.ImGuiKey_ScrollLock
-	KeyNumLock     Key = cimgui.ImGuiKey_NumLock
-	KeyPrintScreen Key = cimgui.ImGuiKey_PrintScreen
-	KeyPause       Key = cimgui.ImGuiKey_Pause
-	KeyF1          Key = cimgui.ImGuiKey_F1
-	KeyF2          Key = cimgui.ImGuiKey_F2
-	KeyF3          Key = cimgui.ImGuiKey_F3
-	KeyF4          Key = cimgui.ImGuiKey_F4
-	KeyF5          Key = cimgui.ImGuiKey_F5
-	KeyF6          Key = cimgui.ImGuiKey_F6
-	KeyF7          Key = cimgui.ImGuiKey_F7
-	KeyF8          Key = cimgui.ImGuiKey_F8
-	KeyF9          Key = cimgui.ImGuiKey_F9
-	KeyF10         Key = cimgui.ImGuiKey_F10
-	KeyF11         Key = cimgui.ImGuiKey_F11
-	KeyF12         Key = cimgui.ImGuiKey_F12
-	// KeyF13          Key = cimgui.ImGuiKey_F13
-	// KeyF14          Key = cimgui.ImGuiKey_F14
-	// KeyF15          Key = cimgui.ImGuiKey_F15
-	// KeyF16          Key = cimgui.ImGuiKey_F16
-	// KeyF17          Key = cimgui.ImGuiKey_F17
-	// KeyF18          Key = cimgui.ImGuiKey_F18
-	// KeyF19          Key = cimgui.ImGuiKey_F19
-	// KeyF20          Key = cimgui.ImGuiKey_F20
-	// KeyF21          Key = cimgui.ImGuiKey_F21
-	// KeyF22          Key = cimgui.ImGuiKey_F22
-	// KeyF23          Key = cimgui.ImGuiKey_F23
-	// KeyF24          Key = cimgui.ImGuiKey_F24
-	// KeyF25          Key = cimgui.ImGuiKey_F25
-	// KeyKP0          Key = cimgui.ImGuiKey_KP0
-	// KeyKP1          Key = cimgui.ImGuiKey_KP1
-	// KeyKP2          Key = cimgui.ImGuiKey_KP2
-	// KeyKP3          Key = cimgui.ImGuiKey_KP3
-	// KeyKP4          Key = cimgui.ImGuiKey_KP4
-	// KeyKP5          Key = cimgui.ImGuiKey_KP5
-	// KeyKP6          Key = cimgui.ImGuiKey_KP6
-	// KeyKP7          Key = cimgui.ImGuiKey_KP7
-	// KeyKP8          Key = cimgui.ImGuiKey_KP8
-	// KeyKP9          Key = cimgui.ImGuiKey_KP9
-	// KeyKPDecimal    Key = cimgui.ImGuiKey_KPDecimal
-	// KeyKPDivide     Key = cimgui.ImGuiKey_KPDivide
-	// KeyKPMultiply   Key = cimgui.ImGuiKey_KPMultiply
-	// KeyKPSubtract   Key = cimgui.ImGuiKey_KPSubtract
-	// KeyKPAdd        Key = cimgui.ImGuiKey_KPAdd
-	// KeyKPEnter      Key = cimgui.ImGuiKey_KPEnter
-	// KeyKPEqual      Key = cimgui.ImGuiKey_KPEqual
-	KeyLeftShift    Key = cimgui.ImGuiKey_LeftShift
-	KeyLeftControl  Key = cimgui.ImGuiKey_LeftCtrl
-	KeyLeftAlt      Key = cimgui.ImGuiKey_LeftAlt
-	KeyLeftSuper    Key = cimgui.ImGuiKey_LeftSuper
-	KeyRightShift   Key = cimgui.ImGuiKey_RightShift
-	KeyRightControl Key = cimgui.ImGuiKey_RightCtrl
-	KeyRightAlt     Key = cimgui.ImGuiKey_RightAlt
-	KeyRightSuper   Key = cimgui.ImGuiKey_RightSuper
-	KeyMenu         Key = cimgui.ImGuiKey_Menu
-	// KeyLast         Key = cimgui.ImGuiKey_Last
+	KeySpace        Key = imgui.KeySpace
+	KeyApostrophe   Key = imgui.KeyApostrophe
+	KeyComma        Key = imgui.KeyComma
+	KeyMinus        Key = imgui.KeyMinus
+	KeyPeriod       Key = imgui.KeyPeriod
+	KeySlash        Key = imgui.KeySlash
+	Key0            Key = imgui.Key0
+	Key1            Key = imgui.Key1
+	Key2            Key = imgui.Key2
+	Key3            Key = imgui.Key3
+	Key4            Key = imgui.Key4
+	Key5            Key = imgui.Key5
+	Key6            Key = imgui.Key6
+	Key7            Key = imgui.Key7
+	Key8            Key = imgui.Key8
+	Key9            Key = imgui.Key9
+	KeySemicolon    Key = imgui.KeySemicolon
+	KeyEqual        Key = imgui.KeyEqual
+	KeyA            Key = imgui.KeyA
+	KeyB            Key = imgui.KeyB
+	KeyC            Key = imgui.KeyC
+	KeyD            Key = imgui.KeyD
+	KeyE            Key = imgui.KeyE
+	KeyF            Key = imgui.KeyF
+	KeyG            Key = imgui.KeyG
+	KeyH            Key = imgui.KeyH
+	KeyI            Key = imgui.KeyI
+	KeyJ            Key = imgui.KeyJ
+	KeyK            Key = imgui.KeyK
+	KeyL            Key = imgui.KeyL
+	KeyM            Key = imgui.KeyM
+	KeyN            Key = imgui.KeyN
+	KeyO            Key = imgui.KeyO
+	KeyP            Key = imgui.KeyP
+	KeyQ            Key = imgui.KeyQ
+	KeyR            Key = imgui.KeyR
+	KeyS            Key = imgui.KeyS
+	KeyT            Key = imgui.KeyT
+	KeyU            Key = imgui.KeyU
+	KeyV            Key = imgui.KeyV
+	KeyW            Key = imgui.KeyW
+	KeyX            Key = imgui.KeyX
+	KeyY            Key = imgui.KeyY
+	KeyZ            Key = imgui.KeyZ
+	KeyLeftBracket  Key = imgui.KeyLeftBracket
+	KeyBackslash    Key = imgui.KeyBackslash
+	KeyRightBracket Key = imgui.KeyRightBracket
+	KeyGraveAccent  Key = imgui.KeyGraveAccent
+	// KeyWorld1       Key = imgui.KeyWorld1
+	// KeyWorld2       Key = imgui.KeyWorld2
+	KeyEscape      Key = imgui.KeyEscape
+	KeyEnter       Key = imgui.KeyEnter
+	KeyTab         Key = imgui.KeyTab
+	KeyBackspace   Key = imgui.KeyBackspace
+	KeyInsert      Key = imgui.KeyInsert
+	KeyDelete      Key = imgui.KeyDelete
+	KeyRight       Key = imgui.KeyRightArrow
+	KeyLeft        Key = imgui.KeyLeftArrow
+	KeyDown        Key = imgui.KeyDownArrow
+	KeyUp          Key = imgui.KeyUpArrow
+	KeyPageUp      Key = imgui.KeyPageUp
+	KeyPageDown    Key = imgui.KeyPageDown
+	KeyHome        Key = imgui.KeyHome
+	KeyEnd         Key = imgui.KeyEnd
+	KeyCapsLock    Key = imgui.KeyCapsLock
+	KeyScrollLock  Key = imgui.KeyScrollLock
+	KeyNumLock     Key = imgui.KeyNumLock
+	KeyPrintScreen Key = imgui.KeyPrintScreen
+	KeyPause       Key = imgui.KeyPause
+	KeyF1          Key = imgui.KeyF1
+	KeyF2          Key = imgui.KeyF2
+	KeyF3          Key = imgui.KeyF3
+	KeyF4          Key = imgui.KeyF4
+	KeyF5          Key = imgui.KeyF5
+	KeyF6          Key = imgui.KeyF6
+	KeyF7          Key = imgui.KeyF7
+	KeyF8          Key = imgui.KeyF8
+	KeyF9          Key = imgui.KeyF9
+	KeyF10         Key = imgui.KeyF10
+	KeyF11         Key = imgui.KeyF11
+	KeyF12         Key = imgui.KeyF12
+	// KeyF13          Key = imgui.KeyF13
+	// KeyF14          Key = imgui.KeyF14
+	// KeyF15          Key = imgui.KeyF15
+	// KeyF16          Key = imgui.KeyF16
+	// KeyF17          Key = imgui.KeyF17
+	// KeyF18          Key = imgui.KeyF18
+	// KeyF19          Key = imgui.KeyF19
+	// KeyF20          Key = imgui.KeyF20
+	// KeyF21          Key = imgui.KeyF21
+	// KeyF22          Key = imgui.KeyF22
+	// KeyF23          Key = imgui.KeyF23
+	// KeyF24          Key = imgui.KeyF24
+	// KeyF25          Key = imgui.KeyF25
+	// KeyKP0          Key = imgui.KeyKP0
+	// KeyKP1          Key = imgui.KeyKP1
+	// KeyKP2          Key = imgui.KeyKP2
+	// KeyKP3          Key = imgui.KeyKP3
+	// KeyKP4          Key = imgui.KeyKP4
+	// KeyKP5          Key = imgui.KeyKP5
+	// KeyKP6          Key = imgui.KeyKP6
+	// KeyKP7          Key = imgui.KeyKP7
+	// KeyKP8          Key = imgui.KeyKP8
+	// KeyKP9          Key = imgui.KeyKP9
+	// KeyKPDecimal    Key = imgui.KeyKPDecimal
+	// KeyKPDivide     Key = imgui.KeyKPDivide
+	// KeyKPMultiply   Key = imgui.KeyKPMultiply
+	// KeyKPSubtract   Key = imgui.KeyKPSubtract
+	// KeyKPAdd        Key = imgui.KeyKPAdd
+	// KeyKPEnter      Key = imgui.KeyKPEnter
+	// KeyKPEqual      Key = imgui.KeyKPEqual
+	KeyLeftShift    Key = imgui.KeyLeftShift
+	KeyLeftControl  Key = imgui.KeyLeftCtrl
+	KeyLeftAlt      Key = imgui.KeyLeftAlt
+	KeyLeftSuper    Key = imgui.KeyLeftSuper
+	KeyRightShift   Key = imgui.KeyRightShift
+	KeyRightControl Key = imgui.KeyRightCtrl
+	KeyRightAlt     Key = imgui.KeyRightAlt
+	KeyRightSuper   Key = imgui.KeyRightSuper
+	KeyMenu         Key = imgui.KeyMenu
+	// KeyLast         Key = imgui.KeyLast
 )
 
 // Modifier represents glfw.Modifier.

@@ -7,7 +7,7 @@ import (
 // OpenPopup opens a popup with specified id.
 // NOTE: you need to build this popup first (see Pop(Modal)Widget).
 func OpenPopup(name string) {
-	imgui.OpenPopup_Str(name)
+	imgui.OpenPopupStr(name)
 }
 
 // CloseCurrentPopup closes currently opened popup.
@@ -22,7 +22,7 @@ var _ Widget = &PopupWidget{}
 // For instance it is used to display color palette in ColorSelectWidget.
 type PopupWidget struct {
 	name   string
-	flags  imgui.ImGuiWindowFlags
+	flags  imgui.WindowFlags
 	layout Layout
 }
 
@@ -36,7 +36,7 @@ func Popup(name string) *PopupWidget {
 }
 
 // Flags sets pupup's flags.
-func (p *PopupWidget) Flags(flags imgui.ImGuiWindowFlags) *PopupWidget {
+func (p *PopupWidget) Flags(flags imgui.WindowFlags) *PopupWidget {
 	p.flags = flags
 	return p
 }
@@ -62,7 +62,7 @@ var _ Widget = &PopupModalWidget{}
 type PopupModalWidget struct {
 	name   string
 	open   *bool
-	flags  imgui.ImGuiWindowFlags
+	flags  imgui.WindowFlags
 	layout Layout
 }
 
@@ -71,7 +71,7 @@ func PopupModal(name string) *PopupModalWidget {
 	return &PopupModalWidget{
 		name:   Context.FontAtlas.RegisterString(name),
 		open:   nil,
-		flags:  imgui.ImGuiWindowFlags_NoResize,
+		flags:  imgui.WindowFlagsNoResize,
 		layout: nil,
 	}
 }
@@ -85,7 +85,7 @@ func (p *PopupModalWidget) IsOpen(open *bool) *PopupModalWidget {
 }
 
 // Flags allows to specify popup's flags.
-func (p *PopupModalWidget) Flags(flags imgui.ImGuiWindowFlags) *PopupModalWidget {
+func (p *PopupModalWidget) Flags(flags imgui.WindowFlags) *PopupModalWidget {
 	p.flags = flags
 	return p
 }

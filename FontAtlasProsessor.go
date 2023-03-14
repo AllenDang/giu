@@ -50,13 +50,13 @@ type FontAtlas struct {
 	stringMap              sync.Map // key is rune, value indicates whether it's a new rune.
 	defaultFonts           []FontInfo
 	extraFonts             []FontInfo
-	extraFontMap           map[string]imgui.ImFont
+	extraFontMap           map[string]imgui.Font
 	fontSize               float32
 }
 
 func newFontAtlas() FontAtlas {
 	result := FontAtlas{
-		extraFontMap: make(map[string]imgui.ImFont),
+		extraFontMap: make(map[string]imgui.Font),
 		fontSize:     defaultFontSize,
 	}
 
@@ -239,7 +239,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 		return
 	}
 
-	fonts := imgui.GetIO().GetFonts()
+	fonts := imgui.CurrentIO().Fonts()
 	fonts.Clear()
 
 	var sb strings.Builder
@@ -256,19 +256,19 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	ranges := imgui.NewGlyphRange()
 	defer ranges.Destroy()
 
-	builder := imgui.NewImFontGlyphRangesBuilder()
+	builder := imgui.NewFontGlyphRangesBuilder()
 
 	// Because we pre-regestered numbers, so default string map's length should greater then 11.
 	if sb.Len() > len(preRegisterString) {
 		builder.AddText(sb.String())
 	} else {
-		builder.AddRanges(fonts.GetGlyphRangesDefault())
+		builder.AddRanges(fonts.GlyphRangesDefault())
 	}
 
 	builder.BuildRanges(ranges)
 
 	if len(a.defaultFonts) > 0 {
-		fontConfig := imgui.NewImFontConfig()
+		fontConfig := imgui.NewFontConfig()
 		fontConfig.SetOversampleH(2)
 		fontConfig.SetOversampleV(2)
 		fontConfig.SetRasterizerMultiply(1.5)
@@ -297,7 +297,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	// Add extra fonts
 	for _, fontInfo := range a.extraFonts {
 		// Store imgui.Font for PushFont
-		var f imgui.ImFont
+		var f imgui.Font
 		if len(fontInfo.fontByte) == 0 {
 			f = fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, 0, ranges.Data())
 		} else {

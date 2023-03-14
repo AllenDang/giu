@@ -7,7 +7,7 @@ import (
 )
 
 type TableRowWidget struct {
-	flags        imgui.ImGuiTableRowFlags
+	flags        imgui.TableRowFlags
 	minRowHeight float32
 	layout       Layout
 	bgColor      color.Color
@@ -27,7 +27,7 @@ func (r *TableRowWidget) BgColor(c color.Color) *TableRowWidget {
 	return r
 }
 
-func (r *TableRowWidget) Flags(flags imgui.ImGuiTableRowFlags) *TableRowWidget {
+func (r *TableRowWidget) Flags(flags imgui.TableRowFlags) *TableRowWidget {
 	r.flags = flags
 	return r
 }
@@ -54,15 +54,15 @@ func (r *TableRowWidget) BuildTableRow() {
 	}
 
 	if r.bgColor != nil {
-		imgui.TableSetBgColorV(imgui.ImGuiTableBgTarget_RowBg0, uint32(imgui.GetColorU32_Vec4(ToVec4Color(r.bgColor))), -1)
+		imgui.TableSetBgColorV(imgui.TableBgTargetRowBg0, uint32(imgui.ColorU32Vec4(ToVec4Color(r.bgColor))), -1)
 	}
 }
 
 type TableColumnWidget struct {
 	label              string
-	flags              imgui.ImGuiTableColumnFlags
+	flags              imgui.TableColumnFlags
 	innerWidthOrWeight float32
-	userID             imgui.ImGuiID
+	userID             imgui.ID
 }
 
 func TableColumn(label string) *TableColumnWidget {
@@ -74,7 +74,7 @@ func TableColumn(label string) *TableColumnWidget {
 	}
 }
 
-func (c *TableColumnWidget) Flags(flags imgui.ImGuiTableColumnFlags) *TableColumnWidget {
+func (c *TableColumnWidget) Flags(flags imgui.TableColumnFlags) *TableColumnWidget {
 	c.flags = flags
 	return c
 }
@@ -85,21 +85,21 @@ func (c *TableColumnWidget) InnerWidthOrWeight(w float32) *TableColumnWidget {
 }
 
 func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
-	c.userID = imgui.ImGuiID(id)
+	c.userID = imgui.ID(id)
 	return c
 }
 
 // BuildTableColumn executes table column build steps.
 func (c *TableColumnWidget) BuildTableColumn() {
-	imgui.TableSetupColumnV(c.label, imgui.ImGuiTableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
+	imgui.TableSetupColumnV(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
 }
 
 var _ Widget = &TableWidget{}
 
 type TableWidget struct {
 	id           string
-	flags        imgui.ImGuiTableFlags
-	size         imgui.ImVec2
+	flags        imgui.TableFlags
+	size         imgui.Vec2
 	innerWidth   float32
 	rows         []*TableRowWidget
 	columns      []*TableColumnWidget
@@ -111,7 +111,7 @@ type TableWidget struct {
 func Table() *TableWidget {
 	return &TableWidget{
 		id:           GenAutoID("Table"),
-		flags:        imgui.ImGuiTableFlags_Resizable | imgui.ImGuiTableFlags_Borders | imgui.ImGuiTableFlags_ScrollY,
+		flags:        imgui.TableFlagsResizable | imgui.TableFlagsBorders | imgui.TableFlagsScrollY,
 		rows:         nil,
 		columns:      nil,
 		fastMode:     false,
@@ -150,7 +150,7 @@ func (t *TableWidget) Rows(rows ...*TableRowWidget) *TableWidget {
 }
 
 func (t *TableWidget) Size(width, height float32) *TableWidget {
-	t.size = imgui.ImVec2{X: width, Y: height}
+	t.size = imgui.Vec2{X: width, Y: height}
 	return t
 }
 
@@ -159,7 +159,7 @@ func (t *TableWidget) InnerWidth(width float32) *TableWidget {
 	return t
 }
 
-func (t *TableWidget) Flags(flags imgui.ImGuiTableFlags) *TableWidget {
+func (t *TableWidget) Flags(flags imgui.TableFlags) *TableWidget {
 	t.flags = flags
 	return t
 }
@@ -188,13 +188,13 @@ func (t *TableWidget) Build() {
 		}
 
 		if t.fastMode {
-			clipper := imgui.NewImGuiListClipper()
+			clipper := imgui.NewListClipper()
 			defer clipper.Destroy()
 
 			clipper.Begin(int32(len(t.rows)))
 
 			for clipper.Step() {
-				for i := clipper.GetDisplayStart(); i < clipper.GetDisplayEnd(); i++ {
+				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
 					row := t.rows[i]
 					row.BuildTableRow()
 				}

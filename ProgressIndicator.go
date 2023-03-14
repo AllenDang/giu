@@ -83,7 +83,7 @@ func (p *ProgressIndicatorWidget) Build() {
 					int(float64(p.radius)*math.Cos(state.angle)+float64(centerPt.Y)),
 				)
 
-				color := imgui.GetStyleColorVec4(imgui.ImGuiCol_Text)
+				color := imgui.StyleColorVec4(imgui.ColText)
 				rgba := Vec4ToRGBA(color)
 
 				canvas.AddCircle(centerPt, p.radius, rgba, int32(p.radius), p.radius/20.0)
@@ -91,8 +91,7 @@ func (p *ProgressIndicatorWidget) Build() {
 
 				// Draw text
 				if len(p.label) > 0 {
-					var size imgui.ImVec2
-					imgui.CalcTextSize(&size, Context.FontAtlas.RegisterString(p.label))
+					size := imgui.CalcTextSize(Context.FontAtlas.RegisterString(p.label))
 					labelWidth := size.X
 					labelPos := centerPt.Add(image.Pt(-1*int(labelWidth/2), int(p.radius+p.radius/5+8)))
 					canvas.AddText(labelPos, rgba, p.label)

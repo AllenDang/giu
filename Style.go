@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // You may want to use styles in order to make your app looking more beautiful.
@@ -46,7 +46,7 @@ func PushFont(font *FontInfo) bool {
 	}
 
 	if f, ok := Context.FontAtlas.extraFontMap[font.String()]; ok {
-		cimgui.PushFont(f)
+		imgui.PushFont(f)
 		return true
 	}
 
@@ -55,63 +55,63 @@ func PushFont(font *FontInfo) bool {
 
 // PopFont pops the font (should be called after PushFont).
 func PopFont() {
-	cimgui.PopFont()
+	imgui.PopFont()
 }
 
 // PushStyleColorVec4 wraps cimgui.PushStyleColor
 // NOTE: don't forget to call PopStyleColor()!
 func PushStyleColorVec4(id StyleColorID, col color.Color) {
-	cimgui.PushStyleColor_Vec4(cimgui.ImGuiCol(id), ToVec4Color(col))
+	imgui.PushStyleColorVec4(imgui.Col(id), ToVec4Color(col))
 }
 
 func PushStyleVarVec2(id StyleVarID, width, height float32) {
-	cimgui.PushStyleVar_Vec2(cimgui.ImGuiStyleVar(id), cimgui.ImVec2{X: width, Y: height})
+	imgui.PushStyleVarVec2(imgui.StyleVar(id), imgui.Vec2{X: width, Y: height})
 }
 
 func PushStyleVarFloat(id StyleVarID, value float32) {
-	cimgui.PushStyleVar_Float(cimgui.ImGuiStyleVar(id), value)
+	imgui.PushStyleVarFloat(imgui.StyleVar(id), value)
 }
 
 // PushColorText calls PushStyleColorVec4(StyleColorText,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorText(col color.Color) {
-	PushStyleColorVec4(cimgui.ImGuiCol_Text, col)
+	PushStyleColorVec4(imgui.ColText, col)
 }
 
 // PushColorTextDisabled calls PushStyleColorVec4(StyleColorTextDisabled,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorTextDisabled(col color.Color) {
-	PushStyleColorVec4(cimgui.ImGuiCol_TextDisabled, col)
+	PushStyleColorVec4(imgui.ColTextDisabled, col)
 }
 
 // PushColorWindowBg calls PushStyleColorVec4(StyleColorWindowBg,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorWindowBg(col color.Color) {
-	PushStyleColorVec4(cimgui.ImGuiCol_WindowBg, col)
+	PushStyleColorVec4(imgui.ColWindowBg, col)
 }
 
 // PushColorFrameBg calls PushStyleColorVec4(StyleColorFrameBg,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorFrameBg(col color.Color) {
-	PushStyleColorVec4(cimgui.ImGuiCol_FrameBg, col)
+	PushStyleColorVec4(imgui.ColFrameBg, col)
 }
 
 // PushColorButton calls PushStyleColorVec4(StyleColorButton,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorButton(col color.Color) {
-	PushStyleColorVec4(cimgui.ImGuiCol_Button, col)
+	PushStyleColorVec4(imgui.ColButton, col)
 }
 
 // PushColorButtonHovered calls PushStyleColorVec4(StyleColorButtonHovered,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorButtonHovered(col color.Color) {
-	PushStyleColorVec4(cimgui.ImGuiCol_ButtonHovered, col)
+	PushStyleColorVec4(imgui.ColButtonHovered, col)
 }
 
 // PushColorButtonActive calls PushStyleColorVec4(StyleColorButtonActive,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorButtonActive(col color.Color) {
-	PushStyleColorVec4(cimgui.ImGuiCol_ButtonActive, col)
+	PushStyleColorVec4(imgui.ColButtonActive, col)
 }
 
 // PushWindowPadding calls PushStyleVar(StyleWindowPadding,...)
@@ -143,13 +143,13 @@ func PushSelectableTextAlign(width, height float32) {
 // It should be called as many times, as you called PushStyle...
 // NOTE: If you don't call PopStyle cimgui will panic.
 func PopStyle() {
-	cimgui.PopStyleVar()
+	imgui.PopStyleVar()
 }
 
 // PopStyleV does similarly to PopStyle, but allows to specify number
 // of styles you're going to pop.
 func PopStyleV(count int) {
-	cimgui.PopStyleVarV(int32(count))
+	imgui.PopStyleVarV(int32(count))
 }
 
 // PopStyleColor is used to stop applying colors styles.
@@ -157,33 +157,33 @@ func PopStyleV(count int) {
 // If PopStyleColor wasn't called after PushColor... or was called
 // improperly, cimgui will panic.
 func PopStyleColor() {
-	cimgui.PopStyleColor()
+	imgui.PopStyleColor()
 }
 
 // PopStyleColorV does similar to PopStyleColor, but allows to specify
 // how much style colors would you like to pop.
 func PopStyleColorV(count int) {
-	cimgui.PopStyleColorV(int32(count))
+	imgui.PopStyleColorV(int32(count))
 }
 
 // AlignTextToFramePadding vertically aligns upcoming text baseline to
 // FramePadding.y so that it will align properly to regularly framed
 // items. Call if you have text on a line before a framed item.
 func AlignTextToFramePadding() {
-	cimgui.AlignTextToFramePadding()
+	imgui.AlignTextToFramePadding()
 }
 
 // PushItemWidth sets following item's widths
 // NOTE: don't forget to call PopItemWidth! If you don't do so, cimgui
 // will panic.
 func PushItemWidth(width float32) {
-	cimgui.PushItemWidth(width)
+	imgui.PushItemWidth(width)
 }
 
 // PopItemWidth should be called to stop applying PushItemWidth effect
 // If it isn't called cimgui will panic.
 func PopItemWidth() {
-	cimgui.PopItemWidth()
+	imgui.PopItemWidth()
 }
 
 // PushTextWrapPos adds the position, where the text should be wrapped.
@@ -192,67 +192,67 @@ func PopItemWidth() {
 // NOTE: Don't forget to call PopWrapTextPos
 // NOTE: it is done automatically in LabelWidget (see (*LabelWidget).Wrapped()).
 func PushTextWrapPos() {
-	cimgui.PushTextWrapPos()
+	imgui.PushTextWrapPos()
 }
 
 // PopTextWrapPos should be called as many times as PushTextWrapPos
 // on each frame.
 func PopTextWrapPos() {
-	cimgui.PopTextWrapPos()
+	imgui.PopTextWrapPos()
 }
 
 // MouseCursorType represents a type (layout) of mouse cursor.
-type MouseCursorType cimgui.ImGuiMouseCursor
+type MouseCursorType imgui.MouseCursor
 
 // cursor types.
 const (
 	// MouseCursorNone no mouse cursor.
-	MouseCursorNone MouseCursorType = cimgui.ImGuiMouseCursor_None
+	MouseCursorNone MouseCursorType = imgui.MouseCursorNone
 	// MouseCursorArrow standard arrow mouse cursor.
-	MouseCursorArrow MouseCursorType = cimgui.ImGuiMouseCursor_Arrow
+	MouseCursorArrow MouseCursorType = imgui.MouseCursorArrow
 	// MouseCursorTextInput when hovering over InputText, etc.
-	MouseCursorTextInput MouseCursorType = cimgui.ImGuiMouseCursor_TextInput
-	// MouseCursorResizeAll (Unused by cimgui functions).
-	MouseCursorResizeAll MouseCursorType = cimgui.ImGuiMouseCursor_ResizeAll
+	MouseCursorTextInput MouseCursorType = imgui.MouseCursorTextInput
+	// MouseCursorResizeAll (Unused by imgui functions).
+	MouseCursorResizeAll MouseCursorType = imgui.MouseCursorResizeAll
 	// MouseCursorResizeNS when hovering over an horizontal border.
-	MouseCursorResizeNS MouseCursorType = cimgui.ImGuiMouseCursor_ResizeNS
+	MouseCursorResizeNS MouseCursorType = imgui.MouseCursorResizeNS
 	// MouseCursorResizeEW when hovering over a vertical border or a column.
-	MouseCursorResizeEW MouseCursorType = cimgui.ImGuiMouseCursor_ResizeEW
+	MouseCursorResizeEW MouseCursorType = imgui.MouseCursorResizeEW
 	// MouseCursorResizeNESW when hovering over the bottom-left corner of a window.
-	MouseCursorResizeNESW MouseCursorType = cimgui.ImGuiMouseCursor_ResizeNESW
+	MouseCursorResizeNESW MouseCursorType = imgui.MouseCursorResizeNESW
 	// MouseCursorResizeNWSE when hovering over the bottom-right corner of a window.
-	MouseCursorResizeNWSE MouseCursorType = cimgui.ImGuiMouseCursor_ResizeNWSE
-	// MouseCursorHand (Unused by cimgui functions. Use for e.g. hyperlinks).
-	MouseCursorHand       MouseCursorType = cimgui.ImGuiMouseCursor_Hand
-	MouseCursorNotAllowed MouseCursorType = cimgui.ImGuiMouseCursor_NotAllowed
-	MouseCursorCount      MouseCursorType = cimgui.ImGuiMouseCursor_COUNT
+	MouseCursorResizeNWSE MouseCursorType = imgui.MouseCursorResizeNWSE
+	// MouseCursorHand (Unused by imgui functions. Use for e.g. hyperlinks).
+	MouseCursorHand       MouseCursorType = imgui.MouseCursorHand
+	MouseCursorNotAllowed MouseCursorType = imgui.MouseCursorNotAllowed
+	MouseCursorCount      MouseCursorType = imgui.MouseCursorCOUNT
 )
 
 // SetMouseCursor sets mouse cursor layout.
 func SetMouseCursor(cursor MouseCursorType) {
-	cimgui.SetMouseCursor(cimgui.ImGuiMouseCursor(cursor))
+	imgui.SetMouseCursor(imgui.MouseCursor(cursor))
 }
 
 // GetWindowPadding returns window padding.
 func GetWindowPadding() (x, y float32) {
-	vec2 := cimgui.GetStyle().GetWindowPadding()
+	vec2 := imgui.CurrentStyle().WindowPadding()
 	return vec2.X, vec2.Y
 }
 
 // GetItemSpacing returns current item spacing.
 func GetItemSpacing() (w, h float32) {
-	vec2 := cimgui.GetStyle().GetItemSpacing()
+	vec2 := imgui.CurrentStyle().ItemSpacing()
 	return vec2.X, vec2.Y
 }
 
 // GetItemInnerSpacing returns current item inner spacing.
 func GetItemInnerSpacing() (w, h float32) {
-	vec2 := cimgui.GetStyle().GetItemInnerSpacing()
+	vec2 := imgui.CurrentStyle().ItemInnerSpacing()
 	return vec2.X, vec2.Y
 }
 
 // GetFramePadding returns current frame padding.
 func GetFramePadding() (x, y float32) {
-	vec2 := cimgui.GetStyle().GetFramePadding()
+	vec2 := imgui.CurrentStyle().FramePadding()
 	return vec2.X, vec2.Y
 }

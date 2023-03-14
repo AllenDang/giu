@@ -1,7 +1,6 @@
 package giu
 
 import (
-	"github.com/AllenDang/cimgui-go"
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
@@ -106,7 +105,7 @@ func (s *SplitLayoutWidget) Build() {
 		}
 	}
 
-	imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_ItemSpacing, imgui.NewImVec2(0, 0))
+	imgui.PushStyleVarVec2(imgui.StyleVarItemSpacing, imgui.NewVec2(0, 0))
 	layout.Build()
 	imgui.PopStyleVar()
 }
@@ -114,11 +113,11 @@ func (s *SplitLayoutWidget) Build() {
 func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 	return Layout{
 		Custom(func() {
-			imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_ItemSpacing, imgui.NewImVec2(s.originItemSpacingX, s.originItemSpacingY))
-			imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_FramePadding, imgui.NewImVec2(s.originFramePaddingX, s.originFramePaddingY))
+			imgui.PushStyleVarVec2(imgui.StyleVarItemSpacing, imgui.NewVec2(s.originItemSpacingX, s.originItemSpacingY))
+			imgui.PushStyleVarVec2(imgui.StyleVarFramePadding, imgui.NewVec2(s.originFramePaddingX, s.originFramePaddingY))
 			// Restore Child bg color
-			bgColor := imgui.GetStyleColorVec4(imgui.ImGuiCol_ChildBg)
-			imgui.PushStyleColor_Vec4(imgui.ImGuiCol_ChildBg, bgColor)
+			bgColor := imgui.StyleColorVec4(imgui.ColChildBg)
+			imgui.PushStyleColorVec4(imgui.ColChildBg, *bgColor)
 		}),
 		layout,
 		Custom(func() {
@@ -137,10 +136,10 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 			hasBorder := !isSplitLayoutWidget && s.border
 
 			if hasFramePadding {
-				imgui.PushStyleVar_Vec2(imgui.ImGuiStyleVar_FramePadding, imgui.NewImVec2(0, 0))
+				imgui.PushStyleVarVec2(imgui.StyleVarFramePadding, imgui.NewVec2(0, 0))
 			}
 
-			imgui.PushStyleColor_Vec4(cimgui.ImGuiCol_ChildBg, imgui.NewImVec4(0, 0, 0, 0))
+			imgui.PushStyleColorVec4(imgui.ColChildBg, imgui.NewVec4(0, 0, 0, 0))
 
 			Child().
 				Border(hasBorder).

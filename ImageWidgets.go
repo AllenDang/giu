@@ -21,7 +21,7 @@ type ImageWidget struct {
 	texture                *imgui.Texture
 	width                  float32
 	height                 float32
-	uv0, uv1               imgui.ImVec2
+	uv0, uv1               imgui.Vec2
 	tintColor, borderColor color.Color
 	onClick                func()
 }
@@ -32,8 +32,8 @@ func Image(texture *imgui.Texture) *ImageWidget {
 		texture:     texture,
 		width:       100,
 		height:      100,
-		uv0:         imgui.ImVec2{X: 0, Y: 0},
-		uv1:         imgui.ImVec2{X: 1, Y: 1},
+		uv0:         imgui.Vec2{X: 0, Y: 0},
+		uv1:         imgui.Vec2{X: 1, Y: 1},
 		tintColor:   color.RGBA{255, 255, 255, 255},
 		borderColor: color.RGBA{0, 0, 0, 0},
 	}
@@ -72,9 +72,8 @@ func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 
 // Build implements Widget interface.
 func (i *ImageWidget) Build() {
-	size := imgui.ImVec2{X: i.width, Y: i.height}
-	var rect imgui.ImVec2
-	imgui.GetContentRegionAvail(&rect)
+	size := imgui.Vec2{X: i.width, Y: i.height}
+	rect := imgui.ContentRegionAvail()
 	if size.X == -1 {
 		size.X = rect.X
 	}
@@ -82,13 +81,13 @@ func (i *ImageWidget) Build() {
 		size.Y = rect.Y
 	}
 
-	if i.texture == nil || i.texture.ID() == 0 {
+	if i.texture == nil || i.texture.ID() == nil {
 		Dummy(size.X, size.Y).Build()
 		return
 	}
 
 	// trick: detect click event
-	if i.onClick != nil && IsMouseClicked(imgui.ImGuiMouseButton_Left) && IsWindowFocused(0) {
+	if i.onClick != nil && IsMouseClicked(imgui.MouseButtonLeft) && IsWindowFocused(0) {
 		cursorPos := GetDrawCursorScreenPos()
 
 		mousePos := GetMousePos()
@@ -355,7 +354,7 @@ func (i *ImageWithURLWidget) Build() {
 
 			tex := imgui.NewTextureFromRgba(ImageToRgba(img))
 
-			if tex == nil || tex.ID() == 0 {
+			if tex == nil || tex.ID() == nil {
 				panic("giu: NewTextureFromRgba: error loading texture")
 			}
 

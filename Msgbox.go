@@ -116,7 +116,7 @@ func PrepareMsgbox() Layout {
 				OpenPopup(msgboxID)
 				state.open = false
 			}
-			imgui.SetNextWindowSize(imgui.NewImVec2(300, 0))
+			imgui.SetNextWindowSize(imgui.NewVec2(300, 0))
 			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxID)).Layout(
 				Custom(func() {
 					// Ensure the state is valid.

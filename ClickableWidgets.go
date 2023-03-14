@@ -60,7 +60,7 @@ func (b *ButtonWidget) Build() {
 		defer imgui.EndDisabled()
 	}
 
-	if imgui.ButtonV(Context.FontAtlas.RegisterString(b.id), imgui.ImVec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.ButtonV(Context.FontAtlas.RegisterString(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -70,12 +70,12 @@ var _ Widget = &ArrowButtonWidget{}
 // ArrowButtonWidget represents a square button with an arrow.
 type ArrowButtonWidget struct {
 	id      string
-	dir     imgui.ImGuiDir
+	dir     imgui.Dir
 	onClick func()
 }
 
 // ArrowButton creates ArrowButtonWidget.
-func ArrowButton(dir imgui.ImGuiDir) *ArrowButtonWidget {
+func ArrowButton(dir imgui.Dir) *ArrowButtonWidget {
 	return &ArrowButtonWidget{
 		id:      GenAutoID("ArrowButton"),
 		dir:     dir,
@@ -179,7 +179,7 @@ func (b *InvisibleButtonWidget) ID(id string) *InvisibleButtonWidget {
 
 // Build implements Widget interface.
 func (b *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButtonV(Context.FontAtlas.RegisterString(b.id), imgui.ImVec2{X: b.width, Y: b.height}, 0) && b.onClick != nil {
+	if imgui.InvisibleButtonV(Context.FontAtlas.RegisterString(b.id), imgui.Vec2{X: b.width, Y: b.height}, 0) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -243,7 +243,7 @@ func (r *RadioButtonWidget) OnChange(onChange func()) *RadioButtonWidget {
 
 // Build implements Widget interface.
 func (r *RadioButtonWidget) Build() {
-	if imgui.RadioButton_Bool(Context.FontAtlas.RegisterString(r.text), r.active) && r.onChange != nil {
+	if imgui.RadioButtonBool(Context.FontAtlas.RegisterString(r.text), r.active) && r.onChange != nil {
 		r.onChange()
 	}
 }
@@ -255,7 +255,7 @@ var _ Widget = &SelectableWidget{}
 type SelectableWidget struct {
 	label    string
 	selected bool
-	flags    imgui.ImGuiSelectableFlags
+	flags    imgui.SelectableFlags
 	width    float32
 	height   float32
 	onClick  func()
@@ -286,7 +286,7 @@ func (s *SelectableWidget) Selected(selected bool) *SelectableWidget {
 }
 
 // Flags add flags.
-func (s *SelectableWidget) Flags(flags imgui.ImGuiSelectableFlags) *SelectableWidget {
+func (s *SelectableWidget) Flags(flags imgui.SelectableFlags) *SelectableWidget {
 	s.flags = flags
 	return s
 }
@@ -314,15 +314,15 @@ func (s *SelectableWidget) OnDClick(onDClick func()) *SelectableWidget {
 // Build implements Widget interface.
 func (s *SelectableWidget) Build() {
 	// If onDClick is set, check flags and set related flag when necessary
-	if s.onDClick != nil && s.flags&imgui.ImGuiSelectableFlags_AllowDoubleClick != 0 {
-		s.flags |= imgui.ImGuiSelectableFlags_AllowDoubleClick
+	if s.onDClick != nil && s.flags&imgui.SelectableFlagsAllowDoubleClick != 0 {
+		s.flags |= imgui.SelectableFlagsAllowDoubleClick
 	}
 
-	if imgui.Selectable_BoolV(Context.FontAtlas.RegisterString(s.label), s.selected, s.flags, imgui.ImVec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.SelectableBoolV(Context.FontAtlas.RegisterString(s.label), s.selected, s.flags, imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 
-	if s.onDClick != nil && imgui.IsItemActive() && imgui.IsMouseDoubleClicked(imgui.ImGuiMouseButton_Left) {
+	if s.onDClick != nil && imgui.IsItemActive() && imgui.IsMouseDoubleClicked(imgui.MouseButtonLeft) {
 		s.onDClick()
 	}
 }
@@ -334,7 +334,7 @@ var _ Widget = &TreeNodeWidget{}
 // It can be used to create certain lists, advanced settings sections e.t.c.
 type TreeNodeWidget struct {
 	label        string
-	flags        imgui.ImGuiTreeNodeFlags
+	flags        imgui.TreeNodeFlags
 	layout       Layout
 	eventHandler func()
 }
@@ -355,7 +355,7 @@ func TreeNodef(format string, args ...any) *TreeNodeWidget {
 }
 
 // Flags sets flags.
-func (t *TreeNodeWidget) Flags(flags imgui.ImGuiTreeNodeFlags) *TreeNodeWidget {
+func (t *TreeNodeWidget) Flags(flags imgui.TreeNodeFlags) *TreeNodeWidget {
 	t.flags = flags
 	return t
 }
@@ -376,7 +376,7 @@ func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
 
 // Build implements Widget interface.
 func (t *TreeNodeWidget) Build() {
-	open := imgui.TreeNodeEx_StrV(t.label, t.flags)
+	open := imgui.TreeNodeExStrV(t.label, t.flags)
 
 	if t.eventHandler != nil {
 		t.eventHandler()
@@ -384,7 +384,7 @@ func (t *TreeNodeWidget) Build() {
 
 	if open {
 		t.layout.Build()
-		if (t.flags & imgui.ImGuiTreeNodeFlags_NoTreePushOnOpen) == 0 {
+		if (t.flags & imgui.TreeNodeFlagsNoTreePushOnOpen) == 0 {
 			imgui.TreePop()
 		}
 	}
