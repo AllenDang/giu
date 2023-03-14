@@ -18,7 +18,7 @@ func loop() {
 			pos := g.GetDrawCursorScreenPos()
 			col := color.RGBA{200, 75, 75, 255}
 			canvas.AddLine(pos, pos.Add(image.Pt(100, 100)), col, 1)
-			canvas.AddRect(pos.Add(image.Pt(110, 0)), pos.Add(image.Pt(200, 100)), col, 5, imgui.ImDrawFlags_RoundCornersAll, 1)
+			canvas.AddRect(pos.Add(image.Pt(110, 0)), pos.Add(image.Pt(200, 100)), col, 5, imgui.DrawFlagsRoundCornersAll, 1)
 			canvas.AddRectFilled(pos.Add(image.Pt(220, 0)), pos.Add(image.Pt(320, 100)), col, 0, 0)
 
 			pos0 := pos.Add(image.Pt(0, 110))
