@@ -167,10 +167,6 @@ func (t *TableWidget) Flags(flags TableFlags) *TableWidget {
 
 // Build implements Widget interface.
 func (t *TableWidget) Build() {
-	if len(t.rows) == 0 {
-		return
-	}
-
 	colCount := len(t.columns)
 	if colCount == 0 {
 		colCount = len(t.rows[0].layout)
