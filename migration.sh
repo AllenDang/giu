@@ -118,11 +118,11 @@ sed -i -e 's/imgui\.TableRowFlags_/imgui\.TableRowFlags/g' $files
 sed -i -e 's/imgui\.TableColumnFlags_/imgui\.TableColumnFlags/g' $files
 sed -i -e 's/\(imgui\.TableColumnFlags.*\)_/\1/g' $files
 
-sed -i -e 's/\(imgui\.PlotFlags\)_/\1/g' $files
 # ImPlotFlags:
 # disable flags that are not present:
 # API CHANGE!
 sed -i -e 's/\(imgui\.\)Im\(PlotFlags\)/\1\2/g' $files
+sed -i -e 's/\(imgui\.PlotFlags\)_/\1/g' $files
 sed -i -e 's/\(.*imgui\.PlotFlagsNoMousePos.*\)/\/\/ \1/g' $files
 sed -i -e 's/\(.*imgui\.PlotFlagsNoHighlight.*\)/\/\/ \1/g' $files
 sed -i -e 's/\(.*imgui\.PlotFlagsYAxis2.*\)/\/\/ \1/g' $files
@@ -132,9 +132,10 @@ sed -i -e 's/\(.*imgui\.PlotFlagsAntiAliased.*\)/\/\/ \1/g' $files
 
 # Plot Axis Flags
 # API CHANGE!
-sed -i -e 's/\(.*imgui\.ImPlotAxisFlagsLogScale.*\)/\/\/ \1/g' $files
-sed -i -e 's/\(.*imgui\.ImPlotAxisFlagsTime.*\)/\/\/ \1/g' $files
 sed -i -e 's/\(imgui\.\)Im\(PlotAxisFlags\)/\1\2/g' $files
+sed -i -e 's/\(.*imgui\.PlotAxisFlagsLogScale.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(.*imgui\.PlotAxisFlagsTime.*\)/\/\/ \1/g' $files
+sed -i -e 's/\(imgui\.PlotAxisFlags\)_/\1/g' $files
 
 # master window
 # API CHANGE!
