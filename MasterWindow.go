@@ -39,8 +39,6 @@ type MasterWindow struct {
 	height     int
 	clearColor [4]float32
 	title      string
-	platform   imgui.Platform
-	renderer   imgui.Renderer
 	context    *imgui.Context
 	io         *imgui.IO
 	updateFunc func()

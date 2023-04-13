@@ -32,9 +32,6 @@ type context struct {
 	// see https://github.com/faiface/mainthread/pull/4
 	isRunning bool
 
-	renderer imgui.Renderer
-	platform imgui.Platform
-
 	widgetIndexCounter int
 
 	// Indicate whether current application is running
@@ -51,10 +48,8 @@ type context struct {
 	cssStylesheet cssStylesheet
 }
 
-func CreateContext(p imgui.Platform, r imgui.Renderer) *context {
+func CreateContext() *context {
 	result := context{
-		platform:      p,
-		renderer:      r,
 		cssStylesheet: make(cssStylesheet),
 	}
 
@@ -71,14 +66,6 @@ func CreateContext(p imgui.Platform, r imgui.Renderer) *context {
 	}
 
 	return &result
-}
-
-func (c *context) GetRenderer() imgui.Renderer {
-	return c.renderer
-}
-
-func (c *context) GetPlatform() imgui.Platform {
-	return c.platform
 }
 
 func (c *context) IO() imgui.IO {
