@@ -58,7 +58,6 @@ sed -i -e 's/\(type PlotAxisFlags \)int/\1imgui.PlotAxisFlags/g' $files
 
 # Context; TODO - check if nothing else is changed
 sed -i -e 's/imgui\.IO()/imgui\.GetIO()/g' $files
-sed -i -e 's/imgui\.IO/imgui\.ImGuiIO/g' $files
 
 # flags
 #
@@ -110,6 +109,7 @@ sed -i -e 's/\(.*ColorEditFlags.*=.*\)/\/\/ \1/g' $files
 # Table Flags
 sed -i -e 's/imgui\.TableFlags_/imgui\.TableFlags/g' $files
 sed -i -e 's/\(imgui\.TableFlagsNoBordersInBodyUntilResize\)TableFlags/\1/g' $files
+sed -i -e 's/\(imgui\.TableFlags.*\)_/\1/g' $files
 
 # Table Row Flags
 sed -i -e 's/imgui\.TableRowFlags_/imgui\.TableRowFlags/g' $files
@@ -118,7 +118,7 @@ sed -i -e 's/imgui\.TableRowFlags_/imgui\.TableRowFlags/g' $files
 sed -i -e 's/imgui\.TableColumnFlags_/imgui\.TableColumnFlags/g' $files
 sed -i -e 's/\(imgui\.TableColumnFlags.*\)_/\1/g' $files
 
-sed -i -e 's/imgui\.PlotFlags_/imgui\.PlotFlags/g' $files
+sed -i -e 's/\(imgui\.PlotFlags\)_/\1/g' $files
 # ImPlotFlags:
 # disable flags that are not present:
 # API CHANGE!
