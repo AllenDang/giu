@@ -3,7 +3,7 @@ package giu
 import (
 	"fmt"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 )
 
 // SingleWindow creates one window filling all available space
@@ -15,11 +15,11 @@ func SingleWindow() *WindowWidget {
 
 	return Window(title).
 		Flags(
-			imgui.WindowFlagsNoTitleBar|
-				imgui.WindowFlagsNoCollapse|
-				imgui.WindowFlagsNoScrollbar|
-				imgui.WindowFlagsNoMove|
-				imgui.WindowFlagsNoResize).
+			WindowFlags(imgui.WindowFlagsNoTitleBar)|
+				WindowFlags(imgui.WindowFlagsNoCollapse)|
+				WindowFlags(imgui.WindowFlagsNoScrollbar)|
+				WindowFlags(imgui.WindowFlagsNoMove)|
+				WindowFlags(imgui.WindowFlagsNoResize)).
 		Size(size[0], size[1])
 }
 
@@ -30,12 +30,12 @@ func SingleWindowWithMenuBar() *WindowWidget {
 
 	return Window(title).
 		Flags(
-			imgui.WindowFlagsNoTitleBar|
-				imgui.WindowFlagsNoCollapse|
-				imgui.WindowFlagsNoScrollbar|
-				imgui.WindowFlagsNoMove|
-				imgui.WindowFlagsMenuBar|
-				imgui.WindowFlagsNoResize).Size(size[0], size[1])
+			WindowFlags(imgui.WindowFlagsNoTitleBar)|
+				WindowFlags(imgui.WindowFlagsNoCollapse)|
+				WindowFlags(imgui.WindowFlagsNoScrollbar)|
+				WindowFlags(imgui.WindowFlagsNoMove)|
+				WindowFlags(imgui.WindowFlagsMenuBar)|
+				WindowFlags(imgui.WindowFlagsNoResize)).Size(size[0], size[1])
 }
 
 var _ Disposable = &windowState{}
@@ -109,12 +109,12 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 
 	ws := w.getState()
 
-	if w.flags&imgui.WindowFlagsNoMove != 0 && w.flags&imgui.WindowFlagsNoResize != 0 {
+	if w.flags&WindowFlags(imgui.WindowFlagsNoMove) != 0 && w.flags&WindowFlags(imgui.WindowFlagsNoResize) != 0 {
 		imgui.SetNextWindowPos(imgui.Vec2{X: w.x, Y: w.y})
 		imgui.SetNextWindowSize(imgui.Vec2{X: w.width, Y: w.height})
 	} else {
-		imgui.SetNextWindowPosV(imgui.Vec2{X: w.x, Y: w.y}, imgui.ConditionFirstUseEver, imgui.Vec2{X: 0, Y: 0})
-		imgui.SetNextWindowSizeV(imgui.Vec2{X: w.width, Y: w.height}, imgui.ConditionFirstUseEver)
+		imgui.SetNextWindowPosV(imgui.Vec2{X: w.x, Y: w.y}, imgui.CondFirstUseEver, imgui.Vec2{X: 0, Y: 0})
+		imgui.SetNextWindowSizeV(imgui.Vec2{X: w.width, Y: w.height}, imgui.CondFirstUseEver)
 	}
 
 	if w.bringToFront {
@@ -132,12 +132,12 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 
 			ws.hasFocus = hasFocus
 
-			ws.currentPosition = imgui.WindowPos()
-			ws.currentSize = imgui.WindowSize()
+			ws.currentPosition = imgui.GetWindowPos()
+			ws.currentSize = imgui.GetWindowSize()
 		}),
 	)
 
-	showed := imgui.BeginV(Context.FontAtlas.RegisterString(w.title), w.open, int(w.flags))
+	showed := imgui.BeginV(Context.FontAtlas.RegisterString(w.title), w.open, imgui.WindowFlags(w.flags))
 
 	if showed {
 		Layout(widgets).Build()

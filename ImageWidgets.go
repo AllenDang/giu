@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 )
 
 var _ Widget = &ImageWidget{}
@@ -66,8 +66,7 @@ func (i *ImageWidget) OnClick(cb func()) *ImageWidget {
 // Size sets image size.
 func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 	// Size image with DPI scaling
-	factor := Context.GetPlatform().GetContentScale()
-	i.width, i.height = width*factor, height*factor
+	i.width, i.height = width, height
 
 	return i
 }
@@ -298,13 +297,13 @@ func (i *ImageWithURLWidget) Size(width, height float32) *ImageWithURLWidget {
 
 // LayoutForLoading allows to set layout rendered while loading an image.
 func (i *ImageWithURLWidget) LayoutForLoading(widgets ...Widget) *ImageWithURLWidget {
-	i.whenLoading = Layout(widgets)
+	i.whenLoading = widgets
 	return i
 }
 
 // LayoutForFailure allows to specify layout when image failed to download.
 func (i *ImageWithURLWidget) LayoutForFailure(widgets ...Widget) *ImageWithURLWidget {
-	i.whenFailure = Layout(widgets)
+	i.whenFailure = widgets
 	return i
 }
 

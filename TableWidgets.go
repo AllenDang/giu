@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 )
 
 type TableRowWidget struct {
@@ -39,7 +39,7 @@ func (r *TableRowWidget) MinHeight(height float64) *TableRowWidget {
 
 // BuildTableRow executes table row build steps.
 func (r *TableRowWidget) BuildTableRow() {
-	imgui.TableNextRow(imgui.TableRowFlags(r.flags), r.minRowHeight)
+	imgui.TableNextRowV(imgui.TableRowFlags(r.flags), float32(r.minRowHeight))
 
 	for _, w := range r.layout {
 		switch w.(type) {
@@ -54,7 +54,7 @@ func (r *TableRowWidget) BuildTableRow() {
 	}
 
 	if r.bgColor != nil {
-		imgui.TableSetBgColor(imgui.TableBgTarget_RowBg0, uint32(imgui.GetColorU32(ToVec4Color(r.bgColor))), -1)
+		imgui.TableSetBgColorV(imgui.ImGuiTableBgTarget_RowBg0, uint32(imgui.GetColorU32Vec4(ToVec4Color(r.bgColor))), -1)
 	}
 }
 
@@ -91,7 +91,7 @@ func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
 
 // BuildTableColumn executes table column build steps.
 func (c *TableColumnWidget) BuildTableColumn() {
-	imgui.TableSetupColumn(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
+	imgui.TableSetupColumnV(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
 }
 
 var _ Widget = &TableWidget{}
@@ -176,9 +176,9 @@ func (t *TableWidget) Build() {
 		colCount = len(t.rows[0].layout)
 	}
 
-	if imgui.BeginTable(t.id, colCount, imgui.TableFlags(t.flags), t.size, t.innerWidth) {
+	if imgui.BeginTableV(t.id, int32(colCount), imgui.TableFlags(t.flags), t.size, float32(t.innerWidth)) {
 		if t.freezeColumn >= 0 && t.freezeRow >= 0 {
-			imgui.TableSetupScrollFreeze(t.freezeColumn, t.freezeRow)
+			imgui.TableSetupScrollFreeze(int32(t.freezeColumn), int32(t.freezeRow))
 		}
 
 		if len(t.columns) > 0 {
@@ -190,13 +190,13 @@ func (t *TableWidget) Build() {
 		}
 
 		if t.fastMode {
-			clipper := imgui.NewListClipper()
-			defer clipper.Delete()
+			clipper := imgui.NewImGuiListClipper()
+			defer clipper.Destroy()
 
-			clipper.Begin(len(t.rows))
+			clipper.Begin(int32(len(t.rows)))
 
 			for clipper.Step() {
-				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
+				for i := clipper.GetDisplayStart(); i < clipper.GetDisplayEnd(); i++ {
 					row := t.rows[i]
 					row.BuildTableRow()
 				}

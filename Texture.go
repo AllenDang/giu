@@ -5,7 +5,7 @@ import (
 	"image"
 	"runtime"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 	"github.com/faiface/mainthread"
 )
 

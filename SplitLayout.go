@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 )
 
 // SplitDirection represents a direction (vertical/horizontal) of splitting layout.
@@ -119,7 +119,7 @@ func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 			PushItemSpacing(s.originItemSpacingX, s.originItemSpacingY)
 			PushFramePadding(s.originFramePaddingX, s.originFramePaddingY)
 			// Restore Child bg color
-			bgColor := imgui.CurrentStyle().GetColor(imgui.StyleColorChildBg)
+			bgColor := imgui.StyleColorVec4(imgui.ColChildBg)
 			PushStyleColor(StyleColorChildBg, Vec4ToRGBA(bgColor))
 		}),
 		layout,

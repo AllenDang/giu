@@ -5,7 +5,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 )
 
 var _ Disposable = &progressIndicatorState{}
@@ -87,10 +87,10 @@ func (p *ProgressIndicatorWidget) Build() {
 					int(float64(p.radius)*math.Cos(state.angle)+float64(centerPt.Y)),
 				)
 
-				color := imgui.CurrentStyle().GetColor(imgui.StyleColorText)
+				color := imgui.StyleColorVec4(imgui.ColText)
 				rgba := Vec4ToRGBA(color)
 
-				canvas.AddCircle(centerPt, p.radius, rgba, int(p.radius), p.radius/20.0)
+				canvas.AddCircle(centerPt, p.radius, rgba, int32(p.radius), p.radius/20.0)
 				canvas.AddCircleFilled(centerPt2, p.radius/5, rgba)
 
 				// Draw text

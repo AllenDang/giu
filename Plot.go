@@ -3,7 +3,7 @@ package giu
 import (
 	"image"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 )
 
 // PlotWidget is implemented by all the particular plots, which can be used
@@ -169,22 +169,47 @@ func (p *PlotCanvasWidget) Size(width, height int) *PlotCanvasWidget {
 // Build implements Widget interface.
 func (p *PlotCanvasWidget) Build() {
 	if len(p.plots) > 0 {
-		imgui.ImPlotSetNextPlotLimits(p.xMin, p.xMax, p.yMin, p.yMax, imgui.Condition(p.axisLimitCondition))
+		imgui.PlotSetupAxisLimitsV(
+			imgui.AxisX1,
+			p.xMin,
+			p.xMax,
+			imgui.PlotCond(p.axisLimitCondition),
+		)
+		imgui.PlotSetupAxisLimitsV(
+			imgui.AxisY1,
+			p.yMin,
+			p.yMax,
+			imgui.PlotCond(p.axisLimitCondition),
+		)
 
 		if len(p.xTicksValue) > 0 {
-			imgui.ImPlotSetNextPlotTicksX(p.xTicksValue, p.xTicksLabel, p.xTicksShowDefault)
+			imgui.PlotSetupAxisTicksdoubleV(
+				imgui.AxisX1,
+				p.xTicksValue[0],
+				p.xTicksValue[1], // <- TODO: why is it so strangely saved?
+				-1,               // TODO
+				p.xTicksLabel,
+				p.xTicksShowDefault,
+			)
 		}
 
 		if len(p.yTicksValue) > 0 {
-			imgui.ImPlotSetNextPlotTicksY(p.yTicksValue, p.yTicksLabel, p.yTicksShowDefault, int(p.yTicksYAxis))
+			imgui.PlotSetupAxisTicksdoubleV(
+				imgui.AxisY1,
+				p.xTicksValue[0],
+				p.xTicksValue[1], // <- TODO: why is it so strangely saved?
+				-1,               // TODO
+				p.xTicksLabel,
+				p.xTicksShowDefault,
+			)
 		}
 
-		if imgui.ImPlotBegin(
+		if imgui.PlotBeginPlot(
 			Context.FontAtlas.RegisterString(p.title), Context.FontAtlas.RegisterString(p.xLabel),
 			Context.FontAtlas.RegisterString(p.yLabel), ToVec2(image.Pt(p.width, p.height)),
-			imgui.ImPlotFlags(p.flags), imgui.ImPlotAxisFlags(p.xFlags),
-			imgui.ImPlotAxisFlags(p.yFlags), imgui.ImPlotAxisFlags(p.y2Flags),
-			imgui.ImPlotAxisFlags(p.y3Flags), Context.FontAtlas.RegisterString(p.y2Label), Context.FontAtlas.RegisterString(p.y3Label),
+			imgui.PlotFlags(p.flags), imgui.PlotAxisFlags(p.xFlags),
+			imgui.PlotAxisFlags(p.yFlags), imgui.PlotAxisFlags(p.y2Flags),
+			imgui.PlotAxisFlags(p.y3Flags), Context.FontAtlas.RegisterString(p.y2Label), Context.FontAtlas.RegisterString(p.y3Label),
 		) {
 			for _, plot := range p.plots {
 				plot.Plot()

@@ -1,9 +1,9 @@
 package giu
 
-import "github.com/AllenDang/imgui-go"
+import imgui "github.com/AllenDang/cimgui-go"
 
 // InputTextFlags represents input text flags.
-type InputTextFlags int
+type InputTextFlags imgui.InputTextFlags
 
 // input text flags.
 const (
@@ -38,7 +38,7 @@ const (
 	// InputTextFlagsNoHorizontalScroll disables following the cursor horizontally.
 	InputTextFlagsNoHorizontalScroll InputTextFlags = imgui.InputTextFlagsNoHorizontalScroll
 	// InputTextFlagsAlwaysInsertMode sets insert mode.
-	InputTextFlagsAlwaysInsertMode InputTextFlags = imgui.InputTextFlagsAlwaysInsertMode
+
 	// InputTextFlagsReadOnly sets read-only mode.
 	InputTextFlagsReadOnly InputTextFlags = imgui.InputTextFlagsReadOnly
 	// InputTextFlagsPassword sets password mode, display all characters as '*'.
@@ -51,73 +51,73 @@ const (
 )
 
 // WindowFlags represents a window flags (see (*WindowWidget).Flags.
-type WindowFlags int
+type WindowFlags imgui.GLFWWindowFlags
 
 // window flags.
 const (
 	// WindowFlagsNone default = 0.
-	WindowFlagsNone WindowFlags = imgui.WindowFlagsNone
+	WindowFlagsNone WindowFlags = WindowFlags(imgui.WindowFlagsNone)
 	// WindowFlagsNoTitleBar disables title-bar.
-	WindowFlagsNoTitleBar WindowFlags = imgui.WindowFlagsNoTitleBar
+	WindowFlagsNoTitleBar WindowFlags = WindowFlags(imgui.WindowFlagsNoTitleBar)
 	// WindowFlagsNoResize disables user resizing with the lower-right grip.
-	WindowFlagsNoResize WindowFlags = imgui.WindowFlagsNoResize
+	WindowFlagsNoResize WindowFlags = WindowFlags(imgui.WindowFlagsNoResize)
 	// WindowFlagsNoMove disables user moving the window.
-	WindowFlagsNoMove WindowFlags = imgui.WindowFlagsNoMove
+	WindowFlagsNoMove WindowFlags = WindowFlags(imgui.WindowFlagsNoMove)
 	// WindowFlagsNoScrollbar disables scrollbars. Window can still scroll with mouse or programmatically.
-	WindowFlagsNoScrollbar WindowFlags = imgui.WindowFlagsNoScrollbar
+	WindowFlagsNoScrollbar WindowFlags = WindowFlags(imgui.WindowFlagsNoScrollbar)
 	// WindowFlagsNoScrollWithMouse disables user vertically scrolling with mouse wheel. On child window, mouse wheel
 	// will be forwarded to the parent unless NoScrollbar is also set.
-	WindowFlagsNoScrollWithMouse WindowFlags = imgui.WindowFlagsNoScrollWithMouse
+	WindowFlagsNoScrollWithMouse WindowFlags = WindowFlags(imgui.WindowFlagsNoScrollWithMouse)
 	// WindowFlagsNoCollapse disables user collapsing window by double-clicking on it.
-	WindowFlagsNoCollapse WindowFlags = imgui.WindowFlagsNoCollapse
+	WindowFlagsNoCollapse WindowFlags = WindowFlags(imgui.WindowFlagsNoCollapse)
 	// WindowFlagsAlwaysAutoResize resizes every window to its content every frame.
-	WindowFlagsAlwaysAutoResize WindowFlags = imgui.WindowFlagsAlwaysAutoResize
+	WindowFlagsAlwaysAutoResize WindowFlags = WindowFlags(imgui.WindowFlagsAlwaysAutoResize)
 	// WindowFlagsNoBackground disables drawing background color (WindowBg, etc.) and outside border. Similar as using
 	// SetNextWindowBgAlpha(0.0f).
-	WindowFlagsNoBackground WindowFlags = imgui.WindowFlagsNoBackground
+	WindowFlagsNoBackground WindowFlags = WindowFlags(imgui.WindowFlagsNoBackground)
 	// WindowFlagsNoSavedSettings will never load/save settings in .ini file.
-	WindowFlagsNoSavedSettings WindowFlags = imgui.WindowFlagsNoSavedSettings
+	WindowFlagsNoSavedSettings WindowFlags = WindowFlags(imgui.WindowFlagsNoSavedSettings)
 	// WindowFlagsNoMouseInputs disables catching mouse, hovering test with pass through.
-	WindowFlagsNoMouseInputs WindowFlags = imgui.WindowFlagsNoMouseInputs
+	WindowFlagsNoMouseInputs WindowFlags = WindowFlags(imgui.WindowFlagsNoMouseInputs)
 	// WindowFlagsMenuBar has a menu-bar.
-	WindowFlagsMenuBar WindowFlags = imgui.WindowFlagsMenuBar
+	WindowFlagsMenuBar WindowFlags = WindowFlags(imgui.WindowFlagsMenuBar)
 	// WindowFlagsHorizontalScrollbar allows horizontal scrollbar to appear (off by default). You may use
 	// SetNextWindowContentSize(ImVec2(width,0.0f)); prior to calling Begin() to specify width. Read code in imgui_demo
 	// in the "Horizontal Scrolling" section.
-	WindowFlagsHorizontalScrollbar WindowFlags = imgui.WindowFlagsHorizontalScrollbar
+	WindowFlagsHorizontalScrollbar WindowFlags = WindowFlags(imgui.WindowFlagsHorizontalScrollbar)
 	// WindowFlagsNoFocusOnAppearing disables taking focus when transitioning from hidden to visible state.
-	WindowFlagsNoFocusOnAppearing WindowFlags = imgui.WindowFlagsNoFocusOnAppearing
+	WindowFlagsNoFocusOnAppearing WindowFlags = WindowFlags(imgui.WindowFlagsNoFocusOnAppearing)
 	// WindowFlagsNoBringToFrontOnFocus disables bringing window to front when taking focus. e.g. clicking on it or
 	// programmatically giving it focus.
-	WindowFlagsNoBringToFrontOnFocus WindowFlags = imgui.WindowFlagsNoBringToFrontOnFocus
+	WindowFlagsNoBringToFrontOnFocus WindowFlags = WindowFlags(imgui.WindowFlagsNoBringToFrontOnFocus)
 	// WindowFlagsAlwaysVerticalScrollbar always shows vertical scrollbar, even if ContentSize.y < Size.y .
-	WindowFlagsAlwaysVerticalScrollbar WindowFlags = imgui.WindowFlagsAlwaysVerticalScrollbar
+	WindowFlagsAlwaysVerticalScrollbar WindowFlags = WindowFlags(imgui.WindowFlagsAlwaysVerticalScrollbar)
 	// WindowFlagsAlwaysHorizontalScrollbar always shows horizontal scrollbar, even if ContentSize.x < Size.x .
-	WindowFlagsAlwaysHorizontalScrollbar WindowFlags = imgui.WindowFlagsAlwaysHorizontalScrollbar
+	WindowFlagsAlwaysHorizontalScrollbar WindowFlags = WindowFlags(imgui.WindowFlagsAlwaysHorizontalScrollbar)
 	// WindowFlagsAlwaysUseWindowPadding ensures child windows without border uses style.WindowPadding (ignored by
 	// default for non-bordered child windows, because more convenient).
-	WindowFlagsAlwaysUseWindowPadding WindowFlags = imgui.WindowFlagsAlwaysUseWindowPadding
+	WindowFlagsAlwaysUseWindowPadding WindowFlags = WindowFlags(imgui.WindowFlagsAlwaysUseWindowPadding)
 	// WindowFlagsNoNavInputs has no gamepad/keyboard navigation within the window.
-	WindowFlagsNoNavInputs WindowFlags = imgui.WindowFlagsNoNavInputs
+	WindowFlagsNoNavInputs WindowFlags = WindowFlags(imgui.WindowFlagsNoNavInputs)
 	// WindowFlagsNoNavFocus has no focusing toward this window with gamepad/keyboard navigation
 	// (e.g. skipped by CTRL+TAB).
-	WindowFlagsNoNavFocus WindowFlags = imgui.WindowFlagsNoNavFocus
+	WindowFlagsNoNavFocus WindowFlags = WindowFlags(imgui.WindowFlagsNoNavFocus)
 	// WindowFlagsUnsavedDocument appends '*' to title without affecting the ID, as a convenience to avoid using the
 	// ### operator. When used in a tab/docking context, tab is selected on closure and closure is deferred by one
 	// frame to allow code to cancel the closure (with a confirmation popup, etc.) without flicker.
-	WindowFlagsUnsavedDocument WindowFlags = imgui.WindowFlagsUnsavedDocument
+	WindowFlagsUnsavedDocument WindowFlags = WindowFlags(imgui.WindowFlagsUnsavedDocument)
 
 	// WindowFlagsNoNav combines WindowFlagsNoNavInputs and WindowFlagsNoNavFocus.
-	WindowFlagsNoNav WindowFlags = imgui.WindowFlagsNoNav
+	WindowFlagsNoNav WindowFlags = WindowFlags(imgui.WindowFlagsNoNav)
 	// WindowFlagsNoDecoration combines WindowFlagsNoTitleBar, WindowFlagsNoResize, WindowFlagsNoScrollbar and
 	// WindowFlagsNoCollapse.
-	WindowFlagsNoDecoration WindowFlags = imgui.WindowFlagsNoDecoration
+	WindowFlagsNoDecoration WindowFlags = WindowFlags(imgui.WindowFlagsNoDecoration)
 	// WindowFlagsNoInputs combines WindowFlagsNoMouseInputs, WindowFlagsNoNavInputs and WindowFlagsNoNavFocus.
-	WindowFlagsNoInputs WindowFlags = imgui.WindowFlagsNoInputs
+	WindowFlagsNoInputs WindowFlags = WindowFlags(imgui.WindowFlagsNoInputs)
 )
 
 // ComboFlags represents imgui.ComboFlags.
-type ComboFlags int
+type ComboFlags imgui.ComboFlags
 
 // combo flags list.
 const (
@@ -141,7 +141,7 @@ const (
 )
 
 // SelectableFlags represents imgui.SelectableFlags.
-type SelectableFlags int
+type SelectableFlags imgui.SelectableFlags
 
 // selectable flags list.
 const (
@@ -158,7 +158,7 @@ const (
 )
 
 // TabItemFlags represents tab item flags.
-type TabItemFlags int
+type TabItemFlags imgui.TabItemFlags
 
 // tab item flags list.
 const (
@@ -175,11 +175,11 @@ const (
 	// (IsItemHovered() && IsMouseClicked(2)) *p_open = false.
 	TabItemFlagsNoCloseWithMiddleMouseButton TabItemFlags = imgui.TabItemFlagsNoCloseWithMiddleMouseButton
 	// TabItemFlagsNoPushID Don't call PushID(tab->ID)/PopID() on BeginTabItem()/EndTabItem().
-	TabItemFlagsNoPushID TabItemFlags = imgui.TabItemFlagsNoPushID
+
 )
 
 // TabBarFlags represents imgui.TabBarFlags.
-type TabBarFlags int
+type TabBarFlags imgui.TabBarFlags
 
 // tab bar flags list.
 const (
@@ -212,7 +212,7 @@ const (
 )
 
 // TreeNodeFlags represents tree node widget flags.
-type TreeNodeFlags int
+type TreeNodeFlags imgui.TreeNodeFlags
 
 // tree node flags list.
 const (
@@ -259,7 +259,7 @@ const (
 )
 
 // FocusedFlags represents imgui.FocusedFlags.
-type FocusedFlags int
+type FocusedFlags imgui.FocusedFlags
 
 // focused flags list.
 const (
@@ -273,7 +273,7 @@ const (
 )
 
 // HoveredFlags represents a hovered flags.
-type HoveredFlags int
+type HoveredFlags imgui.HoveredFlags
 
 // hovered flags list.
 const (
@@ -302,202 +302,219 @@ type ColorEditFlags int
 
 // list of color edit flags.
 const (
-	// ColorEditFlagsNone default = 0.
-	ColorEditFlagsNone ColorEditFlags = imgui.ColorEditFlagsNone
-	// ColorEditFlagsNoAlpha ignores Alpha component (read 3 components from the input pointer).
-	ColorEditFlagsNoAlpha ColorEditFlags = imgui.ColorEditFlagsNoAlpha
-	// ColorEditFlagsNoPicker disables picker when clicking on colored square.
-	ColorEditFlagsNoPicker ColorEditFlags = imgui.ColorEditFlagsNoPicker
-	// ColorEditFlagsNoOptions disables toggling options menu when right-clicking on inputs/small preview.
-	ColorEditFlagsNoOptions ColorEditFlags = imgui.ColorEditFlagsNoOptions
-	// ColorEditFlagsNoSmallPreview disables colored square preview next to the inputs. (e.g. to show only the inputs).
-	ColorEditFlagsNoSmallPreview ColorEditFlags = imgui.ColorEditFlagsNoSmallPreview
-	// ColorEditFlagsNoInputs disables inputs sliders/text widgets (e.g. to show only the small preview colored square).
-	ColorEditFlagsNoInputs ColorEditFlags = imgui.ColorEditFlagsNoInputs
-	// ColorEditFlagsNoTooltip disables tooltip when hovering the preview.
-	ColorEditFlagsNoTooltip ColorEditFlags = imgui.ColorEditFlagsNoTooltip
-	// ColorEditFlagsNoLabel disables display of inline text label (the label is still forwarded to the tooltip and picker).
-	ColorEditFlagsNoLabel ColorEditFlags = imgui.ColorEditFlagsNoLabel
-	// ColorEditFlagsNoDragDrop disables drag and drop target. ColorButton: disable drag and drop source.
-	ColorEditFlagsNoDragDrop ColorEditFlags = imgui.ColorEditFlagsNoDragDrop
+// 	// ColorEditFlagsNone default = 0.
+// 	ColorEditFlagsNone ColorEditFlags = imgui.ColorEditFlagsNone
+// ColorEditFlagsNoAlpha ignores Alpha component (read 3 components from the input pointer).
+// 	ColorEditFlagsNoAlpha ColorEditFlags = imgui.ColorEditFlagsNoAlpha
+// ColorEditFlagsNoPicker disables picker when clicking on colored square.
+// 	ColorEditFlagsNoPicker ColorEditFlags = imgui.ColorEditFlagsNoPicker
+// ColorEditFlagsNoOptions disables toggling options menu when right-clicking on inputs/small preview.
+// 	ColorEditFlagsNoOptions ColorEditFlags = imgui.ColorEditFlagsNoOptions
+// ColorEditFlagsNoSmallPreview disables colored square preview next to the inputs. (e.g. to show only the inputs).
+// 	ColorEditFlagsNoSmallPreview ColorEditFlags = imgui.ColorEditFlagsNoSmallPreview
+// ColorEditFlagsNoInputs disables inputs sliders/text widgets (e.g. to show only the small preview colored square).
+// 	ColorEditFlagsNoInputs ColorEditFlags = imgui.ColorEditFlagsNoInputs
+// ColorEditFlagsNoTooltip disables tooltip when hovering the preview.
+// 	ColorEditFlagsNoTooltip ColorEditFlags = imgui.ColorEditFlagsNoTooltip
+// ColorEditFlagsNoLabel disables display of inline text label (the label is still forwarded to the tooltip and picker).
+// 	ColorEditFlagsNoLabel ColorEditFlags = imgui.ColorEditFlagsNoLabel
+// ColorEditFlagsNoDragDrop disables drag and drop target. ColorButton: disable drag and drop source.
+// 	ColorEditFlagsNoDragDrop ColorEditFlags = imgui.ColorEditFlagsNoDragDrop
 
-	// User Options (right-click on widget to change some of them). You can set application defaults using SetColorEditOptions().
-	// The idea is that you probably don't want to override them in most of your calls, let the user choose and/or call SetColorEditOptions()
-	// during startup.
+// User Options (right-click on widget to change some of them). You can set application defaults using SetColorEditOptions().
+// The idea is that you probably don't want to override them in most of your calls, let the user choose and/or call SetColorEditOptions()
+// during startup.
 
-	// ColorEditFlagsAlphaBar shows vertical alpha bar/gradient in picker.
-	ColorEditFlagsAlphaBar ColorEditFlags = imgui.ColorEditFlagsAlphaBar
-	// ColorEditFlagsAlphaPreview displays preview as a transparent color over a checkerboard, instead of opaque.
-	ColorEditFlagsAlphaPreview ColorEditFlags = imgui.ColorEditFlagsAlphaPreview
-	// ColorEditFlagsAlphaPreviewHalf displays half opaque / half checkerboard, instead of opaque.
-	ColorEditFlagsAlphaPreviewHalf ColorEditFlags = imgui.ColorEditFlagsAlphaPreviewHalf
-	// ColorEditFlagsHDR = (WIP) currently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use
-	// ImGuiColorEditFlags_Float flag as well).
-	ColorEditFlagsHDR ColorEditFlags = imgui.ColorEditFlagsHDR
-	// ColorEditFlagsRGB sets the format as RGB.
-	ColorEditFlagsRGB ColorEditFlags = imgui.ColorEditFlagsRGB
-	// ColorEditFlagsHSV sets the format as HSV.
-	ColorEditFlagsHSV ColorEditFlags = imgui.ColorEditFlagsHSV
-	// ColorEditFlagsHEX sets the format as HEX.
-	ColorEditFlagsHEX ColorEditFlags = imgui.ColorEditFlagsHEX
-	// ColorEditFlagsUint8 _display_ values formatted as 0..255.
-	ColorEditFlagsUint8 ColorEditFlags = imgui.ColorEditFlagsUint8
-	// ColorEditFlagsFloat _display_ values formatted as 0.0f..1.0f floats instead of 0..255 integers. No round-trip of value via integers.
-	ColorEditFlagsFloat ColorEditFlags = imgui.ColorEditFlagsFloat
+// ColorEditFlagsAlphaBar shows vertical alpha bar/gradient in picker.
+//
+//	ColorEditFlagsAlphaBar ColorEditFlags = imgui.ColorEditFlagsAlphaBar
+//
+// ColorEditFlagsAlphaPreview displays preview as a transparent color over a checkerboard, instead of opaque.
+//
+//	ColorEditFlagsAlphaPreview ColorEditFlags = imgui.ColorEditFlagsAlphaPreview
+//
+// ColorEditFlagsAlphaPreviewHalf displays half opaque / half checkerboard, instead of opaque.
+//
+//	ColorEditFlagsAlphaPreviewHalf ColorEditFlags = imgui.ColorEditFlagsAlphaPreviewHalf
+//	// ColorEditFlagsHDR = (WIP) currently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use
+//
+// ImGuiColorEditFlags_Float flag as well).
+//
+//	ColorEditFlagsHDR ColorEditFlags = imgui.ColorEditFlagsHDR
+//
+// ColorEditFlagsRGB sets the format as RGB.
+//
+//	ColorEditFlagsRGB ColorEditFlags = imgui.ColorEditFlagsRGB
+//
+// ColorEditFlagsHSV sets the format as HSV.
+//
+//	ColorEditFlagsHSV ColorEditFlags = imgui.ColorEditFlagsHSV
+//
+// ColorEditFlagsHEX sets the format as HEX.
+//
+//	ColorEditFlagsHEX ColorEditFlags = imgui.ColorEditFlagsHEX
+//
+// ColorEditFlagsUint8 _display_ values formatted as 0..255.
+//
+//	ColorEditFlagsUint8 ColorEditFlags = imgui.ColorEditFlagsUint8
+//
+// ColorEditFlagsFloat _display_ values formatted as 0.0f..1.0f floats instead of 0..255 integers. No round-trip of value via integers.
+//
+//	ColorEditFlagsFloat ColorEditFlags = imgui.ColorEditFlagsFloat
 )
 
 // TableFlags represents table flags.
-type TableFlags int
+type TableFlags imgui.TableFlags
 
 // Table flags enum:.
 const (
-	TableFlagsNone                       TableFlags = TableFlags(imgui.TableFlags_None)
-	TableFlagsResizable                  TableFlags = TableFlags(imgui.TableFlags_Resizable)
-	TableFlagsReorderable                TableFlags = TableFlags(imgui.TableFlags_Reorderable)
-	TableFlagsHideable                   TableFlags = TableFlags(imgui.TableFlags_Hideable)
-	TableFlagsSortable                   TableFlags = TableFlags(imgui.TableFlags_Sortable)
-	TableFlagsNoSavedSettings            TableFlags = TableFlags(imgui.TableFlags_NoSavedSettings)
-	TableFlagsContextMenuInBody          TableFlags = TableFlags(imgui.TableFlags_ContextMenuInBody)
-	TableFlagsRowBg                      TableFlags = TableFlags(imgui.TableFlags_RowBg)
-	TableFlagsBordersInnerH              TableFlags = TableFlags(imgui.TableFlags_BordersInnerH)
-	TableFlagsBordersOuterH              TableFlags = TableFlags(imgui.TableFlags_BordersOuterH)
-	TableFlagsBordersInnerV              TableFlags = TableFlags(imgui.TableFlags_BordersInnerV)
-	TableFlagsBordersOuterV              TableFlags = TableFlags(imgui.TableFlags_BordersOuterV)
-	TableFlagsBordersH                   TableFlags = TableFlags(imgui.TableFlags_BordersH)
-	TableFlagsBordersV                   TableFlags = TableFlags(imgui.TableFlags_BordersV)
-	TableFlagsBordersInner               TableFlags = TableFlags(imgui.TableFlags_BordersInner)
-	TableFlagsBordersOuter               TableFlags = TableFlags(imgui.TableFlags_BordersOuter)
-	TableFlagsBorders                    TableFlags = TableFlags(imgui.TableFlags_Borders)
-	TableFlagsNoBordersInBody            TableFlags = TableFlags(imgui.TableFlags_NoBordersInBody)
-	TableFlagsNoBordersInBodyUntilResize TableFlags = TableFlags(imgui.TableFlags_NoBordersInBodyUntilResizeTableFlags)
-	TableFlagsSizingFixedFit             TableFlags = TableFlags(imgui.TableFlags_SizingFixedFit)
-	TableFlagsSizingFixedSame            TableFlags = TableFlags(imgui.TableFlags_SizingFixedSame)
-	TableFlagsSizingStretchProp          TableFlags = TableFlags(imgui.TableFlags_SizingStretchProp)
-	TableFlagsSizingStretchSame          TableFlags = TableFlags(imgui.TableFlags_SizingStretchSame)
-	TableFlagsNoHostExtendX              TableFlags = TableFlags(imgui.TableFlags_NoHostExtendX)
-	TableFlagsNoHostExtendY              TableFlags = TableFlags(imgui.TableFlags_NoHostExtendY)
-	TableFlagsNoKeepColumnsVisible       TableFlags = TableFlags(imgui.TableFlags_NoKeepColumnsVisible)
-	TableFlagsPreciseWidths              TableFlags = TableFlags(imgui.TableFlags_PreciseWidths)
-	TableFlagsNoClip                     TableFlags = TableFlags(imgui.TableFlags_NoClip)
-	TableFlagsPadOuterX                  TableFlags = TableFlags(imgui.TableFlags_PadOuterX)
-	TableFlagsNoPadOuterX                TableFlags = TableFlags(imgui.TableFlags_NoPadOuterX)
-	TableFlagsNoPadInnerX                TableFlags = TableFlags(imgui.TableFlags_NoPadInnerX)
-	TableFlagsScrollX                    TableFlags = TableFlags(imgui.TableFlags_ScrollX)
-	TableFlagsScrollY                    TableFlags = TableFlags(imgui.TableFlags_ScrollY)
-	TableFlagsSortMulti                  TableFlags = TableFlags(imgui.TableFlags_SortMulti)
-	TableFlagsSortTristate               TableFlags = TableFlags(imgui.TableFlags_SortTristate)
-	TableFlagsSizingMask                 TableFlags = TableFlags(imgui.TableFlags_SizingMask_)
+	TableFlagsNone                       TableFlags = TableFlags(imgui.TableFlagsNone)
+	TableFlagsResizable                  TableFlags = TableFlags(imgui.TableFlagsResizable)
+	TableFlagsReorderable                TableFlags = TableFlags(imgui.TableFlagsReorderable)
+	TableFlagsHideable                   TableFlags = TableFlags(imgui.TableFlagsHideable)
+	TableFlagsSortable                   TableFlags = TableFlags(imgui.TableFlagsSortable)
+	TableFlagsNoSavedSettings            TableFlags = TableFlags(imgui.TableFlagsNoSavedSettings)
+	TableFlagsContextMenuInBody          TableFlags = TableFlags(imgui.TableFlagsContextMenuInBody)
+	TableFlagsRowBg                      TableFlags = TableFlags(imgui.TableFlagsRowBg)
+	TableFlagsBordersInnerH              TableFlags = TableFlags(imgui.TableFlagsBordersInnerH)
+	TableFlagsBordersOuterH              TableFlags = TableFlags(imgui.TableFlagsBordersOuterH)
+	TableFlagsBordersInnerV              TableFlags = TableFlags(imgui.TableFlagsBordersInnerV)
+	TableFlagsBordersOuterV              TableFlags = TableFlags(imgui.TableFlagsBordersOuterV)
+	TableFlagsBordersH                   TableFlags = TableFlags(imgui.TableFlagsBordersH)
+	TableFlagsBordersV                   TableFlags = TableFlags(imgui.TableFlagsBordersV)
+	TableFlagsBordersInner               TableFlags = TableFlags(imgui.TableFlagsBordersInner)
+	TableFlagsBordersOuter               TableFlags = TableFlags(imgui.TableFlagsBordersOuter)
+	TableFlagsBorders                    TableFlags = TableFlags(imgui.TableFlagsBorders)
+	TableFlagsNoBordersInBody            TableFlags = TableFlags(imgui.TableFlagsNoBordersInBody)
+	TableFlagsNoBordersInBodyUntilResize TableFlags = TableFlags(imgui.TableFlagsNoBordersInBodyUntilResize)
+	TableFlagsSizingFixedFit             TableFlags = TableFlags(imgui.TableFlagsSizingFixedFit)
+	TableFlagsSizingFixedSame            TableFlags = TableFlags(imgui.TableFlagsSizingFixedSame)
+	TableFlagsSizingStretchProp          TableFlags = TableFlags(imgui.TableFlagsSizingStretchProp)
+	TableFlagsSizingStretchSame          TableFlags = TableFlags(imgui.TableFlagsSizingStretchSame)
+	TableFlagsNoHostExtendX              TableFlags = TableFlags(imgui.TableFlagsNoHostExtendX)
+	TableFlagsNoHostExtendY              TableFlags = TableFlags(imgui.TableFlagsNoHostExtendY)
+	TableFlagsNoKeepColumnsVisible       TableFlags = TableFlags(imgui.TableFlagsNoKeepColumnsVisible)
+	TableFlagsPreciseWidths              TableFlags = TableFlags(imgui.TableFlagsPreciseWidths)
+	TableFlagsNoClip                     TableFlags = TableFlags(imgui.TableFlagsNoClip)
+	TableFlagsPadOuterX                  TableFlags = TableFlags(imgui.TableFlagsPadOuterX)
+	TableFlagsNoPadOuterX                TableFlags = TableFlags(imgui.TableFlagsNoPadOuterX)
+	TableFlagsNoPadInnerX                TableFlags = TableFlags(imgui.TableFlagsNoPadInnerX)
+	TableFlagsScrollX                    TableFlags = TableFlags(imgui.TableFlagsScrollX)
+	TableFlagsScrollY                    TableFlags = TableFlags(imgui.TableFlagsScrollY)
+	TableFlagsSortMulti                  TableFlags = TableFlags(imgui.TableFlagsSortMulti)
+	TableFlagsSortTristate               TableFlags = TableFlags(imgui.TableFlagsSortTristate)
+	TableFlagsSizingMask                 TableFlags = TableFlags(imgui.TableFlagsSizingMask)
 )
 
 // TableRowFlags represents table row flags.
-type TableRowFlags int
+type TableRowFlags imgui.TableRowFlags
 
 // table row flags:.
 const (
-	TableRowFlagsNone TableRowFlags = TableRowFlags(imgui.TableRowFlags_None)
+	TableRowFlagsNone TableRowFlags = TableRowFlags(imgui.TableRowFlagsNone)
 	// Identify header row (set default background color + width of its contents accounted different for auto column width).
-	TableRowFlagsHeaders TableRowFlags = TableRowFlags(imgui.TableRowFlags_Headers)
+	TableRowFlagsHeaders TableRowFlags = TableRowFlags(imgui.TableRowFlagsHeaders)
 )
 
 // TableColumnFlags represents a flags for table column (see (*TableColumnWidget).Flags()).
-type TableColumnFlags int
+type TableColumnFlags imgui.TableColumnFlags
 
 // table column flags list.
 const (
 	// Input configuration flags.
-	TableColumnFlagsNone                 TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_None)
-	TableColumnFlagsDefaultHide          TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_DefaultHide)
-	TableColumnFlagsDefaultSort          TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_DefaultSort)
-	TableColumnFlagsWidthStretch         TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_WidthStretch)
-	TableColumnFlagsWidthFixed           TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_WidthFixed)
-	TableColumnFlagsNoResize             TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_NoResize)
-	TableColumnFlagsNoReorder            TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_NoReorder)
-	TableColumnFlagsNoHide               TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_NoHide)
-	TableColumnFlagsNoClip               TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_NoClip)
-	TableColumnFlagsNoSort               TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_NoSort)
-	TableColumnFlagsNoSortAscending      TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_NoSortAscending)
-	TableColumnFlagsNoSortDescending     TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_NoSortDescending)
-	TableColumnFlagsNoHeaderWidth        TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_NoHeaderWidth)
-	TableColumnFlagsPreferSortAscending  TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_PreferSortAscending)
-	TableColumnFlagsPreferSortDescending TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_PreferSortDescending)
-	TableColumnFlagsIndentEnable         TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IndentEnable)
-	TableColumnFlagsIndentDisable        TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IndentDisable)
+	TableColumnFlagsNone                 TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNone)
+	TableColumnFlagsDefaultHide          TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsDefaultHide)
+	TableColumnFlagsDefaultSort          TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsDefaultSort)
+	TableColumnFlagsWidthStretch         TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsWidthStretch)
+	TableColumnFlagsWidthFixed           TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsWidthFixed)
+	TableColumnFlagsNoResize             TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNoResize)
+	TableColumnFlagsNoReorder            TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNoReorder)
+	TableColumnFlagsNoHide               TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNoHide)
+	TableColumnFlagsNoClip               TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNoClip)
+	TableColumnFlagsNoSort               TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNoSort)
+	TableColumnFlagsNoSortAscending      TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNoSortAscending)
+	TableColumnFlagsNoSortDescending     TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNoSortDescending)
+	TableColumnFlagsNoHeaderWidth        TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNoHeaderWidth)
+	TableColumnFlagsPreferSortAscending  TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsPreferSortAscending)
+	TableColumnFlagsPreferSortDescending TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsPreferSortDescending)
+	TableColumnFlagsIndentEnable         TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsIndentEnable)
+	TableColumnFlagsIndentDisable        TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsIndentDisable)
 
 	// Output status flags read-only via TableGetColumnFlags().
-	TableColumnFlagsIsEnabled TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IsEnabled)
-	TableColumnFlagsIsVisible TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IsVisible)
-	TableColumnFlagsIsSorted  TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IsSorted)
-	TableColumnFlagsIsHovered TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IsHovered)
+	TableColumnFlagsIsEnabled TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsIsEnabled)
+	TableColumnFlagsIsVisible TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsIsVisible)
+	TableColumnFlagsIsSorted  TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsIsSorted)
+	TableColumnFlagsIsHovered TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsIsHovered)
 
 	// [Internal] Combinations and masks.
-	TableColumnFlagsWidthMask      TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_WidthMask_)
-	TableColumnFlagsIndentMask     TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_IndentMask_)
-	TableColumnFlagsStatusMask     TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_StatusMask_)
-	TableColumnFlagsNoDirectResize TableColumnFlags = TableColumnFlags(imgui.TableColumnFlags_NoDirectResize_)
+	TableColumnFlagsWidthMask      TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsWidthMask)
+	TableColumnFlagsIndentMask     TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsIndentMask)
+	TableColumnFlagsStatusMask     TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsStatusMask)
+	TableColumnFlagsNoDirectResize TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNoDirectResize)
 )
 
 // SliderFlags represents imgui.SliderFlags
 // TODO: Hard-reffer to these constants.
-type SliderFlags int
+type SliderFlags imgui.SliderFlags
 
 // slider flags.
 const (
-	SliderFlagsNone SliderFlags = 0
+	SliderFlagsNone SliderFlags = imgui.SliderFlagsNone
 	// Clamp value to min/max bounds when input manually with CTRL+Click. By default CTRL+Click allows going out of bounds.
-	SliderFlagsAlwaysClamp SliderFlags = 1 << 4
-	// Make the widget logarithmic (linear otherwise). Consider using ImGuiSliderFlagsNoRoundToFormat with this if using
+	SliderFlagsAlwaysClamp SliderFlags = imgui.SliderFlagsAlwaysClamp
+	// Make the widget logarithmic (linear otherwise). Consider using ImGuiSliderFlagsNoRoundToFormat SliderFlags = imgui.SliderFlagsNoRoundToFormat
 	// a format-string with small amount of digits.
-	SliderFlagsLogarithmic SliderFlags = 1 << 5
+	SliderFlagsLogarithmic SliderFlags = imgui.SliderFlagsLogarithmic
 	// Disable rounding underlying value to match precision of the display format string (e.g. %.3f values are rounded to those 3 digits).
-	SliderFlagsNoRoundToFormat SliderFlags = 1 << 6
+	SliderFlagsNoRoundToFormat SliderFlags = imgui.SliderFlagsNoRoundToFormat
 	// Disable CTRL+Click or Enter key allowing to input text directly into the widget.
-	SliderFlagsNoInput SliderFlags = 1 << 7
+	SliderFlagsNoInput SliderFlags = imgui.SliderFlagsNoInput
 	// [Internal] We treat using those bits as being potentially a 'float power' argument from the previous API that has got miscast
 	// to this enum, and will trigger an assert if needed.
-	SliderFlagsInvalidMask SliderFlags = 0x7000000F
+	SliderFlagsInvalidMask SliderFlags = imgui.SliderFlagsInvalidMask
 )
 
-// PlotFlags represents imgui.ImPlotFlags.
-type PlotFlags int
+// PlotFlags represents imgui.PlotFlags.
+type PlotFlags imgui.PlotFlags
 
 // plot flags.
 const (
-	PlotFlagsNone        = PlotFlags(imgui.ImPlotFlags_None)
-	PlotFlagsNoTitle     = PlotFlags(imgui.ImPlotFlags_NoTitle)
-	PlotFlagsNoLegend    = PlotFlags(imgui.ImPlotFlags_NoLegend)
-	PlotFlagsNoMenus     = PlotFlags(imgui.ImPlotFlags_NoMenus)
-	PlotFlagsNoBoxSelect = PlotFlags(imgui.ImPlotFlags_NoBoxSelect)
-	PlotFlagsNoMousePos  = PlotFlags(imgui.ImPlotFlags_NoMousePos)
-	PlotFlagsNoHighlight = PlotFlags(imgui.ImPlotFlags_NoHighlight)
-	PlotFlagsNoChild     = PlotFlags(imgui.ImPlotFlags_NoChild)
-	PlotFlagsEqual       = PlotFlags(imgui.ImPlotFlags_Equal)
-	PlotFlagsYAxis2      = PlotFlags(imgui.ImPlotFlags_YAxis2)
-	PlotFlagsYAxis3      = PlotFlags(imgui.ImPlotFlags_YAxis3)
-	PlotFlagsQuery       = PlotFlags(imgui.ImPlotFlags_Query)
-	PlotFlagsCrosshairs  = PlotFlags(imgui.ImPlotFlags_Crosshairs)
-	PlotFlagsAntiAliased = PlotFlags(imgui.ImPlotFlags_AntiAliased)
-	PlotFlagsCanvasOnly  = PlotFlags(imgui.ImPlotFlags_CanvasOnly)
+	PlotFlagsNone        = PlotFlags(imgui.PlotFlagsNone)
+	PlotFlagsNoTitle     = PlotFlags(imgui.PlotFlagsNoTitle)
+	PlotFlagsNoLegend    = PlotFlags(imgui.PlotFlagsNoLegend)
+	PlotFlagsNoMenus     = PlotFlags(imgui.PlotFlagsNoMenus)
+	PlotFlagsNoBoxSelect = PlotFlags(imgui.PlotFlagsNoBoxSelect)
+	// 	PlotFlagsNoMousePos  = PlotFlags(imgui.PlotFlagsNoMousePos)
+	// 	PlotFlagsNoHighlight = PlotFlags(imgui.PlotFlagsNoHighlight)
+	PlotFlagsNoChild = PlotFlags(imgui.PlotFlagsNoChild)
+	PlotFlagsEqual   = PlotFlags(imgui.PlotFlagsEqual)
+	// 	PlotFlagsYAxis2      = PlotFlags(imgui.PlotFlagsYAxis2)
+	// 	PlotFlagsYAxis3      = PlotFlags(imgui.PlotFlagsYAxis3)
+	// 	PlotFlagsQuery       = PlotFlags(imgui.PlotFlagsQuery)
+	PlotFlagsCrosshairs = PlotFlags(imgui.PlotFlagsCrosshairs)
+	// 	PlotFlagsAntiAliased = PlotFlags(imgui.PlotFlagsAntiAliased)
+	PlotFlagsCanvasOnly = PlotFlags(imgui.PlotFlagsCanvasOnly)
 )
 
-// PlotAxisFlags represents imgui.ImPlotAxisFlags.
-type PlotAxisFlags int
+// PlotAxisFlags represents imgui.PlotAxisFlags.
+type PlotAxisFlags imgui.PlotAxisFlags
 
 // plot axis flags.
 const (
-	PlotAxisFlagsNone          PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_None)
-	PlotAxisFlagsNoLabel       PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_NoLabel)
-	PlotAxisFlagsNoGridLines   PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_NoGridLines)
-	PlotAxisFlagsNoTickMarks   PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_NoTickMarks)
-	PlotAxisFlagsNoTickLabels  PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_NoTickLabels)
-	PlotAxisFlagsForeground    PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_Foreground)
-	PlotAxisFlagsLogScale      PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_LogScale)
-	PlotAxisFlagsTime          PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_Time)
-	PlotAxisFlagsInvert        PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_Invert)
-	PlotAxisFlagsNoInitialFit  PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_NoInitialFit)
-	PlotAxisFlagsAutoFit       PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_AutoFit)
-	PlotAxisFlagsRangeFit      PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_RangeFit)
-	PlotAxisFlagsLockMin       PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_LockMin)
-	PlotAxisFlagsLockMax       PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_LockMax)
-	PlotAxisFlagsLock          PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_Lock)
-	PlotAxisFlagsNoDecorations PlotAxisFlags = PlotAxisFlags(imgui.ImPlotAxisFlags_NoDecorations)
+	PlotAxisFlagsNone         PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsNone)
+	PlotAxisFlagsNoLabel      PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsNoLabel)
+	PlotAxisFlagsNoGridLines  PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsNoGridLines)
+	PlotAxisFlagsNoTickMarks  PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsNoTickMarks)
+	PlotAxisFlagsNoTickLabels PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsNoTickLabels)
+	PlotAxisFlagsForeground   PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsForeground)
+	//	PlotAxisFlagsLogScale      PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsLogScale)
+	//	PlotAxisFlagsTime          PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsTime)
+	PlotAxisFlagsInvert        PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsInvert)
+	PlotAxisFlagsNoInitialFit  PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsNoInitialFit)
+	PlotAxisFlagsAutoFit       PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsAutoFit)
+	PlotAxisFlagsRangeFit      PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsRangeFit)
+	PlotAxisFlagsLockMin       PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsLockMin)
+	PlotAxisFlagsLockMax       PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsLockMax)
+	PlotAxisFlagsLock          PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsLock)
+	PlotAxisFlagsNoDecorations PlotAxisFlags = PlotAxisFlags(imgui.PlotAxisFlagsNoDecorations)
 )

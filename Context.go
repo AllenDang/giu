@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	"gopkg.in/eapache/queue.v1"
 )
 
@@ -28,6 +28,8 @@ type state struct {
 }
 
 type context struct {
+	backend imgui.Backend
+
 	// TODO: should be handled by mainthread tbh
 	// see https://github.com/faiface/mainthread/pull/4
 	isRunning bool
@@ -48,9 +50,10 @@ type context struct {
 	cssStylesheet cssStylesheet
 }
 
-func CreateContext() *context {
+func CreateContext(b imgui.Backend) *context {
 	result := context{
 		cssStylesheet: make(cssStylesheet),
+		backend:       b,
 	}
 
 	result.FontAtlas = newFontAtlas()
@@ -59,8 +62,9 @@ func CreateContext() *context {
 	if len(result.FontAtlas.defaultFonts) == 0 {
 		io := result.IO()
 		io.Fonts().AddFontDefault()
-		fontAtlas := io.Fonts().TextureDataRGBA32()
-		r.SetFontTexture(fontAtlas)
+		// TODO
+		//fontAtlas, _, _, _ := io.Fonts().GetTextureDataAsRGBA32()
+		// r.SetFontTexture(fontAtlas)
 	} else {
 		result.FontAtlas.shouldRebuildFontAtlas = true
 	}

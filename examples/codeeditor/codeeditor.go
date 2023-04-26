@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
+	"github.com/AllenDang/cimgui-go"
 	"github.com/AllenDang/giu"
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/imgui-go"
 )
 
 var (

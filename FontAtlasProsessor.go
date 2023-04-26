@@ -6,9 +6,10 @@ import (
 	"runtime"
 	"strings"
 	"sync"
+	"unsafe"
 
+	"github.com/AllenDang/cimgui-go"
 	"github.com/AllenDang/go-findfont"
-	"github.com/AllenDang/imgui-go"
 )
 
 const (
@@ -254,7 +255,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 		return true
 	})
 
-	ranges := imgui.NewGlyphRanges()
+	ranges := imgui.NewGlyphRange()
 	builder := imgui.NewFontGlyphRangesBuilder()
 
 	// Because we pre-registered numbers, so default string map's length should greater then 11.
@@ -278,14 +279,21 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			}
 
 			// Scale font size with DPI scale factor
-			if runtime.GOOS == windows {
-				fontInfo.size *= Context.GetPlatform().GetContentScale()
-			}
+			// TODO
+			//if runtime.GOOS == windows {
+			//	fontInfo.size *= Context.GetPlatform().GetContentScale()
+			//}
 
 			if len(fontInfo.fontByte) == 0 {
 				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			} else {
-				fonts.AddFontFromMemoryTTFV(fontInfo.fontByte, fontInfo.size, fontConfig, ranges.Data())
+				fonts.AddFontFromMemoryTTFV(
+					unsafe.Pointer(&fontInfo.fontByte[0]),
+					int32(fontInfo.size),
+					0, // TODO: validate
+					fontConfig,
+					ranges.Data(),
+				)
 			}
 		}
 
@@ -300,23 +308,36 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	// Add extra fonts
 	for _, fontInfo := range a.extraFonts {
 		// Scale font size with DPI scale factor
-		if runtime.GOOS == windows {
-			fontInfo.size *= Context.GetPlatform().GetContentScale()
-		}
+		// TODO
+		//if runtime.GOOS == windows {
+		//	fontInfo.size *= Context.GetPlatform().GetContentScale()
+		//}
 
 		// Store imgui.Font for PushFont
 		var f imgui.Font
 		if len(fontInfo.fontByte) == 0 {
-			f = fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+			f = fonts.AddFontFromFileTTFV(
+				fontInfo.fontPath,
+				fontInfo.size,
+				0,
+				ranges.Data(),
+			)
 		} else {
-			f = fonts.AddFontFromMemoryTTFV(fontInfo.fontByte, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+			f = fonts.AddFontFromMemoryTTFV(
+				unsafe.Pointer(&fontInfo.fontByte[0]),
+				int32(fontInfo.size),
+				0,
+				0, // TODO: in ref to imgui-go: `const DefaultFontConfig FontConfig = 0`
+				ranges.Data(),
+			)
 		}
 
 		a.extraFontMap[fontInfo.String()] = &f
 	}
 
-	fontTextureImg := fonts.TextureDataRGBA32()
-	Context.renderer.SetFontTexture(fontTextureImg)
+	// TODO
+	//fontTextureImg, _, _, _ := fonts.GetTextureDataAsRGBA32()
+	//Context.renderer.SetFontTexture(fontTextureImg)
 
 	a.shouldRebuildFontAtlas = false
 }

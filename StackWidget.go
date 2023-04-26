@@ -1,6 +1,6 @@
 package giu
 
-import "github.com/AllenDang/imgui-go"
+import "github.com/AllenDang/cimgui-go"
 
 var _ Widget = &StackWidget{}
 

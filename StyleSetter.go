@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 )
 
 var _ Widget = &StyleSetter{}
@@ -119,7 +119,7 @@ func (ss *StyleSetter) Build() {
 func (ss *StyleSetter) Push() {
 	// Push colors
 	for k, v := range ss.colors {
-		imgui.PushStyleColor(imgui.StyleColorID(k), ToVec4Color(v))
+		imgui.PushStyleColorVec4(imgui.Col(k), ToVec4Color(v))
 	}
 
 	// push style vars
@@ -133,7 +133,7 @@ func (ss *StyleSetter) Push() {
 				value = imgui.Vec2{X: typed, Y: typed}
 			}
 
-			imgui.PushStyleVarVec2(imgui.StyleVarID(k), value)
+			imgui.PushStyleVarVec2(imgui.StyleVar(k), value)
 		} else {
 			var value float32
 			switch typed := v.(type) {
@@ -143,7 +143,7 @@ func (ss *StyleSetter) Push() {
 				value = typed.X
 			}
 
-			imgui.PushStyleVarFloat(imgui.StyleVarID(k), value)
+			imgui.PushStyleVarFloat(imgui.StyleVar(k), value)
 		}
 	}
 
@@ -152,7 +152,9 @@ func (ss *StyleSetter) Push() {
 		ss.isFontPushed = PushFont(ss.font)
 	}
 
-	imgui.BeginDisabled(ss.disabled)
+	if ss.disabled {
+		imgui.BeginDisabled()
+	}
 }
 
 // Pop allows to manually pop the whole StyleSetter (use after Push!)
@@ -161,7 +163,9 @@ func (ss *StyleSetter) Pop() {
 		imgui.PopFont()
 	}
 
-	imgui.EndDisabled()
-	imgui.PopStyleColorV(len(ss.colors))
-	imgui.PopStyleVarV(len(ss.styles))
+	if ss.disabled {
+		imgui.EndDisabled()
+	}
+	imgui.PopStyleColorV(int32(len(ss.colors)))
+	imgui.PopStyleVarV(int32(len(ss.styles)))
 }

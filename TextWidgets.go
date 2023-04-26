@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 	"github.com/sahilm/fuzzy"
 )
 

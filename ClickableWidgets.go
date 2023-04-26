@@ -5,7 +5,7 @@ import (
 	"image"
 	"image/color"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	"golang.org/x/image/colornames"
 )
 
@@ -59,7 +59,7 @@ func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 // Build implements Widget interface.
 func (b *ButtonWidget) Build() {
 	if b.disabled {
-		imgui.BeginDisabled(true)
+		imgui.BeginDisabled()
 		defer imgui.EndDisabled()
 	}
 
@@ -100,7 +100,7 @@ func (b *ArrowButtonWidget) ID(id string) *ArrowButtonWidget {
 
 // Build implements Widget interface.
 func (b *ArrowButtonWidget) Build() {
-	if imgui.ArrowButton(b.id, uint8(b.dir)) && b.onClick != nil {
+	if imgui.ArrowButton(b.id, imgui.Dir(b.dir)) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -224,10 +224,11 @@ func (b *ImageButtonWidget) Build() {
 	}
 
 	if imgui.ImageButtonV(
+		fmt.Sprintf("%v", b.texture.id),
 		b.texture.id,
 		imgui.Vec2{X: b.width, Y: b.height},
 		ToVec2(b.uv0), ToVec2(b.uv1),
-		b.framePadding, ToVec4Color(b.bgColor),
+		ToVec4Color(b.bgColor),
 		ToVec4Color(b.tintColor),
 	) && b.onClick != nil {
 		b.onClick()
@@ -401,7 +402,7 @@ func (r *RadioButtonWidget) OnChange(onChange func()) *RadioButtonWidget {
 
 // Build implements Widget interface.
 func (r *RadioButtonWidget) Build() {
-	if imgui.RadioButton(Context.FontAtlas.RegisterString(r.text), r.active) && r.onChange != nil {
+	if imgui.RadioButtonBool(Context.FontAtlas.RegisterString(r.text), r.active) && r.onChange != nil {
 		r.onChange()
 	}
 }
@@ -476,7 +477,7 @@ func (s *SelectableWidget) Build() {
 		s.flags |= SelectableFlagsAllowDoubleClick
 	}
 
-	if imgui.SelectableV(Context.FontAtlas.RegisterString(s.label), s.selected, int(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.SelectableBoolV(Context.FontAtlas.RegisterString(s.label), s.selected, imgui.SelectableFlags(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 
@@ -534,7 +535,7 @@ func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
 
 // Build implements Widget interface.
 func (t *TreeNodeWidget) Build() {
-	open := imgui.TreeNodeV(t.label, int(t.flags))
+	open := imgui.TreeNodeExStrV(t.label, imgui.TreeNodeFlags(t.flags))
 
 	if t.eventHandler != nil {
 		t.eventHandler()

@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 	"github.com/pkg/browser"
 )
 
@@ -143,15 +143,15 @@ func SetNextWindowSize(width, height float32) {
 	imgui.SetNextWindowSize(imgui.Vec2{X: width, Y: height})
 }
 
-// ExecCondition represents imgui.Condition.
-type ExecCondition imgui.Condition
+// ExecCondition represents imgui.Cond.
+type ExecCondition imgui.Cond
 
 // imgui conditions.
 const (
-	ConditionAlways       ExecCondition = ExecCondition(imgui.ConditionAlways)
-	ConditionOnce         ExecCondition = ExecCondition(imgui.ConditionOnce)
-	ConditionFirstUseEver ExecCondition = ExecCondition(imgui.ConditionFirstUseEver)
-	ConditionAppearing    ExecCondition = ExecCondition(imgui.ConditionAppearing)
+	ConditionAlways       ExecCondition = ExecCondition(imgui.CondAlways)
+	ConditionOnce         ExecCondition = ExecCondition(imgui.CondOnce)
+	ConditionFirstUseEver ExecCondition = ExecCondition(imgui.CondFirstUseEver)
+	ConditionAppearing    ExecCondition = ExecCondition(imgui.CondAppearing)
 )
 
 // SetNextWindowPos sets position of next window.
@@ -159,14 +159,14 @@ func SetNextWindowPos(x, y float32) {
 	imgui.SetNextWindowPos(imgui.Vec2{X: x, Y: y})
 }
 
-// SetNextWindowSizeV does similar to SetNextWIndowSize but allows to specify imgui.Condition.
+// SetNextWindowSizeV does similar to SetNextWIndowSize but allows to specify imgui.Cond.
 func SetNextWindowSizeV(width, height float32, condition ExecCondition) {
 	imgui.SetNextWindowSizeV(
 		imgui.Vec2{
 			X: width,
 			Y: height,
 		},
-		imgui.Condition(condition),
+		imgui.Cond(condition),
 	)
 }
 
@@ -214,5 +214,28 @@ func fatal(widgetName, method, message string, args ...any) {
 func OpenURL(url string) {
 	if err := browser.OpenURL(url); err != nil {
 		log.Printf("Error opening %s: %v", url, err)
+	}
+}
+
+// ColorToUint converts GO color into Uint32 color
+// it is 0xRRGGBBAA
+func ColorToUint(col color.Color) uint32 {
+	r, g, b, a := col.RGBA()
+	mask := uint32(0xff)
+	return r&mask<<24 + g&mask<<16 + b&mask<<8 + a&mask
+}
+
+// UintToColor converts uint32 of form 0xRRGGBB into color.RGBA
+func UintToColor(col uint32) *color.RGBA {
+	mask := 0xff
+	r := byte(col >> 24 & uint32(mask))
+	g := byte(col >> 16 & uint32(mask))
+	b := byte(col >> 8 & uint32(mask))
+	a := byte(col >> 0 & uint32(mask))
+	return &color.RGBA{
+		R: r,
+		G: g,
+		B: b,
+		A: a,
 	}
 }

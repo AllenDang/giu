@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"image/color"
 
-	"github.com/AllenDang/imgui-go"
+	"github.com/AllenDang/cimgui-go"
 )
 
 // GenAutoID automatically generates fidget's id.
@@ -72,7 +72,7 @@ type ChildWidget struct {
 
 // Build implements Widget interface.
 func (c *ChildWidget) Build() {
-	if imgui.BeginChildV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, int(c.flags)) {
+	if imgui.BeginChildStrV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, imgui.WindowFlags(c.flags)) {
 		c.layout.Build()
 	}
 
@@ -163,7 +163,7 @@ func (cc *ComboCustomWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginComboV(Context.FontAtlas.RegisterString(cc.label), cc.previewValue, int(cc.flags)) {
+	if imgui.BeginComboV(Context.FontAtlas.RegisterString(cc.label), cc.previewValue, imgui.ComboFlags(cc.flags)) {
 		cc.layout.Build()
 		imgui.EndCombo()
 	}
@@ -203,9 +203,9 @@ func (c *ComboWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label), c.previewValue, int(c.flags)) {
+	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label), c.previewValue, imgui.ComboFlags(c.flags)) {
 		for i, item := range c.items {
-			if imgui.Selectable(item) {
+			if imgui.SelectableBool(item) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
 					c.onChange()
@@ -268,7 +268,7 @@ func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
 
 // Build implements Widget interface.
 func (c *ContextMenuWidget) Build() {
-	if imgui.BeginPopupContextItemV(c.id, int(c.mouseButton)) {
+	if imgui.BeginPopupContextItemV(c.id, imgui.ImGuiPopupFlags(c.mouseButton)) {
 		c.layout.Build()
 		imgui.EndPopup()
 	}
@@ -308,7 +308,7 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
-	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label), d.value, d.speed, d.min, d.max, d.format)
+	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label), d.value, d.speed, d.min, d.max, d.format, 0)
 }
 
 var _ Widget = &ColumnWidget{}
@@ -430,7 +430,7 @@ func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 
 // Build implements Widget interface.
 func (m *MenuItemWidget) Build() {
-	if imgui.MenuItemV(Context.FontAtlas.RegisterString(m.label), m.shortcut, m.selected, m.enabled) && m.onClick != nil {
+	if imgui.MenuItemBoolV(Context.FontAtlas.RegisterString(m.label), m.shortcut, m.selected, m.enabled) && m.onClick != nil {
 		m.onClick()
 	}
 }
@@ -589,7 +589,7 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 
 // BuildTabItem executes tab item build steps.
 func (t *TabItemWidget) BuildTabItem() {
-	if imgui.BeginTabItemV(t.label, t.open, int(t.flags)) {
+	if imgui.BeginTabItemV(t.label, t.open, imgui.TabItemFlags(t.flags)) {
 		t.layout.Build()
 		imgui.EndTabItem()
 	}
@@ -627,7 +627,7 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 
 // Build implements Widget interface.
 func (t *TabBarWidget) Build() {
-	if imgui.BeginTabBarV(t.id, int(t.flags)) {
+	if imgui.BeginTabBarV(t.id, imgui.TabBarFlags(t.flags)) {
 		for _, ti := range t.tabItems {
 			ti.BuildTabItem()
 		}
@@ -699,7 +699,7 @@ func ColorEdit(label string, c *color.RGBA) *ColorEditWidget {
 	return &ColorEditWidget{
 		label: GenAutoID(label),
 		color: c,
-		flags: ColorEditFlagsNone,
+		// flags: ColorEditFlagsNone,
 	}
 }
 
