@@ -84,7 +84,7 @@ func (i *ImageWidget) Build() {
 		size.Y = rect.Y
 	}
 
-	if i.texture == nil || i.texture.id == 0 {
+	if i.texture == nil || i.texture.id == nil {
 		Dummy(size.X, size.Y).Build()
 		return
 	}

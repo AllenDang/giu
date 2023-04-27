@@ -120,7 +120,7 @@ func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
 			PushFramePadding(s.originFramePaddingX, s.originFramePaddingY)
 			// Restore Child bg color
 			bgColor := imgui.StyleColorVec4(imgui.ColChildBg)
-			PushStyleColor(StyleColorChildBg, Vec4ToRGBA(bgColor))
+			PushStyleColor(StyleColorChildBg, Vec4ToRGBA(*bgColor))
 		}),
 		layout,
 		Custom(func() {

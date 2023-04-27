@@ -54,7 +54,7 @@ func (r *TableRowWidget) BuildTableRow() {
 	}
 
 	if r.bgColor != nil {
-		imgui.TableSetBgColorV(imgui.ImGuiTableBgTarget_RowBg0, uint32(imgui.GetColorU32Vec4(ToVec4Color(r.bgColor))), -1)
+		imgui.TableSetBgColorV(imgui.TableBgTargetRowBg0, imgui.ColorU32Vec4(ToVec4Color(r.bgColor)), -1)
 	}
 }
 
@@ -91,7 +91,7 @@ func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
 
 // BuildTableColumn executes table column build steps.
 func (c *TableColumnWidget) BuildTableColumn() {
-	imgui.TableSetupColumnV(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
+	imgui.TableSetupColumnV(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, imgui.ID(c.userID))
 }
 
 var _ Widget = &TableWidget{}
@@ -190,13 +190,13 @@ func (t *TableWidget) Build() {
 		}
 
 		if t.fastMode {
-			clipper := imgui.NewImGuiListClipper()
+			clipper := imgui.NewListClipper()
 			defer clipper.Destroy()
 
 			clipper.Begin(int32(len(t.rows)))
 
 			for clipper.Step() {
-				for i := clipper.GetDisplayStart(); i < clipper.GetDisplayEnd(); i++ {
+				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
 					row := t.rows[i]
 					row.BuildTableRow()
 				}

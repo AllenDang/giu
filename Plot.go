@@ -204,18 +204,40 @@ func (p *PlotCanvasWidget) Build() {
 			)
 		}
 
-		if imgui.PlotBeginPlot(
-			Context.FontAtlas.RegisterString(p.title), Context.FontAtlas.RegisterString(p.xLabel),
-			Context.FontAtlas.RegisterString(p.yLabel), ToVec2(image.Pt(p.width, p.height)),
-			imgui.PlotFlags(p.flags), imgui.PlotAxisFlags(p.xFlags),
-			imgui.PlotAxisFlags(p.yFlags), imgui.PlotAxisFlags(p.y2Flags),
-			imgui.PlotAxisFlags(p.y3Flags), Context.FontAtlas.RegisterString(p.y2Label), Context.FontAtlas.RegisterString(p.y3Label),
+		imgui.PlotSetupAxisV(
+			imgui.AxisX,
+			Context.FontAtlas.RegisterString(p.xLabel),
+			imgui.PlotAxisFlags(p.xFlags),
+		)
+
+		imgui.PlotSetupAxisV(
+			imgui.AxisY1,
+			Context.FontAtlas.RegisterString(p.yLabel),
+			imgui.PlotAxisFlags(p.yFlags),
+		)
+
+		imgui.PlotSetupAxisV(
+			imgui.AxisY2,
+			Context.FontAtlas.RegisterString(p.y2Label),
+			imgui.PlotAxisFlags(p.y2Flags),
+		)
+
+		imgui.PlotSetupAxisV(
+			imgui.AxisY3,
+			Context.FontAtlas.RegisterString(p.y3Label),
+			imgui.PlotAxisFlags(p.y3Flags),
+		)
+
+		if imgui.PlotBeginPlotV(
+			Context.FontAtlas.RegisterString(p.title),
+			ToVec2(image.Pt(p.width, p.height)),
+			imgui.PlotFlags(p.flags),
 		) {
 			for _, plot := range p.plots {
 				plot.Plot()
 			}
 
-			imgui.ImPlotEnd()
+			imgui.PlotEndPlot()
 		}
 	}
 }
@@ -260,7 +282,16 @@ func (p *BarPlot) Offset(offset int) *BarPlot {
 
 // Plot implements Plot interface.
 func (p *BarPlot) Plot() {
-	imgui.ImPlotBars(p.title, p.data, p.width, p.shift, p.offset)
+	imgui.PlotPlotBarsdoublePtrIntV(
+		p.title,
+		&p.data,
+		int32(len(p.data)),
+		p.width,
+		p.shift,
+		0, // TODO: implement
+		int32(p.offset),
+		0, //TODO: implement
+	)
 }
 
 // BarHPlot represents a column chart on Y axis.
@@ -303,7 +334,14 @@ func (p *BarHPlot) Offset(offset int) *BarHPlot {
 
 // Plot implements plot interface.
 func (p *BarHPlot) Plot() {
-	imgui.ImPlotBarsH(Context.FontAtlas.RegisterString(p.title), p.data, p.height, p.shift, p.offset)
+	// TODO: what plot does it refer to?
+	//imgui.PlotBarsH(
+	//	Context.FontAtlas.RegisterString(p.title),
+	//	p.data,
+	//	p.height,
+	//	p.shift,
+	//	p.offset
+	//	)
 }
 
 // LinePlot represents a plot line (linear chart).
@@ -352,8 +390,13 @@ func (p *LinePlot) Offset(offset int) *LinePlot {
 
 // Plot implements Plot interface.
 func (p *LinePlot) Plot() {
-	imgui.ImPlotSetPlotYAxis(imgui.ImPlotYAxis(p.yAxis))
-	imgui.ImPlotLine(Context.FontAtlas.RegisterString(p.title), p.values, p.xScale, p.x0, p.offset)
+	// TODO: is it right function here?
+	//imgui.PlotSetupAxis(
+	//	imgui.PlotAxisEnum(p.yAxis),
+	//)
+
+	// TODO: no idea what should it be...
+	//imgui.PlotDragLineX(Context.FontAtlas.RegisterString(p.title), p.values, p.xScale, p.x0, p.offset)
 }
 
 // LineXYPlot adds XY plot line.
@@ -388,8 +431,9 @@ func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
 
 // Plot implements Plot interface.
 func (p *LineXYPlot) Plot() {
-	imgui.ImPlotSetPlotYAxis(imgui.ImPlotYAxis(p.yAxis))
-	imgui.ImPlotLineXY(Context.FontAtlas.RegisterString(p.title), p.xs, p.ys, p.offset)
+	// TODO: migrate this
+	//imgui.ImPlotSetPlotYAxis(imgui.ImPlotYAxis(p.yAxis))
+	//imgui.ImPlotLineXY(Context.FontAtlas.RegisterString(p.title), p.xs, p.ys, p.offset)
 }
 
 // PieChartPlot represents a pie chart.
@@ -433,7 +477,18 @@ func (p *PieChartPlot) Angle0(a float64) *PieChartPlot {
 }
 
 func (p *PieChartPlot) Plot() {
-	imgui.ImPlotPieChart(Context.FontAtlas.RegisterStringSlice(p.labels), p.values, p.x, p.y, p.radius, p.normalize, p.labelFormat, p.angle0)
+	// TODO: p.normalized not used anymore - replace with flags
+	imgui.PlotPlotPieChartdoublePtrV(
+		Context.FontAtlas.RegisterStringSlice(p.labels),
+		&p.values,
+		int32(len(p.values)),
+		p.x,
+		p.y,
+		p.radius,
+		p.labelFormat,
+		p.angle0,
+		imgui.PlotPieChartFlagsNormalize,
+	)
 }
 
 type ScatterPlot struct {
@@ -469,7 +524,16 @@ func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
 }
 
 func (p *ScatterPlot) Plot() {
-	imgui.ImPlotScatter(Context.FontAtlas.RegisterString(p.label), p.values, p.xscale, p.x0, p.offset)
+	imgui.PlotPlotScatterdoublePtrIntV(
+		Context.FontAtlas.RegisterString(p.label),
+		&p.values,
+		int32(len(p.values)),
+		p.xscale,
+		p.x0,
+		0, // TODO: implement flags
+		int32(p.offset),
+		0, // TODO: implement
+	)
 }
 
 type ScatterXYPlot struct {
@@ -493,5 +557,13 @@ func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
 }
 
 func (p *ScatterXYPlot) Plot() {
-	imgui.ImPlotScatterXY(Context.FontAtlas.RegisterString(p.label), p.xs, p.ys, p.offset)
+	imgui.PlotPlotScatterdoublePtrdoublePtrV(
+		Context.FontAtlas.RegisterString(p.label),
+		&p.xs,
+		&p.ys,
+		int32(len(p.xs)),
+		0, // TODO: implement
+		int32(p.offset),
+		0, // TODO: implement
+	)
 }

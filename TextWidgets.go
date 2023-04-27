@@ -91,8 +91,8 @@ func (i *InputTextMultilineWidget) Build() {
 	}
 
 	if i.scrollToBottom {
-		imgui.BeginChild(i.label)
-		imgui.SetScrollHereY(1.0)
+		imgui.BeginChildStr(i.label) // TODO: there is a V version
+		imgui.SetScrollHereYV(1.0)
 		imgui.EndChild()
 	}
 }
@@ -239,7 +239,7 @@ func (i *InputTextWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	isChanged := imgui.InputTextWithHint(i.label, i.hint, Context.FontAtlas.RegisterStringPointer(i.value), int(i.flags), i.cb)
+	isChanged := imgui.InputTextWithHint(i.label, i.hint, Context.FontAtlas.RegisterStringPointer(i.value), imgui.InputTextFlags(i.flags), i.cb)
 
 	if isChanged && i.onChange != nil {
 		i.onChange()
@@ -265,7 +265,7 @@ func (i *InputTextWidget) Build() {
 			labels[i] = Label(m.Str)
 		}
 
-		SetNextWindowPos(imgui.GetItemRectMin().X, imgui.GetItemRectMax().Y)
+		SetNextWindowPos(imgui.ItemRectMin().X, imgui.ItemRectMax().Y)
 		imgui.BeginTooltip()
 		labels.Build()
 		imgui.EndTooltip()

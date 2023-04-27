@@ -9,9 +9,14 @@ func StyleColorIDFromString(s string) StyleColorID {
 	if len(s) == 0 {
 		return 0
 	}
-	for i := range _StyleColorID_index[:len(_StyleColorID_index)-1] {
-		if s == _StyleColorID_name[_StyleColorID_index[i]:_StyleColorID_index[i+1]] {
-			return StyleColorID(i)
+	for i := range _StyleColorID_index_0[:len(_StyleColorID_index_0)-1] {
+		if s == _StyleColorID_name_0[_StyleColorID_index_0[i]:_StyleColorID_index_0[i+1]] {
+			return StyleColorID(i + 0)
+		}
+	}
+	for i := range _StyleColorID_index_1[:len(_StyleColorID_index_1)-1] {
+		if s == _StyleColorID_name_1[_StyleColorID_index_1[i]:_StyleColorID_index_1[i+1]] {
+			return StyleColorID(i + 40)
 		}
 	}
 	panic(fmt.Errorf("unable to locate StyleColorID enum corresponding to %q", s))
@@ -96,35 +101,35 @@ func _(s string) {
 	case "tab-unfocused-color":
 	// 37
 	case "tab-unfocused-active-color":
-	// 38
-	case "plot-lines-color":
-	// 39
-	case "plot-lines-hovered-color":
 	// 40
-	case "plot-histogram-color":
+	case "plot-lines-color":
 	// 41
-	case "plot-histogram-hovered-color":
+	case "plot-lines-hovered-color":
 	// 42
-	case "table-header-background-color":
+	case "plot-histogram-color":
 	// 43
-	case "table-border-strong-color":
+	case "plot-histogram-hovered-color":
 	// 44
-	case "table-border-light-color":
+	case "table-header-background-color":
 	// 45
-	case "table-row-background-color":
+	case "table-border-strong-color":
 	// 46
-	case "table-row-alternate-background-color":
+	case "table-border-light-color":
 	// 47
-	case "text-selected-background-color":
+	case "table-row-background-color":
 	// 48
-	case "drag-drop-target-color":
+	case "table-row-alternate-background-color":
 	// 49
-	case "navigation-highlight-color":
+	case "text-selected-background-color":
 	// 50
-	case "windowing-highlight-color":
+	case "drag-drop-target-color":
 	// 51
-	case "windowing-dim-background-color":
+	case "navigation-highlight-color":
 	// 52
+	case "windowing-highlight-color":
+	// 53
+	case "windowing-dim-background-color":
+	// 54
 	case "modal-window-dim-background-color":
 	}
 }

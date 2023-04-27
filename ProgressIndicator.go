@@ -88,7 +88,7 @@ func (p *ProgressIndicatorWidget) Build() {
 				)
 
 				color := imgui.StyleColorVec4(imgui.ColText)
-				rgba := Vec4ToRGBA(color)
+				rgba := Vec4ToRGBA(*color)
 
 				canvas.AddCircle(centerPt, p.radius, rgba, int32(p.radius), p.radius/20.0)
 				canvas.AddCircleFilled(centerPt2, p.radius/5, rgba)
