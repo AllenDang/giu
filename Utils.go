@@ -88,7 +88,7 @@ func Vec4ToRGBA(vec4 imgui.Vec4) color.RGBA {
 // Update ui manually at some point.
 func Update() {
 	if Context.isAlive {
-		Context.platform.Update()
+		Context.backend.Refresh()
 	}
 }
 
@@ -134,7 +134,11 @@ func CalcTextSize(text string) (width, height float32) {
 
 // CalcTextSizeV calculates text dimensions.
 func CalcTextSizeV(text string, hideAfterDoubleHash bool, wrapWidth float32) (w, h float32) {
-	size := imgui.CalcTextSize(text, hideAfterDoubleHash, wrapWidth)
+	size := imgui.CalcTextSizeV(
+		text,
+		hideAfterDoubleHash,
+		wrapWidth,
+	)
 	return size.X, size.Y
 }
 
@@ -182,7 +186,7 @@ func SetKeyboardFocusHere() {
 
 // SetKeyboardFocusHereV sets keyboard on the next widget. Use positive 'offset' to access sub components of a multiple component widget. Use -1 to access previous widget.
 func SetKeyboardFocusHereV(i int) {
-	imgui.SetKeyboardFocusHereV(i)
+	imgui.SetKeyboardFocusHereV(int32(i))
 }
 
 // PushClipRect pushes a clipping rectangle for both ImGui logic (hit-testing etc.) and low-level ImDrawList rendering.

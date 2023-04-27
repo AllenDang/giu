@@ -43,8 +43,9 @@ func loadTexture(rgba image.Image, loadCallback func(*Texture)) {
 		Update()
 
 		result := mainthread.CallVal(func() any {
-			texID, err := Context.renderer.LoadImage(ImageToRgba(rgba))
-			return &loadImageResult{id: texID, err: err}
+			// TODO: there was err here, but it was removed in cimgui-go - need to vaidate texture
+			texID := Context.backend.CreateTextureRgba(ImageToRgba(rgba), rgba.Bounds().Dx(), rgba.Bounds().Dy())
+			return &loadImageResult{id: texID, err: nil}
 		})
 
 		tid, ok := result.(*loadImageResult)
@@ -74,6 +75,6 @@ func ToTexture(textureID imgui.TextureID) *Texture {
 func (t *Texture) release() {
 	Update()
 	mainthread.Call(func() {
-		Context.renderer.ReleaseImage(t.id)
+		Context.backend.DeleteTexture(t.id)
 	})
 }

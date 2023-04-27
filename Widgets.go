@@ -268,7 +268,7 @@ func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
 
 // Build implements Widget interface.
 func (c *ContextMenuWidget) Build() {
-	if imgui.BeginPopupContextItemV(c.id, imgui.ImGuiPopupFlags(c.mouseButton)) {
+	if imgui.BeginPopupContextItemV(c.id, imgui.PopupFlags(c.mouseButton)) {
 		c.layout.Build()
 		imgui.EndPopup()
 	}
@@ -735,7 +735,7 @@ func (ce *ColorEditWidget) Build() {
 	if imgui.ColorEdit4V(
 		Context.FontAtlas.RegisterString(ce.label),
 		&col,
-		int(ce.flags),
+		imgui.ColorEditFlags(ce.flags),
 	) {
 		*ce.color = Vec4ToRGBA(imgui.Vec4{
 			X: col[0],
