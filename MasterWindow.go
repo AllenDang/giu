@@ -41,7 +41,7 @@ type MasterWindow struct {
 	io         *imgui.IO
 	updateFunc func()
 
-	// possibility to expend InputHandler's stuff
+	//possibility to expend InputHandler's stuff
 	// See SetAdditionalInputHandler
 	additionalInputCallback InputHandlerHandleCallback
 }
@@ -360,7 +360,7 @@ func (w *MasterWindow) SetShouldClose(v bool) {
 // see InputHandler.go.
 func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 	// TODO
-	// Context.InputHandler = handler
+	Context.InputHandler = handler
 
 	//w.platform.SetInputCallback(func(key glfw.Key, modifier glfw.ModifierKey, action glfw.Action) {
 	//	k, m, a := Key(key), Modifier(modifier), Action(action)
