@@ -51,9 +51,8 @@ type MasterWindow struct {
 // see examples/helloworld/.
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
 	ctx := imgui.CreateContext()
-	// TODO
-	// imgui.PlotCreateContext()
-	// imgui.ImNodesCreateContext()
+	imgui.PlotCreateContext()
+	// imgui.ImNodesCreateContext() // TODO after implementing ImNodes in cimgui
 
 	io := imgui.CurrentIO()
 
@@ -186,62 +185,52 @@ func (w *MasterWindow) beforeDestroy() {
 	imgui.PlotDestroyContext()
 	w.context.Destroy()
 	// imgui.ImNodesDestroyContext() // TODO: after adding ImNodes (https://github.com/AllenDang/cimgui-go/issues/137)
+
+	// process texture load requests
+	if Context.textureLoadingQueue != nil && Context.textureLoadingQueue.Length() > 0 {
+		for Context.textureLoadingQueue.Length() > 0 {
+			request, ok := Context.textureLoadingQueue.Remove().(textureLoadRequest)
+			Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
+			NewTextureFromRgba(request.img, request.cb)
+		}
+	}
+
+	// TODO InputHandler not re-implemented yet
+	// p.ProcessEvents()
 }
 
 func (w *MasterWindow) render() {
-	// TODO
-	//if !w.platform.IsVisible() || w.platform.IsMinimized() {
-	//	return
-	//}
-
 	mainStylesheet := Style()
 	if s, found := Context.cssStylesheet["main"]; found {
 		mainStylesheet = s
 	}
-
-	// TODO
-	// p.NewFrame()
-	// r.PreRender(w.clearColor)
 
 	mainStylesheet.Push()
 	w.updateFunc()
 	mainStylesheet.Pop()
 }
 
-// Run the main loop to create new frame, process events and call update ui func.
-/* TODO TODO TODO TODO TODO TODO TODO TODO TODO
-func (w *MasterWindow) run() {
-	// TODO
-	// p := w.platform
+// Run runs the main loop.
+// loopFunc will be used to construct the ui.
+// Run should be called at the end of main function, after setting
+// up the master window.
+func (w *MasterWindow) Run(loopFunc func()) {
+	mainthread.Run(func() {
+		Context.isRunning = true
+		w.updateFunc = loopFunc
 
-	// ticker := time.NewTicker(time.Second / time.Duration(p.GetTPS()))
-	// TODO
-	ticker := time.NewTicker(time.Second / 60)
-	shouldQuit := false
+		Context.isAlive = true
 
-	for !shouldQuit {
-		mainthread.Call(func() {
-			// process texture load requests
-			if Context.textureLoadingQueue != nil && Context.textureLoadingQueue.Length() > 0 {
-				for Context.textureLoadingQueue.Length() > 0 {
-					request, ok := Context.textureLoadingQueue.Remove().(textureLoadRequest)
-					Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
-					NewTextureFromRgba(request.img, request.cb)
-				}
-			}
+		Context.backend.SetBeforeRenderHook(w.beforeRender)
+		Context.backend.SetAfterRenderHook(w.afterRender)
+		Context.backend.SetBeforeDestroyContextHook(w.beforeDestroy)
+		Context.backend.Run(w.render)
 
-			// TODO
-			// p.ProcessEvents()
-			w.render()
+		Context.isAlive = false
 
-			// TODO
-			// shouldQuit = p.ShouldStop()
-		})
-
-		<-ticker.C
-	}
+		Context.isRunning = false
+	})
 }
-*/
 
 // GetSize return size of master window.
 func (w *MasterWindow) GetSize() (width, height int) {
@@ -306,28 +295,6 @@ func (w *MasterWindow) SetCloseCallback(cb func() bool) {
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	// TODO: https://github.com/AllenDang/cimgui-go/pull/145
 	// w.platform.SetDropCallback(cb)
-}
-
-// Run runs the main loop.
-// loopFunc will be used to construct the ui.
-// Run should be called at the end of main function, after setting
-// up the master window.
-func (w *MasterWindow) Run(loopFunc func()) {
-	mainthread.Run(func() {
-		Context.isRunning = true
-		w.updateFunc = loopFunc
-
-		Context.isAlive = true
-
-		Context.backend.SetBeforeRenderHook(w.beforeRender)
-		Context.backend.SetAfterRenderHook(w.afterRender)
-		Context.backend.SetBeforeDestroyContextHook(w.beforeDestroy)
-		Context.backend.Run(w.updateFunc)
-
-		Context.isAlive = false
-
-		Context.isRunning = false
-	})
 }
 
 // RegisterKeyboardShortcuts registers a global - master window - keyboard shortcuts.
