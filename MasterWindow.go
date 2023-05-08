@@ -314,7 +314,9 @@ func (w *MasterWindow) Run(loopFunc func()) {
 
 		w.run()
 
+		Context.m.Lock()
 		Context.isAlive = false
+		Context.m.Unlock()
 
 		mainthread.Call(func() {
 			w.renderer.Dispose()
