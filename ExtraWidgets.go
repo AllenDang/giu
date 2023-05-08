@@ -52,10 +52,11 @@ func (h *SplitterWidget) ID(id string) *SplitterWidget {
 	return h
 }
 
-// Build implements Widget interface
+// Build implements Widget interface.
 func (h *SplitterWidget) Build() {
 	// Calc line position.
 	var width, height int
+
 	switch h.direction {
 	case DirectionHorizontal:
 		width = 40
