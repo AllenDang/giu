@@ -145,6 +145,7 @@ func (c *context) GetState(id string) any {
 		c.m.Lock()
 		s.valid = true
 		c.m.Unlock()
+
 		return s.data
 	}
 
