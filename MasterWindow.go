@@ -1,11 +1,12 @@
 package giu
 
 import (
+	"image"
+	"image/color"
+
 	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/faiface/mainthread"
 	"gopkg.in/eapache/queue.v1"
-	"image"
-	"image/color"
 )
 
 // MasterWindowFlags wraps imgui.GLFWWindowFlags.
@@ -41,7 +42,7 @@ type MasterWindow struct {
 	io         *imgui.IO
 	updateFunc func()
 
-	//possibility to expend InputHandler's stuff
+	// possibility to expend InputHandler's stuff
 	// See SetAdditionalInputHandler
 	additionalInputCallback InputHandlerHandleCallback
 }
@@ -63,7 +64,6 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	io.SetIniFilename("")
 
 	backend := imgui.CreateBackend()
-	backend.CreateWindow(title, width, height, imgui.GLFWWindowFlags(flags))
 
 	Context = CreateContext(backend)
 
@@ -78,6 +78,11 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		io:         &io,
 		context:    ctx,
 	}
+
+	backend.SetBeforeRenderHook(mw.beforeRender)
+	backend.SetAfterRenderHook(mw.afterRender)
+	backend.SetBeforeDestroyContextHook(mw.beforeDestroy)
+	backend.CreateWindow(title, width, height, imgui.GLFWWindowFlags(flags))
 
 	mw.SetInputHandler(newInputHandler())
 
@@ -175,16 +180,6 @@ func (w *MasterWindow) sizeChange(width, height int) {
 func (w *MasterWindow) beforeRender() {
 	Context.invalidAllState()
 	Context.FontAtlas.rebuildFontAtlas()
-}
-
-func (w *MasterWindow) afterRender() {
-	Context.cleanState()
-}
-
-func (w *MasterWindow) beforeDestroy() {
-	imgui.PlotDestroyContext()
-	w.context.Destroy()
-	// imgui.ImNodesDestroyContext() // TODO: after adding ImNodes (https://github.com/AllenDang/cimgui-go/issues/137)
 
 	// process texture load requests
 	if Context.textureLoadingQueue != nil && Context.textureLoadingQueue.Length() > 0 {
@@ -197,6 +192,16 @@ func (w *MasterWindow) beforeDestroy() {
 
 	// TODO InputHandler not re-implemented yet
 	// p.ProcessEvents()
+}
+
+func (w *MasterWindow) afterRender() {
+	Context.cleanState()
+}
+
+func (w *MasterWindow) beforeDestroy() {
+	imgui.PlotDestroyContext()
+	//w.context.Destroy() // TODO: check why it panics if it is here
+	// imgui.ImNodesDestroyContext() // TODO: after adding ImNodes (https://github.com/AllenDang/cimgui-go/issues/137)
 }
 
 func (w *MasterWindow) render() {
@@ -221,9 +226,6 @@ func (w *MasterWindow) Run(loopFunc func()) {
 
 		Context.isAlive = true
 
-		Context.backend.SetBeforeRenderHook(w.beforeRender)
-		Context.backend.SetAfterRenderHook(w.afterRender)
-		Context.backend.SetBeforeDestroyContextHook(w.beforeDestroy)
 		Context.backend.Run(w.render)
 
 		Context.isAlive = false
