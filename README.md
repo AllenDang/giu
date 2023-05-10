@@ -23,7 +23,7 @@ Individuals: support continued development and maintenance [here](https://patreo
 
 For documentation refer to [our wiki](https://github.com/AllenDang/giu/wiki),
 [examples](./examples), [GoDoc](https://pkg.go.dev/github.com/AllenDang/giu),
-or just review comments in code.
+or just take a look at comments in code.
 
 
 ## Supported Platforms
