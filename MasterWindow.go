@@ -57,6 +57,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 	// TODO: removed ConfigFlagEnablePowerSavingMode
 	io.SetConfigFlags(imgui.BackendFlagsRendererHasVtxOffset)
+	io.SetBackendFlags(imgui.BackendFlagsRendererHasVtxOffset)
 
 	// Disable imgui.ini
 	io.SetIniFilename("")
@@ -207,13 +208,17 @@ func (w *MasterWindow) Run(loopFunc func()) {
 		Context.isRunning = true
 		w.updateFunc = loopFunc
 
+		Context.m.Lock()
 		Context.isAlive = true
+		Context.m.Unlock()
 
 		Context.backend.Run(w.render)
 
+		Context.m.Lock()
 		Context.isAlive = false
 
 		Context.isRunning = false
+		Context.m.Unlock()
 	})
 }
 

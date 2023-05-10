@@ -1,6 +1,9 @@
 package giu
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 // DialogResult represents dialog result
 // dialog result is bool. if OK/Yes it is true, else (Cancel/No) - false.
@@ -39,6 +42,7 @@ type msgboxState struct {
 	resultCallback DialogResultCallback
 	buttons        MsgboxButtons
 	open           bool
+	m              *sync.Mutex
 }
 
 // Dispose implements disposable interface.
@@ -105,14 +109,25 @@ func PrepareMsgbox() Layout {
 
 			// Register state.
 			if state = GetState[msgboxState](Context, msgboxID); state == nil {
-				state = &msgboxState{title: "Info", content: "Content", buttons: MsgboxButtonsOk, resultCallback: nil, open: false}
+				state = &msgboxState{
+					title:          "Info",
+					content:        "Content",
+					buttons:        MsgboxButtonsOk,
+					resultCallback: nil,
+					open:           false,
+					m:              &sync.Mutex{},
+				}
 				SetState(Context, msgboxID, state)
 			}
 
+			state.m.Lock()
 			if state.open {
 				OpenPopup(msgboxID)
 				state.open = false
 			}
+
+			state.m.Unlock()
+
 			SetNextWindowSize(300, 0)
 			PopupModal(fmt.Sprintf("%s%s", state.title, msgboxID)).Layout(
 				Custom(func() {
@@ -159,7 +174,9 @@ func Msgbox(title, content string) *MsgboxWidget {
 // Buttons sets which buttons should be possible.
 func (m *MsgboxWidget) Buttons(buttons MsgboxButtons) *MsgboxWidget {
 	s := m.getState()
+	s.m.Lock()
 	s.buttons = buttons
+	s.m.Unlock()
 
 	return m
 }
@@ -167,7 +184,9 @@ func (m *MsgboxWidget) Buttons(buttons MsgboxButtons) *MsgboxWidget {
 // ResultCallback sets result callback.
 func (m *MsgboxWidget) ResultCallback(cb DialogResultCallback) *MsgboxWidget {
 	s := m.getState()
+	s.m.Lock()
 	s.resultCallback = cb
+	s.m.Unlock()
 
 	return m
 }

@@ -93,7 +93,8 @@ func (i *ImageWidget) Build() {
 	if i.onClick != nil && IsMouseClicked(MouseButtonLeft) && IsWindowFocused(0) {
 		cursorPos := GetCursorScreenPos()
 		mousePos := GetMousePos()
-		mousePos.Add(cursorPos)
+
+		mousePos = mousePos.Add(cursorPos)
 
 		if cursorPos.X <= mousePos.X && cursorPos.Y <= mousePos.Y &&
 			cursorPos.X+int(i.width) >= mousePos.X && cursorPos.Y+int(i.height) >= mousePos.Y {
@@ -331,8 +332,8 @@ func (i *ImageWithURLWidget) Build() {
 		go func() {
 			// Load image from url
 			client := &http.Client{Timeout: i.downloadTimeout}
-			req, err := http.NewRequestWithContext(downloadContext, "GET", i.imgURL, http.NoBody)
 
+			req, err := http.NewRequestWithContext(downloadContext, "GET", i.imgURL, http.NoBody)
 			if err != nil {
 				errorFn(err)
 				return

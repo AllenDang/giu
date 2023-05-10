@@ -5,28 +5,30 @@ import (
 	"image"
 	"time"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
-var _ Widget = &HSplitterWidget{}
+var _ Widget = &SplitterWidget{}
 
-type HSplitterWidget struct {
-	id     string
-	width  float32
-	height float32
-	delta  *float32
+type SplitterWidget struct {
+	id        string
+	width     float32
+	height    float32
+	delta     *float32
+	direction SplitDirection
 }
 
-func HSplitter(delta *float32) *HSplitterWidget {
-	return &HSplitterWidget{
-		id:     GenAutoID("HSplitter"),
-		width:  0,
-		height: 0,
-		delta:  delta,
+func Splitter(direction SplitDirection, delta *float32) *SplitterWidget {
+	return &SplitterWidget{
+		id:        GenAutoID("Splitter"),
+		width:     0,
+		height:    0,
+		delta:     delta,
+		direction: direction,
 	}
 }
 
-func (h *HSplitterWidget) Size(width, height float32) *HSplitterWidget {
+func (h *SplitterWidget) Size(width, height float32) *SplitterWidget {
 	aw, ah := GetAvailableRegion()
 
 	if width == 0 {
@@ -44,18 +46,25 @@ func (h *HSplitterWidget) Size(width, height float32) *HSplitterWidget {
 	return h
 }
 
-func (h *HSplitterWidget) ID(id string) *HSplitterWidget {
+// ID allows to set widget's ID manually.
+func (h *SplitterWidget) ID(id string) *SplitterWidget {
 	h.id = id
 	return h
 }
 
-// Build implements Widget interface
-//
-//nolint:dupl // will fix later
-func (h *HSplitterWidget) Build() {
+// Build implements Widget interface.
+func (h *SplitterWidget) Build() {
 	// Calc line position.
-	width := 40
-	height := 2
+	var width, height int
+
+	switch h.direction {
+	case DirectionHorizontal:
+		width = 40
+		height = 2
+	case DirectionVertical:
+		width = 2
+		height = 40
+	}
 
 	pt := GetCursorScreenPos()
 
@@ -71,91 +80,18 @@ func (h *HSplitterWidget) Build() {
 	imgui.InvisibleButton(h.id, imgui.Vec2{X: h.width, Y: h.height})
 
 	if imgui.IsItemActive() {
-		*(h.delta) = imgui.CurrentIO().MouseDelta().Y
+		switch h.direction {
+		case DirectionVertical:
+			*(h.delta) = imgui.CurrentIO().MouseDelta().Y
+		case DirectionHorizontal:
+			*(h.delta) = imgui.CurrentIO().MouseDelta().X
+		}
 	} else {
 		*(h.delta) = 0
 	}
 
 	if imgui.IsItemHovered() {
 		imgui.SetMouseCursor(imgui.MouseCursorResizeNS)
-		c = Vec4ToRGBA(*imgui.StyleColorVec4(imgui.ColScrollbarGrabActive))
-	}
-
-	// Draw a line in the very center
-	canvas := GetCanvas()
-	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), c, 0, 0)
-}
-
-var _ Widget = &VSplitterWidget{}
-
-type VSplitterWidget struct {
-	id     string
-	width  float32
-	height float32
-	delta  *float32
-}
-
-func VSplitter(delta *float32) *VSplitterWidget {
-	return &VSplitterWidget{
-		id:     GenAutoID("VSplitter"),
-		width:  0,
-		height: 0,
-		delta:  delta,
-	}
-}
-
-func (v *VSplitterWidget) Size(width, height float32) *VSplitterWidget {
-	aw, ah := GetAvailableRegion()
-
-	if width == 0 {
-		v.width = aw
-	} else {
-		v.width = width
-	}
-
-	if height == 0 {
-		v.height = ah
-	} else {
-		v.height = height
-	}
-
-	return v
-}
-
-func (v *VSplitterWidget) ID(id string) *VSplitterWidget {
-	v.id = id
-	return v
-}
-
-// Build implements Widget interface
-//
-//nolint:dupl // will fix later
-func (v *VSplitterWidget) Build() {
-	// Calc line position.
-	width := 2
-	height := 40
-
-	pt := GetCursorScreenPos()
-
-	centerX := int(v.width / 2)
-	centerY := int(v.height / 2)
-
-	ptMin := image.Pt(centerX-width/2, centerY-height/2)
-	ptMax := image.Pt(centerX+width/2, centerY+height/2)
-
-	c := Vec4ToRGBA(*imgui.StyleColorVec4(imgui.ColScrollbarGrab))
-
-	// Place a invisible button to capture event.
-	imgui.InvisibleButton(v.id, imgui.Vec2{X: v.width, Y: v.height})
-
-	if imgui.IsItemActive() {
-		*(v.delta) = imgui.CurrentIO().MouseDelta().X
-	} else {
-		*(v.delta) = 0
-	}
-
-	if imgui.IsItemHovered() {
-		imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
 		c = Vec4ToRGBA(*imgui.StyleColorVec4(imgui.ColScrollbarGrabActive))
 	}
 

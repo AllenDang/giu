@@ -11,8 +11,8 @@ require (
 	github.com/napsy/go-css v0.0.0-20221107082635-4ed403047a64
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/sahilm/fuzzy v0.1.0
-	github.com/stretchr/testify v1.8.1
-	golang.org/x/image v0.0.0-20220601225756-64ec528b34cd
+	github.com/stretchr/testify v1.8.2
+	golang.org/x/image v0.7.0
 	gopkg.in/eapache/queue.v1 v1.1.0
 )
 
@@ -20,6 +20,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

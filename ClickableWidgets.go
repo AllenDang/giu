@@ -56,6 +56,11 @@ func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 	return b
 }
 
+func (b *ButtonWidget) ID(id string) *ButtonWidget {
+	b.id = id
+	return b
+}
+
 // Build implements Widget interface.
 func (b *ButtonWidget) Build() {
 	if b.disabled {

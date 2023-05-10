@@ -19,6 +19,13 @@ E-mail: allengnr@gmail.com
 
 Individuals: support continued development and maintenance [here](https://patreon.com/AllenDang).
 
+## Documentation
+
+For documentation refer to [our wiki](https://github.com/AllenDang/giu/wiki),
+[examples](./examples), [GoDoc](https://pkg.go.dev/github.com/AllenDang/giu),
+or just review comments in code.
+
+
 ## Supported Platforms
 
 giu is built upon GLFW v3.3, so ideally giu could support all platforms that GLFW v3.3 supports.

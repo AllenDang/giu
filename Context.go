@@ -48,6 +48,8 @@ type context struct {
 	textureLoadingQueue *queue.Queue
 
 	cssStylesheet cssStylesheet
+
+	m *sync.Mutex
 }
 
 func CreateContext(b imgui.Backend) *context {
@@ -56,6 +58,7 @@ func CreateContext(b imgui.Backend) *context {
 		backend:             b,
 		FontAtlas:           newFontAtlas(),
 		textureLoadingQueue: queue.New(),
+		m:                   &sync.Mutex{},
 	}
 
 	// Create font
@@ -63,7 +66,7 @@ func CreateContext(b imgui.Backend) *context {
 		io := result.IO()
 		io.Fonts().AddFontDefault()
 		// TODO
-		//fontAtlas, _, _, _ := io.Fonts().GetTextureDataAsRGBA32()
+		// fontAtlas, _, _, _ := io.Fonts().GetTextureDataAsRGBA32()
 		// r.SetFontTexture(fontAtlas)
 	} else {
 		result.FontAtlas.shouldRebuildFontAtlas = true
@@ -79,7 +82,9 @@ func (c *context) IO() imgui.IO {
 func (c *context) invalidAllState() {
 	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
+			c.m.Lock()
 			s.valid = false
+			c.m.Unlock()
 		}
 		return true
 	})
@@ -88,7 +93,10 @@ func (c *context) invalidAllState() {
 func (c *context) cleanState() {
 	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
-			if !s.valid {
+			c.m.Lock()
+			valid := s.valid
+			c.m.Unlock()
+			if !valid {
 				c.state.Delete(k)
 				s.data.Dispose()
 			}
@@ -110,7 +118,10 @@ func (c *context) SetState(id string, data Disposable) {
 
 func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 	if s, ok := c.load(id); ok {
+		c.m.Lock()
 		s.valid = true
+		c.m.Unlock()
+
 		data, isOk := s.data.(PT)
 		Assert(isOk, "Context", "GetState", fmt.Sprintf("got state of unexpected type: expected %T, instead found %T", new(T), s.data))
 
@@ -122,7 +133,10 @@ func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 
 func (c *context) GetState(id string) any {
 	if s, ok := c.load(id); ok {
+		c.m.Lock()
 		s.valid = true
+		c.m.Unlock()
+
 		return s.data
 	}
 

@@ -3,6 +3,7 @@ package giu
 import (
 	"image"
 	"math"
+	"sync"
 	"time"
 
 	"github.com/AllenDang/cimgui-go"
@@ -13,17 +14,26 @@ var _ Disposable = &progressIndicatorState{}
 type progressIndicatorState struct {
 	angle float64
 	stop  bool
+	m     *sync.Mutex
 }
 
 func (ps *progressIndicatorState) update() {
 	ticker := time.NewTicker(time.Second / 60)
 
-	for !ps.stop {
+	for {
+		ps.m.Lock()
+		if ps.stop {
+			ps.m.Unlock()
+			break
+		}
+
 		if ps.angle > 6.2 {
 			ps.angle = 0
 		}
 
 		ps.angle += 0.1
+
+		ps.m.Unlock()
 
 		Update()
 		<-ticker.C
@@ -34,7 +44,9 @@ func (ps *progressIndicatorState) update() {
 
 // Dispose implements Disposable interface.
 func (ps *progressIndicatorState) Dispose() {
+	ps.m.Lock()
 	ps.stop = true
+	ps.m.Unlock()
 }
 
 // static check to ensure if ProgressIndicatorWidget implements Widget interface.
@@ -66,7 +78,11 @@ func (p *ProgressIndicatorWidget) Build() {
 	// State exists
 	if state := GetState[progressIndicatorState](Context, p.internalID); state == nil {
 		// Register state and start go routine
-		ps := progressIndicatorState{angle: 0.0, stop: false}
+		ps := progressIndicatorState{
+			angle: 0.0,
+			stop:  false,
+			m:     &sync.Mutex{},
+		}
 
 		SetState(Context, p.internalID, &ps)
 
@@ -82,9 +98,14 @@ func (p *ProgressIndicatorWidget) Build() {
 				pos := GetCursorScreenPos()
 
 				centerPt := pos.Add(image.Pt(int(width/2), int(height/2)))
+
+				state.m.Lock()
+				angle := state.angle
+				state.m.Unlock()
+
 				centerPt2 := image.Pt(
-					int(float64(p.radius)*math.Sin(state.angle)+float64(centerPt.X)),
-					int(float64(p.radius)*math.Cos(state.angle)+float64(centerPt.Y)),
+					int(float64(p.radius)*math.Sin(angle)+float64(centerPt.X)),
+					int(float64(p.radius)*math.Cos(angle)+float64(centerPt.Y)),
 				)
 
 				color := imgui.StyleColorVec4(imgui.ColText)

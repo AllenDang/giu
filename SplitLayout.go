@@ -89,7 +89,7 @@ func (s *SplitLayoutWidget) Build() {
 		layout = Layout{
 			Column(
 				s.buildChild(Auto, *s.sashPos, s.layout1),
-				HSplitter(&(splitLayoutState.delta)).Size(0, s.originItemSpacingY),
+				Splitter(DirectionHorizontal, &(splitLayoutState.delta)).Size(0, s.originItemSpacingY),
 				s.buildChild(Auto, Auto, s.layout2),
 			),
 		}
@@ -102,7 +102,7 @@ func (s *SplitLayoutWidget) Build() {
 		layout = Layout{
 			Row(
 				s.buildChild(*s.sashPos, 0, s.layout1),
-				VSplitter(&(splitLayoutState.delta)).Size(s.originItemSpacingX, 0),
+				Splitter(DirectionVertical, &(splitLayoutState.delta)).Size(s.originItemSpacingX, 0),
 				s.buildChild(Auto, Auto, s.layout2),
 			),
 		}
