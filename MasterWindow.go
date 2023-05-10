@@ -1,12 +1,10 @@
 package giu
 
 import (
-	"image"
-	"image/color"
-
 	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/faiface/mainthread"
-	"gopkg.in/eapache/queue.v1"
+	"image"
+	"image/color"
 )
 
 // MasterWindowFlags wraps imgui.GLFWWindowFlags.
@@ -51,7 +49,7 @@ type MasterWindow struct {
 // it should be called in main function. For more details and use cases,
 // see examples/helloworld/.
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
-	ctx := imgui.CreateContext()
+	imGuiContext := imgui.CreateContext()
 	imgui.PlotCreateContext()
 	// imgui.ImNodesCreateContext() // TODO after implementing ImNodes in cimgui
 
@@ -65,10 +63,8 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 	backend := imgui.CreateBackend()
 
+	// Create GIU context
 	Context = CreateContext(backend)
-
-	// init texture loading queue
-	Context.textureLoadingQueue = queue.New()
 
 	mw := &MasterWindow{
 		clearColor: [4]float32{0, 0, 0, 1},
@@ -76,7 +72,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		height:     height,
 		title:      title,
 		io:         &io,
-		context:    ctx,
+		context:    imGuiContext,
 	}
 
 	backend.SetBeforeRenderHook(mw.beforeRender)
@@ -160,19 +156,6 @@ func (w *MasterWindow) setTheme() {
 	// style.SetColor(imgui.ColTableBorderLight, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 0.70})
 }
 
-// SetBgColor sets background color of master window.
-func (w *MasterWindow) SetBgColor(bgColor color.Color) {
-	const mask = 0xffff
-
-	r, g, b, a := bgColor.RGBA()
-	w.clearColor = [4]float32{
-		float32(r) / mask,
-		float32(g) / mask,
-		float32(b) / mask,
-		float32(a) / mask,
-	}
-}
-
 func (w *MasterWindow) sizeChange(width, height int) {
 	w.render()
 }
@@ -246,6 +229,19 @@ func (w *MasterWindow) GetSize() (width, height int) {
 	}
 
 	return w.width, w.height
+}
+
+// SetBgColor sets background color of master window.
+func (w *MasterWindow) SetBgColor(bgColor color.Color) {
+	const mask = 0xffff
+
+	r, g, b, a := bgColor.RGBA()
+	w.clearColor = [4]float32{
+		float32(r) / mask,
+		float32(g) / mask,
+		float32(b) / mask,
+		float32(a) / mask,
+	}
 }
 
 // GetPos return position of master window.

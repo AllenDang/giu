@@ -52,11 +52,11 @@ type context struct {
 
 func CreateContext(b imgui.Backend) *context {
 	result := context{
-		cssStylesheet: make(cssStylesheet),
-		backend:       b,
+		cssStylesheet:       make(cssStylesheet),
+		backend:             b,
+		FontAtlas:           newFontAtlas(),
+		textureLoadingQueue: queue.New(),
 	}
-
-	result.FontAtlas = newFontAtlas()
 
 	// Create font
 	if len(result.FontAtlas.defaultFonts) == 0 {
