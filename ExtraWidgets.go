@@ -13,7 +13,7 @@ var _ Widget = &SplitterWidget{}
 // SplitterWidget is a line (vertical or horizontal) that splits layout (child)
 // Int two pieces. It has a tiny button in the middle of that line and its creator
 // takes float pointer so that you can read user's movement of this rect.
-// Generally used by SplitLayoutWidget
+// Generally used by SplitLayoutWidget.
 type SplitterWidget struct {
 	id        string
 	width     float32
@@ -22,7 +22,7 @@ type SplitterWidget struct {
 	direction SplitDirection
 }
 
-// Splitter creates new SplitterWidget
+// Splitter creates new SplitterWidget.
 func Splitter(direction SplitDirection, delta *float32) *SplitterWidget {
 	return &SplitterWidget{
 		id:        GenAutoID("Splitter"),
@@ -33,7 +33,7 @@ func Splitter(direction SplitDirection, delta *float32) *SplitterWidget {
 	}
 }
 
-// Size sets size of the button aray
+// Size sets size of the button aray.
 func (h *SplitterWidget) Size(width, height float32) *SplitterWidget {
 	aw, ah := GetAvailableRegion()
 
@@ -252,7 +252,7 @@ var _ Widget = &CustomWidget{}
 // This includes:
 // - using functions from upstream imgui instead of thes from giu
 // - build widgets in loop (see also RangeBuilder)
-// - do any calculations needed in this part of rendering
+// - do any calculations needed in this part of rendering.
 type CustomWidget struct {
 	builder func()
 }
@@ -293,7 +293,7 @@ type ConditionWidget struct {
 	layoutElse Layout
 }
 
-// Condition creates new COnditionWidget
+// Condition creates new COnditionWidget.
 func Condition(cond bool, layoutIf, layoutElse Layout) *ConditionWidget {
 	return &ConditionWidget{
 		cond:       cond,
@@ -302,7 +302,7 @@ func Condition(cond bool, layoutIf, layoutElse Layout) *ConditionWidget {
 	}
 }
 
-// Range implements extra abilities (see Splittablle)
+// Range implements extra abilities (see Splittablle).
 func (c *ConditionWidget) Range(rangeFunc func(w Widget)) {
 	var l Layout
 	if c.cond {
@@ -358,7 +358,7 @@ func (s *listBoxState) Dispose() {
 
 var _ Widget = &ListBoxWidget{}
 
-// ListBoxWidget is a field with selectable items (Child with Selectables)
+// ListBoxWidget is a field with selectable items (Child with Selectables).
 type ListBoxWidget struct {
 	id       string
 	width    float32
@@ -371,7 +371,7 @@ type ListBoxWidget struct {
 	onMenu   func(selectedIndex int, menu string)
 }
 
-// ListBox creates new ListBoxWidget
+// ListBox creates new ListBoxWidget.
 func ListBox(id string, items []string) *ListBoxWidget {
 	return &ListBoxWidget{
 		id:       id,
@@ -386,7 +386,7 @@ func ListBox(id string, items []string) *ListBoxWidget {
 	}
 }
 
-// Size sets size of the box
+// Size sets size of the box.
 func (l *ListBoxWidget) Size(width, height float32) *ListBoxWidget {
 	l.width, l.height = width, height
 	return l
@@ -410,7 +410,7 @@ func (l *ListBoxWidget) OnChange(onChange func(selectedIndex int)) *ListBoxWidge
 	return l
 }
 
-// OnDClick sets callback on double click
+// OnDClick sets callback on double click.
 func (l *ListBoxWidget) OnDClick(onDClick func(selectedIndex int)) *ListBoxWidget {
 	l.onDClick = onDClick
 	return l
@@ -496,7 +496,7 @@ type DatePickerWidget struct {
 	startOfWeek time.Weekday
 }
 
-// DatePicker creates new DatePickerWidget
+// DatePicker creates new DatePickerWidget.
 func DatePicker(id string, date *time.Time) *DatePickerWidget {
 	return &DatePickerWidget{
 		id:          GenAutoID(id),
@@ -507,7 +507,7 @@ func DatePicker(id string, date *time.Time) *DatePickerWidget {
 	}
 }
 
-// Size sets combo widget's size
+// Size sets combo widget's size.
 func (d *DatePickerWidget) Size(width float32) *DatePickerWidget {
 	d.width = width
 	return d
@@ -524,14 +524,14 @@ func (d *DatePickerWidget) OnChange(onChange func()) *DatePickerWidget {
 
 // Format sets date format of displayed (in combo) date.
 // Compatible with (time.Time).Format(...)
-// Default: "2006-01-02"
+// Default: "2006-01-02".
 func (d *DatePickerWidget) Format(format string) *DatePickerWidget {
 	d.format = format
 	return d
 }
 
 // StartOfWeek sets first day of the week
-// Default: Sunday
+// Default: Sunday.
 func (d *DatePickerWidget) StartOfWeek(weekday time.Weekday) *DatePickerWidget {
 	d.startOfWeek = weekday
 	return d
