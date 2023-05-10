@@ -571,7 +571,7 @@ type TabItemWidget struct {
 	layout Layout
 }
 
-// TabItemWidget creates new TabItem.
+// TabItem creates new TabItem.
 func TabItem(label string) *TabItemWidget {
 	return &TabItemWidget{
 		label:  Context.FontAtlas.RegisterString(label),
