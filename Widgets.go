@@ -475,6 +475,8 @@ func (m *MenuWidget) Build() {
 
 var _ Widget = &ProgressBarWidget{}
 
+// ProgressBarWidget is a progress bar (like in windows' copy-file dialog).
+// It is a perfect solution to indicate percentage progress of some action.
 type ProgressBarWidget struct {
 	fraction float32
 	width    float32
@@ -482,6 +484,7 @@ type ProgressBarWidget struct {
 	overlay  string
 }
 
+// ProgressBar creates new ProgressBar.
 func ProgressBar(fraction float32) *ProgressBarWidget {
 	return &ProgressBarWidget{
 		fraction: fraction,
@@ -491,16 +494,19 @@ func ProgressBar(fraction float32) *ProgressBarWidget {
 	}
 }
 
+// Size sets size of the bar.
 func (p *ProgressBarWidget) Size(width, height float32) *ProgressBarWidget {
 	p.width, p.height = width, height
 	return p
 }
 
+// Overlay sets custom overlay displayed on the bar.
 func (p *ProgressBarWidget) Overlay(overlay string) *ProgressBarWidget {
 	p.overlay = Context.FontAtlas.RegisterString(overlay)
 	return p
 }
 
+// Overlayf is alias to Overlay(fmt.Sprintf(format, args...)).
 func (p *ProgressBarWidget) Overlayf(format string, args ...any) *ProgressBarWidget {
 	return p.Overlay(fmt.Sprintf(format, args...))
 }
@@ -512,22 +518,34 @@ func (p *ProgressBarWidget) Build() {
 
 var _ Widget = &SeparatorWidget{}
 
+// SeparatorWidget is like <hr> in HTML.
+// Creates a layout-wide line.
 type SeparatorWidget struct{}
+
+// Separator creates new SeparatorWidget.
+func Separator() *SeparatorWidget {
+	return &SeparatorWidget{}
+}
 
 // Build implements Widget interface.
 func (s *SeparatorWidget) Build() {
 	imgui.Separator()
 }
 
-func Separator() *SeparatorWidget {
-	return &SeparatorWidget{}
-}
-
 var _ Widget = &DummyWidget{}
 
+// DummyWidget creates an empty space (moves drawing cursor by width and height).
 type DummyWidget struct {
 	width  float32
 	height float32
+}
+
+// Dummy creates new DummyWidget.
+func Dummy(width, height float32) *DummyWidget {
+	return &DummyWidget{
+		width:  width,
+		height: height,
+	}
 }
 
 // Build implements Widget interface.
@@ -545,13 +563,7 @@ func (d *DummyWidget) Build() {
 	imgui.Dummy(imgui.Vec2{X: d.width, Y: d.height})
 }
 
-func Dummy(width, height float32) *DummyWidget {
-	return &DummyWidget{
-		width:  width,
-		height: height,
-	}
-}
-
+// TabItemWidget is an item in TabBarWidget.
 type TabItemWidget struct {
 	label  string
 	open   *bool
@@ -559,6 +571,7 @@ type TabItemWidget struct {
 	layout Layout
 }
 
+// TabItem creates new TabItem.
 func TabItem(label string) *TabItemWidget {
 	return &TabItemWidget{
 		label:  Context.FontAtlas.RegisterString(label),
@@ -568,20 +581,27 @@ func TabItem(label string) *TabItemWidget {
 	}
 }
 
+// TabItemf creates tab item with formated label.
 func TabItemf(format string, args ...any) *TabItemWidget {
 	return TabItem(fmt.Sprintf(format, args...))
 }
 
+// IsOpen takes a pointer to a boolean.
+// Value of this pointer indicated whether TabItem is currently selected.
+// NOTE: The item will NOT be opened/closed if this value is changed.
+// It has only one-side effect.
 func (t *TabItemWidget) IsOpen(open *bool) *TabItemWidget {
 	t.open = open
 	return t
 }
 
+// Flags allows to set item's flags.
 func (t *TabItemWidget) Flags(flags TabItemFlags) *TabItemWidget {
 	t.flags = flags
 	return t
 }
 
+// Layout is a layout displayed when item is opened.
 func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 	t.layout = Layout(widgets)
 	return t
@@ -597,12 +617,14 @@ func (t *TabItemWidget) BuildTabItem() {
 
 var _ Widget = &TabBarWidget{}
 
+// TabBarWidget is a bar of TabItemWidgets.
 type TabBarWidget struct {
 	id       string
 	flags    TabBarFlags
 	tabItems []*TabItemWidget
 }
 
+// TabBar creates new TabBarWidget.
 func TabBar() *TabBarWidget {
 	return &TabBarWidget{
 		id:    GenAutoID("TabBar"),
@@ -610,16 +632,19 @@ func TabBar() *TabBarWidget {
 	}
 }
 
+// Flags allows to set TabBArFlags.
 func (t *TabBarWidget) Flags(flags TabBarFlags) *TabBarWidget {
 	t.flags = flags
 	return t
 }
 
+// ID manually sets widget's ID.
 func (t *TabBarWidget) ID(id string) *TabBarWidget {
 	t.id = id
 	return t
 }
 
+// TabItems sets list of TabItemWidgets in the bar.
 func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 	t.tabItems = items
 	return t
@@ -638,9 +663,31 @@ func (t *TabBarWidget) Build() {
 
 var _ Widget = &TooltipWidget{}
 
+// TooltipWidget sets a tooltip on the previous widget.
+// The tooltip can be anything.
 type TooltipWidget struct {
 	tip    string
 	layout Layout
+}
+
+// Tooltip creates new tooltip with given label
+// NOTE: you can set the empty label and use Layout() method.
+func Tooltip(tip string) *TooltipWidget {
+	return &TooltipWidget{
+		tip:    Context.FontAtlas.RegisterString(tip),
+		layout: nil,
+	}
+}
+
+// Tooltipf sets formated label.
+func Tooltipf(format string, args ...any) *TooltipWidget {
+	return Tooltip(fmt.Sprintf(format, args...))
+}
+
+// Layout sets a custom layout of tooltip.
+func (t *TooltipWidget) Layout(widgets ...Widget) *TooltipWidget {
+	t.layout = Layout(widgets)
+	return t
 }
 
 // Build implements Widget interface.
@@ -656,33 +703,17 @@ func (t *TooltipWidget) Build() {
 	}
 }
 
-func Tooltip(tip string) *TooltipWidget {
-	return &TooltipWidget{
-		tip:    Context.FontAtlas.RegisterString(tip),
-		layout: nil,
-	}
-}
-
-func Tooltipf(format string, args ...any) *TooltipWidget {
-	return Tooltip(fmt.Sprintf(format, args...))
-}
-
-func (t *TooltipWidget) Layout(widgets ...Widget) *TooltipWidget {
-	t.layout = Layout(widgets)
-	return t
-}
-
 var _ Widget = &SpacingWidget{}
 
 type SpacingWidget struct{}
 
+func Spacing() *SpacingWidget {
+	return &SpacingWidget{}
+}
+
 // Build implements Widget interface.
 func (s *SpacingWidget) Build() {
 	imgui.Spacing()
-}
-
-func Spacing() *SpacingWidget {
-	return &SpacingWidget{}
 }
 
 var _ Widget = &ColorEditWidget{}
