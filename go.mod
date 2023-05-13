@@ -6,7 +6,6 @@ require (
 	github.com/AllenDang/cimgui-go v0.0.0-20230502145512-97518c13c52b
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
-	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20221017161538-93cebf72946b
 	github.com/mazznoer/csscolorparser v0.1.3
 	github.com/napsy/go-css v0.0.0-20221107082635-4ed403047a64
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
