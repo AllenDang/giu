@@ -6,7 +6,7 @@ import (
 )
 
 func loop() {
-	imgui.ShowDemoWindow(nil)
+	imgui.ShowDemoWindow()
 }
 
 func main() {

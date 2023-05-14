@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"unsafe"
 
 	"github.com/AllenDang/cimgui-go"
 	g "github.com/AllenDang/giu"
@@ -17,7 +18,12 @@ func loop() {
 			g.Custom(func() {
 				g.Button("Drag me: 9").Build()
 				if imgui.BeginDragDropSource() {
-					imgui.SetDragDropPayload("DND_DEMO", 9)
+					data := 9
+					imgui.SetDragDropPayload(
+						"DND_DEMO",
+						unsafe.Pointer(&data),
+						0,
+					)
 					g.Label("9").Build()
 					imgui.EndDragDropSource()
 				}
@@ -25,7 +31,12 @@ func loop() {
 			g.Custom(func() {
 				g.Button("Drag me: 10").Build()
 				if imgui.BeginDragDropSource() {
-					imgui.SetDragDropPayload("DND_DEMO", 10)
+					data := 10
+					imgui.SetDragDropPayload(
+						"DND_DEMO",
+						unsafe.Pointer(&data),
+						0,
+					)
 					g.Label("10").Build()
 					imgui.EndDragDropSource()
 				}

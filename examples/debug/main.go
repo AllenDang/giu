@@ -6,7 +6,7 @@ import (
 )
 
 func loop() {
-	giu.Window("Hello world!").Layout(
+	giu.SingleWindow().Layout(
 		giu.Custom(func() {
 			imgui.Text("hi")
 		}),

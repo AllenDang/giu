@@ -111,7 +111,7 @@ func loop() {
 
 		g.ColorEdit("<- Click the black square. I'm changing a color for you##colorChanger", col).
 			Size(100).
-			Flags(g.ColorEditFlagsHEX).
+			Flags(g.ColorEditFlagsDisplayHex).
 			OnChange(func() {
 				fmt.Println(col)
 			}),

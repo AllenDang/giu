@@ -140,22 +140,21 @@ const (
 // TODO: consider if it is necessary and ad constants
 type Modifier imgui.Key
 
-//modifier keys.
-//const (
-//	ModNone     Modifier = iota
-//	ModControl  Modifier = Modifier(imgui.ModControl)
-//	ModAlt      Modifier = Modifier(imgui.ModAlt)
-//	ModSuper    Modifier = Modifier(imgui.ModSuper)
-//	ModShift    Modifier = Modifier(imgui.ModShift)
-//	ModCapsLock Modifier = Modifier(imgui.ModCapsLock)
-//	ModNumLock  Modifier = Modifier(imgui.ModNumLock)
-//)
+// modifier keys.
+const (
+	ModNone Modifier = iota
+	ModControl
+	ModAlt
+	ModSuper
+	ModShift
+	ModCapsLock
+	ModNumLock
+)
 
 type Action int
 
 const (
-	Press Action = iota
-	//	Release Action = Action(imgui.Release)
-	//	Press   Action = Action(imgui.Press)
-	//	Repeat  Action = Action(imgui.Repeat)
+	Release Action = iota
+	Press
+	Repeat
 )

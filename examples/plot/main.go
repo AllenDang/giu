@@ -31,7 +31,7 @@ func loop() {
 			g.Line("Plot Line2", linedata2),
 			g.Scatter("Scatter 散点图", scatterdata),
 		),
-		g.Plot("Plot Time Axe 时间线").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).XAxeFlags(g.PlotAxisFlagsTime).Plots(
+		g.Plot("Plot Time Axe 时间线").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).Plots(
 			g.LineXY("Time Line 时间线", timeDataX, timeDataY),
 			g.ScatterXY("Time Scatter 时间散点图", timeDataX, timeScatterY),
 		),
@@ -45,7 +45,7 @@ func loop() {
 					g.BarH("Plot Bar H 水平柱状图", bardata3),
 				),
 			g.Plot("Pie Chart").
-				Flags(g.PlotFlagsEqual|g.PlotFlagsNoMousePos).
+				Flags(g.PlotFlagsEqual).
 				Size(250, 250).
 				XAxeFlags(g.PlotAxisFlagsNoDecorations).
 				YAxeFlags(g.PlotAxisFlagsNoDecorations, 0, 0).

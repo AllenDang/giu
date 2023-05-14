@@ -302,65 +302,58 @@ type ColorEditFlags int
 
 // list of color edit flags.
 const (
-// 	// ColorEditFlagsNone default = 0.
-// 	ColorEditFlagsNone ColorEditFlags = imgui.ColorEditFlagsNone
-// ColorEditFlagsNoAlpha ignores Alpha component (read 3 components from the input pointer).
-// 	ColorEditFlagsNoAlpha ColorEditFlags = imgui.ColorEditFlagsNoAlpha
-// ColorEditFlagsNoPicker disables picker when clicking on colored square.
-// 	ColorEditFlagsNoPicker ColorEditFlags = imgui.ColorEditFlagsNoPicker
-// ColorEditFlagsNoOptions disables toggling options menu when right-clicking on inputs/small preview.
-// 	ColorEditFlagsNoOptions ColorEditFlags = imgui.ColorEditFlagsNoOptions
-// ColorEditFlagsNoSmallPreview disables colored square preview next to the inputs. (e.g. to show only the inputs).
-// 	ColorEditFlagsNoSmallPreview ColorEditFlags = imgui.ColorEditFlagsNoSmallPreview
-// ColorEditFlagsNoInputs disables inputs sliders/text widgets (e.g. to show only the small preview colored square).
-// 	ColorEditFlagsNoInputs ColorEditFlags = imgui.ColorEditFlagsNoInputs
-// ColorEditFlagsNoTooltip disables tooltip when hovering the preview.
-// 	ColorEditFlagsNoTooltip ColorEditFlags = imgui.ColorEditFlagsNoTooltip
-// ColorEditFlagsNoLabel disables display of inline text label (the label is still forwarded to the tooltip and picker).
-// 	ColorEditFlagsNoLabel ColorEditFlags = imgui.ColorEditFlagsNoLabel
-// ColorEditFlagsNoDragDrop disables drag and drop target. ColorButton: disable drag and drop source.
-// 	ColorEditFlagsNoDragDrop ColorEditFlags = imgui.ColorEditFlagsNoDragDrop
-
-// User Options (right-click on widget to change some of them). You can set application defaults using SetColorEditOptions().
-// The idea is that you probably don't want to override them in most of your calls, let the user choose and/or call SetColorEditOptions()
-// during startup.
-
-// ColorEditFlagsAlphaBar shows vertical alpha bar/gradient in picker.
-//
-//	ColorEditFlagsAlphaBar ColorEditFlags = imgui.ColorEditFlagsAlphaBar
-//
-// ColorEditFlagsAlphaPreview displays preview as a transparent color over a checkerboard, instead of opaque.
-//
-//	ColorEditFlagsAlphaPreview ColorEditFlags = imgui.ColorEditFlagsAlphaPreview
-//
-// ColorEditFlagsAlphaPreviewHalf displays half opaque / half checkerboard, instead of opaque.
-//
-//	ColorEditFlagsAlphaPreviewHalf ColorEditFlags = imgui.ColorEditFlagsAlphaPreviewHalf
-//	// ColorEditFlagsHDR = (WIP) currently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use
-//
-// ImGuiColorEditFlags_Float flag as well).
-//
-//	ColorEditFlagsHDR ColorEditFlags = imgui.ColorEditFlagsHDR
-//
-// ColorEditFlagsRGB sets the format as RGB.
-//
-//	ColorEditFlagsRGB ColorEditFlags = imgui.ColorEditFlagsRGB
-//
-// ColorEditFlagsHSV sets the format as HSV.
-//
-//	ColorEditFlagsHSV ColorEditFlags = imgui.ColorEditFlagsHSV
-//
-// ColorEditFlagsHEX sets the format as HEX.
-//
-//	ColorEditFlagsHEX ColorEditFlags = imgui.ColorEditFlagsHEX
-//
-// ColorEditFlagsUint8 _display_ values formatted as 0..255.
-//
-//	ColorEditFlagsUint8 ColorEditFlags = imgui.ColorEditFlagsUint8
-//
-// ColorEditFlagsFloat _display_ values formatted as 0.0f..1.0f floats instead of 0..255 integers. No round-trip of value via integers.
-//
-//	ColorEditFlagsFloat ColorEditFlags = imgui.ColorEditFlagsFloat
+	ColorEditFlagsNone ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNone)
+	//              // ColorEdit, ColorPicker, ColorButton: ignore Alpha component (will only read 3 components from the input pointer).
+	ColorEditFlagsNoAlpha ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNoAlpha)
+	//              // ColorEdit: disable picker when clicking on color square.
+	ColorEditFlagsNoPicker ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNoPicker)
+	//              // ColorEdit: disable toggling options menu when right-clicking on inputs/small preview.
+	ColorEditFlagsNoOptions ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNoOptions)
+	//              // ColorEdit, ColorPicker: disable color square preview next to the inputs. (e.g. to show only the inputs)
+	ColorEditFlagsNoSmallPreview ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNoSmallPreview)
+	//              // ColorEdit, ColorPicker: disable inputs sliders/text widgets (e.g. to show only the small preview color square).
+	ColorEditFlagsNoInputs ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNoInputs)
+	//              // ColorEdit, ColorPicker, ColorButton: disable tooltip when hovering the preview.
+	ColorEditFlagsNoTooltip ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNoTooltip)
+	//              // ColorEdit, ColorPicker: disable display of inline text label (the label is still forwarded to the tooltip and picker).
+	ColorEditFlagsNoLabel ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNoLabel)
+	//              // ColorPicker: disable bigger color preview on right side of the picker, use small color square preview instead.
+	ColorEditFlagsNoSidePreview ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNoSidePreview)
+	//              // ColorEdit: disable drag and drop target. ColorButton: disable drag and drop source.
+	ColorEditFlagsNoDragDrop ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNoDragDrop)
+	//              // ColorButton: disable border (which is enforced by default)
+	ColorEditFlagsNoBorder ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsNoBorder)
+	//              // ColorEdit, ColorPicker: show vertical alpha bar/gradient in picker.
+	ColorEditFlagsAlphaBar ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaBar)
+	//              // ColorEdit, ColorPicker, ColorButton: display preview as a transparent color over a checkerboard, instead of opaque.
+	ColorEditFlagsAlphaPreview ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaPreview)
+	//              // ColorEdit, ColorPicker, ColorButton: display half opaque / half checkerboard, instead of opaque.
+	ColorEditFlagsAlphaPreviewHalf ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaPreviewHalf)
+	//              // (WIP) ColorEdit: Currently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use ImGuiColorEditFlags_Float flag as well).
+	ColorEditFlagsHDR ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsHDR)
+	// [Display]    // ColorEdit: override _display_ type among RGB/HSV/Hex. ColorPicker: select any combination using one or more of RGB/HSV/Hex.
+	ColorEditFlagsDisplayRGB ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsDisplayRGB)
+	// [Display]    // "
+	ColorEditFlagsDisplayHSV ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsDisplayHSV)
+	// [Display]    // "
+	ColorEditFlagsDisplayHex ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsDisplayHex)
+	// [DataType]   // ColorEdit, ColorPicker, ColorButton: _display_ values formatted as 0..255.
+	ColorEditFlagsUint8 ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsUint8)
+	// [DataType]   // ColorEdit, ColorPicker, ColorButton: _display_ values formatted as 0.0f..1.0f floats instead of 0..255 integers. No round-trip of value via integers.
+	ColorEditFlagsFloat ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsFloat)
+	// [Picker]     // ColorPicker: bar for Hue, rectangle for Sat/Value.
+	ColorEditFlagsPickerHueBar ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsPickerHueBar)
+	// [Picker]     // ColorPicker: wheel for Hue, triangle for Sat/Value.
+	ColorEditFlagsPickerHueWheel ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsPickerHueWheel)
+	// [Input]      // ColorEdit, ColorPicker: input and output data in RGB format.
+	ColorEditFlagsInputRGB ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsInputRGB)
+	// [Input]      // ColorEdit, ColorPicker: input and output data in HSV format.
+	ColorEditFlagsInputHSV       ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsInputHSV)
+	ColorEditFlagsDefaultOptions ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsDefaultOptions)
+	ColorEditFlagsDisplayMask    ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsDisplayMask)
+	ColorEditFlagsDataTypeMask   ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsDataTypeMask)
+	ColorEditFlagsPickerMask     ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsPickerMask)
+	ColorEditFlagsInputMask      ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsInputMask)
 )
 
 // TableFlags represents table flags.
