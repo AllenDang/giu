@@ -3,6 +3,7 @@ package giu
 import (
 	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/faiface/mainthread"
+	"golang.org/x/image/colornames"
 	"image"
 	"image/color"
 )
@@ -86,14 +87,12 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	// TODO
 	// p.SetSizeChangeCallback(mw.sizeChange)
 
-	mw.setTheme()
+	mw.SetBgColor(colornames.Black)
 
 	return mw
 }
 
-func (w *MasterWindow) setTheme() {
-	// style := imgui.CurrentStyle()
-
+func (w *MasterWindow) setTheme() (fin func()) {
 	// Scale DPI in windows
 	// TODO
 	//if runtime.GOOS == "windows" {
@@ -105,56 +104,59 @@ func (w *MasterWindow) setTheme() {
 	imgui.PushStyleVarFloat(imgui.StyleVarGrabRounding, 4)
 	imgui.PushStyleVarFloat(imgui.StyleVarFrameBorderSize, 1)
 
-	// TODO: idk why but I can't find these functions...
-	// style.SetColor(imgui.ColText, imgui.Vec4{X: 0.95, Y: 0.96, Z: 0.98, W: 1.00})
-	// style.SetColor(imgui.ColTextDisabled, imgui.Vec4{X: 0.36, Y: 0.42, Z: 0.47, W: 1.00})
-	// style.SetColor(imgui.ColWindowBg, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
-	// style.SetColor(imgui.ColChildBg, imgui.Vec4{X: 0.15, Y: 0.18, Z: 0.22, W: 1.00})
-	// style.SetColor(imgui.ColPopupBg, imgui.Vec4{X: 0.08, Y: 0.08, Z: 0.08, W: 0.94})
-	// style.SetColor(imgui.ColBorder, imgui.Vec4{X: 0.08, Y: 0.10, Z: 0.12, W: 1.00})
-	// style.SetColor(imgui.ColBorderShadow, imgui.Vec4{X: 0.00, Y: 0.00, Z: 0.00, W: 0.00})
-	// style.SetColor(imgui.ColFrameBg, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
-	// style.SetColor(imgui.ColFrameBgHovered, imgui.Vec4{X: 0.12, Y: 0.20, Z: 0.28, W: 1.00})
-	// style.SetColor(imgui.ColFrameBgActive, imgui.Vec4{X: 0.09, Y: 0.12, Z: 0.14, W: 1.00})
-	// style.SetColor(imgui.ColTitleBg, imgui.Vec4{X: 0.09, Y: 0.12, Z: 0.14, W: 0.65})
-	// style.SetColor(imgui.ColTitleBgActive, imgui.Vec4{X: 0.08, Y: 0.10, Z: 0.12, W: 1.00})
-	// style.SetColor(imgui.ColTitleBgCollapsed, imgui.Vec4{X: 0.00, Y: 0.00, Z: 0.00, W: 0.51})
-	// style.SetColor(imgui.ColMenuBarBg, imgui.Vec4{X: 0.15, Y: 0.18, Z: 0.22, W: 1.00})
-	// style.SetColor(imgui.ColScrollbarBg, imgui.Vec4{X: 0.02, Y: 0.02, Z: 0.02, W: 0.39})
-	// style.SetColor(imgui.ColScrollbarGrab, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
-	// style.SetColor(imgui.ColScrollbarGrabHovered, imgui.Vec4{X: 0.18, Y: 0.22, Z: 0.25, W: 1.00})
-	// style.SetColor(imgui.ColScrollbarGrabActive, imgui.Vec4{X: 0.09, Y: 0.21, Z: 0.31, W: 1.00})
-	// style.SetColor(imgui.ColCheckMark, imgui.Vec4{X: 0.28, Y: 0.56, Z: 1.00, W: 1.00})
-	// style.SetColor(imgui.ColSliderGrab, imgui.Vec4{X: 0.28, Y: 0.56, Z: 1.00, W: 1.00})
-	// style.SetColor(imgui.ColSliderGrabActive, imgui.Vec4{X: 0.37, Y: 0.61, Z: 1.00, W: 1.00})
-	// style.SetColor(imgui.ColButton, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
-	// style.SetColor(imgui.ColButtonHovered, imgui.Vec4{X: 0.28, Y: 0.56, Z: 1.00, W: 1.00})
-	// style.SetColor(imgui.ColButtonActive, imgui.Vec4{X: 0.06, Y: 0.53, Z: 0.98, W: 1.00})
-	// style.SetColor(imgui.ColHeader, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 0.55})
-	// style.SetColor(imgui.ColHeaderHovered, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.80})
-	// style.SetColor(imgui.ColHeaderActive, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 1.00})
-	// style.SetColor(imgui.ColSeparator, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
-	// style.SetColor(imgui.ColSeparatorHovered, imgui.Vec4{X: 0.10, Y: 0.40, Z: 0.75, W: 0.78})
-	// style.SetColor(imgui.ColSeparatorActive, imgui.Vec4{X: 0.10, Y: 0.40, Z: 0.75, W: 1.00})
-	// style.SetColor(imgui.ColResizeGrip, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.25})
-	// style.SetColor(imgui.ColResizeGripHovered, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.67})
-	// style.SetColor(imgui.ColResizeGripActive, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.95})
-	// style.SetColor(imgui.ColTab, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
-	// style.SetColor(imgui.ColTabHovered, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.80})
-	// style.SetColor(imgui.ColTabActive, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
-	// style.SetColor(imgui.ColTabUnfocused, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
-	// style.SetColor(imgui.ColTabUnfocusedActive, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
-	// style.SetColor(imgui.ColPlotLines, imgui.Vec4{X: 0.61, Y: 0.61, Z: 0.61, W: 1.00})
-	// style.SetColor(imgui.ColPlotLinesHovered, imgui.Vec4{X: 1.00, Y: 0.43, Z: 0.35, W: 1.00})
-	// style.SetColor(imgui.ColPlotHistogram, imgui.Vec4{X: 0.90, Y: 0.70, Z: 0.00, W: 1.00})
-	// style.SetColor(imgui.ColPlotHistogramHovered, imgui.Vec4{X: 1.00, Y: 0.60, Z: 0.00, W: 1.00})
-	// style.SetColor(imgui.ColTextSelectedBg, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.35})
-	// style.SetColor(imgui.ColDragDropTarget, imgui.Vec4{X: 1.00, Y: 1.00, Z: 0.00, W: 0.90})
-	// style.SetColor(imgui.ColNavHighlight, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 1.00})
-	// style.SetColor(imgui.ColNavWindowingHighlight, imgui.Vec4{X: 1.00, Y: 1.00, Z: 1.00, W: 0.70})
-	// style.SetColor(imgui.ColTableHeaderBg, imgui.Vec4{X: 0.12, Y: 0.20, Z: 0.28, W: 1.00})
-	// style.SetColor(imgui.ColTableBorderStrong, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
-	// style.SetColor(imgui.ColTableBorderLight, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 0.70})
+	imgui.PushStyleColorVec4(imgui.ColText, imgui.Vec4{X: 0.95, Y: 0.96, Z: 0.98, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTextDisabled, imgui.Vec4{X: 0.36, Y: 0.42, Z: 0.47, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColWindowBg, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColChildBg, imgui.Vec4{X: 0.15, Y: 0.18, Z: 0.22, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColPopupBg, imgui.Vec4{X: 0.08, Y: 0.08, Z: 0.08, W: 0.94})
+	imgui.PushStyleColorVec4(imgui.ColBorder, imgui.Vec4{X: 0.08, Y: 0.10, Z: 0.12, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColBorderShadow, imgui.Vec4{X: 0.00, Y: 0.00, Z: 0.00, W: 0.00})
+	imgui.PushStyleColorVec4(imgui.ColFrameBg, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColFrameBgHovered, imgui.Vec4{X: 0.12, Y: 0.20, Z: 0.28, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColFrameBgActive, imgui.Vec4{X: 0.09, Y: 0.12, Z: 0.14, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTitleBg, imgui.Vec4{X: 0.09, Y: 0.12, Z: 0.14, W: 0.65})
+	imgui.PushStyleColorVec4(imgui.ColTitleBgActive, imgui.Vec4{X: 0.08, Y: 0.10, Z: 0.12, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTitleBgCollapsed, imgui.Vec4{X: 0.00, Y: 0.00, Z: 0.00, W: 0.51})
+	imgui.PushStyleColorVec4(imgui.ColMenuBarBg, imgui.Vec4{X: 0.15, Y: 0.18, Z: 0.22, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColScrollbarBg, imgui.Vec4{X: 0.02, Y: 0.02, Z: 0.02, W: 0.39})
+	imgui.PushStyleColorVec4(imgui.ColScrollbarGrab, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColScrollbarGrabHovered, imgui.Vec4{X: 0.18, Y: 0.22, Z: 0.25, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColScrollbarGrabActive, imgui.Vec4{X: 0.09, Y: 0.21, Z: 0.31, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColCheckMark, imgui.Vec4{X: 0.28, Y: 0.56, Z: 1.00, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColSliderGrab, imgui.Vec4{X: 0.28, Y: 0.56, Z: 1.00, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColSliderGrabActive, imgui.Vec4{X: 0.37, Y: 0.61, Z: 1.00, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColButton, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColButtonHovered, imgui.Vec4{X: 0.28, Y: 0.56, Z: 1.00, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColButtonActive, imgui.Vec4{X: 0.06, Y: 0.53, Z: 0.98, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColHeader, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 0.55})
+	imgui.PushStyleColorVec4(imgui.ColHeaderHovered, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.80})
+	imgui.PushStyleColorVec4(imgui.ColHeaderActive, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColSeparator, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColSeparatorHovered, imgui.Vec4{X: 0.10, Y: 0.40, Z: 0.75, W: 0.78})
+	imgui.PushStyleColorVec4(imgui.ColSeparatorActive, imgui.Vec4{X: 0.10, Y: 0.40, Z: 0.75, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColResizeGrip, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.25})
+	imgui.PushStyleColorVec4(imgui.ColResizeGripHovered, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.67})
+	imgui.PushStyleColorVec4(imgui.ColResizeGripActive, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.95})
+	imgui.PushStyleColorVec4(imgui.ColTab, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTabHovered, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.80})
+	imgui.PushStyleColorVec4(imgui.ColTabActive, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTabUnfocused, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTabUnfocusedActive, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColPlotLines, imgui.Vec4{X: 0.61, Y: 0.61, Z: 0.61, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColPlotLinesHovered, imgui.Vec4{X: 1.00, Y: 0.43, Z: 0.35, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColPlotHistogram, imgui.Vec4{X: 0.90, Y: 0.70, Z: 0.00, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColPlotHistogramHovered, imgui.Vec4{X: 1.00, Y: 0.60, Z: 0.00, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTextSelectedBg, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.35})
+	imgui.PushStyleColorVec4(imgui.ColDragDropTarget, imgui.Vec4{X: 1.00, Y: 1.00, Z: 0.00, W: 0.90})
+	imgui.PushStyleColorVec4(imgui.ColNavHighlight, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColNavWindowingHighlight, imgui.Vec4{X: 1.00, Y: 1.00, Z: 1.00, W: 0.70})
+	imgui.PushStyleColorVec4(imgui.ColTableHeaderBg, imgui.Vec4{X: 0.12, Y: 0.20, Z: 0.28, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTableBorderStrong, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTableBorderLight, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 0.70})
+
+	return func() {
+		imgui.PopStyleColorV(48)
+	}
 }
 
 func (w *MasterWindow) sizeChange(width, height int) {
@@ -189,6 +191,9 @@ func (w *MasterWindow) beforeDestroy() {
 }
 
 func (w *MasterWindow) render() {
+	fin := w.setTheme()
+	defer fin()
+
 	mainStylesheet := Style()
 	if s, found := Context.cssStylesheet["main"]; found {
 		mainStylesheet = s
