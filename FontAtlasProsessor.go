@@ -242,7 +242,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	}
 
 	fonts := Context.IO().Fonts()
-	fonts.Clear()
+	//fonts.Clear() /// TODO: I'm commenting this out, because it produces panic.
 
 	var sb strings.Builder
 
