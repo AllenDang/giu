@@ -1,18 +1,14 @@
 package giu
 
 import (
-	"fmt"
-	"image"
-	"runtime"
-
 	"github.com/AllenDang/cimgui-go"
-	"github.com/faiface/mainthread"
+	"image"
 )
 
 // Texture represents imgui.TextureID.
 // It is base unit of images in imgui.
 type Texture struct {
-	id imgui.TextureID
+	tex *imgui.Texture
 }
 
 type textureLoadRequest struct {
@@ -35,46 +31,15 @@ func EnqueueNewTextureFromRgba(rgba image.Image, loadCb func(t *Texture)) {
 
 // NewTextureFromRgba creates a new texture from image.Image and, when it is done, calls loadCallback(loadedTexture).
 func NewTextureFromRgba(rgba image.Image, loadCallback func(*Texture)) {
-	loadTexture(rgba, loadCallback)
-}
-
-func loadTexture(rgba image.Image, loadCallback func(*Texture)) {
 	go func() {
-		Update()
-
-		result := mainthread.CallVal(func() any {
-			// TODO: there was err here, but it was removed in cimgui-go - need to vaidate texture
-			texID := Context.backend.CreateTextureRgba(ImageToRgba(rgba), rgba.Bounds().Dx(), rgba.Bounds().Dy())
-			return &loadImageResult{id: texID, err: nil}
+		tex := imgui.NewTextureFromRgba(ImageToRgba(rgba))
+		loadCallback(&Texture{
+			tex,
 		})
-
-		tid, ok := result.(*loadImageResult)
-
-		switch {
-		case !ok:
-			panic("giu: NewTextureFromRgba: unexpected error occurred")
-		case tid.err != nil:
-			panic(fmt.Sprintf("giu: NewTextureFromRgba: error loading texture: %v", tid.err))
-		}
-
-		texture := Texture{id: tid.id}
-
-		// Set finalizer
-		runtime.SetFinalizer(&texture, (*Texture).release)
-
-		// execute callback
-		loadCallback(&texture)
 	}()
 }
 
-// ToTexture converts imgui.TextureID to Texture.
-func ToTexture(textureID imgui.TextureID) *Texture {
-	return &Texture{id: textureID}
-}
-
-func (t *Texture) release() {
-	Update()
-	mainthread.Call(func() {
-		Context.backend.DeleteTexture(t.id)
-	})
+// ToTexture converts imgui.Texture to Texture.
+func ToTexture(texture *imgui.Texture) *Texture {
+	return &Texture{tex: texture}
 }

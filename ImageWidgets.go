@@ -84,7 +84,7 @@ func (i *ImageWidget) Build() {
 		size.Y = rect.Y
 	}
 
-	if i.texture == nil || i.texture.id == nil {
+	if i.texture == nil || i.texture.tex == nil {
 		Dummy(size.X, size.Y).Build()
 		return
 	}
@@ -102,7 +102,7 @@ func (i *ImageWidget) Build() {
 		}
 	}
 
-	imgui.ImageV(i.texture.id, size, i.uv0, i.uv1, ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
+	imgui.ImageV(i.texture.tex.ID(), size, i.uv0, i.uv1, ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
 }
 
 type imageState struct {

@@ -154,9 +154,9 @@ func (c *Canvas) PathBezierCubicCurveTo(p1, p2, p3 image.Point, numSegments int3
 }
 
 func (c *Canvas) AddImage(texture *Texture, pMin, pMax image.Point) {
-	c.DrawList.AddImage(texture.id, ToVec2(pMin), ToVec2(pMax))
+	c.DrawList.AddImage(texture.tex.ID(), ToVec2(pMin), ToVec2(pMax))
 }
 
 func (c *Canvas) AddImageV(texture *Texture, pMin, pMax, uvMin, uvMax image.Point, col color.Color) {
-	c.DrawList.AddImageV(texture.id, ToVec2(pMin), ToVec2(pMax), ToVec2(uvMin), ToVec2(uvMax), ColorToUint(col))
+	c.DrawList.AddImageV(texture.tex.ID(), ToVec2(pMin), ToVec2(pMax), ToVec2(uvMin), ToVec2(uvMax), ColorToUint(col))
 }

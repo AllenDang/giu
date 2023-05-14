@@ -224,13 +224,13 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 
 // Build implements Widget interface.
 func (b *ImageButtonWidget) Build() {
-	if b.texture == nil || b.texture.id == nil {
+	if b.texture == nil || b.texture.tex == nil {
 		return
 	}
 
 	if imgui.ImageButtonV(
-		fmt.Sprintf("%v", b.texture.id),
-		b.texture.id,
+		fmt.Sprintf("%v", b.texture.tex.ID()),
+		b.texture.tex.ID(),
 		imgui.Vec2{X: b.width, Y: b.height},
 		ToVec2(b.uv0), ToVec2(b.uv1),
 		ToVec4Color(b.bgColor),
