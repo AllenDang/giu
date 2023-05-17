@@ -209,6 +209,7 @@ func (t *TableWidget) Build() {
 	}
 }
 
+// TreeTableRowWidget is a row in TreeTableWidget.
 type TreeTableRowWidget struct {
 	label    string
 	flags    TreeNodeFlags
@@ -216,6 +217,7 @@ type TreeTableRowWidget struct {
 	children []*TreeTableRowWidget
 }
 
+// TreeTableRow creates new TreeTableRowWidget.
 func TreeTableRow(label string, widgets ...Widget) *TreeTableRowWidget {
 	return &TreeTableRowWidget{
 		label:  GenAutoID(label),
@@ -223,11 +225,13 @@ func TreeTableRow(label string, widgets ...Widget) *TreeTableRowWidget {
 	}
 }
 
+// Children sets child rows of tree row.
 func (ttr *TreeTableRowWidget) Children(rows ...*TreeTableRowWidget) *TreeTableRowWidget {
 	ttr.children = rows
 	return ttr
 }
 
+// Flags sets row's flags.
 func (ttr *TreeTableRowWidget) Flags(flags TreeNodeFlags) *TreeTableRowWidget {
 	ttr.flags = flags
 	return ttr
@@ -269,6 +273,7 @@ func (ttr *TreeTableRowWidget) BuildTreeTableRow() {
 
 var _ Widget = &TreeTableWidget{}
 
+// TreeTableWidget is a table that consists of TreeNodeWidgets.
 type TreeTableWidget struct {
 	id           string
 	flags        TableFlags
@@ -279,6 +284,7 @@ type TreeTableWidget struct {
 	freezeColumn int
 }
 
+// TreeTable creates new TreeTableWidget.
 func TreeTable() *TreeTableWidget {
 	return &TreeTableWidget{
 		id:      GenAutoID("TreeTable"),
@@ -296,21 +302,25 @@ func (tt *TreeTableWidget) Freeze(col, row int) *TreeTableWidget {
 	return tt
 }
 
+// Size sets size of the table.
 func (tt *TreeTableWidget) Size(width, height float32) *TreeTableWidget {
 	tt.size = imgui.Vec2{X: width, Y: height}
 	return tt
 }
 
+// Flags sets table flags.
 func (tt *TreeTableWidget) Flags(flags TableFlags) *TreeTableWidget {
 	tt.flags = flags
 	return tt
 }
 
+// Columns sets table's columns.
 func (tt *TreeTableWidget) Columns(cols ...*TableColumnWidget) *TreeTableWidget {
 	tt.columns = cols
 	return tt
 }
 
+// Rows sets TreeTable rows.
 func (tt *TreeTableWidget) Rows(rows ...*TreeTableRowWidget) *TreeTableWidget {
 	tt.rows = rows
 	return tt
