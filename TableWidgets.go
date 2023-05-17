@@ -208,3 +208,152 @@ func (t *TableWidget) Build() {
 		imgui.EndTable()
 	}
 }
+
+// TreeTableRowWidget is a row in TreeTableWidget.
+type TreeTableRowWidget struct {
+	label    string
+	flags    TreeNodeFlags
+	layout   Layout
+	children []*TreeTableRowWidget
+}
+
+// TreeTableRow creates new TreeTableRowWidget.
+func TreeTableRow(label string, widgets ...Widget) *TreeTableRowWidget {
+	return &TreeTableRowWidget{
+		label:  GenAutoID(label),
+		layout: widgets,
+	}
+}
+
+// Children sets child rows of tree row.
+func (ttr *TreeTableRowWidget) Children(rows ...*TreeTableRowWidget) *TreeTableRowWidget {
+	ttr.children = rows
+	return ttr
+}
+
+// Flags sets row's flags.
+func (ttr *TreeTableRowWidget) Flags(flags TreeNodeFlags) *TreeTableRowWidget {
+	ttr.flags = flags
+	return ttr
+}
+
+// BuildTreeTableRow executes table row building steps.
+func (ttr *TreeTableRowWidget) BuildTreeTableRow() {
+	imgui.TableNextRow(0, 0)
+	imgui.TableNextColumn()
+
+	open := false
+	if len(ttr.children) > 0 {
+		open = imgui.TreeNodeV(Context.FontAtlas.RegisterString(ttr.label), int(ttr.flags))
+	} else {
+		ttr.flags |= TreeNodeFlagsLeaf | TreeNodeFlagsNoTreePushOnOpen
+		imgui.TreeNodeV(Context.FontAtlas.RegisterString(ttr.label), int(ttr.flags))
+	}
+
+	for _, w := range ttr.layout {
+		switch w.(type) {
+		case *TooltipWidget,
+			*ContextMenuWidget, *PopupModalWidget:
+			// noop
+		default:
+			imgui.TableNextColumn()
+		}
+
+		w.Build()
+	}
+
+	if len(ttr.children) > 0 && open {
+		for _, c := range ttr.children {
+			c.BuildTreeTableRow()
+		}
+
+		imgui.TreePop()
+	}
+}
+
+var _ Widget = &TreeTableWidget{}
+
+// TreeTableWidget is a table that consists of TreeNodeWidgets.
+type TreeTableWidget struct {
+	id           string
+	flags        TableFlags
+	size         imgui.Vec2
+	columns      []*TableColumnWidget
+	rows         []*TreeTableRowWidget
+	freezeRow    int
+	freezeColumn int
+}
+
+// TreeTable creates new TreeTableWidget.
+func TreeTable() *TreeTableWidget {
+	return &TreeTableWidget{
+		id:      GenAutoID("TreeTable"),
+		flags:   TableFlagsBordersV | TableFlagsBordersOuterH | TableFlagsResizable | TableFlagsRowBg | TableFlagsNoBordersInBody,
+		rows:    nil,
+		columns: nil,
+	}
+}
+
+// Freeze columns/rows so they stay visible when scrolled.
+func (tt *TreeTableWidget) Freeze(col, row int) *TreeTableWidget {
+	tt.freezeColumn = col
+	tt.freezeRow = row
+
+	return tt
+}
+
+// Size sets size of the table.
+func (tt *TreeTableWidget) Size(width, height float32) *TreeTableWidget {
+	tt.size = imgui.Vec2{X: width, Y: height}
+	return tt
+}
+
+// Flags sets table flags.
+func (tt *TreeTableWidget) Flags(flags TableFlags) *TreeTableWidget {
+	tt.flags = flags
+	return tt
+}
+
+// Columns sets table's columns.
+func (tt *TreeTableWidget) Columns(cols ...*TableColumnWidget) *TreeTableWidget {
+	tt.columns = cols
+	return tt
+}
+
+// Rows sets TreeTable rows.
+func (tt *TreeTableWidget) Rows(rows ...*TreeTableRowWidget) *TreeTableWidget {
+	tt.rows = rows
+	return tt
+}
+
+// Build implements Widget interface.
+func (tt *TreeTableWidget) Build() {
+	if len(tt.rows) == 0 {
+		return
+	}
+
+	colCount := len(tt.columns)
+	if colCount == 0 {
+		colCount = len(tt.rows[0].layout) + 1
+	}
+
+	if imgui.BeginTable(tt.id, colCount, imgui.TableFlags(tt.flags), tt.size, 0) {
+		if tt.freezeColumn >= 0 && tt.freezeRow >= 0 {
+			imgui.TableSetupScrollFreeze(tt.freezeColumn, tt.freezeRow)
+		}
+
+		if len(tt.columns) > 0 {
+			for _, col := range tt.columns {
+				col.BuildTableColumn()
+			}
+
+			imgui.TableHeadersRow()
+		}
+
+		for _, row := range tt.rows {
+			row.BuildTreeTableRow()
+		}
+
+		imgui.EndTable()
+	}
+}
