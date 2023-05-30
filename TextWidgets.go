@@ -271,7 +271,7 @@ func (i *InputTextWidget) Build() {
 		imgui.EndTooltip()
 
 		// Press enter will replace value string with first match candidate
-		if IsKeyPressed(KeyEnter) {
+		if IsKeyPressed(KeyEnter) || IsKeyPressed(KeyTab) {
 			*i.value = state.autoCompleteCandidates[0].Str
 			state.autoCompleteCandidates = nil
 		}
