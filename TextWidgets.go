@@ -259,7 +259,7 @@ func (i *InputTextWidget) Build() {
 	}
 
 	// Draw autocomplete list
-	if len(state.autoCompleteCandidates) > 0 {
+	if len(state.autoCompleteCandidates) > 0 && imgui.IsItemFocused() {
 		labels := make(Layout, len(state.autoCompleteCandidates))
 		for i, m := range state.autoCompleteCandidates {
 			labels[i] = Label(m.Str)
@@ -271,7 +271,7 @@ func (i *InputTextWidget) Build() {
 		imgui.EndTooltip()
 
 		// Press enter will replace value string with first match candidate
-		if IsKeyPressed(KeyEnter) {
+		if IsKeyPressed(KeyEnter) || IsKeyPressed(KeyTab) {
 			*i.value = state.autoCompleteCandidates[0].Str
 			state.autoCompleteCandidates = nil
 		}
