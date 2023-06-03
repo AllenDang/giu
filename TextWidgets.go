@@ -6,6 +6,7 @@ import (
 
 	"github.com/AllenDang/imgui-go"
 	"github.com/sahilm/fuzzy"
+	"golang.org/x/image/colornames"
 )
 
 var _ Widget = &InputTextMultilineWidget{}
@@ -142,11 +143,13 @@ var _ Disposable = &inputTextState{}
 
 type inputTextState struct {
 	autoCompleteCandidates fuzzy.Matches
+	currentIdx             int
 }
 
 // Dispose implements disposable interface.
 func (s *inputTextState) Dispose() {
 	s.autoCompleteCandidates = nil
+	s.currentIdx = 0
 }
 
 var _ Widget = &InputTextWidget{}
@@ -263,6 +266,13 @@ func (i *InputTextWidget) Build() {
 		labels := make(Layout, len(state.autoCompleteCandidates))
 		for i, m := range state.autoCompleteCandidates {
 			labels[i] = Label(m.Str)
+			if i == state.currentIdx {
+				labels[i] = Layout{
+					Custom(func() { PushStyleColor(StyleColorText, colornames.Blue) }),
+					labels[i],
+					Custom(func() { PopStyleColor() }),
+				}
+			}
 		}
 
 		SetNextWindowPos(imgui.GetItemRectMin().X, imgui.GetItemRectMax().Y)
