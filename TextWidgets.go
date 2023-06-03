@@ -252,12 +252,10 @@ func (i *InputTextWidget) Build() {
 		// Enable auto complete
 		if len(i.candidates) > 0 {
 			matches := fuzzy.Find(*i.value, i.candidates)
-			if matches.Len() > 0 {
-				size := int(math.Min(5, float64(matches.Len())))
-				matches = matches[:size]
+			size := int(math.Min(5, float64(matches.Len())))
+			matches = matches[:size]
 
-				state.autoCompleteCandidates = matches
-			}
+			state.autoCompleteCandidates = matches
 		}
 	}
 
