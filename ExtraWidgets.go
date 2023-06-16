@@ -98,7 +98,12 @@ func (h *SplitterWidget) Build() {
 	}
 
 	if imgui.IsItemHovered() {
-		imgui.SetMouseCursor(imgui.MouseCursorResizeNS)
+		switch h.direction {
+		case DirectionHorizontal:
+			imgui.SetMouseCursor(imgui.MouseCursorResizeNS)
+		case DirectionVertical:
+			imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
+		}
 		c = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
 	}
 
