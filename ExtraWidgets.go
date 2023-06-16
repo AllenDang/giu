@@ -88,9 +88,9 @@ func (h *SplitterWidget) Build() {
 
 	if imgui.IsItemActive() {
 		switch h.direction {
-		case DirectionVertical:
-			*(h.delta) = imgui.CurrentIO().GetMouseDelta().Y
 		case DirectionHorizontal:
+			*(h.delta) = imgui.CurrentIO().GetMouseDelta().Y
+		case DirectionVertical:
 			*(h.delta) = imgui.CurrentIO().GetMouseDelta().X
 		}
 	} else {
