@@ -247,6 +247,16 @@ func ListBox(id string, items []string) *ListBoxWidget {
 	}
 }
 
+func (l *ListBoxWidget) SelectedIndex() int {
+	var state *listBoxState
+	if state = GetState[listBoxState](Context, l.id); state == nil {
+		state = &listBoxState{selectedIndex: 0}
+		SetState(Context, l.id, state)
+	}
+
+	return state.selectedIndex
+}
+
 // Size sets size of the box.
 func (l *ListBoxWidget) Size(width, height float32) *ListBoxWidget {
 	l.width, l.height = width, height
