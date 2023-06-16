@@ -104,6 +104,7 @@ func (h *SplitterWidget) Build() {
 		case DirectionVertical:
 			imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
 		}
+
 		c = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
 	}
 
