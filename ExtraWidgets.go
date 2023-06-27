@@ -216,7 +216,7 @@ func RangeBuilder(id string, values []any, builder func(int, any) Widget) Layout
 }
 
 type listBoxState struct {
-	selectedIndex int
+	selectedIndex int32
 }
 
 func (s *listBoxState) Dispose() {
@@ -227,15 +227,16 @@ var _ Widget = &ListBoxWidget{}
 
 // ListBoxWidget is a field with selectable items (Child with Selectables).
 type ListBoxWidget struct {
-	id       string
-	width    float32
-	height   float32
-	border   bool
-	items    []string
-	menus    []string
-	onChange func(selectedIndex int)
-	onDClick func(selectedIndex int)
-	onMenu   func(selectedIndex int, menu string)
+	selectedIndex *int32
+	id            string
+	width         float32
+	height        float32
+	border        bool
+	items         []string
+	menus         []string
+	onChange      func(selectedIndex int)
+	onDClick      func(selectedIndex int)
+	onMenu        func(selectedIndex int, menu string)
 }
 
 // ListBox creates new ListBoxWidget.
@@ -253,14 +254,9 @@ func ListBox(id string, items []string) *ListBoxWidget {
 	}
 }
 
-func (l *ListBoxWidget) SelectedIndex() int {
-	var state *listBoxState
-	if state = GetState[listBoxState](Context, l.id); state == nil {
-		state = &listBoxState{selectedIndex: 0}
-		SetState(Context, l.id, state)
-	}
-
-	return state.selectedIndex
+func (l *ListBoxWidget) SelectedIndex(i *int32) *ListBoxWidget {
+	l.selectedIndex = i
+	return l
 }
 
 // Size sets size of the box.
@@ -303,10 +299,15 @@ func (l *ListBoxWidget) OnMenu(onMenu func(selectedIndex int, menu string)) *Lis
 //
 //nolint:gocognit // will fix later
 func (l *ListBoxWidget) Build() {
-	var state *listBoxState
-	if state = GetState[listBoxState](Context, l.id); state == nil {
-		state = &listBoxState{selectedIndex: 0}
-		SetState(Context, l.id, state)
+	selectedIndex := l.selectedIndex
+	if selectedIndex == nil {
+		var state *listBoxState
+		if state = GetState[listBoxState](Context, l.id); state == nil {
+			state = &listBoxState{selectedIndex: 0}
+			SetState(Context, l.id, state)
+		}
+
+		selectedIndex = &state.selectedIndex
 	}
 
 	child := Child().Border(l.border).Size(l.width, l.height).Layout(Layout{
@@ -318,11 +319,11 @@ func (l *ListBoxWidget) Build() {
 
 			for clipper.Step() {
 				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
-					selected := i == state.selectedIndex
+					selected := i == int(*selectedIndex)
 					item := l.items[i]
 					Selectable(item).Selected(selected).Flags(SelectableFlagsAllowDoubleClick).OnClick(func() {
-						if state.selectedIndex != i {
-							state.selectedIndex = i
+						if *selectedIndex != int32(i) {
+							*selectedIndex = int32(i)
 							if l.onChange != nil {
 								l.onChange(i)
 							}
@@ -330,7 +331,7 @@ func (l *ListBoxWidget) Build() {
 					}).Build()
 
 					if IsItemHovered() && IsMouseDoubleClicked(MouseButtonLeft) && l.onDClick != nil {
-						l.onDClick(state.selectedIndex)
+						l.onDClick(int(*selectedIndex))
 					}
 
 					// Build context menus
