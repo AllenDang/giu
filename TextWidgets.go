@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"math"
 
+	"golang.org/x/image/colornames"
+
 	"github.com/AllenDang/imgui-go"
 	"github.com/sahilm/fuzzy"
 )
@@ -142,11 +144,13 @@ var _ Disposable = &inputTextState{}
 
 type inputTextState struct {
 	autoCompleteCandidates fuzzy.Matches
+	currentIdx             int
 }
 
 // Dispose implements disposable interface.
 func (s *inputTextState) Dispose() {
 	s.autoCompleteCandidates = nil
+	s.currentIdx = 0
 }
 
 var _ Widget = &InputTextWidget{}
@@ -249,31 +253,55 @@ func (i *InputTextWidget) Build() {
 		// Enable auto complete
 		if len(i.candidates) > 0 {
 			matches := fuzzy.Find(*i.value, i.candidates)
-			if matches.Len() > 0 {
-				size := int(math.Min(5, float64(matches.Len())))
-				matches = matches[:size]
+			size := int(math.Min(5, float64(matches.Len())))
+			matches = matches[:size]
 
-				state.autoCompleteCandidates = matches
-			}
+			state.autoCompleteCandidates = matches
 		}
 	}
 
 	// Draw autocomplete list
 	if len(state.autoCompleteCandidates) > 0 && imgui.IsItemFocused() {
-		labels := make(Layout, len(state.autoCompleteCandidates))
-		for i, m := range state.autoCompleteCandidates {
-			labels[i] = Label(m.Str)
+		i.handleAutoComplete(state)
+	}
+}
+
+func (i *InputTextWidget) handleAutoComplete(state *inputTextState) {
+	if state.currentIdx >= len(state.autoCompleteCandidates) {
+		state.currentIdx = 0
+	}
+
+	labels := make(Layout, len(state.autoCompleteCandidates))
+	for i, m := range state.autoCompleteCandidates {
+		labels[i] = Label(m.Str)
+		if i == state.currentIdx {
+			labels[i] = Layout{
+				Custom(func() { PushStyleColor(StyleColorText, colornames.Blue) }),
+				labels[i],
+				Custom(func() { PopStyleColor() }),
+			}
 		}
+	}
 
-		SetNextWindowPos(imgui.GetItemRectMin().X, imgui.GetItemRectMax().Y)
-		imgui.BeginTooltip()
-		labels.Build()
-		imgui.EndTooltip()
+	SetNextWindowPos(imgui.GetItemRectMin().X, imgui.GetItemRectMax().Y)
+	imgui.BeginTooltip()
+	labels.Build()
+	imgui.EndTooltip()
 
-		// Press enter will replace value string with first match candidate
-		if IsKeyPressed(KeyEnter) || IsKeyPressed(KeyTab) {
-			*i.value = state.autoCompleteCandidates[0].Str
-			state.autoCompleteCandidates = nil
+	// Press enter will replace value string with first match candidate
+	switch {
+	case IsKeyPressed(KeyEnter) || IsKeyPressed(KeyTab):
+		*i.value = state.autoCompleteCandidates[state.currentIdx].Str
+		state.autoCompleteCandidates = nil
+	case IsKeyPressed(KeyDown):
+		state.currentIdx++
+		if state.currentIdx >= state.autoCompleteCandidates.Len() {
+			state.currentIdx = 0
+		}
+	case IsKeyPressed(KeyUp):
+		state.currentIdx--
+		if state.currentIdx < 0 {
+			state.currentIdx = len(state.autoCompleteCandidates) - 1
 		}
 	}
 }
