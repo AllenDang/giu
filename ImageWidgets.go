@@ -359,7 +359,7 @@ func (i *ImageWithURLWidget) Build() {
 
 			rgba := ImageToRgba(img)
 
-			NewTextureFromRgba(rgba, func(tex *Texture) {
+			EnqueueNewTextureFromRgba(rgba, func(tex *Texture) {
 				SetState(Context, i.id, &imageState{
 					loading: false,
 					failure: false,
