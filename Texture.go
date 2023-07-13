@@ -31,12 +31,10 @@ func EnqueueNewTextureFromRgba(rgba image.Image, loadCb func(t *Texture)) {
 
 // NewTextureFromRgba creates a new texture from image.Image and, when it is done, calls loadCallback(loadedTexture).
 func NewTextureFromRgba(rgba image.Image, loadCallback func(*Texture)) {
-	go func() {
-		tex := imgui.NewTextureFromRgba(ImageToRgba(rgba))
-		loadCallback(&Texture{
-			tex,
-		})
-	}()
+	tex := imgui.NewTextureFromRgba(ImageToRgba(rgba))
+	loadCallback(&Texture{
+		tex,
+	})
 }
 
 // ToTexture converts imgui.Texture to Texture.
