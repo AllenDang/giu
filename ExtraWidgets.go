@@ -10,6 +10,10 @@ import (
 
 var _ Widget = &SplitterWidget{}
 
+// SplitterWidget is a line (vertical or horizontal) that splits layout (child)
+// Int two pieces. It has a tiny button in the middle of that line and its creator
+// takes float pointer so that you can read user's movement of this rect.
+// Generally used by SplitLayoutWidget.
 type SplitterWidget struct {
 	id        string
 	width     float32
@@ -18,6 +22,7 @@ type SplitterWidget struct {
 	direction SplitDirection
 }
 
+// Splitter creates new SplitterWidget.
 func Splitter(direction SplitDirection, delta *float32) *SplitterWidget {
 	return &SplitterWidget{
 		id:        GenAutoID("Splitter"),
@@ -28,6 +33,7 @@ func Splitter(direction SplitDirection, delta *float32) *SplitterWidget {
 	}
 }
 
+// Size sets size of the button aray.
 func (h *SplitterWidget) Size(width, height float32) *SplitterWidget {
 	aw, ah := GetAvailableRegion()
 
@@ -81,9 +87,9 @@ func (h *SplitterWidget) Build() {
 
 	if imgui.IsItemActive() {
 		switch h.direction {
-		case DirectionVertical:
-			*(h.delta) = imgui.CurrentIO().MouseDelta().Y
 		case DirectionHorizontal:
+			*(h.delta) = imgui.CurrentIO().MouseDelta().Y
+		case DirectionVertical:
 			*(h.delta) = imgui.CurrentIO().MouseDelta().X
 		}
 	} else {
@@ -91,7 +97,13 @@ func (h *SplitterWidget) Build() {
 	}
 
 	if imgui.IsItemHovered() {
-		imgui.SetMouseCursor(imgui.MouseCursorResizeNS)
+		switch h.direction {
+		case DirectionHorizontal:
+			imgui.SetMouseCursor(imgui.MouseCursorResizeNS)
+		case DirectionVertical:
+			imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
+		}
+
 		c = Vec4ToRGBA(*imgui.StyleColorVec4(imgui.ColScrollbarGrabActive))
 	}
 
@@ -100,147 +112,13 @@ func (h *SplitterWidget) Build() {
 	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), c, 0, 0)
 }
 
-type TreeTableRowWidget struct {
-	label    string
-	flags    TreeNodeFlags
-	layout   Layout
-	children []*TreeTableRowWidget
-}
-
-func TreeTableRow(label string, widgets ...Widget) *TreeTableRowWidget {
-	return &TreeTableRowWidget{
-		label:  GenAutoID(label),
-		layout: widgets,
-	}
-}
-
-func (ttr *TreeTableRowWidget) Children(rows ...*TreeTableRowWidget) *TreeTableRowWidget {
-	ttr.children = rows
-	return ttr
-}
-
-func (ttr *TreeTableRowWidget) Flags(flags TreeNodeFlags) *TreeTableRowWidget {
-	ttr.flags = flags
-	return ttr
-}
-
-// BuildTreeTableRow executes table row building steps.
-func (ttr *TreeTableRowWidget) BuildTreeTableRow() {
-	imgui.TableNextRowV(0, 0)
-	imgui.TableNextColumn()
-
-	open := false
-	if len(ttr.children) > 0 {
-		open = imgui.TreeNodeExStrV(Context.FontAtlas.RegisterString(ttr.label), imgui.TreeNodeFlags(ttr.flags))
-	} else {
-		ttr.flags |= TreeNodeFlagsLeaf | TreeNodeFlagsNoTreePushOnOpen
-		imgui.TreeNodeExStrV(Context.FontAtlas.RegisterString(ttr.label), imgui.TreeNodeFlags(ttr.flags))
-	}
-
-	for _, w := range ttr.layout {
-		switch w.(type) {
-		case *TooltipWidget,
-			*ContextMenuWidget, *PopupModalWidget:
-			// noop
-		default:
-			imgui.TableNextColumn()
-		}
-
-		w.Build()
-	}
-
-	if len(ttr.children) > 0 && open {
-		for _, c := range ttr.children {
-			c.BuildTreeTableRow()
-		}
-
-		imgui.TreePop()
-	}
-}
-
-var _ Widget = &TreeTableWidget{}
-
-type TreeTableWidget struct {
-	id           string
-	flags        TableFlags
-	size         imgui.Vec2
-	columns      []*TableColumnWidget
-	rows         []*TreeTableRowWidget
-	freezeRow    int
-	freezeColumn int
-}
-
-func TreeTable() *TreeTableWidget {
-	return &TreeTableWidget{
-		id:      GenAutoID("TreeTable"),
-		flags:   TableFlagsBordersV | TableFlagsBordersOuterH | TableFlagsResizable | TableFlagsRowBg | TableFlagsNoBordersInBody,
-		rows:    nil,
-		columns: nil,
-	}
-}
-
-// Freeze columns/rows so they stay visible when scrolled.
-func (tt *TreeTableWidget) Freeze(col, row int) *TreeTableWidget {
-	tt.freezeColumn = col
-	tt.freezeRow = row
-
-	return tt
-}
-
-func (tt *TreeTableWidget) Size(width, height float32) *TreeTableWidget {
-	tt.size = imgui.Vec2{X: width, Y: height}
-	return tt
-}
-
-func (tt *TreeTableWidget) Flags(flags TableFlags) *TreeTableWidget {
-	tt.flags = flags
-	return tt
-}
-
-func (tt *TreeTableWidget) Columns(cols ...*TableColumnWidget) *TreeTableWidget {
-	tt.columns = cols
-	return tt
-}
-
-func (tt *TreeTableWidget) Rows(rows ...*TreeTableRowWidget) *TreeTableWidget {
-	tt.rows = rows
-	return tt
-}
-
-// Build implements Widget interface.
-func (tt *TreeTableWidget) Build() {
-	if len(tt.rows) == 0 {
-		return
-	}
-
-	colCount := len(tt.columns)
-	if colCount == 0 {
-		colCount = len(tt.rows[0].layout) + 1
-	}
-
-	if imgui.BeginTableV(tt.id, int32(colCount), imgui.TableFlags(tt.flags), tt.size, 0) {
-		if tt.freezeColumn >= 0 && tt.freezeRow >= 0 {
-			imgui.TableSetupScrollFreeze(int32(tt.freezeColumn), int32(tt.freezeRow))
-		}
-
-		if len(tt.columns) > 0 {
-			for _, col := range tt.columns {
-				col.BuildTableColumn()
-			}
-
-			imgui.TableHeadersRow()
-		}
-
-		for _, row := range tt.rows {
-			row.BuildTreeTableRow()
-		}
-
-		imgui.EndTable()
-	}
-}
-
 var _ Widget = &CustomWidget{}
 
+// CustomWidget allows you to do whatever you want.
+// This includes:
+// - using functions from upstream imgui instead of thes from giu
+// - build widgets in loop (see also RangeBuilder)
+// - do any calculations needed in this part of rendering.
 type CustomWidget struct {
 	builder func()
 }
@@ -266,12 +144,22 @@ func (c *CustomWidget) Plot() {
 
 var _ Widget = &ConditionWidget{}
 
+// ConditionWidget allows to build if a condition is met
+// it is like:
+//
+//	if condition {
+//	   layoutIf.Build()
+//	} else {
+//
+//	   layoutElse.Build()
+//	}
 type ConditionWidget struct {
 	cond       bool
 	layoutIf   Layout
 	layoutElse Layout
 }
 
+// Condition creates new COnditionWidget.
 func Condition(cond bool, layoutIf, layoutElse Layout) *ConditionWidget {
 	return &ConditionWidget{
 		cond:       cond,
@@ -280,6 +168,7 @@ func Condition(cond bool, layoutIf, layoutElse Layout) *ConditionWidget {
 	}
 }
 
+// Range implements extra abilities (see Splittablle).
 func (c *ConditionWidget) Range(rangeFunc func(w Widget)) {
 	var l Layout
 	if c.cond {
@@ -325,28 +214,31 @@ func RangeBuilder(id string, values []any, builder func(int, any) Widget) Layout
 	return layout
 }
 
-type ListBoxState struct {
-	selectedIndex int
+type listBoxState struct {
+	selectedIndex int32
 }
 
-func (s *ListBoxState) Dispose() {
+func (s *listBoxState) Dispose() {
 	// Nothing to do here.
 }
 
 var _ Widget = &ListBoxWidget{}
 
+// ListBoxWidget is a field with selectable items (Child with Selectables).
 type ListBoxWidget struct {
-	id       string
-	width    float32
-	height   float32
-	border   bool
-	items    []string
-	menus    []string
-	onChange func(selectedIndex int)
-	onDClick func(selectedIndex int)
-	onMenu   func(selectedIndex int, menu string)
+	selectedIndex *int32
+	id            string
+	width         float32
+	height        float32
+	border        bool
+	items         []string
+	menus         []string
+	onChange      func(selectedIndex int)
+	onDClick      func(selectedIndex int)
+	onMenu        func(selectedIndex int, menu string)
 }
 
+// ListBox creates new ListBoxWidget.
 func ListBox(id string, items []string) *ListBoxWidget {
 	return &ListBoxWidget{
 		id:       id,
@@ -361,31 +253,42 @@ func ListBox(id string, items []string) *ListBoxWidget {
 	}
 }
 
+func (l *ListBoxWidget) SelectedIndex(i *int32) *ListBoxWidget {
+	l.selectedIndex = i
+	return l
+}
+
+// Size sets size of the box.
 func (l *ListBoxWidget) Size(width, height float32) *ListBoxWidget {
 	l.width, l.height = width, height
 	return l
 }
 
+// Border sets whether box should have border (see Child().Border(...).
 func (l *ListBoxWidget) Border(b bool) *ListBoxWidget {
 	l.border = b
 	return l
 }
 
+// ContextMenu adds item in context menu which is opened when user right-click on item.
 func (l *ListBoxWidget) ContextMenu(menuItems []string) *ListBoxWidget {
 	l.menus = menuItems
 	return l
 }
 
+// OnChange sets callback called when user changes their selection.
 func (l *ListBoxWidget) OnChange(onChange func(selectedIndex int)) *ListBoxWidget {
 	l.onChange = onChange
 	return l
 }
 
+// OnDClick sets callback on double click.
 func (l *ListBoxWidget) OnDClick(onDClick func(selectedIndex int)) *ListBoxWidget {
 	l.onDClick = onDClick
 	return l
 }
 
+// OnMenu sets callback called when context menu item clicked.
 func (l *ListBoxWidget) OnMenu(onMenu func(selectedIndex int, menu string)) *ListBoxWidget {
 	l.onMenu = onMenu
 	return l
@@ -395,10 +298,15 @@ func (l *ListBoxWidget) OnMenu(onMenu func(selectedIndex int, menu string)) *Lis
 //
 //nolint:gocognit // will fix later
 func (l *ListBoxWidget) Build() {
-	var state *ListBoxState
-	if state = GetState[ListBoxState](Context, l.id); state == nil {
-		state = &ListBoxState{selectedIndex: 0}
-		SetState(Context, l.id, state)
+	selectedIndex := l.selectedIndex
+	if selectedIndex == nil {
+		var state *listBoxState
+		if state = GetState[listBoxState](Context, l.id); state == nil {
+			state = &listBoxState{selectedIndex: 0}
+			SetState(Context, l.id, state)
+		}
+
+		selectedIndex = &state.selectedIndex
 	}
 
 	child := Child().Border(l.border).Size(l.width, l.height).Layout(Layout{
@@ -410,11 +318,11 @@ func (l *ListBoxWidget) Build() {
 
 			for clipper.Step() {
 				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
-					selected := i == state.selectedIndex
+					selected := i == int(*selectedIndex)
 					item := l.items[i]
 					Selectable(item).Selected(selected).Flags(SelectableFlagsAllowDoubleClick).OnClick(func() {
-						if state.selectedIndex != i {
-							state.selectedIndex = i
+						if *selectedIndex != int32(i) {
+							*selectedIndex = int32(i)
 							if l.onChange != nil {
 								l.onChange(i)
 							}
@@ -422,7 +330,7 @@ func (l *ListBoxWidget) Build() {
 					}).Build()
 
 					if IsItemHovered() && IsMouseDoubleClicked(MouseButtonLeft) && l.onDClick != nil {
-						l.onDClick(state.selectedIndex)
+						l.onDClick(int(*selectedIndex))
 					}
 
 					// Build context menus
@@ -452,6 +360,10 @@ func (l *ListBoxWidget) Build() {
 
 var _ Widget = &DatePickerWidget{}
 
+// DatePickerWidget is a simple Calender widget.
+// It allow user to select a day and convert it to time.Time go type.
+// It consists of a Combo widget which (after opening) contains
+// a calender-like table.
 type DatePickerWidget struct {
 	id          string
 	date        *time.Time
@@ -461,6 +373,7 @@ type DatePickerWidget struct {
 	startOfWeek time.Weekday
 }
 
+// DatePicker creates new DatePickerWidget.
 func DatePicker(id string, date *time.Time) *DatePickerWidget {
 	return &DatePickerWidget{
 		id:          GenAutoID(id),
@@ -471,11 +384,13 @@ func DatePicker(id string, date *time.Time) *DatePickerWidget {
 	}
 }
 
+// Size sets combo widget's size.
 func (d *DatePickerWidget) Size(width float32) *DatePickerWidget {
 	d.width = width
 	return d
 }
 
+// OnChange sets callback called when date is changed.
 func (d *DatePickerWidget) OnChange(onChange func()) *DatePickerWidget {
 	if onChange != nil {
 		d.onChange = onChange
@@ -484,11 +399,16 @@ func (d *DatePickerWidget) OnChange(onChange func()) *DatePickerWidget {
 	return d
 }
 
+// Format sets date format of displayed (in combo) date.
+// Compatible with (time.Time).Format(...)
+// Default: "2006-01-02".
 func (d *DatePickerWidget) Format(format string) *DatePickerWidget {
 	d.format = format
 	return d
 }
 
+// StartOfWeek sets first day of the week
+// Default: Sunday.
 func (d *DatePickerWidget) StartOfWeek(weekday time.Weekday) *DatePickerWidget {
 	d.startOfWeek = weekday
 	return d
