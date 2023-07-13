@@ -10,6 +10,7 @@ import (
 // in MasterWindow. If SingleWindow is set up, no other windows may be
 // defined.
 func SingleWindow() *WindowWidget {
+	pos := imgui.MainViewport().Pos()
 	sizeX, sizeY := Context.backend.DisplaySize()
 	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
 
@@ -19,8 +20,9 @@ func SingleWindow() *WindowWidget {
 				WindowFlags(imgui.WindowFlagsNoCollapse)|
 				WindowFlags(imgui.WindowFlagsNoScrollbar)|
 				WindowFlags(imgui.WindowFlagsNoMove)|
-				WindowFlags(imgui.WindowFlagsNoResize)).
-		Size(float32(sizeX), float32(sizeY))
+				WindowFlags(imgui.WindowFlagsNoResize),
+		).
+		Pos(pos.X, pos.Y).Size(float32(sizeX), float32(sizeY))
 }
 
 // SingleWindowWithMenuBar creates a SingleWindow and allows to add menubar on its top.
@@ -35,7 +37,8 @@ func SingleWindowWithMenuBar() *WindowWidget {
 				WindowFlags(imgui.WindowFlagsNoScrollbar)|
 				WindowFlags(imgui.WindowFlagsNoMove)|
 				WindowFlags(imgui.WindowFlagsMenuBar)|
-				WindowFlags(imgui.WindowFlagsNoResize)).Size(float32(sizeX), float32(sizeY))
+				WindowFlags(imgui.WindowFlagsNoResize),
+		).Size(float32(sizeX), float32(sizeY))
 }
 
 var _ Disposable = &windowState{}
