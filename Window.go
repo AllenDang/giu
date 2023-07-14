@@ -27,6 +27,7 @@ func SingleWindow() *WindowWidget {
 
 // SingleWindowWithMenuBar creates a SingleWindow and allows to add menubar on its top.
 func SingleWindowWithMenuBar() *WindowWidget {
+	pos := imgui.MainViewport().Pos()
 	sizeX, sizeY := Context.backend.DisplaySize()
 	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
 
@@ -38,7 +39,7 @@ func SingleWindowWithMenuBar() *WindowWidget {
 				WindowFlags(imgui.WindowFlagsNoMove)|
 				WindowFlags(imgui.WindowFlagsMenuBar)|
 				WindowFlags(imgui.WindowFlagsNoResize),
-		).Size(float32(sizeX), float32(sizeY))
+		).Size(float32(sizeX), float32(sizeY)).Pos(pos.X, pos.Y)
 }
 
 var _ Disposable = &windowState{}
