@@ -1,4 +1,5 @@
-// package giu
+package giu
+
 //
 // import (
 //
@@ -246,4 +247,3 @@
 //
 //		return state
 //	}
-package giu

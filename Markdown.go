@@ -1,4 +1,5 @@
-// package giu
+package giu
+
 //
 // import (
 //
@@ -139,4 +140,3 @@
 //			BorderColor: ToVec4Color(color.RGBA{0, 0, 0, 0}),
 //		}
 //	}
-package giu
