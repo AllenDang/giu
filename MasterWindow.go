@@ -63,7 +63,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	// Disable imgui.ini
 	io.SetIniFilename("")
 
-	backend := imgui.CreateBackend()
+	backend := imgui.CreateBackend(imgui.NewGLFWBackend())
 
 	// Create GIU context
 	Context = CreateContext(backend)
@@ -301,8 +301,7 @@ func (w *MasterWindow) SetCloseCallback(cb func() bool) {
 
 // SetDropCallback sets callback when file was dropped into the window.
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
-	// TODO: https://github.com/AllenDang/cimgui-go/pull/145
-	// w.platform.SetDropCallback(cb)
+	w.backend.SetDropCallback(cb)
 }
 
 // RegisterKeyboardShortcuts registers a global - master window - keyboard shortcuts.
