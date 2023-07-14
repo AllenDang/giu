@@ -29,7 +29,7 @@ func Test_SetGetState(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.id, func(t *testing.T) {
-			ctx := CreateContext(nil, nil)
+			ctx := CreateContext(nil)
 			SetState(ctx, tc.id, tc.data)
 			restored := GetState[teststate](ctx, tc.id)
 			assert.Equal(t, tc.data, restored, "unexpected state restored")
@@ -48,7 +48,7 @@ func Test_SetGetStateGeneric(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.id, func(t *testing.T) {
-			ctx := CreateContext(nil, nil)
+			ctx := CreateContext(nil)
 			SetState(ctx, tc.id, tc.data)
 			restored := GetState[teststate](ctx, tc.id)
 			assert.Equal(t, tc.data, restored, "unexpected state restored")
@@ -71,7 +71,7 @@ func Test_SetGetWrongStateGeneric(t *testing.T) {
 }
 
 func Test_invalidState(t *testing.T) {
-	ctx := CreateContext(nil, nil)
+	ctx := CreateContext(nil)
 
 	state1ID := "state1"
 	state2ID := "state2"
@@ -97,7 +97,7 @@ func Test_invalidState(t *testing.T) {
 }
 
 func Test_GetWidgetIndex(t *testing.T) {
-	ctx := CreateContext(nil, nil)
+	ctx := CreateContext(nil)
 	for i := 0; i <= 3; i++ {
 		assert.Equal(t, i, ctx.GetWidgetIndex(), "widget index wasn't increased")
 	}
