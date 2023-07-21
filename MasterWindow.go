@@ -230,10 +230,6 @@ func (w *MasterWindow) Run(loopFunc func()) {
 // GetSize return size of master window.
 func (w *MasterWindow) GetSize() (width, height int) {
 	if w.backend != nil {
-		// TODO
-		//if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
-		//return glfwPlatform.GetWindow().GetSize()
-		//}
 		w, h := w.backend.DisplaySize()
 		return int(w), int(h)
 	}
@@ -276,12 +272,7 @@ func (w *MasterWindow) SetPos(x, y int) {
 // SetSize sets size of master window.
 func (w *MasterWindow) SetSize(x, y int) {
 	if w.backend != nil {
-		// TODO
-		//if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
-		//	mainthread.CallNonBlock(func() {
-		//		glfwPlatform.GetWindow().SetSize(x, y)
-		//	})
-		//}
+		w.backend.SetWindowSize(x, y)
 	}
 }
 
@@ -296,7 +287,7 @@ func (w *MasterWindow) SetSize(x, y int) {
 // callback for all windows.
 func (w *MasterWindow) SetCloseCallback(cb func() bool) {
 	// TODO
-	// w.backend.SetCloseCallback(cb)
+	//w.backend.SetCloseCallback(imgui.WindowCloseCallback(cb))
 }
 
 // SetDropCallback sets callback when file was dropped into the window.
@@ -342,14 +333,12 @@ func (w *MasterWindow) SetIcon(icons []image.Image) {
 // To specify only a minimum size or only a maximum one, set the other pair to giu.DontCare.
 // To disable size limits for a window, set them all to giu.DontCare.
 func (w *MasterWindow) SetSizeLimits(minw, minh, maxw, maxh int) {
-	// TODO
-	// w.platform.SetSizeLimits(minw, minh, maxw, maxh)
+	w.backend.SetWindowSizeLimits(minw, minh, maxw, maxh)
 }
 
 // SetTitle updates master window's title.
 func (w *MasterWindow) SetTitle(title string) {
-	// TODO
-	// w.platform.SetTitle(title)
+	w.backend.SetWindowTitle(title)
 }
 
 // Close will safely close the master window.
