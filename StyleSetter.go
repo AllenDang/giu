@@ -196,6 +196,7 @@ func (ss *StyleSetter) Pop() {
 	if ss.disabled {
 		imgui.EndDisabled()
 	}
+
 	imgui.PopStyleColorV(int32(len(ss.colors)))
 	imgui.PopStyleVarV(int32(len(ss.styles)))
 }

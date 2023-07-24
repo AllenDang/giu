@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/pkg/browser"
 )
 
@@ -142,6 +142,7 @@ func CalcTextSizeV(text string, hideAfterDoubleHash bool, wrapWidth float32) (w,
 		hideAfterDoubleHash,
 		wrapWidth,
 	)
+
 	return size.X, size.Y
 }
 
@@ -229,6 +230,7 @@ func OpenURL(url string) {
 func ColorToUint(col color.Color) uint32 {
 	r, g, b, a := col.RGBA()
 	mask := uint32(0xff)
+
 	return r&mask<<24 + g&mask<<16 + b&mask<<8 + a&mask
 }
 
@@ -239,6 +241,7 @@ func UintToColor(col uint32) *color.RGBA {
 	g := byte(col >> 16 & uint32(mask))
 	b := byte(col >> 8 & uint32(mask))
 	a := byte(col >> 0 & uint32(mask))
+
 	return &color.RGBA{
 		R: r,
 		G: g,

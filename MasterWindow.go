@@ -253,12 +253,12 @@ func (w *MasterWindow) SetBgColor(bgColor color.Color) {
 
 // GetPos return position of master window.
 func (w *MasterWindow) GetPos() (x, y int) {
-	if w.backend != nil {
-		// TODO
-		//if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
-		//	x, y = glfwPlatform.GetWindow().GetPos()
-		//}
-	}
+	// TODO
+	// if w.backend != nil {
+	//if glfwPlatform, ok := w.platform.(*imgui.GLFW); ok {
+	//	x, y = glfwPlatform.GetWindow().GetPos()
+	//}
+	//}
 
 	return
 }
