@@ -86,7 +86,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	mw.SetInputHandler(newInputHandler())
 
 	// TODO
-	// p.SetSizeChangeCallback(mw.sizeChange)
+	//b.SetSizeChangeCallback(mw.sizeChange)
 
 	mw.SetBgColor(colornames.Black)
 
@@ -350,8 +350,7 @@ func (w *MasterWindow) Close() {
 
 // SetShouldClose sets whether master window should be closed.
 func (w *MasterWindow) SetShouldClose(v bool) {
-	// TODO
-	// w.platform.SetShouldStop(v)
+	w.backend.SetShouldClose(v)
 }
 
 // SetInputHandler allows to change default input handler.
