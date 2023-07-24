@@ -75,6 +75,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		title:      title,
 		io:         &io,
 		context:    imGuiContext,
+		backend:    backend,
 	}
 
 	backend.SetBeforeRenderHook(mw.beforeRender)
@@ -286,8 +287,9 @@ func (w *MasterWindow) SetSize(x, y int) {
 // Mac OS X: Selecting Quit from the application menu will trigger the close
 // callback for all windows.
 func (w *MasterWindow) SetCloseCallback(cb func() bool) {
-	// TODO
-	//w.backend.SetCloseCallback(imgui.WindowCloseCallback(cb))
+	w.backend.SetCloseCallback(func(b imgui.Backend) {
+		b.SetShouldClose(cb())
+	})
 }
 
 // SetDropCallback sets callback when file was dropped into the window.
