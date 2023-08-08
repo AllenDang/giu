@@ -156,7 +156,8 @@ func (w *MasterWindow) setTheme() (fin func()) {
 	imgui.PushStyleColorVec4(imgui.ColTableBorderLight, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 0.70})
 
 	return func() {
-		imgui.PopStyleColorV(48)
+		imgui.PopStyleColorV(49)
+		imgui.PopStyleVarV(4)
 	}
 }
 
