@@ -318,13 +318,13 @@ func (l *ListBoxWidget) Build() {
 
 			for clipper.Step() {
 				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
-					selected := i == int(*selectedIndex)
+					selected := i == *selectedIndex
 					item := l.items[i]
 					Selectable(item).Selected(selected).Flags(SelectableFlagsAllowDoubleClick).OnClick(func() {
-						if *selectedIndex != int32(i) {
-							*selectedIndex = int32(i)
+						if *selectedIndex != i {
+							*selectedIndex = i
 							if l.onChange != nil {
-								l.onChange(i)
+								l.onChange(int(i))
 							}
 						}
 					}).Build()
@@ -340,7 +340,7 @@ func (l *ListBoxWidget) Build() {
 						menu := m
 						menus = append(menus, MenuItem(fmt.Sprintf("%s##%d", menu, index)).OnClick(func() {
 							if l.onMenu != nil {
-								l.onMenu(index, menu)
+								l.onMenu(int(index), menu)
 							}
 						}))
 					}

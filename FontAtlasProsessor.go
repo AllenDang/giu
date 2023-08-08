@@ -319,7 +319,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			f = fonts.AddFontFromFileTTFV(
 				fontInfo.fontPath,
 				fontInfo.size,
-				0,
+				imgui.NewFontConfig(),
 				ranges.Data(),
 			)
 		} else {
@@ -327,7 +327,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 				unsafe.Pointer(&fontInfo.fontByte[0]),
 				int32(fontInfo.size),
 				fontInfo.size,
-				0, // TODO: in ref to imgui-go: `const DefaultFontConfig FontConfig = 0`
+				imgui.NewFontConfig(),
 				ranges.Data(),
 			)
 		}
