@@ -298,7 +298,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 		}
 
 		// Fall back if no font is added
-		if fonts.GetFontCount() == 0 {
+		if fonts.FontCount() == 0 {
 			fonts.AddFontDefault()
 		}
 	} else {
