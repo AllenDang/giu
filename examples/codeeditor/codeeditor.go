@@ -47,6 +47,8 @@ func loop() {
 }
 
 func main() {
+	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
+
 	errMarkers = imgui.NewErrorMarkers()
 
 	editor = g.CodeEditor().
@@ -56,6 +58,5 @@ func main() {
 		LanguageDefinition(giu.LanguageDefinitionSQL).
 		Border(true)
 
-	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
 	wnd.Run(loop)
 }
