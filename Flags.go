@@ -223,7 +223,7 @@ const (
 	// TreeNodeFlagsFramed draws full colored frame (e.g. for CollapsingHeader).
 	TreeNodeFlagsFramed TreeNodeFlags = imgui.TreeNodeFlagsFramed
 	// TreeNodeFlagsAllowItemOverlap hit testing to allow subsequent widgets to overlap this one.
-	TreeNodeFlagsAllowItemOverlap TreeNodeFlags = imgui.TreeNodeFlagsAllowItemOverlap
+	TreeNodeFlagsAllowItemOverlap TreeNodeFlags = imgui.TreeNodeFlagsAllowOverlap
 	// TreeNodeFlagsNoTreePushOnOpen doesn't do a TreePush() when open
 	// (e.g. for CollapsingHeader) = no extra indent nor pushing on ID stack.
 	TreeNodeFlagsNoTreePushOnOpen TreeNodeFlags = imgui.TreeNodeFlagsNoTreePushOnOpen

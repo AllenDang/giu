@@ -37,7 +37,7 @@ type MasterWindow struct {
 	height     int
 	clearColor [4]float32
 	title      string
-	context    imgui.Context
+	context    *imgui.Context
 	io         *imgui.IO
 	updateFunc func()
 
@@ -73,7 +73,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		width:      width,
 		height:     height,
 		title:      title,
-		io:         &io,
+		io:         io,
 		context:    imGuiContext,
 		backend:    backend,
 	}

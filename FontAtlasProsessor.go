@@ -315,7 +315,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 		//}
 
 		// Store imgui.Font for PushFont
-		var f imgui.Font
+		var f *imgui.Font
 		if len(fontInfo.fontByte) == 0 {
 			f = fonts.AddFontFromFileTTFV(
 				fontInfo.fontPath,
@@ -335,7 +335,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			)
 		}
 
-		a.extraFontMap[fontInfo.String()] = &f
+		a.extraFontMap[fontInfo.String()] = f
 	}
 
 	fontTextureImg, w, h, _ := fonts.GetTextureDataAsRGBA32()

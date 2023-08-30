@@ -75,7 +75,7 @@ func CreateContext(b imgui.Backend) *context {
 	return &result
 }
 
-func (c *context) IO() imgui.IO {
+func (c *context) IO() *imgui.IO {
 	return imgui.CurrentIO()
 }
 

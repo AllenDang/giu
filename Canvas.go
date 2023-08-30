@@ -20,7 +20,7 @@ import (
 //
 //	c := &Canvas{imgui.GetXXXDrawList()}
 type Canvas struct {
-	DrawList imgui.DrawList
+	DrawList *imgui.DrawList
 }
 
 // GetCanvas returns current draw list (for current window).
