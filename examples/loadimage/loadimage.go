@@ -70,6 +70,6 @@ func main() {
 	g.EnqueueNewTextureFromRgba(rgba, func(t *g.Texture) {
 		tex = t
 	})
-	wnd.SetIcon([]image.Image{rgba})
+	wnd.SetIcon(rgba)
 	wnd.Run(loop)
 }

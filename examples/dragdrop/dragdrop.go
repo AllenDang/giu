@@ -4,13 +4,11 @@ import (
 	"fmt"
 	"unsafe"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	g "github.com/AllenDang/giu"
 )
 
-var (
-	dropTarget string = "Drop here"
-)
+var dropTarget string = "Drop here"
 
 func loop() {
 	g.SingleWindow().Layout(
@@ -46,7 +44,7 @@ func loop() {
 		g.Custom(func() {
 			if imgui.BeginDragDropTarget() {
 				payload := imgui.AcceptDragDropPayload("DND_DEMO")
-				if payload != 0 {
+				if payload != nil {
 					dropTarget = fmt.Sprintf("Dropped value: %d", payload.Data())
 				}
 				imgui.EndDragDropTarget()
