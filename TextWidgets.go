@@ -293,6 +293,10 @@ func (i *InputTextWidget) handleAutoComplete(state *inputTextState) {
 	case IsKeyPressed(KeyEnter) || IsKeyPressed(KeyTab):
 		*i.value = state.autoCompleteCandidates[state.currentIdx].Str
 		state.autoCompleteCandidates = nil
+
+		if i.onChange != nil {
+			i.onChange()
+		}
 	case IsKeyPressed(KeyDown):
 		state.currentIdx++
 		if state.currentIdx >= state.autoCompleteCandidates.Len() {
