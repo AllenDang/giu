@@ -51,6 +51,8 @@ package main
 //	}
 func main() {
 	panic("Code editor is not implemented in giu, since it is not present in cimgui-go yet.")
+ 	//	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
+  //  
 	//	errMarkers = imgui.NewErrorMarkers()
 	//
 	//	editor = g.CodeEditor().
@@ -60,6 +62,5 @@ func main() {
 	//		LanguageDefinition(giu.LanguageDefinitionSQL).
 	//		Border(true)
 	//
-	//	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
 	//	wnd.Run(loop)
 }
