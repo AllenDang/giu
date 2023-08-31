@@ -85,8 +85,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 	mw.SetInputHandler(newInputHandler())
 
-	// TODO
-	//b.SetSizeChangeCallback(mw.sizeChange)
+	mw.backend.SetSizeChangeCallback(mw.sizeChange)
 
 	mw.SetBgColor(colornames.Black)
 
@@ -354,16 +353,15 @@ func (w *MasterWindow) SetShouldClose(v bool) {
 // SetInputHandler allows to change default input handler.
 // see InputHandler.go.
 func (w *MasterWindow) SetInputHandler(handler InputHandler) {
-	// TODO
 	Context.InputHandler = handler
 
-	//w.platform.SetInputCallback(func(key glfw.Key, modifier glfw.ModifierKey, action glfw.Action) {
-	//	k, m, a := Key(key), Modifier(modifier), Action(action)
-	//	handler.Handle(k, m, a)
-	//	if w.additionalInputCallback != nil {
-	//		w.additionalInputCallback(k, m, a)
-	//	}
-	//})
+	w.backend.SetKeyCallback(imgui.KeyCallback(func(key, scanCode, modifier, action int) {
+		k, m, a := Key(key), Modifier(modifier), Action(action)
+		handler.Handle(k, m, a)
+		if w.additionalInputCallback != nil {
+			w.additionalInputCallback(k, m, a)
+		}
+	}))
 }
 
 // SetAdditionalInputHandlerCallback allows to set an input callback to handle more events (not only these from giu.inputHandler).
