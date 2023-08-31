@@ -322,9 +322,8 @@ func (w *MasterWindow) RegisterKeyboardShortcuts(s ...WindowShortcut) *MasterWin
 //
 // The desired image sizes varies depending on platform and system settings. The selected
 // images will be rescaled as needed. Good sizes include 16x16, 32x32 and 48x48.
-func (w *MasterWindow) SetIcon(icons []image.Image) {
-	// TODO
-	// w.platform.SetIcon(icons)
+func (w *MasterWindow) SetIcon(icons ...image.Image) {
+	w.backend.SetIcons(icons...)
 }
 
 // SetSizeLimits sets the size limits of the client area of the specified window.
