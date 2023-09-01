@@ -3,7 +3,7 @@ module github.com/AllenDang/giu
 go 1.18
 
 require (
-	github.com/AllenDang/cimgui-go v0.0.0-20230831143341-78458520a341
+	github.com/AllenDang/cimgui-go v0.0.0-20230901204748-48447edc03fb
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
 	github.com/mazznoer/csscolorparser v0.1.3
