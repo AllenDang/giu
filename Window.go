@@ -83,6 +83,11 @@ func (w *WindowWidget) Flags(flags WindowFlags) *WindowWidget {
 	return w
 }
 
+// GetFlags gets window flags.
+func (w *WindowWidget) GetFlags() WindowFlags {
+	return w.flags
+}
+
 // Size sets window size
 // NOTE: size can be changed by user, if you want to prevent
 // user from changing window size, use NoResize flag.
