@@ -1,11 +1,11 @@
-github.com/AllenDang/cimgui-go v0.0.0-20230911122246-ecb090757dec h1:lPrviFeeQzkDYPe7smvydzr2oE3MhiYzDIi4J0K7tZs=
-github.com/AllenDang/cimgui-go v0.0.0-20230911122246-ecb090757dec/go.mod h1:l6f+JX+a2UiQTRFrVwAguPaJswzKsVmHt+MJXfXDXyM=
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8 h1:dKZMqib/yUDoCFigmz2agG8geZ/e3iRq304/KJXqKyw=
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8/go.mod h1:b4uuDd0s6KRIPa84cEEchdQ9ICh7K0OryZHbSzMca9k=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 h1:baVdMKlASEHrj19iqjARrPbaRisD7EuZEVJj6ZMLl1Q=
 github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3/go.mod h1:VEPNJUlxl5KdWjDvz6Q1l+rJlxF2i6xqDeGuGAxa87M=
+github.com/gucio321/cimgui-go v0.0.0-20230911201022-83675c2c2498 h1:977k0kyw1jQgcQ2PLDDSDsFHTfxRV5d7ymMcr+3I5TE=
+github.com/gucio321/cimgui-go v0.0.0-20230911201022-83675c2c2498/go.mod h1:l6f+JX+a2UiQTRFrVwAguPaJswzKsVmHt+MJXfXDXyM=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/mazznoer/csscolorparser v0.1.3 h1:vug4zh6loQxAUxfU1DZEu70gTPufDPspamZlHAkKcxE=
