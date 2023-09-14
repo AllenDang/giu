@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 
@@ -10,6 +11,7 @@ import (
 var texture *g.Texture
 
 func loop() {
+	fmt.Println(texture.ID())
 	g.SingleWindow().Layout(
 		g.Label("Canvas demo"),
 		g.Custom(func() {
@@ -55,7 +57,7 @@ func main() {
 	wnd := g.NewMasterWindow("Canvas", 600, 600, g.MasterWindowFlagsNotResizable)
 
 	img, _ := g.LoadImage("gopher.png")
-	g.NewTextureFromRgba(img, func(tex *g.Texture) {
+	g.EnqueueNewTextureFromRgba(img, func(tex *g.Texture) {
 		texture = tex
 	})
 
