@@ -1,6 +1,6 @@
 module github.com/AllenDang/giu
 
-go 1.18
+go 1.21
 
 require (
 	github.com/AllenDang/cimgui-go v0.0.0-20230914095121-bf64ab4e16c2
