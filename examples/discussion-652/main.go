@@ -18,6 +18,6 @@ func loop() {
 }
 
 func main() {
-	wnd := giu.NewMasterWindow("Width of table column [discussion 652]", 64, 480, 0)
+	wnd := giu.NewMasterWindow("Width of table column [discussion 652]", 640, 480, 0)
 	wnd.Run(loop)
 }
