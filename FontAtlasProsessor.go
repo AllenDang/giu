@@ -289,7 +289,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			} else {
 				fontConfig.SetFontDataOwnedByAtlas(false)
 				fonts.AddFontFromMemoryTTFV(
-					unsafe.Pointer(&fontInfo.fontByte[0]),
+					unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte)),
 					int32(fontInfo.size),
 					fontInfo.size, // TODO: validate
 					fontConfig,
@@ -327,7 +327,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			fontConfig := imgui.NewFontConfig()
 			fontConfig.SetFontDataOwnedByAtlas(false)
 			f = fonts.AddFontFromMemoryTTFV(
-				unsafe.Pointer(&fontInfo.fontByte[0]),
+				unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte)),
 				int32(fontInfo.size),
 				fontInfo.size,
 				fontConfig,
