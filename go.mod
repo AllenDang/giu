@@ -22,5 +22,3 @@ require (
 	golang.org/x/sys v0.5.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-replace github.com/AllenDang/cimgui-go => github.com/gucio321/cimgui-go v0.0.0-20230911201022-83675c2c2498
