@@ -94,7 +94,6 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 func (w *MasterWindow) setTheme() (fin func()) {
 	// Scale DPI in windows
-	// TODO
 	//if runtime.GOOS == "windows" {
 	//	style.ScaleAllSizes(Context.GetPlatform().GetContentScale())
 	//}
@@ -187,7 +186,6 @@ func (w *MasterWindow) afterRender() {
 
 func (w *MasterWindow) beforeDestroy() {
 	imgui.PlotDestroyContext()
-	//w.context.Destroy() // TODO: check why it panics if it is here
 	// imgui.ImNodesDestroyContext() // TODO: after adding ImNodes (https://github.com/AllenDang/cimgui-go/issues/137)
 }
 
