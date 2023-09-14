@@ -70,9 +70,10 @@ type WindowWidget struct {
 
 // Window creates a WindowWidget.
 func Window(title string) *WindowWidget {
-	return &WindowWidget{
+	defaultPos := imgui.MainViewport().Pos()
+	return (&WindowWidget{
 		title: title,
-	}
+	}).Pos(defaultPos.X, defaultPos.Y)
 }
 
 // IsOpen sets if window widget is `opened` (minimized).
