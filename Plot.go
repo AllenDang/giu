@@ -1,9 +1,8 @@
 package giu
 
 import (
-	"image"
-
 	"github.com/AllenDang/cimgui-go"
+	"image"
 )
 
 // PlotWidget is implemented by all the particular plots, which can be used
@@ -168,7 +167,15 @@ func (p *PlotCanvasWidget) Size(width, height int) *PlotCanvasWidget {
 
 // Build implements Widget interface.
 func (p *PlotCanvasWidget) Build() {
-	if len(p.plots) > 0 {
+	if len(p.plots) == 0 {
+		return
+	}
+
+	if imgui.PlotBeginPlotV(
+		Context.FontAtlas.RegisterString(p.title),
+		ToVec2(image.Pt(p.width, p.height)),
+		imgui.PlotFlags(p.flags),
+	) {
 		imgui.PlotSetupAxisLimitsV(
 			imgui.AxisX1,
 			p.xMin,
@@ -228,17 +235,11 @@ func (p *PlotCanvasWidget) Build() {
 			imgui.PlotAxisFlags(p.y3Flags),
 		)
 
-		if imgui.PlotBeginPlotV(
-			Context.FontAtlas.RegisterString(p.title),
-			ToVec2(image.Pt(p.width, p.height)),
-			imgui.PlotFlags(p.flags),
-		) {
-			for _, plot := range p.plots {
-				plot.Plot()
-			}
-
-			imgui.PlotEndPlot()
+		for _, plot := range p.plots {
+			plot.Plot()
 		}
+
+		imgui.PlotEndPlot()
 	}
 }
 
