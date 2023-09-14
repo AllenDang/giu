@@ -24,7 +24,9 @@ func (c *CircleButtonWidget) Build() {
 	width, height := g.CalcTextSize(c.id)
 	var padding float32 = 8.0
 
-	pos := g.GetCursorPos()
+	// You may want to use GetCursorPos here depending on you use case.
+	// We use ScreenPos here, because it is relative to MasterWindow (CursorPos seems to be relative to Viewport?)
+	pos := g.GetCursorScreenPos()
 
 	// Calculate the center point
 	radius := int(width/2 + padding*2)
