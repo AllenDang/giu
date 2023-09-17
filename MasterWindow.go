@@ -8,34 +8,55 @@ import (
 	"image/color"
 )
 
-// MasterWindowFlags wraps imgui.GLFWWindowFlags.
-type MasterWindowFlags imgui.GLFWWindowFlags
+// MasterWindowFlags implements BackendWindowFlags
+type MasterWindowFlags int
 
 // master window flags.
 const (
 	// Specifies the window will be fixed size.
-	MasterWindowFlagsNotResizable MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsNotResizable)
+	MasterWindowFlagsNotResizable MasterWindowFlags = 1 << iota
 	// Specifies whether the window is maximized.
-	MasterWindowFlagsMaximized MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsMaximized)
+	MasterWindowFlagsMaximized
 	// Specifies whether the window will be always-on-top.
-	MasterWindowFlagsFloating MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsFloating)
+	MasterWindowFlagsFloating
 	// Specifies whether the window will be frameless.
-	MasterWindowFlagsFrameless MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsFrameless)
+	MasterWindowFlagsFrameless
 	// Specifies whether the window will be transparent.
-	MasterWindowFlagsTransparent MasterWindowFlags = MasterWindowFlags(imgui.GLFWWindowFlagsTransparent)
+	MasterWindowFlagsTransparent
 )
 
+// parseAndApply converts MasterWindowFlags to appropiate imgui.GLFWWindowFlags.
+func (m MasterWindowFlags) parseAndApply(b imgui.Backend[imgui.GLFWWindowFlags]) {
+	data := map[MasterWindowFlags]struct {
+		f     imgui.GLFWWindowFlags
+		value int // value isn't always true (sometimes false). Also WindowHint takes int not bool
+	}{
+		MasterWindowFlagsNotResizable: {imgui.GLFWWindowFlagsResizable, 0},
+		MasterWindowFlagsMaximized:    {imgui.GLFWWindowFlagsMaximized, 1},
+		MasterWindowFlagsFloating:     {imgui.GLFWWindowFlagsFloating, 1},
+		MasterWindowFlagsFrameless:    {imgui.GLFWWindowFlagsDecorated, 0},
+		MasterWindowFlagsTransparent:  {imgui.GLFWWindowFlagsTransparent, 1},
+	}
+
+	for flag, d := range data {
+		if m&flag != 0 {
+			b.SetWindowFlags(d.f, d.value)
+		}
+	}
+}
+
+// TODO
 // DontCare could be used as an argument to (*MasterWindow).SetSizeLimits.
 // var DontCare int = imgui.GlfwDontCare
 
 // MasterWindow represents a glfw master window
 // It is a base for a windows (see Window.go).
 type MasterWindow struct {
-	backend imgui.Backend
+	backend imgui.Backend[imgui.GLFWWindowFlags]
 
 	width      int
 	height     int
-	clearColor [4]float32
+	clearColor imgui.Vec4
 	title      string
 	context    *imgui.Context
 	io         *imgui.IO
@@ -69,7 +90,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	Context = CreateContext(backend)
 
 	mw := &MasterWindow{
-		clearColor: [4]float32{0, 0, 0, 1},
+		clearColor: imgui.Vec4{0, 0, 0, 1},
 		width:      width,
 		height:     height,
 		title:      title,
@@ -81,7 +102,8 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	backend.SetBeforeRenderHook(mw.beforeRender)
 	backend.SetAfterRenderHook(mw.afterRender)
 	backend.SetBeforeDestroyContextHook(mw.beforeDestroy)
-	backend.CreateWindow(title, width, height, imgui.GLFWWindowFlags(flags))
+	flags.parseAndApply(backend)
+	backend.CreateWindow(title, width, height)
 
 	mw.SetInputHandler(newInputHandler())
 
@@ -241,12 +263,14 @@ func (w *MasterWindow) SetBgColor(bgColor color.Color) {
 	const mask = 0xffff
 
 	r, g, b, a := bgColor.RGBA()
-	w.clearColor = [4]float32{
+	w.clearColor = imgui.Vec4{
 		float32(r) / mask,
 		float32(g) / mask,
 		float32(b) / mask,
 		float32(a) / mask,
 	}
+
+	w.backend.SetBgColor(w.clearColor)
 }
 
 // GetPos return position of master window.
@@ -283,7 +307,7 @@ func (w *MasterWindow) SetSize(x, y int) {
 // Mac OS X: Selecting Quit from the application menu will trigger the close
 // callback for all windows.
 func (w *MasterWindow) SetCloseCallback(cb func() bool) {
-	w.backend.SetCloseCallback(func(b imgui.Backend) {
+	w.backend.SetCloseCallback(func(b imgui.Backend[imgui.GLFWWindowFlags]) {
 		b.SetShouldClose(cb())
 	})
 }
