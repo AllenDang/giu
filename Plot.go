@@ -335,14 +335,16 @@ func (p *BarHPlot) Offset(offset int) *BarHPlot {
 
 // Plot implements plot interface.
 func (p *BarHPlot) Plot() {
-	// TODO: what plot does it refer to?
-	//imgui.PlotBarsH(
-	//	Context.FontAtlas.RegisterString(p.title),
-	//	p.data,
-	//	p.height,
-	//	p.shift,
-	//	p.offset
-	//	)
+	imgui.PlotPlotBarsdoublePtrIntV(
+		Context.FontAtlas.RegisterString(p.title),
+		&p.data,
+		int32(len(p.data)),
+		p.height,
+		p.shift,
+		imgui.PlotErrorBarsFlagsHorizontal,
+		int32(p.offset),
+		0,
+	)
 }
 
 // LinePlot represents a plot line (linear chart).
@@ -391,13 +393,19 @@ func (p *LinePlot) Offset(offset int) *LinePlot {
 
 // Plot implements Plot interface.
 func (p *LinePlot) Plot() {
-	// TODO: is it right function here?
-	//imgui.PlotSetupAxis(
-	//	imgui.PlotAxisEnum(p.yAxis),
-	//)
+	imgui.PlotSetupAxis(
+		imgui.PlotAxisEnum(p.yAxis),
+	)
 
 	// TODO: no idea what should it be...
 	//imgui.PlotDragLineX(Context.FontAtlas.RegisterString(p.title), p.values, p.xScale, p.x0, p.offset)
+	//imgui.PlotDragLineX(
+	//	Context.FontAtlas.RegisterString(p.title),
+	//	p.values,
+	//	p.xScale,
+	//	p.x0,
+	//	p.offset,
+	//)
 }
 
 // LineXYPlot adds XY plot line.
