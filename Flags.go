@@ -447,7 +447,6 @@ const (
 )
 
 // SliderFlags represents imgui.SliderFlags
-// TODO: Hard-reffer to these constants.
 type SliderFlags imgui.SliderFlags
 
 // slider flags.

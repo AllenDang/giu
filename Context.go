@@ -63,11 +63,12 @@ func CreateContext(b imgui.Backend[imgui.GLFWWindowFlags]) *context {
 
 	// Create font
 	if len(result.FontAtlas.defaultFonts) == 0 {
-		io := result.IO()
-		io.Fonts().AddFontDefault()
-		// TODO
-		// fontAtlas, _, _, _ := io.Fonts().GetTextureDataAsRGBA32()
-		// r.SetFontTexture(fontAtlas)
+		fonts := result.IO().Fonts()
+		fonts.AddFontDefault()
+		fontTextureImg, w, h, _ := fonts.GetTextureDataAsRGBA32()
+		tex := Context.backend.CreateTexture(fontTextureImg, int(w), int(h))
+		fonts.SetTexID(tex)
+		fonts.SetTexReady(true)
 	} else {
 		result.FontAtlas.shouldRebuildFontAtlas = true
 	}
