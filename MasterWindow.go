@@ -1,11 +1,12 @@
 package giu
 
 import (
+	"image"
+	"image/color"
+
 	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/faiface/mainthread"
 	"golang.org/x/image/colornames"
-	"image"
-	"image/color"
 )
 
 // MasterWindowFlags implements BackendWindowFlags
@@ -197,9 +198,6 @@ func (w *MasterWindow) beforeRender() {
 			NewTextureFromRgba(request.img, request.cb)
 		}
 	}
-
-	// TODO InputHandler not re-implemented yet
-	// p.ProcessEvents()
 }
 
 func (w *MasterWindow) afterRender() {
@@ -377,13 +375,13 @@ func (w *MasterWindow) SetShouldClose(v bool) {
 func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 	Context.InputHandler = handler
 
-	w.backend.SetKeyCallback(imgui.KeyCallback(func(key, scanCode, modifier, action int) {
+	w.backend.SetKeyCallback(func(key, scanCode, action, modifier int) {
 		k, m, a := Key(key), Modifier(modifier), Action(action)
 		handler.Handle(k, m, a)
 		if w.additionalInputCallback != nil {
 			w.additionalInputCallback(k, m, a)
 		}
-	}))
+	})
 }
 
 // SetAdditionalInputHandlerCallback allows to set an input callback to handle more events (not only these from giu.inputHandler).
