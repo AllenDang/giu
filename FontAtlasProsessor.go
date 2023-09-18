@@ -279,10 +279,10 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			}
 
 			// Scale font size with DPI scale factor
-			// TODO
-			//if runtime.GOOS == windows {
-			//	fontInfo.size *= Context.GetPlatform().GetContentScale()
-			//}
+			if runtime.GOOS == windows {
+				xScale, _ := Context.backend.ContentScale()
+				fontInfo.size *= xScale
+			}
 
 			if len(fontInfo.fontByte) == 0 {
 				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
@@ -309,10 +309,10 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	// Add extra fonts
 	for _, fontInfo := range a.extraFonts {
 		// Scale font size with DPI scale factor
-		// TODO
-		//if runtime.GOOS == windows {
-		//	fontInfo.size *= Context.GetPlatform().GetContentScale()
-		//}
+		if runtime.GOOS == windows {
+			xScale, _ := Context.backend.ContentScale()
+			fontInfo.size *= xScale
+		}
 
 		// Store imgui.Font for PushFont
 		var f *imgui.Font

@@ -3,6 +3,7 @@ package giu
 import (
 	"image"
 	"image/color"
+	"runtime"
 
 	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/faiface/mainthread"
@@ -117,9 +118,10 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 func (w *MasterWindow) setTheme() (fin func()) {
 	// Scale DPI in windows
-	//if runtime.GOOS == "windows" {
-	//	style.ScaleAllSizes(Context.GetPlatform().GetContentScale())
-	//}
+	if runtime.GOOS == "windows" {
+		xScale, _ := Context.backend.ContentScale()
+		imgui.CurrentStyle().ScaleAllSizes(xScale)
+	}
 
 	imgui.PushStyleVarFloat(imgui.StyleVarWindowRounding, 2)
 	imgui.PushStyleVarFloat(imgui.StyleVarFrameRounding, 4)
