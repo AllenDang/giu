@@ -1,8 +1,9 @@
 package giu
 
 import (
-	"github.com/AllenDang/cimgui-go"
 	"image"
+
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // Texture represents imgui.TextureID.

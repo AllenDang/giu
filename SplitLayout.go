@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // SplitDirection represents a direction (vertical/horizontal) of splitting layout.

@@ -8,7 +8,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/AllenDang/go-findfont"
 )
 
@@ -242,7 +242,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	}
 
 	fonts := Context.IO().Fonts()
-	//fonts.Clear() /// TODO: I'm commenting this out, because it produces panic.
+	// fonts.Clear() /// TODO: I'm commenting this out, because it produces panic.
 
 	var sb strings.Builder
 

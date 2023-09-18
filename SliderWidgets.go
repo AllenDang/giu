@@ -3,7 +3,7 @@ package giu
 import (
 	"fmt"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var _ Widget = &SliderIntWidget{}

@@ -226,7 +226,7 @@ func OpenURL(url string) {
 }
 
 // ColorToUint converts GO color into Uint32 color
-// it is 0xRRGGBBAA
+// it is 0xRRGGBBAA.
 func ColorToUint(col color.Color) uint32 {
 	r, g, b, a := col.RGBA()
 	mask := uint32(0xff)
@@ -234,7 +234,7 @@ func ColorToUint(col color.Color) uint32 {
 	return r&mask<<24 + g&mask<<16 + b&mask<<8 + a&mask
 }
 
-// UintToColor converts uint32 of form 0xRRGGBB into color.RGBA
+// UintToColor converts uint32 of form 0xRRGGBB into color.RGBA.
 func UintToColor(col uint32) *color.RGBA {
 	mask := 0xff
 	r := byte(col >> 24 & uint32(mask))

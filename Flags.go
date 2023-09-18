@@ -333,9 +333,9 @@ const (
 	ColorEditFlagsHDR ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsHDR)
 	// [Display]    // ColorEdit: override _display_ type among RGB/HSV/Hex. ColorPicker: select any combination using one or more of RGB/HSV/Hex.
 	ColorEditFlagsDisplayRGB ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsDisplayRGB)
-	// [Display]    // "
+	// [Display]    // ".
 	ColorEditFlagsDisplayHSV ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsDisplayHSV)
-	// [Display]    // "
+	// [Display]    // ".
 	ColorEditFlagsDisplayHex ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsDisplayHex)
 	// [DataType]   // ColorEdit, ColorPicker, ColorButton: _display_ values formatted as 0..255.
 	ColorEditFlagsUint8 ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsUint8)
@@ -446,7 +446,7 @@ const (
 	TableColumnFlagsNoDirectResize TableColumnFlags = TableColumnFlags(imgui.TableColumnFlagsNoDirectResize)
 )
 
-// SliderFlags represents imgui.SliderFlags
+// SliderFlags represents imgui.SliderFlags.
 type SliderFlags imgui.SliderFlags
 
 // slider flags.
@@ -478,7 +478,7 @@ const (
 	PlotFlagsNoBoxSelect = PlotFlags(imgui.PlotFlagsNoBoxSelect)
 	// 	PlotFlagsNoMousePos  = PlotFlags(imgui.PlotFlagsNoMousePos)
 	// 	PlotFlagsNoHighlight = PlotFlags(imgui.PlotFlagsNoHighlight)
-	// PlotFlagsNoChild = PlotFlags(imgui.PlotFlagsNoChild)
+	// PlotFlagsNoChild = PlotFlags(imgui.PlotFlagsNoChild).
 	PlotFlagsEqual = PlotFlags(imgui.PlotFlagsEqual)
 	// 	PlotFlagsYAxis2      = PlotFlags(imgui.PlotFlagsYAxis2)
 	// 	PlotFlagsYAxis3      = PlotFlags(imgui.PlotFlagsYAxis3)

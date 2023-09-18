@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var _ Widget = &ImageWidget{}

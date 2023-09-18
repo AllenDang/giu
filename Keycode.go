@@ -1,8 +1,9 @@
 package giu
 
 import (
-	imgui "github.com/AllenDang/cimgui-go"
 	"log"
+
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // Key represents a imgui key.
@@ -13,7 +14,6 @@ type Key imgui.Key
 // put in the 256+ range).
 const (
 	KeyNone         Key = Key(imgui.KeyNone)
-	KeyUnknown          = KeyNone // DEPRECATED: since cimgui-go migration use KeyNone
 	KeySpace        Key = Key(imgui.KeySpace)
 	KeyApostrophe   Key = Key(imgui.KeyApostrophe)
 	KeyComma        Key = Key(imgui.KeyComma)
@@ -62,8 +62,6 @@ const (
 	KeyBackslash    Key = Key(imgui.KeyBackslash)
 	KeyRightBracket Key = Key(imgui.KeyRightBracket)
 	KeyGraveAccent  Key = Key(imgui.KeyGraveAccent)
-	//KeyWorld1       Key = Key(imgui.KeyWorld1)
-	//KeyWorld2       Key = Key(imgui.KeyWorld2)
 	KeyEscape       Key = Key(imgui.KeyEscape)
 	KeyEnter        Key = Key(imgui.KeyEnter)
 	KeyTab          Key = Key(imgui.KeyTab)
@@ -106,7 +104,7 @@ const (
 	KeyMenu             = Key(imgui.KeyMenu)
 )
 
-// refer glfw3.h
+// refer glfw3.h.
 func keyFromGLFWKey(k imgui.GLFWKey) Key {
 	data := map[imgui.GLFWKey]Key{
 		imgui.GLFWKeySpace:        KeySpace,

@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var _ Disposable = &progressIndicatorState{}

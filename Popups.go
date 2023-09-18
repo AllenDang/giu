@@ -1,7 +1,7 @@
 package giu
 
 import (
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // OpenPopup opens a popup with specified id.

@@ -1,8 +1,6 @@
 package giu
 
-import (
-	"github.com/AllenDang/cimgui-go"
-)
+import imgui "github.com/AllenDang/cimgui-go"
 
 var _ Widget = &ListClipperWrapper{}
 

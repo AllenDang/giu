@@ -5,7 +5,7 @@ import (
 	"image/color"
 	"testing"
 
-	"github.com/AllenDang/cimgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/stretchr/testify/assert"
 )
 

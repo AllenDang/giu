@@ -10,7 +10,7 @@ import (
 	"golang.org/x/image/colornames"
 )
 
-// MasterWindowFlags implements BackendWindowFlags
+// MasterWindowFlags implements BackendWindowFlags.
 type MasterWindowFlags int
 
 // master window flags.
@@ -27,7 +27,7 @@ const (
 	MasterWindowFlagsTransparent
 )
 
-// parseAndApply converts MasterWindowFlags to appropiate imgui.GLFWWindowFlags.
+// parseAndApply converts MasterWindowFlags to appropriate imgui.GLFWWindowFlags.
 func (m MasterWindowFlags) parseAndApply(b imgui.Backend[imgui.GLFWWindowFlags]) {
 	data := map[MasterWindowFlags]struct {
 		f     imgui.GLFWWindowFlags
@@ -47,7 +47,7 @@ func (m MasterWindowFlags) parseAndApply(b imgui.Backend[imgui.GLFWWindowFlags])
 	}
 }
 
-// TODO
+// TODO(gucio321) implement this in cimgui-go
 // DontCare could be used as an argument to (*MasterWindow).SetSizeLimits.
 // var DontCare int = imgui.GlfwDontCare
 
@@ -274,13 +274,13 @@ func (w *MasterWindow) SetBgColor(bgColor color.Color) {
 }
 
 // GetPos return position of master window.
-func (w *MasterWindow) GetPos() (int, int) {
-	var x, y int32
+func (w *MasterWindow) GetPos() (x int, y int) {
+	var xResult, yResult int32
 	if w.backend != nil {
-		x, y = w.backend.GetWindowPos()
+		xResult, yResult = w.backend.GetWindowPos()
 	}
 
-	return int(x), int(y)
+	return int(xResult), int(yResult)
 }
 
 // SetPos sets position of master window.
