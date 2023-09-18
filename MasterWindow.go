@@ -376,7 +376,7 @@ func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 	Context.InputHandler = handler
 
 	w.backend.SetKeyCallback(func(key, scanCode, action, modifier int) {
-		k, m, a := Key(key), Modifier(modifier), Action(action)
+		k, m, a := keyFromGLFWKey(imgui.GLFWKey(key)), Modifier(modifier), Action(action)
 		handler.Handle(k, m, a)
 		if w.additionalInputCallback != nil {
 			w.additionalInputCallback(k, m, a)
