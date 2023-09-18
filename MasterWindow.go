@@ -92,7 +92,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	Context = CreateContext(backend)
 
 	mw := &MasterWindow{
-		clearColor: imgui.Vec4{0, 0, 0, 1},
+		clearColor: imgui.Vec4{X: 0, Y: 0, Z: 0, W: 1},
 		width:      width,
 		height:     height,
 		title:      title,
@@ -208,7 +208,7 @@ func (w *MasterWindow) afterRender() {
 
 func (w *MasterWindow) beforeDestroy() {
 	imgui.PlotDestroyContext()
-	// imgui.ImNodesDestroyContext() // TODO: after adding ImNodes (https://github.com/AllenDang/cimgui-go/issues/137)
+	//imgui.ImNodesDestroyContext() // TODO: after adding ImNodes (https://github.com/AllenDang/cimgui-go/issues/137)
 }
 
 func (w *MasterWindow) render() {
@@ -264,17 +264,17 @@ func (w *MasterWindow) SetBgColor(bgColor color.Color) {
 
 	r, g, b, a := bgColor.RGBA()
 	w.clearColor = imgui.Vec4{
-		float32(r) / mask,
-		float32(g) / mask,
-		float32(b) / mask,
-		float32(a) / mask,
+		X: float32(r) / mask,
+		Y: float32(g) / mask,
+		Z: float32(b) / mask,
+		W: float32(a) / mask,
 	}
 
 	w.backend.SetBgColor(w.clearColor)
 }
 
 // GetPos return position of master window.
-func (w *MasterWindow) GetPos() (x int, y int) {
+func (w *MasterWindow) GetPos() (x, y int) {
 	var xResult, yResult int32
 	if w.backend != nil {
 		xResult, yResult = w.backend.GetWindowPos()

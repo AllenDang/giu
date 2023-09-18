@@ -71,6 +71,7 @@ type WindowWidget struct {
 // Window creates a WindowWidget.
 func Window(title string) *WindowWidget {
 	defaultPos := imgui.MainViewport().Pos()
+
 	return (&WindowWidget{
 		title: title,
 	}).Pos(defaultPos.X, defaultPos.Y)

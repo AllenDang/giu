@@ -202,6 +202,7 @@ func keyFromGLFWKey(k imgui.GLFWKey) Key {
 	}
 
 	log.Panicf("Unknown key: %v", k)
+
 	return 0
 }
 
