@@ -195,7 +195,7 @@ func (p *PlotCanvasWidget) Build() {
 				imgui.AxisX1,
 				p.xTicksValue[0],
 				p.xTicksValue[1], // <- TODO: why is it so strangely saved?
-				-1,               // TODO
+				-1,               // TODO: implement
 				p.xTicksLabel,
 				p.xTicksShowDefault,
 			)
@@ -206,7 +206,7 @@ func (p *PlotCanvasWidget) Build() {
 				imgui.AxisY1,
 				p.xTicksValue[0],
 				p.xTicksValue[1], // <- TODO: why is it so strangely saved?
-				-1,               // TODO
+				-1,               // TODO: implement
 				p.xTicksLabel,
 				p.xTicksShowDefault,
 			)
@@ -292,7 +292,7 @@ func (p *BarPlot) Plot() {
 		p.shift,
 		0, // TODO: implement
 		int32(p.offset),
-		0, //TODO: implement
+		0, // TODO: implement
 	)
 }
 
@@ -400,7 +400,7 @@ func (p *LinePlot) Plot() {
 
 	// TODO: no idea what should it be...
 	// imgui.PlotDragLineX(Context.FontAtlas.RegisterString(p.title), p.values, p.xScale, p.x0, p.offset)
-	//imgui.PlotDragLineX(
+	// imgui.PlotDragLineX(
 	//	Context.FontAtlas.RegisterString(p.title),
 	//	p.values,
 	//	p.xScale,
@@ -443,7 +443,7 @@ func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
 func (p *LineXYPlot) Plot() {
 	// TODO: migrate this
 	// imgui.ImPlotSetPlotYAxis(imgui.ImPlotYAxis(p.yAxis))
-	//imgui.ImPlotLineXY(Context.FontAtlas.RegisterString(p.title), p.xs, p.ys, p.offset)
+	// imgui.ImPlotLineXY(Context.FontAtlas.RegisterString(p.title), p.xs, p.ys, p.offset)
 }
 
 // PieChartPlot represents a pie chart.

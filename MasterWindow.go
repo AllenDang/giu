@@ -208,7 +208,7 @@ func (w *MasterWindow) afterRender() {
 
 func (w *MasterWindow) beforeDestroy() {
 	imgui.PlotDestroyContext()
-	//imgui.ImNodesDestroyContext() // TODO: after adding ImNodes (https://github.com/AllenDang/cimgui-go/issues/137)
+	// imgui.ImNodesDestroyContext() // TODO: after adding ImNodes (https://github.com/AllenDang/cimgui-go/issues/137)
 }
 
 func (w *MasterWindow) render() {
