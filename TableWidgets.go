@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 type TableRowWidget struct {
@@ -39,7 +39,7 @@ func (r *TableRowWidget) MinHeight(height float64) *TableRowWidget {
 
 // BuildTableRow executes table row build steps.
 func (r *TableRowWidget) BuildTableRow() {
-	imgui.TableNextRow(imgui.TableRowFlags(r.flags), r.minRowHeight)
+	imgui.TableNextRowV(imgui.TableRowFlags(r.flags), float32(r.minRowHeight))
 
 	for _, w := range r.layout {
 		switch w.(type) {
@@ -54,7 +54,7 @@ func (r *TableRowWidget) BuildTableRow() {
 	}
 
 	if r.bgColor != nil {
-		imgui.TableSetBgColor(imgui.TableBgTarget_RowBg0, uint32(imgui.GetColorU32(ToVec4Color(r.bgColor))), -1)
+		imgui.TableSetBgColorV(imgui.TableBgTargetRowBg0, imgui.ColorU32Vec4(ToVec4Color(r.bgColor)), -1)
 	}
 }
 
@@ -91,7 +91,7 @@ func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
 
 // BuildTableColumn executes table column build steps.
 func (c *TableColumnWidget) BuildTableColumn() {
-	imgui.TableSetupColumn(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, c.userID)
+	imgui.TableSetupColumnV(c.label, imgui.TableColumnFlags(c.flags), c.innerWidthOrWeight, imgui.ID(c.userID))
 }
 
 var _ Widget = &TableWidget{}
@@ -172,9 +172,9 @@ func (t *TableWidget) Build() {
 		colCount = len(t.rows[0].layout)
 	}
 
-	if imgui.BeginTable(t.id, colCount, imgui.TableFlags(t.flags), t.size, t.innerWidth) {
+	if imgui.BeginTableV(t.id, int32(colCount), imgui.TableFlags(t.flags), t.size, float32(t.innerWidth)) {
 		if t.freezeColumn >= 0 && t.freezeRow >= 0 {
-			imgui.TableSetupScrollFreeze(t.freezeColumn, t.freezeRow)
+			imgui.TableSetupScrollFreeze(int32(t.freezeColumn), int32(t.freezeRow))
 		}
 
 		if len(t.columns) > 0 {
@@ -187,9 +187,9 @@ func (t *TableWidget) Build() {
 
 		if t.fastMode {
 			clipper := imgui.NewListClipper()
-			defer clipper.Delete()
+			defer clipper.Destroy()
 
-			clipper.Begin(len(t.rows))
+			clipper.Begin(int32(len(t.rows)))
 
 			for clipper.Step() {
 				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
@@ -239,15 +239,15 @@ func (ttr *TreeTableRowWidget) Flags(flags TreeNodeFlags) *TreeTableRowWidget {
 
 // BuildTreeTableRow executes table row building steps.
 func (ttr *TreeTableRowWidget) BuildTreeTableRow() {
-	imgui.TableNextRow(0, 0)
+	imgui.TableNextRowV(0, 0)
 	imgui.TableNextColumn()
 
 	open := false
 	if len(ttr.children) > 0 {
-		open = imgui.TreeNodeV(Context.FontAtlas.RegisterString(ttr.label), int(ttr.flags))
+		open = imgui.TreeNodeExStrV(Context.FontAtlas.RegisterString(ttr.label), imgui.TreeNodeFlags(ttr.flags))
 	} else {
 		ttr.flags |= TreeNodeFlagsLeaf | TreeNodeFlagsNoTreePushOnOpen
-		imgui.TreeNodeV(Context.FontAtlas.RegisterString(ttr.label), int(ttr.flags))
+		imgui.TreeNodeExStrV(Context.FontAtlas.RegisterString(ttr.label), imgui.TreeNodeFlags(ttr.flags))
 	}
 
 	for _, w := range ttr.layout {
@@ -337,9 +337,9 @@ func (tt *TreeTableWidget) Build() {
 		colCount = len(tt.rows[0].layout) + 1
 	}
 
-	if imgui.BeginTable(tt.id, colCount, imgui.TableFlags(tt.flags), tt.size, 0) {
+	if imgui.BeginTableV(tt.id, int32(colCount), imgui.TableFlags(tt.flags), tt.size, 0) {
 		if tt.freezeColumn >= 0 && tt.freezeRow >= 0 {
-			imgui.TableSetupScrollFreeze(tt.freezeColumn, tt.freezeRow)
+			imgui.TableSetupScrollFreeze(int32(tt.freezeColumn), int32(tt.freezeRow))
 		}
 
 		if len(tt.columns) > 0 {

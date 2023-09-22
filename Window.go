@@ -3,39 +3,43 @@ package giu
 import (
 	"fmt"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // SingleWindow creates one window filling all available space
 // in MasterWindow. If SingleWindow is set up, no other windows may be
 // defined.
 func SingleWindow() *WindowWidget {
-	size := Context.platform.DisplaySize()
+	pos := imgui.MainViewport().Pos()
+	sizeX, sizeY := Context.backend.DisplaySize()
 	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
 
 	return Window(title).
 		Flags(
-			imgui.WindowFlagsNoTitleBar|
-				imgui.WindowFlagsNoCollapse|
-				imgui.WindowFlagsNoScrollbar|
-				imgui.WindowFlagsNoMove|
-				imgui.WindowFlagsNoResize).
-		Size(size[0], size[1])
+			WindowFlags(imgui.WindowFlagsNoTitleBar)|
+				WindowFlags(imgui.WindowFlagsNoCollapse)|
+				WindowFlags(imgui.WindowFlagsNoScrollbar)|
+				WindowFlags(imgui.WindowFlagsNoMove)|
+				WindowFlags(imgui.WindowFlagsNoResize),
+		).
+		Pos(pos.X, pos.Y).Size(float32(sizeX), float32(sizeY))
 }
 
 // SingleWindowWithMenuBar creates a SingleWindow and allows to add menubar on its top.
 func SingleWindowWithMenuBar() *WindowWidget {
-	size := Context.platform.DisplaySize()
+	pos := imgui.MainViewport().Pos()
+	sizeX, sizeY := Context.backend.DisplaySize()
 	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
 
 	return Window(title).
 		Flags(
-			imgui.WindowFlagsNoTitleBar|
-				imgui.WindowFlagsNoCollapse|
-				imgui.WindowFlagsNoScrollbar|
-				imgui.WindowFlagsNoMove|
-				imgui.WindowFlagsMenuBar|
-				imgui.WindowFlagsNoResize).Size(size[0], size[1])
+			WindowFlags(imgui.WindowFlagsNoTitleBar)|
+				WindowFlags(imgui.WindowFlagsNoCollapse)|
+				WindowFlags(imgui.WindowFlagsNoScrollbar)|
+				WindowFlags(imgui.WindowFlagsNoMove)|
+				WindowFlags(imgui.WindowFlagsMenuBar)|
+				WindowFlags(imgui.WindowFlagsNoResize),
+		).Size(float32(sizeX), float32(sizeY)).Pos(pos.X, pos.Y)
 }
 
 var _ Disposable = &windowState{}
@@ -66,9 +70,11 @@ type WindowWidget struct {
 
 // Window creates a WindowWidget.
 func Window(title string) *WindowWidget {
-	return &WindowWidget{
+	defaultPos := imgui.MainViewport().Pos()
+
+	return (&WindowWidget{
 		title: title,
-	}
+	}).Pos(defaultPos.X, defaultPos.Y)
 }
 
 // IsOpen sets if window widget is `opened` (minimized).
@@ -109,12 +115,12 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 
 	ws := w.getState()
 
-	if w.flags&imgui.WindowFlagsNoMove != 0 && w.flags&imgui.WindowFlagsNoResize != 0 {
+	if w.flags&WindowFlags(imgui.WindowFlagsNoMove) != 0 && w.flags&WindowFlags(imgui.WindowFlagsNoResize) != 0 {
 		imgui.SetNextWindowPos(imgui.Vec2{X: w.x, Y: w.y})
 		imgui.SetNextWindowSize(imgui.Vec2{X: w.width, Y: w.height})
 	} else {
-		imgui.SetNextWindowPosV(imgui.Vec2{X: w.x, Y: w.y}, imgui.ConditionFirstUseEver, imgui.Vec2{X: 0, Y: 0})
-		imgui.SetNextWindowSizeV(imgui.Vec2{X: w.width, Y: w.height}, imgui.ConditionFirstUseEver)
+		imgui.SetNextWindowPosV(imgui.Vec2{X: w.x, Y: w.y}, imgui.CondFirstUseEver, imgui.Vec2{X: 0, Y: 0})
+		imgui.SetNextWindowSizeV(imgui.Vec2{X: w.width, Y: w.height}, imgui.CondFirstUseEver)
 	}
 
 	if w.bringToFront {
@@ -137,7 +143,7 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 		}),
 	)
 
-	showed := imgui.BeginV(Context.FontAtlas.RegisterString(w.title), w.open, int(w.flags))
+	showed := imgui.BeginV(Context.FontAtlas.RegisterString(w.title), w.open, imgui.WindowFlags(w.flags))
 
 	if showed {
 		Layout(widgets).Build()

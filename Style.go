@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // You may want to use styles in order to make your app looking more beautiful.
@@ -46,7 +46,7 @@ func PushFont(font *FontInfo) bool {
 	}
 
 	if f, ok := Context.FontAtlas.extraFontMap[font.String()]; ok {
-		imgui.PushFont(*f)
+		imgui.PushFont(f)
 		return true
 	}
 
@@ -58,52 +58,52 @@ func PopFont() {
 	imgui.PopFont()
 }
 
-// PushStyleColor wraps imgui.PushStyleColor
+// PushStyleColor wraps imgui.PushStyleColorVec4
 // NOTE: don't forget to call PopStyleColor()!
 func PushStyleColor(id StyleColorID, col color.Color) {
-	imgui.PushStyleColor(imgui.StyleColorID(id), ToVec4Color(col))
+	imgui.PushStyleColorVec4(imgui.Col(id), ToVec4Color(col))
 }
 
 // PushColorText calls PushStyleColor(StyleColorText,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorText(col color.Color) {
-	imgui.PushStyleColor(imgui.StyleColorText, ToVec4Color(col))
+	imgui.PushStyleColorVec4(imgui.ColText, ToVec4Color(col))
 }
 
 // PushColorTextDisabled calls PushStyleColor(StyleColorTextDisabled,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorTextDisabled(col color.Color) {
-	imgui.PushStyleColor(imgui.StyleColorTextDisabled, ToVec4Color(col))
+	imgui.PushStyleColorVec4(imgui.ColTextDisabled, ToVec4Color(col))
 }
 
 // PushColorWindowBg calls PushStyleColor(StyleColorWindowBg,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorWindowBg(col color.Color) {
-	imgui.PushStyleColor(imgui.StyleColorWindowBg, ToVec4Color(col))
+	imgui.PushStyleColorVec4(imgui.ColWindowBg, ToVec4Color(col))
 }
 
 // PushColorFrameBg calls PushStyleColor(StyleColorFrameBg,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorFrameBg(col color.Color) {
-	imgui.PushStyleColor(imgui.StyleColorFrameBg, ToVec4Color(col))
+	imgui.PushStyleColorVec4(imgui.ColFrameBg, ToVec4Color(col))
 }
 
 // PushColorButton calls PushStyleColor(StyleColorButton,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorButton(col color.Color) {
-	imgui.PushStyleColor(imgui.StyleColorButton, ToVec4Color(col))
+	imgui.PushStyleColorVec4(imgui.ColButton, ToVec4Color(col))
 }
 
 // PushColorButtonHovered calls PushStyleColor(StyleColorButtonHovered,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorButtonHovered(col color.Color) {
-	imgui.PushStyleColor(imgui.StyleColorButtonHovered, ToVec4Color(col))
+	imgui.PushStyleColorVec4(imgui.ColButtonHovered, ToVec4Color(col))
 }
 
 // PushColorButtonActive calls PushStyleColor(StyleColorButtonActive,...)
 // NOTE: don't forget to call PopStyleColor()!
 func PushColorButtonActive(col color.Color) {
-	imgui.PushStyleColor(imgui.StyleColorButtonActive, ToVec4Color(col))
+	imgui.PushStyleColorVec4(imgui.ColButtonActive, ToVec4Color(col))
 }
 
 // PushWindowPadding calls PushStyleVar(StyleWindowPadding,...)
@@ -141,7 +141,7 @@ func PopStyle() {
 // PopStyleV does similarly to PopStyle, but allows to specify number
 // of styles you're going to pop.
 func PopStyleV(count int) {
-	imgui.PopStyleVarV(count)
+	imgui.PopStyleVarV(int32(count))
 }
 
 // PopStyleColor is used to stop applying colors styles.
@@ -155,7 +155,7 @@ func PopStyleColor() {
 // PopStyleColorV does similar to PopStyleColor, but allows to specify
 // how much style colors would you like to pop.
 func PopStyleColorV(count int) {
-	imgui.PopStyleColorV(count)
+	imgui.PopStyleColorV(int32(count))
 }
 
 // AlignTextToFramePadding vertically aligns upcoming text baseline to
@@ -194,34 +194,34 @@ func PopTextWrapPos() {
 }
 
 // MouseCursorType represents a type (layout) of mouse cursor.
-type MouseCursorType int
+type MouseCursorType imgui.MouseCursor
 
 // cursor types.
 const (
 	// MouseCursorNone no mouse cursor.
-	MouseCursorNone MouseCursorType = -1
+	MouseCursorNone MouseCursorType = imgui.MouseCursorNone
 	// MouseCursorArrow standard arrow mouse cursor.
-	MouseCursorArrow MouseCursorType = 0
+	MouseCursorArrow MouseCursorType = imgui.MouseCursorArrow
 	// MouseCursorTextInput when hovering over InputText, etc.
-	MouseCursorTextInput MouseCursorType = 1
+	MouseCursorTextInput MouseCursorType = imgui.MouseCursorTextInput
 	// MouseCursorResizeAll (Unused by imgui functions).
-	MouseCursorResizeAll MouseCursorType = 2
+	MouseCursorResizeAll MouseCursorType = imgui.MouseCursorResizeAll
 	// MouseCursorResizeNS when hovering over an horizontal border.
-	MouseCursorResizeNS MouseCursorType = 3
+	MouseCursorResizeNS MouseCursorType = imgui.MouseCursorResizeNS
 	// MouseCursorResizeEW when hovering over a vertical border or a column.
-	MouseCursorResizeEW MouseCursorType = 4
+	MouseCursorResizeEW MouseCursorType = imgui.MouseCursorResizeEW
 	// MouseCursorResizeNESW when hovering over the bottom-left corner of a window.
-	MouseCursorResizeNESW MouseCursorType = 5
+	MouseCursorResizeNESW MouseCursorType = imgui.MouseCursorResizeNESW
 	// MouseCursorResizeNWSE when hovering over the bottom-right corner of a window.
-	MouseCursorResizeNWSE MouseCursorType = 6
+	MouseCursorResizeNWSE MouseCursorType = imgui.MouseCursorResizeNWSE
 	// MouseCursorHand (Unused by imgui functions. Use for e.g. hyperlinks).
-	MouseCursorHand  MouseCursorType = 7
-	MouseCursorCount MouseCursorType = 8
+	MouseCursorHand  MouseCursorType = imgui.MouseCursorHand
+	MouseCursorCount MouseCursorType = imgui.MouseCursorCOUNT
 )
 
 // SetMouseCursor sets mouse cursor layout.
 func SetMouseCursor(cursor MouseCursorType) {
-	imgui.SetMouseCursor(int(cursor))
+	imgui.SetMouseCursor(imgui.MouseCursor(cursor))
 }
 
 // GetWindowPadding returns window padding.

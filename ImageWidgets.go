@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var _ Widget = &ImageWidget{}
@@ -66,8 +66,7 @@ func (i *ImageWidget) OnClick(cb func()) *ImageWidget {
 // Size sets image size.
 func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 	// Size image with DPI scaling
-	factor := Context.GetPlatform().GetContentScale()
-	i.width, i.height = width*factor, height*factor
+	i.width, i.height = width, height
 
 	return i
 }
@@ -85,7 +84,7 @@ func (i *ImageWidget) Build() {
 		size.Y = rect.Y
 	}
 
-	if i.texture == nil || i.texture.id == 0 {
+	if i.texture == nil || i.texture.tex == nil {
 		Dummy(size.X, size.Y).Build()
 		return
 	}
@@ -103,7 +102,7 @@ func (i *ImageWidget) Build() {
 		}
 	}
 
-	imgui.ImageV(i.texture.id, size, i.uv0, i.uv1, ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
+	imgui.ImageV(i.texture.tex.ID(), size, i.uv0, i.uv1, ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
 }
 
 type imageState struct {
@@ -299,13 +298,13 @@ func (i *ImageWithURLWidget) Size(width, height float32) *ImageWithURLWidget {
 
 // LayoutForLoading allows to set layout rendered while loading an image.
 func (i *ImageWithURLWidget) LayoutForLoading(widgets ...Widget) *ImageWithURLWidget {
-	i.whenLoading = Layout(widgets)
+	i.whenLoading = widgets
 	return i
 }
 
 // LayoutForFailure allows to specify layout when image failed to download.
 func (i *ImageWithURLWidget) LayoutForFailure(widgets ...Widget) *ImageWithURLWidget {
-	i.whenFailure = Layout(widgets)
+	i.whenFailure = widgets
 	return i
 }
 
@@ -360,7 +359,7 @@ func (i *ImageWithURLWidget) Build() {
 
 			rgba := ImageToRgba(img)
 
-			NewTextureFromRgba(rgba, func(tex *Texture) {
+			EnqueueNewTextureFromRgba(rgba, func(tex *Texture) {
 				SetState(Context, i.id, &imageState{
 					loading: false,
 					failure: false,

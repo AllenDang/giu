@@ -3,7 +3,7 @@ package giu
 import (
 	"fmt"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var _ Widget = &SliderIntWidget{}
@@ -72,7 +72,7 @@ func (s *SliderIntWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.SliderIntV(Context.FontAtlas.RegisterString(s.label), s.value, s.min, s.max, s.format) && s.onChange != nil {
+	if imgui.SliderIntV(Context.FontAtlas.RegisterString(s.label), s.value, s.min, s.max, s.format, 0) && s.onChange != nil {
 		s.onChange()
 	}
 }
@@ -150,7 +150,7 @@ func (vs *VSliderIntWidget) Build() {
 		vs.min,
 		vs.max,
 		vs.format,
-		int(vs.flags),
+		imgui.SliderFlags(vs.flags),
 	) && vs.onChange != nil {
 		vs.onChange()
 	}

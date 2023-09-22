@@ -6,7 +6,7 @@ import (
 
 	"golang.org/x/image/colornames"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/sahilm/fuzzy"
 )
 
@@ -80,21 +80,21 @@ func (i *InputTextMultilineWidget) AutoScrollToBottom(b bool) *InputTextMultilin
 
 // Build implements Widget interface.
 func (i *InputTextMultilineWidget) Build() {
-	if imgui.InputTextMultilineV(
+	if imgui.InputTextMultiline(
 		Context.FontAtlas.RegisterString(i.label),
 		Context.FontAtlas.RegisterStringPointer(i.text),
 		imgui.Vec2{
 			X: i.width,
 			Y: i.height,
 		},
-		int(i.flags), i.cb,
+		imgui.InputTextFlags(i.flags), i.cb,
 	) && i.onChange != nil {
 		i.onChange()
 	}
 
 	if i.scrollToBottom {
-		imgui.BeginChild(i.label)
-		imgui.SetScrollHereY(1.0)
+		imgui.BeginChildStr(i.label) // TODO: there is a V version
+		imgui.SetScrollHereYV(1.0)
 		imgui.EndChild()
 	}
 }
@@ -243,7 +243,7 @@ func (i *InputTextWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	isChanged := imgui.InputTextWithHint(i.label, i.hint, Context.FontAtlas.RegisterStringPointer(i.value), int(i.flags), i.cb)
+	isChanged := imgui.InputTextWithHint(i.label, i.hint, Context.FontAtlas.RegisterStringPointer(i.value), imgui.InputTextFlags(i.flags), i.cb)
 
 	if isChanged && i.onChange != nil {
 		i.onChange()
@@ -283,7 +283,7 @@ func (i *InputTextWidget) handleAutoComplete(state *inputTextState) {
 		}
 	}
 
-	SetNextWindowPos(imgui.GetItemRectMin().X, imgui.GetItemRectMax().Y)
+	SetNextWindowPos(imgui.ItemRectMin().X, imgui.ItemRectMax().Y)
 	imgui.BeginTooltip()
 	labels.Build()
 	imgui.EndTooltip()
@@ -386,7 +386,13 @@ func (i *InputIntWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.InputIntV(i.label, i.value, i.step, i.stepFast, int(i.flags)) && i.onChange != nil {
+	if imgui.InputIntV(
+		i.label,
+		i.value,
+		int32(i.step),
+		int32(i.stepFast),
+		imgui.InputTextFlags(i.flags),
+	) && i.onChange != nil {
 		i.onChange()
 	}
 }
@@ -472,7 +478,14 @@ func (i *InputFloatWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.InputFloatV(i.label, i.value, i.step, i.stepFast, i.format, int(i.flags)) && i.onChange != nil {
+	if imgui.InputFloatV(
+		i.label,
+		i.value,
+		i.step,
+		i.stepFast,
+		i.format,
+		imgui.InputTextFlags(i.flags),
+	) && i.onChange != nil {
 		i.onChange()
 	}
 }

@@ -116,7 +116,7 @@ func (eh *EventHandler) OnMouseReleased(mouseButton MouseButton, callback func()
 
 // Build implements Widget interface
 //
-//nolint:gocognit,gocyclo // will fix later
+//nolint:gocyclo // will fix later
 func (eh *EventHandler) Build() {
 	isActive := IsItemActive()
 

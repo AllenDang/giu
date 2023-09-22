@@ -5,7 +5,7 @@ import (
 	"image"
 	"time"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 var _ Widget = &SplitterWidget{}
@@ -80,8 +80,7 @@ func (h *SplitterWidget) Build() {
 	ptMin := image.Pt(centerX-width/2, centerY-height/2)
 	ptMax := image.Pt(centerX+width/2, centerY+height/2)
 
-	style := imgui.CurrentStyle()
-	c := Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrab))
+	c := Vec4ToRGBA(*imgui.StyleColorVec4(imgui.ColScrollbarGrab))
 
 	// Place a invisible button to capture event.
 	imgui.InvisibleButton(h.id, imgui.Vec2{X: h.width, Y: h.height})
@@ -89,9 +88,9 @@ func (h *SplitterWidget) Build() {
 	if imgui.IsItemActive() {
 		switch h.direction {
 		case DirectionHorizontal:
-			*(h.delta) = imgui.CurrentIO().GetMouseDelta().Y
+			*(h.delta) = imgui.CurrentIO().MouseDelta().Y
 		case DirectionVertical:
-			*(h.delta) = imgui.CurrentIO().GetMouseDelta().X
+			*(h.delta) = imgui.CurrentIO().MouseDelta().X
 		}
 	} else {
 		*(h.delta) = 0
@@ -105,7 +104,7 @@ func (h *SplitterWidget) Build() {
 			imgui.SetMouseCursor(imgui.MouseCursorResizeEW)
 		}
 
-		c = Vec4ToRGBA(style.GetColor(imgui.StyleColorScrollbarGrabActive))
+		c = Vec4ToRGBA(*imgui.StyleColorVec4(imgui.ColScrollbarGrabActive))
 	}
 
 	// Draw a line in the very center
@@ -200,7 +199,7 @@ func (c *ConditionWidget) Build() {
 func RangeBuilder(id string, values []any, builder func(int, any) Widget) Layout {
 	var layout Layout
 
-	layout = append(layout, Custom(func() { imgui.PushID(id) }))
+	layout = append(layout, Custom(func() { imgui.PushIDStr(id) }))
 
 	if len(values) > 0 && builder != nil {
 		for i, v := range values {
@@ -313,19 +312,19 @@ func (l *ListBoxWidget) Build() {
 	child := Child().Border(l.border).Size(l.width, l.height).Layout(Layout{
 		Custom(func() {
 			clipper := imgui.NewListClipper()
-			defer clipper.Delete()
+			defer clipper.Destroy()
 
-			clipper.Begin(len(l.items))
+			clipper.Begin(int32(len(l.items)))
 
 			for clipper.Step() {
 				for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {
-					selected := i == int(*selectedIndex)
+					selected := i == *selectedIndex
 					item := l.items[i]
 					Selectable(item).Selected(selected).Flags(SelectableFlagsAllowDoubleClick).OnClick(func() {
-						if *selectedIndex != int32(i) {
-							*selectedIndex = int32(i)
+						if *selectedIndex != i {
+							*selectedIndex = i
 							if l.onChange != nil {
-								l.onChange(i)
+								l.onChange(int(i))
 							}
 						}
 					}).Build()
@@ -341,7 +340,7 @@ func (l *ListBoxWidget) Build() {
 						menu := m
 						menus = append(menus, MenuItem(fmt.Sprintf("%s##%d", menu, index)).OnClick(func() {
 							if l.onMenu != nil {
-								l.onMenu(index, menu)
+								l.onMenu(int(index), menu)
 							}
 						}))
 					}
@@ -437,7 +436,7 @@ func (d *DatePickerWidget) Build() {
 		return
 	}
 
-	imgui.PushID(d.id)
+	imgui.PushIDStr(d.id)
 	defer imgui.PopID()
 
 	if d.width > 0 {
@@ -553,12 +552,12 @@ func (d *DatePickerWidget) getDaysGroups() (days [][]int) {
 
 func (d *DatePickerWidget) calendarField(day int) Widget {
 	today := time.Now()
-	highlightColor := imgui.CurrentStyle().GetColor(imgui.StyleColorPlotHistogram)
+	highlightColor := imgui.StyleColorVec4(imgui.ColPlotHistogram)
 
 	return Custom(func() {
 		isToday := d.date.Year() == today.Year() && d.date.Month() == today.Month() && day == today.Day()
 		if isToday {
-			imgui.PushStyleColor(imgui.StyleColorText, highlightColor)
+			imgui.PushStyleColorVec4(imgui.ColText, *highlightColor)
 		}
 
 		Selectable(fmt.Sprintf("%02d", day)).Selected(isToday).OnClick(func() {

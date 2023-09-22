@@ -5,13 +5,11 @@ import (
 
 	"github.com/AllenDang/giu"
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/imgui-go"
 )
 
-var (
-	editor     *g.CodeEditorWidget
-	errMarkers imgui.ErrorMarkers
-)
+var editor *g.CodeEditorWidget
+
+// errMarkers imgui.ErrorMarkers
 
 func loop() {
 	g.SingleWindow().Layout(
@@ -35,11 +33,12 @@ func loop() {
 				editor.Text("Set text")
 			}),
 			g.Button("Set Error Marker").OnClick(func() {
-				errMarkers.Clear()
-				errMarkers.Insert(1, "Error message")
-				fmt.Println("ErrMarkers Size:", errMarkers.Size())
+				panic("implement me!")
+				// errMarkers.Clear()
+				// errMarkers.Insert(1, "Error message")
+				// fmt.Println("ErrMarkers Size:", errMarkers.Size())
 
-				editor.ErrorMarkers(errMarkers)
+				// editor.ErrorMarkers(errMarkers)
 			}),
 		),
 		editor,
@@ -49,7 +48,7 @@ func loop() {
 func main() {
 	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
 
-	errMarkers = imgui.NewErrorMarkers()
+	// errMarkers = imgui.NewErrorMarkers()
 
 	editor = g.CodeEditor().
 		ShowWhitespaces(false).

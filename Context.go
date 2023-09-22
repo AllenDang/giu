@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	"gopkg.in/eapache/queue.v1"
 )
 
@@ -28,12 +28,11 @@ type state struct {
 }
 
 type context struct {
+	backend imgui.Backend[imgui.GLFWWindowFlags]
+
 	// TODO: should be handled by mainthread tbh
 	// see https://github.com/faiface/mainthread/pull/4
 	isRunning bool
-
-	renderer imgui.Renderer
-	platform imgui.Platform
 
 	widgetIndexCounter int
 
@@ -53,22 +52,23 @@ type context struct {
 	m *sync.Mutex
 }
 
-func CreateContext(p imgui.Platform, r imgui.Renderer) *context {
+func CreateContext(b imgui.Backend[imgui.GLFWWindowFlags]) *context {
 	result := context{
-		platform:      p,
-		renderer:      r,
-		cssStylesheet: make(cssStylesheet),
-		m:             &sync.Mutex{},
+		cssStylesheet:       make(cssStylesheet),
+		backend:             b,
+		FontAtlas:           newFontAtlas(),
+		textureLoadingQueue: queue.New(),
+		m:                   &sync.Mutex{},
 	}
-
-	result.FontAtlas = newFontAtlas()
 
 	// Create font
 	if len(result.FontAtlas.defaultFonts) == 0 {
-		io := result.IO()
-		io.Fonts().AddFontDefault()
-		fontAtlas := io.Fonts().TextureDataRGBA32()
-		r.SetFontTexture(fontAtlas)
+		fonts := result.IO().Fonts()
+		fonts.AddFontDefault()
+		fontTextureImg, w, h, _ := fonts.GetTextureDataAsRGBA32()
+		tex := Context.backend.CreateTexture(fontTextureImg, int(w), int(h))
+		fonts.SetTexID(tex)
+		fonts.SetTexReady(true)
 	} else {
 		result.FontAtlas.shouldRebuildFontAtlas = true
 	}
@@ -76,15 +76,7 @@ func CreateContext(p imgui.Platform, r imgui.Renderer) *context {
 	return &result
 }
 
-func (c *context) GetRenderer() imgui.Renderer {
-	return c.renderer
-}
-
-func (c *context) GetPlatform() imgui.Platform {
-	return c.platform
-}
-
-func (c *context) IO() imgui.IO {
+func (c *context) IO() *imgui.IO {
 	return imgui.CurrentIO()
 }
 

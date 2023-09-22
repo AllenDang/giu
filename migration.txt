@@ -1,0 +1,4 @@
+API Changes:
+- remove InputTextFlagsAlwaysInsertMode
+- remove TabItemFlagsNoPushID
+- create: UintToColor and ColorToUint

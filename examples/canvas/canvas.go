@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 
@@ -10,6 +11,7 @@ import (
 var texture *g.Texture
 
 func loop() {
+	fmt.Println(texture.ID())
 	g.SingleWindow().Layout(
 		g.Label("Canvas demo"),
 		g.Custom(func() {
@@ -42,7 +44,7 @@ func loop() {
 			canvas.PathLineTo(p1)
 			canvas.PathLineTo(p2)
 			canvas.PathBezierCubicCurveTo(p2.Add(image.Pt(40, 0)), p3.Add(image.Pt(-50, 0)), p3, 0)
-			canvas.PathStroke(color, false, 1)
+			canvas.PathStroke(color, 0, 1)
 
 			if texture != nil {
 				canvas.AddImage(texture, image.Pt(350, 25), image.Pt(500, 125))
@@ -55,7 +57,7 @@ func main() {
 	wnd := g.NewMasterWindow("Canvas", 600, 600, g.MasterWindowFlagsNotResizable)
 
 	img, _ := g.LoadImage("gopher.png")
-	g.NewTextureFromRgba(img, func(tex *g.Texture) {
+	g.EnqueueNewTextureFromRgba(img, func(tex *g.Texture) {
 		texture = tex
 	})
 

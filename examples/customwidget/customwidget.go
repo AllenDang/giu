@@ -24,7 +24,9 @@ func (c *CircleButtonWidget) Build() {
 	width, height := g.CalcTextSize(c.id)
 	var padding float32 = 8.0
 
-	pos := g.GetCursorPos()
+	// You may want to use GetCursorPos here depending on you use case.
+	// We use ScreenPos here, because it is relative to MasterWindow (CursorPos seems to be relative to Viewport?)
+	pos := g.GetCursorScreenPos()
 
 	// Calculate the center point
 	radius := int(width/2 + padding*2)
@@ -43,7 +45,7 @@ func (c *CircleButtonWidget) Build() {
 	if drawActive {
 		canvas.AddCircleFilled(center, float32(radius), color.RGBA{12, 12, 200, 255})
 	}
-	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, radius, 2)
+	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, int32(radius), 2)
 
 	// Draw text
 	canvas.AddText(center.Sub(image.Pt(int((width)/2), int(height/2))), color.RGBA{255, 255, 255, 255}, c.id)

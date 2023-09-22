@@ -1,8 +1,6 @@
 package giu
 
-import (
-	"github.com/AllenDang/imgui-go"
-)
+import imgui "github.com/AllenDang/cimgui-go"
 
 var _ Widget = &ListClipperWrapper{}
 
@@ -34,9 +32,9 @@ func (l *ListClipperWrapper) Build() {
 	})
 
 	clipper := imgui.NewListClipper()
-	defer clipper.Delete()
+	defer clipper.Destroy()
 
-	clipper.Begin(len(layout))
+	clipper.Begin(int32(len(layout)))
 
 	for clipper.Step() {
 		for i := clipper.DisplayStart(); i < clipper.DisplayEnd(); i++ {

@@ -1,156 +1,229 @@
 package giu
 
-import "github.com/go-gl/glfw/v3.3/glfw"
+import (
+	"log"
 
-// Key represents a glfw key.
-type Key glfw.Key
+	imgui "github.com/AllenDang/cimgui-go"
+)
+
+// Key represents a imgui key.
+type Key imgui.Key
 
 // These key codes are inspired by the USB HID Usage Tables v1.12 (p. 53-60),
 // but re-arranged to map to 7-bit ASCII for printable keys (function keys are
 // put in the 256+ range).
 const (
-	KeyUnknown      Key = Key(glfw.KeyUnknown)
-	KeySpace        Key = Key(glfw.KeySpace)
-	KeyApostrophe   Key = Key(glfw.KeyApostrophe)
-	KeyComma        Key = Key(glfw.KeyComma)
-	KeyMinus        Key = Key(glfw.KeyMinus)
-	KeyPeriod       Key = Key(glfw.KeyPeriod)
-	KeySlash        Key = Key(glfw.KeySlash)
-	Key0            Key = Key(glfw.Key0)
-	Key1            Key = Key(glfw.Key1)
-	Key2            Key = Key(glfw.Key2)
-	Key3            Key = Key(glfw.Key3)
-	Key4            Key = Key(glfw.Key4)
-	Key5            Key = Key(glfw.Key5)
-	Key6            Key = Key(glfw.Key6)
-	Key7            Key = Key(glfw.Key7)
-	Key8            Key = Key(glfw.Key8)
-	Key9            Key = Key(glfw.Key9)
-	KeySemicolon    Key = Key(glfw.KeySemicolon)
-	KeyEqual        Key = Key(glfw.KeyEqual)
-	KeyA            Key = Key(glfw.KeyA)
-	KeyB            Key = Key(glfw.KeyB)
-	KeyC            Key = Key(glfw.KeyC)
-	KeyD            Key = Key(glfw.KeyD)
-	KeyE            Key = Key(glfw.KeyE)
-	KeyF            Key = Key(glfw.KeyF)
-	KeyG            Key = Key(glfw.KeyG)
-	KeyH            Key = Key(glfw.KeyH)
-	KeyI            Key = Key(glfw.KeyI)
-	KeyJ            Key = Key(glfw.KeyJ)
-	KeyK            Key = Key(glfw.KeyK)
-	KeyL            Key = Key(glfw.KeyL)
-	KeyM            Key = Key(glfw.KeyM)
-	KeyN            Key = Key(glfw.KeyN)
-	KeyO            Key = Key(glfw.KeyO)
-	KeyP            Key = Key(glfw.KeyP)
-	KeyQ            Key = Key(glfw.KeyQ)
-	KeyR            Key = Key(glfw.KeyR)
-	KeyS            Key = Key(glfw.KeyS)
-	KeyT            Key = Key(glfw.KeyT)
-	KeyU            Key = Key(glfw.KeyU)
-	KeyV            Key = Key(glfw.KeyV)
-	KeyW            Key = Key(glfw.KeyW)
-	KeyX            Key = Key(glfw.KeyX)
-	KeyY            Key = Key(glfw.KeyY)
-	KeyZ            Key = Key(glfw.KeyZ)
-	KeyLeftBracket  Key = Key(glfw.KeyLeftBracket)
-	KeyBackslash    Key = Key(glfw.KeyBackslash)
-	KeyRightBracket Key = Key(glfw.KeyRightBracket)
-	KeyGraveAccent  Key = Key(glfw.KeyGraveAccent)
-	KeyWorld1       Key = Key(glfw.KeyWorld1)
-	KeyWorld2       Key = Key(glfw.KeyWorld2)
-	KeyEscape       Key = Key(glfw.KeyEscape)
-	KeyEnter        Key = Key(glfw.KeyEnter)
-	KeyTab          Key = Key(glfw.KeyTab)
-	KeyBackspace    Key = Key(glfw.KeyBackspace)
-	KeyInsert       Key = Key(glfw.KeyInsert)
-	KeyDelete       Key = Key(glfw.KeyDelete)
-	KeyRight        Key = Key(glfw.KeyRight)
-	KeyLeft         Key = Key(glfw.KeyLeft)
-	KeyDown         Key = Key(glfw.KeyDown)
-	KeyUp           Key = Key(glfw.KeyUp)
-	KeyPageUp       Key = Key(glfw.KeyPageUp)
-	KeyPageDown     Key = Key(glfw.KeyPageDown)
-	KeyHome         Key = Key(glfw.KeyHome)
-	KeyEnd          Key = Key(glfw.KeyEnd)
-	KeyCapsLock     Key = Key(glfw.KeyCapsLock)
-	KeyScrollLock   Key = Key(glfw.KeyScrollLock)
-	KeyNumLock      Key = Key(glfw.KeyNumLock)
-	KeyPrintScreen  Key = Key(glfw.KeyPrintScreen)
-	KeyPause        Key = Key(glfw.KeyPause)
-	KeyF1           Key = Key(glfw.KeyF1)
-	KeyF2           Key = Key(glfw.KeyF2)
-	KeyF3           Key = Key(glfw.KeyF3)
-	KeyF4           Key = Key(glfw.KeyF4)
-	KeyF5           Key = Key(glfw.KeyF5)
-	KeyF6           Key = Key(glfw.KeyF6)
-	KeyF7           Key = Key(glfw.KeyF7)
-	KeyF8           Key = Key(glfw.KeyF8)
-	KeyF9           Key = Key(glfw.KeyF9)
-	KeyF10          Key = Key(glfw.KeyF10)
-	KeyF11          Key = Key(glfw.KeyF11)
-	KeyF12          Key = Key(glfw.KeyF12)
-	KeyF13          Key = Key(glfw.KeyF13)
-	KeyF14          Key = Key(glfw.KeyF14)
-	KeyF15          Key = Key(glfw.KeyF15)
-	KeyF16          Key = Key(glfw.KeyF16)
-	KeyF17          Key = Key(glfw.KeyF17)
-	KeyF18          Key = Key(glfw.KeyF18)
-	KeyF19          Key = Key(glfw.KeyF19)
-	KeyF20          Key = Key(glfw.KeyF20)
-	KeyF21          Key = Key(glfw.KeyF21)
-	KeyF22          Key = Key(glfw.KeyF22)
-	KeyF23          Key = Key(glfw.KeyF23)
-	KeyF24          Key = Key(glfw.KeyF24)
-	KeyF25          Key = Key(glfw.KeyF25)
-	KeyKP0          Key = Key(glfw.KeyKP0)
-	KeyKP1          Key = Key(glfw.KeyKP1)
-	KeyKP2          Key = Key(glfw.KeyKP2)
-	KeyKP3          Key = Key(glfw.KeyKP3)
-	KeyKP4          Key = Key(glfw.KeyKP4)
-	KeyKP5          Key = Key(glfw.KeyKP5)
-	KeyKP6          Key = Key(glfw.KeyKP6)
-	KeyKP7          Key = Key(glfw.KeyKP7)
-	KeyKP8          Key = Key(glfw.KeyKP8)
-	KeyKP9          Key = Key(glfw.KeyKP9)
-	KeyKPDecimal    Key = Key(glfw.KeyKPDecimal)
-	KeyKPDivide     Key = Key(glfw.KeyKPDivide)
-	KeyKPMultiply   Key = Key(glfw.KeyKPMultiply)
-	KeyKPSubtract   Key = Key(glfw.KeyKPSubtract)
-	KeyKPAdd        Key = Key(glfw.KeyKPAdd)
-	KeyKPEnter      Key = Key(glfw.KeyKPEnter)
-	KeyKPEqual      Key = Key(glfw.KeyKPEqual)
-	KeyLeftShift    Key = Key(glfw.KeyLeftShift)
-	KeyLeftControl  Key = Key(glfw.KeyLeftControl)
-	KeyLeftAlt      Key = Key(glfw.KeyLeftAlt)
-	KeyLeftSuper    Key = Key(glfw.KeyLeftSuper)
-	KeyRightShift   Key = Key(glfw.KeyRightShift)
-	KeyRightControl Key = Key(glfw.KeyRightControl)
-	KeyRightAlt     Key = Key(glfw.KeyRightAlt)
-	KeyRightSuper   Key = Key(glfw.KeyRightSuper)
-	KeyMenu         Key = Key(glfw.KeyMenu)
-	KeyLast         Key = Key(glfw.KeyLast)
+	KeyNone         Key = Key(imgui.KeyNone)
+	KeySpace        Key = Key(imgui.KeySpace)
+	KeyApostrophe   Key = Key(imgui.KeyApostrophe)
+	KeyComma        Key = Key(imgui.KeyComma)
+	KeyMinus        Key = Key(imgui.KeyMinus)
+	KeyPeriod       Key = Key(imgui.KeyPeriod)
+	KeySlash        Key = Key(imgui.KeySlash)
+	Key0            Key = Key(imgui.Key0)
+	Key1            Key = Key(imgui.Key1)
+	Key2            Key = Key(imgui.Key2)
+	Key3            Key = Key(imgui.Key3)
+	Key4            Key = Key(imgui.Key4)
+	Key5            Key = Key(imgui.Key5)
+	Key6            Key = Key(imgui.Key6)
+	Key7            Key = Key(imgui.Key7)
+	Key8            Key = Key(imgui.Key8)
+	Key9            Key = Key(imgui.Key9)
+	KeySemicolon    Key = Key(imgui.KeySemicolon)
+	KeyEqual        Key = Key(imgui.KeyEqual)
+	KeyA            Key = Key(imgui.KeyA)
+	KeyB            Key = Key(imgui.KeyB)
+	KeyC            Key = Key(imgui.KeyC)
+	KeyD            Key = Key(imgui.KeyD)
+	KeyE            Key = Key(imgui.KeyE)
+	KeyF            Key = Key(imgui.KeyF)
+	KeyG            Key = Key(imgui.KeyG)
+	KeyH            Key = Key(imgui.KeyH)
+	KeyI            Key = Key(imgui.KeyI)
+	KeyJ            Key = Key(imgui.KeyJ)
+	KeyK            Key = Key(imgui.KeyK)
+	KeyL            Key = Key(imgui.KeyL)
+	KeyM            Key = Key(imgui.KeyM)
+	KeyN            Key = Key(imgui.KeyN)
+	KeyO            Key = Key(imgui.KeyO)
+	KeyP            Key = Key(imgui.KeyP)
+	KeyQ            Key = Key(imgui.KeyQ)
+	KeyR            Key = Key(imgui.KeyR)
+	KeyS            Key = Key(imgui.KeyS)
+	KeyT            Key = Key(imgui.KeyT)
+	KeyU            Key = Key(imgui.KeyU)
+	KeyV            Key = Key(imgui.KeyV)
+	KeyW            Key = Key(imgui.KeyW)
+	KeyX            Key = Key(imgui.KeyX)
+	KeyY            Key = Key(imgui.KeyY)
+	KeyZ            Key = Key(imgui.KeyZ)
+	KeyLeftBracket  Key = Key(imgui.KeyLeftBracket)
+	KeyBackslash    Key = Key(imgui.KeyBackslash)
+	KeyRightBracket Key = Key(imgui.KeyRightBracket)
+	KeyGraveAccent  Key = Key(imgui.KeyGraveAccent)
+	KeyEscape       Key = Key(imgui.KeyEscape)
+	KeyEnter        Key = Key(imgui.KeyEnter)
+	KeyTab          Key = Key(imgui.KeyTab)
+	KeyBackspace    Key = Key(imgui.KeyBackspace)
+	KeyInsert           = Key(imgui.KeyInsert)
+	KeyDelete           = Key(imgui.KeyDelete)
+	KeyRight            = Key(imgui.KeyRightArrow)
+	KeyLeft             = Key(imgui.KeyLeftArrow)
+	KeyDown             = Key(imgui.KeyDownArrow)
+	KeyUp               = Key(imgui.KeyUpArrow)
+	KeyPageUp           = Key(imgui.KeyPageUp)
+	KeyPageDown         = Key(imgui.KeyPageDown)
+	KeyHome             = Key(imgui.KeyHome)
+	KeyEnd              = Key(imgui.KeyEnd)
+	KeyCapsLock         = Key(imgui.KeyCapsLock)
+	KeyScrollLock       = Key(imgui.KeyScrollLock)
+	KeyNumLock          = Key(imgui.KeyNumLock)
+	KeyPrintScreen      = Key(imgui.KeyPrintScreen)
+	KeyPause            = Key(imgui.KeyPause)
+	KeyF1               = Key(imgui.KeyF1)
+	KeyF2               = Key(imgui.KeyF2)
+	KeyF3               = Key(imgui.KeyF3)
+	KeyF4               = Key(imgui.KeyF4)
+	KeyF5               = Key(imgui.KeyF5)
+	KeyF6               = Key(imgui.KeyF6)
+	KeyF7               = Key(imgui.KeyF7)
+	KeyF8               = Key(imgui.KeyF8)
+	KeyF9               = Key(imgui.KeyF9)
+	KeyF10              = Key(imgui.KeyF10)
+	KeyF11              = Key(imgui.KeyF11)
+	KeyF12              = Key(imgui.KeyF12)
+	KeyLeftShift        = Key(imgui.KeyLeftShift)
+	KeyLeftControl      = Key(imgui.KeyLeftCtrl)
+	KeyLeftAlt          = Key(imgui.KeyLeftAlt)
+	KeyLeftSuper        = Key(imgui.KeyLeftSuper)
+	KeyRightShift       = Key(imgui.KeyRightShift)
+	KeyRightControl     = Key(imgui.KeyRightCtrl)
+	KeyRightAlt         = Key(imgui.KeyRightAlt)
+	KeyRightSuper       = Key(imgui.KeyRightSuper)
+	KeyMenu             = Key(imgui.KeyMenu)
 )
 
-// Modifier represents glfw.Modifier.
-type Modifier glfw.ModifierKey
+// refer glfw3.h.
+func keyFromGLFWKey(k imgui.GLFWKey) Key {
+	data := map[imgui.GLFWKey]Key{
+		imgui.GLFWKeySpace:        KeySpace,
+		imgui.GLFWKeyApostrophe:   KeyApostrophe,
+		imgui.GLFWKeyComma:        KeyComma,
+		imgui.GLFWKeyMinus:        KeyMinus,
+		imgui.GLFWKeyPeriod:       KeyPeriod,
+		imgui.GLFWKeySlash:        KeySlash,
+		imgui.GLFWKey0:            Key0,
+		imgui.GLFWKey1:            Key1,
+		imgui.GLFWKey2:            Key2,
+		imgui.GLFWKey3:            Key3,
+		imgui.GLFWKey4:            Key4,
+		imgui.GLFWKey5:            Key5,
+		imgui.GLFWKey6:            Key6,
+		imgui.GLFWKey7:            Key7,
+		imgui.GLFWKey8:            Key8,
+		imgui.GLFWKey9:            Key9,
+		imgui.GLFWKeySemicolon:    KeySemicolon,
+		imgui.GLFWKeyEqual:        KeyEqual,
+		imgui.GLFWKeyA:            KeyA,
+		imgui.GLFWKeyB:            KeyB,
+		imgui.GLFWKeyC:            KeyC,
+		imgui.GLFWKeyD:            KeyD,
+		imgui.GLFWKeyE:            KeyE,
+		imgui.GLFWKeyF:            KeyF,
+		imgui.GLFWKeyG:            KeyG,
+		imgui.GLFWKeyH:            KeyH,
+		imgui.GLFWKeyI:            KeyI,
+		imgui.GLFWKeyJ:            KeyJ,
+		imgui.GLFWKeyK:            KeyK,
+		imgui.GLFWKeyL:            KeyL,
+		imgui.GLFWKeyM:            KeyM,
+		imgui.GLFWKeyN:            KeyN,
+		imgui.GLFWKeyO:            KeyO,
+		imgui.GLFWKeyP:            KeyP,
+		imgui.GLFWKeyQ:            KeyQ,
+		imgui.GLFWKeyR:            KeyR,
+		imgui.GLFWKeyS:            KeyS,
+		imgui.GLFWKeyT:            KeyT,
+		imgui.GLFWKeyU:            KeyU,
+		imgui.GLFWKeyV:            KeyV,
+		imgui.GLFWKeyW:            KeyW,
+		imgui.GLFWKeyX:            KeyX,
+		imgui.GLFWKeyY:            KeyY,
+		imgui.GLFWKeyZ:            KeyZ,
+		imgui.GLFWKeyLeftBracket:  KeyLeftBracket,
+		imgui.GLFWKeyBackslash:    KeyBackslash,
+		imgui.GLFWKeyRightBracket: KeyRightBracket,
+		imgui.GLFWKeyGraveAccent:  KeyGraveAccent,
+		imgui.GLFWKeyEscape:       KeyEscape,
+		imgui.GLFWKeyEnter:        KeyEnter,
+		imgui.GLFWKeyTab:          KeyTab,
+		imgui.GLFWKeyBackspace:    KeyBackspace,
+		imgui.GLFWKeyInsert:       KeyInsert,
+		imgui.GLFWKeyDelete:       KeyDelete,
+		imgui.GLFWKeyRight:        KeyRight,
+		imgui.GLFWKeyLeft:         KeyLeft,
+		imgui.GLFWKeyDown:         KeyDown,
+		imgui.GLFWKeyUp:           KeyUp,
+		imgui.GLFWKeyPageUp:       KeyPageUp,
+		imgui.GLFWKeyPageDown:     KeyPageDown,
+		imgui.GLFWKeyHome:         KeyHome,
+		imgui.GLFWKeyEnd:          KeyEnd,
+		imgui.GLFWKeyCapsLock:     KeyCapsLock,
+		imgui.GLFWKeyScrollLock:   KeyScrollLock,
+		imgui.GLFWKeyNumLock:      KeyNumLock,
+		imgui.GLFWKeyPrintScreen:  KeyPrintScreen,
+		imgui.GLFWKeyPause:        KeyPause,
+		imgui.GLFWKeyF1:           KeyF1,
+		imgui.GLFWKeyF2:           KeyF2,
+		imgui.GLFWKeyF3:           KeyF3,
+		imgui.GLFWKeyF4:           KeyF4,
+		imgui.GLFWKeyF5:           KeyF5,
+		imgui.GLFWKeyF6:           KeyF6,
+		imgui.GLFWKeyF7:           KeyF7,
+		imgui.GLFWKeyF8:           KeyF8,
+		imgui.GLFWKeyF9:           KeyF9,
+		imgui.GLFWKeyF10:          KeyF10,
+		imgui.GLFWKeyF11:          KeyF11,
+		imgui.GLFWKeyF12:          KeyF12,
+		imgui.GLFWKeyLeftShift:    KeyLeftShift,
+		imgui.GLFWKeyLeftControl:  KeyLeftControl,
+		imgui.GLFWKeyLeftAlt:      KeyLeftAlt,
+		imgui.GLFWKeyLeftSuper:    KeyLeftSuper,
+		imgui.GLFWKeyRightShift:   KeyRightShift,
+		imgui.GLFWKeyRightControl: KeyRightControl,
+		imgui.GLFWKeyRightAlt:     KeyRightAlt,
+		imgui.GLFWKeyRightSuper:   KeyRightSuper,
+		imgui.GLFWKeyMenu:         KeyMenu,
+	}
+
+	if v, ok := data[k]; ok {
+		return v
+	}
+
+	log.Panicf("Unknown key: %v", k)
+
+	return 0
+}
+
+// Modifier represents imgui.Modifier.
+type Modifier imgui.Key
 
 // modifier keys.
 const (
-	ModNone     Modifier = iota
-	ModControl  Modifier = Modifier(glfw.ModControl)
-	ModAlt      Modifier = Modifier(glfw.ModAlt)
-	ModSuper    Modifier = Modifier(glfw.ModSuper)
-	ModShift    Modifier = Modifier(glfw.ModShift)
-	ModCapsLock Modifier = Modifier(glfw.ModCapsLock)
-	ModNumLock  Modifier = Modifier(glfw.ModNumLock)
+	ModNone     Modifier = 0
+	ModControl           = Modifier(imgui.GLFWModControl)
+	ModAlt               = Modifier(imgui.GLFWModAlt)
+	ModSuper             = Modifier(imgui.GLFWModSuper)
+	ModShift             = Modifier(imgui.GLFWModShift)
+	ModCapsLock          = Modifier(imgui.GLFWModCapsLock)
+	ModNumLock           = Modifier(imgui.GLFWModNumLock)
 )
 
-type Action glfw.Action
+type Action int
 
 const (
-	Release Action = Action(glfw.Release)
-	Press   Action = Action(glfw.Press)
-	Repeat  Action = Action(glfw.Repeat)
+	Release Action = iota
+	Press
+	Repeat
 )

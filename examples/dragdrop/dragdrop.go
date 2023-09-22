@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
+	"unsafe"
 
+	imgui "github.com/AllenDang/cimgui-go"
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/imgui-go"
 )
 
-var (
-	dropTarget string = "Drop here"
-)
+var dropTarget string = "Drop here"
 
 func loop() {
 	g.SingleWindow().Layout(
@@ -17,7 +16,12 @@ func loop() {
 			g.Custom(func() {
 				g.Button("Drag me: 9").Build()
 				if imgui.BeginDragDropSource() {
-					imgui.SetDragDropPayload("DND_DEMO", 9)
+					data := 9
+					imgui.SetDragDropPayload(
+						"DND_DEMO",
+						unsafe.Pointer(&data),
+						0,
+					)
 					g.Label("9").Build()
 					imgui.EndDragDropSource()
 				}
@@ -25,7 +29,12 @@ func loop() {
 			g.Custom(func() {
 				g.Button("Drag me: 10").Build()
 				if imgui.BeginDragDropSource() {
-					imgui.SetDragDropPayload("DND_DEMO", 10)
+					data := 10
+					imgui.SetDragDropPayload(
+						"DND_DEMO",
+						unsafe.Pointer(&data),
+						0,
+					)
 					g.Label("10").Build()
 					imgui.EndDragDropSource()
 				}
@@ -35,7 +44,7 @@ func loop() {
 		g.Custom(func() {
 			if imgui.BeginDragDropTarget() {
 				payload := imgui.AcceptDragDropPayload("DND_DEMO")
-				if payload != 0 {
+				if payload != nil {
 					dropTarget = fmt.Sprintf("Dropped value: %d", payload.Data())
 				}
 				imgui.EndDragDropTarget()

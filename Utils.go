@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/pkg/browser"
 )
 
@@ -91,7 +91,7 @@ func Update() {
 	defer Context.m.Unlock()
 
 	if Context.isAlive {
-		Context.platform.Update()
+		Context.backend.Refresh()
 	}
 }
 
@@ -137,7 +137,12 @@ func CalcTextSize(text string) (width, height float32) {
 
 // CalcTextSizeV calculates text dimensions.
 func CalcTextSizeV(text string, hideAfterDoubleHash bool, wrapWidth float32) (w, h float32) {
-	size := imgui.CalcTextSize(text, hideAfterDoubleHash, wrapWidth)
+	size := imgui.CalcTextSizeV(
+		text,
+		hideAfterDoubleHash,
+		wrapWidth,
+	)
+
 	return size.X, size.Y
 }
 
@@ -146,15 +151,15 @@ func SetNextWindowSize(width, height float32) {
 	imgui.SetNextWindowSize(imgui.Vec2{X: width, Y: height})
 }
 
-// ExecCondition represents imgui.Condition.
-type ExecCondition imgui.Condition
+// ExecCondition represents imgui.Cond.
+type ExecCondition imgui.Cond
 
 // imgui conditions.
 const (
-	ConditionAlways       ExecCondition = ExecCondition(imgui.ConditionAlways)
-	ConditionOnce         ExecCondition = ExecCondition(imgui.ConditionOnce)
-	ConditionFirstUseEver ExecCondition = ExecCondition(imgui.ConditionFirstUseEver)
-	ConditionAppearing    ExecCondition = ExecCondition(imgui.ConditionAppearing)
+	ConditionAlways       ExecCondition = ExecCondition(imgui.CondAlways)
+	ConditionOnce         ExecCondition = ExecCondition(imgui.CondOnce)
+	ConditionFirstUseEver ExecCondition = ExecCondition(imgui.CondFirstUseEver)
+	ConditionAppearing    ExecCondition = ExecCondition(imgui.CondAppearing)
 )
 
 // SetNextWindowPos sets position of next window.
@@ -162,14 +167,14 @@ func SetNextWindowPos(x, y float32) {
 	imgui.SetNextWindowPos(imgui.Vec2{X: x, Y: y})
 }
 
-// SetNextWindowSizeV does similar to SetNextWIndowSize but allows to specify imgui.Condition.
+// SetNextWindowSizeV does similar to SetNextWIndowSize but allows to specify imgui.Cond.
 func SetNextWindowSizeV(width, height float32, condition ExecCondition) {
 	imgui.SetNextWindowSizeV(
 		imgui.Vec2{
 			X: width,
 			Y: height,
 		},
-		imgui.Condition(condition),
+		imgui.Cond(condition),
 	)
 }
 
@@ -185,7 +190,7 @@ func SetKeyboardFocusHere() {
 
 // SetKeyboardFocusHereV sets keyboard on the next widget. Use positive 'offset' to access sub components of a multiple component widget. Use -1 to access previous widget.
 func SetKeyboardFocusHereV(i int) {
-	imgui.SetKeyboardFocusHereV(i)
+	imgui.SetKeyboardFocusHereV(int32(i))
 }
 
 // PushClipRect pushes a clipping rectangle for both ImGui logic (hit-testing etc.) and low-level ImDrawList rendering.
@@ -217,5 +222,30 @@ func fatal(widgetName, method, message string, args ...any) {
 func OpenURL(url string) {
 	if err := browser.OpenURL(url); err != nil {
 		log.Printf("Error opening %s: %v", url, err)
+	}
+}
+
+// ColorToUint converts GO color into Uint32 color
+// it is 0xRRGGBBAA.
+func ColorToUint(col color.Color) uint32 {
+	r, g, b, a := col.RGBA()
+	mask := uint32(0xff)
+
+	return r&mask<<24 + g&mask<<16 + b&mask<<8 + a&mask
+}
+
+// UintToColor converts uint32 of form 0xRRGGBB into color.RGBA.
+func UintToColor(col uint32) *color.RGBA {
+	mask := 0xff
+	r := byte(col >> 24 & uint32(mask))
+	g := byte(col >> 16 & uint32(mask))
+	b := byte(col >> 8 & uint32(mask))
+	a := byte(col >> 0 & uint32(mask))
+
+	return &color.RGBA{
+		R: r,
+		G: g,
+		B: b,
+		A: a,
 	}
 }

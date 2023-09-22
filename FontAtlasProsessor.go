@@ -6,9 +6,10 @@ import (
 	"runtime"
 	"strings"
 	"sync"
+	"unsafe"
 
+	imgui "github.com/AllenDang/cimgui-go"
 	"github.com/AllenDang/go-findfont"
-	"github.com/AllenDang/imgui-go"
 )
 
 const (
@@ -241,7 +242,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	}
 
 	fonts := Context.IO().Fonts()
-	fonts.Clear()
+	// fonts.Clear() /// TODO: I'm commenting this out, because it produces panic.
 
 	var sb strings.Builder
 
@@ -254,7 +255,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 		return true
 	})
 
-	ranges := imgui.NewGlyphRanges()
+	ranges := imgui.NewGlyphRange()
 	builder := imgui.NewFontGlyphRangesBuilder()
 
 	// Because we pre-registered numbers, so default string map's length should greater then 11.
@@ -279,18 +280,26 @@ func (a *FontAtlas) rebuildFontAtlas() {
 
 			// Scale font size with DPI scale factor
 			if runtime.GOOS == windows {
-				fontInfo.size *= Context.GetPlatform().GetContentScale()
+				xScale, _ := Context.backend.ContentScale()
+				fontInfo.size *= xScale
 			}
 
 			if len(fontInfo.fontByte) == 0 {
 				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
 			} else {
-				fonts.AddFontFromMemoryTTFV(fontInfo.fontByte, fontInfo.size, fontConfig, ranges.Data())
+				fontConfig.SetFontDataOwnedByAtlas(false)
+				fonts.AddFontFromMemoryTTFV(
+					unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte)), //nolint:gosec // we need this here
+					int32(len(fontInfo.fontByte)),
+					fontInfo.size,
+					fontConfig,
+					ranges.Data(),
+				)
 			}
 		}
 
 		// Fall back if no font is added
-		if fonts.GetFontCount() == 0 {
+		if fonts.FontCount() == 0 {
 			fonts.AddFontDefault()
 		}
 	} else {
@@ -301,22 +310,38 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	for _, fontInfo := range a.extraFonts {
 		// Scale font size with DPI scale factor
 		if runtime.GOOS == windows {
-			fontInfo.size *= Context.GetPlatform().GetContentScale()
+			xScale, _ := Context.backend.ContentScale()
+			fontInfo.size *= xScale
 		}
 
 		// Store imgui.Font for PushFont
-		var f imgui.Font
+		var f *imgui.Font
 		if len(fontInfo.fontByte) == 0 {
-			f = fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+			f = fonts.AddFontFromFileTTFV(
+				fontInfo.fontPath,
+				fontInfo.size,
+				imgui.NewFontConfig(),
+				ranges.Data(),
+			)
 		} else {
-			f = fonts.AddFontFromMemoryTTFV(fontInfo.fontByte, fontInfo.size, imgui.DefaultFontConfig, ranges.Data())
+			fontConfig := imgui.NewFontConfig()
+			fontConfig.SetFontDataOwnedByAtlas(false)
+			f = fonts.AddFontFromMemoryTTFV(
+				unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte)), //nolint:gosec // we need this here
+				int32(len(fontInfo.fontByte)),
+				fontInfo.size,
+				fontConfig,
+				ranges.Data(),
+			)
 		}
 
-		a.extraFontMap[fontInfo.String()] = &f
+		a.extraFontMap[fontInfo.String()] = f
 	}
 
-	fontTextureImg := fonts.TextureDataRGBA32()
-	Context.renderer.SetFontTexture(fontTextureImg)
+	fontTextureImg, w, h, _ := fonts.GetTextureDataAsRGBA32()
+	tex := Context.backend.CreateTexture(fontTextureImg, int(w), int(h))
+	fonts.SetTexID(tex)
+	fonts.SetTexReady(true)
 
 	a.shouldRebuildFontAtlas = false
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"image"
 
-	"github.com/AllenDang/imgui-go"
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // These constants holds information about where GetWidgetWidth should proceed their
@@ -177,7 +177,7 @@ func (a *AlignmentSetter) Build() {
 // if you find anything else, please report it on
 // https://github.com/AllenDang/giu Any contribution is appreciated!
 func GetWidgetWidth(w Widget) (result float32) {
-	imgui.PushID(GenAutoID("GetWidgetWidthMeasurement"))
+	imgui.PushIDStr(GenAutoID("GetWidgetWidthMeasurement"))
 	defer imgui.PopID()
 
 	// save cursor position before doing anything
