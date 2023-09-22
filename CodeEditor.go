@@ -18,7 +18,7 @@ const (
 var _ Disposable = &codeEditorState{}
 
 type codeEditorState struct {
-	//editor imgui.TextEditor
+	// editor imgui.TextEditor
 }
 
 // Dispose implements Disposable interface.
@@ -55,20 +55,20 @@ func (ce *CodeEditorWidget) ID(id string) *CodeEditorWidget {
 
 // ShowWhitespaces sets if whitespace is shown in code editor.
 func (ce *CodeEditorWidget) ShowWhitespaces(s bool) *CodeEditorWidget {
-	//ce.getState().editor.SetShowWhitespaces(s)
+	// ce.getState().editor.SetShowWhitespaces(s)
 	return ce
 }
 
 // TabSize sets editor's tab size.
 func (ce *CodeEditorWidget) TabSize(size int) *CodeEditorWidget {
-	//ce.getState().editor.SetTabSize(size)
+	// ce.getState().editor.SetTabSize(size)
 	return ce
 }
 
 // LanguageDefinition sets code editor language definition.
 
 func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
-	//s := ce.getState()
+	// s := ce.getState()
 	lookup := map[LanguageDefinition]func(){
 		//LanguageDefinitionSQL: s.editor.SetLanguageDefinitionSQL,
 		//LanguageDefinitionCPP: s.editor.SetLanguageDefinitionCPP,
@@ -88,19 +88,19 @@ func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *C
 
 // Text sets editor's text.
 func (ce *CodeEditorWidget) Text(str string) *CodeEditorWidget {
-	//ce.getState().editor.SetText(str)
+	// ce.getState().editor.SetText(str)
 	return ce
 }
 
 // ErrorMarkers sets error markers.
-//func (ce *CodeEditorWidget) ErrorMarkers(markers imgui.ErrorMarkers) *CodeEditorWidget {
+// func (ce *CodeEditorWidget) ErrorMarkers(markers imgui.ErrorMarkers) *CodeEditorWidget {
 //	ce.getState().editor.SetErrorMarkers(markers)
 //return ce
 //}
 
 // HandleKeyboardInputs sets if editor should handle keyboard input.
 func (ce *CodeEditorWidget) HandleKeyboardInputs(b bool) *CodeEditorWidget {
-	//ce.getState().editor.SetHandleKeyboardInputs(b)
+	// ce.getState().editor.SetHandleKeyboardInputs(b)
 	return ce
 }
 
@@ -118,13 +118,13 @@ func (ce *CodeEditorWidget) Border(border bool) *CodeEditorWidget {
 
 // HasSelection returns true if some text is selected.
 func (ce *CodeEditorWidget) HasSelection() bool {
-	//return ce.getState().editor.HasSelection()
+	// return ce.getState().editor.HasSelection()
 	return false
 }
 
 // GetSelectedText returns selected text.
 func (ce *CodeEditorWidget) GetSelectedText() string {
-	//return ce.getState().editor.GetSelectedText()
+	// return ce.getState().editor.GetSelectedText()
 	return ""
 }
 
@@ -166,7 +166,7 @@ func (ce *CodeEditorWidget) GetWordUnderCursor() string {
 
 // SelectWordUnderCursor selects the word under cursor.
 func (ce *CodeEditorWidget) SelectWordUnderCursor() {
-	//ce.getState().editor.SelectWordUnderCursor()
+	// ce.getState().editor.SelectWordUnderCursor()
 }
 
 // IsTextChanged returns true if the editable text was changed in the frame.
@@ -184,33 +184,33 @@ func (ce *CodeEditorWidget) GetScreenCursorPos() (x, y int) {
 
 // Copy copies selection.
 func (ce *CodeEditorWidget) Copy() {
-	//ce.getState().editor.Copy()
+	// ce.getState().editor.Copy()
 }
 
 // Cut cuts selection.
 func (ce *CodeEditorWidget) Cut() {
-	//ce.getState().editor.Cut()
+	// ce.getState().editor.Cut()
 }
 
 // Paste does the same as Ctrl+V.
 func (ce *CodeEditorWidget) Paste() {
-	//ce.getState().editor.Paste()
+	// ce.getState().editor.Paste()
 }
 
 // Delete deletes the selection.
 func (ce *CodeEditorWidget) Delete() {
-	//ce.getState().editor.Delete()
+	// ce.getState().editor.Delete()
 }
 
 // Build implements Widget interface.
 func (ce *CodeEditorWidget) Build() {
-	//s := ce.getState()
+	// s := ce.getState()
 
 	// register text in font atlas
-	//Context.FontAtlas.RegisterString(s.editor.GetText())
+	// Context.FontAtlas.RegisterString(s.editor.GetText())
 
 	// build editor
-	//s.editor.Render(ce.title, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)
+	// s.editor.Render(ce.title, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)
 }
 
 func (ce *CodeEditorWidget) getState() (state *codeEditorState) {

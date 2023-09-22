@@ -3,11 +3,11 @@ package giu
 // MarkdownWidget implements DearImGui markdown extension
 // https://github.com/juliettef/imgui_markdown
 // It is like LabelWidget but with md formatting.
-// TODO: re-implement this
+// TODO: re-implement this.
 type MarkdownWidget struct {
 	md     *string
 	linkCb func(url string)
-	//headers []imgui.MarkdownHeaderData
+	// headers []imgui.MarkdownHeaderData
 }
 
 // Markdown creates new markdown widget.
@@ -29,28 +29,28 @@ func (m *MarkdownWidget) OnLink(cb func(url string)) *MarkdownWidget {
 // NOTE: level (counting from 0!) is header level. (for instance, header `# H1` will have level 0).
 func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *MarkdownWidget {
 	// ensure if header data are at least as long as level
-	//if m.headers == nil {
+	// if m.headers == nil {
 	//	m.headers = make([]imgui.MarkdownHeaderData, level)
 	//}
 
-	//if level <= len(m.headers) {
+	// if level <= len(m.headers) {
 	//	m.headers = append(m.headers, make([]imgui.MarkdownHeaderData, len(m.headers)-level+1)...)
 	//}
 
-	//if font != nil {
+	// if font != nil {
 	//	if f, ok := Context.FontAtlas.extraFontMap[font.String()]; ok {
 	//		m.headers[level].Font = *f
 	//	}
 	//}
 
-	//m.headers[level].HasSeparator = separator
+	// m.headers[level].HasSeparator = separator
 
 	return m
 }
 
 // Build implements Widget interface.
 func (m *MarkdownWidget) Build() {
-	//imgui.Markdown(Context.FontAtlas.RegisterStringPointer(m.md), m.linkCb, loadImage, m.headers)
+	// imgui.Markdown(Context.FontAtlas.RegisterStringPointer(m.md), m.linkCb, loadImage, m.headers)
 }
 
 //func loadImage(path string) imgui.MarkdownImageData {
