@@ -94,8 +94,6 @@ func (i *ImageWidget) Build() {
 		cursorPos := GetCursorScreenPos()
 		mousePos := GetMousePos()
 
-		mousePos = mousePos.Add(cursorPos)
-
 		if cursorPos.X <= mousePos.X && cursorPos.Y <= mousePos.Y &&
 			cursorPos.X+int(i.width) >= mousePos.X && cursorPos.Y+int(i.height) >= mousePos.Y {
 			i.onClick()
