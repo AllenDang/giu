@@ -1,13 +1,14 @@
 package giu
 
 import (
-	imgui "github.com/AllenDang/cimgui-go"
-	"github.com/faiface/mainthread"
 	"image"
 	"image/color"
 	"net/http"
 	"strings"
 	"time"
+
+	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/faiface/mainthread"
 )
 
 // MarkdownWidget implements DearImGui markdown extension
@@ -21,7 +22,6 @@ type MarkdownWidget struct {
 
 // Markdown creates new markdown widget.
 func Markdown(md *string) *MarkdownWidget {
-	panic("MarkdownWidget is not implemented yet!")
 	return &MarkdownWidget{
 		md:     md,
 		linkCb: OpenURL,
@@ -37,7 +37,7 @@ func (m *MarkdownWidget) OnLink(cb func(url string)) *MarkdownWidget {
 // Header sets header formatting
 // NOTE: level (counting from 0!) is header level. (for instance, header `# H1` will have level 0).
 func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *MarkdownWidget {
-	//ensure if header data are at least as long as level
+	// ensure if header data are at least as long as level
 	if m.headers == nil {
 		m.headers = make([]imgui.MarkdownHeadingFormat, level)
 	}
@@ -74,7 +74,7 @@ func loadImage(path string) imgui.MarkdownImageData {
 
 	switch {
 	case strings.HasPrefix(path, "http://") || strings.HasPrefix(path, "https://"):
-		//Load image from url
+		// Load image from url
 		client := &http.Client{Timeout: 5 * time.Second}
 		resp, respErr := client.Get(path)
 
@@ -128,7 +128,7 @@ func loadImage(path string) imgui.MarkdownImageData {
 			Y: float32(size.Dy()),
 		},
 		FieldUseLinkCallback: true,
-		//default values
+		// default values
 		FieldUv0:        ToVec2(image.Point{0, 0}),
 		FieldUv1:        ToVec2(image.Point{1, 1}),
 		FieldTint_col:   ToVec4Color(color.RGBA{255, 255, 255, 255}),
