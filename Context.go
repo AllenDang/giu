@@ -30,8 +30,6 @@ type state struct {
 type context struct {
 	backend imgui.Backend[imgui.GLFWWindowFlags]
 
-	// TODO: should be handled by mainthread tbh
-	// see https://github.com/faiface/mainthread/pull/4
 	isRunning bool
 
 	widgetIndexCounter int
