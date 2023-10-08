@@ -6,6 +6,7 @@ import (
 	"image"
 	"image/color"
 	"net/http"
+	"reflect"
 	"time"
 
 	imgui "github.com/AllenDang/cimgui-go"
@@ -108,6 +109,7 @@ type imageState struct {
 	failure bool
 	cancel  ctx.CancelFunc
 	texture *Texture
+	img     *image.RGBA
 }
 
 // Dispose cleans imageState (implements Disposable interface).
@@ -127,7 +129,7 @@ var _ Widget = &ImageWithRgbaWidget{}
 // display it in giu.
 type ImageWithRgbaWidget struct {
 	id   string
-	rgba image.Image
+	rgba *image.RGBA
 	img  *ImageWidget
 }
 
@@ -135,7 +137,7 @@ type ImageWithRgbaWidget struct {
 func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 	return &ImageWithRgbaWidget{
 		id:   GenAutoID("ImageWithRgba"),
-		rgba: rgba,
+		rgba: ImageToRgba(rgba),
 		img:  Image(nil),
 	}
 }
@@ -162,7 +164,7 @@ func (i *ImageWithRgbaWidget) OnClick(cb func()) *ImageWithRgbaWidget {
 func (i *ImageWithRgbaWidget) Build() {
 	if i.rgba != nil {
 		var imgState *imageState
-		if imgState = GetState[imageState](Context, i.id); imgState == nil {
+		if imgState = GetState[imageState](Context, i.id); imgState == nil || !reflect.DeepEqual(i.rgba, imgState.img) {
 			imgState = &imageState{}
 			SetState(Context, i.id, imgState)
 
