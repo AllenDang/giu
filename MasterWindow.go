@@ -6,7 +6,6 @@ import (
 	"runtime"
 
 	imgui "github.com/AllenDang/cimgui-go"
-	"golang.design/x/hotkey/mainthread"
 	"golang.org/x/image/colornames"
 )
 
@@ -230,7 +229,7 @@ func (w *MasterWindow) render() {
 // Run should be called at the end of main function, after setting
 // up the master window.
 func (w *MasterWindow) Run(loopFunc func()) {
-	mainthread.Init(func() {
+	mainthreadCallPlatform(func() {
 		Context.isRunning = true
 		w.updateFunc = loopFunc
 
