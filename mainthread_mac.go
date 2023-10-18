@@ -5,6 +5,6 @@ package giu
 
 import "golang.design/x/hotkey/mainthread"
 
-func mainthreadCall(c func()) {
-	mainthread.init(c)
+func mainthreadCallPlatform(c func()) {
+	mainthread.Call(c)
 }
