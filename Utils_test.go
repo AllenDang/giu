@@ -107,3 +107,20 @@ func Test_Assert(t *testing.T) {
 		})
 	}
 }
+
+func TestUintToColor(t *testing.T) {
+	tests := []struct {
+		name string
+		col  uint32
+		want *color.RGBA
+	}{
+		{"full red full alpha", 0xFF0000FF, &color.RGBA{R: 255, G: 0, B: 0, A: 255}},
+		{"full red 0 alpha", 0xFF000000, &color.RGBA{R: 255, G: 0, B: 0, A: 0}},
+		{"full green", 0x00FF00FF, &color.RGBA{R: 0, G: 255, B: 0, A: 255}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equalf(t, tt.want, UintToColor(tt.col), "UintToColor(%v)", tt.col)
+		})
+	}
+}

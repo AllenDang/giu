@@ -231,7 +231,10 @@ func ColorToUint(col color.Color) uint32 {
 	r, g, b, a := col.RGBA()
 	mask := uint32(0xff)
 
-	return r&mask<<24 + g&mask<<16 + b&mask<<8 + a&mask
+	return r&mask +
+		g&mask<<8 +
+		b&mask<<16 +
+		a&mask<<24
 }
 
 // UintToColor converts uint32 of form 0xRRGGBB into color.RGBA.
