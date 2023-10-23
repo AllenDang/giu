@@ -184,7 +184,7 @@ func (w *MasterWindow) setTheme() (fin func()) {
 }
 
 func (w *MasterWindow) sizeChange(width, height int) {
-	w.render()
+	// noop
 }
 
 func (w *MasterWindow) beforeRender() {
