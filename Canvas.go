@@ -157,6 +157,10 @@ func (c *Canvas) AddImage(texture *Texture, pMin, pMax image.Point) {
 	c.DrawList.AddImage(texture.ID(), ToVec2(pMin), ToVec2(pMax))
 }
 
+func (c *Canvas) AddImageQuad(texture *Texture, p1, p2, p3, p4, uv1, uv2, uv3, uv4 image.Point, col color.Color) {
+	c.DrawList.AddImageQuadV(texture.tex.ID(), ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec2(uv1), ToVec2(uv2), ToVec2(uv3), ToVec2(uv4), ColorToUint(col))
+}
+
 func (c *Canvas) AddImageV(texture *Texture, pMin, pMax, uvMin, uvMax image.Point, col color.Color) {
 	c.DrawList.AddImageV(texture.tex.ID(), ToVec2(pMin), ToVec2(pMax), ToVec2(uvMin), ToVec2(uvMax), ColorToUint(col))
 }
