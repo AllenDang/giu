@@ -112,6 +112,8 @@ const (
 	StyleVarItemInnerSpacing = StyleVarID(imgui.StyleVarItemInnerSpacing) // item-inner-spacing
 	// StyleVarIndentSpacing is a float.
 	StyleVarIndentSpacing = StyleVarID(imgui.StyleVarIndentSpacing) // indent-spacing
+	// StyleVarCellPadding is a Vec2
+	StyleVarCellPadding = StyleVarID(imgui.StyleVarCellPadding)
 	// StyleVarScrollbarSize is a float.
 	StyleVarScrollbarSize = StyleVarID(imgui.StyleVarScrollbarSize) // scrollbar-size
 	// StyleVarScrollbarRounding is a float.

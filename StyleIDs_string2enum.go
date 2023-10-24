@@ -146,11 +146,6 @@ func StyleVarIDFromString(s string) StyleVarID {
 	}
 	for i := range _StyleVarID_index_1[:len(_StyleVarID_index_1)-1] {
 		if s == _StyleVarID_name_1[_StyleVarID_index_1[i]:_StyleVarID_index_1[i+1]] {
-			return StyleVarID(i + 18)
-		}
-	}
-	for i := range _StyleVarID_index_2[:len(_StyleVarID_index_2)-1] {
-		if s == _StyleVarID_name_2[_StyleVarID_index_2[i]:_StyleVarID_index_2[i+1]] {
 			return StyleVarID(i + 24)
 		}
 	}
@@ -194,6 +189,8 @@ func _(s string) {
 	case "item-inner-spacing":
 	// 16
 	case "indent-spacing":
+	// 17
+	case "StyleVarCellPadding":
 	// 18
 	case "scrollbar-size":
 	// 19
