@@ -105,31 +105,32 @@ func _() {
 	_ = x[StyleVarItemSpacing-14]
 	_ = x[StyleVarItemInnerSpacing-15]
 	_ = x[StyleVarIndentSpacing-16]
+	_ = x[StyleVarCellPadding-17]
 	_ = x[StyleVarScrollbarSize-18]
 	_ = x[StyleVarScrollbarRounding-19]
 	_ = x[StyleVarGrabMinSize-20]
 	_ = x[StyleVarGrabRounding-21]
 	_ = x[StyleVarTabRounding-22]
-	_ = x[StyleVarButtonTextAlign-23]
-	_ = x[StyleVarSelectableTextAlign-24]
+	_ = x[StyleVarButtonTextAlign-24]
+	_ = x[StyleVarSelectableTextAlign-25]
 }
 
 const (
-	_StyleVarID_name_0 = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-min-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacing"
-	_StyleVarID_name_1 = "scrollbar-sizescrollbar-roundinggrab-min-sizegrab-roundingtab-roundingbutton-text-alignselectable-text-align"
+	_StyleVarID_name_0 = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-min-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacingStyleVarCellPaddingscrollbar-sizescrollbar-roundinggrab-min-sizegrab-roundingtab-rounding"
+	_StyleVarID_name_1 = "button-text-alignselectable-text-align"
 )
 
 var (
-	_StyleVarID_index_0 = [...]uint8{0, 5, 19, 33, 48, 66, 81, 99, 113, 130, 144, 161, 174, 188, 205, 217, 235, 249}
-	_StyleVarID_index_1 = [...]uint8{0, 14, 32, 45, 58, 70, 87, 108}
+	_StyleVarID_index_0 = [...]uint16{0, 5, 19, 33, 48, 66, 81, 99, 113, 130, 144, 161, 174, 188, 205, 217, 235, 249, 268, 282, 300, 313, 326, 338}
+	_StyleVarID_index_1 = [...]uint8{0, 17, 38}
 )
 
 func (i StyleVarID) String() string {
 	switch {
-	case 0 <= i && i <= 16:
+	case 0 <= i && i <= 22:
 		return _StyleVarID_name_0[_StyleVarID_index_0[i]:_StyleVarID_index_0[i+1]]
-	case 18 <= i && i <= 24:
-		i -= 18
+	case 24 <= i && i <= 25:
+		i -= 24
 		return _StyleVarID_name_1[_StyleVarID_index_1[i]:_StyleVarID_index_1[i+1]]
 	default:
 		return "StyleVarID(" + strconv.FormatInt(int64(i), 10) + ")"

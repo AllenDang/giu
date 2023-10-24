@@ -146,7 +146,7 @@ func StyleVarIDFromString(s string) StyleVarID {
 	}
 	for i := range _StyleVarID_index_1[:len(_StyleVarID_index_1)-1] {
 		if s == _StyleVarID_name_1[_StyleVarID_index_1[i]:_StyleVarID_index_1[i+1]] {
-			return StyleVarID(i + 18)
+			return StyleVarID(i + 24)
 		}
 	}
 	panic(fmt.Errorf("unable to locate StyleVarID enum corresponding to %q", s))
@@ -189,6 +189,8 @@ func _(s string) {
 	case "item-inner-spacing":
 	// 16
 	case "indent-spacing":
+	// 17
+	case "StyleVarCellPadding":
 	// 18
 	case "scrollbar-size":
 	// 19
@@ -199,9 +201,9 @@ func _(s string) {
 	case "grab-rounding":
 	// 22
 	case "tab-rounding":
-	// 23
-	case "button-text-align":
 	// 24
+	case "button-text-align":
+	// 25
 	case "selectable-text-align":
 	}
 }
