@@ -3,9 +3,10 @@ module github.com/AllenDang/giu
 go 1.21
 
 require (
-	github.com/AllenDang/cimgui-go v0.0.0-20230918114712-675654f053d9
+	github.com/AllenDang/cimgui-go v0.0.0-20231009021832-f9856eb4a9a7
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
+	github.com/juliettef/IconFontCppHeaders v0.0.0-20230803153112-1a083cca7d65
 	github.com/mazznoer/csscolorparser v0.1.3
 	github.com/napsy/go-css v0.0.0-20221107082635-4ed403047a64
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
