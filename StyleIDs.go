@@ -124,10 +124,20 @@ const (
 	StyleVarGrabRounding = StyleVarID(imgui.StyleVarGrabRounding) // grab-rounding
 	// StyleVarTabRounding is a float.
 	StyleVarTabRounding = StyleVarID(imgui.StyleVarTabRounding) // tab-rounding
+	// StyleVarTabBarBorderSize is a float.
+	StyleVarTabBarBorderSize = StyleVarID(imgui.StyleVarTabBarBorderSize)
 	// StyleVarButtonTextAlign is a Vec2.
 	StyleVarButtonTextAlign = StyleVarID(imgui.StyleVarButtonTextAlign) // button-text-align
 	// StyleVarSelectableTextAlign is a Vec2.
 	StyleVarSelectableTextAlign = StyleVarID(imgui.StyleVarSelectableTextAlign) // selectable-text-align
+	// StyleVarSeparatorTextBorderSize is a float
+	StyleVarSeparatorTextBorderSize = StyleVarID(imgui.StyleVarSeparatorTextBorderSize)
+	// SeparatorTextAlign is an ImVec2.
+	StyleVarSeparatorTextAlign = StyleVarID(imgui.StyleVarSeparatorTextAlign)
+	// SeparatorTextPadding is an ImVec2.
+	StyleVarSeparatorTextPadding = StyleVarID(imgui.StyleVarSeparatorTextPadding)
+	// DockingSeparatorSize is a float.
+	StyleVarDockingSeparatorSize = StyleVarID(imgui.StyleVarDockingSeparatorSize)
 )
 
 // IsVec2 returns true if the style var id should be processed as imgui.Vec2
