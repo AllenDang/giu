@@ -203,7 +203,7 @@ func loop() {
 					Size(g.Auto, g.Auto),
 			),
 			g.TabItem("ListBox").Layout(
-				g.ListBox("ListBox1", []string{"List item 1", "List item 2", "List item 3"}),
+				g.ListBox([]string{"List item 1", "List item 2", "List item 3"}),
 			),
 			g.TabItem("Table").Layout(
 				g.Table().
