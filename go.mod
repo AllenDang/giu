@@ -6,14 +6,14 @@ require (
 	github.com/AllenDang/cimgui-go v0.0.0-20231009021832-f9856eb4a9a7
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
-	github.com/juliettef/IconFontCppHeaders v0.0.0-20230803153112-1a083cca7d65
+	github.com/juliettef/IconFontCppHeaders v0.0.0-20231102151620-41b304750e83
 	github.com/mazznoer/csscolorparser v0.1.3
 	github.com/napsy/go-css v0.0.0-20221107082635-4ed403047a64
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/sahilm/fuzzy v0.1.0
 	github.com/stretchr/testify v1.8.4
 	golang.design/x/hotkey v0.4.1
-	golang.org/x/image v0.13.0
+	golang.org/x/image v0.14.0
 	gopkg.in/eapache/queue.v1 v1.1.0
 )
 
