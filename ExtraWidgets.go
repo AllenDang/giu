@@ -239,9 +239,9 @@ type ListBoxWidget struct {
 }
 
 // ListBox creates new ListBoxWidget.
-func ListBox(id string, items []string) *ListBoxWidget {
+func ListBox(items []string) *ListBoxWidget {
 	return &ListBoxWidget{
-		id:       id,
+		id:       GenAutoID("##ListBox"),
 		width:    0,
 		height:   0,
 		border:   true,
@@ -251,6 +251,11 @@ func ListBox(id string, items []string) *ListBoxWidget {
 		onDClick: nil,
 		onMenu:   nil,
 	}
+}
+
+func (l *ListBoxWidget) ID(id string) *ListBoxWidget {
+	l.id = id
+	return l
 }
 
 func (l *ListBoxWidget) SelectedIndex(i *int32) *ListBoxWidget {
