@@ -74,7 +74,7 @@ type MasterWindow struct {
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
 	imGuiContext := imgui.CreateContext()
 	imgui.PlotCreateContext()
-	// imgui.ImNodesCreateContext() // TODO after implementing ImNodes in cimgui
+	imgui.ImNodesCreateContext()
 
 	io := imgui.CurrentIO()
 
@@ -207,7 +207,7 @@ func (w *MasterWindow) afterRender() {
 
 func (w *MasterWindow) beforeDestroy() {
 	imgui.PlotDestroyContext()
-	// imgui.ImNodesDestroyContext() // TODO: after adding ImNodes (https://github.com/AllenDang/cimgui-go/issues/137)
+	imgui.ImNodesDestroyContext()
 }
 
 func (w *MasterWindow) render() {
