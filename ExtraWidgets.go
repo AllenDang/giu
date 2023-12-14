@@ -365,17 +365,27 @@ func (l *ListBoxWidget) Build() {
 
 var _ Widget = &DatePickerWidget{}
 
+// DatePickerLabels represents a label string in date picker.
+type DatePickerLabels string
+
+// These constants hold strings for translations of day/month/year
+const (
+	DatePickerLabelMonth DatePickerLabels = "Month:"
+	DatePickerLabelYear  DatePickerLabels = "    Year:"
+)
+
 // DatePickerWidget is a simple Calender widget.
 // It allow user to select a day and convert it to time.Time go type.
 // It consists of a Combo widget which (after opening) contains
 // a calender-like table.
 type DatePickerWidget struct {
-	id          string
-	date        *time.Time
-	width       float32
-	onChange    func()
-	format      string
-	startOfWeek time.Weekday
+	id           string
+	date         *time.Time
+	width        float32
+	onChange     func()
+	format       string
+	startOfWeek  time.Weekday
+	translations map[DatePickerLabels]string
 }
 
 // DatePicker creates new DatePickerWidget.
@@ -386,6 +396,10 @@ func DatePicker(id string, date *time.Time) *DatePickerWidget {
 		width:       100,
 		startOfWeek: time.Sunday,
 		onChange:    func() {}, // small hack - prevent giu from setting nil cb (skip nil check later)
+		translations: map[DatePickerLabels]string{
+			DatePickerLabelMonth: string(DatePickerLabelMonth),
+			DatePickerLabelYear:  string(DatePickerLabelYear),
+		},
 	}
 }
 
@@ -416,6 +430,12 @@ func (d *DatePickerWidget) Format(format string) *DatePickerWidget {
 // Default: Sunday.
 func (d *DatePickerWidget) StartOfWeek(weekday time.Weekday) *DatePickerWidget {
 	d.startOfWeek = weekday
+	return d
+}
+
+// Translation sets a translation to specified label type
+func (d *DatePickerWidget) Translation(label DatePickerLabels, value string) *DatePickerWidget {
+	d.translations[label] = value
 	return d
 }
 
@@ -451,37 +471,46 @@ func (d *DatePickerWidget) Build() {
 	}
 
 	if imgui.BeginComboV(d.id+"##Combo", d.date.Format(d.getFormat()), imgui.ComboFlagsHeightLargest) {
-		// --- [Build year widget] ---
+		// --- [Build year/month widget] ---
 		imgui.AlignTextToFramePadding()
 
 		const yearButtonSize = 25
 
-		Row(
-			Label(Context.FontAtlas.RegisterString(" Year")),
-			Labelf("%14d", d.date.Year()),
-			Button("-##"+d.id+"year").OnClick(func() {
-				*d.date = d.date.AddDate(-1, 0, 0)
-				d.onChange()
-			}).Size(yearButtonSize, yearButtonSize),
-			Button("+##"+d.id+"year").OnClick(func() {
-				*d.date = d.date.AddDate(1, 0, 0)
-				d.onChange()
-			}).Size(yearButtonSize, yearButtonSize),
-		).Build()
-
-		// --- [Build month widgets] ---
-		Row(
-			Label("Month"),
-			Labelf("%10s(%02d)", d.date.Month().String(), d.date.Month()),
-			Button("-##"+d.id+"month").OnClick(func() {
-				*d.date = d.date.AddDate(0, -1, 0)
-				d.onChange()
-			}).Size(yearButtonSize, yearButtonSize),
-			Button("+##"+d.id+"month").OnClick(func() {
-				*d.date = d.date.AddDate(0, 1, 0)
-				d.onChange()
-			}).Size(yearButtonSize, yearButtonSize),
-		).Build()
+		Table().
+			Size(0, 50).
+			Flags(0).
+			Columns(
+				TableColumn("##"+d.id+"col1").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)),
+				TableColumn("##"+d.id+"col2").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)),
+				TableColumn("##"+d.id+"col3").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)|TableColumnFlagsWidthFixed).InnerWidthOrWeight(100),
+				TableColumn("##"+d.id+"col4").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)),
+			).
+			Rows(
+				TableRow(
+					Label(d.translations[DatePickerLabelYear]),
+					ArrowButton(DirectionLeft).ID(d.id+"year-").OnClick(func() {
+						*d.date = d.date.AddDate(-1, 0, 0)
+						d.onChange()
+					}),
+					Labelf("%d", d.date.Year()),
+					ArrowButton(DirectionRight).ID(d.id+"year+").OnClick(func() {
+						*d.date = d.date.AddDate(1, 0, 0)
+						d.onChange()
+					}),
+				),
+				TableRow(
+					Label(d.translations[DatePickerLabelMonth]),
+					ArrowButton(DirectionLeft).ID(d.id+"month-").OnClick(func() {
+						*d.date = d.date.AddDate(0, -1, 0)
+						d.onChange()
+					}),
+					Labelf("%s (%02d)", d.date.Month().String(), d.date.Month()),
+					ArrowButton(DirectionRight).ID(d.id+"month+").OnClick(func() {
+						*d.date = d.date.AddDate(0, 1, 0)
+						d.onChange()
+					}),
+				),
+			).Build()
 
 		// --- [Build day widgets] ---
 		days := d.getDaysGroups()
