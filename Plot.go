@@ -1,9 +1,8 @@
 package giu
 
 import (
-	"image"
-
 	imgui "github.com/AllenDang/cimgui-go"
+	"image"
 )
 
 // PlotWidget is implemented by all the particular plots, which can be used
@@ -400,13 +399,16 @@ func (p *LinePlot) Plot() {
 
 	// TODO: no idea what should it be...
 	// imgui.PlotDragLineX(Context.FontAtlas.RegisterString(p.title), p.values, p.xScale, p.x0, p.offset)
-	// imgui.PlotDragLineX(
-	//	Context.FontAtlas.RegisterString(p.title),
-	//	p.values,
-	//	p.xScale,
-	//	p.x0,
-	//	p.offset,
-	//)
+	imgui.PlotPlotLinedoublePtrIntV(
+		Context.FontAtlas.RegisterString(p.title),
+		&p.values,
+		int32(len(p.values)),
+		p.xScale,
+		p.x0,
+		0, // flags
+		int32(p.offset),
+		8, // sizeof(double) = 8
+	)
 }
 
 // LineXYPlot adds XY plot line.
