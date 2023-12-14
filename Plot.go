@@ -291,7 +291,7 @@ func (p *BarPlot) Plot() {
 		p.shift,
 		0, // TODO: implement
 		int32(p.offset),
-		0, // TODO: implement
+		8, // sizeof(double) = 8
 	)
 }
 
@@ -549,7 +549,7 @@ func (p *ScatterPlot) Plot() {
 		p.x0,
 		0, // TODO: implement flags
 		int32(p.offset),
-		0, // TODO: implement
+		8, // sizeof(double) = 8
 	)
 }
 
@@ -581,6 +581,6 @@ func (p *ScatterXYPlot) Plot() {
 		int32(len(p.xs)),
 		0, // TODO: implement
 		int32(p.offset),
-		0, // TODO: implement
+		8, // sizeof(double) = 8
 	)
 }
