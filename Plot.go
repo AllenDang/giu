@@ -393,12 +393,10 @@ func (p *LinePlot) Offset(offset int) *LinePlot {
 
 // Plot implements Plot interface.
 func (p *LinePlot) Plot() {
-	imgui.PlotSetupAxis(
+	imgui.PlotSetAxis(
 		imgui.PlotAxisEnum(p.yAxis),
 	)
 
-	// TODO: no idea what should it be...
-	// imgui.PlotDragLineX(Context.FontAtlas.RegisterString(p.title), p.values, p.xScale, p.x0, p.offset)
 	imgui.PlotPlotLinedoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.title),
 		&p.values,
