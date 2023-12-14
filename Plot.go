@@ -441,9 +441,16 @@ func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
 
 // Plot implements Plot interface.
 func (p *LineXYPlot) Plot() {
-	// TODO: migrate this
-	// imgui.ImPlotSetPlotYAxis(imgui.ImPlotYAxis(p.yAxis))
-	// imgui.ImPlotLineXY(Context.FontAtlas.RegisterString(p.title), p.xs, p.ys, p.offset)
+	imgui.PlotSetAxis(imgui.PlotAxisEnum(p.yAxis))
+	imgui.PlotPlotLinedoublePtrdoublePtrV(
+		Context.FontAtlas.RegisterString(p.title),
+		&p.xs,
+		&p.ys,
+		int32(len(p.xs)),
+		0, // flags
+		int32(p.offset),
+		8, // sizeof(double) = 8
+	)
 }
 
 // PieChartPlot represents a pie chart.
