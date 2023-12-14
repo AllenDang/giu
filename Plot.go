@@ -190,24 +190,22 @@ func (p *PlotCanvasWidget) Build() {
 		)
 
 		if len(p.xTicksValue) > 0 {
-			imgui.PlotSetupAxisTicksdoubleV(
+			imgui.PlotSetupAxisTicksdoublePtrV(
 				imgui.AxisX1,
-				p.xTicksValue[0],
-				p.xTicksValue[1], // <- TODO: why is it so strangely saved?
-				-1,               // TODO: implement
+				&p.xTicksValue,
+				int32(len(p.xTicksValue)),
 				p.xTicksLabel,
 				p.xTicksShowDefault,
 			)
 		}
 
 		if len(p.yTicksValue) > 0 {
-			imgui.PlotSetupAxisTicksdoubleV(
+			imgui.PlotSetupAxisTicksdoublePtrV(
 				imgui.AxisY1,
-				p.xTicksValue[0],
-				p.xTicksValue[1], // <- TODO: why is it so strangely saved?
-				-1,               // TODO: implement
-				p.xTicksLabel,
-				p.xTicksShowDefault,
+				&p.yTicksValue,
+				int32(len(p.yTicksValue)),
+				p.yTicksLabel,
+				p.yTicksShowDefault,
 			)
 		}
 
