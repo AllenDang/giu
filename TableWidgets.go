@@ -169,7 +169,12 @@ func (t *TableWidget) Flags(flags TableFlags) *TableWidget {
 func (t *TableWidget) Build() {
 	colCount := len(t.columns)
 	if colCount == 0 {
-		colCount = len(t.rows[0].layout)
+		if len(t.rows) > 0 {
+			colCount = len(t.rows[0].layout)
+		} else {
+			// No rows or columns, pass a single column to BeginTable
+			colCount = 1
+		}
 	}
 
 	if imgui.BeginTableV(t.id, int32(colCount), imgui.TableFlags(t.flags), t.size, float32(t.innerWidth)) {
