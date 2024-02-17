@@ -1,9 +1,8 @@
 package giu
 
 import (
-	"image"
-
 	imgui "github.com/AllenDang/cimgui-go"
+	"image"
 )
 
 // PlotWidget is implemented by all the particular plots, which can be used
@@ -191,24 +190,22 @@ func (p *PlotCanvasWidget) Build() {
 		)
 
 		if len(p.xTicksValue) > 0 {
-			imgui.PlotSetupAxisTicksdoubleV(
+			imgui.PlotSetupAxisTicksdoublePtrV(
 				imgui.AxisX1,
-				p.xTicksValue[0],
-				p.xTicksValue[1], // <- TODO: why is it so strangely saved?
-				-1,               // TODO: implement
+				&p.xTicksValue,
+				int32(len(p.xTicksValue)),
 				p.xTicksLabel,
 				p.xTicksShowDefault,
 			)
 		}
 
 		if len(p.yTicksValue) > 0 {
-			imgui.PlotSetupAxisTicksdoubleV(
+			imgui.PlotSetupAxisTicksdoublePtrV(
 				imgui.AxisY1,
-				p.xTicksValue[0],
-				p.xTicksValue[1], // <- TODO: why is it so strangely saved?
-				-1,               // TODO: implement
-				p.xTicksLabel,
-				p.xTicksShowDefault,
+				&p.yTicksValue,
+				int32(len(p.yTicksValue)),
+				p.yTicksLabel,
+				p.yTicksShowDefault,
 			)
 		}
 
@@ -292,7 +289,7 @@ func (p *BarPlot) Plot() {
 		p.shift,
 		0, // TODO: implement
 		int32(p.offset),
-		0, // TODO: implement
+		8, // sizeof(double) = 8
 	)
 }
 
@@ -394,19 +391,20 @@ func (p *LinePlot) Offset(offset int) *LinePlot {
 
 // Plot implements Plot interface.
 func (p *LinePlot) Plot() {
-	imgui.PlotSetupAxis(
+	imgui.PlotSetAxis(
 		imgui.PlotAxisEnum(p.yAxis),
 	)
 
-	// TODO: no idea what should it be...
-	// imgui.PlotDragLineX(Context.FontAtlas.RegisterString(p.title), p.values, p.xScale, p.x0, p.offset)
-	// imgui.PlotDragLineX(
-	//	Context.FontAtlas.RegisterString(p.title),
-	//	p.values,
-	//	p.xScale,
-	//	p.x0,
-	//	p.offset,
-	//)
+	imgui.PlotPlotLinedoublePtrIntV(
+		Context.FontAtlas.RegisterString(p.title),
+		&p.values,
+		int32(len(p.values)),
+		p.xScale,
+		p.x0,
+		0, // flags
+		int32(p.offset),
+		8, // sizeof(double) = 8
+	)
 }
 
 // LineXYPlot adds XY plot line.
@@ -441,9 +439,16 @@ func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
 
 // Plot implements Plot interface.
 func (p *LineXYPlot) Plot() {
-	// TODO: migrate this
-	// imgui.ImPlotSetPlotYAxis(imgui.ImPlotYAxis(p.yAxis))
-	// imgui.ImPlotLineXY(Context.FontAtlas.RegisterString(p.title), p.xs, p.ys, p.offset)
+	imgui.PlotSetAxis(imgui.PlotAxisEnum(p.yAxis))
+	imgui.PlotPlotLinedoublePtrdoublePtrV(
+		Context.FontAtlas.RegisterString(p.title),
+		&p.xs,
+		&p.ys,
+		int32(len(p.xs)),
+		0, // flags
+		int32(p.offset),
+		8, // sizeof(double) = 8
+	)
 }
 
 // PieChartPlot represents a pie chart.
@@ -542,7 +547,7 @@ func (p *ScatterPlot) Plot() {
 		p.x0,
 		0, // TODO: implement flags
 		int32(p.offset),
-		0, // TODO: implement
+		8, // sizeof(double) = 8
 	)
 }
 
@@ -574,6 +579,6 @@ func (p *ScatterXYPlot) Plot() {
 		int32(len(p.xs)),
 		0, // TODO: implement
 		int32(p.offset),
-		0, // TODO: implement
+		8, // sizeof(double) = 8
 	)
 }

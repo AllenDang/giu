@@ -12,7 +12,7 @@ require (
 	github.com/sahilm/fuzzy v0.1.0
 	github.com/stretchr/testify v1.8.4
 	golang.design/x/hotkey v0.4.1
-	golang.org/x/image v0.14.0
+	golang.org/x/image v0.15.0
 	gopkg.in/eapache/queue.v1 v1.1.0
 )
 
