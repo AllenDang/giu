@@ -19,7 +19,7 @@ func loop() {
 					data := 9
 					imgui.SetDragDropPayload(
 						"DND_DEMO",
-						unsafe.Pointer(&data),
+						uintptr(unsafe.Pointer(&data)),
 						0,
 					)
 					g.Label("9").Build()
@@ -32,7 +32,7 @@ func loop() {
 					data := 10
 					imgui.SetDragDropPayload(
 						"DND_DEMO",
-						unsafe.Pointer(&data),
+						uintptr(unsafe.Pointer(&data)),
 						0,
 					)
 					g.Label("10").Build()
