@@ -6,8 +6,6 @@ github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 h1:baVdMKlASEHr
 github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3/go.mod h1:VEPNJUlxl5KdWjDvz6Q1l+rJlxF2i6xqDeGuGAxa87M=
 github.com/gucio321/cimgui-go v0.0.0-20231114082315-929315197f3b h1:UXXL8T57rSyuqmBibPlMTESmm/fVEVyBSKKvbHmi4Y4=
 github.com/gucio321/cimgui-go v0.0.0-20231114082315-929315197f3b/go.mod h1:UH0IZCbsJKA1hAVQQU6AIDfamqTk0/d3VucaN8lp1Gs=
-github.com/juliettef/IconFontCppHeaders v0.0.0-20231102151620-41b304750e83 h1:bFKXHT3AtxMZmccjBD88Id9yJHlIspmznB7FeAWTLe0=
-github.com/juliettef/IconFontCppHeaders v0.0.0-20231102151620-41b304750e83/go.mod h1:edkq0hzsRusIHvIaeynCDd0hpwLQbjjHcGnMEuADrVk=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/mazznoer/csscolorparser v0.1.3 h1:vug4zh6loQxAUxfU1DZEu70gTPufDPspamZlHAkKcxE=
