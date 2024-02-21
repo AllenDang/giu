@@ -272,6 +272,12 @@ func (w *MasterWindow) SetBgColor(bgColor color.Color) {
 	w.backend.SetBgColor(w.clearColor)
 }
 
+// SetTargetFPS sets target FPS of master window.
+// Default for GLFW is 30.
+func (w *MasterWindow) SetTargetFPS(fps uint) {
+	w.backend.SetTargetFPS(fps)
+}
+
 // GetPos return position of master window.
 func (w *MasterWindow) GetPos() (x, y int) {
 	var xResult, yResult int32
