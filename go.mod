@@ -10,7 +10,7 @@ require (
 	github.com/napsy/go-css v0.0.0-20221107082635-4ed403047a64
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/sahilm/fuzzy v0.1.1
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	golang.design/x/hotkey v0.4.1
 	golang.org/x/image v0.15.0
 	gopkg.in/eapache/queue.v1 v1.1.0
