@@ -538,5 +538,5 @@ func (l *LabelWidget) Build() {
 		}
 	}
 
-	imgui.Text(l.label)
+	imgui.TextUnformatted(l.label)
 }
