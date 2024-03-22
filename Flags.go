@@ -94,9 +94,6 @@ const (
 	WindowFlagsAlwaysVerticalScrollbar WindowFlags = WindowFlags(imgui.WindowFlagsAlwaysVerticalScrollbar)
 	// WindowFlagsAlwaysHorizontalScrollbar always shows horizontal scrollbar, even if ContentSize.x < Size.x .
 	WindowFlagsAlwaysHorizontalScrollbar WindowFlags = WindowFlags(imgui.WindowFlagsAlwaysHorizontalScrollbar)
-	// WindowFlagsAlwaysUseWindowPadding ensures child windows without border uses style.WindowPadding (ignored by
-	// default for non-bordered child windows, because more convenient).
-	WindowFlagsAlwaysUseWindowPadding WindowFlags = WindowFlags(imgui.WindowFlagsAlwaysUseWindowPadding)
 	// WindowFlagsNoNavInputs has no gamepad/keyboard navigation within the window.
 	WindowFlagsNoNavInputs WindowFlags = WindowFlags(imgui.WindowFlagsNoNavInputs)
 	// WindowFlagsNoNavFocus has no focusing toward this window with gamepad/keyboard navigation

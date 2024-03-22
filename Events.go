@@ -30,7 +30,7 @@ func IsItemActive() bool {
 
 // IsKeyDown returns true if key `key` is down.
 func IsKeyDown(key Key) bool {
-	return imgui.IsKeyDownNil(imgui.Key(key))
+	return imgui.IsKeyDown(imgui.Key(key))
 }
 
 // IsKeyPressed returns true if key `key` is pressed.
@@ -40,12 +40,12 @@ func IsKeyPressed(key Key) bool {
 
 // IsKeyReleased returns true if key `key` is released.
 func IsKeyReleased(key Key) bool {
-	return imgui.IsKeyReleasedNil(imgui.Key(key))
+	return imgui.IsKeyReleased(imgui.Key(key))
 }
 
 // IsMouseDown returns true if mouse button `button` is down.
 func IsMouseDown(button MouseButton) bool {
-	return imgui.IsMouseDownNil(imgui.MouseButton(button))
+	return imgui.IsMouseDown(imgui.MouseButton(button))
 }
 
 // IsMouseClicked returns true if mouse button `button` is clicked
@@ -56,7 +56,7 @@ func IsMouseClicked(button MouseButton) bool {
 
 // IsMouseReleased returns true if mouse button `button` is released.
 func IsMouseReleased(button MouseButton) bool {
-	return imgui.IsMouseReleasedNil(imgui.MouseButton(button))
+	return imgui.IsMouseReleased(imgui.MouseButton(button))
 }
 
 // IsMouseDoubleClicked returns true if mouse button `button` is double clicked.

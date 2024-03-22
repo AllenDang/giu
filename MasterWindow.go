@@ -1,6 +1,7 @@
 package giu
 
 import (
+	"errors"
 	"image"
 	"image/color"
 	"runtime"
@@ -85,7 +86,10 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	// Disable imgui.ini
 	io.SetIniFilename("")
 
-	backend := imgui.CreateBackend(imgui.NewGLFWBackend())
+	backend, err := imgui.CreateBackend(imgui.NewGLFWBackend())
+	if err != nil && !errors.Is(err, imgui.CExposerError) {
+		panic(err)
+	}
 
 	// Create GIU context
 	Context = CreateContext(backend)
