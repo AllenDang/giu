@@ -72,7 +72,13 @@ type ChildWidget struct {
 
 // Build implements Widget interface.
 func (c *ChildWidget) Build() {
-	if imgui.BeginChildStrV(c.id, imgui.Vec2{X: c.width, Y: c.height}, c.border, imgui.WindowFlags(c.flags)) {
+	if imgui.BeginChildStrV(c.id, imgui.Vec2{X: c.width, Y: c.height}, func() imgui.ChildFlags {
+		if c.border {
+			return imgui.ChildFlagsBorder
+		}
+
+		return 0
+	}(), imgui.WindowFlags(c.flags)) {
 		c.layout.Build()
 	}
 

@@ -229,8 +229,8 @@ func (b *ImageButtonWidget) Build() {
 	}
 
 	if imgui.ImageButtonV(
-		fmt.Sprintf("%v", b.texture.tex.ID()),
-		b.texture.tex.ID(),
+		fmt.Sprintf("%v", b.texture.tex.ID),
+		b.texture.tex.ID,
 		imgui.Vec2{X: b.width, Y: b.height},
 		ToVec2(b.uv0), ToVec2(b.uv1),
 		ToVec4Color(b.bgColor),

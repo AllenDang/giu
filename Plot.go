@@ -1,8 +1,9 @@
 package giu
 
 import (
-	imgui "github.com/AllenDang/cimgui-go"
 	"image"
+
+	imgui "github.com/AllenDang/cimgui-go"
 )
 
 // PlotWidget is implemented by all the particular plots, which can be used
@@ -493,7 +494,7 @@ func (p *PieChartPlot) Angle0(a float64) *PieChartPlot {
 
 func (p *PieChartPlot) Plot() {
 	// TODO: p.normalized not used anymore - replace with flags
-	imgui.PlotPlotPieChartdoublePtrV(
+	imgui.PlotPlotPieChartdoublePtrStrV(
 		Context.FontAtlas.RegisterStringSlice(p.labels),
 		&p.values,
 		int32(len(p.values)),

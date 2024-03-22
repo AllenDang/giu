@@ -40,7 +40,7 @@ func ToTexture(texture *imgui.Texture) *Texture {
 
 func (t *Texture) ID() imgui.TextureID {
 	if t.tex != nil {
-		return t.tex.ID()
+		return t.tex.ID
 	}
 
 	return imgui.TextureID{}
