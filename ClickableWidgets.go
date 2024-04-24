@@ -549,7 +549,7 @@ func (t *TreeNodeWidget) Build() {
 	if open {
 		t.layout.Build()
 
-		if (t.flags & imgui.TreeNodeFlagsNoTreePushOnOpen) == 0 {
+		if (imgui.TreeNodeFlags(t.flags) & imgui.TreeNodeFlagsNoTreePushOnOpen) == 0 {
 			imgui.TreePop()
 		}
 	}

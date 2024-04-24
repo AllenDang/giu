@@ -199,24 +199,24 @@ type MouseCursorType imgui.MouseCursor
 // cursor types.
 const (
 	// MouseCursorNone no mouse cursor.
-	MouseCursorNone MouseCursorType = imgui.MouseCursorNone
+	MouseCursorNone = MouseCursorType(imgui.MouseCursorNone)
 	// MouseCursorArrow standard arrow mouse cursor.
-	MouseCursorArrow MouseCursorType = imgui.MouseCursorArrow
+	MouseCursorArrow = MouseCursorType(imgui.MouseCursorArrow)
 	// MouseCursorTextInput when hovering over InputText, etc.
-	MouseCursorTextInput MouseCursorType = imgui.MouseCursorTextInput
+	MouseCursorTextInput = MouseCursorType(imgui.MouseCursorTextInput)
 	// MouseCursorResizeAll (Unused by imgui functions).
-	MouseCursorResizeAll MouseCursorType = imgui.MouseCursorResizeAll
+	MouseCursorResizeAll = MouseCursorType(imgui.MouseCursorResizeAll)
 	// MouseCursorResizeNS when hovering over an horizontal border.
-	MouseCursorResizeNS MouseCursorType = imgui.MouseCursorResizeNS
+	MouseCursorResizeNS = MouseCursorType(imgui.MouseCursorResizeNS)
 	// MouseCursorResizeEW when hovering over a vertical border or a column.
-	MouseCursorResizeEW MouseCursorType = imgui.MouseCursorResizeEW
+	MouseCursorResizeEW = MouseCursorType(imgui.MouseCursorResizeEW)
 	// MouseCursorResizeNESW when hovering over the bottom-left corner of a window.
-	MouseCursorResizeNESW MouseCursorType = imgui.MouseCursorResizeNESW
+	MouseCursorResizeNESW = MouseCursorType(imgui.MouseCursorResizeNESW)
 	// MouseCursorResizeNWSE when hovering over the bottom-right corner of a window.
-	MouseCursorResizeNWSE MouseCursorType = imgui.MouseCursorResizeNWSE
+	MouseCursorResizeNWSE = MouseCursorType(imgui.MouseCursorResizeNWSE)
 	// MouseCursorHand (Unused by imgui functions. Use for e.g. hyperlinks).
-	MouseCursorHand  MouseCursorType = imgui.MouseCursorHand
-	MouseCursorCount MouseCursorType = imgui.MouseCursorCOUNT
+	MouseCursorHand  = MouseCursorType(imgui.MouseCursorHand)
+	MouseCursorCount = MouseCursorType(imgui.MouseCursorCOUNT)
 )
 
 // SetMouseCursor sets mouse cursor layout.
