@@ -211,7 +211,7 @@ func (p *PlotCanvasWidget) Build() {
 		}
 
 		imgui.PlotSetupAxisV(
-			imgui.AxisX,
+			imgui.AxisX1,
 			Context.FontAtlas.RegisterString(p.xLabel),
 			imgui.PlotAxisFlags(p.xFlags),
 		)
@@ -340,7 +340,7 @@ func (p *BarHPlot) Plot() {
 		int32(len(p.data)),
 		p.height,
 		p.shift,
-		imgui.PlotErrorBarsFlagsHorizontal,
+		imgui.PlotBarsFlagsHorizontal,
 		int32(p.offset),
 		0,
 	)

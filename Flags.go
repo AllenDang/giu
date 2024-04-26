@@ -8,46 +8,46 @@ type InputTextFlags imgui.InputTextFlags
 // input text flags.
 const (
 	// InputTextFlagsNone sets everything default.
-	InputTextFlagsNone InputTextFlags = imgui.InputTextFlagsNone
+	InputTextFlagsNone = InputTextFlags(imgui.InputTextFlagsNone)
 	// InputTextFlagsCharsDecimal allows 0123456789.+-.
-	InputTextFlagsCharsDecimal InputTextFlags = imgui.InputTextFlagsCharsDecimal
+	InputTextFlagsCharsDecimal = InputTextFlags(imgui.InputTextFlagsCharsDecimal)
 	// InputTextFlagsCharsHexadecimal allow 0123456789ABCDEFabcdef.
-	InputTextFlagsCharsHexadecimal InputTextFlags = imgui.InputTextFlagsCharsHexadecimal
+	InputTextFlagsCharsHexadecimal = InputTextFlags(imgui.InputTextFlagsCharsHexadecimal)
 	// InputTextFlagsCharsUppercase turns a..z into A..Z.
-	InputTextFlagsCharsUppercase InputTextFlags = imgui.InputTextFlagsCharsUppercase
+	InputTextFlagsCharsUppercase = InputTextFlags(imgui.InputTextFlagsCharsUppercase)
 	// InputTextFlagsCharsNoBlank filters out spaces, tabs.
-	InputTextFlagsCharsNoBlank InputTextFlags = imgui.InputTextFlagsCharsNoBlank
+	InputTextFlagsCharsNoBlank = InputTextFlags(imgui.InputTextFlagsCharsNoBlank)
 	// InputTextFlagsAutoSelectAll selects entire text when first taking mouse focus.
-	InputTextFlagsAutoSelectAll InputTextFlags = imgui.InputTextFlagsAutoSelectAll
+	InputTextFlagsAutoSelectAll = InputTextFlags(imgui.InputTextFlagsAutoSelectAll)
 	// InputTextFlagsEnterReturnsTrue returns 'true' when Enter is pressed (as opposed to when the value was modified).
-	InputTextFlagsEnterReturnsTrue InputTextFlags = imgui.InputTextFlagsEnterReturnsTrue
+	InputTextFlagsEnterReturnsTrue = InputTextFlags(imgui.InputTextFlagsEnterReturnsTrue)
 	// InputTextFlagsCallbackCompletion for callback on pressing TAB (for completion handling).
-	InputTextFlagsCallbackCompletion InputTextFlags = imgui.InputTextFlagsCallbackCompletion
+	InputTextFlagsCallbackCompletion = InputTextFlags(imgui.InputTextFlagsCallbackCompletion)
 	// InputTextFlagsCallbackHistory for callback on pressing Up/Down arrows (for history handling).
-	InputTextFlagsCallbackHistory InputTextFlags = imgui.InputTextFlagsCallbackHistory
+	InputTextFlagsCallbackHistory = InputTextFlags(imgui.InputTextFlagsCallbackHistory)
 	// InputTextFlagsCallbackAlways for callback on each iteration. User code may query cursor position, modify text buffer.
-	InputTextFlagsCallbackAlways InputTextFlags = imgui.InputTextFlagsCallbackAlways
+	InputTextFlagsCallbackAlways = InputTextFlags(imgui.InputTextFlagsCallbackAlways)
 	// InputTextFlagsCallbackCharFilter for callback on character inputs to replace or discard them.
 	// Modify 'EventChar' to replace or discard, or return 1 in callback to discard.
-	InputTextFlagsCallbackCharFilter InputTextFlags = imgui.InputTextFlagsCallbackCharFilter
+	InputTextFlagsCallbackCharFilter = InputTextFlags(imgui.InputTextFlagsCallbackCharFilter)
 	// InputTextFlagsAllowTabInput when pressing TAB to input a '\t' character into the text field.
-	InputTextFlagsAllowTabInput InputTextFlags = imgui.InputTextFlagsAllowTabInput
+	InputTextFlagsAllowTabInput = InputTextFlags(imgui.InputTextFlagsAllowTabInput)
 	// InputTextFlagsCtrlEnterForNewLine in multi-line mode, unfocus with Enter, add new line with Ctrl+Enter
 	// (default is opposite: unfocus with Ctrl+Enter, add line with Enter).
-	InputTextFlagsCtrlEnterForNewLine InputTextFlags = imgui.InputTextFlagsCtrlEnterForNewLine
+	InputTextFlagsCtrlEnterForNewLine = InputTextFlags(imgui.InputTextFlagsCtrlEnterForNewLine)
 	// InputTextFlagsNoHorizontalScroll disables following the cursor horizontally.
-	InputTextFlagsNoHorizontalScroll InputTextFlags = imgui.InputTextFlagsNoHorizontalScroll
+	InputTextFlagsNoHorizontalScroll = InputTextFlags(imgui.InputTextFlagsNoHorizontalScroll)
 	// InputTextFlagsAlwaysInsertMode sets insert mode.
 
 	// InputTextFlagsReadOnly sets read-only mode.
-	InputTextFlagsReadOnly InputTextFlags = imgui.InputTextFlagsReadOnly
+	InputTextFlagsReadOnly = InputTextFlags(imgui.InputTextFlagsReadOnly)
 	// InputTextFlagsPassword sets password mode, display all characters as '*'.
-	InputTextFlagsPassword InputTextFlags = imgui.InputTextFlagsPassword
+	InputTextFlagsPassword = InputTextFlags(imgui.InputTextFlagsPassword)
 	// InputTextFlagsNoUndoRedo disables undo/redo. Note that input text owns the text data while active,
 	// if you want to provide your own undo/redo stack you need e.g. to call ClearActiveID().
-	InputTextFlagsNoUndoRedo InputTextFlags = imgui.InputTextFlagsNoUndoRedo
+	InputTextFlagsNoUndoRedo = InputTextFlags(imgui.InputTextFlagsNoUndoRedo)
 	// InputTextFlagsCharsScientific allows 0123456789.+-*/eE (Scientific notation input).
-	InputTextFlagsCharsScientific InputTextFlags = imgui.InputTextFlagsCharsScientific
+	InputTextFlagsCharsScientific = InputTextFlags(imgui.InputTextFlagsCharsScientific)
 )
 
 // WindowFlags represents a window flags (see (*WindowWidget).Flags.
@@ -119,22 +119,22 @@ type ComboFlags imgui.ComboFlags
 // combo flags list.
 const (
 	// ComboFlagsNone default = 0.
-	ComboFlagsNone ComboFlags = imgui.ComboFlagsNone
+	ComboFlagsNone = ComboFlags(imgui.ComboFlagsNone)
 	// ComboFlagsPopupAlignLeft aligns the popup toward the left by default.
-	ComboFlagsPopupAlignLeft ComboFlags = imgui.ComboFlagsPopupAlignLeft
+	ComboFlagsPopupAlignLeft = ComboFlags(imgui.ComboFlagsPopupAlignLeft)
 	// ComboFlagsHeightSmall has max ~4 items visible.
 	// Tip: If you want your combo popup to be a specific size you can use SetNextWindowSizeConstraints() prior to calling BeginCombo().
-	ComboFlagsHeightSmall ComboFlags = imgui.ComboFlagsHeightSmall
+	ComboFlagsHeightSmall = ComboFlags(imgui.ComboFlagsHeightSmall)
 	// ComboFlagsHeightRegular has max ~8 items visible (default).
-	ComboFlagsHeightRegular ComboFlags = imgui.ComboFlagsHeightRegular
+	ComboFlagsHeightRegular = ComboFlags(imgui.ComboFlagsHeightRegular)
 	// ComboFlagsHeightLarge has max ~20 items visible.
-	ComboFlagsHeightLarge ComboFlags = imgui.ComboFlagsHeightLarge
+	ComboFlagsHeightLarge = ComboFlags(imgui.ComboFlagsHeightLarge)
 	// ComboFlagsHeightLargest has as many fitting items as possible.
-	ComboFlagsHeightLargest ComboFlags = imgui.ComboFlagsHeightLargest
+	ComboFlagsHeightLargest = ComboFlags(imgui.ComboFlagsHeightLargest)
 	// ComboFlagsNoArrowButton displays on the preview box without the square arrow button.
-	ComboFlagsNoArrowButton ComboFlags = imgui.ComboFlagsNoArrowButton
+	ComboFlagsNoArrowButton = ComboFlags(imgui.ComboFlagsNoArrowButton)
 	// ComboFlagsNoPreview displays only a square arrow button.
-	ComboFlagsNoPreview ComboFlags = imgui.ComboFlagsNoPreview
+	ComboFlagsNoPreview = ComboFlags(imgui.ComboFlagsNoPreview)
 )
 
 // SelectableFlags represents imgui.SelectableFlags.
@@ -143,15 +143,15 @@ type SelectableFlags imgui.SelectableFlags
 // selectable flags list.
 const (
 	// SelectableFlagsNone default = 0.
-	SelectableFlagsNone SelectableFlags = imgui.SelectableFlagsNone
+	SelectableFlagsNone = SelectableFlags(imgui.SelectableFlagsNone)
 	// SelectableFlagsDontClosePopups makes clicking the selectable not close any parent popup windows.
-	SelectableFlagsDontClosePopups SelectableFlags = imgui.SelectableFlagsDontClosePopups
+	SelectableFlagsDontClosePopups = SelectableFlags(imgui.SelectableFlagsDontClosePopups)
 	// SelectableFlagsSpanAllColumns allows the selectable frame to span all columns (text will still fit in current column).
-	SelectableFlagsSpanAllColumns SelectableFlags = imgui.SelectableFlagsSpanAllColumns
+	SelectableFlagsSpanAllColumns = SelectableFlags(imgui.SelectableFlagsSpanAllColumns)
 	// SelectableFlagsAllowDoubleClick generates press events on double clicks too.
-	SelectableFlagsAllowDoubleClick SelectableFlags = imgui.SelectableFlagsAllowDoubleClick
+	SelectableFlagsAllowDoubleClick = SelectableFlags(imgui.SelectableFlagsAllowDoubleClick)
 	// SelectableFlagsDisabled disallows selection and displays text in a greyed out color.
-	SelectableFlagsDisabled SelectableFlags = imgui.SelectableFlagsDisabled
+	SelectableFlagsDisabled = SelectableFlags(imgui.SelectableFlagsDisabled)
 )
 
 // TabItemFlags represents tab item flags.
@@ -160,17 +160,17 @@ type TabItemFlags imgui.TabItemFlags
 // tab item flags list.
 const (
 	// TabItemFlagsNone default = 0.
-	TabItemFlagsNone TabItemFlags = imgui.TabItemFlagsNone
+	TabItemFlagsNone = TabItemFlags(imgui.TabItemFlagsNone)
 	// TabItemFlagsUnsavedDocument Append '*' to title without affecting the ID, as a convenience to avoid using the
 	// ### operator. Also: tab is selected on closure and closure is deferred by one frame to allow code to undo it
 	// without flicker.
-	TabItemFlagsUnsavedDocument TabItemFlags = imgui.TabItemFlagsUnsavedDocument
+	TabItemFlagsUnsavedDocument = TabItemFlags(imgui.TabItemFlagsUnsavedDocument)
 	// TabItemFlagsSetSelected Trigger flag to programmatically make the tab selected when calling BeginTabItem().
-	TabItemFlagsSetSelected TabItemFlags = imgui.TabItemFlagsSetSelected
+	TabItemFlagsSetSelected = TabItemFlags(imgui.TabItemFlagsSetSelected)
 	// TabItemFlagsNoCloseWithMiddleMouseButton  Disable behavior of closing tabs (that are submitted with
 	// p_open != NULL) with middle mouse button. You can still repro this behavior on user's side with if
 	// (IsItemHovered() && IsMouseClicked(2)) *p_open = false.
-	TabItemFlagsNoCloseWithMiddleMouseButton TabItemFlags = imgui.TabItemFlagsNoCloseWithMiddleMouseButton
+	TabItemFlagsNoCloseWithMiddleMouseButton = TabItemFlags(imgui.TabItemFlagsNoCloseWithMiddleMouseButton)
 	// TabItemFlagsNoPushID Don't call PushID(tab->ID)/PopID() on BeginTabItem()/EndTabItem().
 
 )
@@ -181,31 +181,31 @@ type TabBarFlags imgui.TabBarFlags
 // tab bar flags list.
 const (
 	// TabBarFlagsNone default = 0.
-	TabBarFlagsNone TabBarFlags = imgui.TabBarFlagsNone
+	TabBarFlagsNone = TabBarFlags(imgui.TabBarFlagsNone)
 	// TabBarFlagsReorderable Allow manually dragging tabs to re-order them + New tabs are appended at the end of list.
-	TabBarFlagsReorderable TabBarFlags = imgui.TabBarFlagsReorderable
+	TabBarFlagsReorderable = TabBarFlags(imgui.TabBarFlagsReorderable)
 	// TabBarFlagsAutoSelectNewTabs Automatically select new tabs when they appear.
-	TabBarFlagsAutoSelectNewTabs TabBarFlags = imgui.TabBarFlagsAutoSelectNewTabs
+	TabBarFlagsAutoSelectNewTabs = TabBarFlags(imgui.TabBarFlagsAutoSelectNewTabs)
 	// TabBarFlagsTabListPopupButton Disable buttons to open the tab list popup.
-	TabBarFlagsTabListPopupButton TabBarFlags = imgui.TabBarFlagsTabListPopupButton
+	TabBarFlagsTabListPopupButton = TabBarFlags(imgui.TabBarFlagsTabListPopupButton)
 	// TabBarFlagsNoCloseWithMiddleMouseButton Disable behavior of closing tabs (that are submitted with p_open != NULL)
 	// with middle mouse button. You can still repro this behavior on user's side with if
 	// (IsItemHovered() && IsMouseClicked(2)) *p_open = false.
-	TabBarFlagsNoCloseWithMiddleMouseButton TabBarFlags = imgui.TabBarFlagsNoCloseWithMiddleMouseButton
+	TabBarFlagsNoCloseWithMiddleMouseButton = TabBarFlags(imgui.TabBarFlagsNoCloseWithMiddleMouseButton)
 	// TabBarFlagsNoTabListScrollingButtons Disable scrolling buttons (apply when fitting policy is
 	// TabBarFlagsFittingPolicyScroll).
-	TabBarFlagsNoTabListScrollingButtons TabBarFlags = imgui.TabBarFlagsNoTabListScrollingButtons
+	TabBarFlagsNoTabListScrollingButtons = TabBarFlags(imgui.TabBarFlagsNoTabListScrollingButtons)
 	// TabBarFlagsNoTooltip Disable tooltips when hovering a tab.
-	TabBarFlagsNoTooltip TabBarFlags = imgui.TabBarFlagsNoTooltip
+	TabBarFlagsNoTooltip = TabBarFlags(imgui.TabBarFlagsNoTooltip)
 	// TabBarFlagsFittingPolicyResizeDown Resize tabs when they don't fit.
-	TabBarFlagsFittingPolicyResizeDown TabBarFlags = imgui.TabBarFlagsFittingPolicyResizeDown
+	TabBarFlagsFittingPolicyResizeDown = TabBarFlags(imgui.TabBarFlagsFittingPolicyResizeDown)
 	// TabBarFlagsFittingPolicyScroll Add scroll buttons when tabs don't fit.
-	TabBarFlagsFittingPolicyScroll TabBarFlags = imgui.TabBarFlagsFittingPolicyScroll
+	TabBarFlagsFittingPolicyScroll = TabBarFlags(imgui.TabBarFlagsFittingPolicyScroll)
 	// TabBarFlagsFittingPolicyMask combines
 	// TabBarFlagsFittingPolicyResizeDown and TabBarFlagsFittingPolicyScroll.
-	TabBarFlagsFittingPolicyMask TabBarFlags = imgui.TabBarFlagsFittingPolicyMask
+	TabBarFlagsFittingPolicyMask = TabBarFlags(imgui.TabBarFlagsFittingPolicyMask)
 	// TabBarFlagsFittingPolicyDefault alias for TabBarFlagsFittingPolicyResizeDown.
-	TabBarFlagsFittingPolicyDefault TabBarFlags = imgui.TabBarFlagsFittingPolicyDefault
+	TabBarFlagsFittingPolicyDefault = TabBarFlags(imgui.TabBarFlagsFittingPolicyDefault)
 )
 
 // TreeNodeFlags represents tree node widget flags.
@@ -214,45 +214,45 @@ type TreeNodeFlags imgui.TreeNodeFlags
 // tree node flags list.
 const (
 	// TreeNodeFlagsNone default = 0.
-	TreeNodeFlagsNone TreeNodeFlags = imgui.TreeNodeFlagsNone
+	TreeNodeFlagsNone = TreeNodeFlags(imgui.TreeNodeFlagsNone)
 	// TreeNodeFlagsSelected draws as selected.
-	TreeNodeFlagsSelected TreeNodeFlags = imgui.TreeNodeFlagsSelected
+	TreeNodeFlagsSelected = TreeNodeFlags(imgui.TreeNodeFlagsSelected)
 	// TreeNodeFlagsFramed draws full colored frame (e.g. for CollapsingHeader).
-	TreeNodeFlagsFramed TreeNodeFlags = imgui.TreeNodeFlagsFramed
+	TreeNodeFlagsFramed = TreeNodeFlags(imgui.TreeNodeFlagsFramed)
 	// TreeNodeFlagsAllowItemOverlap hit testing to allow subsequent widgets to overlap this one.
-	TreeNodeFlagsAllowItemOverlap TreeNodeFlags = imgui.TreeNodeFlagsAllowOverlap
+	TreeNodeFlagsAllowItemOverlap = TreeNodeFlags(imgui.TreeNodeFlagsAllowOverlap)
 	// TreeNodeFlagsNoTreePushOnOpen doesn't do a TreePush() when open
 	// (e.g. for CollapsingHeader) = no extra indent nor pushing on ID stack.
-	TreeNodeFlagsNoTreePushOnOpen TreeNodeFlags = imgui.TreeNodeFlagsNoTreePushOnOpen
+	TreeNodeFlagsNoTreePushOnOpen = TreeNodeFlags(imgui.TreeNodeFlagsNoTreePushOnOpen)
 	// TreeNodeFlagsNoAutoOpenOnLog doesn't automatically and temporarily open node when Logging is active
 	// (by default logging will automatically open tree nodes).
-	TreeNodeFlagsNoAutoOpenOnLog TreeNodeFlags = imgui.TreeNodeFlagsNoAutoOpenOnLog
+	TreeNodeFlagsNoAutoOpenOnLog = TreeNodeFlags(imgui.TreeNodeFlagsNoAutoOpenOnLog)
 	// TreeNodeFlagsDefaultOpen defaults node to be open.
-	TreeNodeFlagsDefaultOpen TreeNodeFlags = imgui.TreeNodeFlagsDefaultOpen
+	TreeNodeFlagsDefaultOpen = TreeNodeFlags(imgui.TreeNodeFlagsDefaultOpen)
 	// TreeNodeFlagsOpenOnDoubleClick needs double-click to open node.
-	TreeNodeFlagsOpenOnDoubleClick TreeNodeFlags = imgui.TreeNodeFlagsOpenOnDoubleClick
+	TreeNodeFlagsOpenOnDoubleClick = TreeNodeFlags(imgui.TreeNodeFlagsOpenOnDoubleClick)
 	// TreeNodeFlagsOpenOnArrow opens only when clicking on the arrow part.
 	// If TreeNodeFlagsOpenOnDoubleClick is also set, single-click arrow or double-click all box to open.
-	TreeNodeFlagsOpenOnArrow TreeNodeFlags = imgui.TreeNodeFlagsOpenOnArrow
+	TreeNodeFlagsOpenOnArrow = TreeNodeFlags(imgui.TreeNodeFlagsOpenOnArrow)
 	// TreeNodeFlagsLeaf allows no collapsing, no arrow (use as a convenience for leaf nodes).
-	TreeNodeFlagsLeaf TreeNodeFlags = imgui.TreeNodeFlagsLeaf
+	TreeNodeFlagsLeaf = TreeNodeFlags(imgui.TreeNodeFlagsLeaf)
 	// TreeNodeFlagsBullet displays a bullet instead of an arrow.
-	TreeNodeFlagsBullet TreeNodeFlags = imgui.TreeNodeFlagsBullet
+	TreeNodeFlagsBullet = TreeNodeFlags(imgui.TreeNodeFlagsBullet)
 	// TreeNodeFlagsFramePadding uses FramePadding (even for an unframed text node) to
 	// vertically align text baseline to regular widget height. Equivalent to calling AlignTextToFramePadding().
-	TreeNodeFlagsFramePadding TreeNodeFlags = imgui.TreeNodeFlagsFramePadding
+	TreeNodeFlagsFramePadding = TreeNodeFlags(imgui.TreeNodeFlagsFramePadding)
 	// TreeNodeFlagsSpanAvailWidth extends hit box to the right-most edge, even if not framed.
 	// This is not the default in order to allow adding other items on the same line.
 	// In the future we may refactor the hit system to be front-to-back, allowing natural overlaps
 	// and then this can become the default.
-	TreeNodeFlagsSpanAvailWidth TreeNodeFlags = imgui.TreeNodeFlagsSpanAvailWidth
+	TreeNodeFlagsSpanAvailWidth = TreeNodeFlags(imgui.TreeNodeFlagsSpanAvailWidth)
 	// TreeNodeFlagsSpanFullWidth extends hit box to the left-most and right-most edges (bypass the indented area).
-	TreeNodeFlagsSpanFullWidth TreeNodeFlags = imgui.TreeNodeFlagsSpanFullWidth
+	TreeNodeFlagsSpanFullWidth = TreeNodeFlags(imgui.TreeNodeFlagsSpanFullWidth)
 	// TreeNodeFlagsNavLeftJumpsBackHere (WIP) Nav: left direction may move to this TreeNode() from any of its child
 	// (items submitted between TreeNode and TreePop).
-	TreeNodeFlagsNavLeftJumpsBackHere TreeNodeFlags = imgui.TreeNodeFlagsNavLeftJumpsBackHere
+	TreeNodeFlagsNavLeftJumpsBackHere = TreeNodeFlags(imgui.TreeNodeFlagsNavLeftJumpsBackHere)
 	// TreeNodeFlagsCollapsingHeader combines TreeNodeFlagsFramed and TreeNodeFlagsNoAutoOpenOnLog.
-	TreeNodeFlagsCollapsingHeader TreeNodeFlags = imgui.TreeNodeFlagsCollapsingHeader
+	TreeNodeFlagsCollapsingHeader = TreeNodeFlags(imgui.TreeNodeFlagsCollapsingHeader)
 )
 
 // FocusedFlags represents imgui.FocusedFlags.
@@ -260,10 +260,10 @@ type FocusedFlags imgui.FocusedFlags
 
 // focused flags list.
 const (
-	FocusedFlagsNone             = imgui.FocusedFlagsNone
-	FocusedFlagsChildWindows     = imgui.FocusedFlagsChildWindows     // Return true if any children of the window is focused
-	FocusedFlagsRootWindow       = imgui.FocusedFlagsRootWindow       // Test from root window (top most parent of the current hierarchy)
-	FocusedFlagsAnyWindow        = imgui.FocusedFlagsAnyWindow        // Return true if any window is focused. Important: If you are trying to tell how to dispatch your low-level inputs do NOT use this. Use 'io.WantCaptureMouse' instead! Please read the FAQ!
+	FocusedFlagsNone             = (imgui.FocusedFlagsNone)
+	FocusedFlagsChildWindows     = (imgui.FocusedFlagsChildWindows)   // Return true if any children of the window is focused
+	FocusedFlagsRootWindow       = (imgui.FocusedFlagsRootWindow)     // Test from root window (top most parent of the current hierarchy)
+	FocusedFlagsAnyWindow        = (imgui.FocusedFlagsAnyWindow)      // Return true if any window is focused. Important: If you are trying to tell how to dispatch your low-level inputs do NOT use this. Use 'io.WantCaptureMouse' instead! Please read the FAQ!
 	FocusedFlagsNoPopupHierarchy = imgui.FocusedFlagsNoPopupHierarchy // Do not consider popup hierarchy (do not treat popup emitter as parent of popup) (when used with ChildWindows or RootWindow)
 	// FocusedFlagsDockHierarchy               = 1 << 4   // Consider docking hierarchy (treat dockspace host as parent of docked window) (when used with ChildWindows or RootWindow).
 	FocusedFlagsRootAndChildWindows = imgui.FocusedFlagsRootAndChildWindows
@@ -276,22 +276,22 @@ type HoveredFlags imgui.HoveredFlags
 const (
 	// HoveredFlagsNone Return true if directly over the item/window, not obstructed by another window,
 	// not obstructed by an active popup or modal blocking inputs under them.
-	HoveredFlagsNone HoveredFlags = imgui.HoveredFlagsNone
+	HoveredFlagsNone = HoveredFlags(imgui.HoveredFlagsNone)
 	// HoveredFlagsChildWindows IsWindowHovered() only: Return true if any children of the window is hovered.
-	HoveredFlagsChildWindows HoveredFlags = imgui.HoveredFlagsChildWindows
+	HoveredFlagsChildWindows = HoveredFlags(imgui.HoveredFlagsChildWindows)
 	// HoveredFlagsRootWindow IsWindowHovered() only: Test from root window (top most parent of the current hierarchy).
-	HoveredFlagsRootWindow HoveredFlags = imgui.HoveredFlagsRootWindow
+	HoveredFlagsRootWindow = HoveredFlags(imgui.HoveredFlagsRootWindow)
 	// HoveredFlagsAnyWindow IsWindowHovered() only: Return true if any window is hovered.
-	HoveredFlagsAnyWindow HoveredFlags = imgui.HoveredFlagsAnyWindow
+	HoveredFlagsAnyWindow = HoveredFlags(imgui.HoveredFlagsAnyWindow)
 	// HoveredFlagsAllowWhenBlockedByPopup Return true even if a popup window is normally blocking access to this item/window.
-	HoveredFlagsAllowWhenBlockedByPopup HoveredFlags = imgui.HoveredFlagsAllowWhenBlockedByPopup
+	HoveredFlagsAllowWhenBlockedByPopup = HoveredFlags(imgui.HoveredFlagsAllowWhenBlockedByPopup)
 	// HoveredFlagsAllowWhenBlockedByActiveItem Return true even if an active item is blocking access to this item/window.
 	// Useful for Drag and Drop patterns.
-	HoveredFlagsAllowWhenBlockedByActiveItem HoveredFlags = imgui.HoveredFlagsAllowWhenBlockedByActiveItem
+	HoveredFlagsAllowWhenBlockedByActiveItem = HoveredFlags(imgui.HoveredFlagsAllowWhenBlockedByActiveItem)
 	// HoveredFlagsAllowWhenOverlapped Return true even if the position is overlapped by another window.
-	HoveredFlagsAllowWhenOverlapped HoveredFlags = imgui.HoveredFlagsAllowWhenOverlapped
+	HoveredFlagsAllowWhenOverlapped = HoveredFlags(imgui.HoveredFlagsAllowWhenOverlapped)
 	// HoveredFlagsAllowWhenDisabled Return true even if the item is disabled.
-	HoveredFlagsAllowWhenDisabled HoveredFlags = imgui.HoveredFlagsAllowWhenDisabled
+	HoveredFlagsAllowWhenDisabled = HoveredFlags(imgui.HoveredFlagsAllowWhenDisabled)
 )
 
 // ColorEditFlags for ColorEdit3V(), etc.
@@ -448,19 +448,19 @@ type SliderFlags imgui.SliderFlags
 
 // slider flags.
 const (
-	SliderFlagsNone SliderFlags = imgui.SliderFlagsNone
+	SliderFlagsNone = SliderFlags(imgui.SliderFlagsNone)
 	// Clamp value to min/max bounds when input manually with CTRL+Click. By default CTRL+Click allows going out of bounds.
-	SliderFlagsAlwaysClamp SliderFlags = imgui.SliderFlagsAlwaysClamp
-	// Make the widget logarithmic (linear otherwise). Consider using ImGuiSliderFlagsNoRoundToFormat SliderFlags = imgui.SliderFlagsNoRoundToFormat
+	SliderFlagsAlwaysClamp = SliderFlags(imgui.SliderFlagsAlwaysClamp)
+	// Make the widget logarithmic (linear otherwise). Consider using ImGuiSliderFlagsNoRoundToFormat = SliderFlags(imgui.SliderFlagsNoRoundToFormat)
 	// a format-string with small amount of digits.
-	SliderFlagsLogarithmic SliderFlags = imgui.SliderFlagsLogarithmic
+	SliderFlagsLogarithmic = SliderFlags(imgui.SliderFlagsLogarithmic)
 	// Disable rounding underlying value to match precision of the display format string (e.g. %.3f values are rounded to those 3 digits).
-	SliderFlagsNoRoundToFormat SliderFlags = imgui.SliderFlagsNoRoundToFormat
+	SliderFlagsNoRoundToFormat = SliderFlags(imgui.SliderFlagsNoRoundToFormat)
 	// Disable CTRL+Click or Enter key allowing to input text directly into the widget.
-	SliderFlagsNoInput SliderFlags = imgui.SliderFlagsNoInput
+	SliderFlagsNoInput = SliderFlags(imgui.SliderFlagsNoInput)
 	// [Internal] We treat using those bits as being potentially a 'float power' argument from the previous API that has got miscast
 	// to this enum, and will trigger an assert if needed.
-	SliderFlagsInvalidMask SliderFlags = imgui.SliderFlagsInvalidMask
+	SliderFlagsInvalidMask = SliderFlags(imgui.SliderFlagsInvalidMask)
 )
 
 // PlotFlags represents imgui.PlotFlags.

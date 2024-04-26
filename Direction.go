@@ -7,8 +7,8 @@ type Direction imgui.Dir
 
 // directions.
 const (
-	DirectionLeft  Direction = imgui.DirLeft
-	DirectionRight Direction = imgui.DirRight
-	DirectionUp    Direction = imgui.DirUp
-	DirectionDown  Direction = imgui.DirDown
+	DirectionLeft  = Direction(imgui.DirLeft)
+	DirectionRight = Direction(imgui.DirRight)
+	DirectionUp    = Direction(imgui.DirUp)
+	DirectionDown  = Direction(imgui.DirDown)
 )
