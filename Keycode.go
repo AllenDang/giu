@@ -120,6 +120,8 @@ const (
 	KeyRightAlt       = Key(imgui.KeyRightAlt)
 	KeyRightSuper     = Key(imgui.KeyRightSuper)
 	KeyMenu           = Key(imgui.KeyMenu)
+	KeyWorld1         = Key(imgui.GLFWKeyWorld1)
+	KeyWorld2         = Key(imgui.GLFWKeyWorld2)
 )
 
 // refer glfw3.h.
@@ -230,6 +232,8 @@ func keyFromGLFWKey(k imgui.GLFWKey) Key {
 		imgui.GLFWKeyRightAlt:     KeyRightAlt,
 		imgui.GLFWKeyRightSuper:   KeyRightSuper,
 		imgui.GLFWKeyMenu:         KeyMenu,
+		imgui.GLFWKeyWorld1:       KeyWorld1,
+		imgui.GLFWKeyWorld2:       KeyWorld2,
 	}
 
 	if v, ok := data[k]; ok {
