@@ -154,13 +154,13 @@ var _ Widget = &ConditionWidget{}
 //	   layoutElse.Build()
 //	}
 type ConditionWidget struct {
-	cond       bool
-	layoutIf   Layout
-	layoutElse Layout
+	cond bool
+	layoutIf,
+	layoutElse Widget
 }
 
 // Condition creates new COnditionWidget.
-func Condition(cond bool, layoutIf, layoutElse Layout) *ConditionWidget {
+func Condition(cond bool, layoutIf, layoutElse Widget) *ConditionWidget {
 	return &ConditionWidget{
 		cond:       cond,
 		layoutIf:   layoutIf,
@@ -170,15 +170,21 @@ func Condition(cond bool, layoutIf, layoutElse Layout) *ConditionWidget {
 
 // Range implements extra abilities (see Splittablle).
 func (c *ConditionWidget) Range(rangeFunc func(w Widget)) {
-	var l Layout
+	var l Widget
 	if c.cond {
 		l = c.layoutIf
 	} else {
 		l = c.layoutElse
 	}
 
+	s, ok := l.(Splitable)
+	if !ok {
+		rangeFunc(l)
+		return
+	}
+
 	if l != nil {
-		l.Range(rangeFunc)
+		s.Range(rangeFunc)
 	}
 }
 
