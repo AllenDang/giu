@@ -122,6 +122,7 @@ const (
 	KeyMenu           = Key(imgui.KeyMenu)
 	KeyWorld1         = Key(imgui.GLFWKeyWorld1)
 	KeyWorld2         = Key(imgui.GLFWKeyWorld2)
+	KeyUnknown        = Key(-1)
 )
 
 // refer glfw3.h.
@@ -234,6 +235,7 @@ func keyFromGLFWKey(k imgui.GLFWKey) Key {
 		imgui.GLFWKeyMenu:         KeyMenu,
 		imgui.GLFWKeyWorld1:       KeyWorld1,
 		imgui.GLFWKeyWorld2:       KeyWorld2,
+		-1:                        KeyUnknown,
 	}
 
 	if v, ok := data[k]; ok {
