@@ -95,7 +95,7 @@ func (ce *CodeEditorWidget) Text(str string) *CodeEditorWidget {
 // ErrorMarkers sets error markers.
 // func (ce *CodeEditorWidget) ErrorMarkers(markers imgui.ErrorMarkers) *CodeEditorWidget {
 //	ce.getState().editor.SetErrorMarkers(markers)
-//return ce
+// return ce
 //}
 
 // HandleKeyboardInputs sets if editor should handle keyboard input.
