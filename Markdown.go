@@ -1,3 +1,4 @@
+//nolint:gocritic,govet,wsl // this file is TODO. We don't want commentedOutCode lint issues here.
 package giu
 
 // MarkdownWidget implements DearImGui markdown extension
@@ -13,6 +14,7 @@ type MarkdownWidget struct {
 // Markdown creates new markdown widget.
 func Markdown(md *string) *MarkdownWidget {
 	panic("MarkdownWidget is not implemented yet!")
+
 	return &MarkdownWidget{
 		md:     md,
 		linkCb: OpenURL,

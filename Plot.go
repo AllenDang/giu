@@ -290,7 +290,7 @@ func (p *BarPlot) Plot() {
 		p.shift,
 		0, // TODO: implement
 		int32(p.offset),
-		8, // sizeof(double) = 8
+		8, // in fact this is sizeof(double) = 8
 	)
 }
 
@@ -404,7 +404,7 @@ func (p *LinePlot) Plot() {
 		p.x0,
 		0, // flags
 		int32(p.offset),
-		8, // sizeof(double) = 8
+		8, // in fact this is sizeof(double) = 8
 	)
 }
 
@@ -448,7 +448,7 @@ func (p *LineXYPlot) Plot() {
 		int32(len(p.xs)),
 		0, // flags
 		int32(p.offset),
-		8, // sizeof(double) = 8
+		8, // in fact this is sizeof(double) = 8
 	)
 }
 
@@ -548,7 +548,7 @@ func (p *ScatterPlot) Plot() {
 		p.x0,
 		0, // TODO: implement flags
 		int32(p.offset),
-		8, // sizeof(double) = 8
+		8, // in fact this is sizeof(double) = 8
 	)
 }
 
@@ -580,6 +580,6 @@ func (p *ScatterXYPlot) Plot() {
 		int32(len(p.xs)),
 		0, // TODO: implement
 		int32(p.offset),
-		8, // sizeof(double) = 8
+		8, // in fact this is sizeof(double) = 8
 	)
 }

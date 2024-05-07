@@ -104,7 +104,7 @@ func main() {
 		// Prepare PkgInfo
 		save(filepath.Join(contentsPath, "PkgInfo"), darwinPkginfo())
 
-		if len(iconPath) > 0 && filepath.Ext(iconPath) == iconExtension {
+		if iconPath != "" && filepath.Ext(iconPath) == iconExtension {
 			// Prepare icon
 			resourcesPath := filepath.Join(contentsPath, "Resources")
 			mkdirAll(resourcesPath)

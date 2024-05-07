@@ -122,12 +122,12 @@ const (
 	ComboFlagsNone = ComboFlags(imgui.ComboFlagsNone)
 	// ComboFlagsPopupAlignLeft aligns the popup toward the left by default.
 	ComboFlagsPopupAlignLeft = ComboFlags(imgui.ComboFlagsPopupAlignLeft)
-	// ComboFlagsHeightSmall has max ~4 items visible.
+	// ComboFlagsHeightSmall has maxValue ~4 items visible.
 	// Tip: If you want your combo popup to be a specific size you can use SetNextWindowSizeConstraints() prior to calling BeginCombo().
 	ComboFlagsHeightSmall = ComboFlags(imgui.ComboFlagsHeightSmall)
-	// ComboFlagsHeightRegular has max ~8 items visible (default).
+	// ComboFlagsHeightRegular has maxValue ~8 items visible (default).
 	ComboFlagsHeightRegular = ComboFlags(imgui.ComboFlagsHeightRegular)
-	// ComboFlagsHeightLarge has max ~20 items visible.
+	// ComboFlagsHeightLarge has maxValue ~20 items visible.
 	ComboFlagsHeightLarge = ComboFlags(imgui.ComboFlagsHeightLarge)
 	// ComboFlagsHeightLargest has as many fitting items as possible.
 	ComboFlagsHeightLargest = ComboFlags(imgui.ComboFlagsHeightLargest)
@@ -449,7 +449,7 @@ type SliderFlags imgui.SliderFlags
 // slider flags.
 const (
 	SliderFlagsNone = SliderFlags(imgui.SliderFlagsNone)
-	// Clamp value to min/max bounds when input manually with CTRL+Click. By default CTRL+Click allows going out of bounds.
+	// Clamp value to minValue/maxValue bounds when input manually with CTRL+Click. By default CTRL+Click allows going out of bounds.
 	SliderFlagsAlwaysClamp = SliderFlags(imgui.SliderFlagsAlwaysClamp)
 	// Make the widget logarithmic (linear otherwise). Consider using ImGuiSliderFlagsNoRoundToFormat = SliderFlags(imgui.SliderFlagsNoRoundToFormat)
 	// a format-string with small amount of digits.

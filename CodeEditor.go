@@ -1,3 +1,4 @@
+//nolint:gocritic,govet,unused // this file is TODO. We don't want commentedOutCode linter issues here yet.
 package giu
 
 import (
@@ -40,6 +41,7 @@ type CodeEditorWidget struct {
 // CodeEditor creates new code editor widget.
 func CodeEditor() *CodeEditorWidget {
 	panic("Code Editor is not implemented yet!")
+
 	return &CodeEditorWidget{
 		title: GenAutoID("##CodeEditor"),
 	}
@@ -70,10 +72,10 @@ func (ce *CodeEditorWidget) TabSize(size int) *CodeEditorWidget {
 func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
 	// s := ce.getState()
 	lookup := map[LanguageDefinition]func(){
-		//LanguageDefinitionSQL: s.editor.SetLanguageDefinitionSQL,
-		//LanguageDefinitionCPP: s.editor.SetLanguageDefinitionCPP,
-		//LanguageDefinitionLua: s.editor.SetLanguageDefinitionLua,
-		//LanguageDefinitionC:   s.editor.SetLanguageDefinitionC,
+		// LanguageDefinitionSQL: s.editor.SetLanguageDefinitionSQL,
+		// LanguageDefinitionCPP: s.editor.SetLanguageDefinitionCPP,
+		// LanguageDefinitionLua: s.editor.SetLanguageDefinitionLua,
+		// LanguageDefinitionC:   s.editor.SetLanguageDefinitionC,
 	}
 
 	setter, correctDefinition := lookup[definition]
@@ -95,7 +97,7 @@ func (ce *CodeEditorWidget) Text(str string) *CodeEditorWidget {
 // ErrorMarkers sets error markers.
 // func (ce *CodeEditorWidget) ErrorMarkers(markers imgui.ErrorMarkers) *CodeEditorWidget {
 //	ce.getState().editor.SetErrorMarkers(markers)
-//return ce
+// return ce
 //}
 
 // HandleKeyboardInputs sets if editor should handle keyboard input.
@@ -216,7 +218,7 @@ func (ce *CodeEditorWidget) Build() {
 func (ce *CodeEditorWidget) getState() (state *codeEditorState) {
 	if state = GetState[codeEditorState](Context, ce.title); state == nil {
 		state = &codeEditorState{
-			//editor: imgui.NewTextEditor(),
+			// editor: imgui.NewTextEditor(),
 		}
 
 		SetState(Context, ce.title, state)

@@ -34,6 +34,7 @@ func Test_InputHandle_RegisterKeyboardShortcuts(t *testing.T) {
 				Callback: tt.cb,
 				IsGlobal: tt.isGlobal,
 			})
+
 			combo := keyCombo{
 				key:      tt.key,
 				modifier: tt.mod,
@@ -42,6 +43,7 @@ func Test_InputHandle_RegisterKeyboardShortcuts(t *testing.T) {
 			shortcut, exist := i.shortcuts[combo]
 
 			a.True(exist, "shortcut wasn't registered in input manager")
+
 			if tt.isGlobal {
 				// TODO: figure out why it doesn't work
 				// a.Equal(shortcut.global, tt.cb, "wrong shortcut set in input manager")
