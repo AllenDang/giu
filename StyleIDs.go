@@ -112,7 +112,7 @@ const (
 	StyleVarItemInnerSpacing = StyleVarID(imgui.StyleVarItemInnerSpacing) // item-inner-spacing
 	// StyleVarIndentSpacing is a float.
 	StyleVarIndentSpacing = StyleVarID(imgui.StyleVarIndentSpacing) // indent-spacing
-	// StyleVarCellPadding is a Vec2
+	// StyleVarCellPadding is a Vec2.
 	StyleVarCellPadding = StyleVarID(imgui.StyleVarCellPadding)
 	// StyleVarScrollbarSize is a float.
 	StyleVarScrollbarSize = StyleVarID(imgui.StyleVarScrollbarSize) // scrollbar-size
@@ -130,7 +130,7 @@ const (
 	StyleVarButtonTextAlign = StyleVarID(imgui.StyleVarButtonTextAlign) // button-text-align
 	// StyleVarSelectableTextAlign is a Vec2.
 	StyleVarSelectableTextAlign = StyleVarID(imgui.StyleVarSelectableTextAlign) // selectable-text-align
-	// StyleVarSeparatorTextBorderSize is a float
+	// StyleVarSeparatorTextBorderSize is a float.
 	StyleVarSeparatorTextBorderSize = StyleVarID(imgui.StyleVarSeparatorTextBorderSize)
 	// SeparatorTextAlign is an ImVec2.
 	StyleVarSeparatorTextAlign = StyleVarID(imgui.StyleVarSeparatorTextAlign)
