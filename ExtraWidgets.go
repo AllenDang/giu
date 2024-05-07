@@ -374,7 +374,7 @@ var _ Widget = &DatePickerWidget{}
 // DatePickerLabels represents a label string in date picker.
 type DatePickerLabels string
 
-// These constants hold strings for translations of day/month/year
+// These constants hold strings for translations of day/month/year.
 const (
 	DatePickerLabelMonth DatePickerLabels = "Month:"
 	DatePickerLabelYear  DatePickerLabels = "    Year:"
@@ -439,7 +439,7 @@ func (d *DatePickerWidget) StartOfWeek(weekday time.Weekday) *DatePickerWidget {
 	return d
 }
 
-// Translation sets a translation to specified label type
+// Translation sets a translation to specified label type.
 func (d *DatePickerWidget) Translation(label DatePickerLabels, value string) *DatePickerWidget {
 	d.translations[label] = value
 	return d
