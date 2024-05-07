@@ -480,8 +480,6 @@ func (d *DatePickerWidget) Build() {
 		// --- [Build year/month widget] ---
 		imgui.AlignTextToFramePadding()
 
-		const yearButtonSize = 25
-
 		Table().
 			Size(0, 50).
 			Flags(0).

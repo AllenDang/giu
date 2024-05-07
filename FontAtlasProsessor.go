@@ -248,6 +248,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 
 	a.stringMap.Range(func(k, v any) bool {
 		a.stringMap.Store(k, true)
+
 		if ks, ok := k.(rune); ok {
 			sb.WriteRune(ks)
 		}

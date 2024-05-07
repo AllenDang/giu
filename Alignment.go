@@ -66,6 +66,7 @@ func AlignManually(alignmentType AlignmentType, widget Widget, widgetWidth float
 
 		if forceApplyWidth {
 			PushItemWidth(widgetWidth)
+
 			defer PopItemWidth()
 		}
 

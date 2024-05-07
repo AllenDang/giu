@@ -89,7 +89,7 @@ const (
 	// StyleVarWindowBorderSize is a float.
 	StyleVarWindowBorderSize = StyleVarID(imgui.StyleVarWindowBorderSize) // window-border-size
 	// StyleVarWindowMinSize is a Vec2.
-	StyleVarWindowMinSize = StyleVarID(imgui.StyleVarWindowMinSize) // window-min-size
+	StyleVarWindowMinSize = StyleVarID(imgui.StyleVarWindowMinSize) // window-minValue-size
 	// StyleVarWindowTitleAlign is a Vec2.
 	StyleVarWindowTitleAlign = StyleVarID(imgui.StyleVarWindowTitleAlign) // window-title-align
 	// StyleVarChildRounding is a float.
@@ -119,7 +119,7 @@ const (
 	// StyleVarScrollbarRounding is a float.
 	StyleVarScrollbarRounding = StyleVarID(imgui.StyleVarScrollbarRounding) // scrollbar-rounding
 	// StyleVarGrabMinSize is a float.
-	StyleVarGrabMinSize = StyleVarID(imgui.StyleVarGrabMinSize) // grab-min-size
+	StyleVarGrabMinSize = StyleVarID(imgui.StyleVarGrabMinSize) // grab-minValue-size
 	// StyleVarGrabRounding is a float.
 	StyleVarGrabRounding = StyleVarID(imgui.StyleVarGrabRounding) // grab-rounding
 	// StyleVarTabRounding is a float.

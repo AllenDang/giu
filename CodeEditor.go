@@ -1,4 +1,4 @@
-//nolint:gocritic // this file is TODO. We don't want commentedOutCode linter issues here yet.
+//nolint:gocritic,govet,unused // this file is TODO. We don't want commentedOutCode linter issues here yet.
 package giu
 
 import (
@@ -41,6 +41,7 @@ type CodeEditorWidget struct {
 // CodeEditor creates new code editor widget.
 func CodeEditor() *CodeEditorWidget {
 	panic("Code Editor is not implemented yet!")
+
 	return &CodeEditorWidget{
 		title: GenAutoID("##CodeEditor"),
 	}

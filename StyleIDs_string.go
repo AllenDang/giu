@@ -120,7 +120,7 @@ func _() {
 	_ = x[StyleVarDockingSeparatorSize-29]
 }
 
-const _StyleVarID_name = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-min-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacingStyleVarCellPaddingscrollbar-sizescrollbar-roundinggrab-min-sizegrab-roundingtab-roundingStyleVarTabBarBorderSizebutton-text-alignselectable-text-alignStyleVarSeparatorTextBorderSizeStyleVarSeparatorTextAlignStyleVarSeparatorTextPaddingStyleVarDockingSeparatorSize"
+const _StyleVarID_name = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-minValue-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacingStyleVarCellPaddingscrollbar-sizescrollbar-roundinggrab-minValue-sizegrab-roundingtab-roundingStyleVarTabBarBorderSizebutton-text-alignselectable-text-alignStyleVarSeparatorTextBorderSizeStyleVarSeparatorTextAlignStyleVarSeparatorTextPaddingStyleVarDockingSeparatorSize"
 
 var _StyleVarID_index = [...]uint16{0, 5, 19, 33, 48, 66, 81, 99, 113, 130, 144, 161, 174, 188, 205, 217, 235, 249, 268, 282, 300, 313, 326, 338, 362, 379, 400, 431, 457, 485, 513}
 

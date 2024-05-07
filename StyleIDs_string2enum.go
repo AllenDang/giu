@@ -161,7 +161,7 @@ func _(s string) {
 	// 4
 	case "window-border-size":
 	// 5
-	case "window-min-size":
+	case "window-minValue-size":
 	// 6
 	case "window-title-align":
 	// 7
@@ -191,7 +191,7 @@ func _(s string) {
 	// 19
 	case "scrollbar-rounding":
 	// 20
-	case "grab-min-size":
+	case "grab-minValue-size":
 	// 21
 	case "grab-rounding":
 	// 22

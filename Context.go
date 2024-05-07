@@ -85,6 +85,7 @@ func (c *context) invalidAllState() {
 			s.valid = false
 			c.m.Unlock()
 		}
+
 		return true
 	})
 }
@@ -95,11 +96,13 @@ func (c *context) cleanState() {
 			c.m.Lock()
 			valid := s.valid
 			c.m.Unlock()
+
 			if !valid {
 				c.state.Delete(k)
 				s.data.Dispose()
 			}
 		}
+
 		return true
 	})
 

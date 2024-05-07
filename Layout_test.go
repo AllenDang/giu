@@ -53,6 +53,7 @@ func Test_Layout_Range(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(tt *testing.T) {
 			counter := 0
+
 			test.layout.Range(func(w Widget) {
 				if _, isTestwidget := w.(*testwidget); isTestwidget {
 					counter++
@@ -95,6 +96,7 @@ func Test_Layout_Build(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.name, func(tt *testing.T) {
 			counter := 0
+
 			test.layout.Range(func(w Widget) {
 				if tw, isTestwidget := w.(*testwidget); isTestwidget {
 					tw.counter = &counter

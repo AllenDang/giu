@@ -284,22 +284,22 @@ func (c *ContextMenuWidget) Build() {
 var _ Widget = &DragIntWidget{}
 
 type DragIntWidget struct {
-	label  string
-	value  *int32
-	speed  float32
-	min    int32
-	max    int32
-	format string
+	label    string
+	value    *int32
+	speed    float32
+	minValue int32
+	maxValue int32
+	format   string
 }
 
-func DragInt(label string, value *int32, min, max int32) *DragIntWidget {
+func DragInt(label string, value *int32, minValue, maxValue int32) *DragIntWidget {
 	return &DragIntWidget{
-		label:  GenAutoID(label),
-		value:  value,
-		speed:  1.0,
-		min:    min,
-		max:    max,
-		format: "%d",
+		label:    GenAutoID(label),
+		value:    value,
+		speed:    1.0,
+		minValue: minValue,
+		maxValue: maxValue,
+		format:   "%d",
 	}
 }
 
@@ -315,7 +315,7 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
-	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label), d.value, d.speed, d.min, d.max, d.format, 0)
+	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label), d.value, d.speed, d.minValue, d.maxValue, d.format, 0)
 }
 
 var _ Widget = &ColumnWidget{}
