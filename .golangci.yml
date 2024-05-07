@@ -19,7 +19,7 @@ linters:
     - goconst
     - gocritic
     - gocyclo
-    - goerr113
+    - err113
     - gofmt
     #- gofumpt
     - goheader
@@ -71,7 +71,7 @@ linters-settings:
   goimports:
     local-prefixes: github.com/AllenDang/giu
   govet:
-    check-shadowing: true
+    shadow: true
   maligned:
     suggest-new: true
   misspell:
@@ -79,11 +79,11 @@ linters-settings:
 
 run:
   timeout: 5m
+
+issues:
   skip-dirs:
     - .github
     - build
     - web
-
-issues:
   max-same-issues: 0
   exclude-use-default: false
