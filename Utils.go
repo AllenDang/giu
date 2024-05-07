@@ -22,7 +22,6 @@ func LoadImage(imgPath string) (*image.RGBA, error) {
 	}
 
 	defer func() {
-		//nolint:govet // we want to reuse this err variable here
 		if err := imgFile.Close(); err != nil {
 			panic(fmt.Sprintf("error closing image file: %s", imgPath))
 		}
