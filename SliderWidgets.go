@@ -12,20 +12,20 @@ var _ Widget = &SliderIntWidget{}
 type SliderIntWidget struct {
 	label    string
 	value    *int32
-	min      int32
-	max      int32
+	minValue int32
+	maxValue int32
 	format   string
 	width    float32
 	onChange func()
 }
 
 // SliderInt constructs new SliderIntWidget.
-func SliderInt(value *int32, min, max int32) *SliderIntWidget {
+func SliderInt(value *int32, minValue, maxValue int32) *SliderIntWidget {
 	return &SliderIntWidget{
 		label:    GenAutoID("##SliderInt"),
 		value:    value,
-		min:      min,
-		max:      max,
+		minValue: minValue,
+		maxValue: maxValue,
 		format:   "%d",
 		width:    0,
 		onChange: nil,
@@ -72,7 +72,7 @@ func (s *SliderIntWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.SliderIntV(Context.FontAtlas.RegisterString(s.label), s.value, s.min, s.max, s.format, 0) && s.onChange != nil {
+	if imgui.SliderIntV(Context.FontAtlas.RegisterString(s.label), s.value, s.minValue, s.maxValue, s.format, 0) && s.onChange != nil {
 		s.onChange()
 	}
 }
@@ -85,24 +85,24 @@ type VSliderIntWidget struct {
 	width    float32
 	height   float32
 	value    *int32
-	min      int32
-	max      int32
+	minValue int32
+	maxValue int32
 	format   string
 	flags    SliderFlags
 	onChange func()
 }
 
 // VSliderInt creates new vslider int.
-func VSliderInt(value *int32, min, max int32) *VSliderIntWidget {
+func VSliderInt(value *int32, minValue, maxValue int32) *VSliderIntWidget {
 	return &VSliderIntWidget{
-		label:  GenAutoID("##VSliderInt"),
-		width:  18,
-		height: 60,
-		value:  value,
-		min:    min,
-		max:    max,
-		format: "%d",
-		flags:  SliderFlagsNone,
+		label:    GenAutoID("##VSliderInt"),
+		width:    18,
+		height:   60,
+		value:    value,
+		minValue: minValue,
+		maxValue: maxValue,
+		format:   "%d",
+		flags:    SliderFlagsNone,
 	}
 }
 
@@ -147,8 +147,8 @@ func (vs *VSliderIntWidget) Build() {
 		Context.FontAtlas.RegisterString(vs.label),
 		imgui.Vec2{X: vs.width, Y: vs.height},
 		vs.value,
-		vs.min,
-		vs.max,
+		vs.minValue,
+		vs.maxValue,
 		vs.format,
 		imgui.SliderFlags(vs.flags),
 	) && vs.onChange != nil {
@@ -163,20 +163,20 @@ var _ Widget = &SliderFloatWidget{}
 type SliderFloatWidget struct {
 	label    string
 	value    *float32
-	min      float32
-	max      float32
+	minValue float32
+	maxValue float32
 	format   string
 	width    float32
 	onChange func()
 }
 
 // SliderFloat creates new slider float widget.
-func SliderFloat(value *float32, min, max float32) *SliderFloatWidget {
+func SliderFloat(value *float32, minValue, maxValue float32) *SliderFloatWidget {
 	return &SliderFloatWidget{
 		label:    GenAutoID("##SliderFloat"),
 		value:    value,
-		min:      min,
-		max:      max,
+		minValue: minValue,
+		maxValue: maxValue,
 		format:   "%.3f",
 		width:    0,
 		onChange: nil,
@@ -222,7 +222,7 @@ func (sf *SliderFloatWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.SliderFloatV(Context.FontAtlas.RegisterString(sf.label), sf.value, sf.min, sf.max, sf.format, 1.0) && sf.onChange != nil {
+	if imgui.SliderFloatV(Context.FontAtlas.RegisterString(sf.label), sf.value, sf.minValue, sf.maxValue, sf.format, 1.0) && sf.onChange != nil {
 		sf.onChange()
 	}
 }

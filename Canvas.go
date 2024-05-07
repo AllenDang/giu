@@ -141,8 +141,8 @@ func (c *Canvas) PathStroke(col color.Color, flags DrawFlags, thickness float32)
 	c.DrawList.PathStrokeV(ColorToUint(col), imgui.DrawFlags(flags), thickness)
 }
 
-func (c *Canvas) PathArcTo(center image.Point, radius, min, max float32, numSegments int32) {
-	c.DrawList.PathArcToV(ToVec2(center), radius, min, max, numSegments)
+func (c *Canvas) PathArcTo(center image.Point, radius, minV, maxV float32, numSegments int32) {
+	c.DrawList.PathArcToV(ToVec2(center), radius, minV, maxV, numSegments)
 }
 
 func (c *Canvas) PathArcToFast(center image.Point, radius float32, min12, max12 int32) {

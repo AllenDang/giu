@@ -1,3 +1,4 @@
+//nolint:gocritic // this file is TODO. We don't want commentedOutCode lint issues here.
 package giu
 
 // MarkdownWidget implements DearImGui markdown extension
