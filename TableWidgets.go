@@ -110,7 +110,7 @@ type TableWidget struct {
 
 func Table() *TableWidget {
 	return &TableWidget{
-		id:           GenAutoID("Table"),
+		id:           Context.GenAutoID("Table"),
 		flags:        TableFlagsResizable | TableFlagsBorders | TableFlagsScrollY,
 		rows:         nil,
 		columns:      nil,
@@ -225,7 +225,7 @@ type TreeTableRowWidget struct {
 // TreeTableRow creates new TreeTableRowWidget.
 func TreeTableRow(label string, widgets ...Widget) *TreeTableRowWidget {
 	return &TreeTableRowWidget{
-		label:  GenAutoID(label),
+		label:  Context.GenAutoID(label),
 		layout: widgets,
 	}
 }
@@ -292,7 +292,7 @@ type TreeTableWidget struct {
 // TreeTable creates new TreeTableWidget.
 func TreeTable() *TreeTableWidget {
 	return &TreeTableWidget{
-		id:      GenAutoID("TreeTable"),
+		id:      Context.GenAutoID("TreeTable"),
 		flags:   TableFlagsBordersV | TableFlagsBordersOuterH | TableFlagsResizable | TableFlagsRowBg | TableFlagsNoBordersInBody,
 		rows:    nil,
 		columns: nil,
