@@ -43,7 +43,7 @@ func CodeEditor() *CodeEditorWidget {
 	panic("Code Editor is not implemented yet!")
 
 	return &CodeEditorWidget{
-		title: GenAutoID("##CodeEditor"),
+		title: Context.GenAutoID("##CodeEditor"),
 	}
 }
 

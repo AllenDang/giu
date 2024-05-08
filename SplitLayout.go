@@ -50,7 +50,7 @@ func SplitLayout(direction SplitDirection, sashPos *float32, layout1, layout2 Wi
 		layout1:   layout1,
 		layout2:   layout2,
 		border:    true,
-		id:        GenAutoID("SplitLayout"),
+		id:        Context.GenAutoID("SplitLayout"),
 	}
 }
 

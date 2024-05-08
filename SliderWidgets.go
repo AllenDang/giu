@@ -22,7 +22,7 @@ type SliderIntWidget struct {
 // SliderInt constructs new SliderIntWidget.
 func SliderInt(value *int32, minValue, maxValue int32) *SliderIntWidget {
 	return &SliderIntWidget{
-		label:    GenAutoID("##SliderInt"),
+		label:    Context.GenAutoID("##SliderInt"),
 		value:    value,
 		minValue: minValue,
 		maxValue: maxValue,
@@ -95,7 +95,7 @@ type VSliderIntWidget struct {
 // VSliderInt creates new vslider int.
 func VSliderInt(value *int32, minValue, maxValue int32) *VSliderIntWidget {
 	return &VSliderIntWidget{
-		label:    GenAutoID("##VSliderInt"),
+		label:    Context.GenAutoID("##VSliderInt"),
 		width:    18,
 		height:   60,
 		value:    value,
@@ -173,7 +173,7 @@ type SliderFloatWidget struct {
 // SliderFloat creates new slider float widget.
 func SliderFloat(value *float32, minValue, maxValue float32) *SliderFloatWidget {
 	return &SliderFloatWidget{
-		label:    GenAutoID("##SliderFloat"),
+		label:    Context.GenAutoID("##SliderFloat"),
 		value:    value,
 		minValue: minValue,
 		maxValue: maxValue,

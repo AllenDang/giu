@@ -94,7 +94,7 @@ type AlignmentSetter struct {
 func Align(at AlignmentType) *AlignmentSetter {
 	return &AlignmentSetter{
 		alignType: at,
-		id:        GenAutoID("alignSetter"),
+		id:        Context.GenAutoID("alignSetter"),
 	}
 }
 
@@ -178,7 +178,7 @@ func (a *AlignmentSetter) Build() {
 // if you find anything else, please report it on
 // https://github.com/AllenDang/giu Any contribution is appreciated!
 func GetWidgetWidth(w Widget) (result float32) {
-	imgui.PushIDStr(GenAutoID("GetWidgetWidthMeasurement"))
+	imgui.PushIDStr(Context.GenAutoID("GetWidgetWidthMeasurement"))
 	defer imgui.PopID()
 
 	// save cursor position before doing anything

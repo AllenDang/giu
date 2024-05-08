@@ -33,7 +33,7 @@ func InputTextMultiline(text *string) *InputTextMultilineWidget {
 		flags:    0,
 		cb:       nil,
 		onChange: nil,
-		label:    GenAutoID("##InputTextMultiline"),
+		label:    Context.GenAutoID("##InputTextMultiline"),
 	}
 }
 
@@ -170,7 +170,7 @@ type InputTextWidget struct {
 // InputText creates new input text widget.
 func InputText(value *string) *InputTextWidget {
 	return &InputTextWidget{
-		label:    GenAutoID("##InputText"),
+		label:    Context.GenAutoID("##InputText"),
 		hint:     "",
 		value:    value,
 		width:    0,
@@ -329,7 +329,7 @@ type InputIntWidget struct {
 // with InputTextFlagsCharsDecimal and strconv.ParseInt in OnChange callback.
 func InputInt(value *int32) *InputIntWidget {
 	return &InputIntWidget{
-		label:    GenAutoID("##InputInt"),
+		label:    Context.GenAutoID("##InputInt"),
 		value:    value,
 		width:    0,
 		flags:    0,
@@ -414,7 +414,7 @@ type InputFloatWidget struct {
 // InputFloat constructs InputFloatWidget.
 func InputFloat(value *float32) *InputFloatWidget {
 	return &InputFloatWidget{
-		label:    GenAutoID("##InputFloatWidget"),
+		label:    Context.GenAutoID("##InputFloatWidget"),
 		width:    0,
 		value:    value,
 		format:   "%.3f",

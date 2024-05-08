@@ -136,7 +136,7 @@ type ImageWithRgbaWidget struct {
 // ImageWithRgba creates ImageWithRgbaWidget.
 func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 	return &ImageWithRgbaWidget{
-		id:   GenAutoID("ImageWithRgba"),
+		id:   Context.GenAutoID("ImageWithRgba"),
 		rgba: ImageToRgba(rgba),
 		img:  Image(nil),
 	}
