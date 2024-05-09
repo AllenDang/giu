@@ -123,7 +123,7 @@ func (eh *EventHandler) Build() {
 	if eh.onActivate != nil || eh.onDeactivate != nil {
 		var state *eventHandlerState
 
-		stateID := Context.GenAutoID("eventHandlerState")
+		stateID := GenAutoID("eventHandlerState")
 		if state = GetState[eventHandlerState](Context, stateID); state == nil {
 			state = &eventHandlerState{}
 			SetState(Context, stateID, state)

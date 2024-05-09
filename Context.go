@@ -47,9 +47,6 @@ type context struct {
 	isRunning bool
 
 	widgetIndex map[string]int
-	// this function could be overwrited by user.
-	// Especially, do this if you want to disable auto ID generator.
-	GenAutoID func(baseID string) string
 
 	// Indicate whether current application is running
 	isAlive bool
@@ -74,7 +71,6 @@ func CreateContext(b imgui.Backend[imgui.GLFWWindowFlags]) *context {
 		FontAtlas:           newFontAtlas(),
 		textureLoadingQueue: queue.New(),
 		m:                   &sync.Mutex{},
-		GenAutoID:           GenAutoID,
 		widgetIndex:         make(map[string]int),
 	}
 
