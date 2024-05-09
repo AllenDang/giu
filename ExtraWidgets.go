@@ -25,7 +25,7 @@ type SplitterWidget struct {
 // Splitter creates new SplitterWidget.
 func Splitter(direction SplitDirection, delta *float32) *SplitterWidget {
 	return &SplitterWidget{
-		id:        Context.GenAutoID("Splitter"),
+		id:        GenAutoID("Splitter"),
 		width:     0,
 		height:    0,
 		delta:     delta,
@@ -247,7 +247,7 @@ type ListBoxWidget struct {
 // ListBox creates new ListBoxWidget.
 func ListBox(items []string) *ListBoxWidget {
 	return &ListBoxWidget{
-		id:       Context.GenAutoID("##ListBox"),
+		id:       GenAutoID("##ListBox"),
 		width:    0,
 		height:   0,
 		border:   true,
@@ -397,7 +397,7 @@ type DatePickerWidget struct {
 // DatePicker creates new DatePickerWidget.
 func DatePicker(id string, date *time.Time) *DatePickerWidget {
 	return &DatePickerWidget{
-		id:          Context.GenAutoID(id),
+		id:          GenAutoID(id),
 		date:        date,
 		width:       100,
 		startOfWeek: time.Sunday,
