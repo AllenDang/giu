@@ -7,6 +7,11 @@ import (
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
+// GenAutoID automatically generates fidget's id.
+func GenAutoID(id string) string {
+	return fmt.Sprintf("%s##%d", id, Context.GetWidgetIndex())
+}
+
 var _ Widget = &RowWidget{}
 
 // RowWidget joins a layout into one line
@@ -108,7 +113,7 @@ func (c *ChildWidget) ID(id string) *ChildWidget {
 
 func Child() *ChildWidget {
 	return &ChildWidget{
-		id:     Context.GenAutoID("Child"),
+		id:     GenAutoID("Child"),
 		width:  0,
 		height: 0,
 		border: true,
@@ -131,7 +136,7 @@ type ComboCustomWidget struct {
 // ComboCustom creates a new combo custom widget.
 func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	return &ComboCustomWidget{
-		label:        Context.GenAutoID(label),
+		label:        GenAutoID(label),
 		previewValue: Context.FontAtlas.RegisterString(previewValue),
 		width:        0,
 		flags:        0,
@@ -187,7 +192,7 @@ type ComboWidget struct {
 // Combo creates a new ComboWidget.
 func Combo(label, previewValue string, items []string, selected *int32) *ComboWidget {
 	return &ComboWidget{
-		label:        Context.GenAutoID(label),
+		label:        GenAutoID(label),
 		previewValue: Context.FontAtlas.RegisterString(previewValue),
 		items:        Context.FontAtlas.RegisterStringSlice(items),
 		selected:     selected,
@@ -249,7 +254,7 @@ func ContextMenu() *ContextMenuWidget {
 	return &ContextMenuWidget{
 		mouseButton: MouseButtonRight,
 		layout:      nil,
-		id:          Context.GenAutoID("ContextMenu"),
+		id:          GenAutoID("ContextMenu"),
 	}
 }
 
@@ -289,7 +294,7 @@ type DragIntWidget struct {
 
 func DragInt(label string, value *int32, minValue, maxValue int32) *DragIntWidget {
 	return &DragIntWidget{
-		label:    Context.GenAutoID(label),
+		label:    GenAutoID(label),
 		value:    value,
 		speed:    1.0,
 		minValue: minValue,
@@ -398,7 +403,7 @@ type MenuItemWidget struct {
 
 func MenuItem(label string) *MenuItemWidget {
 	return &MenuItemWidget{
-		label:    Context.GenAutoID(label),
+		label:    GenAutoID(label),
 		shortcut: "",
 		selected: false,
 		enabled:  true,
@@ -447,7 +452,7 @@ type MenuWidget struct {
 
 func Menu(label string) *MenuWidget {
 	return &MenuWidget{
-		label:   Context.GenAutoID(label),
+		label:   GenAutoID(label),
 		enabled: true,
 		layout:  nil,
 	}
@@ -629,7 +634,7 @@ type TabBarWidget struct {
 // TabBar creates new TabBarWidget.
 func TabBar() *TabBarWidget {
 	return &TabBarWidget{
-		id:    Context.GenAutoID("TabBar"),
+		id:    GenAutoID("TabBar"),
 		flags: 0,
 	}
 }
@@ -730,7 +735,7 @@ type ColorEditWidget struct {
 
 func ColorEdit(label string, c *color.RGBA) *ColorEditWidget {
 	return &ColorEditWidget{
-		label: Context.GenAutoID(label),
+		label: GenAutoID(label),
 		color: c,
 		// flags: ColorEditFlagsNone,
 	}

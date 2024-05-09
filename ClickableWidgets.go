@@ -23,7 +23,7 @@ type ButtonWidget struct {
 // Button creates a new button widget.
 func Button(label string) *ButtonWidget {
 	return &ButtonWidget{
-		id:      Context.GenAutoID(label),
+		id:      GenAutoID(label),
 		width:   0,
 		height:  0,
 		onClick: nil,
@@ -85,7 +85,7 @@ type ArrowButtonWidget struct {
 // ArrowButton creates ArrowButtonWidget.
 func ArrowButton(dir Direction) *ArrowButtonWidget {
 	return &ArrowButtonWidget{
-		id:      Context.GenAutoID("ArrowButton"),
+		id:      GenAutoID("ArrowButton"),
 		dir:     dir,
 		onClick: nil,
 	}
@@ -121,7 +121,7 @@ type SmallButtonWidget struct {
 // SmallButton constructs a new small button widget.
 func SmallButton(id string) *SmallButtonWidget {
 	return &SmallButtonWidget{
-		id:      Context.GenAutoID(id),
+		id:      GenAutoID(id),
 		onClick: nil,
 	}
 }
@@ -160,7 +160,7 @@ type InvisibleButtonWidget struct {
 // InvisibleButton constructs a new invisible button widget.
 func InvisibleButton() *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
-		id:      Context.GenAutoID("InvisibleButton"),
+		id:      GenAutoID("InvisibleButton"),
 		width:   0,
 		height:  0,
 		onClick: nil,
@@ -291,7 +291,7 @@ type ImageButtonWithRgbaWidget struct {
 // ImageButtonWithRgba creates a new widget.
 func ImageButtonWithRgba(rgba image.Image) *ImageButtonWithRgbaWidget {
 	return &ImageButtonWithRgbaWidget{
-		id:                Context.GenAutoID("ImageButtonWithRgba"),
+		id:                GenAutoID("ImageButtonWithRgba"),
 		ImageButtonWidget: ImageButton(nil),
 		rgba:              rgba,
 	}
@@ -360,7 +360,7 @@ type CheckboxWidget struct {
 // Checkbox creates a new CheckboxWidget.
 func Checkbox(text string, selected *bool) *CheckboxWidget {
 	return &CheckboxWidget{
-		text:     Context.GenAutoID(text),
+		text:     GenAutoID(text),
 		selected: selected,
 		onChange: nil,
 	}
@@ -393,7 +393,7 @@ type RadioButtonWidget struct {
 // RadioButton creates a radio button.
 func RadioButton(text string, active bool) *RadioButtonWidget {
 	return &RadioButtonWidget{
-		text:     Context.GenAutoID(text),
+		text:     GenAutoID(text),
 		active:   active,
 		onChange: nil,
 	}
@@ -429,7 +429,7 @@ type SelectableWidget struct {
 // Selectable constructs a selectable widget.
 func Selectable(label string) *SelectableWidget {
 	return &SelectableWidget{
-		label:    Context.GenAutoID(label),
+		label:    GenAutoID(label),
 		selected: false,
 		flags:    0,
 		width:    0,
