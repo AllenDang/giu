@@ -11,7 +11,15 @@ import (
 // GenAutoID automatically generates widget's ID.
 // It returns an unique value each time it is called.
 func GenAutoID(id string) string {
-	return fmt.Sprintf("%s##%d", id, Context.GetWidgetIndex())
+	idx, ok := Context.widgetIndex[id]
+	if !ok {
+		Context.widgetIndex[id] = 0
+		return id
+	}
+
+	Context.widgetIndex[id]++
+
+	return fmt.Sprintf("%s##%d", id, idx)
 }
 
 // Context represents a giu context.
@@ -38,7 +46,7 @@ type context struct {
 
 	isRunning bool
 
-	widgetIndexCounter int
+	widgetIndex map[string]int
 	// this function could be overwrited by user.
 	// Especially, do this if you want to disable auto ID generator.
 	GenAutoID func(baseID string) string
@@ -67,6 +75,7 @@ func CreateContext(b imgui.Backend[imgui.GLFWWindowFlags]) *context {
 		textureLoadingQueue: queue.New(),
 		m:                   &sync.Mutex{},
 		GenAutoID:           GenAutoID,
+		widgetIndex:         make(map[string]int),
 	}
 
 	// Create font
@@ -116,8 +125,8 @@ func (c *context) cleanState() {
 		return true
 	})
 
-	// Reset widgetIndexCounter
-	c.widgetIndexCounter = 0
+	// Reset widgetIndex
+	c.widgetIndex = make(map[string]int)
 }
 
 func SetState[T any, PT genericDisposable[T]](c *context, id string, data PT) {
@@ -163,12 +172,4 @@ func (c *context) load(id any) (*state, bool) {
 	}
 
 	return nil, false
-}
-
-// Get widget index for current layout.
-func (c *context) GetWidgetIndex() int {
-	i := c.widgetIndexCounter
-	c.widgetIndexCounter++
-
-	return i
 }

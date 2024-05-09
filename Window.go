@@ -12,7 +12,7 @@ import (
 func SingleWindow() *WindowWidget {
 	pos := imgui.MainViewport().Pos()
 	sizeX, sizeY := Context.backend.DisplaySize()
-	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
+	title := GenAutoID("SingleWindow")
 
 	return Window(title).
 		Flags(
@@ -29,7 +29,7 @@ func SingleWindow() *WindowWidget {
 func SingleWindowWithMenuBar() *WindowWidget {
 	pos := imgui.MainViewport().Pos()
 	sizeX, sizeY := Context.backend.DisplaySize()
-	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
+	title := GenAutoID("SingleWindowWithMenuBar")
 
 	return Window(title).
 		Flags(
