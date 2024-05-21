@@ -15,7 +15,7 @@ var _ Widget = &SplitterWidget{}
 // takes float pointer so that you can read user's movement of this rect.
 // Generally used by SplitLayoutWidget.
 type SplitterWidget struct {
-	id        string
+	id        ID
 	width     float32
 	height    float32
 	delta     *float32
@@ -53,7 +53,7 @@ func (h *SplitterWidget) Size(width, height float32) *SplitterWidget {
 }
 
 // ID allows to set widget's ID manually.
-func (h *SplitterWidget) ID(id string) *SplitterWidget {
+func (h *SplitterWidget) ID(id ID) *SplitterWidget {
 	h.id = id
 	return h
 }
@@ -83,7 +83,7 @@ func (h *SplitterWidget) Build() {
 	c := Vec4ToRGBA(*imgui.StyleColorVec4(imgui.ColScrollbarGrab))
 
 	// Place a invisible button to capture event.
-	imgui.InvisibleButton(h.id, imgui.Vec2{X: h.width, Y: h.height})
+	imgui.InvisibleButton(h.id.String(), imgui.Vec2{X: h.width, Y: h.height})
 
 	if imgui.IsItemActive() {
 		switch h.direction {
@@ -233,7 +233,7 @@ var _ Widget = &ListBoxWidget{}
 // ListBoxWidget is a field with selectable items (Child with Selectables).
 type ListBoxWidget struct {
 	selectedIndex *int32
-	id            string
+	id            ID
 	width         float32
 	height        float32
 	border        bool
@@ -259,7 +259,8 @@ func ListBox(items []string) *ListBoxWidget {
 	}
 }
 
-func (l *ListBoxWidget) ID(id string) *ListBoxWidget {
+// ID assigns hardcoded ID (baypass GenAutoID mechanism)
+func (l *ListBoxWidget) ID(id ID) *ListBoxWidget {
 	l.id = id
 	return l
 }
@@ -312,9 +313,9 @@ func (l *ListBoxWidget) Build() {
 	selectedIndex := l.selectedIndex
 	if selectedIndex == nil {
 		var state *listBoxState
-		if state = GetState[listBoxState](Context, l.id); state == nil {
+		if state = GetState[listBoxState](Context, l.id.String()); state == nil {
 			state = &listBoxState{selectedIndex: 0}
-			SetState(Context, l.id, state)
+			SetState(Context, l.id.String(), state)
 		}
 
 		selectedIndex = &state.selectedIndex
@@ -385,7 +386,7 @@ const (
 // It consists of a Combo widget which (after opening) contains
 // a calender-like table.
 type DatePickerWidget struct {
-	id           string
+	id           ID
 	date         *time.Time
 	width        float32
 	onChange     func()
@@ -467,7 +468,7 @@ func (d *DatePickerWidget) Build() {
 		return
 	}
 
-	imgui.PushIDStr(d.id)
+	imgui.PushIDStr(d.id.String())
 	defer imgui.PopID()
 
 	if d.width > 0 {
@@ -476,7 +477,7 @@ func (d *DatePickerWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.BeginComboV(d.id+"##Combo", d.date.Format(d.getFormat()), imgui.ComboFlagsHeightLargest) {
+	if imgui.BeginComboV(d.id.String()+"##Combo", d.date.Format(d.getFormat()), imgui.ComboFlagsHeightLargest) {
 		// --- [Build year/month widget] ---
 		imgui.AlignTextToFramePadding()
 
@@ -484,10 +485,10 @@ func (d *DatePickerWidget) Build() {
 			Size(0, 50).
 			Flags(0).
 			Columns(
-				TableColumn("##"+d.id+"col1").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)),
-				TableColumn("##"+d.id+"col2").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)),
-				TableColumn("##"+d.id+"col3").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)|TableColumnFlagsWidthFixed).InnerWidthOrWeight(100),
-				TableColumn("##"+d.id+"col4").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)),
+				TableColumn("##"+d.id.String()+"col1").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)),
+				TableColumn("##"+d.id.String()+"col2").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)),
+				TableColumn("##"+d.id.String()+"col3").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)|TableColumnFlagsWidthFixed).InnerWidthOrWeight(100),
+				TableColumn("##"+d.id.String()+"col4").Flags(TableColumnFlags(imgui.TableColumnFlagsNoHeaderLabel)),
 			).
 			Rows(
 				TableRow(

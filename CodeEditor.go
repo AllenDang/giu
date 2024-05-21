@@ -32,7 +32,7 @@ var _ Widget = &CodeEditorWidget{}
 
 // CodeEditorWidget represents imgui.TextEditor.
 type CodeEditorWidget struct {
-	title string
+	title ID
 	width,
 	height float32
 	border bool
@@ -50,7 +50,7 @@ func CodeEditor() *CodeEditorWidget {
 // ID allows to manually set editor's ID.
 // It isn't necessary to use it in a normal conditions.
 
-func (ce *CodeEditorWidget) ID(id string) *CodeEditorWidget {
+func (ce *CodeEditorWidget) ID(id ID) *CodeEditorWidget {
 	ce.title = id
 	return ce
 }
@@ -216,12 +216,12 @@ func (ce *CodeEditorWidget) Build() {
 }
 
 func (ce *CodeEditorWidget) getState() (state *codeEditorState) {
-	if state = GetState[codeEditorState](Context, ce.title); state == nil {
+	if state = GetState[codeEditorState](Context, ce.title.String()); state == nil {
 		state = &codeEditorState{
 			// editor: imgui.NewTextEditor(),
 		}
 
-		SetState(Context, ce.title, state)
+		SetState(Context, ce.title.String(), state)
 	}
 
 	return state

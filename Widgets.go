@@ -57,7 +57,7 @@ func SameLine() {
 var _ Widget = &ChildWidget{}
 
 type ChildWidget struct {
-	id     string
+	id     ID
 	width  float32
 	height float32
 	border bool
@@ -67,7 +67,7 @@ type ChildWidget struct {
 
 // Build implements Widget interface.
 func (c *ChildWidget) Build() {
-	if imgui.BeginChildStrV(c.id, imgui.Vec2{X: c.width, Y: c.height}, func() imgui.ChildFlags {
+	if imgui.BeginChildStrV(c.id.String(), imgui.Vec2{X: c.width, Y: c.height}, func() imgui.ChildFlags {
 		if c.border {
 			return imgui.ChildFlagsBorder
 		}
@@ -101,7 +101,7 @@ func (c *ChildWidget) Layout(widgets ...Widget) *ChildWidget {
 }
 
 // ID sets the interval id of child widgets.
-func (c *ChildWidget) ID(id string) *ChildWidget {
+func (c *ChildWidget) ID(id ID) *ChildWidget {
 	c.id = id
 	return c
 }
@@ -121,7 +121,7 @@ var _ Widget = &ComboCustomWidget{}
 
 // ComboCustomWidget represents a combo with custom layout when opened.
 type ComboCustomWidget struct {
-	label        string
+	label        ID
 	previewValue string
 	width        float32
 	flags        ComboFlags
@@ -164,7 +164,7 @@ func (cc *ComboCustomWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginComboV(Context.FontAtlas.RegisterString(cc.label), cc.previewValue, imgui.ComboFlags(cc.flags)) {
+	if imgui.BeginComboV(Context.FontAtlas.RegisterString(cc.label.String()), cc.previewValue, imgui.ComboFlags(cc.flags)) {
 		cc.layout.Build()
 		imgui.EndCombo()
 	}
@@ -175,7 +175,7 @@ var _ Widget = &ComboWidget{}
 // ComboWidget is a wrapper of ComboCustomWidget.
 // It creates a combo of selectables. (it is the most frequently used).
 type ComboWidget struct {
-	label        string
+	label        ID
 	previewValue string
 	items        []string
 	selected     *int32
@@ -204,7 +204,7 @@ func (c *ComboWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label), c.previewValue, imgui.ComboFlags(c.flags)) {
+	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label.String()), c.previewValue, imgui.ComboFlags(c.flags)) {
 		for i, item := range c.items {
 			i := i
 			if imgui.SelectableBool(fmt.Sprintf("%s##%d", item, i)) {
@@ -240,7 +240,7 @@ func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 var _ Widget = &ContextMenuWidget{}
 
 type ContextMenuWidget struct {
-	id          string
+	id          ID
 	mouseButton MouseButton
 	layout      Layout
 }
@@ -263,14 +263,14 @@ func (c *ContextMenuWidget) MouseButton(mouseButton MouseButton) *ContextMenuWid
 	return c
 }
 
-func (c *ContextMenuWidget) ID(id string) *ContextMenuWidget {
+func (c *ContextMenuWidget) ID(id ID) *ContextMenuWidget {
 	c.id = id
 	return c
 }
 
 // Build implements Widget interface.
 func (c *ContextMenuWidget) Build() {
-	if imgui.BeginPopupContextItemV(c.id, imgui.PopupFlags(c.mouseButton)) {
+	if imgui.BeginPopupContextItemV(c.id.String(), imgui.PopupFlags(c.mouseButton)) {
 		c.layout.Build()
 		imgui.EndPopup()
 	}
@@ -279,7 +279,7 @@ func (c *ContextMenuWidget) Build() {
 var _ Widget = &DragIntWidget{}
 
 type DragIntWidget struct {
-	label    string
+	label    ID
 	value    *int32
 	speed    float32
 	minValue int32
@@ -310,7 +310,7 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
-	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label), d.value, d.speed, d.minValue, d.maxValue, d.format, 0)
+	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, 0)
 }
 
 var _ Widget = &ColumnWidget{}
@@ -389,7 +389,7 @@ func (m *MenuBarWidget) Build() {
 var _ Widget = &MenuItemWidget{}
 
 type MenuItemWidget struct {
-	label    string
+	label    ID
 	shortcut string
 	selected bool
 	enabled  bool
@@ -432,7 +432,7 @@ func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 
 // Build implements Widget interface.
 func (m *MenuItemWidget) Build() {
-	if imgui.MenuItemBoolV(Context.FontAtlas.RegisterString(m.label), m.shortcut, m.selected, m.enabled) && m.onClick != nil {
+	if imgui.MenuItemBoolV(Context.FontAtlas.RegisterString(m.label.String()), m.shortcut, m.selected, m.enabled) && m.onClick != nil {
 		m.onClick()
 	}
 }
@@ -440,7 +440,7 @@ func (m *MenuItemWidget) Build() {
 var _ Widget = &MenuWidget{}
 
 type MenuWidget struct {
-	label   string
+	label   ID
 	enabled bool
 	layout  Layout
 }
@@ -463,13 +463,13 @@ func (m *MenuWidget) Enabled(e bool) *MenuWidget {
 }
 
 func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
-	m.layout = Layout(widgets)
+	m.layout = widgets
 	return m
 }
 
 // Build implements Widget interface.
 func (m *MenuWidget) Build() {
-	if imgui.BeginMenuV(Context.FontAtlas.RegisterString(m.label), m.enabled) {
+	if imgui.BeginMenuV(Context.FontAtlas.RegisterString(m.label.String()), m.enabled) {
 		m.layout.Build()
 		imgui.EndMenu()
 	}
@@ -621,7 +621,7 @@ var _ Widget = &TabBarWidget{}
 
 // TabBarWidget is a bar of TabItemWidgets.
 type TabBarWidget struct {
-	id       string
+	id       ID
 	flags    TabBarFlags
 	tabItems []*TabItemWidget
 }
@@ -641,7 +641,7 @@ func (t *TabBarWidget) Flags(flags TabBarFlags) *TabBarWidget {
 }
 
 // ID manually sets widget's ID.
-func (t *TabBarWidget) ID(id string) *TabBarWidget {
+func (t *TabBarWidget) ID(id ID) *TabBarWidget {
 	t.id = id
 	return t
 }
@@ -654,7 +654,7 @@ func (t *TabBarWidget) TabItems(items ...*TabItemWidget) *TabBarWidget {
 
 // Build implements Widget interface.
 func (t *TabBarWidget) Build() {
-	if imgui.BeginTabBarV(t.id, imgui.TabBarFlags(t.flags)) {
+	if imgui.BeginTabBarV(t.id.String(), imgui.TabBarFlags(t.flags)) {
 		for _, ti := range t.tabItems {
 			ti.BuildTabItem()
 		}
@@ -721,7 +721,7 @@ func (s *SpacingWidget) Build() {
 var _ Widget = &ColorEditWidget{}
 
 type ColorEditWidget struct {
-	label    string
+	label    ID
 	color    *color.RGBA
 	flags    ColorEditFlags
 	width    float32
@@ -766,7 +766,7 @@ func (ce *ColorEditWidget) Build() {
 	}
 
 	if imgui.ColorEdit4V(
-		Context.FontAtlas.RegisterString(ce.label),
+		Context.FontAtlas.RegisterString(ce.label.String()),
 		&col,
 		imgui.ColorEditFlags(ce.flags),
 	) {

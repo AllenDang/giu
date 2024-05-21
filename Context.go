@@ -10,16 +10,16 @@ import (
 
 // GenAutoID automatically generates widget's ID.
 // It returns an unique value each time it is called.
-func GenAutoID(id string) string {
+func GenAutoID(id string) ID {
 	idx, ok := Context.widgetIndex[id]
 	if !ok {
 		Context.widgetIndex[id] = 0
-		return id
+		return ID(id)
 	}
 
 	Context.widgetIndex[id]++
 
-	return fmt.Sprintf("%s##%d", id, idx)
+	return ID(fmt.Sprintf("%s##%d", id, idx))
 }
 
 // Context represents a giu context.

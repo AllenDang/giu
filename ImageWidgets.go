@@ -128,7 +128,7 @@ var _ Widget = &ImageWithRgbaWidget{}
 // imgui textures. You can just pass golang-native image.Image and
 // display it in giu.
 type ImageWithRgbaWidget struct {
-	id   string
+	id   ID
 	rgba *image.RGBA
 	img  *ImageWidget
 }
@@ -143,7 +143,7 @@ func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 }
 
 // ID sets the interval id of ImageWithRgba widgets.
-func (i *ImageWithRgbaWidget) ID(id string) *ImageWithRgbaWidget {
+func (i *ImageWithRgbaWidget) ID(id ID) *ImageWithRgbaWidget {
 	i.id = id
 	return i
 }
@@ -164,9 +164,9 @@ func (i *ImageWithRgbaWidget) OnClick(cb func()) *ImageWithRgbaWidget {
 func (i *ImageWithRgbaWidget) Build() {
 	if i.rgba != nil {
 		var imgState *imageState
-		if imgState = GetState[imageState](Context, i.id); imgState == nil || !reflect.DeepEqual(i.rgba, imgState.img) {
+		if imgState = GetState[imageState](Context, i.id.String()); imgState == nil || !reflect.DeepEqual(i.rgba, imgState.img) {
 			imgState = &imageState{}
-			SetState(Context, i.id, imgState)
+			SetState(Context, i.id.String(), imgState)
 
 			NewTextureFromRgba(i.rgba, func(tex *Texture) {
 				imgState.texture = tex

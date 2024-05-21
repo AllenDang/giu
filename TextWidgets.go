@@ -15,7 +15,7 @@ var _ Widget = &InputTextMultilineWidget{}
 // InputTextMultilineWidget is a large (multiline) text input
 // see examples/widgets/.
 type InputTextMultilineWidget struct {
-	label          string
+	label          ID
 	text           *string
 	width, height  float32
 	flags          InputTextFlags
@@ -39,13 +39,18 @@ func InputTextMultiline(text *string) *InputTextMultilineWidget {
 
 // Label sets input field label.
 func (i *InputTextMultilineWidget) Label(label string) *InputTextMultilineWidget {
-	i.label = label
+	i.label = GenAutoID(label)
 	return i
 }
 
 // Labelf is formatting version of Label.
 func (i *InputTextMultilineWidget) Labelf(format string, args ...any) *InputTextMultilineWidget {
 	return i.Label(fmt.Sprintf(format, args...))
+}
+
+func (i *InputTextMultilineWidget) ID(id ID) *InputTextMultilineWidget {
+	i.label = id
+	return i
 }
 
 // Flags sets InputTextFlags (see Flags.go).
@@ -81,7 +86,7 @@ func (i *InputTextMultilineWidget) AutoScrollToBottom(b bool) *InputTextMultilin
 // Build implements Widget interface.
 func (i *InputTextMultilineWidget) Build() {
 	if imgui.InputTextMultiline(
-		Context.FontAtlas.RegisterString(i.label),
+		Context.FontAtlas.RegisterString(i.label.String()),
 		Context.FontAtlas.RegisterStringPointer(i.text),
 		imgui.Vec2{
 			X: i.width,
@@ -93,7 +98,7 @@ func (i *InputTextMultilineWidget) Build() {
 	}
 
 	if i.scrollToBottom {
-		imgui.BeginChildStr(i.label) // TODO: there is a V version
+		imgui.BeginChildStr(i.label.String()) // TODO: there is a V version
 		imgui.SetScrollHereYV(1.0)
 		imgui.EndChild()
 	}
@@ -157,7 +162,7 @@ var _ Widget = &InputTextWidget{}
 
 // InputTextWidget is a single-line text input.
 type InputTextWidget struct {
-	label      string
+	label      ID
 	hint       string
 	value      *string
 	width      float32
@@ -182,13 +187,20 @@ func InputText(value *string) *InputTextWidget {
 
 // Label adds label (alternatively you can use it to set widget's id).
 func (i *InputTextWidget) Label(label string) *InputTextWidget {
-	i.label = Context.FontAtlas.RegisterString(label)
+	i.label = GenAutoID(Context.FontAtlas.RegisterString(label))
 	return i
 }
 
 // Labelf adds formatted label.
 func (i *InputTextWidget) Labelf(format string, args ...any) *InputTextWidget {
 	return i.Label(fmt.Sprintf(format, args...))
+}
+
+// ID sets widget's id.
+func (i *InputTextWidget) ID(id ID) *InputTextWidget {
+	i.label = id
+	return i
+
 }
 
 // AutoComplete enables auto complete popup by using fuzzy search of current value against candidates
@@ -232,9 +244,9 @@ func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 func (i *InputTextWidget) Build() {
 	// Get state
 	var state *inputTextState
-	if state = GetState[inputTextState](Context, i.label); state == nil {
+	if state = GetState[inputTextState](Context, i.label.String()); state == nil {
 		state = &inputTextState{}
-		SetState(Context, i.label, state)
+		SetState(Context, i.label.String(), state)
 	}
 
 	if i.width != 0 {
@@ -243,7 +255,7 @@ func (i *InputTextWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	isChanged := imgui.InputTextWithHint(i.label, i.hint, Context.FontAtlas.RegisterStringPointer(i.value), imgui.InputTextFlags(i.flags), i.cb)
+	isChanged := imgui.InputTextWithHint(i.label.String(), i.hint, Context.FontAtlas.RegisterStringPointer(i.value), imgui.InputTextFlags(i.flags), i.cb)
 
 	if isChanged && i.onChange != nil {
 		i.onChange()
@@ -314,7 +326,7 @@ var _ Widget = &InputIntWidget{}
 
 // InputIntWidget is an input text field accepting integer values only.
 type InputIntWidget struct {
-	label    string
+	label    ID
 	value    *int32
 	width    float32
 	flags    InputTextFlags
@@ -339,13 +351,20 @@ func InputInt(value *int32) *InputIntWidget {
 
 // Label sets label (id).
 func (i *InputIntWidget) Label(label string) *InputIntWidget {
-	i.label = Context.FontAtlas.RegisterString(label)
+	i.label = GenAutoID(Context.FontAtlas.RegisterString(label))
 	return i
 }
 
 // Labelf sets formatted label.
 func (i *InputIntWidget) Labelf(format string, args ...any) *InputIntWidget {
 	return i.Label(fmt.Sprintf(format, args...))
+}
+
+// ID sets widget's id.
+func (i *InputIntWidget) ID(id ID) *InputIntWidget {
+	i.label = id
+	return i
+
 }
 
 // Size sets input's width.
@@ -387,7 +406,7 @@ func (i *InputIntWidget) Build() {
 	}
 
 	if imgui.InputIntV(
-		i.label,
+		i.label.String(),
 		i.value,
 		int32(i.step),
 		int32(i.stepFast),
@@ -401,7 +420,7 @@ var _ Widget = &InputFloatWidget{}
 
 // InputFloatWidget does similar to InputIntWIdget, but accepts float numbers.
 type InputFloatWidget struct {
-	label    string
+	label    ID
 	value    *float32
 	width    float32
 	flags    InputTextFlags
@@ -425,13 +444,19 @@ func InputFloat(value *float32) *InputFloatWidget {
 
 // Label sets label of input field.
 func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
-	i.label = Context.FontAtlas.RegisterString(label)
+	i.label = GenAutoID(Context.FontAtlas.RegisterString(label))
 	return i
 }
 
 // Labelf sets formatted label.
 func (i *InputFloatWidget) Labelf(format string, args ...any) *InputFloatWidget {
 	return i.Label(fmt.Sprintf(format, args...))
+}
+
+// ID sets widget's id.
+func (i *InputFloatWidget) ID(id ID) *InputFloatWidget {
+	i.label = id
+	return i
 }
 
 // Size sets input field's width.
@@ -479,7 +504,7 @@ func (i *InputFloatWidget) Build() {
 	}
 
 	if imgui.InputFloatV(
-		i.label,
+		i.label.String(),
 		i.value,
 		i.step,
 		i.stepFast,

@@ -14,8 +14,8 @@ func SingleWindow() *WindowWidget {
 	sizeX, sizeY := Context.backend.DisplaySize()
 	title := GenAutoID("SingleWindow")
 
-	return Window(title).
-		Flags(
+	return Window(title.String()). // TODO: maybe we should implement auto id in Window too?
+					Flags(
 			WindowFlags(imgui.WindowFlagsNoTitleBar)|
 				WindowFlags(imgui.WindowFlagsNoCollapse)|
 				WindowFlags(imgui.WindowFlagsNoScrollbar)|
@@ -31,8 +31,8 @@ func SingleWindowWithMenuBar() *WindowWidget {
 	sizeX, sizeY := Context.backend.DisplaySize()
 	title := GenAutoID("SingleWindowWithMenuBar")
 
-	return Window(title).
-		Flags(
+	return Window(title.String()). // TODO: maybe we should implement auto id in Window too?
+					Flags(
 			WindowFlags(imgui.WindowFlagsNoTitleBar)|
 				WindowFlags(imgui.WindowFlagsNoCollapse)|
 				WindowFlags(imgui.WindowFlagsNoScrollbar)|
