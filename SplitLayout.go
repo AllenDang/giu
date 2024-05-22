@@ -30,7 +30,7 @@ func (s *splitLayoutState) Dispose() {
 // SplitLayoutWidget creates two children with a line between them.
 // This line can be moved by the user to adjust child sizes.
 type SplitLayoutWidget struct {
-	id                  string
+	id                  ID
 	direction           SplitDirection
 	layout1             Widget
 	layout2             Widget
@@ -61,7 +61,7 @@ func (s *SplitLayoutWidget) Border(b bool) *SplitLayoutWidget {
 }
 
 // ID allows to manually set splitter's id.
-func (s *SplitLayoutWidget) ID(id string) *SplitLayoutWidget {
+func (s *SplitLayoutWidget) ID(id ID) *SplitLayoutWidget {
 	s.id = id
 	return s
 }
@@ -160,9 +160,9 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 }
 
 func (s *SplitLayoutWidget) getState() (state *splitLayoutState) {
-	if state = GetState[splitLayoutState](Context, s.id); state == nil {
+	if state = GetState[splitLayoutState](Context, s.id.String()); state == nil {
 		state = &splitLayoutState{delta: 0.0}
-		SetState(Context, s.id, state)
+		SetState(Context, s.id.String(), state)
 	}
 
 	return state

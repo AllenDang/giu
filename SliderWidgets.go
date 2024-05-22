@@ -10,7 +10,7 @@ var _ Widget = &SliderIntWidget{}
 
 // SliderIntWidget is a slider around int32 values.
 type SliderIntWidget struct {
-	label    string
+	label    ID
 	value    *int32
 	minValue int32
 	maxValue int32
@@ -55,13 +55,18 @@ func (s *SliderIntWidget) OnChange(onChange func()) *SliderIntWidget {
 
 // Label sets slider label (id).
 func (s *SliderIntWidget) Label(label string) *SliderIntWidget {
-	s.label = Context.FontAtlas.RegisterString(label)
+	s.label = GenAutoID(label)
 	return s
 }
 
 // Labelf sets formatted label.
 func (s *SliderIntWidget) Labelf(format string, args ...any) *SliderIntWidget {
 	return s.Label(fmt.Sprintf(format, args...))
+}
+
+func (s *SliderIntWidget) ID(id ID) *SliderIntWidget {
+	s.label = id
+	return s
 }
 
 // Build implements Widget interface.
@@ -72,7 +77,7 @@ func (s *SliderIntWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.SliderIntV(Context.FontAtlas.RegisterString(s.label), s.value, s.minValue, s.maxValue, s.format, 0) && s.onChange != nil {
+	if imgui.SliderIntV(Context.FontAtlas.RegisterString(s.label.String()), s.value, s.minValue, s.maxValue, s.format, 0) && s.onChange != nil {
 		s.onChange()
 	}
 }
@@ -81,7 +86,7 @@ var _ Widget = &VSliderIntWidget{}
 
 // VSliderIntWidget stands from Vertical SliderIntWidget.
 type VSliderIntWidget struct {
-	label    string
+	label    ID
 	width    float32
 	height   float32
 	value    *int32
@@ -132,7 +137,7 @@ func (vs *VSliderIntWidget) OnChange(onChange func()) *VSliderIntWidget {
 
 // Label sets slider's label (id).
 func (vs *VSliderIntWidget) Label(label string) *VSliderIntWidget {
-	vs.label = Context.FontAtlas.RegisterString(label)
+	vs.label = GenAutoID(label)
 	return vs
 }
 
@@ -141,10 +146,15 @@ func (vs *VSliderIntWidget) Labelf(format string, args ...any) *VSliderIntWidget
 	return vs.Label(fmt.Sprintf(format, args...))
 }
 
+func (vs *VSliderIntWidget) ID(id ID) *VSliderIntWidget {
+	vs.label = id
+	return vs
+}
+
 // Build implements Widget interface.
 func (vs *VSliderIntWidget) Build() {
 	if imgui.VSliderIntV(
-		Context.FontAtlas.RegisterString(vs.label),
+		Context.FontAtlas.RegisterString(vs.label.String()),
 		imgui.Vec2{X: vs.width, Y: vs.height},
 		vs.value,
 		vs.minValue,
@@ -161,7 +171,7 @@ var _ Widget = &SliderFloatWidget{}
 // SliderFloatWidget does similar to SliderIntWidget but slides around
 // float32 values.
 type SliderFloatWidget struct {
-	label    string
+	label    ID
 	value    *float32
 	minValue float32
 	maxValue float32
@@ -205,13 +215,18 @@ func (sf *SliderFloatWidget) Size(width float32) *SliderFloatWidget {
 
 // Label sets slider's label (id).
 func (sf *SliderFloatWidget) Label(label string) *SliderFloatWidget {
-	sf.label = Context.FontAtlas.RegisterString(label)
+	sf.label = GenAutoID(Context.FontAtlas.RegisterString(label))
 	return sf
 }
 
 // Labelf sets formatted label.
 func (sf *SliderFloatWidget) Labelf(format string, args ...any) *SliderFloatWidget {
 	return sf.Label(fmt.Sprintf(format, args...))
+}
+
+func (sf *SliderFloatWidget) ID(id ID) *SliderFloatWidget {
+	sf.label = id
+	return sf
 }
 
 // Build implements Widget interface.
@@ -222,7 +237,7 @@ func (sf *SliderFloatWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.SliderFloatV(Context.FontAtlas.RegisterString(sf.label), sf.value, sf.minValue, sf.maxValue, sf.format, 1.0) && sf.onChange != nil {
+	if imgui.SliderFloatV(Context.FontAtlas.RegisterString(sf.label.String()), sf.value, sf.minValue, sf.maxValue, sf.format, 1.0) && sf.onChange != nil {
 		sf.onChange()
 	}
 }

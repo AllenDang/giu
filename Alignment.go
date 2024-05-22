@@ -87,7 +87,7 @@ var _ Widget = &AlignmentSetter{}
 type AlignmentSetter struct {
 	alignType AlignmentType
 	layout    Layout
-	id        string
+	id        ID
 }
 
 // Align sets widgets alignment.
@@ -107,8 +107,8 @@ func (a *AlignmentSetter) To(widgets ...Widget) *AlignmentSetter {
 // ID allows to manually set AlignmentSetter ID
 // NOTE: there isn't any known reason to use this method, however
 // it is here for some random cases. YOU DON'T NEED TO USE IT
-// in normal conditions.
-func (a *AlignmentSetter) ID(id string) *AlignmentSetter {
+// in normal cases.
+func (a *AlignmentSetter) ID(id ID) *AlignmentSetter {
 	a.id = id
 	return a
 }
@@ -178,7 +178,7 @@ func (a *AlignmentSetter) Build() {
 // if you find anything else, please report it on
 // https://github.com/AllenDang/giu Any contribution is appreciated!
 func GetWidgetWidth(w Widget) (result float32) {
-	imgui.PushIDStr(GenAutoID("GetWidgetWidthMeasurement"))
+	imgui.PushIDStr(string(GenAutoID("GetWidgetWidthMeasurement")))
 	defer imgui.PopID()
 
 	// save cursor position before doing anything

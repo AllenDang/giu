@@ -12,10 +12,10 @@ import (
 func SingleWindow() *WindowWidget {
 	pos := imgui.MainViewport().Pos()
 	sizeX, sizeY := Context.backend.DisplaySize()
-	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
+	title := GenAutoID("SingleWindow")
 
-	return Window(title).
-		Flags(
+	return Window(title.String()). // TODO: maybe we should implement auto id in Window too?
+					Flags(
 			WindowFlags(imgui.WindowFlagsNoTitleBar)|
 				WindowFlags(imgui.WindowFlagsNoCollapse)|
 				WindowFlags(imgui.WindowFlagsNoScrollbar)|
@@ -29,10 +29,10 @@ func SingleWindow() *WindowWidget {
 func SingleWindowWithMenuBar() *WindowWidget {
 	pos := imgui.MainViewport().Pos()
 	sizeX, sizeY := Context.backend.DisplaySize()
-	title := fmt.Sprintf("SingleWindow_%d", Context.GetWidgetIndex())
+	title := GenAutoID("SingleWindowWithMenuBar")
 
-	return Window(title).
-		Flags(
+	return Window(title.String()). // TODO: maybe we should implement auto id in Window too?
+					Flags(
 			WindowFlags(imgui.WindowFlagsNoTitleBar)|
 				WindowFlags(imgui.WindowFlagsNoCollapse)|
 				WindowFlags(imgui.WindowFlagsNoScrollbar)|

@@ -97,7 +97,7 @@ func (c *TableColumnWidget) BuildTableColumn() {
 var _ Widget = &TableWidget{}
 
 type TableWidget struct {
-	id           string
+	id           ID
 	flags        TableFlags
 	size         imgui.Vec2
 	innerWidth   float64
@@ -121,7 +121,7 @@ func Table() *TableWidget {
 }
 
 // ID sets the internal id of table widget.
-func (t *TableWidget) ID(id string) *TableWidget {
+func (t *TableWidget) ID(id ID) *TableWidget {
 	t.id = id
 	return t
 }
@@ -177,7 +177,7 @@ func (t *TableWidget) Build() {
 		}
 	}
 
-	if imgui.BeginTableV(t.id, int32(colCount), imgui.TableFlags(t.flags), t.size, float32(t.innerWidth)) {
+	if imgui.BeginTableV(t.id.String(), int32(colCount), imgui.TableFlags(t.flags), t.size, float32(t.innerWidth)) {
 		if t.freezeColumn >= 0 && t.freezeRow >= 0 {
 			imgui.TableSetupScrollFreeze(int32(t.freezeColumn), int32(t.freezeRow))
 		}
@@ -216,7 +216,7 @@ func (t *TableWidget) Build() {
 
 // TreeTableRowWidget is a row in TreeTableWidget.
 type TreeTableRowWidget struct {
-	label    string
+	label    ID
 	flags    TreeNodeFlags
 	layout   Layout
 	children []*TreeTableRowWidget
@@ -249,10 +249,10 @@ func (ttr *TreeTableRowWidget) BuildTreeTableRow() {
 
 	open := false
 	if len(ttr.children) > 0 {
-		open = imgui.TreeNodeExStrV(Context.FontAtlas.RegisterString(ttr.label), imgui.TreeNodeFlags(ttr.flags))
+		open = imgui.TreeNodeExStrV(Context.FontAtlas.RegisterString(ttr.label.String()), imgui.TreeNodeFlags(ttr.flags))
 	} else {
 		ttr.flags |= TreeNodeFlagsLeaf | TreeNodeFlagsNoTreePushOnOpen
-		imgui.TreeNodeExStrV(Context.FontAtlas.RegisterString(ttr.label), imgui.TreeNodeFlags(ttr.flags))
+		imgui.TreeNodeExStrV(Context.FontAtlas.RegisterString(ttr.label.String()), imgui.TreeNodeFlags(ttr.flags))
 	}
 
 	for _, w := range ttr.layout {
@@ -280,7 +280,7 @@ var _ Widget = &TreeTableWidget{}
 
 // TreeTableWidget is a table that consists of TreeNodeWidgets.
 type TreeTableWidget struct {
-	id           string
+	id           ID
 	flags        TableFlags
 	size         imgui.Vec2
 	columns      []*TableColumnWidget
@@ -342,7 +342,7 @@ func (tt *TreeTableWidget) Build() {
 		colCount = len(tt.rows[0].layout) + 1
 	}
 
-	if imgui.BeginTableV(tt.id, int32(colCount), imgui.TableFlags(tt.flags), tt.size, 0) {
+	if imgui.BeginTableV(tt.id.String(), int32(colCount), imgui.TableFlags(tt.flags), tt.size, 0) {
 		if tt.freezeColumn >= 0 && tt.freezeRow >= 0 {
 			imgui.TableSetupScrollFreeze(int32(tt.freezeColumn), int32(tt.freezeRow))
 		}

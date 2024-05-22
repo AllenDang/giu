@@ -95,10 +95,3 @@ func Test_invalidState(t *testing.T) {
 	assert.Nil(t, GetState[teststate](ctx, state1ID),
 		"although state hasn't been accessed during the frame, it hasn't ben deleted by invalidAllState/cleanState")
 }
-
-func Test_GetWidgetIndex(t *testing.T) {
-	ctx := CreateContext(nil)
-	for i := 0; i <= 3; i++ {
-		assert.Equal(t, i, ctx.GetWidgetIndex(), "widget index wasn't increased")
-	}
-}

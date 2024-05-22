@@ -14,6 +14,16 @@ import (
 	"github.com/pkg/browser"
 )
 
+// ID is an alias type. If some method uses ID it means, that this string will NOT be proceeded anyhow and will be passed
+// as-is to cimgui-go. This also means that it deffinitly needs to be
+// unique because else it will cause strange UI behavior.
+// see: https://github.com/AllenDang/giu/wiki#id
+type ID string
+
+func (i ID) String() string {
+	return string(i)
+}
+
 // LoadImage loads image from file and returns *image.RGBA.
 func LoadImage(imgPath string) (*image.RGBA, error) {
 	imgFile, err := os.Open(filepath.Clean(imgPath))

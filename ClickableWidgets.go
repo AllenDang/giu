@@ -13,7 +13,7 @@ var _ Widget = &ButtonWidget{}
 
 // ButtonWidget represents a ImGui button widget.
 type ButtonWidget struct {
-	id       string
+	id       ID
 	width    float32
 	height   float32
 	disabled bool
@@ -56,7 +56,7 @@ func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 	return b
 }
 
-func (b *ButtonWidget) ID(id string) *ButtonWidget {
+func (b *ButtonWidget) ID(id ID) *ButtonWidget {
 	b.id = id
 	return b
 }
@@ -68,7 +68,7 @@ func (b *ButtonWidget) Build() {
 		defer imgui.EndDisabled()
 	}
 
-	if imgui.ButtonV(Context.FontAtlas.RegisterString(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.ButtonV(Context.FontAtlas.RegisterString(b.id.String()), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -77,7 +77,7 @@ var _ Widget = &ArrowButtonWidget{}
 
 // ArrowButtonWidget represents a square button with an arrow.
 type ArrowButtonWidget struct {
-	id      string
+	id      ID
 	dir     Direction
 	onClick func()
 }
@@ -98,14 +98,14 @@ func (b *ArrowButtonWidget) OnClick(onClick func()) *ArrowButtonWidget {
 }
 
 // ID allows to manually set widget's id.
-func (b *ArrowButtonWidget) ID(id string) *ArrowButtonWidget {
+func (b *ArrowButtonWidget) ID(id ID) *ArrowButtonWidget {
 	b.id = id
 	return b
 }
 
 // Build implements Widget interface.
 func (b *ArrowButtonWidget) Build() {
-	if imgui.ArrowButton(b.id, imgui.Dir(b.dir)) && b.onClick != nil {
+	if imgui.ArrowButton(b.id.String(), imgui.Dir(b.dir)) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -114,7 +114,7 @@ var _ Widget = &SmallButtonWidget{}
 
 // SmallButtonWidget is like a button but without frame padding.
 type SmallButtonWidget struct {
-	id      string
+	id      ID
 	onClick func()
 }
 
@@ -140,7 +140,7 @@ func (b *SmallButtonWidget) OnClick(onClick func()) *SmallButtonWidget {
 
 // Build implements Widget interface.
 func (b *SmallButtonWidget) Build() {
-	if imgui.SmallButton(Context.FontAtlas.RegisterString(b.id)) && b.onClick != nil {
+	if imgui.SmallButton(Context.FontAtlas.RegisterString(b.id.String())) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -151,7 +151,7 @@ var _ Widget = &InvisibleButtonWidget{}
 // NOTE: you may want to display other widgets on this button.
 // to do so, you may move drawing cursor back by Get/SetCursor(Screen)Pos.
 type InvisibleButtonWidget struct {
-	id      string
+	id      ID
 	width   float32
 	height  float32
 	onClick func()
@@ -180,14 +180,14 @@ func (b *InvisibleButtonWidget) OnClick(onClick func()) *InvisibleButtonWidget {
 }
 
 // ID allows to manually set widget's id (no need to use in normal conditions).
-func (b *InvisibleButtonWidget) ID(id string) *InvisibleButtonWidget {
+func (b *InvisibleButtonWidget) ID(id ID) *InvisibleButtonWidget {
 	b.id = id
 	return b
 }
 
 // Build implements Widget interface.
 func (b *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(Context.FontAtlas.RegisterString(b.id), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.InvisibleButton(Context.FontAtlas.RegisterString(b.id.String()), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -279,13 +279,13 @@ func (b *ImageButtonWidget) FramePadding(padding int) *ImageButtonWidget {
 
 var _ Widget = &ImageButtonWithRgbaWidget{}
 
-// ImageButtonWithRgbaWidget does similar to ImageButtonWIdget,
+// ImageButtonWithRgbaWidget does similar to ImageButtonWidget,
 // but implements image.Image instead of giu.Texture. It is probably
-// more useful than the original ImageButtonWIdget.
+// more useful than the original ImageButtonWidget.
 type ImageButtonWithRgbaWidget struct {
 	*ImageButtonWidget
 	rgba image.Image
-	id   string
+	id   ID
 }
 
 // ImageButtonWithRgba creates a new widget.
@@ -335,11 +335,11 @@ func (b *ImageButtonWithRgbaWidget) FramePadding(padding int) *ImageButtonWithRg
 
 // Build implements Widget interface.
 func (b *ImageButtonWithRgbaWidget) Build() {
-	if state := GetState[imageState](Context, b.id); state == nil {
-		SetState(Context, b.id, &imageState{})
+	if state := GetState[imageState](Context, b.id.String()); state == nil {
+		SetState(Context, b.id.String(), &imageState{})
 
 		NewTextureFromRgba(b.rgba, func(tex *Texture) {
-			SetState(Context, b.id, &imageState{texture: tex})
+			SetState(Context, b.id.String(), &imageState{texture: tex})
 		})
 	} else {
 		b.ImageButtonWidget.texture = state.texture
@@ -352,7 +352,7 @@ var _ Widget = &CheckboxWidget{}
 
 // CheckboxWidget adds a checkbox.
 type CheckboxWidget struct {
-	text     string
+	text     ID
 	selected *bool
 	onChange func()
 }
@@ -374,7 +374,7 @@ func (c *CheckboxWidget) OnChange(onChange func()) *CheckboxWidget {
 
 // Build implements Widget interface.
 func (c *CheckboxWidget) Build() {
-	if imgui.Checkbox(Context.FontAtlas.RegisterString(c.text), c.selected) && c.onChange != nil {
+	if imgui.Checkbox(Context.FontAtlas.RegisterString(c.text.String()), c.selected) && c.onChange != nil {
 		c.onChange()
 	}
 }
@@ -385,7 +385,7 @@ var _ Widget = &RadioButtonWidget{}
 // It is common to use it for single-choice questions.
 // see examples/widgets.
 type RadioButtonWidget struct {
-	text     string
+	text     ID
 	active   bool
 	onChange func()
 }
@@ -407,7 +407,7 @@ func (r *RadioButtonWidget) OnChange(onChange func()) *RadioButtonWidget {
 
 // Build implements Widget interface.
 func (r *RadioButtonWidget) Build() {
-	if imgui.RadioButtonBool(Context.FontAtlas.RegisterString(r.text), r.active) && r.onChange != nil {
+	if imgui.RadioButtonBool(Context.FontAtlas.RegisterString(r.text.String()), r.active) && r.onChange != nil {
 		r.onChange()
 	}
 }
@@ -417,7 +417,7 @@ var _ Widget = &SelectableWidget{}
 // SelectableWidget is a window-width button with a label which can get selected (highlighted).
 // useful for certain lists.
 type SelectableWidget struct {
-	label    string
+	label    ID
 	selected bool
 	flags    SelectableFlags
 	width    float32
@@ -482,7 +482,7 @@ func (s *SelectableWidget) Build() {
 		s.flags |= SelectableFlagsAllowDoubleClick
 	}
 
-	if imgui.SelectableBoolV(Context.FontAtlas.RegisterString(s.label), s.selected, imgui.SelectableFlags(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.SelectableBoolV(Context.FontAtlas.RegisterString(s.label.String()), s.selected, imgui.SelectableFlags(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 
