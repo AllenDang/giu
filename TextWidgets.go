@@ -200,7 +200,6 @@ func (i *InputTextWidget) Labelf(format string, args ...any) *InputTextWidget {
 func (i *InputTextWidget) ID(id ID) *InputTextWidget {
 	i.label = id
 	return i
-
 }
 
 // AutoComplete enables auto complete popup by using fuzzy search of current value against candidates
@@ -364,7 +363,6 @@ func (i *InputIntWidget) Labelf(format string, args ...any) *InputIntWidget {
 func (i *InputIntWidget) ID(id ID) *InputIntWidget {
 	i.label = id
 	return i
-
 }
 
 // Size sets input's width.

@@ -259,7 +259,7 @@ func ListBox(items []string) *ListBoxWidget {
 	}
 }
 
-// ID assigns hardcoded ID (baypass GenAutoID mechanism)
+// ID assigns hardcoded ID (baypass GenAutoID mechanism).
 func (l *ListBoxWidget) ID(id ID) *ListBoxWidget {
 	l.id = id
 	return l
