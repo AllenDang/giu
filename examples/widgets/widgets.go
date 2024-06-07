@@ -5,6 +5,7 @@ import (
 	"image/color"
 	"time"
 
+	"github.com/AllenDang/giu"
 	g "github.com/AllenDang/giu"
 )
 
@@ -77,6 +78,12 @@ func loop() {
 				g.Button("I'm a button"),
 				g.BulletText("I could be any widgets"),
 			),
+		),
+
+		giu.Tooltip("This tooltip is attached to a layout!").To(
+			giu.Label("We are labels"),
+			giu.Label("And there is the same tooltip"),
+			giu.Label("Attached to us!"),
 		),
 		g.InputText(&name).Label("Input text with auto complete, input hw and press enter").Size(300).AutoComplete(autoCompleteCandidates),
 		g.DatePicker("Date Picker", &date).OnChange(func() {
