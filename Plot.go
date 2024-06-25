@@ -6,6 +6,20 @@ import (
 	imgui "github.com/AllenDang/cimgui-go"
 )
 
+type (
+	PlotXAxis = imgui.PlotAxisEnum
+	PlotYAxis = imgui.PlotAxisEnum
+)
+
+const (
+	AxisX1 = PlotXAxis(imgui.AxisX1)
+	AxisX2 = PlotXAxis(imgui.AxisX2)
+	AxisX3 = PlotXAxis(imgui.AxisX3)
+	AxisY1 = PlotYAxis(imgui.AxisY1)
+	AxisY2 = PlotYAxis(imgui.AxisY2)
+	AxisY3 = PlotYAxis(imgui.AxisY3)
+)
+
 // PlotWidget is implemented by all the particular plots, which can be used
 // in (*PlotCanvasWidget).Plots.
 type PlotWidget interface {
@@ -73,6 +87,32 @@ func Plot(title string) *PlotCanvasWidget {
 		yTicksYAxis:        0,
 		axisLimitCondition: ConditionOnce,
 	}
+}
+
+func (p *PlotCanvasWidget) SetXAxisLabel(axis PlotXAxis, label string) *PlotCanvasWidget {
+	switch axis {
+	case AxisX1:
+		p.xLabel = label
+	case AxisX2:
+		p.y2Label = label
+	case AxisX3:
+		p.y3Label = label
+	}
+
+	return p
+}
+
+func (p *PlotCanvasWidget) SetYAxisLabel(axis PlotYAxis, label string) *PlotCanvasWidget {
+	switch axis {
+	case AxisY1:
+		p.yLabel = label
+	case AxisY2:
+		p.y2Label = label
+	case AxisY3:
+		p.y3Label = label
+	}
+
+	return p
 }
 
 // AxisLimits sets X and Y axis limits.
@@ -222,17 +262,21 @@ func (p *PlotCanvasWidget) Build() {
 			imgui.PlotAxisFlags(p.yFlags),
 		)
 
-		imgui.PlotSetupAxisV(
-			imgui.AxisY2,
-			Context.FontAtlas.RegisterString(p.y2Label),
-			imgui.PlotAxisFlags(p.y2Flags),
-		)
+		if p.y2Label != "" {
+			imgui.PlotSetupAxisV(
+				imgui.AxisY2,
+				Context.FontAtlas.RegisterString(p.y2Label),
+				imgui.PlotAxisFlags(p.y2Flags),
+			)
+		}
 
-		imgui.PlotSetupAxisV(
-			imgui.AxisY3,
-			Context.FontAtlas.RegisterString(p.y3Label),
-			imgui.PlotAxisFlags(p.y3Flags),
-		)
+		if p.y3Label != "" {
+			imgui.PlotSetupAxisV(
+				imgui.AxisY3,
+				Context.FontAtlas.RegisterString(p.y3Label),
+				imgui.PlotAxisFlags(p.y3Flags),
+			)
+		}
 
 		for _, plot := range p.plots {
 			plot.Plot()
@@ -241,20 +285,6 @@ func (p *PlotCanvasWidget) Build() {
 		imgui.PlotEndPlot()
 	}
 }
-
-type (
-	PlotXAxis = imgui.PlotAxisEnum
-	PlotYAxis = imgui.PlotAxisEnum
-)
-
-const (
-	AxisX1 = PlotXAxis(imgui.AxisX1)
-	AxisX2 = PlotXAxis(imgui.AxisX2)
-	AxisX3 = PlotXAxis(imgui.AxisX3)
-	AxisY1 = PlotYAxis(imgui.AxisY1)
-	AxisY2 = PlotYAxis(imgui.AxisY2)
-	AxisY3 = PlotYAxis(imgui.AxisY3)
-)
 
 func SwitchPlotAxes(x PlotXAxis, y PlotYAxis) PlotWidget {
 	return Custom(func() {
