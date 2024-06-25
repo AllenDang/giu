@@ -12,12 +12,12 @@ type (
 )
 
 const (
-	AxisX1 = PlotXAxis(imgui.AxisX1)
-	AxisX2 = PlotXAxis(imgui.AxisX2)
-	AxisX3 = PlotXAxis(imgui.AxisX3)
-	AxisY1 = PlotYAxis(imgui.AxisY1)
-	AxisY2 = PlotYAxis(imgui.AxisY2)
-	AxisY3 = PlotYAxis(imgui.AxisY3)
+	AxisX1 = imgui.AxisX1
+	AxisX2 = imgui.AxisX2
+	AxisX3 = imgui.AxisX3
+	AxisY1 = imgui.AxisY1
+	AxisY2 = imgui.AxisY2
+	AxisY3 = imgui.AxisY3
 )
 
 // PlotWidget is implemented by all the particular plots, which can be used
@@ -288,7 +288,7 @@ func (p *PlotCanvasWidget) Build() {
 
 func SwitchPlotAxes(x PlotXAxis, y PlotYAxis) PlotWidget {
 	return Custom(func() {
-		imgui.PlotSetAxes(imgui.PlotAxisEnum(x), imgui.PlotAxisEnum(y))
+		imgui.PlotSetAxes(x, y)
 	})
 }
 
