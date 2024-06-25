@@ -29,8 +29,9 @@ func loop() {
 		g.Plot("Plot 基本图表").AxisLimits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(
 			g.Line("Plot Line 线图", linedata),
 			g.Line("Plot Line2", linedata2),
+			g.SwitchPlotAxes(g.AxisX1, g.AxisY2),
 			g.Scatter("Scatter 散点图", scatterdata),
-		),
+		).SetYAxisLabel(g.AxisY2, "secondary axis"),
 		g.Plot("Plot Time Axe 时间线").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).Plots(
 			g.LineXY("Time Line 时间线", timeDataX, timeDataY),
 			g.ScatterXY("Time Scatter 时间散点图", timeDataX, timeScatterY),
