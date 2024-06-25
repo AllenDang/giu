@@ -242,6 +242,26 @@ func (p *PlotCanvasWidget) Build() {
 	}
 }
 
+type (
+	PlotXAxis = imgui.PlotAxisEnum
+	PlotYAxis = imgui.PlotAxisEnum
+)
+
+const (
+	AxisX1 = PlotXAxis(imgui.AxisX1)
+	AxisX2 = PlotXAxis(imgui.AxisX2)
+	AxisX3 = PlotXAxis(imgui.AxisX3)
+	AxisY1 = PlotYAxis(imgui.AxisY1)
+	AxisY2 = PlotYAxis(imgui.AxisY2)
+	AxisY3 = PlotYAxis(imgui.AxisY3)
+)
+
+func SwitchPlotAxes(x PlotXAxis, y PlotYAxis) PlotWidget {
+	return Custom(func() {
+		imgui.PlotSetAxes(imgui.PlotAxisEnum(x), imgui.PlotAxisEnum(y))
+	})
+}
+
 // BarPlot adds bar plot (column chart) to the canvas.
 type BarPlot struct {
 	title  string
@@ -251,7 +271,6 @@ type BarPlot struct {
 	offset int
 }
 
-// Bar adds a plot bar (column chart).
 func Bar(title string, data []float64) *BarPlot {
 	return &BarPlot{
 		title:  title,
