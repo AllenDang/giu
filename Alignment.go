@@ -200,6 +200,9 @@ func GetWidgetWidth(w Widget) (result float32) {
 	spacingW, _ := GetItemSpacing()
 	result = float32(GetCursorPos().X-startPos.X) - spacingW
 
+	// Undo SameLine (see https://github.com/AllenDang/giu/issues/807)
+	imgui.NewLine()
+
 	// reset drawing cursor position
 	SetCursorPos(currentPos)
 
