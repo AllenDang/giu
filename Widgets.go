@@ -670,6 +670,7 @@ var _ Widget = &TooltipWidget{}
 type TooltipWidget struct {
 	tip    string
 	layout Layout
+	to     Layout
 }
 
 // Tooltip creates new tooltip with given label
@@ -692,8 +693,28 @@ func (t *TooltipWidget) Layout(widgets ...Widget) *TooltipWidget {
 	return t
 }
 
+// To sets layout to which the tooltip should be attached.
+// NOTE: This is an optional approach. By default tooltip is attached to the previous widget.
+func (t *TooltipWidget) To(layout ...Widget) *TooltipWidget {
+	t.to = Layout(layout)
+	return t
+}
+
 // Build implements Widget interface.
 func (t *TooltipWidget) Build() {
+	if t.to != nil {
+		t.to.Range(func(w Widget) {
+			w.Build()
+			t.buildTooltip()
+		})
+
+		return
+	}
+
+	t.buildTooltip()
+}
+
+func (t *TooltipWidget) buildTooltip() {
 	if imgui.IsItemHovered() {
 		if t.layout != nil {
 			imgui.BeginTooltip()

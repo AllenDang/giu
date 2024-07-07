@@ -78,6 +78,12 @@ func loop() {
 				g.BulletText("I could be any widgets"),
 			),
 		),
+
+		g.Tooltip("This tooltip is attached to a layout!").To(
+			g.Label("We are labels"),
+			g.Label("And there is the same tooltip"),
+			g.Label("Attached to us!"),
+		),
 		g.InputText(&name).Label("Input text with auto complete, input hw and press enter").Size(300).AutoComplete(autoCompleteCandidates),
 		g.DatePicker("Date Picker", &date).OnChange(func() {
 			fmt.Println(date)
