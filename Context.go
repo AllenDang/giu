@@ -125,6 +125,10 @@ func (c *context) cleanState() {
 	c.widgetIndex = make(map[string]int)
 }
 
+func (c *context) Backend() imgui.Backend[imgui.GLFWWindowFlags] {
+	return c.backend
+}
+
 func SetState[T any, PT genericDisposable[T]](c *context, id string, data PT) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
