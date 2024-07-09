@@ -115,13 +115,11 @@ func (i *ImageWidget) Build() {
 }
 
 type imageState struct {
-	loading        bool
-	failure        bool
-	cancel         ctx.CancelFunc
-	texture        *Texture
-	img            *image.RGBA
-	default_width  float32
-	default_height float32
+	loading bool
+	failure bool
+	cancel  ctx.CancelFunc
+	texture *Texture
+	img     *image.RGBA
 }
 
 // Dispose cleans imageState (implements Disposable interface).
@@ -304,14 +302,6 @@ func (i *ImageWithURLWidget) Timeout(downloadTimeout time.Duration) *ImageWithUR
 
 // Size sets image's size.
 func (i *ImageWithURLWidget) Size(width, height float32) *ImageWithURLWidget {
-
-	if width == 0 && height == 0 {
-		imgState := GetState[imageState](Context, i.id)
-		if imgState != nil {
-			width, height = imgState.default_width, imgState.default_height
-		}
-	}
-
 	i.img.Size(width, height)
 	return i
 }
@@ -381,11 +371,9 @@ func (i *ImageWithURLWidget) Build() {
 
 			EnqueueNewTextureFromRgba(rgba, func(tex *Texture) {
 				SetState(Context, i.id, &imageState{
-					loading:        false,
-					failure:        false,
-					texture:        tex,
-					default_width:  float32(rgba.Bounds().Dx()),
-					default_height: float32(rgba.Bounds().Dy()),
+					loading: false,
+					failure: false,
+					texture: tex,
 				})
 			})
 
