@@ -31,8 +31,8 @@ type ImageWidget struct {
 func Image(texture *Texture) *ImageWidget {
 	return &ImageWidget{
 		texture:     texture,
-		width:       100,
-		height:      100,
+		width:       0,
+		height:      0,
 		uv0:         imgui.Vec2{X: 0, Y: 0},
 		uv1:         imgui.Vec2{X: 1, Y: 1},
 		tintColor:   color.RGBA{255, 255, 255, 255},
@@ -74,14 +74,24 @@ func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 
 // Build implements Widget interface.
 func (i *ImageWidget) Build() {
+
+	if i.width == 0 && i.height == 0 {
+		if i.texture != nil {
+			i.width, i.height = float32(i.texture.tex.Width), float32(i.texture.tex.Height)
+		} else {
+			i.width, i.height = 100, 100
+		}
+	}
+
 	size := imgui.Vec2{X: i.width, Y: i.height}
-	rect := imgui.ContentRegionAvail()
 
 	if size.X == -1 {
+		rect := imgui.ContentRegionAvail()
 		size.X = rect.X
 	}
 
 	if size.Y == -1 {
+		rect := imgui.ContentRegionAvail()
 		size.Y = rect.Y
 	}
 
