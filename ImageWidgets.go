@@ -16,7 +16,7 @@ var _ Widget = &ImageWidget{}
 
 // ImageWidget adds an image.
 // The default size is the size of the image,
-// to set a specific size, use .Size(width, height)
+// to set a specific size, use .Size(width, height).
 // NOTE: ImageWidget is going to be deprecated. ImageWithRGBAWidget
 // should be used instead, however, because it is a native
 // imgui's solution it is still there.
@@ -146,7 +146,7 @@ type ImageWithRgbaWidget struct {
 
 // ImageWithRgba creates ImageWithRgbaWidget.
 // The default size is the size of the image,
-// to set a specific size, use .Size(width, height)
+// to set a specific size, use .Size(width, height).
 func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 	return &ImageWithRgbaWidget{
 		id:   GenAutoID("ImageWithRgba"),
@@ -207,7 +207,7 @@ type ImageWithFileWidget struct {
 
 // ImageWithFile constructs a new ImageWithFileWidget.
 // The default size is the size of the image,
-// to set a specific size, use .Size(width, height)
+// to set a specific size, use .Size(width, height).
 func ImageWithFile(imgPath string) *ImageWithFileWidget {
 	return &ImageWithFileWidget{
 		id:      fmt.Sprintf("ImageWithFile_%s", imgPath),
@@ -271,7 +271,7 @@ type ImageWithURLWidget struct {
 
 // ImageWithURL creates ImageWithURLWidget.
 // The default size is the size of the image,
-// to set a specific size, use .Size(width, height)
+// to set a specific size, use .Size(width, height).
 func ImageWithURL(url string) *ImageWithURLWidget {
 	return &ImageWithURLWidget{
 		id:              fmt.Sprintf("ImageWithURL_%s", url),
