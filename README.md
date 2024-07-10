@@ -15,7 +15,7 @@ Any contribution (features, widgets, tutorials, documents, etc...) is appreciate
 
 Businesses: support continued development and maintenance via invoiced technical support, maintenance, sponsoring contracts:
 
-E-mail: allengnr@gmail.com
+E-mail: <allengnr@gmail.com>
 
 Individuals: support continued development and maintenance [here](https://patreon.com/AllenDang).
 
@@ -24,7 +24,6 @@ Individuals: support continued development and maintenance [here](https://patreo
 For documentation refer to [our wiki](https://github.com/AllenDang/giu/wiki),
 [examples](./examples), [GoDoc](https://pkg.go.dev/github.com/AllenDang/giu),
 or just take a look at comments in code.
-
 
 ## Supported Platforms
 
@@ -58,32 +57,32 @@ Compared to other Dear ImGui golang bindings, giu has the following features:
 package main
 
 import (
-	"fmt"
+ "fmt"
 
-	g "github.com/AllenDang/giu"
+ g "github.com/AllenDang/giu"
 )
 
 func onClickMe() {
-	fmt.Println("Hello world!")
+ fmt.Println("Hello world!")
 }
 
 func onImSoCute() {
-	fmt.Println("Im sooooooo cute!!")
+ fmt.Println("Im sooooooo cute!!")
 }
 
 func loop() {
-	g.SingleWindow().Layout(
-		g.Label("Hello world from giu"),
-		g.Row(
-			g.Button("Click Me").OnClick(onClickMe),
-			g.Button("I'm so cute").OnClick(onImSoCute),
-		),
-	)
+ g.SingleWindow().Layout(
+  g.Label("Hello world from giu"),
+  g.Row(
+   g.Button("Click Me").OnClick(onClickMe),
+   g.Button("I'm so cute").OnClick(onImSoCute),
+  ),
+ )
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable)
-	wnd.Run(loop)
+ wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable)
+ wnd.Run(loop)
 }
 ```
 
@@ -176,19 +175,19 @@ GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc CXX=aarch64-linux
 
 ## Deploying
 
-### Build MacOS version on MacOS.
+### Build MacOS version on MacOS
 
 ```sh
 go build -ldflags "-s -w" .
 ```
 
-### Build Windows version on Windows.
+### Build Windows version on Windows
 
 ```sh
 go build -ldflags "-s -w -H=windowsgui -extldflags=-static" .
 ```
 
-### Build Windows version on MacOS/Linux.
+### Build Windows version on MacOS/Linux
 
 1. Install mingw-64.
 
@@ -226,3 +225,7 @@ Check [Wiki](https://github.com/AllenDang/giu/wiki)
 ## Contribution
 
 All kinds of pull requests (document, demo, screenshots, code, etc.) are more than welcome!
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=AllenDang/giu&type=Date)](https://star-history.com/#AllenDang/giu&Date)
