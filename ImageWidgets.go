@@ -15,6 +15,8 @@ import (
 var _ Widget = &ImageWidget{}
 
 // ImageWidget adds an image.
+// The default size is the size of the image,
+// to set a specific size, use .Size(width, height)
 // NOTE: ImageWidget is going to be deprecated. ImageWithRGBAWidget
 // should be used instead, however, because it is a native
 // imgui's solution it is still there.
@@ -74,7 +76,6 @@ func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 
 // Build implements Widget interface.
 func (i *ImageWidget) Build() {
-
 	if i.width == 0 && i.height == 0 {
 		if i.texture != nil {
 			i.width, i.height = float32(i.texture.tex.Width), float32(i.texture.tex.Height)
@@ -144,6 +145,8 @@ type ImageWithRgbaWidget struct {
 }
 
 // ImageWithRgba creates ImageWithRgbaWidget.
+// The default size is the size of the image,
+// to set a specific size, use .Size(width, height)
 func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
 	return &ImageWithRgbaWidget{
 		id:   GenAutoID("ImageWithRgba"),
@@ -203,6 +206,8 @@ type ImageWithFileWidget struct {
 }
 
 // ImageWithFile constructs a new ImageWithFileWidget.
+// The default size is the size of the image,
+// to set a specific size, use .Size(width, height)
 func ImageWithFile(imgPath string) *ImageWithFileWidget {
 	return &ImageWithFileWidget{
 		id:      fmt.Sprintf("ImageWithFile_%s", imgPath),
@@ -265,6 +270,8 @@ type ImageWithURLWidget struct {
 }
 
 // ImageWithURL creates ImageWithURLWidget.
+// The default size is the size of the image,
+// to set a specific size, use .Size(width, height)
 func ImageWithURL(url string) *ImageWithURLWidget {
 	return &ImageWithURLWidget{
 		id:              fmt.Sprintf("ImageWithURL_%s", url),
