@@ -79,7 +79,7 @@ func CreateContext(b imgui.Backend[imgui.GLFWWindowFlags]) *context {
 		fonts := result.IO().Fonts()
 		fonts.AddFontDefault()
 		fontTextureImg, w, h, _ := fonts.GetTextureDataAsRGBA32()
-		tex := Context.backend.CreateTexture(fontTextureImg, int(w), int(h))
+		tex := result.backend.CreateTexture(fontTextureImg, int(w), int(h))
 		fonts.SetTexID(tex)
 		fonts.SetTexReady(true)
 	} else {
