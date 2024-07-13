@@ -202,7 +202,7 @@ func (c *ConditionWidget) Build() {
 }
 
 // RangeBuilder batch create widgets and render only which is visible.
-func RangeBuilder(id string, values []any, builder func(int, any) Widget) Layout {
+func RangeBuilder[S ~[]T, T any](id string, values S, builder func(int, T) Widget) Layout {
 	var layout Layout
 
 	layout = append(layout, Custom(func() { imgui.PushIDStr(id) }))
