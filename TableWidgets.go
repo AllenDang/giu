@@ -106,6 +106,7 @@ type TableWidget struct {
 	fastMode     bool
 	freezeRow    int
 	freezeColumn int
+	noHeader     bool
 }
 
 func Table() *TableWidget {
@@ -117,6 +118,7 @@ func Table() *TableWidget {
 		fastMode:     false,
 		freezeRow:    -1,
 		freezeColumn: -1,
+		noHeader:     false,
 	}
 }
 
@@ -129,6 +131,12 @@ func (t *TableWidget) ID(id ID) *TableWidget {
 // FastMode Displays visible rows only to boost performance.
 func (t *TableWidget) FastMode(b bool) *TableWidget {
 	t.fastMode = b
+	return t
+}
+
+// NoHeader indicates that the column header should no be shown.
+func (t *TableWidget) NoHeader(b bool) *TableWidget {
+	t.noHeader = b
 	return t
 }
 
@@ -187,7 +195,9 @@ func (t *TableWidget) Build() {
 				col.BuildTableColumn()
 			}
 
-			imgui.TableHeadersRow()
+			if !t.noHeader {
+				imgui.TableHeadersRow()
+			}
 		}
 
 		if t.fastMode {
