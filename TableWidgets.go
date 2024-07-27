@@ -106,6 +106,7 @@ type TableWidget struct {
 	fastMode     bool
 	freezeRow    int
 	freezeColumn int
+	noHeader     bool
 }
 
 func Table() *TableWidget {
@@ -117,6 +118,7 @@ func Table() *TableWidget {
 		fastMode:     false,
 		freezeRow:    -1,
 		freezeColumn: -1,
+		noHeader:     false,
 	}
 }
 
@@ -132,6 +134,14 @@ func (t *TableWidget) FastMode(b bool) *TableWidget {
 	return t
 }
 
+// NoHeader indicates that the column header should not be shown. This allows
+// the use of the Columns() function to configure table columns (eg. column
+// width) but without showing the table header.
+func (t *TableWidget) NoHeader(b bool) *TableWidget {
+	t.noHeader = b
+	return t
+}
+
 // Freeze columns/rows so they stay visible when scrolled.
 func (t *TableWidget) Freeze(col, row int) *TableWidget {
 	t.freezeColumn = col
@@ -140,6 +150,9 @@ func (t *TableWidget) Freeze(col, row int) *TableWidget {
 	return t
 }
 
+// Columns adds a list of column widgets to be used in the table. Columns added
+// with this function will cause the table header to be shown. If the table
+// header is not required then the NoHeader() function can be used.
 func (t *TableWidget) Columns(cols ...*TableColumnWidget) *TableWidget {
 	t.columns = cols
 	return t
@@ -187,7 +200,9 @@ func (t *TableWidget) Build() {
 				col.BuildTableColumn()
 			}
 
-			imgui.TableHeadersRow()
+			if !t.noHeader {
+				imgui.TableHeadersRow()
+			}
 		}
 
 		if t.fastMode {
