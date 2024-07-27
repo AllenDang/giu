@@ -134,7 +134,7 @@ func (t *TableWidget) FastMode(b bool) *TableWidget {
 	return t
 }
 
-// NoHeader indicates that the column header should no be shown.
+// NoHeader indicates that the column header should not be shown.
 func (t *TableWidget) NoHeader(b bool) *TableWidget {
 	t.noHeader = b
 	return t
