@@ -139,19 +139,15 @@ func (a *AlignmentSetter) Build() {
 		currentPos := GetCursorPos()
 		w := GetWidgetWidth(item)
 		availableW, _ := GetAvailableRegion()
-		// we need to increase available region by 2 * window padding (X),
-		// because GetCursorPos considers it
-		paddingW, _ := GetWindowPadding()
-		availableW += 2 * paddingW
 
 		// set cursor position to align the widget
 		switch a.alignType {
 		case AlignLeft:
 			SetCursorPos(currentPos)
 		case AlignCenter:
-			SetCursorPos(image.Pt(int(availableW/2-w/2), currentPos.Y))
+			SetCursorPos(image.Pt(int(availableW/2-w/2)+currentPos.X, currentPos.Y))
 		case AlignRight:
-			SetCursorPos(image.Pt(int(availableW-w), currentPos.Y))
+			SetCursorPos(image.Pt(int(availableW-w)+currentPos.X, currentPos.Y))
 		default:
 			panic(fmt.Sprintf("giu: (*AlignSetter).Build: unknown align type %d", a.alignType))
 		}
