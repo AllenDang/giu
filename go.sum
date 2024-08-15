@@ -8,8 +8,8 @@ github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3 h1:baVdMKlASEHr
 github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3/go.mod h1:VEPNJUlxl5KdWjDvz6Q1l+rJlxF2i6xqDeGuGAxa87M=
 github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0SNc=
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
-github.com/mazznoer/csscolorparser v0.1.4 h1:1bAWPWdoMc5qdAXVlixS9rpZLw/vaq5InX/lj3tfRQQ=
-github.com/mazznoer/csscolorparser v0.1.4/go.mod h1:OQRVvgCyHDCAquR1YWfSwwaDcM0LhnSffGnlbOew/3I=
+github.com/mazznoer/csscolorparser v0.1.5 h1:Wr4uNIE+pHWN3TqZn2SGpA2nLRG064gB7WdSfSS5cz4=
+github.com/mazznoer/csscolorparser v0.1.5/go.mod h1:OQRVvgCyHDCAquR1YWfSwwaDcM0LhnSffGnlbOew/3I=
 github.com/napsy/go-css v0.0.0-20221107082635-4ed403047a64 h1:7LWtWY3Ei9ghnamqn8xCu7LOXAKaQrcfbcf0sU33LG4=
 github.com/napsy/go-css v0.0.0-20221107082635-4ed403047a64/go.mod h1:HqZYcKcNnv50fgOTdGUn9YbJa2qC9oJ3kLnyrwwVzUI=
 github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 h1:KoWmjvw+nsYOo29YJK9vDA65RGE3NrOnUtO7a+RF9HU=
