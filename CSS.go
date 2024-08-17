@@ -41,6 +41,10 @@ func (e ErrCSSParse) Error() string {
 
 // ParseCSSStyleSheet parses CSS stylesheet and stores the rules in giu context.
 func ParseCSSStyleSheet(data []byte) error {
+	// css does not support windows formatting
+	// https://github.com/AllenDang/giu/issues/842
+	data = []byte(strings.ReplaceAll(string(data), "\r\n", "\n"))
+
 	stylesheet, err := css.Unmarshal(data)
 	if err != nil {
 		return fmt.Errorf("error marshaling CSS file: %w", err)
