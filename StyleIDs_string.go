@@ -122,7 +122,7 @@ func _() {
 
 const _StyleVarID_name = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-minValue-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacingStyleVarCellPaddingscrollbar-sizescrollbar-roundinggrab-minValue-sizegrab-roundingtab-roundingStyleVarTabBarBorderSizebutton-text-alignselectable-text-alignStyleVarSeparatorTextBorderSizeStyleVarSeparatorTextAlignStyleVarSeparatorTextPaddingStyleVarDockingSeparatorSize"
 
-var _StyleVarID_index = [...]uint16{0, 5, 19, 33, 48, 66, 81, 99, 113, 130, 144, 161, 174, 188, 205, 217, 235, 249, 268, 282, 300, 313, 326, 338, 362, 379, 400, 431, 457, 485, 513}
+var _StyleVarID_index = [...]uint16{0, 5, 19, 33, 48, 66, 86, 104, 118, 135, 149, 166, 179, 193, 210, 222, 240, 254, 273, 287, 305, 323, 336, 348, 372, 389, 410, 441, 467, 495, 523}
 
 func (i StyleVarID) String() string {
 	if i < 0 || i >= StyleVarID(len(_StyleVarID_index)-1) {
