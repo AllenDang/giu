@@ -16,11 +16,11 @@ func loop() {
 			g.Custom(func() {
 				g.Button("Drag me: 9").Build()
 				if imgui.BeginDragDropSource() {
-					data := 9
+					data := int(9)
 					imgui.SetDragDropPayload(
 						"DND_DEMO",
 						uintptr(unsafe.Pointer(&data)),
-						0,
+						uint64(unsafe.Sizeof(data)),
 					)
 					g.Label("9").Build()
 					imgui.EndDragDropSource()
@@ -33,7 +33,7 @@ func loop() {
 					imgui.SetDragDropPayload(
 						"DND_DEMO",
 						uintptr(unsafe.Pointer(&data)),
-						0,
+						uint64(unsafe.Sizeof(data)),
 					)
 					g.Label("10").Build()
 					imgui.EndDragDropSource()
@@ -44,8 +44,8 @@ func loop() {
 		g.Custom(func() {
 			if imgui.BeginDragDropTarget() {
 				payload := imgui.AcceptDragDropPayload("DND_DEMO")
-				if payload != nil {
-					dropTarget = fmt.Sprintf("Dropped value: %d", payload.Data())
+				if payload != nil && payload.CData != nil {
+					dropTarget = fmt.Sprintf("Dropped value: %d", *(*int)(unsafe.Pointer(payload.Data())))
 				}
 				imgui.EndDragDropTarget()
 			}
