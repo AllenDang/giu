@@ -25,6 +25,8 @@ const (
 	MasterWindowFlagsFrameless
 	// Specifies whether the window will be transparent.
 	MasterWindowFlagsTransparent
+	// Specifies wheter the windows will be hidden (for use with multiple windows)
+	MasterWindowFlagsHidden
 )
 
 // parseAndApply converts MasterWindowFlags to appropriate imgui.GLFWWindowFlags.
@@ -38,6 +40,7 @@ func (m MasterWindowFlags) parseAndApply(b imgui.Backend[imgui.GLFWWindowFlags])
 		MasterWindowFlagsFloating:     {imgui.GLFWWindowFlagsFloating, 1},
 		MasterWindowFlagsFrameless:    {imgui.GLFWWindowFlagsDecorated, 0},
 		MasterWindowFlagsTransparent:  {imgui.GLFWWindowFlagsTransparent, 1},
+		MasterWindowFlagsHidden:       {imgui.GLFWWindowFlagsVisible, 0},
 	}
 
 	for flag, d := range data {
