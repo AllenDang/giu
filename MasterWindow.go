@@ -25,7 +25,7 @@ const (
 	MasterWindowFlagsFrameless
 	// Specifies whether the window will be transparent.
 	MasterWindowFlagsTransparent
-	// Specifies wheter the windows will be hidden (for use with multiple windows)
+	// Specifies wheter the windows will be hidden (for use with multiple windows).
 	MasterWindowFlagsHidden
 )
 
