@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 )
 
 // You may want to use styles in order to make your app looking more beautiful.

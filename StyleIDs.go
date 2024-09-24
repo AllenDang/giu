@@ -1,6 +1,6 @@
 package giu
 
-import imgui "github.com/AllenDang/cimgui-go"
+import "github.com/AllenDang/cimgui-go/imgui"
 
 // Here are the style IDs for styling imgui apps.
 // For details about each of attributes read comment above them.
@@ -51,9 +51,9 @@ const (
 	StyleColorResizeGripActive      = StyleColorID(imgui.ColResizeGripActive)      // resize-grip-active-color
 	StyleColorTab                   = StyleColorID(imgui.ColTab)                   // tab-color
 	StyleColorTabHovered            = StyleColorID(imgui.ColTabHovered)            // tab-hovered-color
-	StyleColorTabActive             = StyleColorID(imgui.ColTabActive)             // tab-active-color
-	StyleColorTabUnfocused          = StyleColorID(imgui.ColTabUnfocused)          // tab-unfocused-color
-	StyleColorTabUnfocusedActive    = StyleColorID(imgui.ColTabUnfocusedActive)    // tab-unfocused-active-color
+	StyleColorTabActive             = StyleColorID(imgui.ColTabSelected)           // tab-active-color
+	StyleColorTabUnfocused          = StyleColorID(imgui.ColTabDimmed)             // tab-unfocused-color
+	StyleColorTabUnfocusedActive    = StyleColorID(imgui.ColTabDimmedSelected)     // tab-unfocused-active-color
 	StyleColorPlotLines             = StyleColorID(imgui.ColPlotLines)             // plot-lines-color
 	StyleColorPlotLinesHovered      = StyleColorID(imgui.ColPlotLinesHovered)      // plot-lines-hovered-color
 	StyleColorProgressBarActive     = StyleColorPlotLinesHovered                   // progress-bar-active-color

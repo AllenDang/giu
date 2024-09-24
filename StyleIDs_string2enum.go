@@ -16,7 +16,17 @@ func StyleColorIDFromString(s string) StyleColorID {
 	}
 	for i := range _StyleColorID_index_1[:len(_StyleColorID_index_1)-1] {
 		if s == _StyleColorID_name_1[_StyleColorID_index_1[i]:_StyleColorID_index_1[i+1]] {
-			return StyleColorID(i + 40)
+			return StyleColorID(i + 37)
+		}
+	}
+	for i := range _StyleColorID_index_2[:len(_StyleColorID_index_2)-1] {
+		if s == _StyleColorID_name_2[_StyleColorID_index_2[i]:_StyleColorID_index_2[i+1]] {
+			return StyleColorID(i + 42)
+		}
+	}
+	for i := range _StyleColorID_index_3[:len(_StyleColorID_index_3)-1] {
+		if s == _StyleColorID_name_3[_StyleColorID_index_3[i]:_StyleColorID_index_3[i+1]] {
+			return StyleColorID(i + 52)
 		}
 	}
 	panic(fmt.Errorf("unable to locate StyleColorID enum corresponding to %q", s))
@@ -92,44 +102,44 @@ func _(s string) {
 	// 32
 	case "resize-grip-active-color":
 	// 33
-	case "tab-color":
-	// 34
 	case "tab-hovered-color":
+	// 34
+	case "tab-color":
 	// 35
 	case "tab-active-color":
-	// 36
-	case "tab-unfocused-color":
 	// 37
+	case "tab-unfocused-color":
+	// 38
 	case "tab-unfocused-active-color":
-	// 40
-	case "plot-lines-color":
-	// 41
-	case "plot-lines-hovered-color":
 	// 42
-	case "plot-histogram-color":
+	case "plot-lines-color":
 	// 43
-	case "plot-histogram-hovered-color":
+	case "plot-lines-hovered-color":
 	// 44
-	case "table-header-background-color":
+	case "plot-histogram-color":
 	// 45
-	case "table-border-strong-color":
+	case "plot-histogram-hovered-color":
 	// 46
-	case "table-border-light-color":
+	case "table-header-background-color":
 	// 47
-	case "table-row-background-color":
+	case "table-border-strong-color":
 	// 48
-	case "table-row-alternate-background-color":
+	case "table-border-light-color":
 	// 49
-	case "text-selected-background-color":
+	case "table-row-background-color":
 	// 50
-	case "drag-drop-target-color":
-	// 51
-	case "navigation-highlight-color":
+	case "table-row-alternate-background-color":
 	// 52
-	case "windowing-highlight-color":
+	case "text-selected-background-color":
 	// 53
-	case "windowing-dim-background-color":
+	case "drag-drop-target-color":
 	// 54
+	case "navigation-highlight-color":
+	// 55
+	case "windowing-highlight-color":
+	// 56
+	case "windowing-dim-background-color":
+	// 57
 	case "modal-window-dim-background-color":
 	}
 }
@@ -139,9 +149,17 @@ func StyleVarIDFromString(s string) StyleVarID {
 	if len(s) == 0 {
 		return 0
 	}
-	for i := range _StyleVarID_index[:len(_StyleVarID_index)-1] {
-		if s == _StyleVarID_name[_StyleVarID_index[i]:_StyleVarID_index[i+1]] {
-			return StyleVarID(i)
+	for i := range _StyleVarID_index_0[:len(_StyleVarID_index_0)-1] {
+		if s == _StyleVarID_name_0[_StyleVarID_index_0[i]:_StyleVarID_index_0[i+1]] {
+			return StyleVarID(i + 0)
+		}
+	}
+	if s == _StyleVarID_name_1 {
+		return StyleVarID(24)
+	}
+	for i := range _StyleVarID_index_2[:len(_StyleVarID_index_2)-1] {
+		if s == _StyleVarID_name_2[_StyleVarID_index_2[i]:_StyleVarID_index_2[i+1]] {
+			return StyleVarID(i + 28)
 		}
 	}
 	panic(fmt.Errorf("unable to locate StyleVarID enum corresponding to %q", s))
@@ -196,19 +214,19 @@ func _(s string) {
 	case "grab-rounding":
 	// 22
 	case "tab-rounding":
-	// 23
-	case "StyleVarTabBarBorderSize":
 	// 24
-	case "button-text-align":
-	// 25
-	case "selectable-text-align":
-	// 26
-	case "StyleVarSeparatorTextBorderSize":
-	// 27
-	case "StyleVarSeparatorTextAlign":
+	case "StyleVarTabBarBorderSize":
 	// 28
-	case "StyleVarSeparatorTextPadding":
+	case "button-text-align":
 	// 29
+	case "selectable-text-align":
+	// 30
+	case "StyleVarSeparatorTextBorderSize":
+	// 31
+	case "StyleVarSeparatorTextAlign":
+	// 32
+	case "StyleVarSeparatorTextPadding":
+	// 33
 	case "StyleVarDockingSeparatorSize":
 	}
 }

@@ -4,7 +4,8 @@ import "C"
 import (
 	"log"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/backend/glfwbackend"
+	"github.com/AllenDang/cimgui-go/imgui"
 )
 
 // Key represents a imgui key.
@@ -94,23 +95,23 @@ const (
 	KeyF10            = Key(imgui.KeyF10)
 	KeyF11            = Key(imgui.KeyF11)
 	KeyF12            = Key(imgui.KeyF12)
-	KeyNumPad0        = Key(imgui.GLFWKeyKp0)
-	KeyNumPad1        = Key(imgui.GLFWKeyKp1)
-	KeyNumPad2        = Key(imgui.GLFWKeyKp2)
-	KeyNumPad3        = Key(imgui.GLFWKeyKp3)
-	KeyNumPad4        = Key(imgui.GLFWKeyKp4)
-	KeyNumPad5        = Key(imgui.GLFWKeyKp5)
-	KeyNumPad6        = Key(imgui.GLFWKeyKp6)
-	KeyNumPad7        = Key(imgui.GLFWKeyKp7)
-	KeyNumPad8        = Key(imgui.GLFWKeyKp8)
-	KeyNumPad9        = Key(imgui.GLFWKeyKp9)
-	KeyNumPadDecimal  = Key(imgui.GLFWKeyKpDecimal)
-	KeyNumPadDivide   = Key(imgui.GLFWKeyKpDivide)
-	KeyNumPadMultiply = Key(imgui.GLFWKeyKpMultiply)
-	KeyNumPadSubtract = Key(imgui.GLFWKeyKpSubtract)
-	KeyNumPadAdd      = Key(imgui.GLFWKeyKpAdd)
-	KeyNumPadEnter    = Key(imgui.GLFWKeyKpEnter)
-	KeyNumPadEqual    = Key(imgui.GLFWKeyKpEqual)
+	KeyNumPad0        = Key(glfwbackend.GLFWKeyKp0)
+	KeyNumPad1        = Key(glfwbackend.GLFWKeyKp1)
+	KeyNumPad2        = Key(glfwbackend.GLFWKeyKp2)
+	KeyNumPad3        = Key(glfwbackend.GLFWKeyKp3)
+	KeyNumPad4        = Key(glfwbackend.GLFWKeyKp4)
+	KeyNumPad5        = Key(glfwbackend.GLFWKeyKp5)
+	KeyNumPad6        = Key(glfwbackend.GLFWKeyKp6)
+	KeyNumPad7        = Key(glfwbackend.GLFWKeyKp7)
+	KeyNumPad8        = Key(glfwbackend.GLFWKeyKp8)
+	KeyNumPad9        = Key(glfwbackend.GLFWKeyKp9)
+	KeyNumPadDecimal  = Key(glfwbackend.GLFWKeyKpDecimal)
+	KeyNumPadDivide   = Key(glfwbackend.GLFWKeyKpDivide)
+	KeyNumPadMultiply = Key(glfwbackend.GLFWKeyKpMultiply)
+	KeyNumPadSubtract = Key(glfwbackend.GLFWKeyKpSubtract)
+	KeyNumPadAdd      = Key(glfwbackend.GLFWKeyKpAdd)
+	KeyNumPadEnter    = Key(glfwbackend.GLFWKeyKpEnter)
+	KeyNumPadEqual    = Key(glfwbackend.GLFWKeyKpEqual)
 	KeyLeftShift      = Key(imgui.KeyLeftShift)
 	KeyLeftControl    = Key(imgui.KeyLeftCtrl)
 	KeyLeftAlt        = Key(imgui.KeyLeftAlt)
@@ -120,122 +121,122 @@ const (
 	KeyRightAlt       = Key(imgui.KeyRightAlt)
 	KeyRightSuper     = Key(imgui.KeyRightSuper)
 	KeyMenu           = Key(imgui.KeyMenu)
-	KeyWorld1         = Key(imgui.GLFWKeyWorld1)
-	KeyWorld2         = Key(imgui.GLFWKeyWorld2)
+	KeyWorld1         = Key(glfwbackend.GLFWKeyWorld1)
+	KeyWorld2         = Key(glfwbackend.GLFWKeyWorld2)
 	KeyUnknown        = Key(-1)
 )
 
 // refer glfw3.h.
-func keyFromGLFWKey(k imgui.GLFWKey) Key {
-	data := map[imgui.GLFWKey]Key{
-		imgui.GLFWKeySpace:        KeySpace,
-		imgui.GLFWKeyApostrophe:   KeyApostrophe,
-		imgui.GLFWKeyComma:        KeyComma,
-		imgui.GLFWKeyMinus:        KeyMinus,
-		imgui.GLFWKeyPeriod:       KeyPeriod,
-		imgui.GLFWKeySlash:        KeySlash,
-		imgui.GLFWKey0:            Key0,
-		imgui.GLFWKey1:            Key1,
-		imgui.GLFWKey2:            Key2,
-		imgui.GLFWKey3:            Key3,
-		imgui.GLFWKey4:            Key4,
-		imgui.GLFWKey5:            Key5,
-		imgui.GLFWKey6:            Key6,
-		imgui.GLFWKey7:            Key7,
-		imgui.GLFWKey8:            Key8,
-		imgui.GLFWKey9:            Key9,
-		imgui.GLFWKeySemicolon:    KeySemicolon,
-		imgui.GLFWKeyEqual:        KeyEqual,
-		imgui.GLFWKeyA:            KeyA,
-		imgui.GLFWKeyB:            KeyB,
-		imgui.GLFWKeyC:            KeyC,
-		imgui.GLFWKeyD:            KeyD,
-		imgui.GLFWKeyE:            KeyE,
-		imgui.GLFWKeyF:            KeyF,
-		imgui.GLFWKeyG:            KeyG,
-		imgui.GLFWKeyH:            KeyH,
-		imgui.GLFWKeyI:            KeyI,
-		imgui.GLFWKeyJ:            KeyJ,
-		imgui.GLFWKeyK:            KeyK,
-		imgui.GLFWKeyL:            KeyL,
-		imgui.GLFWKeyM:            KeyM,
-		imgui.GLFWKeyN:            KeyN,
-		imgui.GLFWKeyO:            KeyO,
-		imgui.GLFWKeyP:            KeyP,
-		imgui.GLFWKeyQ:            KeyQ,
-		imgui.GLFWKeyR:            KeyR,
-		imgui.GLFWKeyS:            KeyS,
-		imgui.GLFWKeyT:            KeyT,
-		imgui.GLFWKeyU:            KeyU,
-		imgui.GLFWKeyV:            KeyV,
-		imgui.GLFWKeyW:            KeyW,
-		imgui.GLFWKeyX:            KeyX,
-		imgui.GLFWKeyY:            KeyY,
-		imgui.GLFWKeyZ:            KeyZ,
-		imgui.GLFWKeyLeftBracket:  KeyLeftBracket,
-		imgui.GLFWKeyBackslash:    KeyBackslash,
-		imgui.GLFWKeyRightBracket: KeyRightBracket,
-		imgui.GLFWKeyGraveAccent:  KeyGraveAccent,
-		imgui.GLFWKeyEscape:       KeyEscape,
-		imgui.GLFWKeyEnter:        KeyEnter,
-		imgui.GLFWKeyTab:          KeyTab,
-		imgui.GLFWKeyBackspace:    KeyBackspace,
-		imgui.GLFWKeyInsert:       KeyInsert,
-		imgui.GLFWKeyDelete:       KeyDelete,
-		imgui.GLFWKeyRight:        KeyRight,
-		imgui.GLFWKeyLeft:         KeyLeft,
-		imgui.GLFWKeyDown:         KeyDown,
-		imgui.GLFWKeyUp:           KeyUp,
-		imgui.GLFWKeyPageUp:       KeyPageUp,
-		imgui.GLFWKeyPageDown:     KeyPageDown,
-		imgui.GLFWKeyHome:         KeyHome,
-		imgui.GLFWKeyEnd:          KeyEnd,
-		imgui.GLFWKeyCapsLock:     KeyCapsLock,
-		imgui.GLFWKeyScrollLock:   KeyScrollLock,
-		imgui.GLFWKeyNumLock:      KeyNumLock,
-		imgui.GLFWKeyPrintScreen:  KeyPrintScreen,
-		imgui.GLFWKeyPause:        KeyPause,
-		imgui.GLFWKeyF1:           KeyF1,
-		imgui.GLFWKeyF2:           KeyF2,
-		imgui.GLFWKeyF3:           KeyF3,
-		imgui.GLFWKeyF4:           KeyF4,
-		imgui.GLFWKeyF5:           KeyF5,
-		imgui.GLFWKeyF6:           KeyF6,
-		imgui.GLFWKeyF7:           KeyF7,
-		imgui.GLFWKeyF8:           KeyF8,
-		imgui.GLFWKeyF9:           KeyF9,
-		imgui.GLFWKeyF10:          KeyF10,
-		imgui.GLFWKeyF11:          KeyF11,
-		imgui.GLFWKeyF12:          KeyF12,
-		imgui.GLFWKeyKp0:          KeyNumPad0,
-		imgui.GLFWKeyKp1:          KeyNumPad1,
-		imgui.GLFWKeyKp2:          KeyNumPad2,
-		imgui.GLFWKeyKp3:          KeyNumPad3,
-		imgui.GLFWKeyKp4:          KeyNumPad4,
-		imgui.GLFWKeyKp5:          KeyNumPad5,
-		imgui.GLFWKeyKp6:          KeyNumPad6,
-		imgui.GLFWKeyKp7:          KeyNumPad7,
-		imgui.GLFWKeyKp8:          KeyNumPad8,
-		imgui.GLFWKeyKp9:          KeyNumPad9,
-		imgui.GLFWKeyKpDecimal:    KeyNumPadDecimal,
-		imgui.GLFWKeyKpDivide:     KeyNumPadDivide,
-		imgui.GLFWKeyKpMultiply:   KeyNumPadMultiply,
-		imgui.GLFWKeyKpSubtract:   KeyNumPadSubtract,
-		imgui.GLFWKeyKpAdd:        KeyNumPadAdd,
-		imgui.GLFWKeyKpEnter:      KeyNumPadEnter,
-		imgui.GLFWKeyKpEqual:      KeyNumPadEqual,
-		imgui.GLFWKeyLeftShift:    KeyLeftShift,
-		imgui.GLFWKeyLeftControl:  KeyLeftControl,
-		imgui.GLFWKeyLeftAlt:      KeyLeftAlt,
-		imgui.GLFWKeyLeftSuper:    KeyLeftSuper,
-		imgui.GLFWKeyRightShift:   KeyRightShift,
-		imgui.GLFWKeyRightControl: KeyRightControl,
-		imgui.GLFWKeyRightAlt:     KeyRightAlt,
-		imgui.GLFWKeyRightSuper:   KeyRightSuper,
-		imgui.GLFWKeyMenu:         KeyMenu,
-		imgui.GLFWKeyWorld1:       KeyWorld1,
-		imgui.GLFWKeyWorld2:       KeyWorld2,
-		-1:                        KeyUnknown,
+func keyFromGLFWKey(k glfwbackend.GLFWKey) Key {
+	data := map[glfwbackend.GLFWKey]Key{
+		glfwbackend.GLFWKeySpace:        KeySpace,
+		glfwbackend.GLFWKeyApostrophe:   KeyApostrophe,
+		glfwbackend.GLFWKeyComma:        KeyComma,
+		glfwbackend.GLFWKeyMinus:        KeyMinus,
+		glfwbackend.GLFWKeyPeriod:       KeyPeriod,
+		glfwbackend.GLFWKeySlash:        KeySlash,
+		glfwbackend.GLFWKey0:            Key0,
+		glfwbackend.GLFWKey1:            Key1,
+		glfwbackend.GLFWKey2:            Key2,
+		glfwbackend.GLFWKey3:            Key3,
+		glfwbackend.GLFWKey4:            Key4,
+		glfwbackend.GLFWKey5:            Key5,
+		glfwbackend.GLFWKey6:            Key6,
+		glfwbackend.GLFWKey7:            Key7,
+		glfwbackend.GLFWKey8:            Key8,
+		glfwbackend.GLFWKey9:            Key9,
+		glfwbackend.GLFWKeySemicolon:    KeySemicolon,
+		glfwbackend.GLFWKeyEqual:        KeyEqual,
+		glfwbackend.GLFWKeyA:            KeyA,
+		glfwbackend.GLFWKeyB:            KeyB,
+		glfwbackend.GLFWKeyC:            KeyC,
+		glfwbackend.GLFWKeyD:            KeyD,
+		glfwbackend.GLFWKeyE:            KeyE,
+		glfwbackend.GLFWKeyF:            KeyF,
+		glfwbackend.GLFWKeyG:            KeyG,
+		glfwbackend.GLFWKeyH:            KeyH,
+		glfwbackend.GLFWKeyI:            KeyI,
+		glfwbackend.GLFWKeyJ:            KeyJ,
+		glfwbackend.GLFWKeyK:            KeyK,
+		glfwbackend.GLFWKeyL:            KeyL,
+		glfwbackend.GLFWKeyM:            KeyM,
+		glfwbackend.GLFWKeyN:            KeyN,
+		glfwbackend.GLFWKeyO:            KeyO,
+		glfwbackend.GLFWKeyP:            KeyP,
+		glfwbackend.GLFWKeyQ:            KeyQ,
+		glfwbackend.GLFWKeyR:            KeyR,
+		glfwbackend.GLFWKeyS:            KeyS,
+		glfwbackend.GLFWKeyT:            KeyT,
+		glfwbackend.GLFWKeyU:            KeyU,
+		glfwbackend.GLFWKeyV:            KeyV,
+		glfwbackend.GLFWKeyW:            KeyW,
+		glfwbackend.GLFWKeyX:            KeyX,
+		glfwbackend.GLFWKeyY:            KeyY,
+		glfwbackend.GLFWKeyZ:            KeyZ,
+		glfwbackend.GLFWKeyLeftBracket:  KeyLeftBracket,
+		glfwbackend.GLFWKeyBackslash:    KeyBackslash,
+		glfwbackend.GLFWKeyRightBracket: KeyRightBracket,
+		glfwbackend.GLFWKeyGraveAccent:  KeyGraveAccent,
+		glfwbackend.GLFWKeyEscape:       KeyEscape,
+		glfwbackend.GLFWKeyEnter:        KeyEnter,
+		glfwbackend.GLFWKeyTab:          KeyTab,
+		glfwbackend.GLFWKeyBackspace:    KeyBackspace,
+		glfwbackend.GLFWKeyInsert:       KeyInsert,
+		glfwbackend.GLFWKeyDelete:       KeyDelete,
+		glfwbackend.GLFWKeyRight:        KeyRight,
+		glfwbackend.GLFWKeyLeft:         KeyLeft,
+		glfwbackend.GLFWKeyDown:         KeyDown,
+		glfwbackend.GLFWKeyUp:           KeyUp,
+		glfwbackend.GLFWKeyPageUp:       KeyPageUp,
+		glfwbackend.GLFWKeyPageDown:     KeyPageDown,
+		glfwbackend.GLFWKeyHome:         KeyHome,
+		glfwbackend.GLFWKeyEnd:          KeyEnd,
+		glfwbackend.GLFWKeyCapsLock:     KeyCapsLock,
+		glfwbackend.GLFWKeyScrollLock:   KeyScrollLock,
+		glfwbackend.GLFWKeyNumLock:      KeyNumLock,
+		glfwbackend.GLFWKeyPrintScreen:  KeyPrintScreen,
+		glfwbackend.GLFWKeyPause:        KeyPause,
+		glfwbackend.GLFWKeyF1:           KeyF1,
+		glfwbackend.GLFWKeyF2:           KeyF2,
+		glfwbackend.GLFWKeyF3:           KeyF3,
+		glfwbackend.GLFWKeyF4:           KeyF4,
+		glfwbackend.GLFWKeyF5:           KeyF5,
+		glfwbackend.GLFWKeyF6:           KeyF6,
+		glfwbackend.GLFWKeyF7:           KeyF7,
+		glfwbackend.GLFWKeyF8:           KeyF8,
+		glfwbackend.GLFWKeyF9:           KeyF9,
+		glfwbackend.GLFWKeyF10:          KeyF10,
+		glfwbackend.GLFWKeyF11:          KeyF11,
+		glfwbackend.GLFWKeyF12:          KeyF12,
+		glfwbackend.GLFWKeyKp0:          KeyNumPad0,
+		glfwbackend.GLFWKeyKp1:          KeyNumPad1,
+		glfwbackend.GLFWKeyKp2:          KeyNumPad2,
+		glfwbackend.GLFWKeyKp3:          KeyNumPad3,
+		glfwbackend.GLFWKeyKp4:          KeyNumPad4,
+		glfwbackend.GLFWKeyKp5:          KeyNumPad5,
+		glfwbackend.GLFWKeyKp6:          KeyNumPad6,
+		glfwbackend.GLFWKeyKp7:          KeyNumPad7,
+		glfwbackend.GLFWKeyKp8:          KeyNumPad8,
+		glfwbackend.GLFWKeyKp9:          KeyNumPad9,
+		glfwbackend.GLFWKeyKpDecimal:    KeyNumPadDecimal,
+		glfwbackend.GLFWKeyKpDivide:     KeyNumPadDivide,
+		glfwbackend.GLFWKeyKpMultiply:   KeyNumPadMultiply,
+		glfwbackend.GLFWKeyKpSubtract:   KeyNumPadSubtract,
+		glfwbackend.GLFWKeyKpAdd:        KeyNumPadAdd,
+		glfwbackend.GLFWKeyKpEnter:      KeyNumPadEnter,
+		glfwbackend.GLFWKeyKpEqual:      KeyNumPadEqual,
+		glfwbackend.GLFWKeyLeftShift:    KeyLeftShift,
+		glfwbackend.GLFWKeyLeftControl:  KeyLeftControl,
+		glfwbackend.GLFWKeyLeftAlt:      KeyLeftAlt,
+		glfwbackend.GLFWKeyLeftSuper:    KeyLeftSuper,
+		glfwbackend.GLFWKeyRightShift:   KeyRightShift,
+		glfwbackend.GLFWKeyRightControl: KeyRightControl,
+		glfwbackend.GLFWKeyRightAlt:     KeyRightAlt,
+		glfwbackend.GLFWKeyRightSuper:   KeyRightSuper,
+		glfwbackend.GLFWKeyMenu:         KeyMenu,
+		glfwbackend.GLFWKeyWorld1:       KeyWorld1,
+		glfwbackend.GLFWKeyWorld2:       KeyWorld2,
+		-1:                              KeyUnknown,
 	}
 
 	if v, ok := data[k]; ok {
@@ -253,12 +254,12 @@ type Modifier imgui.Key
 // modifier keys.
 const (
 	ModNone     Modifier = 0
-	ModControl           = Modifier(imgui.GLFWModControl)
-	ModAlt               = Modifier(imgui.GLFWModAlt)
-	ModSuper             = Modifier(imgui.GLFWModSuper)
-	ModShift             = Modifier(imgui.GLFWModShift)
-	ModCapsLock          = Modifier(imgui.GLFWModCapsLock)
-	ModNumLock           = Modifier(imgui.GLFWModNumLock)
+	ModControl           = Modifier(glfwbackend.GLFWModControl)
+	ModAlt               = Modifier(glfwbackend.GLFWModAlt)
+	ModSuper             = Modifier(glfwbackend.GLFWModSuper)
+	ModShift             = Modifier(glfwbackend.GLFWModShift)
+	ModCapsLock          = Modifier(glfwbackend.GLFWModCapsLock)
+	ModNumLock           = Modifier(glfwbackend.GLFWModNumLock)
 )
 
 type Action int

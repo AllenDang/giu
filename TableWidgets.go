@@ -3,7 +3,7 @@ package giu
 import (
 	"image/color"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 )
 
 type TableRowWidget struct {

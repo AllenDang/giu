@@ -8,7 +8,7 @@ import (
 	"sync"
 	"unsafe"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 	"github.com/AllenDang/go-findfont"
 )
 

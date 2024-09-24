@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"image/color"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 )
 
 var _ Widget = &RowWidget{}
@@ -69,7 +69,7 @@ type ChildWidget struct {
 func (c *ChildWidget) Build() {
 	if imgui.BeginChildStrV(c.id.String(), imgui.Vec2{X: c.width, Y: c.height}, func() imgui.ChildFlags {
 		if c.border {
-			return imgui.ChildFlagsBorder
+			return imgui.ChildFlagsBorders
 		}
 
 		return 0

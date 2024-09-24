@@ -3,21 +3,21 @@ package giu
 import (
 	"image"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/implot"
 )
 
 type (
-	PlotXAxis = imgui.PlotAxisEnum
-	PlotYAxis = imgui.PlotAxisEnum
+	PlotXAxis = implot.PlotAxisEnum
+	PlotYAxis = implot.PlotAxisEnum
 )
 
 const (
-	AxisX1 = imgui.AxisX1
-	AxisX2 = imgui.AxisX2
-	AxisX3 = imgui.AxisX3
-	AxisY1 = imgui.AxisY1
-	AxisY2 = imgui.AxisY2
-	AxisY3 = imgui.AxisY3
+	AxisX1 = implot.AxisX1
+	AxisX2 = implot.AxisX2
+	AxisX3 = implot.AxisX3
+	AxisY1 = implot.AxisY1
+	AxisY2 = implot.AxisY2
+	AxisY3 = implot.AxisY3
 )
 
 // PlotWidget is implemented by all the particular plots, which can be used
@@ -212,27 +212,27 @@ func (p *PlotCanvasWidget) Build() {
 		return
 	}
 
-	if imgui.PlotBeginPlotV(
+	if implot.PlotBeginPlotV(
 		Context.FontAtlas.RegisterString(p.title),
 		ToVec2(image.Pt(p.width, p.height)),
-		imgui.PlotFlags(p.flags),
+		implot.PlotFlags(p.flags),
 	) {
-		imgui.PlotSetupAxisLimitsV(
-			imgui.AxisX1,
+		implot.PlotSetupAxisLimitsV(
+			implot.AxisX1,
 			p.xMin,
 			p.xMax,
-			imgui.PlotCond(p.axisLimitCondition),
+			implot.PlotCond(p.axisLimitCondition),
 		)
-		imgui.PlotSetupAxisLimitsV(
-			imgui.AxisY1,
+		implot.PlotSetupAxisLimitsV(
+			implot.AxisY1,
 			p.yMin,
 			p.yMax,
-			imgui.PlotCond(p.axisLimitCondition),
+			implot.PlotCond(p.axisLimitCondition),
 		)
 
 		if len(p.xTicksValue) > 0 {
-			imgui.PlotSetupAxisTicksdoublePtrV(
-				imgui.AxisX1,
+			implot.PlotSetupAxisTicksdoublePtrV(
+				implot.AxisX1,
 				&p.xTicksValue,
 				int32(len(p.xTicksValue)),
 				p.xTicksLabel,
@@ -241,8 +241,8 @@ func (p *PlotCanvasWidget) Build() {
 		}
 
 		if len(p.yTicksValue) > 0 {
-			imgui.PlotSetupAxisTicksdoublePtrV(
-				imgui.AxisY1,
+			implot.PlotSetupAxisTicksdoublePtrV(
+				implot.AxisY1,
 				&p.yTicksValue,
 				int32(len(p.yTicksValue)),
 				p.yTicksLabel,
@@ -250,31 +250,31 @@ func (p *PlotCanvasWidget) Build() {
 			)
 		}
 
-		imgui.PlotSetupAxisV(
-			imgui.AxisX1,
+		implot.PlotSetupAxisV(
+			implot.AxisX1,
 			Context.FontAtlas.RegisterString(p.xLabel),
-			imgui.PlotAxisFlags(p.xFlags),
+			implot.PlotAxisFlags(p.xFlags),
 		)
 
-		imgui.PlotSetupAxisV(
-			imgui.AxisY1,
+		implot.PlotSetupAxisV(
+			implot.AxisY1,
 			Context.FontAtlas.RegisterString(p.yLabel),
-			imgui.PlotAxisFlags(p.yFlags),
+			implot.PlotAxisFlags(p.yFlags),
 		)
 
 		if p.y2Label != "" {
-			imgui.PlotSetupAxisV(
-				imgui.AxisY2,
+			implot.PlotSetupAxisV(
+				implot.AxisY2,
 				Context.FontAtlas.RegisterString(p.y2Label),
-				imgui.PlotAxisFlags(p.y2Flags),
+				implot.PlotAxisFlags(p.y2Flags),
 			)
 		}
 
 		if p.y3Label != "" {
-			imgui.PlotSetupAxisV(
-				imgui.AxisY3,
+			implot.PlotSetupAxisV(
+				implot.AxisY3,
 				Context.FontAtlas.RegisterString(p.y3Label),
-				imgui.PlotAxisFlags(p.y3Flags),
+				implot.PlotAxisFlags(p.y3Flags),
 			)
 		}
 
@@ -282,13 +282,13 @@ func (p *PlotCanvasWidget) Build() {
 			plot.Plot()
 		}
 
-		imgui.PlotEndPlot()
+		implot.PlotEndPlot()
 	}
 }
 
 func SwitchPlotAxes(x PlotXAxis, y PlotYAxis) PlotWidget {
 	return Custom(func() {
-		imgui.PlotSetAxes(x, y)
+		implot.PlotSetAxes(x, y)
 	})
 }
 
@@ -331,7 +331,7 @@ func (p *BarPlot) Offset(offset int) *BarPlot {
 
 // Plot implements Plot interface.
 func (p *BarPlot) Plot() {
-	imgui.PlotPlotBarsdoublePtrIntV(
+	implot.PlotPlotBarsdoublePtrIntV(
 		p.title,
 		&p.data,
 		int32(len(p.data)),
@@ -383,13 +383,13 @@ func (p *BarHPlot) Offset(offset int) *BarHPlot {
 
 // Plot implements plot interface.
 func (p *BarHPlot) Plot() {
-	imgui.PlotPlotBarsdoublePtrIntV(
+	implot.PlotPlotBarsdoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.title),
 		&p.data,
 		int32(len(p.data)),
 		p.height,
 		p.shift,
-		imgui.PlotBarsFlagsHorizontal,
+		implot.PlotBarsFlagsHorizontal,
 		int32(p.offset),
 		0,
 	)
@@ -441,11 +441,11 @@ func (p *LinePlot) Offset(offset int) *LinePlot {
 
 // Plot implements Plot interface.
 func (p *LinePlot) Plot() {
-	imgui.PlotSetAxis(
-		imgui.PlotAxisEnum(p.yAxis),
+	implot.PlotSetAxis(
+		implot.PlotAxisEnum(p.yAxis),
 	)
 
-	imgui.PlotPlotLinedoublePtrIntV(
+	implot.PlotPlotLinedoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.title),
 		&p.values,
 		int32(len(p.values)),
@@ -489,8 +489,8 @@ func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
 
 // Plot implements Plot interface.
 func (p *LineXYPlot) Plot() {
-	imgui.PlotSetAxis(imgui.PlotAxisEnum(p.yAxis))
-	imgui.PlotPlotLinedoublePtrdoublePtrV(
+	implot.PlotSetAxis(implot.PlotAxisEnum(p.yAxis))
+	implot.PlotPlotLinedoublePtrdoublePtrV(
 		Context.FontAtlas.RegisterString(p.title),
 		&p.xs,
 		&p.ys,
@@ -543,7 +543,7 @@ func (p *PieChartPlot) Angle0(a float64) *PieChartPlot {
 
 func (p *PieChartPlot) Plot() {
 	// TODO: p.normalized not used anymore - replace with flags
-	imgui.PlotPlotPieChartdoublePtrStrV(
+	implot.PlotPlotPieChartdoublePtrStrV(
 		Context.FontAtlas.RegisterStringSlice(p.labels),
 		&p.values,
 		int32(len(p.values)),
@@ -552,7 +552,7 @@ func (p *PieChartPlot) Plot() {
 		p.radius,
 		p.labelFormat,
 		p.angle0,
-		imgui.PlotPieChartFlagsNormalize,
+		implot.PlotPieChartFlagsNormalize,
 	)
 }
 
@@ -589,7 +589,7 @@ func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
 }
 
 func (p *ScatterPlot) Plot() {
-	imgui.PlotPlotScatterdoublePtrIntV(
+	implot.PlotPlotScatterdoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.label),
 		&p.values,
 		int32(len(p.values)),
@@ -622,7 +622,7 @@ func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
 }
 
 func (p *ScatterXYPlot) Plot() {
-	imgui.PlotPlotScatterdoublePtrdoublePtrV(
+	implot.PlotPlotScatterdoublePtrdoublePtrV(
 		Context.FontAtlas.RegisterString(p.label),
 		&p.xs,
 		&p.ys,

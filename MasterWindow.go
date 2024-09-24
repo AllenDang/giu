@@ -6,7 +6,11 @@ import (
 	"image/color"
 	"runtime"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/backend"
+	"github.com/AllenDang/cimgui-go/backend/glfwbackend"
+	"github.com/AllenDang/cimgui-go/imgui"
+	"github.com/AllenDang/cimgui-go/imnodes"
+	"github.com/AllenDang/cimgui-go/implot"
 	"golang.org/x/image/colornames"
 )
 
@@ -29,18 +33,18 @@ const (
 	MasterWindowFlagsHidden
 )
 
-// parseAndApply converts MasterWindowFlags to appropriate imgui.GLFWWindowFlags.
-func (m MasterWindowFlags) parseAndApply(b imgui.Backend[imgui.GLFWWindowFlags]) {
+// parseAndApply converts MasterWindowFlags to appropriate glfwbackend.GLFWWindowFlags.
+func (m MasterWindowFlags) parseAndApply(b backend.Backend[glfwbackend.GLFWWindowFlags]) {
 	data := map[MasterWindowFlags]struct {
-		f     imgui.GLFWWindowFlags
+		f     glfwbackend.GLFWWindowFlags
 		value int // value isn't always true (sometimes false). Also WindowHint takes int not bool
 	}{
-		MasterWindowFlagsNotResizable: {imgui.GLFWWindowFlagsResizable, 0},
-		MasterWindowFlagsMaximized:    {imgui.GLFWWindowFlagsMaximized, 1},
-		MasterWindowFlagsFloating:     {imgui.GLFWWindowFlagsFloating, 1},
-		MasterWindowFlagsFrameless:    {imgui.GLFWWindowFlagsDecorated, 0},
-		MasterWindowFlagsTransparent:  {imgui.GLFWWindowFlagsTransparent, 1},
-		MasterWindowFlagsHidden:       {imgui.GLFWWindowFlagsVisible, 0},
+		MasterWindowFlagsNotResizable: {glfwbackend.GLFWWindowFlagsResizable, 0},
+		MasterWindowFlagsMaximized:    {glfwbackend.GLFWWindowFlagsMaximized, 1},
+		MasterWindowFlagsFloating:     {glfwbackend.GLFWWindowFlagsFloating, 1},
+		MasterWindowFlagsFrameless:    {glfwbackend.GLFWWindowFlagsDecorated, 0},
+		MasterWindowFlagsTransparent:  {glfwbackend.GLFWWindowFlagsTransparent, 1},
+		MasterWindowFlagsHidden:       {glfwbackend.GLFWWindowFlagsVisible, 0},
 	}
 
 	for flag, d := range data {
@@ -57,7 +61,7 @@ func (m MasterWindowFlags) parseAndApply(b imgui.Backend[imgui.GLFWWindowFlags])
 // MasterWindow represents a glfw master window
 // It is a base for a windows (see Window.go).
 type MasterWindow struct {
-	backend imgui.Backend[imgui.GLFWWindowFlags]
+	backend backend.Backend[glfwbackend.GLFWWindowFlags]
 
 	width      int
 	height     int
@@ -77,8 +81,8 @@ type MasterWindow struct {
 // see examples/helloworld/.
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
 	imGuiContext := imgui.CreateContext()
-	imgui.PlotCreateContext()
-	imgui.ImNodesCreateContext()
+	implot.PlotCreateContext()
+	imnodes.ImNodesCreateContext()
 
 	io := imgui.CurrentIO()
 
@@ -89,13 +93,13 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	// Disable imgui.ini
 	io.SetIniFilename("")
 
-	backend, err := imgui.CreateBackend(imgui.NewGLFWBackend())
-	if err != nil && !errors.Is(err, imgui.CExposerError) {
+	currentBackend, err := backend.CreateBackend(glfwbackend.NewGLFWBackend())
+	if err != nil && !errors.Is(err, backend.CExposerError) {
 		panic(err)
 	}
 
 	// Create GIU context
-	Context = CreateContext(backend)
+	Context = CreateContext(currentBackend)
 
 	mw := &MasterWindow{
 		clearColor: imgui.Vec4{X: 0, Y: 0, Z: 0, W: 1},
@@ -104,14 +108,14 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		title:      title,
 		io:         io,
 		context:    imGuiContext,
-		backend:    backend,
+		backend:    currentBackend,
 	}
 
-	backend.SetBeforeRenderHook(mw.beforeRender)
-	backend.SetAfterRenderHook(mw.afterRender)
-	backend.SetBeforeDestroyContextHook(mw.beforeDestroy)
-	flags.parseAndApply(backend)
-	backend.CreateWindow(title, width, height)
+	currentBackend.SetBeforeRenderHook(mw.beforeRender)
+	currentBackend.SetAfterRenderHook(mw.afterRender)
+	currentBackend.SetBeforeDestroyContextHook(mw.beforeDestroy)
+	flags.parseAndApply(currentBackend)
+	currentBackend.CreateWindow(title, width, height)
 
 	mw.SetInputHandler(newInputHandler())
 
@@ -169,9 +173,9 @@ func (w *MasterWindow) setTheme() (fin func()) {
 	imgui.PushStyleColorVec4(imgui.ColResizeGripActive, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.95})
 	imgui.PushStyleColorVec4(imgui.ColTab, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
 	imgui.PushStyleColorVec4(imgui.ColTabHovered, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.80})
-	imgui.PushStyleColorVec4(imgui.ColTabActive, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
-	imgui.PushStyleColorVec4(imgui.ColTabUnfocused, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
-	imgui.PushStyleColorVec4(imgui.ColTabUnfocusedActive, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTabSelected, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTabDimmed, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColTabDimmedSelected, imgui.Vec4{X: 0.11, Y: 0.15, Z: 0.17, W: 1.00})
 	imgui.PushStyleColorVec4(imgui.ColPlotLines, imgui.Vec4{X: 0.61, Y: 0.61, Z: 0.61, W: 1.00})
 	imgui.PushStyleColorVec4(imgui.ColPlotLinesHovered, imgui.Vec4{X: 1.00, Y: 0.43, Z: 0.35, W: 1.00})
 	imgui.PushStyleColorVec4(imgui.ColPlotHistogram, imgui.Vec4{X: 0.90, Y: 0.70, Z: 0.00, W: 1.00})
@@ -212,8 +216,8 @@ func (w *MasterWindow) afterRender() {
 }
 
 func (w *MasterWindow) beforeDestroy() {
-	imgui.PlotDestroyContext()
-	imgui.ImNodesDestroyContext()
+	implot.PlotDestroyContext()
+	imnodes.ImNodesDestroyContext()
 }
 
 func (w *MasterWindow) render() {
@@ -320,7 +324,7 @@ func (w *MasterWindow) SetSize(x, y int) {
 // Mac OS X: Selecting Quit from the application menu will trigger the close
 // callback for all windows.
 func (w *MasterWindow) SetCloseCallback(cb func() bool) {
-	w.backend.SetCloseCallback(func(b imgui.Backend[imgui.GLFWWindowFlags]) {
+	w.backend.SetCloseCallback(func(b backend.Backend[glfwbackend.GLFWWindowFlags]) {
 		b.SetShouldClose(cb())
 	})
 }
@@ -391,7 +395,7 @@ func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 	Context.InputHandler = handler
 
 	w.backend.SetKeyCallback(func(key, scanCode, action, modifier int) {
-		k, m, a := keyFromGLFWKey(imgui.GLFWKey(key)), Modifier(modifier), Action(action)
+		k, m, a := keyFromGLFWKey(glfwbackend.GLFWKey(key)), Modifier(modifier), Action(action)
 		handler.Handle(k, m, a)
 
 		if w.additionalInputCallback != nil {
