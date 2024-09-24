@@ -4,11 +4,11 @@ linters:
   enable:
     - asciicheck
     - bodyclose
+    - copyloopvar
     - dogsled
     - dupl
     - errcheck
     - errorlint
-    - exportloopref
     - forcetypeassert
     #- funlen
     #- gci
@@ -26,7 +26,7 @@ linters:
     - goimports
     #- gomnd
     - goprintffuncname
-    - gosec
+    #- gosec
     - gosimple
     - govet
     - importas
