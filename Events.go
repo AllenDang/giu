@@ -1,6 +1,6 @@
 package giu
 
-import imgui "github.com/AllenDang/cimgui-go"
+import "github.com/AllenDang/cimgui-go/imgui"
 
 // MouseButton represents imgui.MouseButton.
 type MouseButton imgui.MouseButton

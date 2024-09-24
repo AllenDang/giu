@@ -1,6 +1,6 @@
 package giu
 
-import imgui "github.com/AllenDang/cimgui-go"
+import "github.com/AllenDang/cimgui-go/imgui"
 
 // Direction represents a ArrowButton direction.
 type Direction imgui.Dir

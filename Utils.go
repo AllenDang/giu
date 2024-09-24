@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 	"github.com/pkg/browser"
 )
 

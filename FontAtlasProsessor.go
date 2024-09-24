@@ -8,7 +8,7 @@ import (
 	"sync"
 	"unsafe"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 	"github.com/AllenDang/go-findfont"
 )
 
@@ -290,7 +290,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			} else {
 				fontConfig.SetFontDataOwnedByAtlas(false)
 				fonts.AddFontFromMemoryTTFV(
-					uintptr(unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte))), //nolint:gosec // we need this here
+					uintptr(unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte))),
 					int32(len(fontInfo.fontByte)),
 					fontInfo.size,
 					fontConfig,
@@ -328,7 +328,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			fontConfig := imgui.NewFontConfig()
 			fontConfig.SetFontDataOwnedByAtlas(false)
 			f = fonts.AddFontFromMemoryTTFV(
-				uintptr(unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte))), //nolint:gosec // we need this here
+				uintptr(unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte))),
 				int32(len(fontInfo.fontByte)),
 				fontInfo.size,
 				fontConfig,

@@ -3,13 +3,14 @@ package giu
 import (
 	"image"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/backend"
+	"github.com/AllenDang/cimgui-go/imgui"
 )
 
 // Texture represents imgui.TextureID.
 // It is base unit of images in imgui.
 type Texture struct {
-	tex *imgui.Texture
+	tex *backend.Texture
 }
 
 type textureLoadRequest struct {
@@ -27,14 +28,14 @@ func EnqueueNewTextureFromRgba(rgba image.Image, loadCb func(t *Texture)) {
 
 // NewTextureFromRgba creates a new texture from image.Image and, when it is done, calls loadCallback(loadedTexture).
 func NewTextureFromRgba(rgba image.Image, loadCallback func(*Texture)) {
-	tex := imgui.NewTextureFromRgba(ImageToRgba(rgba))
+	tex := backend.NewTextureFromRgba(ImageToRgba(rgba))
 	loadCallback(&Texture{
 		tex,
 	})
 }
 
-// ToTexture converts imgui.Texture to Texture.
-func ToTexture(texture *imgui.Texture) *Texture {
+// ToTexture converts backend.Texture to Texture.
+func ToTexture(texture *backend.Texture) *Texture {
 	return &Texture{tex: texture}
 }
 

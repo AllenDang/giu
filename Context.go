@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"sync"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/backend"
+	"github.com/AllenDang/cimgui-go/backend/glfwbackend"
+	"github.com/AllenDang/cimgui-go/imgui"
 	"gopkg.in/eapache/queue.v1"
 )
 
@@ -42,7 +44,7 @@ type state struct {
 }
 
 type context struct {
-	backend imgui.Backend[imgui.GLFWWindowFlags]
+	backend backend.Backend[glfwbackend.GLFWWindowFlags]
 
 	isRunning bool
 
@@ -64,7 +66,7 @@ type context struct {
 	m *sync.Mutex
 }
 
-func CreateContext(b imgui.Backend[imgui.GLFWWindowFlags]) *context {
+func CreateContext(b backend.Backend[glfwbackend.GLFWWindowFlags]) *context {
 	result := context{
 		cssStylesheet:       make(cssStylesheet),
 		backend:             b,
@@ -125,7 +127,7 @@ func (c *context) cleanState() {
 	c.widgetIndex = make(map[string]int)
 }
 
-func (c *context) Backend() imgui.Backend[imgui.GLFWWindowFlags] {
+func (c *context) Backend() backend.Backend[glfwbackend.GLFWWindowFlags] {
 	return c.backend
 }
 
@@ -144,7 +146,7 @@ func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 		c.m.Unlock()
 
 		data, isOk := s.data.(PT)
-		Assert(isOk, "Context", "GetState", fmt.Sprintf("got state of unexpected type: expected %T, instead found %T", new(T), s.data))
+		Assert(isOk, "Context", "GetState", "got state of unexpected type: expected %T, instead found %T", new(T), s.data)
 
 		return data
 	}

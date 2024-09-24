@@ -41,45 +41,55 @@ func _() {
 	_ = x[StyleColorResizeGrip-30]
 	_ = x[StyleColorResizeGripHovered-31]
 	_ = x[StyleColorResizeGripActive-32]
-	_ = x[StyleColorTab-33]
-	_ = x[StyleColorTabHovered-34]
+	_ = x[StyleColorTab-34]
+	_ = x[StyleColorTabHovered-33]
 	_ = x[StyleColorTabActive-35]
-	_ = x[StyleColorTabUnfocused-36]
-	_ = x[StyleColorTabUnfocusedActive-37]
-	_ = x[StyleColorPlotLines-40]
-	_ = x[StyleColorPlotLinesHovered-41]
-	_ = x[StyleColorPlotHistogram-42]
-	_ = x[StyleColorPlotHistogramHovered-43]
-	_ = x[StyleColorTableHeaderBg-44]
-	_ = x[StyleColorTableBorderStrong-45]
-	_ = x[StyleColorTableBorderLight-46]
-	_ = x[StyleColorTableRowBg-47]
-	_ = x[StyleColorTableRowBgAlt-48]
-	_ = x[StyleColorTextSelectedBg-49]
-	_ = x[StyleColorDragDropTarget-50]
-	_ = x[StyleColorNavHighlight-51]
-	_ = x[StyleColorNavWindowingHighlight-52]
-	_ = x[StyleColorNavWindowingDimBg-53]
-	_ = x[StyleColorModalWindowDimBg-54]
+	_ = x[StyleColorTabUnfocused-37]
+	_ = x[StyleColorTabUnfocusedActive-38]
+	_ = x[StyleColorPlotLines-42]
+	_ = x[StyleColorPlotLinesHovered-43]
+	_ = x[StyleColorPlotHistogram-44]
+	_ = x[StyleColorPlotHistogramHovered-45]
+	_ = x[StyleColorTableHeaderBg-46]
+	_ = x[StyleColorTableBorderStrong-47]
+	_ = x[StyleColorTableBorderLight-48]
+	_ = x[StyleColorTableRowBg-49]
+	_ = x[StyleColorTableRowBgAlt-50]
+	_ = x[StyleColorTextSelectedBg-52]
+	_ = x[StyleColorDragDropTarget-53]
+	_ = x[StyleColorNavHighlight-54]
+	_ = x[StyleColorNavWindowingHighlight-55]
+	_ = x[StyleColorNavWindowingDimBg-56]
+	_ = x[StyleColorModalWindowDimBg-57]
 }
 
 const (
-	_StyleColorID_name_0 = "colordisabled-colorbackground-colorchild-background-colorpopup-background-colorborder-colorborder-shadow-colorframe-background-colorframe-background-hovered-colorframe-background-active-colortitle-background-colortitle-background-active-colortitle-background-collapsed-colormenu-bar-background-colorscrollbar-background-colorscrollbar-grab-colorscrollbar-grab-hovered-colorscrollbar-grab-active-colorcheckmark-colorslider-grab-colorslider-grab-active-colorbutton-colorbutton-hovered-colorbutton-active-colorheader-colorheader-hovered-colorheader-active-colorseparator-colorseparator-hovered-colorseparator-active-colorresize-grip-colorresize-grip-hovered-colorresize-grip-active-colortab-colortab-hovered-colortab-active-colortab-unfocused-colortab-unfocused-active-color"
-	_StyleColorID_name_1 = "plot-lines-colorplot-lines-hovered-colorplot-histogram-colorplot-histogram-hovered-colortable-header-background-colortable-border-strong-colortable-border-light-colortable-row-background-colortable-row-alternate-background-colortext-selected-background-colordrag-drop-target-colornavigation-highlight-colorwindowing-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
+	_StyleColorID_name_0 = "colordisabled-colorbackground-colorchild-background-colorpopup-background-colorborder-colorborder-shadow-colorframe-background-colorframe-background-hovered-colorframe-background-active-colortitle-background-colortitle-background-active-colortitle-background-collapsed-colormenu-bar-background-colorscrollbar-background-colorscrollbar-grab-colorscrollbar-grab-hovered-colorscrollbar-grab-active-colorcheckmark-colorslider-grab-colorslider-grab-active-colorbutton-colorbutton-hovered-colorbutton-active-colorheader-colorheader-hovered-colorheader-active-colorseparator-colorseparator-hovered-colorseparator-active-colorresize-grip-colorresize-grip-hovered-colorresize-grip-active-colortab-hovered-colortab-colortab-active-color"
+	_StyleColorID_name_1 = "tab-unfocused-colortab-unfocused-active-color"
+	_StyleColorID_name_2 = "plot-lines-colorplot-lines-hovered-colorplot-histogram-colorplot-histogram-hovered-colortable-header-background-colortable-border-strong-colortable-border-light-colortable-row-background-colortable-row-alternate-background-color"
+	_StyleColorID_name_3 = "text-selected-background-colordrag-drop-target-colornavigation-highlight-colorwindowing-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
 )
 
 var (
-	_StyleColorID_index_0 = [...]uint16{0, 5, 19, 35, 57, 79, 91, 110, 132, 162, 191, 213, 242, 274, 299, 325, 345, 373, 400, 415, 432, 456, 468, 488, 507, 519, 539, 558, 573, 596, 618, 635, 660, 684, 693, 710, 726, 745, 771}
-	_StyleColorID_index_1 = [...]uint16{0, 16, 40, 60, 88, 117, 142, 166, 192, 228, 258, 280, 306, 331, 361, 394}
+	_StyleColorID_index_0 = [...]uint16{0, 5, 19, 35, 57, 79, 91, 110, 132, 162, 191, 213, 242, 274, 299, 325, 345, 373, 400, 415, 432, 456, 468, 488, 507, 519, 539, 558, 573, 596, 618, 635, 660, 684, 701, 710, 726}
+	_StyleColorID_index_1 = [...]uint8{0, 19, 45}
+	_StyleColorID_index_2 = [...]uint8{0, 16, 40, 60, 88, 117, 142, 166, 192, 228}
+	_StyleColorID_index_3 = [...]uint8{0, 30, 52, 78, 103, 133, 166}
 )
 
 func (i StyleColorID) String() string {
 	switch {
-	case 0 <= i && i <= 37:
+	case 0 <= i && i <= 35:
 		return _StyleColorID_name_0[_StyleColorID_index_0[i]:_StyleColorID_index_0[i+1]]
-	case 40 <= i && i <= 54:
-		i -= 40
+	case 37 <= i && i <= 38:
+		i -= 37
 		return _StyleColorID_name_1[_StyleColorID_index_1[i]:_StyleColorID_index_1[i+1]]
+	case 42 <= i && i <= 50:
+		i -= 42
+		return _StyleColorID_name_2[_StyleColorID_index_2[i]:_StyleColorID_index_2[i+1]]
+	case 52 <= i && i <= 57:
+		i -= 52
+		return _StyleColorID_name_3[_StyleColorID_index_3[i]:_StyleColorID_index_3[i+1]]
 	default:
 		return "StyleColorID(" + strconv.FormatInt(int64(i), 10) + ")"
 	}
@@ -111,22 +121,36 @@ func _() {
 	_ = x[StyleVarGrabMinSize-20]
 	_ = x[StyleVarGrabRounding-21]
 	_ = x[StyleVarTabRounding-22]
-	_ = x[StyleVarTabBarBorderSize-23]
-	_ = x[StyleVarButtonTextAlign-24]
-	_ = x[StyleVarSelectableTextAlign-25]
-	_ = x[StyleVarSeparatorTextBorderSize-26]
-	_ = x[StyleVarSeparatorTextAlign-27]
-	_ = x[StyleVarSeparatorTextPadding-28]
-	_ = x[StyleVarDockingSeparatorSize-29]
+	_ = x[StyleVarTabBarBorderSize-24]
+	_ = x[StyleVarButtonTextAlign-28]
+	_ = x[StyleVarSelectableTextAlign-29]
+	_ = x[StyleVarSeparatorTextBorderSize-30]
+	_ = x[StyleVarSeparatorTextAlign-31]
+	_ = x[StyleVarSeparatorTextPadding-32]
+	_ = x[StyleVarDockingSeparatorSize-33]
 }
 
-const _StyleVarID_name = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-minValue-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacingStyleVarCellPaddingscrollbar-sizescrollbar-roundinggrab-minValue-sizegrab-roundingtab-roundingStyleVarTabBarBorderSizebutton-text-alignselectable-text-alignStyleVarSeparatorTextBorderSizeStyleVarSeparatorTextAlignStyleVarSeparatorTextPaddingStyleVarDockingSeparatorSize"
+const (
+	_StyleVarID_name_0 = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-minValue-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacingStyleVarCellPaddingscrollbar-sizescrollbar-roundinggrab-minValue-sizegrab-roundingtab-rounding"
+	_StyleVarID_name_1 = "StyleVarTabBarBorderSize"
+	_StyleVarID_name_2 = "button-text-alignselectable-text-alignStyleVarSeparatorTextBorderSizeStyleVarSeparatorTextAlignStyleVarSeparatorTextPaddingStyleVarDockingSeparatorSize"
+)
 
-var _StyleVarID_index = [...]uint16{0, 5, 19, 33, 48, 66, 86, 104, 118, 135, 149, 166, 179, 193, 210, 222, 240, 254, 273, 287, 305, 323, 336, 348, 372, 389, 410, 441, 467, 495, 523}
+var (
+	_StyleVarID_index_0 = [...]uint16{0, 5, 19, 33, 48, 66, 86, 104, 118, 135, 149, 166, 179, 193, 210, 222, 240, 254, 273, 287, 305, 323, 336, 348}
+	_StyleVarID_index_2 = [...]uint8{0, 17, 38, 69, 95, 123, 151}
+)
 
 func (i StyleVarID) String() string {
-	if i < 0 || i >= StyleVarID(len(_StyleVarID_index)-1) {
+	switch {
+	case 0 <= i && i <= 22:
+		return _StyleVarID_name_0[_StyleVarID_index_0[i]:_StyleVarID_index_0[i+1]]
+	case i == 24:
+		return _StyleVarID_name_1
+	case 28 <= i && i <= 33:
+		i -= 28
+		return _StyleVarID_name_2[_StyleVarID_index_2[i]:_StyleVarID_index_2[i+1]]
+	default:
 		return "StyleVarID(" + strconv.FormatInt(int64(i), 10) + ")"
 	}
-	return _StyleVarID_name[_StyleVarID_index[i]:_StyleVarID_index[i+1]]
 }

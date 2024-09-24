@@ -6,7 +6,7 @@ import (
 
 	"golang.org/x/image/colornames"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 	"github.com/sahilm/fuzzy"
 )
 
