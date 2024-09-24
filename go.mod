@@ -1,9 +1,11 @@
 module github.com/AllenDang/giu
 
-go 1.21
+go 1.22
+
+toolchain go1.23.1
 
 require (
-	github.com/AllenDang/cimgui-go v0.0.0-20240806122035-9ebf619d1d03
+	github.com/AllenDang/cimgui-go v1.0.0
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
 	github.com/mazznoer/csscolorparser v0.1.5
@@ -21,6 +23,6 @@ require (
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.design/x/mainthread v0.3.0 // indirect
-	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/sys v0.20.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
