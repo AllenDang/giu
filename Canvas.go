@@ -4,7 +4,7 @@ import (
 	"image"
 	"image/color"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 )
 
 // Canvas represents imgui.DrawList

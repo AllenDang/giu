@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"image"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 )
 
 // These constants holds information about where GetWidgetWidth should proceed their
