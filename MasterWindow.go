@@ -81,6 +81,7 @@ type MasterWindow struct {
 // see examples/helloworld/.
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
 	imGuiContext := imgui.CreateContext()
+
 	implot.PlotCreateContext()
 	imnodes.ImNodesCreateContext()
 

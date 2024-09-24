@@ -535,7 +535,6 @@ func (d *DatePickerWidget) Build() {
 			var row []Widget
 
 			for _, day := range week {
-				day := day // hack for golang ranges
 				if day == 0 {
 					row = append(row, Label(" "))
 					continue

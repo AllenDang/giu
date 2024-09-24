@@ -290,8 +290,8 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			} else {
 				fontConfig.SetFontDataOwnedByAtlas(false)
 				fonts.AddFontFromMemoryTTFV(
-					uintptr(unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte))),
-					int32(len(fontInfo.fontByte)),
+					uintptr(unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte))), //nolint:gosec // we need this here
+					int32(len(fontInfo.fontByte)),                                // nolint:gosec // no risk heree I think, its cimgui-go API
 					fontInfo.size,
 					fontConfig,
 					ranges.Data(),
@@ -328,8 +328,8 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			fontConfig := imgui.NewFontConfig()
 			fontConfig.SetFontDataOwnedByAtlas(false)
 			f = fonts.AddFontFromMemoryTTFV(
-				uintptr(unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte))),
-				int32(len(fontInfo.fontByte)),
+				uintptr(unsafe.Pointer(imgui.SliceToPtr(fontInfo.fontByte))), //nolint:gosec // we need this here
+				int32(len(fontInfo.fontByte)),                                // nolint:gosec // no risk heree I think, its cimgui-go API
 				fontInfo.size,
 				fontConfig,
 				ranges.Data(),
