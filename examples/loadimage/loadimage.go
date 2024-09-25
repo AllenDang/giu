@@ -8,7 +8,7 @@ import (
 	"log"
 	"time"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 	g "github.com/AllenDang/giu"
 )
 
@@ -23,11 +23,9 @@ var (
 
 func loop() {
 	var start_pos image.Point
-	var window_size imgui.Vec2
 	g.SingleWindow().Layout(
 		g.Custom(func() {
 			start_pos = g.GetCursorScreenPos()
-			window_size = imgui.WindowSize()
 		}),
 		g.Label("Display wich has size of contentAvaiable (stretch)"),
 		fromfile.ToImageWidget().OnClick(func() {
@@ -62,7 +60,7 @@ func loop() {
 			scale := imgui.Vec2{0.10, 0.10}
 			p_min := imgui.Vec2{computed_posX, computed_posY}
 			p_max := imgui.Vec2{computed_posX + float32(size.X)*scale.X, computed_posY + float32(size.Y)*scale.Y}
-			imgui.ForegroundDrawList().AddImage(fromurl.Texture().ID(), p_min, p_max)
+			imgui.ForegroundDrawListViewportPtr().AddImage(fromurl.Texture().ID(), p_min, p_max)
 		}),
 
 		/*

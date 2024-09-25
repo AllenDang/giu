@@ -7,7 +7,7 @@ import (
 	"image/color"
 	"sync"
 
-	imgui "github.com/AllenDang/cimgui-go"
+	"github.com/AllenDang/cimgui-go/imgui"
 )
 
 func defaultSurface() *image.RGBA {
