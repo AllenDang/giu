@@ -2,6 +2,7 @@ package giu
 
 import (
 	go_ctx "context"
+	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
@@ -21,14 +22,16 @@ func (i *ReflectiveBoundTexture) LoadSurfaceFunc(fn SurfaceLoaderFunc, commit bo
 	if err != nil {
 		return err
 	}
+
 	return i.SetSurfaceFromRGBA(img, commit)
 }
 
 func (i *ReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commit bool) error {
 	img, err := loader.ServeRGBA()
 	if err != nil {
-		return err
+		return fmt.Errorf("in ReflectiveBoundTexture LoadSurface after loader.ServeRGBA: %w", err)
 	}
+
 	return i.SetSurfaceFromRGBA(img, commit)
 }
 
@@ -43,6 +46,7 @@ func (f *fileLoader) ServeRGBA() (*image.RGBA, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return img, nil
 }
 
@@ -65,14 +69,17 @@ type urlLoader struct {
 
 func (u *urlLoader) ServeRGBA() (*image.RGBA, error) {
 	client := &http.Client{Timeout: u.timeout}
+
 	req, err := http.NewRequestWithContext(go_ctx.Background(), "GET", u.url, http.NoBody)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("urlLoader serveRGBA after http.NewRequestWithContext: %w", err)
 	}
+
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("urlLoader serveRGBA after client.Do: %w", err)
 	}
+
 	defer func() {
 		err := resp.Body.Close()
 		if err != nil {
@@ -82,8 +89,9 @@ func (u *urlLoader) ServeRGBA() (*image.RGBA, error) {
 
 	img, _, err := image.Decode(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("urlLoader serveRGBA after image.Decode: %w", err)
 	}
+
 	return ImageToRgba(img), nil
 }
 
@@ -106,7 +114,8 @@ type uniformLoader struct {
 
 func (u *uniformLoader) ServeRGBA() (*image.RGBA, error) {
 	img := image.NewRGBA(image.Rect(0, 0, u.width, u.height))
-	draw.Draw(img, img.Bounds(), &image.Uniform{u.color}, image.ZP, draw.Src)
+	draw.Draw(img, img.Bounds(), &image.Uniform{u.color}, image.Point{}, draw.Src)
+
 	return img, nil
 }
 

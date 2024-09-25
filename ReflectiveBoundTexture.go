@@ -1,6 +1,7 @@
 package giu
 
 import (
+	"errors"
 	"fmt"
 	"hash/crc32"
 	"image"
@@ -10,18 +11,20 @@ import (
 	"github.com/AllenDang/cimgui-go/imgui"
 )
 
+var errNilRGBA = errors.New("surface RGBA Result is nil")
+
 func defaultSurface() *image.RGBA {
-	surface, _ := UniformLoader(REFLECTIVE_SURFACE_DEFAULT_WIDTH, REFLECTIVE_SURFACE_DEFAULT_HEIGHT, REFLECTIVE_SURFACE_DEFAULT_COLOR).ServeRGBA()
+	surface, _ := UniformLoader(ReflectiveSurfaceDefaultWidth, ReflectiveSurfaceDefaultHeight, ReflectiveSurfaceDefaultColor).ServeRGBA()
 	return surface
 }
 
 const (
-	REFLECTIVE_SURFACE_DEFAULT_WIDTH  = 128
-	REFLECTIVE_SURFACE_DEFAULT_HEIGHT = 128
+	ReflectiveSurfaceDefaultWidth  = 128
+	ReflectiveSurfaceDefaultHeight = 128
 )
 
 var (
-	REFLECTIVE_SURFACE_DEFAULT_COLOR = color.RGBA{255, 255, 255, 255}
+	ReflectiveSurfaceDefaultColor = color.RGBA{255, 255, 255, 255}
 )
 
 type ReflectiveBoundTexture struct {
@@ -39,29 +42,34 @@ type ReflectiveBoundTexture struct {
 func (i *ReflectiveBoundTexture) commit() (*ReflectiveBoundTexture, bool) {
 	i.mu.Lock()
 	defer i.mu.Unlock()
+
 	if i.Surface == nil {
 		i.Surface = defaultSurface()
 	}
 
-	var has_changed bool
+	var hasChanged bool
 	if sum := crc32.ChecksumIEEE(i.Surface.Pix); sum != i.lastSum {
-		has_changed = true
+		hasChanged = true
+
 		i.unbind()
 		i.bind()
 		i.lastSum = sum
 	}
-	return i, has_changed
+
+	return i, hasChanged
 }
 
 func (i *ReflectiveBoundTexture) SetSurfaceFromRGBA(img *image.RGBA, commit bool) error {
 	if img != nil {
 		i.Surface = img
 	} else {
-		return fmt.Errorf("RGBA Result is nil")
+		return fmt.Errorf("%w", errNilRGBA)
 	}
+
 	if commit {
 		i.commit()
 	}
+
 	return nil
 }
 
@@ -70,18 +78,18 @@ func (i *ReflectiveBoundTexture) ToImageWidget() *ImageWidget {
 }
 
 type ImguiImageVOptionStruct struct {
-	Uv0        imgui.Vec2
-	Uv1        imgui.Vec2
-	Tint_col   imgui.Vec4
-	Border_col imgui.Vec4
+	Uv0       imgui.Vec2
+	Uv1       imgui.Vec2
+	TintCol   imgui.Vec4
+	BorderCol imgui.Vec4
 }
 
 func (i *ReflectiveBoundTexture) GetImGuiImageVDefaultOptionsStruct() ImguiImageVOptionStruct {
 	return ImguiImageVOptionStruct{
-		Uv0:        imgui.Vec2{0, 0},
-		Uv1:        imgui.Vec2{1, 1},
-		Tint_col:   imgui.Vec4{1, 1, 1, 1},
-		Border_col: imgui.Vec4{0, 0, 0, 0},
+		Uv0:       imgui.Vec2{X: 0, Y: 0},
+		Uv1:       imgui.Vec2{X: 1, Y: 1},
+		TintCol:   imgui.Vec4{X: 1, Y: 1, Z: 1, W: 1},
+		BorderCol: imgui.Vec4{X: 0, Y: 0, Z: 0, W: 0},
 	}
 }
 
@@ -102,7 +110,6 @@ func (i *ReflectiveBoundTexture) ImguiImage(width, height float32, options Imgui
 }
 
 func (i *ReflectiveBoundTexture) ImguiImageV(width, height float32, options ImguiImageVOptionStruct) {
-
 	size := imgui.Vec2{X: width, Y: height}
 
 	if size.X == -1 {
@@ -115,7 +122,7 @@ func (i *ReflectiveBoundTexture) ImguiImageV(width, height float32, options Imgu
 		size.Y = rect.Y
 	}
 
-	imgui.ImageV(i.Texture().ID(), size, options.Uv0, options.Uv1, options.Tint_col, options.Border_col)
+	imgui.ImageV(i.Texture().ID(), size, options.Uv0, options.Uv1, options.TintCol, options.BorderCol)
 }
 
 func (i *ReflectiveBoundTexture) ImguiImageButtonV(id string, width, height float32, options ImguiImageVOptionStruct) {
@@ -131,7 +138,7 @@ func (i *ReflectiveBoundTexture) ImguiImageButtonV(id string, width, height floa
 		size.Y = rect.Y
 	}
 
-	imgui.ImageButtonV(id, i.Texture().ID(), size, options.Uv0, options.Uv1, options.Tint_col, options.Border_col)
+	imgui.ImageButtonV(id, i.Texture().ID(), size, options.Uv0, options.Uv1, options.TintCol, options.BorderCol)
 }
 
 func (i *ReflectiveBoundTexture) unbind() {
@@ -171,21 +178,22 @@ func (i *ReflectiveBoundTexture) GetRGBA(commit bool) *image.RGBA {
 	if commit {
 		i.commit()
 	}
+
 	return i.Surface
 }
 
-// Force releasing against all finalizers,
+// ForceRelease forces releasing resources against all finalizers,
 // effectively losing the object but ensuring both RAM and VRAM
 // are freed.
 func (i *ReflectiveBoundTexture) ForceRelease() {
 	i.unbind()
 	i.Surface = nil
+
 	var u uint32
 	i.lastSum = u
-	i = nil
 }
 
-// Forces Commiting.
+// ForceCommit forces committing.
 func (i *ReflectiveBoundTexture) ForceCommit() (*ReflectiveBoundTexture, bool) {
 	return i.commit()
 }
