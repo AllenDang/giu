@@ -63,6 +63,7 @@ func (s *StatefulReflectiveBoundTexture) ResetState() error {
 		return errIsLoading
 	default:
 		s.state = ssNone
+		s.lastError = nil
 		if s.onReset != nil {
 			go s.onReset()
 		}
@@ -76,9 +77,7 @@ func (s *StatefulReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commi
 		return errNeedReset
 	}
 
-	s.lastError = nil
 	s.state = ssLoading
-
 	if s.onLoading != nil {
 		go s.onLoading()
 	}
