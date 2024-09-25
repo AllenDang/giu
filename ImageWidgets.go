@@ -76,10 +76,10 @@ func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 	return i
 }
 
-// Scale multiply dimensions after size
-func (i *ImageWidget) Scale(scaleX, ScaleY float32) *ImageWidget {
+// Scale multiply dimensions after size.
+func (i *ImageWidget) Scale(scaleX, scaleY float32) *ImageWidget {
 	// Size image with DPI scaling
-	i.scale = imgui.Vec2{scaleX, ScaleY}
+	i.scale = imgui.Vec2{scaleX, scaleY}
 	return i
 }
 
@@ -105,8 +105,8 @@ func (i *ImageWidget) Build() {
 		size.Y = rect.Y
 	}
 
-	size.X = size.X * i.scale.X
-	size.Y = size.Y * i.scale.Y
+	size.X *= i.scale.X
+	size.Y *= i.scale.Y
 
 	if i.texture == nil || i.texture.tex == nil {
 		Dummy(size.X, size.Y).Build()

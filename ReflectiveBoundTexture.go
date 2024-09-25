@@ -32,9 +32,9 @@ type ReflectiveBoundTexture struct {
 }
 
 /* Return a waranted:
- * Initialized
- * With proper resources bindings against gpu (free old, bound new)
- * Up to date Texture
+ * - Initialized
+ * - With proper resources bindings against gpu (free old, bound new)
+ * - Up to date Texture.
  */
 func (i *ReflectiveBoundTexture) commit() (*ReflectiveBoundTexture, bool) {
 	i.mu.Lock()
@@ -84,7 +84,8 @@ func (i *ReflectiveBoundTexture) GetImGuiImageVDefaultOptionsStruct() ImguiImage
 		Border_col: imgui.Vec4{0, 0, 0, 0},
 	}
 }
-func (i *ReflectiveBoundTexture) ImguiImage(width float32, height float32, options ImguiImageVOptionStruct) {
+
+func (i *ReflectiveBoundTexture) ImguiImage(width, height float32, options ImguiImageVOptionStruct) {
 	size := imgui.Vec2{X: width, Y: height}
 
 	if size.X == -1 {
@@ -100,7 +101,7 @@ func (i *ReflectiveBoundTexture) ImguiImage(width float32, height float32, optio
 	imgui.Image(i.Texture().ID(), size)
 }
 
-func (i *ReflectiveBoundTexture) ImguiImageV(width float32, height float32, options ImguiImageVOptionStruct) {
+func (i *ReflectiveBoundTexture) ImguiImageV(width, height float32, options ImguiImageVOptionStruct) {
 
 	size := imgui.Vec2{X: width, Y: height}
 
@@ -117,7 +118,7 @@ func (i *ReflectiveBoundTexture) ImguiImageV(width float32, height float32, opti
 	imgui.ImageV(i.Texture().ID(), size, options.Uv0, options.Uv1, options.Tint_col, options.Border_col)
 }
 
-func (i *ReflectiveBoundTexture) ImguiImageButtonV(id string, width float32, height float32, options ImguiImageVOptionStruct) {
+func (i *ReflectiveBoundTexture) ImguiImageButtonV(id string, width, height float32, options ImguiImageVOptionStruct) {
 	size := imgui.Vec2{X: width, Y: height}
 
 	if size.X == -1 {
@@ -184,7 +185,7 @@ func (i *ReflectiveBoundTexture) ForceRelease() {
 	i = nil
 }
 
-// Force Commiting
+// Forces Commiting.
 func (i *ReflectiveBoundTexture) ForceCommit() (*ReflectiveBoundTexture, bool) {
 	return i.commit()
 }

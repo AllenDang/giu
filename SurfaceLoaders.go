@@ -5,11 +5,12 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"log"
 	"net/http"
 	"time"
 )
 
-// SurfaceLoader interface
+// SurfaceLoader interface.
 type SurfaceLoader interface {
 	ServeRGBA() (*image.RGBA, error)
 }
@@ -31,7 +32,7 @@ func (i *ReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commit bool) 
 	return i.SetSurfaceFromRGBA(img, commit)
 }
 
-// FileLoader
+// FileLoader.
 
 type fileLoader struct {
 	path string
@@ -55,7 +56,7 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) er
 	return i.LoadSurface(FileLoader(path), commit)
 }
 
-// UrlLoader
+// UrlLoader.
 
 type urlLoader struct {
 	url     string
@@ -66,23 +67,21 @@ func (u *urlLoader) ServeRGBA() (*image.RGBA, error) {
 	client := &http.Client{Timeout: u.timeout}
 	req, err := http.NewRequestWithContext(go_ctx.Background(), "GET", u.url, http.NoBody)
 	if err != nil {
-		//errorFn(err)
 		return nil, err
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		//errorFn(err)
 		return nil, err
 	}
-	defer resp.Body.Close()
-	/*defer func() {
-		if closeErr := resp.Body.Close(); closeErr != nil {
-			errorFn(closeErr)
+	defer func() {
+		err := resp.Body.Close()
+		if err != nil {
+			log.Println(err)
 		}
-	}()*/
+	}()
+
 	img, _, err := image.Decode(resp.Body)
 	if err != nil {
-		//errorFn(err)
 		return nil, err
 	}
 	return ImageToRgba(img), nil
@@ -99,7 +98,7 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromURL(url string, timeout time.Dura
 	return i.LoadSurface(URLLoader(url, timeout), commit)
 }
 
-// UniformLoader
+// UniformLoader.
 type uniformLoader struct {
 	width, height int
 	color         color.Color
@@ -111,14 +110,14 @@ func (u *uniformLoader) ServeRGBA() (*image.RGBA, error) {
 	return img, nil
 }
 
-func UniformLoader(width, height int, color color.Color) SurfaceLoader {
+func UniformLoader(width, height int, c color.Color) SurfaceLoader {
 	return &uniformLoader{
 		width:  width,
 		height: height,
-		color:  color,
+		color:  c,
 	}
 }
 
-func (i *ReflectiveBoundTexture) SetSurfaceUniform(width int, height int, c color.Color, commit bool) error {
+func (i *ReflectiveBoundTexture) SetSurfaceUniform(width, height int, c color.Color, commit bool) error {
 	return i.LoadSurface(UniformLoader(width, height, c), commit)
 }
