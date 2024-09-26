@@ -65,11 +65,6 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromRGBA(img *image.RGBA, commit bool
 	return nil
 }
 
-func (i *ReflectiveBoundTexture) ImageWithRGBA(img image.Image) *ImageWidget {
-	_ = i.SetSurfaceFromRGBA(ImageToRgba(img), false)
-	return i.ToImageWidget()
-}
-
 func (i *ReflectiveBoundTexture) ToImageWidget() *ImageWidget {
 	return Image(i.Texture())
 }

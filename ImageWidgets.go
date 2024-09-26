@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"net/http"
-	"reflect"
 	"time"
 
 	"github.com/AllenDang/cimgui-go/imgui"
@@ -129,10 +127,10 @@ func (i *ImageWidget) Build() {
 
 type imageState struct {
 	loading bool
-	failure bool
+	// failure bool
 	cancel  ctx.CancelFunc
 	texture *Texture
-	img     *image.RGBA
+	// img     *image.RGBA
 }
 
 // Dispose cleans imageState (implements Disposable interface).
@@ -151,19 +149,21 @@ var _ Widget = &ImageWithRgbaWidget{}
 // imgui textures. You can just pass golang-native image.Image and
 // display it in giu.
 type ImageWithRgbaWidget struct {
-	id   ID
-	rgba *image.RGBA
-	img  *ImageWidget
+	id  ID
+	rbt *ReflectiveBoundTexture
+	img *ImageWidget
 }
 
 // ImageWithRgba creates ImageWithRgbaWidget.
 // The default size is the size of the image,
 // to set a specific size, use .Size(width, height).
-func ImageWithRgba(rgba image.Image) *ImageWithRgbaWidget {
+func ImageWithRgba(rgba image.Image, rbt *ReflectiveBoundTexture) *ImageWithRgbaWidget {
+	_= rbt.SetSurfaceFromRGBA(ImageToRgba(rgba), false)
+
 	return &ImageWithRgbaWidget{
-		id:   GenAutoID("ImageWithRgba"),
-		rgba: ImageToRgba(rgba),
-		img:  Image(nil),
+		id:  GenAutoID("ImageWithRgba"),
+		rbt: rbt,
+		img: rbt.ToImageWidget(),
 	}
 }
 
@@ -187,20 +187,6 @@ func (i *ImageWithRgbaWidget) OnClick(cb func()) *ImageWithRgbaWidget {
 
 // Build implements Widget interface.
 func (i *ImageWithRgbaWidget) Build() {
-	if i.rgba != nil {
-		var imgState *imageState
-		if imgState = GetState[imageState](Context, i.id.String()); imgState == nil || !reflect.DeepEqual(i.rgba, imgState.img) {
-			imgState = &imageState{}
-			SetState(Context, i.id.String(), imgState)
-
-			NewTextureFromRgba(i.rgba, func(tex *Texture) {
-				imgState.texture = tex
-			})
-		}
-
-		i.img.texture = imgState.texture
-	}
-
 	i.img.Build()
 }
 
@@ -212,19 +198,21 @@ var _ Widget = &ImageWithFileWidget{}
 // because files are not included in executable binaries!
 // You may want to use "embed" package and ImageWithRgba instead.
 type ImageWithFileWidget struct {
-	id      string
-	imgPath string
-	img     *ImageWidget
+	id  string
+	rbt *ReflectiveBoundTexture
+	img *ImageWidget
 }
 
 // ImageWithFile constructs a new ImageWithFileWidget.
 // The default size is the size of the image,
 // to set a specific size, use .Size(width, height).
-func ImageWithFile(imgPath string) *ImageWithFileWidget {
+func ImageWithFile(imgPath string, rbt *ReflectiveBoundTexture) *ImageWithFileWidget {
+	_ = rbt.SetSurfaceFromFile(imgPath, false)
+
 	return &ImageWithFileWidget{
-		id:      fmt.Sprintf("ImageWithFile_%s", imgPath),
-		imgPath: imgPath,
-		img:     Image(nil),
+		id:  fmt.Sprintf("ImageWithFile_%s", imgPath),
+		rbt: rbt,
+		img: rbt.ToImageWidget(),
 	}
 }
 
@@ -248,21 +236,6 @@ func (i *ImageWithFileWidget) OnClick(cb func()) *ImageWithFileWidget {
 
 // Build implements Widget interface.
 func (i *ImageWithFileWidget) Build() {
-	var imgState *imageState
-	if imgState = GetState[imageState](Context, i.id); imgState == nil {
-		// Prevent multiple invocation to LoadImage.
-		imgState = &imageState{}
-		SetState(Context, i.id, imgState)
-
-		img, err := LoadImage(i.imgPath)
-		if err == nil {
-			NewTextureFromRgba(img, func(tex *Texture) {
-				imgState.texture = tex
-			})
-		}
-	}
-
-	i.img.texture = imgState.texture
 	i.img.Build()
 }
 
@@ -272,22 +245,25 @@ var _ Widget = &ImageWithURLWidget{}
 // an URL as image source.
 type ImageWithURLWidget struct {
 	id              string
+	srbt            *StatefulReflectiveBoundTexture
 	imgURL          string
 	downloadTimeout time.Duration
 	whenLoading     Layout
 	whenFailure     Layout
 	onReady         func()
 	onFailure       func(error)
+	onLoading       func()
 	img             *ImageWidget
 }
 
 // ImageWithURL creates ImageWithURLWidget.
 // The default size is the size of the image,
 // to set a specific size, use .Size(width, height).
-func ImageWithURL(url string) *ImageWithURLWidget {
+func ImageWithURL(url string, srbt *StatefulReflectiveBoundTexture) *ImageWithURLWidget {
 	return &ImageWithURLWidget{
 		id:              fmt.Sprintf("ImageWithURL_%s", url),
 		imgURL:          url,
+		srbt:            srbt,
 		downloadTimeout: 10 * time.Second,
 		whenLoading:     Layout{Dummy(100, 100)},
 		whenFailure:     Layout{Dummy(100, 100)},
@@ -304,6 +280,12 @@ func (i *ImageWithURLWidget) OnReady(onReady func()) *ImageWithURLWidget {
 // OnFailure sets event trigger when image failed to download/load.
 func (i *ImageWithURLWidget) OnFailure(onFailure func(error)) *ImageWithURLWidget {
 	i.onFailure = onFailure
+	return i
+}
+
+// OnLoading sets event trigger when image starts download/load.
+func (i *ImageWithURLWidget) OnLoading(onLoading func()) *ImageWithURLWidget {
+	i.onLoading = onLoading
 	return i
 }
 
@@ -339,79 +321,28 @@ func (i *ImageWithURLWidget) LayoutForFailure(widgets ...Widget) *ImageWithURLWi
 
 // Build implements Widget interface.
 func (i *ImageWithURLWidget) Build() {
-	var imgState *imageState
-	if imgState = GetState[imageState](Context, i.id); imgState == nil {
-		imgState = &imageState{}
-		SetState(Context, i.id, imgState)
-
-		// Prevent multiple invocation to download image.
-		downloadContext, cancelFunc := ctx.WithCancel(ctx.Background())
-
-		SetState(Context, i.id, &imageState{loading: true, cancel: cancelFunc})
-
-		errorFn := func(err error) {
-			SetState(Context, i.id, &imageState{failure: true})
-
-			// Trigger onFailure event
-			if i.onFailure != nil {
-				i.onFailure(err)
-			}
-		}
-
-		go func() {
-			// Load image from url
-			client := &http.Client{Timeout: i.downloadTimeout}
-
-			req, err := http.NewRequestWithContext(downloadContext, "GET", i.imgURL, http.NoBody)
-			if err != nil {
-				errorFn(err)
-				return
-			}
-
-			resp, err := client.Do(req)
-			if err != nil {
-				errorFn(err)
-				return
-			}
-
-			defer func() {
-				if closeErr := resp.Body.Close(); closeErr != nil {
-					errorFn(closeErr)
-				}
-			}()
-
-			img, _, err := image.Decode(resp.Body)
-			if err != nil {
-				errorFn(err)
-				return
-			}
-
-			rgba := ImageToRgba(img)
-
-			EnqueueNewTextureFromRgba(rgba, func(tex *Texture) {
-				SetState(Context, i.id, &imageState{
-					loading: false,
-					failure: false,
-					texture: tex,
-				})
-			})
-
-			// Trigger onReady event
-			if i.onReady != nil {
-				i.onReady()
-			}
-		}()
+	if i.onFailure != nil {
+		i.srbt.onFailure = i.onFailure
 	}
 
-	imgState = GetState[imageState](Context, i.id)
+	if i.onLoading != nil {
+		i.srbt.onLoading = i.onLoading
+	}
 
-	switch {
-	case imgState.failure:
+	if i.onReady != nil {
+		i.srbt.onSuccess = i.onReady
+	}
+
+	_ = i.srbt.SetSurfaceFromURL(i.imgURL, i.downloadTimeout, false)
+
+	state := i.srbt.GetState()
+	switch state {
+	case SsFailure:
 		i.whenFailure.Build()
-	case imgState.loading:
+	case SsLoading:
 		i.whenLoading.Build()
-	default:
-		i.img.texture = imgState.texture
+	case SsSuccess:
+		i.img.texture = i.srbt.ToImageWidget().texture
 		i.img.Build()
 	}
 }
