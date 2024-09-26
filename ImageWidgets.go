@@ -1,7 +1,6 @@
 package giu
 
 import (
-	ctx "context"
 	"fmt"
 	"image"
 	"image/color"
@@ -123,23 +122,6 @@ func (i *ImageWidget) Build() {
 	}
 
 	imgui.ImageV(i.texture.tex.ID, size, i.uv0, i.uv1, ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
-}
-
-type imageState struct {
-	loading bool
-	// failure bool
-	cancel  ctx.CancelFunc
-	texture *Texture
-	// img     *image.RGBA
-}
-
-// Dispose cleans imageState (implements Disposable interface).
-func (is *imageState) Dispose() {
-	is.texture = nil
-	// Cancel ongoing image downloading
-	if is.loading && is.cancel != nil {
-		is.cancel()
-	}
 }
 
 var _ Widget = &ImageWithRgbaWidget{}

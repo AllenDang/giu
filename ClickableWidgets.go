@@ -284,16 +284,18 @@ var _ Widget = &ImageButtonWithRgbaWidget{}
 // more useful than the original ImageButtonWidget.
 type ImageButtonWithRgbaWidget struct {
 	*ImageButtonWidget
-	rgba image.Image
-	id   ID
+	id  ID
+	rbt *ReflectiveBoundTexture
 }
 
 // ImageButtonWithRgba creates a new widget.
-func ImageButtonWithRgba(rgba image.Image) *ImageButtonWithRgbaWidget {
+func ImageButtonWithRgba(rgba image.Image, rbt *ReflectiveBoundTexture) *ImageButtonWithRgbaWidget {
+	_ = rbt.SetSurfaceFromRGBA(ImageToRgba(rgba), false)
+
 	return &ImageButtonWithRgbaWidget{
 		id:                GenAutoID("ImageButtonWithRgba"),
-		ImageButtonWidget: ImageButton(nil),
-		rgba:              rgba,
+		rbt:               rbt,
+		ImageButtonWidget: ImageButton(rbt.ToImageWidget().texture),
 	}
 }
 
@@ -335,16 +337,6 @@ func (b *ImageButtonWithRgbaWidget) FramePadding(padding int) *ImageButtonWithRg
 
 // Build implements Widget interface.
 func (b *ImageButtonWithRgbaWidget) Build() {
-	if state := GetState[imageState](Context, b.id.String()); state == nil {
-		SetState(Context, b.id.String(), &imageState{})
-
-		NewTextureFromRgba(b.rgba, func(tex *Texture) {
-			SetState(Context, b.id.String(), &imageState{texture: tex})
-		})
-	} else {
-		b.ImageButtonWidget.texture = state.texture
-	}
-
 	b.ImageButtonWidget.Build()
 }
 
