@@ -47,6 +47,7 @@ func loop() {
 			fmt.Println("image from url clicked")
 		}).Scale(0.25, 0.25),
 
+		g.Separator(),
 		g.Label("Advanced Drawing manipulation"),
 		g.DragInt("Sonic Offset X", &sonicOffsetX, 0, 1280),
 		g.DragInt("Sonic Offset Y", &sonicOffsetY, 0, 720),
@@ -56,40 +57,13 @@ func loop() {
 			pos_with_offset := start_pos.Add(sonicOffset)
 			computed_posX := (float32(pos_with_offset.X)) + imgui.ScrollX()
 			computed_posY := (float32(pos_with_offset.Y)) + imgui.ScrollY()
-			//cur_pos := g.GetCursorPos()
-			scale := imgui.Vec2{0.10, 0.10}
-			p_min := imgui.Vec2{computed_posX, computed_posY}
-			p_max := imgui.Vec2{computed_posX + float32(size.X)*scale.X, computed_posY + float32(size.Y)*scale.Y}
+			scale := imgui.Vec2{X: 0.10, Y: 0.10}
+			p_min := imgui.Vec2{X: computed_posX, Y: computed_posY}
+			p_max := imgui.Vec2{X: computed_posX + float32(size.X)*scale.X, Y: computed_posY + float32(size.Y)*scale.Y}
 			imgui.ForegroundDrawListViewportPtr().AddImage(fromurl.Texture().ID(), p_min, p_max)
 		}),
-
-		/*
-			g.Label("Display images from url with loading and fallback"),
-			g.Label("Display image from url without placeholder (no size when loading)"),
-			urlWidgetLike.ToImageWidget().Size(300, 200),
-
-			g.ImageWithURL(
-				"https://png.pngitem.com/pimgs/s/424-4241958_transparent-gopher-png-golang-gopher-png-png-download.png").
-				Timeout(5*time.Second).
-				Size(300, 200).
-				LayoutForLoading(
-					g.Child().Size(300, 200).Layout(g.Layout{
-						g.Label("Loading..."),
-					}),
-				).
-				LayoutForFailure(
-					fallback.ToImageWidget().Size(300, 200),
-				).
-				OnReady(func() {
-					fmt.Println("Image is downloaded.")
-				}),
-
-			g.Label("Handle failure event"),
-			g.ImageWithURL("http://x.y/z.jpg").Timeout(2*time.Second).OnFailure(func(err error) {
-				fmt.Printf("Failed to download image, Error msg is %s\n", err.Error())
-			}),*/
-
-		g.Label("Footer"),
+		g.Separator(),
+		g.Label("For more advanced image examples (async/statefull/dynamic) check the asyncimage example!"),
 	)
 }
 

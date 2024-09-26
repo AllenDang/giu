@@ -35,6 +35,10 @@ func (i *ReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commit bool) 
 	return i.SetSurfaceFromRGBA(img, commit)
 }
 
+func (s *StatefulReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commit bool) error {
+	return s.LoadSurfaceAsync(loader, commit)
+}
+
 // FileLoader.
 
 type fileLoader struct {
@@ -60,15 +64,25 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) er
 	return i.LoadSurface(FileLoader(path), commit)
 }
 
+func (s *StatefulReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) error {
+	return s.LoadSurface(FileLoader(path), commit)
+}
+
 // UrlLoader.
 
 type urlLoader struct {
 	url     string
 	timeout time.Duration
+	httpdir string
 }
 
 func (u *urlLoader) ServeRGBA() (*image.RGBA, error) {
-	client := &http.Client{Timeout: u.timeout}
+	t := &http.Transport{}
+	t.RegisterProtocol("file", http.NewFileTransport(http.Dir(u.httpdir)))
+
+	client := &http.Client{
+		Transport: t,
+		Timeout:   u.timeout}
 
 	req, err := http.NewRequestWithContext(go_ctx.Background(), "GET", u.url, http.NoBody)
 	if err != nil {
@@ -95,15 +109,29 @@ func (u *urlLoader) ServeRGBA() (*image.RGBA, error) {
 	return ImageToRgba(img), nil
 }
 
-func URLLoader(url string, timeout time.Duration) SurfaceLoader {
+func URLLoader(url, httpdir string, timeout time.Duration) SurfaceLoader {
 	return &urlLoader{
 		url:     url,
 		timeout: timeout,
+		httpdir: httpdir,
 	}
 }
 
+// SetFSRoot sets root "/" for file:// SetSurfaceFromURL schemes (defaults is executable working dir).
+func (i *ReflectiveBoundTexture) SetFSRoot(root string) {
+	i.fsroot = root
+}
+
+func (i *ReflectiveBoundTexture) GetFSRoot() string {
+	return i.fsroot
+}
+
 func (i *ReflectiveBoundTexture) SetSurfaceFromURL(url string, timeout time.Duration, commit bool) error {
-	return i.LoadSurface(URLLoader(url, timeout), commit)
+	return i.LoadSurface(URLLoader(url, i.fsroot, timeout), commit)
+}
+
+func (s *StatefulReflectiveBoundTexture) SetSurfaceFromURL(url string, timeout time.Duration, commit bool) error {
+	return s.LoadSurface(URLLoader(url, s.fsroot, timeout), commit)
 }
 
 // UniformLoader.
@@ -129,4 +157,7 @@ func UniformLoader(width, height int, c color.Color) SurfaceLoader {
 
 func (i *ReflectiveBoundTexture) SetSurfaceUniform(width, height int, c color.Color, commit bool) error {
 	return i.LoadSurface(UniformLoader(width, height, c), commit)
+}
+func (s *StatefulReflectiveBoundTexture) SetSurfaceUniform(width, height int, c color.Color, commit bool) error {
+	return s.LoadSurface(UniformLoader(width, height, c), commit)
 }

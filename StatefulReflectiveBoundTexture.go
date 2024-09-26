@@ -5,21 +5,22 @@ import (
 	"fmt"
 )
 
-var errNeedReset = errors.New("cannot load surface without a reset. Should call (*StatefulReflectiveBoundTexture).ResetState()")
-var errIsLoading = errors.New("cannot reset surface state while loading")
+var ErrNeedReset = errors.New("cannot load surface without a reset. Should call (*StatefulReflectiveBoundTexture).ResetState()")
+var ErrIsLoading = errors.New("cannot reset surface state while loading")
 
-type surfaceState int
+type SurfaceState int
 
+//go:generate stringer -type=SurfaceState
 const (
-	ssNone surfaceState = iota
-	ssLoading
-	ssFailure
-	ssSuccess
+	SsNone SurfaceState = iota
+	SsLoading
+	SsFailure
+	SsSuccess
 )
 
 type StatefulReflectiveBoundTexture struct {
 	ReflectiveBoundTexture
-	state     surfaceState
+	state     SurfaceState
 	lastError error
 	onReset   func()
 	onLoading func()
@@ -27,7 +28,7 @@ type StatefulReflectiveBoundTexture struct {
 	onFailure func(error)
 }
 
-func (s *StatefulReflectiveBoundTexture) GetState() surfaceState {
+func (s *StatefulReflectiveBoundTexture) GetState() SurfaceState {
 	return s.state
 }
 
@@ -57,13 +58,14 @@ func (s *StatefulReflectiveBoundTexture) OnFailure(fn func(error)) *StatefulRefl
 
 func (s *StatefulReflectiveBoundTexture) ResetState() error {
 	switch s.state {
-	case ssNone:
+	case SsNone:
 		return nil
-	case ssLoading:
-		return errIsLoading
+	case SsLoading:
+		return ErrIsLoading
 	default:
-		s.state = ssNone
+		s.state = SsNone
 		s.lastError = nil
+
 		if s.onReset != nil {
 			go s.onReset()
 		}
@@ -72,12 +74,12 @@ func (s *StatefulReflectiveBoundTexture) ResetState() error {
 	return nil
 }
 
-func (s *StatefulReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commit bool) error {
-	if s.state != ssNone {
-		return errNeedReset
+func (s *StatefulReflectiveBoundTexture) LoadSurfaceAsync(loader SurfaceLoader, commit bool) error {
+	if s.state != SsNone {
+		return ErrNeedReset
 	}
 
-	s.state = ssLoading
+	s.state = SsLoading
 	if s.onLoading != nil {
 		go s.onLoading()
 	}
@@ -85,7 +87,7 @@ func (s *StatefulReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commi
 	go func() {
 		img, err := loader.ServeRGBA()
 		if err != nil {
-			s.state = ssFailure
+			s.state = SsFailure
 			s.lastError = fmt.Errorf("in ReflectiveBoundTexture LoadSurface after loader.ServeRGBA: %w", err)
 
 			if s.onFailure != nil {
@@ -97,7 +99,7 @@ func (s *StatefulReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commi
 
 		e := s.SetSurfaceFromRGBA(img, commit)
 		if e != nil {
-			s.state = ssFailure
+			s.state = SsFailure
 			s.lastError = fmt.Errorf("in ReflectiveBoundTexture LoadSurface after SetSurfaceFromRGBA: %w", err)
 
 			if s.onFailure != nil {
@@ -107,7 +109,7 @@ func (s *StatefulReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commi
 			return
 		}
 
-		s.state = ssSuccess
+		s.state = SsSuccess
 
 		if s.onSuccess != nil {
 			go s.onSuccess()

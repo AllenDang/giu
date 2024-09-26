@@ -32,6 +32,7 @@ type ReflectiveBoundTexture struct {
 	tex     *Texture
 	lastSum uint32
 	mu      sync.Mutex
+	fsroot  string
 }
 
 /* Return a waranted:
