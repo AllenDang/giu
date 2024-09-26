@@ -158,7 +158,7 @@ type ImageWithRgbaWidget struct {
 // The default size is the size of the image,
 // to set a specific size, use .Size(width, height).
 func ImageWithRgba(rgba image.Image, rbt *ReflectiveBoundTexture) *ImageWithRgbaWidget {
-	_= rbt.SetSurfaceFromRGBA(ImageToRgba(rgba), false)
+	_ = rbt.SetSurfaceFromRGBA(ImageToRgba(rgba), false)
 
 	return &ImageWithRgbaWidget{
 		id:  GenAutoID("ImageWithRgba"),
