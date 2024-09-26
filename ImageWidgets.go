@@ -14,9 +14,9 @@ var _ Widget = &ImageWidget{}
 // ImageWidget adds an image.
 // The default size is the size of the image,
 // to set a specific size, use .Size(width, height).
-// NOTE: ImageWidget is going to be deprecated. ImageWithRGBAWidget
-// should be used instead, however, because it is a native
-// imgui's solution it is still there.
+// NOTE: ImageWidget is not something useful in its own,
+// but an important underlying object of higher level objects.
+// Also, it is an imgui native solution.
 type ImageWidget struct {
 	texture                *Texture
 	width                  float32
