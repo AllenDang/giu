@@ -11,21 +11,12 @@ import (
 	"github.com/AllenDang/cimgui-go/imgui"
 )
 
-var errNilRGBA = errors.New("surface RGBA Result is nil")
+var ErrNilRGBA = errors.New("surface RGBA Result is nil")
 
 func defaultSurface() *image.RGBA {
-	surface, _ := UniformLoader(ReflectiveSurfaceDefaultWidth, ReflectiveSurfaceDefaultHeight, ReflectiveSurfaceDefaultColor).ServeRGBA()
+	surface, _ := UniformLoader(128.0, 128.0, color.RGBA{255, 255, 255, 255}).ServeRGBA()
 	return surface
 }
-
-const (
-	ReflectiveSurfaceDefaultWidth  = 128
-	ReflectiveSurfaceDefaultHeight = 128
-)
-
-var (
-	ReflectiveSurfaceDefaultColor = color.RGBA{255, 255, 255, 255}
-)
 
 type ReflectiveBoundTexture struct {
 	Surface *image.RGBA
@@ -64,7 +55,7 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromRGBA(img *image.RGBA, commit bool
 	if img != nil {
 		i.Surface = img
 	} else {
-		return fmt.Errorf("%w", errNilRGBA)
+		return fmt.Errorf("%w", ErrNilRGBA)
 	}
 
 	if commit {
