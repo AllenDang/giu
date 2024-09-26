@@ -70,7 +70,6 @@ func (s *StatefulReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commi
 	return s.LoadSurfaceAsync(loader, commit)
 }
 
-
 // fileLoader is a struct that implements the SurfaceLoader interface for loading images from a file.
 type fileLoader struct {
 	path string
@@ -126,7 +125,6 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) er
 func (s *StatefulReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) error {
 	return s.LoadSurface(FileLoader(path), commit)
 }
-
 
 // urlLoader is a SurfaceLoader that loads images from a specified URL.
 type urlLoader struct {
