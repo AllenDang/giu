@@ -133,7 +133,7 @@ func loop() {
 			g.Child().Size(400, 625).Layout(
 				ShouldReturnPanel(),
 			),
-			g.Child().Size(-1, 625).Layout(
+			g.Child().Flags(g.WindowFlagsHorizontalScrollbar).Size(-1, 625).Layout(
 				ShouldReturnImage(),
 			)),
 		g.Separator(),
