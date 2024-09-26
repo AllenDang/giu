@@ -64,6 +64,11 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) er
 	return i.LoadSurface(FileLoader(path), commit)
 }
 
+func (i *ReflectiveBoundTexture) ImageWithFile(path string) *ImageWidget {
+	_ = i.LoadSurface(FileLoader(path), false)
+	return i.ToImageWidget()
+}
+
 func (s *StatefulReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) error {
 	return s.LoadSurface(FileLoader(path), commit)
 }
@@ -128,6 +133,11 @@ func (i *ReflectiveBoundTexture) GetFSRoot() string {
 
 func (i *ReflectiveBoundTexture) SetSurfaceFromURL(url string, timeout time.Duration, commit bool) error {
 	return i.LoadSurface(URLLoader(url, i.fsroot, timeout), commit)
+}
+
+func (i *ReflectiveBoundTexture) ImageWithURL(url string, timeout time.Duration) *ImageWidget {
+	_ = i.LoadSurface(URLLoader(url, i.fsroot, timeout), false)
+	return i.ToImageWidget()
 }
 
 func (s *StatefulReflectiveBoundTexture) SetSurfaceFromURL(url string, timeout time.Duration, commit bool) error {
