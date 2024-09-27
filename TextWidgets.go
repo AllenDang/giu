@@ -243,9 +243,9 @@ func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 func (i *InputTextWidget) Build() {
 	// Get state
 	var state *inputTextState
-	if state = GetState[inputTextState](Context, i.label.String()); state == nil {
+	if state = GetState[inputTextState](Context, i.label); state == nil {
 		state = &inputTextState{}
-		SetState(Context, i.label.String(), state)
+		SetState(Context, i.label, state)
 	}
 
 	if i.width != 0 {

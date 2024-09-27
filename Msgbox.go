@@ -97,7 +97,7 @@ func buildMsgboxButtons(buttons MsgboxButtons, callback DialogResultCallback) La
 	}
 }
 
-const msgboxID string = "###Msgbox"
+const msgboxID ID = "###Msgbox"
 
 // PrepareMsgbox should be invoked in function in the same layout level where you call g.Msgbox.
 // BUG: calling this more than 1 time per frame causes unexpected
@@ -122,7 +122,7 @@ func PrepareMsgbox() Layout {
 
 			state.m.Lock()
 			if state.open {
-				OpenPopup(msgboxID)
+				OpenPopup(msgboxID.String())
 				state.open = false
 			}
 

@@ -191,8 +191,8 @@ func (w *WindowWidget) RegisterKeyboardShortcuts(s ...WindowShortcut) *WindowWid
 	return w
 }
 
-func (w *WindowWidget) getStateID() string {
-	return fmt.Sprintf("%s_windowState", w.title)
+func (w *WindowWidget) getStateID() ID {
+	return ID(fmt.Sprintf("%s_windowState", w.title))
 }
 
 // returns window state.

@@ -216,12 +216,12 @@ func (ce *CodeEditorWidget) Build() {
 }
 
 func (ce *CodeEditorWidget) getState() (state *codeEditorState) {
-	if state = GetState[codeEditorState](Context, ce.title.String()); state == nil {
+	if state = GetState[codeEditorState](Context, ce.title); state == nil {
 		state = &codeEditorState{
 			// editor: imgui.NewTextEditor(),
 		}
 
-		SetState(Context, ce.title.String(), state)
+		SetState(Context, ce.title, state)
 	}
 
 	return state

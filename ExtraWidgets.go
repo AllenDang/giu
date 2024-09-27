@@ -313,9 +313,9 @@ func (l *ListBoxWidget) Build() {
 	selectedIndex := l.selectedIndex
 	if selectedIndex == nil {
 		var state *listBoxState
-		if state = GetState[listBoxState](Context, l.id.String()); state == nil {
+		if state = GetState[listBoxState](Context, l.id); state == nil {
 			state = &listBoxState{selectedIndex: 0}
-			SetState(Context, l.id.String(), state)
+			SetState(Context, l.id, state)
 		}
 
 		selectedIndex = &state.selectedIndex

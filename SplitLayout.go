@@ -160,9 +160,9 @@ func (s *SplitLayoutWidget) buildChild(width, height float32, layout Widget) Wid
 }
 
 func (s *SplitLayoutWidget) getState() (state *splitLayoutState) {
-	if state = GetState[splitLayoutState](Context, s.id.String()); state == nil {
+	if state = GetState[splitLayoutState](Context, s.id); state == nil {
 		state = &splitLayoutState{delta: 0.0}
-		SetState(Context, s.id.String(), state)
+		SetState(Context, s.id, state)
 	}
 
 	return state
