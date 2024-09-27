@@ -319,11 +319,11 @@ func (i *ImageWithURLWidget) Build() {
 
 	state := i.srbt.GetState()
 	switch state {
-	case SsFailure:
+	case SurfaceStateFailure:
 		i.whenFailure.Build()
-	case SsLoading:
+	case SurfaceStateLoading:
 		i.whenLoading.Build()
-	case SsSuccess:
+	case SurfaceStateSuccess:
 		i.img.texture = i.srbt.ToImageWidget().texture
 		i.img.Build()
 	}

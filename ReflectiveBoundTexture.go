@@ -220,8 +220,8 @@ func (i *ReflectiveBoundTexture) Texture() *Texture {
 	return i.tex
 }
 
-// ID commits any pending changes and returns the ImGui TextureID of the associated texture.
-func (i *ReflectiveBoundTexture) ID() imgui.TextureID {
+// TextureID commits any pending changes and returns the ImGui TextureID of the associated texture.
+func (i *ReflectiveBoundTexture) TextureID() imgui.TextureID {
 	return i.Texture().ID()
 }
 

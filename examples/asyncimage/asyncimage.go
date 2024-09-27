@@ -49,7 +49,7 @@ func CanLoadHeader() *g.AlignmentSetter {
 }
 
 func HeaderWidget() g.Widget {
-	if dynamicImage.GetState() == g.SsLoading {
+	if dynamicImage.GetState() == g.SurfaceStateLoading {
 		return TextHeader("Image Is Currently loading...", color.RGBA{0x80, 0x80, 0xFF, 255})
 	}
 	return CanLoadHeader()
@@ -60,7 +60,7 @@ func FooterWidget(label string) g.Widget {
 }
 
 func ShouldReturnImage() g.Widget {
-	if dynamicImage.GetState() != g.SsSuccess {
+	if dynamicImage.GetState() != g.SurfaceStateSuccess {
 		return fallback.ToImageWidget().Size(-1, -1)
 	}
 	return g.Custom(func() { dynamicImage.ToImageWidget().Scale(imageScaleX, imageScaleY).Build() })
@@ -84,7 +84,7 @@ func ShouldReturnPanel() g.Widget {
 			imgui.SliderFloat("scale Y##Scaling", &imageScaleY, 0.1, 4.0)
 		}
 		imgui.SeparatorText("FileSystem URLS")
-		if dynamicImage.GetState() == g.SsLoading {
+		if dynamicImage.GetState() == g.SurfaceStateLoading {
 			imgui.Text("Unavailable while loading image...")
 		} else {
 			imgui.Text("Loading URLS Works with file:/// scheme too.")

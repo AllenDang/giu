@@ -8,15 +8,15 @@ func _() {
 	// An "invalid array index" compiler error signifies that the constant values have changed.
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
-	_ = x[SsNone-0]
-	_ = x[SsLoading-1]
-	_ = x[SsFailure-2]
-	_ = x[SsSuccess-3]
+	_ = x[SurfaceStateNone-0]
+	_ = x[SurfaceStateLoading-1]
+	_ = x[SurfaceStateFailure-2]
+	_ = x[SurfaceStateSuccess-3]
 }
 
-const _SurfaceState_name = "SsNoneSsLoadingSsFailureSsSuccess"
+const _SurfaceState_name = "SurfaceStateNoneSurfaceStateLoadingSurfaceStateFailureSurfaceStateSuccess"
 
-var _SurfaceState_index = [...]uint8{0, 6, 15, 24, 33}
+var _SurfaceState_index = [...]uint8{0, 16, 35, 54, 73}
 
 func (i SurfaceState) String() string {
 	if i < 0 || i >= SurfaceState(len(_SurfaceState_index)-1) {
