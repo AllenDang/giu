@@ -14,13 +14,12 @@ var (
 	canvasMarginComputedWidth float32
 	canvasInited              = false
 	canvas                    *Canvas
-	//buffer                    *image.RGBA
-	buffer        = []DrawCommand{}
-	current_color = color.RGBA{0, 0, 0, 255}
-	current_tool  = 0
-	brush_size    = float32(12.0)
-	was_drawing   = false
-	lastTo        image.Point
+	buffer                    = []DrawCommand{}
+	current_color             = color.RGBA{0, 0, 0, 255}
+	current_tool              = 0
+	brush_size                = float32(12.0)
+	was_drawing               = false
+	lastTo                    image.Point
 )
 
 func FlushDrawCommands(c *Canvas) {
@@ -49,11 +48,6 @@ func (c *Canvas) PushImageToBackend(commit bool) error {
 }
 
 func (c *Canvas) AppendDrawCommands(cmds *[]DrawCommand) {
-	/*lockid, err := g.mu.Lock()
-	if err != nil {
-		panic(err)
-	}
-	defer g.mu.Unlock(lockid)*/
 	c.DrawCommands = append(c.DrawCommands, *cmds...)
 }
 

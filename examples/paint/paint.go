@@ -6,8 +6,6 @@ import (
 	_ "image/png"
 
 	"github.com/AllenDang/cimgui-go/imgui"
-	"github.com/AllenDang/cimgui-go/imnodes"
-	"github.com/AllenDang/cimgui-go/implot"
 	g "github.com/AllenDang/giu"
 )
 
@@ -26,7 +24,6 @@ const (
 )
 
 func loop() {
-
 	if !showWindow {
 		wnd.SetShouldClose(true)
 	}
@@ -42,8 +39,6 @@ func loop() {
 
 func noOSDecoratedWindowsConfig() g.MasterWindowFlags {
 	imgui.CreateContext()
-	implot.PlotCreateContext()
-	imnodes.ImNodesCreateContext()
 	io := imgui.CurrentIO()
 	io.SetConfigViewportsNoAutoMerge(true)
 	io.SetConfigViewportsNoDefaultParent(true)
@@ -52,15 +47,10 @@ func noOSDecoratedWindowsConfig() g.MasterWindowFlags {
 }
 
 func main() {
-
 	// This prepare creating a fully imgui window with no native decoration.
 	// Flags are to be used with NewMasterWindow.
 	// Should NOT use SingleLayoutWindow !
 	mwFlags := noOSDecoratedWindowsConfig()
-
-	/*if err := ResetCanvas(200.0); err != nil {
-		log.Fatalf("Error initing canvas: %v", err)
-	}*/
 
 	wnd = g.NewMasterWindow("Paint Demo", 1280, 720, mwFlags)
 	wnd.SetTargetFPS(60)
