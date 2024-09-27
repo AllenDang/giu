@@ -70,6 +70,8 @@ func (s *StatefulReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commi
 	return s.LoadSurfaceAsync(loader, commit)
 }
 
+var _ SurfaceLoader = &fileLoader{}
+
 // fileLoader is a struct that implements the SurfaceLoader interface for loading images from a file.
 type fileLoader struct {
 	path string
@@ -96,7 +98,7 @@ func (f *fileLoader) ServeRGBA() (*image.RGBA, error) {
 //
 // Returns:
 //   - SurfaceLoader: A new SurfaceLoader for loading images from the specified file path.
-func FileLoader(path string) SurfaceLoader {
+func FileLoader(path string) *fileLoader {
 	return &fileLoader{
 		path: path,
 	}
@@ -125,6 +127,8 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) er
 func (s *StatefulReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) error {
 	return s.LoadSurface(FileLoader(path), commit)
 }
+
+var _ SurfaceLoader = &urlLoader{}
 
 // urlLoader is a SurfaceLoader that loads images from a specified URL.
 type urlLoader struct {
@@ -180,7 +184,7 @@ func (u *urlLoader) ServeRGBA() (*image.RGBA, error) {
 //
 // Returns:
 //   - SurfaceLoader: A new SurfaceLoader for loading images from the specified URL.
-func URLLoader(url, httpdir string, timeout time.Duration) SurfaceLoader {
+func URLLoader(url, httpdir string, timeout time.Duration) *urlLoader {
 	return &urlLoader{
 		url:     url,
 		timeout: timeout,
@@ -230,6 +234,8 @@ func (s *StatefulReflectiveBoundTexture) SetSurfaceFromURL(url string, timeout t
 	return s.LoadSurface(URLLoader(url, s.fsroot, timeout), commit)
 }
 
+var _ SurfaceLoader = &uniformLoader{}
+
 // uniformLoader is a SurfaceLoader that creates a uniform color image.
 type uniformLoader struct {
 	width, height int
@@ -257,7 +263,7 @@ func (u *uniformLoader) ServeRGBA() (*image.RGBA, error) {
 //
 // Returns:
 //   - SurfaceLoader: A new SurfaceLoader for creating a uniform color image.
-func UniformLoader(width, height int, c color.Color) SurfaceLoader {
+func UniformLoader(width, height int, c color.Color) *uniformLoader {
 	return &uniformLoader{
 		width:  width,
 		height: height,

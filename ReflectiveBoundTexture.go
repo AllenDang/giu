@@ -2,7 +2,6 @@ package giu
 
 import (
 	"errors"
-	"fmt"
 	"hash/crc32"
 	"image"
 	"image/color"
@@ -79,7 +78,7 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromRGBA(img *image.RGBA, commit bool
 	if img != nil {
 		i.Surface = img
 	} else {
-		return fmt.Errorf("%w", ErrNilRGBA)
+		return ErrNilRGBA
 	}
 
 	if commit {

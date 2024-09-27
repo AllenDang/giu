@@ -10,8 +10,6 @@ import (
 	"time"
 
 	"github.com/AllenDang/cimgui-go/imgui"
-	"github.com/AllenDang/cimgui-go/imnodes"
-	"github.com/AllenDang/cimgui-go/implot"
 	g "github.com/AllenDang/giu"
 )
 
@@ -120,7 +118,6 @@ func ShouldReturnPanel() g.Widget {
 }
 
 func loop() {
-
 	if !showWindow {
 		wnd.SetShouldClose(true)
 	}
@@ -144,8 +141,6 @@ func loop() {
 
 func noOSDecoratedWindowsConfig() g.MasterWindowFlags {
 	imgui.CreateContext()
-	implot.PlotCreateContext()
-	imnodes.ImNodesCreateContext()
 	io := imgui.CurrentIO()
 	io.SetConfigViewportsNoAutoMerge(true)
 	io.SetConfigViewportsNoDefaultParent(true)
@@ -154,7 +149,6 @@ func noOSDecoratedWindowsConfig() g.MasterWindowFlags {
 }
 
 func initDynamicImage() error {
-
 	// SurfaceURL works from files:// too !
 	// Note : the "root" of the scheme is willingly the Executable / working directory
 	if err := fallback.SetSurfaceFromURL("file:///files/fallback.png", time.Second*5, false); err != nil {
@@ -179,7 +173,6 @@ func initDynamicImage() error {
 }
 
 func main() {
-
 	// This prepare creating a fully imgui window with no native decoration.
 	// Flags are to be used with NewMasterWindow.
 	// Should NOT use SingleLayoutWindow !
