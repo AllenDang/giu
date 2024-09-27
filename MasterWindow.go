@@ -214,6 +214,7 @@ func (w *MasterWindow) beforeRender() {
 }
 
 func (w *MasterWindow) afterRender() {
+	Context.cleanState()
 }
 
 func (w *MasterWindow) beforeDestroy() {
@@ -222,8 +223,6 @@ func (w *MasterWindow) beforeDestroy() {
 }
 
 func (w *MasterWindow) render() {
-	Context.cleanState()
-
 	fin := w.setTheme()
 	defer fin()
 
