@@ -1,9 +1,10 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"image/color"
-	"path"
+	"io/fs"
 
 	"github.com/AllenDang/cimgui-go/imgui"
 	g "github.com/AllenDang/giu"
@@ -21,16 +22,51 @@ var (
 	toolbarInited  = false
 )
 
-func initToolbar() {
-	p := func(img string) string { return path.Join("icons", img) }
-	penButtonImg.SetSurfaceFromFile(p("pencil.png"), false)
-	fillButtonImg.SetSurfaceFromFile(p("paint-bucket.png"), false)
-	undoButtonImg.SetSurfaceFromFile(p("undo.png"), false)
-	brushButtonImg.SetSurfaceFromFile(p("brush.png"), false)
-	clearButtonImg.SetSurfaceFromFile(p("clear.png"), false)
-	openButtonImg.SetSurfaceFromFile(p("open-folder.png"), false)
-	saveButtonImg.SetSurfaceFromFile(p("floppy-disk.png"), false)
+//go:embed all:icons
+var icons embed.FS
+
+type AssetLoadingInfo struct {
+	file    string
+	backend *g.ReflectiveBoundTexture
+}
+
+func Assets() (fs.FS, error) {
+	return fs.Sub(icons, "icons")
+}
+
+func LoadAsset(path string, backend *g.ReflectiveBoundTexture) error {
+	assets, _ := Assets()
+	file, err := assets.Open(path)
+	if err != nil {
+		return fmt.Errorf("LoadAsset: error opening image file %s: %w", file, err)
+	}
+
+	defer func() {
+		if err := file.Close(); err != nil {
+			panic(fmt.Sprintf("error closing image file: %s", file))
+		}
+	}()
+	return backend.SetSurfaceFromFsFile(file, false)
+}
+
+var loadableAssets = []AssetLoadingInfo{
+	{file: "pencil.png", backend: penButtonImg},
+	{file: "paint-bucket.png", backend: fillButtonImg},
+	{file: "undo.png", backend: undoButtonImg},
+	{file: "brush.png", backend: brushButtonImg},
+	{file: "clear.png", backend: clearButtonImg},
+	{file: "open-folder.png", backend: openButtonImg},
+	{file: "floppy-disk.png", backend: saveButtonImg},
+}
+
+func initToolbar() error {
+	for _, info := range loadableAssets {
+		if err := LoadAsset(info.file, info.backend); err != nil {
+			return err
+		}
+	}
 	toolbarInited = true
+	return nil
 }
 
 func ShowToolbar() g.Widget {

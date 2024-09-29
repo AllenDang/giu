@@ -6,6 +6,7 @@ import (
 	"image"
 	"image/color"
 	"image/draw"
+	"io/fs"
 	"log"
 	"net/http"
 	"time"
@@ -126,6 +127,64 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) er
 //   - error: An error if the image could not be loaded or set as the surface.
 func (s *StatefulReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) error {
 	return s.LoadSurface(FileLoader(path), commit)
+}
+
+var _ SurfaceLoader = &fsFileLoader{}
+
+// fsFileLoader is a struct that implements the SurfaceLoader interface for loading images from a file and embedded fs.
+type fsFileLoader struct {
+	file fs.File
+}
+
+// ServeRGBA loads an RGBA image from the file specified by the path in fileLoader.
+//
+// Returns:
+//   - *image.RGBA: The loaded RGBA image.
+//   - error: An error if the image could not be loaded.
+func (f *fsFileLoader) ServeRGBA() (*image.RGBA, error) {
+	img, err := LoadImageFromFile(f.file)
+	if err != nil {
+		return nil, err
+	}
+
+	return img, nil
+}
+
+// FsFileLoader creates a new SurfaceLoader that loads images from the specified file interface.
+//
+// Parameters:
+//   - file: the file interface representing the file
+//
+// Returns:
+//   - SurfaceLoader: A new SurfaceLoader for loading images from the specified file path.
+func FsFileLoader(file fs.File) *fsFileLoader {
+	return &fsFileLoader{
+		file: file,
+	}
+}
+
+// SetSurfaceFromFsFile loads an image from the specified file interface and sets it as the surface of the ReflectiveBoundTexture.
+//
+// Parameters:
+//   - file: the file interface representing the file
+//   - commit: A boolean flag indicating whether to commit the changes.
+//
+// Returns:
+//   - error: An error if the image could not be loaded or set as the surface.
+func (i *ReflectiveBoundTexture) SetSurfaceFromFsFile(file fs.File, commit bool) error {
+	return i.LoadSurface(FsFileLoader(file), commit)
+}
+
+// SetSurfaceFromFsFile loads an image from the specified file interface and sets it as the surface of the StatefulReflectiveBoundTexture.
+//
+// Parameters:
+//   - file: the file interface representing the file
+//   - commit: A boolean flag indicating whether to commit the changes.
+//
+// Returns:
+//   - error: An error if the image could not be loaded or set as the surface.
+func (s *StatefulReflectiveBoundTexture) SetSurfaceFromFsFile(file fs.File, commit bool) error {
+	return s.LoadSurface(FsFileLoader(file), commit)
 }
 
 var _ SurfaceLoader = &urlLoader{}

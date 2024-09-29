@@ -6,6 +6,7 @@ import (
 	"image/color"
 	"image/draw"
 	"image/png"
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
@@ -22,6 +23,16 @@ type ID string
 
 func (i ID) String() string {
 	return string(i)
+}
+
+// LoadImage loads image file interface and assume caller takes care of interface closing
+func LoadImageFromFile(file fs.File) (*image.RGBA, error) {
+	img, err := png.Decode(file)
+	if err != nil {
+		return nil, fmt.Errorf("LoadImage: error decoding png image: %w", err)
+	}
+
+	return ImageToRgba(img), nil
 }
 
 // LoadImage loads image from file and returns *image.RGBA.
