@@ -25,7 +25,7 @@ func (i ID) String() string {
 	return string(i)
 }
 
-// LoadImage loads image file interface and assume caller takes care of interface closing
+// LoadImageFromFile loads image file interface and assume caller takes care of interface proper closing.
 func LoadImageFromFile(file fs.File) (*image.RGBA, error) {
 	img, err := png.Decode(file)
 	if err != nil {
