@@ -48,12 +48,7 @@ func LoadImage(imgPath string) (*image.RGBA, error) {
 		}
 	}()
 
-	img, err := png.Decode(imgFile)
-	if err != nil {
-		return nil, fmt.Errorf("LoadImage: error decoding png image: %w", err)
-	}
-
-	return ImageToRgba(img), nil
+	return LoadImageFromFile(imgFile)
 }
 
 // ImageToRgba converts image.Image to *image.RGBA.
