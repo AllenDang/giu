@@ -161,8 +161,13 @@ func ButtonColorMaker() *g.RowWidget {
 		imgui.ImageButton("##open_tool", openButtonImg.Texture().ID(), sz.Mul(1.7))
 		imgui.SameLine()
 		imgui.ImageButton("##save_tool", saveButtonImg.Texture().ID(), sz.Mul(1.7))
+		if imgui.ImageButton("##brush_tool", brushButtonImg.Texture().ID(), sz.Mul(0.9)) {
+			brush_size = 12.0
+		}
 		imgui.SameLine()
-		imgui.ImageButton("##brush_tool", brushButtonImg.Texture().ID(), sz.Mul(1.7))
+		imgui.PushItemWidth(225.0)
+		imgui.SliderFloat("##Brush Size", &brush_size, float32(0.1), float32(72.0))
+		imgui.PopItemWidth()
 		imgui.SetCursorPos(start_ul)
 		for i := range defaultColors {
 			if i%2 != 0 {
