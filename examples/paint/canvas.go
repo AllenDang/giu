@@ -156,6 +156,7 @@ func CanvasWidget() g.Widget {
 					inpos := image.Point{mousepos.X - scr.X, mousepos.Y - scr.Y}
 					if imgui.IsMouseClickedBool(imgui.MouseButtonLeft) {
 						was_drawing = true
+						canvas.UndoIndexes = append(canvas.UndoIndexes, len(canvas.DrawCommands))
 						lastTo = image.Point{0, 0}
 						buffer = append(buffer, DrawCommand{Tool: current_tool, Color: current_color, BrushSize: brush_size, From: inpos, To: inpos})
 						lastTo = inpos
