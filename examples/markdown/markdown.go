@@ -72,6 +72,7 @@ func loop() {
 		),
 	)
 }
+
 func main() {
 	wnd := giu.NewMasterWindow("ImGui Markdown [Demo]", 640, 480, 0)
 	wnd.Run(loop)

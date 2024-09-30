@@ -1,3 +1,4 @@
+//nolint:wsl,gocritic // this is disabled in cimgui-go
 package main
 
 // import (

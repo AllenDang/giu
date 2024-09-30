@@ -1,3 +1,4 @@
+//nolint:gocritic,wsl // this is disabled now
 package main
 
 // import (

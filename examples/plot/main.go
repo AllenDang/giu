@@ -60,6 +60,7 @@ func loop() {
 
 func main() {
 	delta := 0.1
+
 	for x := 0.0; x < 10; x += delta {
 		linedata = append(linedata, math.Sin(x))
 		linedata2 = append(linedata2, math.Cos(x))
@@ -71,6 +72,7 @@ func main() {
 	}
 
 	delta = 1
+
 	for x := 0.0; x < 10; x += delta {
 		bardata = append(bardata, math.Sin(x))
 		bardata2 = append(bardata2, math.Sin(x)-0.2)

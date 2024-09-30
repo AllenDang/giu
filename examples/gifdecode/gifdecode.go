@@ -13,8 +13,6 @@ import (
 //go:embed golang.gif
 var gifFileData []byte
 
-const gifFilepath = "./golang.gif"
-
 var (
 	frames       []*giu.Texture
 	gifImg       *gif.GIF
@@ -25,8 +23,6 @@ func loop() {
 	// load textures
 	if frames[0] == nil {
 		for i, frame := range gifImg.Image {
-			// lol, this is the most magic thing in go i've ever seen :D
-			i := i
 			giu.NewTextureFromRgba(giu.ImageToRgba(frame), func(t *giu.Texture) {
 				frames[i] = t
 			})
@@ -53,7 +49,9 @@ func main() {
 	go func() {
 		for {
 			time.Sleep(time.Duration(gifImg.Delay[currentFrame]*10) * time.Millisecond)
+
 			giu.Update()
+
 			currentFrame++
 			if currentFrame == len(frames) {
 				currentFrame = 0

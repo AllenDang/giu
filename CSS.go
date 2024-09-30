@@ -99,7 +99,6 @@ func ParseCSSStyleSheet(data []byte) error {
 			err = panicToErr(func() {
 				styleColorID = StyleColorIDFromString(styleVarName)
 			})
-
 			if err != nil {
 				return ErrCSSParse{What: "style variable ID", Value: styleVarName}
 			}

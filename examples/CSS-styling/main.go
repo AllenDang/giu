@@ -22,8 +22,10 @@ func loop() {
 
 func main() {
 	wnd := giu.NewMasterWindow("CSS Style [example]", 640, 480, 0)
+
 	if err := giu.ParseCSSStyleSheet(cssStyle); err != nil {
 		panic(err)
 	}
+
 	wnd.Run(loop)
 }

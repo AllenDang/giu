@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 
@@ -11,7 +10,6 @@ import (
 var texture *g.Texture
 
 func loop() {
-	fmt.Println(texture.ID())
 	g.SingleWindow().Layout(
 		g.Label("Canvas demo"),
 		g.Custom(func() {
@@ -32,7 +30,8 @@ func loop() {
 			p2 := pos.Add(image.Pt(120, 210))
 			p3 := pos.Add(image.Pt(210, 210))
 			p4 := pos.Add(image.Pt(210, 150))
-			// canvas.AddTriangle(p1, p2, p3, col, 2)
+
+			canvas.AddTriangle(p1, p2, p3, col, 2)
 			canvas.AddQuad(p1, p2, p3, p4, col, 1)
 
 			p1 = p1.Add(image.Pt(120, 60))
@@ -41,6 +40,7 @@ func loop() {
 			p1 = pos.Add(image.Pt(10, 400))
 			p2 = pos.Add(image.Pt(50, 440))
 			p3 = pos.Add(image.Pt(200, 500))
+
 			canvas.PathLineTo(p1)
 			canvas.PathLineTo(p2)
 			canvas.PathBezierCubicCurveTo(p2.Add(image.Pt(40, 0)), p3.Add(image.Pt(-50, 0)), p3, 0)

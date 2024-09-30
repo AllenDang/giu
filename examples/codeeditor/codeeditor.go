@@ -1,20 +1,20 @@
+//nolint:wsl,gocritic,staticcheck // this is disabled now.
 package main
 
 import (
 	"fmt"
 
 	"github.com/AllenDang/giu"
-	g "github.com/AllenDang/giu"
 )
 
-var editor *g.CodeEditorWidget
+var editor *giu.CodeEditorWidget
 
 // errMarkers imgui.ErrorMarkers
 
 func loop() {
-	g.SingleWindow().Layout(
-		g.Row(
-			g.Button("Get Text").OnClick(func() {
+	giu.SingleWindow().Layout(
+		giu.Row(
+			giu.Button("Get Text").OnClick(func() {
 				if editor.HasSelection() {
 					fmt.Println(editor.GetSelectedText())
 				} else {
@@ -29,10 +29,10 @@ func loop() {
 
 				fmt.Println("Current line is", editor.GetCurrentLineText())
 			}),
-			g.Button("Set Text").OnClick(func() {
+			giu.Button("Set Text").OnClick(func() {
 				editor.Text("Set text")
 			}),
-			g.Button("Set Error Marker").OnClick(func() {
+			giu.Button("Set Error Marker").OnClick(func() {
 				panic("implement me!")
 				// errMarkers.Clear()
 				// errMarkers.Insert(1, "Error message")
@@ -46,11 +46,11 @@ func loop() {
 }
 
 func main() {
-	wnd := g.NewMasterWindow("Code Editor", 800, 600, 0)
+	wnd := giu.NewMasterWindow("Code Editor", 800, 600, 0)
 
 	// errMarkers = imgui.NewErrorMarkers()
 
-	editor = g.CodeEditor().
+	editor = giu.CodeEditor().
 		ShowWhitespaces(false).
 		TabSize(2).
 		Text("select * from greeting\nwhere date > current_timestamp\norder by date").
