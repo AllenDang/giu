@@ -56,6 +56,8 @@ func SameLine() {
 
 var _ Widget = &ChildWidget{}
 
+// ChildWidget is a container widget. It will have a separated scroll bar.
+// Use Child if you want to create a layout of e specific size.
 type ChildWidget struct {
 	id     ID
 	width  float32
@@ -65,7 +67,50 @@ type ChildWidget struct {
 	layout Layout
 }
 
-// Build implements Widget interface.
+// Child creates a new ChildWidget
+func Child() *ChildWidget {
+	return &ChildWidget{
+		id:     GenAutoID("Child"),
+		width:  0,
+		height: 0,
+		border: true,
+		flags:  0,
+		layout: nil,
+	}
+}
+
+// Border sets whether child should have border
+// You can use imgui.ChildFlagsBorders as well
+func (c *ChildWidget) Border(border bool) *ChildWidget {
+	c.border = border
+	return c
+}
+
+// Size sets child size.
+func (c *ChildWidget) Size(width, height float32) *ChildWidget {
+	c.width, c.height = width, height
+	return c
+}
+
+// Flags allows to specify Child flags.
+func (c *ChildWidget) Flags(flags WindowFlags) *ChildWidget {
+	c.flags = flags
+	return c
+}
+
+// Layout sets widgets that will be rendered inside of the Child.
+func (c *ChildWidget) Layout(widgets ...Widget) *ChildWidget {
+	c.layout = Layout(widgets)
+	return c
+}
+
+// ID sets the interval id of child widgets.
+func (c *ChildWidget) ID(id ID) *ChildWidget {
+	c.id = id
+	return c
+}
+
+// Build makes a Child.
 func (c *ChildWidget) Build() {
 	if imgui.BeginChildStrV(c.id.String(), imgui.Vec2{X: c.width, Y: c.height}, func() imgui.ChildFlags {
 		if c.border {
@@ -78,43 +123,6 @@ func (c *ChildWidget) Build() {
 	}
 
 	imgui.EndChild()
-}
-
-func (c *ChildWidget) Border(border bool) *ChildWidget {
-	c.border = border
-	return c
-}
-
-func (c *ChildWidget) Size(width, height float32) *ChildWidget {
-	c.width, c.height = width, height
-	return c
-}
-
-func (c *ChildWidget) Flags(flags WindowFlags) *ChildWidget {
-	c.flags = flags
-	return c
-}
-
-func (c *ChildWidget) Layout(widgets ...Widget) *ChildWidget {
-	c.layout = Layout(widgets)
-	return c
-}
-
-// ID sets the interval id of child widgets.
-func (c *ChildWidget) ID(id ID) *ChildWidget {
-	c.id = id
-	return c
-}
-
-func Child() *ChildWidget {
-	return &ChildWidget{
-		id:     GenAutoID("Child"),
-		width:  0,
-		height: 0,
-		border: true,
-		flags:  0,
-		layout: nil,
-	}
 }
 
 var _ Widget = &ComboCustomWidget{}
