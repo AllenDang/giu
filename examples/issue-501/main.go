@@ -14,6 +14,7 @@ func loop() {
 		giu.Custom(func() {
 			if shouldFocus {
 				shouldFocus = false
+
 				giu.SetKeyboardFocusHere()
 			}
 		}),

@@ -22,6 +22,7 @@ func CircleButton(id string, clicked func()) *CircleButtonWidget {
 
 func (c *CircleButtonWidget) Build() {
 	width, height := g.CalcTextSize(c.id)
+
 	var padding float32 = 8.0
 
 	// You may want to use GetCursorPos here depending on you use case.
@@ -45,6 +46,7 @@ func (c *CircleButtonWidget) Build() {
 	if drawActive {
 		canvas.AddCircleFilled(center, float32(radius), color.RGBA{12, 12, 200, 255})
 	}
+
 	canvas.AddCircle(center, float32(radius), color.RGBA{200, 12, 12, 255}, int32(radius), 2)
 
 	// Draw text
