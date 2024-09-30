@@ -81,6 +81,7 @@ run:
   timeout: 5m
 
 issues:
+  exclude-dirs-use-default: false
   skip-dirs:
     - .github
     - build
