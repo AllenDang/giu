@@ -67,7 +67,7 @@ type ChildWidget struct {
 	layout Layout
 }
 
-// Child creates a new ChildWidget
+// Child creates a new ChildWidget.
 func Child() *ChildWidget {
 	return &ChildWidget{
 		id:     GenAutoID("Child"),
@@ -80,7 +80,7 @@ func Child() *ChildWidget {
 }
 
 // Border sets whether child should have border
-// You can use imgui.ChildFlagsBorders as well
+// You can use imgui.ChildFlagsBorders as well.
 func (c *ChildWidget) Border(border bool) *ChildWidget {
 	c.border = border
 	return c

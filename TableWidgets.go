@@ -111,7 +111,7 @@ var _ Widget = &TableWidget{}
 // TableWidget is a table widget.
 // - Call Table to create new
 // - Then use Rows method to add content
-// - Use Columns method to configure columns (optional)
+// - Use Columns method to configure columns (optional).
 type TableWidget struct {
 	id           ID
 	flags        TableFlags
