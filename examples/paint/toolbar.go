@@ -149,6 +149,7 @@ func ButtonColorMaker() *g.RowWidget {
 				canvas, _ = NewCanvas(canvasDetectedHeight)
 				canvas.UndoIndexes = uind
 				canvas.DrawCommands = dc
+				canvas.Compute()
 			}
 		}
 		imgui.SameLine()
