@@ -112,7 +112,7 @@ func (c *context) invalidAllState() {
 }
 
 // cleanState removes all states that were not marked as valid during rendering.
-// should be called after rendering
+// should be called after rendering.
 func (c *context) cleanState() {
 	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
@@ -138,7 +138,7 @@ func (c *context) Backend() backend.Backend[glfwbackend.GLFWWindowFlags] {
 	return c.backend
 }
 
-// SetState is a generic version of Context.SetState
+// SetState is a generic version of Context.SetState.
 func SetState[T any, PT genericDisposable[T]](c *context, id string, data PT) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
@@ -148,7 +148,7 @@ func (c *context) SetState(id string, data Disposable) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
-// Get state is a generic version of Context.GetState
+// Get state is a generic version of Context.GetState.
 func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 	if s, ok := c.load(id); ok {
 		c.m.Lock()
