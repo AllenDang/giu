@@ -39,10 +39,13 @@ linters:
     - prealloc
     - predeclared
     - promlinter
+    - reassign
     #- revive
     - rowserrcheck
     - staticcheck
     - stylecheck
+    - tagliatelle
+    - testifylint
     - typecheck
     - unconvert
     - unparam
