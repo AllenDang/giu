@@ -21,7 +21,7 @@ linters:
     - gocyclo
     - err113
     - gofmt
-    #- gofumpt
+    - gofumpt
     - goheader
     - goimports
     #- gomnd

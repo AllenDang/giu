@@ -29,7 +29,8 @@ func main() {
 			giu.WindowShortcut{
 				Key:      giu.KeyC,
 				Modifier: giu.ModControl,
-				Callback: func() { checkbox1 = !checkbox1 }},
+				Callback: func() { checkbox1 = !checkbox1 },
+			},
 		)
 
 	wnd.Run(loop)
