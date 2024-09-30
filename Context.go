@@ -148,7 +148,7 @@ func (c *context) SetState(id string, data Disposable) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
-// Get state is a generic version of Context.GetState.
+// GetState is a generic version of Context.GetState.
 func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 	if s, ok := c.load(id); ok {
 		c.m.Lock()
