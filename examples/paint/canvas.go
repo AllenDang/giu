@@ -84,6 +84,26 @@ func (c *Canvas) Compute() {
 	c.LastComputedLen = len(c.DrawCommands)
 }
 
+func UndoCanvas() {
+	if len(canvas.UndoIndexes) > 0 {
+		lastUndoIndex := canvas.UndoIndexes[len(canvas.UndoIndexes)-1]
+		uind := canvas.UndoIndexes[:len(canvas.UndoIndexes)-1]
+		dc := canvas.DrawCommands[:lastUndoIndex]
+		canvas.Backend.ForceRelease()
+		canvas, _ = NewCanvas(canvasDetectedHeight)
+		canvas.UndoIndexes = uind
+		canvas.DrawCommands = dc
+		canvas.Compute()
+	}
+}
+
+func ClearCanvas() error {
+	var err error
+	canvas.Backend.ForceRelease()
+	canvas, err = NewCanvas(canvasDetectedHeight)
+	return err
+}
+
 func NewCanvas(height float32) (*Canvas, error) {
 	backend := &g.ReflectiveBoundTexture{}
 	image := defaultSurface(height)

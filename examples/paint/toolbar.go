@@ -141,21 +141,11 @@ func ButtonColorMaker() *g.RowWidget {
 		}
 		imgui.SameLine()
 		if imgui.ImageButton("##undo_tool", undoButtonImg.Texture().ID(), sz.Mul(1.7)) {
-			if len(canvas.UndoIndexes) > 0 {
-				lastUndoIndex := canvas.UndoIndexes[len(canvas.UndoIndexes)-1]
-				uind := canvas.UndoIndexes[:len(canvas.UndoIndexes)-1]
-				dc := canvas.DrawCommands[:lastUndoIndex]
-				canvas.Backend.ForceRelease()
-				canvas, _ = NewCanvas(canvasDetectedHeight)
-				canvas.UndoIndexes = uind
-				canvas.DrawCommands = dc
-				canvas.Compute()
-			}
+			UndoCanvas()
 		}
 		imgui.SameLine()
 		if imgui.ImageButton("##clear_tool", clearButtonImg.Texture().ID(), sz.Mul(1.7)) {
-			canvas.Backend.ForceRelease()
-			canvas, _ = NewCanvas(canvasDetectedHeight)
+			ClearCanvas()
 		}
 		imgui.SameLine()
 		imgui.ImageButton("##open_tool", openButtonImg.Texture().ID(), sz.Mul(1.7))
