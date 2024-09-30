@@ -152,28 +152,26 @@ func CanvasWidget() g.Widget {
 		if g.IsItemHovered() {
 			mousepos := g.GetMousePos()
 			if mousepos.X >= scr.X && mousepos.X <= scr.X+int(canvasComputedWidth) && mousepos.Y >= scr.Y && mousepos.Y <= scr.Y+int(canvasDetectedHeight) {
-				if g.IsWindowFocused(0) {
-					inpos := image.Point{mousepos.X - scr.X, mousepos.Y - scr.Y}
-					if imgui.IsMouseClickedBool(imgui.MouseButtonLeft) {
-						was_drawing = true
-						canvas.UndoIndexes = append(canvas.UndoIndexes, len(canvas.DrawCommands))
-						lastTo = image.Point{0, 0}
-						buffer = append(buffer, DrawCommand{Tool: current_tool, Color: current_color, BrushSize: brush_size, From: inpos, To: inpos})
-						lastTo = inpos
+				inpos := image.Point{mousepos.X - scr.X, mousepos.Y - scr.Y}
+				if imgui.IsMouseClickedBool(imgui.MouseButtonLeft) {
+					was_drawing = true
+					canvas.UndoIndexes = append(canvas.UndoIndexes, len(canvas.DrawCommands))
+					lastTo = image.Point{0, 0}
+					buffer = append(buffer, DrawCommand{Tool: current_tool, Color: current_color, BrushSize: brush_size, From: inpos, To: inpos})
+					lastTo = inpos
+					FlushDrawCommands(canvas)
+				}
+				if g.IsMouseDown(g.MouseButtonLeft) && was_drawing {
+					delta := imgui.CurrentIO().MouseDelta()
+					dx := int(delta.X)
+					dy := int(delta.Y)
+					if dx == 0 || dy == 0 {
 						FlushDrawCommands(canvas)
 					}
-					if g.IsMouseDown(g.MouseButtonLeft) && was_drawing {
-						delta := imgui.CurrentIO().MouseDelta()
-						dx := int(delta.X)
-						dy := int(delta.Y)
-						if dx == 0 || dy == 0 {
-							FlushDrawCommands(canvas)
-						}
-						buffer = append(buffer, DrawCommand{Tool: current_tool, Color: current_color, BrushSize: brush_size, From: lastTo, To: inpos})
-						lastTo = inpos
-						if len(buffer) >= 8 {
-							FlushDrawCommands(canvas)
-						}
+					buffer = append(buffer, DrawCommand{Tool: current_tool, Color: current_color, BrushSize: brush_size, From: lastTo, To: inpos})
+					lastTo = inpos
+					if len(buffer) >= 8 {
+						FlushDrawCommands(canvas)
 					}
 				}
 			}
