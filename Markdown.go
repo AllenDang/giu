@@ -1,4 +1,4 @@
-//nolint:gocritic,govet,wsl // this file is TODO. We don't want commentedOutCode lint issues here.
+//nolint:gocritic,govet,wsl,revive // this file is TODO. We don't want commentedOutCode lint issues here.
 package giu
 
 // MarkdownWidget implements DearImGui markdown extension

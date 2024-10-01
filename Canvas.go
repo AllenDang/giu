@@ -156,7 +156,7 @@ func (c *Canvas) PathArcToFast(center image.Point, radius float32, min12, max12 
 	c.DrawList.PathArcToFast(ToVec2(center), radius, min12, max12)
 }
 
-// PathBezierQuadraticCurveTo adds a quadratic bezier curve.
+// PathBezierCubicCurveTo adds a cubic bezier curve.
 func (c *Canvas) PathBezierCubicCurveTo(p1, p2, p3 image.Point, numSegments int32) {
 	c.DrawList.PathBezierCubicCurveToV(ToVec2(p1), ToVec2(p2), ToVec2(p3), numSegments)
 }

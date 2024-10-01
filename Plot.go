@@ -502,6 +502,7 @@ func (p *LineXYPlot) Plot() {
 }
 
 // PieChartPlot represents a pie chart.
+// TODO: support PlotPieChartFlags.
 type PieChartPlot struct {
 	labels       []string
 	values       []float64
@@ -525,6 +526,7 @@ func PieChart(labels []string, values []float64, x, y, radius float64) *PieChart
 	}
 }
 
+// Normalize sets normalize flag.
 func (p *PieChartPlot) Normalize(n bool) *PieChartPlot {
 	p.normalize = n
 	return p
@@ -536,13 +538,19 @@ func (p *PieChartPlot) LabelFormat(fmtStr string) *PieChartPlot {
 	return p
 }
 
+// Angle0 sets start angle.
 func (p *PieChartPlot) Angle0(a float64) *PieChartPlot {
 	p.angle0 = a
 	return p
 }
 
+// Plot implements Plot interface.
 func (p *PieChartPlot) Plot() {
-	// TODO: p.normalized not used anymore - replace with flags
+	var flags implot.PlotPieChartFlags
+	if p.normalize {
+		flags |= implot.PlotPieChartFlagsNormalize
+	}
+
 	implot.PlotPlotPieChartdoublePtrStrV(
 		Context.FontAtlas.RegisterStringSlice(p.labels),
 		&p.values,
@@ -552,10 +560,11 @@ func (p *PieChartPlot) Plot() {
 		p.radius,
 		p.labelFormat,
 		p.angle0,
-		implot.PlotPieChartFlagsNormalize,
+		flags,
 	)
 }
 
+// ScatterPlot represents a scatter plot.
 type ScatterPlot struct {
 	label      string
 	values     []float64
@@ -563,6 +572,7 @@ type ScatterPlot struct {
 	offset     int
 }
 
+// Scatter adds scatter plot to the canvas.
 func Scatter(label string, values []float64) *ScatterPlot {
 	return &ScatterPlot{
 		label:  label,
@@ -573,21 +583,25 @@ func Scatter(label string, values []float64) *ScatterPlot {
 	}
 }
 
+// XScale sets x-axis scale.
 func (p *ScatterPlot) XScale(s float64) *ScatterPlot {
 	p.xscale = s
 	return p
 }
 
+// X0 sets start position on x axis.
 func (p *ScatterPlot) X0(x float64) *ScatterPlot {
 	p.x0 = x
 	return p
 }
 
+// Offset sets chart offset.
 func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
 	p.offset = offset
 	return p
 }
 
+// Plot implements Plot interface.
 func (p *ScatterPlot) Plot() {
 	implot.PlotPlotScatterdoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.label),
@@ -601,12 +615,14 @@ func (p *ScatterPlot) Plot() {
 	)
 }
 
+// ScatterXYPlot represents a scatter plot with possibility to set x and y values.
 type ScatterXYPlot struct {
 	label  string
 	xs, ys []float64
 	offset int
 }
 
+// ScatterXY adds scatter plot with x and y values.
 func ScatterXY(label string, xs, ys []float64) *ScatterXYPlot {
 	return &ScatterXYPlot{
 		label:  label,
@@ -616,11 +632,13 @@ func ScatterXY(label string, xs, ys []float64) *ScatterXYPlot {
 	}
 }
 
+// Offset sets chart offset.
 func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
 	p.offset = offset
 	return p
 }
 
+// Plot implements Plot interface.
 func (p *ScatterXYPlot) Plot() {
 	implot.PlotPlotScatterdoublePtrdoublePtrV(
 		Context.FontAtlas.RegisterString(p.label),
