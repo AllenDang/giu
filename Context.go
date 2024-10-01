@@ -25,7 +25,7 @@ func GenAutoID(id string) ID {
 }
 
 // Context represents a giu context.
-var Context *context
+var Context *GIUContext
 
 // Disposable should be implemented by all states stored in context.
 // Dispose method is called when state is removed from context.
@@ -43,7 +43,7 @@ type state struct {
 	data  Disposable
 }
 
-type context struct {
+type GIUContext struct {
 	backend backend.Backend[glfwbackend.GLFWWindowFlags]
 
 	isRunning bool
@@ -67,8 +67,8 @@ type context struct {
 }
 
 // CreateContext creates a new giu context.
-func CreateContext(b backend.Backend[glfwbackend.GLFWWindowFlags]) *context {
-	result := context{
+func CreateContext(b backend.Backend[glfwbackend.GLFWWindowFlags]) *GIUContext {
+	result := GIUContext{
 		cssStylesheet:       make(cssStylesheet),
 		backend:             b,
 		FontAtlas:           newFontAtlas(),
@@ -93,13 +93,13 @@ func CreateContext(b backend.Backend[glfwbackend.GLFWWindowFlags]) *context {
 }
 
 // IO returns the imgui.IO object.
-func (c *context) IO() *imgui.IO {
+func (c *GIUContext) IO() *imgui.IO {
 	return imgui.CurrentIO()
 }
 
 // invalidAllState should be called before rendering.
 // it ensures all states are marked as invalid for that moment.
-func (c *context) invalidAllState() {
+func (c *GIUContext) invalidAllState() {
 	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
 			c.m.Lock()
@@ -113,7 +113,7 @@ func (c *context) invalidAllState() {
 
 // cleanState removes all states that were not marked as valid during rendering.
 // should be called after rendering.
-func (c *context) cleanState() {
+func (c *GIUContext) cleanState() {
 	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
 			c.m.Lock()
@@ -134,22 +134,22 @@ func (c *context) cleanState() {
 }
 
 // Backend returns the imgui.backend used by the context.
-func (c *context) Backend() backend.Backend[glfwbackend.GLFWWindowFlags] {
+func (c *GIUContext) Backend() backend.Backend[glfwbackend.GLFWWindowFlags] {
 	return c.backend
 }
 
 // SetState is a generic version of Context.SetState.
-func SetState[T any, PT genericDisposable[T]](c *context, id string, data PT) {
+func SetState[T any, PT genericDisposable[T]](c *GIUContext, id string, data PT) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
 // SetState stores data in context by id.
-func (c *context) SetState(id string, data Disposable) {
+func (c *GIUContext) SetState(id string, data Disposable) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
 // GetState is a generic version of Context.GetState.
-func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
+func GetState[T any, PT genericDisposable[T]](c *GIUContext, id string) PT {
 	if s, ok := c.load(id); ok {
 		c.m.Lock()
 		s.valid = true
@@ -165,7 +165,7 @@ func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 }
 
 // GetState returns previously stored state by id.
-func (c *context) GetState(id string) any {
+func (c *GIUContext) GetState(id string) any {
 	if s, ok := c.load(id); ok {
 		c.m.Lock()
 		s.valid = true
@@ -177,7 +177,7 @@ func (c *context) GetState(id string) any {
 	return nil
 }
 
-func (c *context) load(id any) (*state, bool) {
+func (c *GIUContext) load(id any) (*state, bool) {
 	if v, ok := c.state.Load(id); ok {
 		if s, ok := v.(*state); ok {
 			return s, true
