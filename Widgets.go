@@ -758,8 +758,10 @@ func (t *TooltipWidget) buildTooltip() {
 
 var _ Widget = &SpacingWidget{}
 
+// Spacing increases a spacing between two widgets a bit.
 type SpacingWidget struct{}
 
+// Spacing creates new SpacingWidget.
 func Spacing() *SpacingWidget {
 	return &SpacingWidget{}
 }
@@ -771,6 +773,7 @@ func (s *SpacingWidget) Build() {
 
 var _ Widget = &ColorEditWidget{}
 
+// ColorEditWidget is a widget that provides a color editor.
 type ColorEditWidget struct {
 	label    ID
 	color    *color.RGBA
@@ -779,6 +782,7 @@ type ColorEditWidget struct {
 	onChange func()
 }
 
+// ColorEdit creates new ColorEditWidget.
 func ColorEdit(label string, c *color.RGBA) *ColorEditWidget {
 	return &ColorEditWidget{
 		label: GenAutoID(label),
@@ -787,16 +791,19 @@ func ColorEdit(label string, c *color.RGBA) *ColorEditWidget {
 	}
 }
 
+// OnChange sets callback that will be executed when color is changed.
 func (ce *ColorEditWidget) OnChange(cb func()) *ColorEditWidget {
 	ce.onChange = cb
 	return ce
 }
 
+// Flags allows to set ColorEditFlags.
 func (ce *ColorEditWidget) Flags(f ColorEditFlags) *ColorEditWidget {
 	ce.flags = f
 	return ce
 }
 
+// Size sets width of the color editor.
 func (ce *ColorEditWidget) Size(width float32) *ColorEditWidget {
 	ce.width = width
 	return ce
