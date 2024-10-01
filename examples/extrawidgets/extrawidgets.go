@@ -1,3 +1,4 @@
+// Package main presents giu extra widgets (Widgets created in giu, not native to imgui).
 package main
 
 import (
@@ -7,7 +8,7 @@ import (
 )
 
 var (
-	showPD bool    = true
+	showPD         = true
 	radius float32 = 20
 	stack  int32
 )
