@@ -121,46 +121,57 @@ func (c *Canvas) AddQuadFilled(p1, p2, p3, p4 image.Point, col color.Color) {
 
 // Stateful path API, add points then finish with PathFillConvex() or PathStroke().
 
+// PathClear clears the current path.
 func (c *Canvas) PathClear() {
 	c.DrawList.PathClear()
 }
 
+// PathLineTo adds a line between the last point and the provided one.
 func (c *Canvas) PathLineTo(pos image.Point) {
 	c.DrawList.PathLineTo(ToVec2(pos))
 }
 
+// PathLineToMergeDuplicate merges with previous if the vertex if very close.
 func (c *Canvas) PathLineToMergeDuplicate(pos image.Point) {
 	c.DrawList.PathLineToMergeDuplicate(ToVec2(pos))
 }
 
+// PathFillConvex fills the current path with the specified color.
 func (c *Canvas) PathFillConvex(col color.Color) {
 	c.DrawList.PathFillConvex(ColorToUint(col))
 }
 
+// PathStroke adds a line between the last point and the provided one.
 func (c *Canvas) PathStroke(col color.Color, flags DrawFlags, thickness float32) {
 	c.DrawList.PathStrokeV(ColorToUint(col), imgui.DrawFlags(flags), thickness)
 }
 
+// PathArcTo adds a cubic bezier curve between the last point and the provided one.
 func (c *Canvas) PathArcTo(center image.Point, radius, minV, maxV float32, numSegments int32) {
 	c.DrawList.PathArcToV(ToVec2(center), radius, minV, maxV, numSegments)
 }
 
+// PathArcToFast is a faster version of PathArcTo() but T=0 and T=1 will not exactly match the arc fast.
 func (c *Canvas) PathArcToFast(center image.Point, radius float32, min12, max12 int32) {
 	c.DrawList.PathArcToFast(ToVec2(center), radius, min12, max12)
 }
 
+// PathBezierQuadraticCurveTo adds a quadratic bezier curve.
 func (c *Canvas) PathBezierCubicCurveTo(p1, p2, p3 image.Point, numSegments int32) {
 	c.DrawList.PathBezierCubicCurveToV(ToVec2(p1), ToVec2(p2), ToVec2(p3), numSegments)
 }
 
+// AddImage draws a textured rectangle.
 func (c *Canvas) AddImage(texture *Texture, pMin, pMax image.Point) {
 	c.DrawList.AddImage(texture.ID(), ToVec2(pMin), ToVec2(pMax))
 }
 
+// AddImageQuad draws a textured on quad.
 func (c *Canvas) AddImageQuad(texture *Texture, p1, p2, p3, p4, uv1, uv2, uv3, uv4 image.Point, col color.Color) {
 	c.DrawList.AddImageQuadV(texture.tex.ID, ToVec2(p1), ToVec2(p2), ToVec2(p3), ToVec2(p4), ToVec2(uv1), ToVec2(uv2), ToVec2(uv3), ToVec2(uv4), ColorToUint(col))
 }
 
+// AddImageV is more flexible version of AddImage.
 func (c *Canvas) AddImageV(texture *Texture, pMin, pMax, uvMin, uvMax image.Point, col color.Color) {
 	c.DrawList.AddImageV(texture.tex.ID, ToVec2(pMin), ToVec2(pMax), ToVec2(uvMin), ToVec2(uvMax), ColorToUint(col))
 }
