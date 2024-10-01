@@ -59,7 +59,7 @@ func Test_SetGetStateGeneric(t *testing.T) {
 func Test_SetGetWrongStateGeneric(t *testing.T) {
 	id := "id"
 	data := &teststate{}
-	ctx := context{}
+	ctx := GIUContext{}
 
 	defer func() {
 		if r := recover(); r == nil {
