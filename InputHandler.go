@@ -29,6 +29,7 @@ const (
 	LocalShortcut ShortcutType = false
 )
 
+// InputHandlerHandleCallback is a callback which is called when a shortcut is triggered.
 type InputHandlerHandleCallback func(Key, Modifier, Action)
 
 // InputHandler is an interface which needs to be implemented

@@ -6,11 +6,13 @@ import (
 	"github.com/AllenDang/cimgui-go/implot"
 )
 
+// PlotAxis types.
 type (
 	PlotXAxis = implot.PlotAxisEnum
 	PlotYAxis = implot.PlotAxisEnum
 )
 
+// Available axes.
 const (
 	AxisX1 = implot.AxisX1
 	AxisX2 = implot.AxisX2
@@ -89,6 +91,7 @@ func Plot(title string) *PlotCanvasWidget {
 	}
 }
 
+// SetXAxisLabel sets x axis label.
 func (p *PlotCanvasWidget) SetXAxisLabel(axis PlotXAxis, label string) *PlotCanvasWidget {
 	switch axis {
 	case AxisX1:
@@ -102,6 +105,7 @@ func (p *PlotCanvasWidget) SetXAxisLabel(axis PlotXAxis, label string) *PlotCanv
 	return p
 }
 
+// SetYAxisLabel sets y axis label.
 func (p *PlotCanvasWidget) SetYAxisLabel(axis PlotYAxis, label string) *PlotCanvasWidget {
 	switch axis {
 	case AxisY1:
@@ -286,6 +290,7 @@ func (p *PlotCanvasWidget) Build() {
 	}
 }
 
+// SwitchPlotAxes switches plot axes.
 func SwitchPlotAxes(x PlotXAxis, y PlotYAxis) PlotWidget {
 	return Custom(func() {
 		implot.PlotSetAxes(x, y)
@@ -301,6 +306,7 @@ type BarPlot struct {
 	offset int
 }
 
+// Bar adds plot bars to the canvas.
 func Bar(title string, data []float64) *BarPlot {
 	return &BarPlot{
 		title:  title,

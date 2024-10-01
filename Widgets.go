@@ -246,12 +246,14 @@ func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 
 var _ Widget = &ContextMenuWidget{}
 
+// ContextMenuWidget is a context menu on another widget. (e.g. right-click menu on button).
 type ContextMenuWidget struct {
 	id          ID
 	mouseButton MouseButton
 	layout      Layout
 }
 
+// ContextMenu creates new ContextMenuWidget.
 func ContextMenu() *ContextMenuWidget {
 	return &ContextMenuWidget{
 		mouseButton: MouseButtonRight,
@@ -260,16 +262,19 @@ func ContextMenu() *ContextMenuWidget {
 	}
 }
 
+// Layout sets layout of the context menu.
 func (c *ContextMenuWidget) Layout(widgets ...Widget) *ContextMenuWidget {
 	c.layout = Layout(widgets)
 	return c
 }
 
+// MouseButton sets mouse button that will trigger the context menu.
 func (c *ContextMenuWidget) MouseButton(mouseButton MouseButton) *ContextMenuWidget {
 	c.mouseButton = mouseButton
 	return c
 }
 
+// ID sets the interval id of context menu.
 func (c *ContextMenuWidget) ID(id ID) *ContextMenuWidget {
 	c.id = id
 	return c
@@ -285,6 +290,7 @@ func (c *ContextMenuWidget) Build() {
 
 var _ Widget = &DragIntWidget{}
 
+// DragIntWidget is a widget that allows to drag an integer value.
 type DragIntWidget struct {
 	label    ID
 	value    *int32
@@ -294,6 +300,7 @@ type DragIntWidget struct {
 	format   string
 }
 
+// DragInt creates new DragIntWidget.
 func DragInt(label string, value *int32, minValue, maxValue int32) *DragIntWidget {
 	return &DragIntWidget{
 		label:    GenAutoID(label),
@@ -305,11 +312,13 @@ func DragInt(label string, value *int32, minValue, maxValue int32) *DragIntWidge
 	}
 }
 
+// Speed sets speed of the dragging.
 func (d *DragIntWidget) Speed(speed float32) *DragIntWidget {
 	d.speed = speed
 	return d
 }
 
+// Format sets format of the value.
 func (d *DragIntWidget) Format(format string) *DragIntWidget {
 	d.format = format
 	return d
@@ -758,7 +767,7 @@ func (t *TooltipWidget) buildTooltip() {
 
 var _ Widget = &SpacingWidget{}
 
-// Spacing increases a spacing between two widgets a bit.
+// SpacingWidget increases a spacing between two widgets a bit.
 type SpacingWidget struct{}
 
 // Spacing creates new SpacingWidget.

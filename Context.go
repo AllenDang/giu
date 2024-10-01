@@ -43,6 +43,7 @@ type state struct {
 	data  Disposable
 }
 
+// GUIContext represents a giu context. (Current context is giu.Context.
 type GIUContext struct {
 	backend backend.Backend[glfwbackend.GLFWWindowFlags]
 

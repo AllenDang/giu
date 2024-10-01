@@ -224,6 +224,7 @@ func (sf *SliderFloatWidget) Labelf(format string, args ...any) *SliderFloatWidg
 	return sf.Label(fmt.Sprintf(format, args...))
 }
 
+// ID manually sets widget id.
 func (sf *SliderFloatWidget) ID(id ID) *SliderFloatWidget {
 	sf.label = id
 	return sf
