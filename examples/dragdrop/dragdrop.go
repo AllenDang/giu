@@ -1,3 +1,4 @@
+// Package main shows usage of drag and drop feature (uses imgui).
 package main
 
 import (
@@ -9,7 +10,7 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
-var dropTarget string = "Drop here"
+var dropTarget = "Drop here"
 
 func loop() {
 	g.SingleWindow().Layout(

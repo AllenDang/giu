@@ -1,3 +1,4 @@
+// Package main shows a simple FPS counter.
 package main
 
 import (

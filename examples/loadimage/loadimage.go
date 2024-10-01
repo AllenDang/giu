@@ -1,3 +1,7 @@
+// Package main provides examples of loading and presenting images.
+// - from file
+// - from RGBA variable
+// - from URL
 package main
 
 import (

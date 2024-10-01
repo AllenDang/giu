@@ -1,4 +1,4 @@
-// Package main presents usage of multiple imgui windows.
+// Package main presents operations on windows (focus, size, position).
 package main
 
 import "github.com/AllenDang/giu"

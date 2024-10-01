@@ -1,3 +1,4 @@
+// Package main presents the simpliest giu hello-world app.
 package main
 
 import (

@@ -1,3 +1,4 @@
+// Package main presents usage of giu Message Box.
 package main
 
 import (

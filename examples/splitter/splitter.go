@@ -1,3 +1,4 @@
+// Package main shows usage of SplitLayout.
 package main
 
 import (

@@ -1,3 +1,4 @@
+// Package main shows how to use giu Alignment system.
 package main
 
 import (

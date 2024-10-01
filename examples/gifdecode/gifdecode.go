@@ -1,3 +1,5 @@
+// Package main shows a simple example of how to read, decode, convert to Textures and present gif image in giu.
+// It also shows how to force giu redraws.
 package main
 
 import (
