@@ -345,16 +345,21 @@ func (g *ColumnWidget) Build() {
 
 var _ Widget = &MainMenuBarWidget{}
 
+// MainMenuBarWidget is a widget that creates a main menu bar.
+// Main means that it will be docked to the MasterWindow.
+// Do NOT use with SingleWindow (see MenuBarWidget).
 type MainMenuBarWidget struct {
 	layout Layout
 }
 
+// MainMenuBar creates new MainMenuBarWidget.
 func MainMenuBar() *MainMenuBarWidget {
 	return &MainMenuBarWidget{
 		layout: nil,
 	}
 }
 
+// Layout sets layout of the menu bar. (See MenuWidget).
 func (m *MainMenuBarWidget) Layout(widgets ...Widget) *MainMenuBarWidget {
 	m.layout = Layout(widgets)
 	return m
@@ -370,16 +375,20 @@ func (m *MainMenuBarWidget) Build() {
 
 var _ Widget = &MenuBarWidget{}
 
+// MenuBarWidget is a widget that creates a menu bar for a window.
+// Use it e.g. with SingleWindowWithMenuBar.
 type MenuBarWidget struct {
 	layout Layout
 }
 
+// MenuBar creates new MenuBarWidget.
 func MenuBar() *MenuBarWidget {
 	return &MenuBarWidget{
 		layout: nil,
 	}
 }
 
+// Layout sets layout of the menu bar. (See MenuWidget).
 func (m *MenuBarWidget) Layout(widgets ...Widget) *MenuBarWidget {
 	m.layout = Layout(widgets)
 	return m
@@ -395,6 +404,7 @@ func (m *MenuBarWidget) Build() {
 
 var _ Widget = &MenuItemWidget{}
 
+// MenuItemWidget is a menu node. Commonly used inside of MenuWidget.
 type MenuItemWidget struct {
 	label    ID
 	shortcut string
@@ -403,6 +413,7 @@ type MenuItemWidget struct {
 	onClick  func()
 }
 
+// MenuItem creates new MenuItemWidget.
 func MenuItem(label string) *MenuItemWidget {
 	return &MenuItemWidget{
 		label:    GenAutoID(label),
@@ -413,25 +424,31 @@ func MenuItem(label string) *MenuItemWidget {
 	}
 }
 
+// MenuItemf creates MenuItem with formated label.
 func MenuItemf(format string, args ...any) *MenuItemWidget {
 	return MenuItem(fmt.Sprintf(format, args...))
 }
 
+// Shortcut sets shortcut of the item (grayed, right-aligned text). Used for presenting e.g. keyboard shortcuts (e.g. "Ctrl+S")
+// NOTE: this is only a visual effect. It has nothing to do with keyboard shortcuts.
 func (m *MenuItemWidget) Shortcut(s string) *MenuItemWidget {
 	m.shortcut = s
 	return m
 }
 
+// Selected sets whether the item is selected.
 func (m *MenuItemWidget) Selected(s bool) *MenuItemWidget {
 	m.selected = s
 	return m
 }
 
+// Enabled sets whether the item is enabled.
 func (m *MenuItemWidget) Enabled(e bool) *MenuItemWidget {
 	m.enabled = e
 	return m
 }
 
+// OnClick sets callback that will be executed when item is clicked.
 func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 	m.onClick = onClick
 	return m
@@ -446,12 +463,15 @@ func (m *MenuItemWidget) Build() {
 
 var _ Widget = &MenuWidget{}
 
+// MenuWidget is a node of (Main)MenuBarWidget.
+// See also: MenuItemWidget, MenuBarWidget, MainMenuBarWidget.
 type MenuWidget struct {
 	label   ID
 	enabled bool
 	layout  Layout
 }
 
+// Menu creates new MenuWidget.
 func Menu(label string) *MenuWidget {
 	return &MenuWidget{
 		label:   GenAutoID(label),
@@ -460,15 +480,18 @@ func Menu(label string) *MenuWidget {
 	}
 }
 
+// Menuf is alias to Menu(fmt.Sprintf(format, args...)).
 func Menuf(format string, args ...any) *MenuWidget {
 	return Menu(fmt.Sprintf(format, args...))
 }
 
+// Enabled sets whether the menu is enabled.
 func (m *MenuWidget) Enabled(e bool) *MenuWidget {
 	m.enabled = e
 	return m
 }
 
+// Layout sets layout of the menu. (See MenuItemWidget).
 func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
 	m.layout = widgets
 	return m
