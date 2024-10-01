@@ -26,10 +26,12 @@ type FontInfo struct {
 	size     float32
 }
 
+// String returns a string representation of the FontInfo. It is intended to be unique for each FontInfo.
 func (f *FontInfo) String() string {
 	return fmt.Sprintf("%s:%.2f", f.fontName, f.size)
 }
 
+// SetSize sets the font size.
 func (f *FontInfo) SetSize(size float32) *FontInfo {
 	result := *f
 	result.size = size
@@ -46,6 +48,12 @@ func (f *FontInfo) SetSize(size float32) *FontInfo {
 	return &result
 }
 
+// FontAtlas is a mechanism to automatically manage fonts in giu.
+// When you add a string in your app, it is registered inside the FontAtlas.
+// Then, font data are built based on the registered strings.
+// for more details, see: https://github.com/ocornut/imgui/blob/master/docs/FONTS.md
+// DefaultFont = font that is used for normal rendering.
+// ExtraFont = font that can be set and then it'll be used for rendering things.
 type FontAtlas struct {
 	shouldRebuildFontAtlas bool
 	stringMap              sync.Map // key is rune, value indicates whether it's a new rune.
@@ -143,6 +151,7 @@ func (a *FontAtlas) SetDefaultFontFromBytes(fontBytes []byte, size float32) {
 	}, a.defaultFonts...)
 }
 
+// GetDefaultFonts returns a list of currently loaded default fonts.
 func (a *FontAtlas) GetDefaultFonts() []FontInfo {
 	return a.defaultFonts
 }
@@ -236,6 +245,7 @@ func (a *FontAtlas) RegisterStringSlice(str []string) []string {
 }
 
 // Rebuild font atlas when necessary.
+// The whole magic happens here.
 func (a *FontAtlas) rebuildFontAtlas() {
 	if !a.shouldRebuildFontAtlas {
 		return
@@ -246,7 +256,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 
 	var sb strings.Builder
 
-	a.stringMap.Range(func(k, v any) bool {
+	a.stringMap.Range(func(k, _ any) bool {
 		a.stringMap.Store(k, true)
 
 		if ks, ok := k.(rune); ok {
