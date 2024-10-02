@@ -20,7 +20,7 @@ func (t *teststate2) Dispose() {
 
 func Test_SetGetState(t *testing.T) {
 	tests := []struct {
-		id   string
+		id   ID
 		data *teststate
 	}{
 		{"nil", nil},
@@ -28,7 +28,7 @@ func Test_SetGetState(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		t.Run(tc.id, func(t *testing.T) {
+		t.Run(tc.id.String(), func(t *testing.T) {
 			ctx := CreateContext(nil)
 			SetState(ctx, tc.id, tc.data)
 			restored := GetState[teststate](ctx, tc.id)
@@ -39,7 +39,7 @@ func Test_SetGetState(t *testing.T) {
 
 func Test_SetGetStateGeneric(t *testing.T) {
 	tests := []struct {
-		id   string
+		id   ID
 		data *teststate
 	}{
 		{"nil", nil},
@@ -47,7 +47,7 @@ func Test_SetGetStateGeneric(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		t.Run(tc.id, func(t *testing.T) {
+		t.Run(tc.id.String(), func(t *testing.T) {
 			ctx := CreateContext(nil)
 			SetState(ctx, tc.id, tc.data)
 			restored := GetState[teststate](ctx, tc.id)
@@ -57,7 +57,7 @@ func Test_SetGetStateGeneric(t *testing.T) {
 }
 
 func Test_SetGetWrongStateGeneric(t *testing.T) {
-	id := "id"
+	id := ID("id")
 	data := &teststate{}
 	ctx := GIUContext{}
 
@@ -66,6 +66,7 @@ func Test_SetGetWrongStateGeneric(t *testing.T) {
 			t.Errorf("expected code to assert to panic, but it didn't")
 		}
 	}()
+
 	SetState(&ctx, id, data)
 	GetState[teststate2](&ctx, id)
 }
@@ -73,9 +74,9 @@ func Test_SetGetWrongStateGeneric(t *testing.T) {
 func Test_invalidState(t *testing.T) {
 	ctx := CreateContext(nil)
 
-	state1ID := "state1"
-	state2ID := "state2"
-	states := map[string]*teststate{
+	state1ID := ID("state1")
+	state2ID := ID("state2")
+	states := map[ID]*teststate{
 		state1ID: {},
 		state2ID: {},
 	}
