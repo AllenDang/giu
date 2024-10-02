@@ -195,7 +195,7 @@ func (w *MasterWindow) setTheme() (fin func()) {
 	}
 }
 
-func (w *MasterWindow) sizeChange(width, height int) {
+func (w *MasterWindow) sizeChange(_, _ int) {
 	// noop
 }
 

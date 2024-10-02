@@ -1,3 +1,4 @@
+// Package main presents how to write your own widget that will be compatible with giu.Widget.
 package main
 
 import (
@@ -8,11 +9,13 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
+// CircleButtonWidget is just a circle with hover and click event handling.
 type CircleButtonWidget struct {
 	id      string
 	clicked func()
 }
 
+// CircleButton creates a new CircleButtonWidget.
 func CircleButton(id string, clicked func()) *CircleButtonWidget {
 	return &CircleButtonWidget{
 		id:      id,
@@ -20,6 +23,7 @@ func CircleButton(id string, clicked func()) *CircleButtonWidget {
 	}
 }
 
+// Build is the implementation of giu.Widget interface.
 func (c *CircleButtonWidget) Build() {
 	width, height := g.CalcTextSize(c.id)
 

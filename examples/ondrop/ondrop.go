@@ -1,3 +1,4 @@
+// Package main shows how to handle dropped file.
 package main
 
 import (

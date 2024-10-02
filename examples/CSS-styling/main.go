@@ -1,3 +1,5 @@
+// Package main shows how to use giu CSS implementation to set style on your app.
+// See also: examples/setstyle for native StyleSetter usage
 package main
 
 import (

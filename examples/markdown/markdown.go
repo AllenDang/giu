@@ -1,3 +1,5 @@
+// Package main shows how to use the Markdown widget.
+// NOTE: Ths feature is already disabled in giu as cimgui-go doesn't implement it yet.
 package main
 
 import (
@@ -7,7 +9,7 @@ import (
 )
 
 var (
-	markdown       string  = getExampleMarkdownText()
+	markdown               = getExampleMarkdownText()
 	splitLayoutPos float32 = 320
 )
 

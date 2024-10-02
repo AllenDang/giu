@@ -1,3 +1,4 @@
+// Package main presents how to create multiple windows in the same application.
 package main
 
 import (

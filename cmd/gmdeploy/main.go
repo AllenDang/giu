@@ -1,3 +1,5 @@
+// Package main could be used to deploy a giu application.
+// use -help for more.
 package main
 
 import (

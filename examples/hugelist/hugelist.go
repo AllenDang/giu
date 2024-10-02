@@ -1,3 +1,4 @@
+// Package main presents how to implement large, procedurally-generated table.
 package main
 
 import (

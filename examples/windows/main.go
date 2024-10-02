@@ -1,3 +1,4 @@
+// Package main presents operations on windows (focus, size, position).
 package main
 
 import "github.com/AllenDang/giu"
@@ -11,8 +12,8 @@ func loop() {
 
 	w1Layout := giu.Layout{
 		giu.Labelf("Focused state %t", w1.HasFocus()),
-		giu.Labelf("Position: %d, %d", int(w1W), int(w1H)),
-		giu.Labelf("Size: %d, %d", int(w1X), int(w1Y)),
+		giu.Labelf("Position: %d, %d", int(w1X), int(w1Y)),
+		giu.Labelf("Size: %d, %d", int(w1W), int(w1H)),
 		giu.Button("bring to front window 2").OnClick(w2.BringToFront),
 	}
 	w2Layout := giu.Layout{

@@ -1,3 +1,4 @@
+// Package main presents usage of Plots in giu.
 package main
 
 import (

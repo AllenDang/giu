@@ -265,6 +265,7 @@ func (l *ListBoxWidget) ID(id ID) *ListBoxWidget {
 	return l
 }
 
+// SelectedIndex sets a pointer where the selected index will be stored.
 func (l *ListBoxWidget) SelectedIndex(i *int32) *ListBoxWidget {
 	l.selectedIndex = i
 	return l

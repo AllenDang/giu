@@ -262,8 +262,10 @@ const (
 	ModNumLock           = Modifier(glfwbackend.GLFWModNumLock)
 )
 
+// Action represents key status change type.
 type Action int
 
+// Actions.
 const (
 	Release Action = iota
 	Press

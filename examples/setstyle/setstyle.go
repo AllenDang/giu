@@ -1,3 +1,5 @@
+// Package main shows how to setyle your app by using giu.StyleSetter.
+// See also: examples/CSS-styling
 package main
 
 import (

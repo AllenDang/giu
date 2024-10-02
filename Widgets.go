@@ -246,12 +246,14 @@ func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 
 var _ Widget = &ContextMenuWidget{}
 
+// ContextMenuWidget is a context menu on another widget. (e.g. right-click menu on button).
 type ContextMenuWidget struct {
 	id          ID
 	mouseButton MouseButton
 	layout      Layout
 }
 
+// ContextMenu creates new ContextMenuWidget.
 func ContextMenu() *ContextMenuWidget {
 	return &ContextMenuWidget{
 		mouseButton: MouseButtonRight,
@@ -260,16 +262,19 @@ func ContextMenu() *ContextMenuWidget {
 	}
 }
 
+// Layout sets layout of the context menu.
 func (c *ContextMenuWidget) Layout(widgets ...Widget) *ContextMenuWidget {
 	c.layout = Layout(widgets)
 	return c
 }
 
+// MouseButton sets mouse button that will trigger the context menu.
 func (c *ContextMenuWidget) MouseButton(mouseButton MouseButton) *ContextMenuWidget {
 	c.mouseButton = mouseButton
 	return c
 }
 
+// ID sets the interval id of context menu.
 func (c *ContextMenuWidget) ID(id ID) *ContextMenuWidget {
 	c.id = id
 	return c
@@ -285,6 +290,7 @@ func (c *ContextMenuWidget) Build() {
 
 var _ Widget = &DragIntWidget{}
 
+// DragIntWidget is a widget that allows to drag an integer value.
 type DragIntWidget struct {
 	label    ID
 	value    *int32
@@ -294,6 +300,7 @@ type DragIntWidget struct {
 	format   string
 }
 
+// DragInt creates new DragIntWidget.
 func DragInt(label string, value *int32, minValue, maxValue int32) *DragIntWidget {
 	return &DragIntWidget{
 		label:    GenAutoID(label),
@@ -305,11 +312,13 @@ func DragInt(label string, value *int32, minValue, maxValue int32) *DragIntWidge
 	}
 }
 
+// Speed sets speed of the dragging.
 func (d *DragIntWidget) Speed(speed float32) *DragIntWidget {
 	d.speed = speed
 	return d
 }
 
+// Format sets format of the value.
 func (d *DragIntWidget) Format(format string) *DragIntWidget {
 	d.format = format
 	return d
@@ -345,16 +354,21 @@ func (g *ColumnWidget) Build() {
 
 var _ Widget = &MainMenuBarWidget{}
 
+// MainMenuBarWidget is a widget that creates a main menu bar.
+// Main means that it will be docked to the MasterWindow.
+// Do NOT use with SingleWindow (see MenuBarWidget).
 type MainMenuBarWidget struct {
 	layout Layout
 }
 
+// MainMenuBar creates new MainMenuBarWidget.
 func MainMenuBar() *MainMenuBarWidget {
 	return &MainMenuBarWidget{
 		layout: nil,
 	}
 }
 
+// Layout sets layout of the menu bar. (See MenuWidget).
 func (m *MainMenuBarWidget) Layout(widgets ...Widget) *MainMenuBarWidget {
 	m.layout = Layout(widgets)
 	return m
@@ -370,16 +384,20 @@ func (m *MainMenuBarWidget) Build() {
 
 var _ Widget = &MenuBarWidget{}
 
+// MenuBarWidget is a widget that creates a menu bar for a window.
+// Use it e.g. with SingleWindowWithMenuBar.
 type MenuBarWidget struct {
 	layout Layout
 }
 
+// MenuBar creates new MenuBarWidget.
 func MenuBar() *MenuBarWidget {
 	return &MenuBarWidget{
 		layout: nil,
 	}
 }
 
+// Layout sets layout of the menu bar. (See MenuWidget).
 func (m *MenuBarWidget) Layout(widgets ...Widget) *MenuBarWidget {
 	m.layout = Layout(widgets)
 	return m
@@ -395,6 +413,7 @@ func (m *MenuBarWidget) Build() {
 
 var _ Widget = &MenuItemWidget{}
 
+// MenuItemWidget is a menu node. Commonly used inside of MenuWidget.
 type MenuItemWidget struct {
 	label    ID
 	shortcut string
@@ -403,6 +422,7 @@ type MenuItemWidget struct {
 	onClick  func()
 }
 
+// MenuItem creates new MenuItemWidget.
 func MenuItem(label string) *MenuItemWidget {
 	return &MenuItemWidget{
 		label:    GenAutoID(label),
@@ -413,25 +433,31 @@ func MenuItem(label string) *MenuItemWidget {
 	}
 }
 
+// MenuItemf creates MenuItem with formated label.
 func MenuItemf(format string, args ...any) *MenuItemWidget {
 	return MenuItem(fmt.Sprintf(format, args...))
 }
 
+// Shortcut sets shortcut of the item (grayed, right-aligned text). Used for presenting e.g. keyboard shortcuts (e.g. "Ctrl+S")
+// NOTE: this is only a visual effect. It has nothing to do with keyboard shortcuts.
 func (m *MenuItemWidget) Shortcut(s string) *MenuItemWidget {
 	m.shortcut = s
 	return m
 }
 
+// Selected sets whether the item is selected.
 func (m *MenuItemWidget) Selected(s bool) *MenuItemWidget {
 	m.selected = s
 	return m
 }
 
+// Enabled sets whether the item is enabled.
 func (m *MenuItemWidget) Enabled(e bool) *MenuItemWidget {
 	m.enabled = e
 	return m
 }
 
+// OnClick sets callback that will be executed when item is clicked.
 func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 	m.onClick = onClick
 	return m
@@ -446,12 +472,15 @@ func (m *MenuItemWidget) Build() {
 
 var _ Widget = &MenuWidget{}
 
+// MenuWidget is a node of (Main)MenuBarWidget.
+// See also: MenuItemWidget, MenuBarWidget, MainMenuBarWidget.
 type MenuWidget struct {
 	label   ID
 	enabled bool
 	layout  Layout
 }
 
+// Menu creates new MenuWidget.
 func Menu(label string) *MenuWidget {
 	return &MenuWidget{
 		label:   GenAutoID(label),
@@ -460,15 +489,18 @@ func Menu(label string) *MenuWidget {
 	}
 }
 
+// Menuf is alias to Menu(fmt.Sprintf(format, args...)).
 func Menuf(format string, args ...any) *MenuWidget {
 	return Menu(fmt.Sprintf(format, args...))
 }
 
+// Enabled sets whether the menu is enabled.
 func (m *MenuWidget) Enabled(e bool) *MenuWidget {
 	m.enabled = e
 	return m
 }
 
+// Layout sets layout of the menu. (See MenuItemWidget).
 func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
 	m.layout = widgets
 	return m
@@ -735,8 +767,10 @@ func (t *TooltipWidget) buildTooltip() {
 
 var _ Widget = &SpacingWidget{}
 
+// SpacingWidget increases a spacing between two widgets a bit.
 type SpacingWidget struct{}
 
+// Spacing creates new SpacingWidget.
 func Spacing() *SpacingWidget {
 	return &SpacingWidget{}
 }
@@ -748,6 +782,7 @@ func (s *SpacingWidget) Build() {
 
 var _ Widget = &ColorEditWidget{}
 
+// ColorEditWidget is a widget that provides a color editor.
 type ColorEditWidget struct {
 	label    ID
 	color    *color.RGBA
@@ -756,6 +791,7 @@ type ColorEditWidget struct {
 	onChange func()
 }
 
+// ColorEdit creates new ColorEditWidget.
 func ColorEdit(label string, c *color.RGBA) *ColorEditWidget {
 	return &ColorEditWidget{
 		label: GenAutoID(label),
@@ -764,16 +800,19 @@ func ColorEdit(label string, c *color.RGBA) *ColorEditWidget {
 	}
 }
 
+// OnChange sets callback that will be executed when color is changed.
 func (ce *ColorEditWidget) OnChange(cb func()) *ColorEditWidget {
 	ce.onChange = cb
 	return ce
 }
 
+// Flags allows to set ColorEditFlags.
 func (ce *ColorEditWidget) Flags(f ColorEditFlags) *ColorEditWidget {
 	ce.flags = f
 	return ce
 }
 
+// Size sets width of the color editor.
 func (ce *ColorEditWidget) Size(width float32) *ColorEditWidget {
 	ce.width = width
 	return ce

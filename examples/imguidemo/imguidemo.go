@@ -1,3 +1,4 @@
+// Package main shows imgui demo window.
 package main
 
 import (

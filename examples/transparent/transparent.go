@@ -1,3 +1,4 @@
+// Package main shows how to create a transparent window with custom drawing.
 package main
 
 import (

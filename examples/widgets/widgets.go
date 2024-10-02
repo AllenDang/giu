@@ -1,3 +1,4 @@
+// Package main presents most of available giu widgets.
 package main
 
 import (
@@ -17,9 +18,9 @@ var (
 	dragInt                int32
 	multiline              string
 	radioOp                int
-	autoCompleteCandidates           = []string{"hello", "hello world"}
-	date                   time.Time = time.Now()
-	col                              = &color.RGBA{}
+	autoCompleteCandidates = []string{"hello", "hello world"}
+	date                   = time.Now()
+	col                    = &color.RGBA{}
 )
 
 func btnClickMeClicked() {

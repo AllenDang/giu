@@ -1,3 +1,4 @@
+// Package main presents usage of giu.Canvas.
 package main
 
 import (

@@ -64,6 +64,7 @@ func (s *SliderIntWidget) Labelf(format string, args ...any) *SliderIntWidget {
 	return s.Label(fmt.Sprintf(format, args...))
 }
 
+// ID manually sets widget id.
 func (s *SliderIntWidget) ID(id ID) *SliderIntWidget {
 	s.label = id
 	return s
@@ -146,6 +147,7 @@ func (vs *VSliderIntWidget) Labelf(format string, args ...any) *VSliderIntWidget
 	return vs.Label(fmt.Sprintf(format, args...))
 }
 
+// ID manually sets widget id.
 func (vs *VSliderIntWidget) ID(id ID) *VSliderIntWidget {
 	vs.label = id
 	return vs
@@ -224,6 +226,7 @@ func (sf *SliderFloatWidget) Labelf(format string, args ...any) *SliderFloatWidg
 	return sf.Label(fmt.Sprintf(format, args...))
 }
 
+// ID manually sets widget id.
 func (sf *SliderFloatWidget) ID(id ID) *SliderFloatWidget {
 	sf.label = id
 	return sf

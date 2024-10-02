@@ -1,3 +1,4 @@
+// Package main presents how to use keyboard shortcuts system in giu.
 package main
 
 import "github.com/AllenDang/giu"

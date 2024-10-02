@@ -56,6 +56,7 @@ func (b *ButtonWidget) Size(width, height float32) *ButtonWidget {
 	return b
 }
 
+// ID allows to manually set widget's id.
 func (b *ButtonWidget) ID(id ID) *ButtonWidget {
 	b.id = id
 	return b

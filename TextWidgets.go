@@ -48,6 +48,7 @@ func (i *InputTextMultilineWidget) Labelf(format string, args ...any) *InputText
 	return i.Label(fmt.Sprintf(format, args...))
 }
 
+// ID sets widget's id.
 func (i *InputTextMultilineWidget) ID(id ID) *InputTextMultilineWidget {
 	i.label = id
 	return i

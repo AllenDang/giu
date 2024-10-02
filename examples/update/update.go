@@ -1,3 +1,4 @@
+// Package main shows how to split FPS from TPS in giu. The ticker is updated in TPS while gui is redrawn as it wants (FPS).
 package main
 
 import (

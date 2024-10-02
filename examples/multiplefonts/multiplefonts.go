@@ -1,3 +1,4 @@
+// Package main shows how to use multiple fonts in giu.
 package main
 
 import (

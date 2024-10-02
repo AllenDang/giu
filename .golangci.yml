@@ -40,7 +40,7 @@ linters:
     - predeclared
     - promlinter
     - reassign
-    #- revive
+    - revive
     - rowserrcheck
     - staticcheck
     - stylecheck

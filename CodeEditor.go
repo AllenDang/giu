@@ -1,4 +1,4 @@
-//nolint:gocritic,govet,unused // this file is TODO. We don't want commentedOutCode linter issues here yet.
+//nolint:gocritic,govet,unused,revive // this file is TODO. We don't want commentedOutCode linter issues here yet.
 package giu
 
 import (
