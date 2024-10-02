@@ -7,9 +7,7 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
-var (
-	names []string
-)
+var names []string
 
 func buildRows() []*g.TableRowWidget {
 	rows := make([]*g.TableRowWidget, len(names))

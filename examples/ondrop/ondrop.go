@@ -7,9 +7,7 @@ import (
 	g "github.com/AllenDang/giu"
 )
 
-var (
-	dropInFiles string
-)
+var dropInFiles string
 
 func loop() {
 	g.SingleWindow().Layout(
@@ -25,6 +23,7 @@ func onDrop(names []string) {
 	}
 
 	dropInFiles = sb.String()
+
 	g.Update()
 }
 

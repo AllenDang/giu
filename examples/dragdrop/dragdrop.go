@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"github.com/AllenDang/cimgui-go/imgui"
+
 	g "github.com/AllenDang/giu"
 )
 
@@ -15,6 +16,7 @@ func loop() {
 		g.Row(
 			g.Custom(func() {
 				g.Button("Drag me: 9").Build()
+
 				if imgui.BeginDragDropSource() {
 					data := int(9)
 					imgui.SetDragDropPayload(
@@ -28,6 +30,7 @@ func loop() {
 			}),
 			g.Custom(func() {
 				g.Button("Drag me: 10").Build()
+
 				if imgui.BeginDragDropSource() {
 					data := 10
 					imgui.SetDragDropPayload(
@@ -45,8 +48,9 @@ func loop() {
 			if imgui.BeginDragDropTarget() {
 				payload := imgui.AcceptDragDropPayload("DND_DEMO")
 				if payload != nil && payload.CData != nil {
-					dropTarget = fmt.Sprintf("Dropped value: %d", *(*int)(unsafe.Pointer(payload.Data())))
+					dropTarget = fmt.Sprintf("Dropped value: %d", *(*int)(unsafe.Pointer(payload.Data()))) //nolint:govet // its cimgui-go design
 				}
+
 				imgui.EndDragDropTarget()
 			}
 		}),

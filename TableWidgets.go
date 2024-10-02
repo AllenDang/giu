@@ -6,6 +6,7 @@ import (
 	"github.com/AllenDang/cimgui-go/imgui"
 )
 
+// TableRowWidget represents a row in a table.
 type TableRowWidget struct {
 	flags        TableRowFlags
 	minRowHeight float64
@@ -13,6 +14,9 @@ type TableRowWidget struct {
 	bgColor      color.Color
 }
 
+// TableRow creates a TbleRowWidget.
+// Each widget will be rendered in a separated column.
+// NOTE: if you want to put multiple widgets in one cell, enclose them in Layout{}.
 func TableRow(widgets ...Widget) *TableRowWidget {
 	return &TableRowWidget{
 		flags:        0,
@@ -22,16 +26,19 @@ func TableRow(widgets ...Widget) *TableRowWidget {
 	}
 }
 
+// BgColor sets the background color of the row.
 func (r *TableRowWidget) BgColor(c color.Color) *TableRowWidget {
 	r.bgColor = c
 	return r
 }
 
+// Flags sets the flags of the row.
 func (r *TableRowWidget) Flags(flags TableRowFlags) *TableRowWidget {
 	r.flags = flags
 	return r
 }
 
+// MinHeight sets the minimum height of the row.
 func (r *TableRowWidget) MinHeight(height float64) *TableRowWidget {
 	r.minRowHeight = height
 	return r
@@ -58,6 +65,7 @@ func (r *TableRowWidget) BuildTableRow() {
 	}
 }
 
+// TableColumnWidget allows to configure table columns headers.
 type TableColumnWidget struct {
 	label              string
 	flags              TableColumnFlags
@@ -65,6 +73,7 @@ type TableColumnWidget struct {
 	userID             uint32
 }
 
+// TableColumn creates a new TableColumnWidget.
 func TableColumn(label string) *TableColumnWidget {
 	return &TableColumnWidget{
 		label:              Context.FontAtlas.RegisterString(label),
@@ -74,16 +83,19 @@ func TableColumn(label string) *TableColumnWidget {
 	}
 }
 
+// Flags sets the flags of the column.
 func (c *TableColumnWidget) Flags(flags TableColumnFlags) *TableColumnWidget {
 	c.flags = flags
 	return c
 }
 
+// InnerWidthOrWeight sets the inner width or weight of the column.
 func (c *TableColumnWidget) InnerWidthOrWeight(w float32) *TableColumnWidget {
 	c.innerWidthOrWeight = w
 	return c
 }
 
+// UserID sets the user id of the column.
 func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
 	c.userID = id
 	return c
@@ -96,6 +108,10 @@ func (c *TableColumnWidget) BuildTableColumn() {
 
 var _ Widget = &TableWidget{}
 
+// TableWidget is a table widget.
+// - Call Table to create new
+// - Then use Rows method to add content
+// - Use Columns method to configure columns (optional).
 type TableWidget struct {
 	id           ID
 	flags        TableFlags
@@ -109,6 +125,7 @@ type TableWidget struct {
 	noHeader     bool
 }
 
+// Table creates new TableWidget.
 func Table() *TableWidget {
 	return &TableWidget{
 		id:           GenAutoID("Table"),
@@ -158,21 +175,25 @@ func (t *TableWidget) Columns(cols ...*TableColumnWidget) *TableWidget {
 	return t
 }
 
+// Rows sets the rows of the table.
 func (t *TableWidget) Rows(rows ...*TableRowWidget) *TableWidget {
 	t.rows = rows
 	return t
 }
 
+// Size sets the size of the table.
 func (t *TableWidget) Size(width, height float32) *TableWidget {
 	t.size = imgui.Vec2{X: width, Y: height}
 	return t
 }
 
+// InnerWidth sets the inner width of the table.
 func (t *TableWidget) InnerWidth(width float64) *TableWidget {
 	t.innerWidth = width
 	return t
 }
 
+// Flags sets the flags of the table.
 func (t *TableWidget) Flags(flags TableFlags) *TableWidget {
 	t.flags = flags
 	return t

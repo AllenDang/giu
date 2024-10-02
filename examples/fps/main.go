@@ -19,8 +19,9 @@ func loop() {
 	giu.SingleWindow().Layout(
 		giu.Custom(func() {
 			frames++
-			timeDelta = time.Now().Sub(currentTime)
+			timeDelta = time.Since(currentTime)
 			currentTime = time.Now()
+
 			fpsTime = fpsTime.Add(timeDelta)
 			if fpsTime.Second() >= 1 {
 				currentFPS = frames

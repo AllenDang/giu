@@ -8,15 +8,14 @@ import (
 	"github.com/AllenDang/giu"
 )
 
-var (
-	counter int
-)
+var counter int
 
 func refresh() {
 	ticker := time.NewTicker(time.Second * 1)
 
 	for {
 		counter = rand.Intn(100)
+
 		giu.Update()
 
 		<-ticker.C

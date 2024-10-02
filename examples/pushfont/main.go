@@ -10,6 +10,7 @@ var font *giu.FontInfo
 
 func loop() {
 	fontPushed := false
+
 	giu.Window("example").Layout(
 		giu.Custom(func() {
 			fontPushed = giu.PushFont(font)
