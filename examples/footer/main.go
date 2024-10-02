@@ -1,3 +1,5 @@
+// Package main presents how to create a footer in giu.
+// ref: https://github.com/AllenDang/giu/discussions/648
 package main
 
 import "github.com/AllenDang/giu"
