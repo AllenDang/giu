@@ -6,9 +6,10 @@ import (
 	"github.com/AllenDang/cimgui-go/implot"
 )
 
-// PlotAxis types.
 type (
+	// PlotXAxis allows to chose X axis.
 	PlotXAxis = implot.PlotAxisEnum
+	// PlotYAxis allows to chose Y axis.
 	PlotYAxis = implot.PlotAxisEnum
 )
 

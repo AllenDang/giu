@@ -84,6 +84,7 @@ func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
 	return ss
 }
 
+// Range implements Splitable interface.
 func (ss *StyleSetter) Range(rangeFunc func(w Widget)) {
 	if ss.layout != nil {
 		var result Layout

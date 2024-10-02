@@ -43,7 +43,7 @@ type state struct {
 	data  Disposable
 }
 
-// GUIContext represents a giu context. (Current context is giu.Context.
+// GIUContext represents a giu context. (Current context is giu.Context.
 type GIUContext struct {
 	backend backend.Backend[glfwbackend.GLFWWindowFlags]
 
@@ -101,7 +101,7 @@ func (c *GIUContext) IO() *imgui.IO {
 // invalidAllState should be called before rendering.
 // it ensures all states are marked as invalid for that moment.
 func (c *GIUContext) invalidAllState() {
-	c.state.Range(func(k, v any) bool {
+	c.state.Range(func(_, v any) bool {
 		if s, ok := v.(*state); ok {
 			c.m.Lock()
 			s.valid = false
