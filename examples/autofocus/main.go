@@ -1,3 +1,5 @@
+// Package main shows how to set auto-focus on an input field.
+// Reference: https://github.com/AllenDang/giu/issues/501
 package main
 
 import (
