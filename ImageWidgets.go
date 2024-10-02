@@ -177,9 +177,9 @@ func (i *ImageWithRgbaWidget) OnClick(cb func()) *ImageWithRgbaWidget {
 func (i *ImageWithRgbaWidget) Build() {
 	if i.rgba != nil {
 		var imgState *imageState
-		if imgState = GetState[imageState](Context, i.id.String()); imgState == nil || !reflect.DeepEqual(i.rgba, imgState.img) {
+		if imgState = GetState[imageState](Context, i.id); imgState == nil || !reflect.DeepEqual(i.rgba, imgState.img) {
 			imgState = &imageState{}
-			SetState(Context, i.id.String(), imgState)
+			SetState(Context, i.id, imgState)
 
 			NewTextureFromRgba(i.rgba, func(tex *Texture) {
 				imgState.texture = tex
@@ -200,7 +200,7 @@ var _ Widget = &ImageWithFileWidget{}
 // because files are not included in executable binaries!
 // You may want to use "embed" package and ImageWithRgba instead.
 type ImageWithFileWidget struct {
-	id      string
+	id      ID
 	imgPath string
 	img     *ImageWidget
 }
@@ -210,14 +210,14 @@ type ImageWithFileWidget struct {
 // to set a specific size, use .Size(width, height).
 func ImageWithFile(imgPath string) *ImageWithFileWidget {
 	return &ImageWithFileWidget{
-		id:      fmt.Sprintf("ImageWithFile_%s", imgPath),
+		id:      ID(fmt.Sprintf("ImageWithFile_%s", imgPath)),
 		imgPath: imgPath,
 		img:     Image(nil),
 	}
 }
 
 // ID sets the interval id of ImageWithFile widgets.
-func (i *ImageWithFileWidget) ID(id string) *ImageWithFileWidget {
+func (i *ImageWithFileWidget) ID(id ID) *ImageWithFileWidget {
 	i.id = id
 	return i
 }
@@ -259,7 +259,7 @@ var _ Widget = &ImageWithURLWidget{}
 // ImageWithURLWidget allows to display an image using
 // an URL as image source.
 type ImageWithURLWidget struct {
-	id              string
+	id              ID
 	imgURL          string
 	downloadTimeout time.Duration
 	whenLoading     Layout
@@ -274,7 +274,7 @@ type ImageWithURLWidget struct {
 // to set a specific size, use .Size(width, height).
 func ImageWithURL(url string) *ImageWithURLWidget {
 	return &ImageWithURLWidget{
-		id:              fmt.Sprintf("ImageWithURL_%s", url),
+		id:              ID(fmt.Sprintf("ImageWithURL_%s", url)),
 		imgURL:          url,
 		downloadTimeout: 10 * time.Second,
 		whenLoading:     Layout{Dummy(100, 100)},

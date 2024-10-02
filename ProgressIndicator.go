@@ -55,7 +55,7 @@ var _ Widget = &ProgressIndicatorWidget{}
 // ProgressIndicatorWidget represents progress indicator widget
 // see examples/extrawidgets/.
 type ProgressIndicatorWidget struct {
-	internalID string
+	internalID ID
 	width      float32
 	height     float32
 	radius     float32
@@ -65,7 +65,7 @@ type ProgressIndicatorWidget struct {
 // ProgressIndicator creates a new ProgressIndicatorWidget.
 func ProgressIndicator(label string, width, height, radius float32) *ProgressIndicatorWidget {
 	return &ProgressIndicatorWidget{
-		internalID: "###giu-progress-indicator",
+		internalID: GenAutoID("###giu-progress-indicator"),
 		width:      width,
 		height:     height,
 		radius:     radius,

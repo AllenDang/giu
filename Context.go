@@ -139,17 +139,17 @@ func (c *context) Backend() backend.Backend[glfwbackend.GLFWWindowFlags] {
 }
 
 // SetState is a generic version of Context.SetState.
-func SetState[T any, PT genericDisposable[T]](c *context, id string, data PT) {
+func SetState[T any, PT genericDisposable[T]](c *context, id ID, data PT) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
 // SetState stores data in context by id.
-func (c *context) SetState(id string, data Disposable) {
+func (c *context) SetState(id ID, data Disposable) {
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
 // GetState is a generic version of Context.GetState.
-func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
+func GetState[T any, PT genericDisposable[T]](c *context, id ID) PT {
 	if s, ok := c.load(id); ok {
 		c.m.Lock()
 		s.valid = true
@@ -165,7 +165,7 @@ func GetState[T any, PT genericDisposable[T]](c *context, id string) PT {
 }
 
 // GetState returns previously stored state by id.
-func (c *context) GetState(id string) any {
+func (c *context) GetState(id ID) any {
 	if s, ok := c.load(id); ok {
 		c.m.Lock()
 		s.valid = true
