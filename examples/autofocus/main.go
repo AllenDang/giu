@@ -27,7 +27,7 @@ func loop() {
 	)
 }
 
-func onAnyKeyPressed(key giu.Key, mod giu.Modifier, action giu.Action) {
+func onAnyKeyPressed(_ giu.Key, _ giu.Modifier, action giu.Action) {
 	if action == giu.Press {
 		shouldFocus = true
 	}
