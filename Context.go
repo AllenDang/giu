@@ -44,6 +44,8 @@ type state struct {
 }
 
 // GIUContext represents a giu context. (Current context is giu.Context.
+//
+//nolint:revive // I WANT TO CALL THIS GIUContext!
 type GIUContext struct {
 	backend backend.Backend[glfwbackend.GLFWWindowFlags]
 
