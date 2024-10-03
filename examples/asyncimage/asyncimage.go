@@ -21,14 +21,14 @@ var (
 	imageScaleX     = float32(1.0)
 	imageScaleY     = float32(1.0)
 	linkedScale     = true
-	dynamicImageUrl = "https://www.pngfind.com/pngs/b/465-4652097_gopher-png.png"
+	dynamicImageURL = "https://www.pngfind.com/pngs/b/465-4652097_gopher-png.png"
 	showWindow      = true
 	wnd             *g.MasterWindow
 	footerLabel     string
 	inputRootfs     = "."
 )
 
-func TextHeader(str string, col color.RGBA) *g.StyleSetter {
+func textHeader(str string, col color.RGBA) *g.StyleSetter {
 	return g.Style().SetColor(g.StyleColorText, col).To(
 		g.Align(g.AlignCenter).To(
 			g.Label(str),
@@ -36,33 +36,33 @@ func TextHeader(str string, col color.RGBA) *g.StyleSetter {
 	)
 }
 
-func CanLoadHeader() *g.AlignmentSetter {
+func canLoadHeader() *g.AlignmentSetter {
 	return g.Align(g.AlignCenter).To(
 
 		g.Row(
-			g.InputText(&dynamicImageUrl),
+			g.InputText(&dynamicImageURL),
 			g.Button("Load Image from URL").OnClick(func() {
 				err := dynamicImage.ResetState()
 				if err == nil {
-					dynamicImage.SetSurfaceFromURL(dynamicImageUrl, time.Second*5, false)
+					_ = dynamicImage.SetSurfaceFromURL(dynamicImageURL, time.Second*5, false)
 				}
 			}),
 		))
 }
 
-func HeaderWidget() g.Widget {
+func headerWidget() g.Widget {
 	if dynamicImage.GetState() == g.SurfaceStateLoading {
-		return TextHeader("Image Is Currently loading...", color.RGBA{0x80, 0x80, 0xFF, 255})
+		return textHeader("Image Is Currently loading...", color.RGBA{0x80, 0x80, 0xFF, 255})
 	}
 
-	return CanLoadHeader()
+	return canLoadHeader()
 }
 
-func FooterWidget(label string) g.Widget {
-	return g.Row(TextHeader(label, color.RGBA{0xFF, 0xFF, 0xFF, 255}))
+func footerWidget(label string) g.Widget {
+	return g.Row(textHeader(label, color.RGBA{0xFF, 0xFF, 0xFF, 255}))
 }
 
-func ShouldReturnImage() g.Widget {
+func shouldReturnImage() g.Widget {
 	if dynamicImage.GetState() != g.SurfaceStateSuccess {
 		return fallback.ToImageWidget().Size(-1, -1)
 	}
@@ -70,7 +70,7 @@ func ShouldReturnImage() g.Widget {
 	return g.Custom(func() { dynamicImage.ToImageWidget().Scale(imageScaleX, imageScaleY).Build() })
 }
 
-func ShouldReturnPanel() g.Widget {
+func shouldReturnPanel() g.Widget {
 	return g.Custom(func() {
 		imgui.SeparatorText("Image Scale")
 
@@ -104,11 +104,11 @@ func ShouldReturnPanel() g.Widget {
 				inputRootfs = "."
 				dynamicImage.SetFSRoot(inputRootfs)
 
-				dynamicImageUrl = "file:///files/sonic.png"
+				dynamicImageURL = "file:///files/sonic.png"
 				err := dynamicImage.ResetState()
 
 				if err == nil {
-					dynamicImage.SetSurfaceFromURL(dynamicImageUrl, time.Second*5, false)
+					_ = dynamicImage.SetSurfaceFromURL(dynamicImageURL, time.Second*5, false)
 				}
 
 				linkedScale = true
@@ -138,17 +138,17 @@ func loop() {
 
 	g.PushColorWindowBg(color.RGBA{30, 30, 30, 255})
 	g.Window("Async Images").IsOpen(&showWindow).Pos(10, 30).Size(1280, 720).Flags(g.WindowFlagsNoResize).Layout(
-		HeaderWidget(),
+		headerWidget(),
 		g.Separator(),
 		g.Row(
 			g.Child().Size(400, 625).Layout(
-				ShouldReturnPanel(),
+				shouldReturnPanel(),
 			),
 			g.Child().Flags(g.WindowFlagsHorizontalScrollbar).Size(-1, 625).Layout(
-				ShouldReturnImage(),
+				shouldReturnImage(),
 			)),
 		g.Separator(),
-		FooterWidget(footerLabel),
+		footerWidget(footerLabel),
 	)
 	g.PopStyleColor()
 }
@@ -167,7 +167,7 @@ func initDynamicImage() error {
 	// SurfaceURL works from files:// too !
 	// Note : the "root" of the scheme is willingly the Executable / working directory
 	if err := fallback.SetSurfaceFromURL("file:///files/fallback.png", time.Second*5, false); err != nil {
-		return err
+		return fmt.Errorf("error at initDynamicImage: %w", err)
 	}
 
 	dynamicImage.OnReset(func() {
@@ -202,5 +202,3 @@ func main() {
 	wnd.SetTargetFPS(60)
 	wnd.Run(loop)
 }
-
-/**/
