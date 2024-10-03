@@ -1,10 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 
 	"github.com/AllenDang/cimgui-go/imgui"
+
 	g "github.com/AllenDang/giu"
 )
 
@@ -15,84 +17,126 @@ var (
 	canvasInited              = false
 	canvas                    *Canvas
 	buffer                    = []DrawCommand{}
-	current_color             = color.RGBA{0, 0, 0, 255}
-	current_tool              = 0
-	brush_size                = float32(12.0)
-	was_drawing               = false
+	currentColor              = color.RGBA{0, 0, 0, 255}
+	currentTool               = 0
+	brushSize                 = float32(12.0)
+	wasDrawing                = false
 	lastTo                    image.Point
 )
 
-func FlushDrawCommands(c *Canvas) {
-	bcopy := append(buffer)
+func flushDrawCommands(c *Canvas) {
+	var bcopy []DrawCommand
+	bcopy = append(bcopy, buffer...)
+
 	go c.AppendDrawCommands(&bcopy)
 
 	buffer = nil
 	buffer = []DrawCommand{}
 }
 
+// Canvas represents a drawable surface where draw commands are executed.
+// It holds the image data, the backend texture, and manages the state of drawing operations.
 type Canvas struct {
-	DrawCommands     []DrawCommand
-	Image            *image.RGBA
-	Backend          *g.ReflectiveBoundTexture
+	// DrawCommands is a slice of drawCommand that records all drawing actions performed on the canvas.
+	DrawCommands []DrawCommand
+
+	// Image is the RGBA image that represents the current state of the canvas.
+	Image *image.RGBA
+
+	// Backend is the texture that interfaces with the graphical backend to display the canvas.
+	Backend *g.ReflectiveBoundTexture
+
+	// LastPaintedIndex is the index of the last draw command that was painted on the canvas.
 	LastPaintedIndex int
-	LastComputedLen  int
-	UndoIndexes      []int
-	inited           bool
+
+	// LastComputedLen is the length of the draw commands that have been processed.
+	LastComputedLen int
+
+	// UndoIndexes is a slice of integers that keeps track of the indexes of draw commands for undo operations.
+	UndoIndexes []int
+
+	// inited is a boolean flag indicating whether the canvas has been initialized.
+	inited bool
 }
 
-func (c *Canvas) GetDrawCommands(since_index int) []DrawCommand {
-	return c.DrawCommands[since_index:]
+// GetDrawCommands returns a slice of drawCommand starting from the specified index.
+// It allows retrieval of draw commands that have been added since a given point in time.
+func (c *Canvas) GetDrawCommands(sinceIndex int) []DrawCommand {
+	return c.DrawCommands[sinceIndex:]
 }
 
+// PushImageToBackend updates the backend texture with the current state of the canvas image.
+// The commit parameter determines whether the changes should be committed immediately.
 func (c *Canvas) PushImageToBackend(commit bool) error {
-	return c.Backend.SetSurfaceFromRGBA(c.Image, commit)
+	err := c.Backend.SetSurfaceFromRGBA(c.Image, commit)
+	if err != nil {
+		return fmt.Errorf("failed to push image to backend: %w", err)
+	}
+
+	return nil
 }
 
+// AppendDrawCommands adds a slice of drawCommand to the canvas's existing draw commands.
+// It appends the provided commands to the DrawCommands slice.
 func (c *Canvas) AppendDrawCommands(cmds *[]DrawCommand) {
 	c.DrawCommands = append(c.DrawCommands, *cmds...)
 }
 
+// Compute processes the draw commands on the canvas and updates the image accordingly.
+// It initializes the canvas if it hasn't been initialized yet, and then processes any
+// new draw commands that have been added since the last computation.
 func (c *Canvas) Compute() {
+	// Initialize the canvas if it hasn't been initialized
 	if !c.inited {
+		// Perform initial flood fill operations to set up the canvas
 		Floodfill(c.Image, color.RGBA{255, 255, 254, 255}, 1, 1)
 		Floodfill(c.Image, color.RGBA{255, 255, 255, 255}, 2, 2)
 
+		// Push the initial image state to the backend
 		err := c.PushImageToBackend(false)
 		if err != nil {
 			return
 		}
 
+		// Mark the canvas as initialized
 		c.inited = true
 
 		return
 	}
 
+	// Return if there are no draw commands to process
 	if len(c.DrawCommands) < 1 {
 		return
 	}
 
+	// Return if all draw commands have already been processed
 	if len(c.DrawCommands) <= c.LastComputedLen {
 		return
 	}
 
+	// Get the new draw commands that need to be processed
 	draws := c.GetDrawCommands(c.LastComputedLen)
 	for _, r := range draws {
 		switch r.Tool {
 		case 0:
+			// Process line drawing commands
 			line := r.ToLine()
 			DrawLine(line.P1.X, line.P1.Y, line.P2.X, line.P2.Y, line.C, line.Thickness, c.Image)
 		case 1:
+			// Process fill commands
 			f := r.ToFill()
 			Floodfill(c.Image, f.C, f.P1.X, f.P1.Y)
-		default:
 		}
 	}
 
+	// Update the backend with the new image state
 	_ = c.PushImageToBackend(false)
+
+	// Update the last computed length to the current number of draw commands
 	c.LastComputedLen = len(c.DrawCommands)
 }
 
-func UndoCanvas() {
+func undoCanvas() {
 	if len(canvas.UndoIndexes) > 0 {
 		lastUndoIndex := canvas.UndoIndexes[len(canvas.UndoIndexes)-1]
 		uind := canvas.UndoIndexes[:len(canvas.UndoIndexes)-1]
@@ -105,7 +149,7 @@ func UndoCanvas() {
 	}
 }
 
-func ClearCanvas() error {
+func clearCanvas() error {
 	var err error
 
 	canvas.Backend.ForceRelease()
@@ -114,28 +158,31 @@ func ClearCanvas() error {
 	return err
 }
 
+// NewCanvas creates a new Canvas with a specified height.
+// It initializes the canvas with a default surface and binds it to a ReflectiveBoundTexture backend.
+// Returns a pointer to the Canvas and an error if the surface cannot be set.
 func NewCanvas(height float32) (*Canvas, error) {
 	backend := &g.ReflectiveBoundTexture{}
-	image := defaultSurface(height)
+	img := defaultSurface(height)
 
-	err := backend.SetSurfaceFromRGBA(image, false)
+	err := backend.SetSurfaceFromRGBA(img, false)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to set surface from RGBA: %w", err)
 	}
 
-	c := &Canvas{Image: image, Backend: backend}
+	c := &Canvas{Image: img, Backend: backend}
 
 	return c, nil
 }
 
-func FittingCanvasSize16By9(height float32) image.Point {
+func fittingCanvasSize16By9(height float32) image.Point {
 	width := height * (16.0 / 9.0)
 	return image.Point{X: int(width), Y: int(height)}
 }
 
 func defaultSurface(height float32) *image.RGBA {
-	p := FittingCanvasSize16By9(height)
-	surface, _ := g.UniformLoader(p.X, p.Y, color.RGBA{255, 255, 255, 255}).ServeRGBA()
+	p := fittingCanvasSize16By9(height)
+	surface, _ := g.NewUniformLoader(p.X, p.Y, color.RGBA{255, 255, 255, 255}).ServeRGBA()
 
 	return surface
 }
@@ -168,58 +215,66 @@ var defaultColors = []color.RGBA{
 func computeCanvasBounds() {
 	avail := imgui.ContentRegionAvail()
 	canvasDetectedHeight = avail.Y
-	canvasSize := FittingCanvasSize16By9(canvasDetectedHeight)
+	canvasSize := fittingCanvasSize16By9(canvasDetectedHeight)
 	canvasComputedWidth = float32(canvasSize.X)
 	canvasMarginComputedWidth = (avail.X - canvasComputedWidth) / 2.0
 }
 
+// CanvasWidget creates a widget for the canvas, handling drawing operations and user interactions.
+// It manages mouse events to draw on the canvas and updates the drawing buffer accordingly.
 func CanvasWidget() g.Widget {
 	canvas.Compute()
 
 	return g.Custom(func() {
-		if was_drawing && !g.IsMouseDown(g.MouseButtonLeft) {
-			was_drawing = false
+		// Check if the user has stopped drawing
+		if wasDrawing && !g.IsMouseDown(g.MouseButtonLeft) {
+			wasDrawing = false
 
-			FlushDrawCommands(canvas)
+			flushDrawCommands(canvas)
 
 			lastTo = image.Point{0, 0}
 		}
 
+		// Get the current screen position of the cursor
 		scr := g.GetCursorScreenPos()
 
+		// Render the canvas image
 		canvas.Backend.ToImageWidget().Build()
 
+		// Check if the canvas is hovered by the mouse
 		if g.IsItemHovered() {
 			mousepos := g.GetMousePos()
 			if mousepos.X >= scr.X && mousepos.X <= scr.X+int(canvasComputedWidth) && mousepos.Y >= scr.Y && mousepos.Y <= scr.Y+int(canvasDetectedHeight) {
 				inpos := image.Point{mousepos.X - scr.X, mousepos.Y - scr.Y}
 
+				// Start drawing on mouse click
 				if imgui.IsMouseClickedBool(imgui.MouseButtonLeft) {
-					was_drawing = true
+					wasDrawing = true
 
 					canvas.UndoIndexes = append(canvas.UndoIndexes, len(canvas.DrawCommands))
 					lastTo = image.Point{0, 0}
 
-					buffer = append(buffer, DrawCommand{Tool: current_tool, Color: current_color, BrushSize: brush_size, From: inpos, To: inpos})
+					buffer = append(buffer, DrawCommand{Tool: currentTool, Color: currentColor, BrushSize: brushSize, From: inpos, To: inpos})
 					lastTo = inpos
 
-					FlushDrawCommands(canvas)
+					flushDrawCommands(canvas)
 				}
 
-				if g.IsMouseDown(g.MouseButtonLeft) && was_drawing {
+				// Continue drawing while the mouse is held down
+				if g.IsMouseDown(g.MouseButtonLeft) && wasDrawing {
 					delta := imgui.CurrentIO().MouseDelta()
 					dx := int(delta.X)
 					dy := int(delta.Y)
 
 					if dx == 0 || dy == 0 {
-						FlushDrawCommands(canvas)
+						flushDrawCommands(canvas)
 					}
 
-					buffer = append(buffer, DrawCommand{Tool: current_tool, Color: current_color, BrushSize: brush_size, From: lastTo, To: inpos})
+					buffer = append(buffer, DrawCommand{Tool: currentTool, Color: currentColor, BrushSize: brushSize, From: lastTo, To: inpos})
 					lastTo = inpos
 
 					if len(buffer) >= 8 {
-						FlushDrawCommands(canvas)
+						flushDrawCommands(canvas)
 					}
 				}
 			}
@@ -227,8 +282,11 @@ func CanvasWidget() g.Widget {
 	})
 }
 
+// CanvasRow creates a row layout for the canvas widget, initializing the canvas if necessary.
+// It ensures the canvas is properly sized and positioned within the GUI.
 func CanvasRow() g.Widget {
 	return g.Custom(func() {
+		// Initialize the canvas if it hasn't been initialized yet
 		if !canvasInited {
 			computeCanvasBounds()
 
@@ -244,6 +302,7 @@ func CanvasRow() g.Widget {
 			return
 		}
 
+		// Build the row layout with the canvas widget
 		g.Row(
 			g.Dummy(canvasMarginComputedWidth, canvasDetectedHeight),
 			CanvasWidget(),

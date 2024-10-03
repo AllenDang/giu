@@ -71,10 +71,10 @@ func (s *StatefulReflectiveBoundTexture) LoadSurface(loader SurfaceLoader, commi
 	return s.LoadSurfaceAsync(loader, commit)
 }
 
-var _ SurfaceLoader = &fileLoader{}
+var _ SurfaceLoader = &FileLoader{}
 
-// fileLoader is a struct that implements the SurfaceLoader interface for loading images from a file.
-type fileLoader struct {
+// FileLoader is a struct that implements the SurfaceLoader interface for loading images from a file.
+type FileLoader struct {
 	path string
 }
 
@@ -83,7 +83,7 @@ type fileLoader struct {
 // Returns:
 //   - *image.RGBA: The loaded RGBA image.
 //   - error: An error if the image could not be loaded.
-func (f *fileLoader) ServeRGBA() (*image.RGBA, error) {
+func (f *FileLoader) ServeRGBA() (*image.RGBA, error) {
 	img, err := LoadImage(f.path)
 	if err != nil {
 		return nil, err
@@ -92,15 +92,15 @@ func (f *fileLoader) ServeRGBA() (*image.RGBA, error) {
 	return img, nil
 }
 
-// FileLoader creates a new SurfaceLoader that loads images from the specified file path.
+// NewFileLoader creates a new SurfaceLoader that loads images from the specified file path.
 //
 // Parameters:
 //   - path: The path to the file to load the image from.
 //
 // Returns:
 //   - SurfaceLoader: A new SurfaceLoader for loading images from the specified file path.
-func FileLoader(path string) *fileLoader {
-	return &fileLoader{
+func NewFileLoader(path string) *FileLoader {
+	return &FileLoader{
 		path: path,
 	}
 }
@@ -114,7 +114,7 @@ func FileLoader(path string) *fileLoader {
 // Returns:
 //   - error: An error if the image could not be loaded or set as the surface.
 func (i *ReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) error {
-	return i.LoadSurface(FileLoader(path), commit)
+	return i.LoadSurface(NewFileLoader(path), commit)
 }
 
 // SetSurfaceFromFile loads an image from the specified file path and sets it as the surface of the StatefulReflectiveBoundTexture.
@@ -126,13 +126,13 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) er
 // Returns:
 //   - error: An error if the image could not be loaded or set as the surface.
 func (s *StatefulReflectiveBoundTexture) SetSurfaceFromFile(path string, commit bool) error {
-	return s.LoadSurface(FileLoader(path), commit)
+	return s.LoadSurface(NewFileLoader(path), commit)
 }
 
-var _ SurfaceLoader = &fsFileLoader{}
+var _ SurfaceLoader = &FsFileLoader{}
 
-// fsFileLoader is a struct that implements the SurfaceLoader interface for loading images from a file and embedded fs.
-type fsFileLoader struct {
+// FsFileLoader is a struct that implements the SurfaceLoader interface for loading images from a file and embedded fs.
+type FsFileLoader struct {
 	file fs.File
 }
 
@@ -141,7 +141,7 @@ type fsFileLoader struct {
 // Returns:
 //   - *image.RGBA: The loaded RGBA image.
 //   - error: An error if the image could not be loaded.
-func (f *fsFileLoader) ServeRGBA() (*image.RGBA, error) {
+func (f *FsFileLoader) ServeRGBA() (*image.RGBA, error) {
 	img, err := PNGToRgba(f.file)
 	if err != nil {
 		return nil, err
@@ -150,15 +150,15 @@ func (f *fsFileLoader) ServeRGBA() (*image.RGBA, error) {
 	return img, nil
 }
 
-// FsFileLoader creates a new SurfaceLoader that loads images from the specified file interface.
+// NewFsFileLoader creates a new SurfaceLoader that loads images from the specified file interface.
 //
 // Parameters:
 //   - file: the file interface representing the file
 //
 // Returns:
 //   - SurfaceLoader: A new SurfaceLoader for loading images from the specified file path.
-func FsFileLoader(file fs.File) *fsFileLoader {
-	return &fsFileLoader{
+func NewFsFileLoader(file fs.File) *FsFileLoader {
+	return &FsFileLoader{
 		file: file,
 	}
 }
@@ -172,7 +172,7 @@ func FsFileLoader(file fs.File) *fsFileLoader {
 // Returns:
 //   - error: An error if the image could not be loaded or set as the surface.
 func (i *ReflectiveBoundTexture) SetSurfaceFromFsFile(file fs.File, commit bool) error {
-	return i.LoadSurface(FsFileLoader(file), commit)
+	return i.LoadSurface(NewFsFileLoader(file), commit)
 }
 
 // SetSurfaceFromFsFile loads an image from the specified file interface and sets it as the surface of the StatefulReflectiveBoundTexture.
@@ -184,13 +184,13 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromFsFile(file fs.File, commit bool)
 // Returns:
 //   - error: An error if the image could not be loaded or set as the surface.
 func (s *StatefulReflectiveBoundTexture) SetSurfaceFromFsFile(file fs.File, commit bool) error {
-	return s.LoadSurface(FsFileLoader(file), commit)
+	return s.LoadSurface(NewFsFileLoader(file), commit)
 }
 
-var _ SurfaceLoader = &urlLoader{}
+var _ SurfaceLoader = &URLLoader{}
 
-// urlLoader is a SurfaceLoader that loads images from a specified URL.
-type urlLoader struct {
+// URLLoader is a SurfaceLoader that loads images from a specified URL.
+type URLLoader struct {
 	url     string
 	timeout time.Duration
 	httpdir string
@@ -201,15 +201,16 @@ type urlLoader struct {
 // Returns:
 //   - *image.RGBA: The loaded RGBA image.
 //   - error: An error if the image could not be loaded.
-func (u *urlLoader) ServeRGBA() (*image.RGBA, error) {
+func (u *URLLoader) ServeRGBA() (*image.RGBA, error) {
 	t := &http.Transport{}
 	t.RegisterProtocol("file", http.NewFileTransport(http.Dir(u.httpdir)))
 
 	client := &http.Client{
 		Transport: t,
-		Timeout:   u.timeout}
+		Timeout:   u.timeout,
+	}
 
-	req, err := http.NewRequestWithContext(go_ctx.Background(), "GET", u.url, http.NoBody)
+	req, err := http.NewRequestWithContext(go_ctx.Background(), http.MethodGet, u.url, http.NoBody)
 	if err != nil {
 		return nil, fmt.Errorf("urlLoader serveRGBA after http.NewRequestWithContext: %w", err)
 	}
@@ -234,7 +235,7 @@ func (u *urlLoader) ServeRGBA() (*image.RGBA, error) {
 	return ImageToRgba(img), nil
 }
 
-// URLLoader creates a new SurfaceLoader that loads images from the specified URL.
+// NewURLLoader creates a new SurfaceLoader that loads images from the specified URL.
 //
 // Parameters:
 //   - url: The URL to load the image from.
@@ -243,8 +244,8 @@ func (u *urlLoader) ServeRGBA() (*image.RGBA, error) {
 //
 // Returns:
 //   - SurfaceLoader: A new SurfaceLoader for loading images from the specified URL.
-func URLLoader(url, httpdir string, timeout time.Duration) *urlLoader {
-	return &urlLoader{
+func NewURLLoader(url, httpdir string, timeout time.Duration) *URLLoader {
+	return &URLLoader{
 		url:     url,
 		timeout: timeout,
 		httpdir: httpdir,
@@ -277,7 +278,7 @@ func (i *ReflectiveBoundTexture) GetFSRoot() string {
 // Returns:
 //   - error: An error if the image could not be loaded or set as the surface.
 func (i *ReflectiveBoundTexture) SetSurfaceFromURL(url string, timeout time.Duration, commit bool) error {
-	return i.LoadSurface(URLLoader(url, i.fsroot, timeout), commit)
+	return i.LoadSurface(NewURLLoader(url, i.fsroot, timeout), commit)
 }
 
 // SetSurfaceFromURL loads an image from the specified URL and sets it as the surface of the StatefulReflectiveBoundTexture.
@@ -290,13 +291,13 @@ func (i *ReflectiveBoundTexture) SetSurfaceFromURL(url string, timeout time.Dura
 // Returns:
 //   - error: An error if the image could not be loaded or set as the surface.
 func (s *StatefulReflectiveBoundTexture) SetSurfaceFromURL(url string, timeout time.Duration, commit bool) error {
-	return s.LoadSurface(URLLoader(url, s.fsroot, timeout), commit)
+	return s.LoadSurface(NewURLLoader(url, s.fsroot, timeout), commit)
 }
 
-var _ SurfaceLoader = &uniformLoader{}
+var _ SurfaceLoader = &UniformLoader{}
 
-// uniformLoader is a SurfaceLoader that creates a uniform color image.
-type uniformLoader struct {
+// UniformLoader is a SurfaceLoader that creates a uniform color image.
+type UniformLoader struct {
 	width, height int
 	color         color.Color
 }
@@ -306,14 +307,14 @@ type uniformLoader struct {
 // Returns:
 //   - *image.RGBA: The created RGBA image.
 //   - error: An error if the image could not be created.
-func (u *uniformLoader) ServeRGBA() (*image.RGBA, error) {
+func (u *UniformLoader) ServeRGBA() (*image.RGBA, error) {
 	img := image.NewRGBA(image.Rect(0, 0, u.width, u.height))
 	draw.Draw(img, img.Bounds(), &image.Uniform{u.color}, image.Point{}, draw.Src)
 
 	return img, nil
 }
 
-// UniformLoader creates a new SurfaceLoader that creates a uniform color image.
+// NewUniformLoader creates a new SurfaceLoader that creates a uniform color image.
 //
 // Parameters:
 //   - width: The width of the image.
@@ -322,8 +323,8 @@ func (u *uniformLoader) ServeRGBA() (*image.RGBA, error) {
 //
 // Returns:
 //   - SurfaceLoader: A new SurfaceLoader for creating a uniform color image.
-func UniformLoader(width, height int, c color.Color) *uniformLoader {
-	return &uniformLoader{
+func NewUniformLoader(width, height int, c color.Color) *UniformLoader {
+	return &UniformLoader{
 		width:  width,
 		height: height,
 		color:  c,
@@ -341,7 +342,7 @@ func UniformLoader(width, height int, c color.Color) *uniformLoader {
 // Returns:
 //   - error: An error if the image could not be created or set as the surface.
 func (i *ReflectiveBoundTexture) SetSurfaceUniform(width, height int, c color.Color, commit bool) error {
-	return i.LoadSurface(UniformLoader(width, height, c), commit)
+	return i.LoadSurface(NewUniformLoader(width, height, c), commit)
 }
 
 // SetSurfaceUniform creates a uniform color image and sets it as the surface of the StatefulReflectiveBoundTexture.
@@ -355,5 +356,5 @@ func (i *ReflectiveBoundTexture) SetSurfaceUniform(width, height int, c color.Co
 // Returns:
 //   - error: An error if the image could not be created or set as the surface.
 func (s *StatefulReflectiveBoundTexture) SetSurfaceUniform(width, height int, c color.Color, commit bool) error {
-	return s.LoadSurface(UniformLoader(width, height, c), commit)
+	return s.LoadSurface(NewUniformLoader(width, height, c), commit)
 }

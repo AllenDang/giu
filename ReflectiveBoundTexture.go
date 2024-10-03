@@ -15,7 +15,7 @@ var ErrNilRGBA = errors.New("surface RGBA Result is nil")
 
 // defaultSurface returns a default RGBA surface with a uniform color.
 func defaultSurface() *image.RGBA {
-	surface, _ := UniformLoader(128.0, 128.0, color.RGBA{255, 255, 255, 255}).ServeRGBA()
+	surface, _ := NewUniformLoader(128.0, 128.0, color.RGBA{255, 255, 255, 255}).ServeRGBA()
 	return surface
 }
 
@@ -123,7 +123,7 @@ func (i *ReflectiveBoundTexture) GetImGuiImageVDefaultOptionsStruct() ImguiImage
 //   - width: The width of the image. If set to -1, it will use the available content region width.
 //   - height: The height of the image. If set to -1, it will use the available content region height.
 //   - options: The options for rendering the image.
-func (i *ReflectiveBoundTexture) ImguiImage(width, height float32, options ImguiImageVOptionStruct) {
+func (i *ReflectiveBoundTexture) ImguiImage(width, height float32) {
 	size := imgui.Vec2{X: width, Y: height}
 
 	if size.X == -1 {

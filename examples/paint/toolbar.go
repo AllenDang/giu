@@ -7,6 +7,7 @@ import (
 	"io/fs"
 
 	"github.com/AllenDang/cimgui-go/imgui"
+
 	g "github.com/AllenDang/giu"
 )
 
@@ -25,17 +26,22 @@ var (
 //go:embed all:icons
 var icons embed.FS
 
-type AssetLoadingInfo struct {
+type assetLoadingInfo struct {
 	file    string
 	backend *g.ReflectiveBoundTexture
 }
 
-func Assets() (fs.FS, error) {
-	return fs.Sub(icons, "icons")
+func assets() (fs.FS, error) {
+	f, err := fs.Sub(icons, "icons")
+	if err != nil {
+		return nil, fmt.Errorf("error in assets: %w", err)
+	}
+
+	return f, nil
 }
 
-func LoadAsset(path string, backend *g.ReflectiveBoundTexture) error {
-	assets, _ := Assets()
+func loadAsset(path string, backend *g.ReflectiveBoundTexture) error {
+	assets, _ := assets()
 
 	file, err := assets.Open(path)
 	if err != nil {
@@ -48,10 +54,15 @@ func LoadAsset(path string, backend *g.ReflectiveBoundTexture) error {
 		}
 	}()
 
-	return backend.SetSurfaceFromFsFile(file, false)
+	err = backend.SetSurfaceFromFsFile(file, false)
+	if err != nil {
+		return fmt.Errorf("error in loadAsset: %w", err)
+	}
+
+	return nil
 }
 
-var loadableAssets = []AssetLoadingInfo{
+var loadableAssets = []assetLoadingInfo{
 	{file: "pencil.png", backend: penButtonImg},
 	{file: "paint-bucket.png", backend: fillButtonImg},
 	{file: "undo.png", backend: undoButtonImg},
@@ -63,7 +74,7 @@ var loadableAssets = []AssetLoadingInfo{
 
 func initToolbar() error {
 	for _, info := range loadableAssets {
-		if err := LoadAsset(info.file, info.backend); err != nil {
+		if err := loadAsset(info.file, info.backend); err != nil {
 			return err
 		}
 	}
@@ -73,13 +84,13 @@ func initToolbar() error {
 	return nil
 }
 
-func ShowToolbar() g.Widget {
+func showToolbar() g.Widget {
 	if !toolbarInited {
-		initToolbar()
+		_ = initToolbar()
 	}
 
-	return g.Child().Size(-1, TOOLBAR_H).Layout(
-		ButtonColorMaker(),
+	return g.Child().Size(-1, toolbarHeight).Layout(
+		buttonColorMaker(),
 	)
 }
 
@@ -115,8 +126,8 @@ func colorPopup(ce *color.RGBA, fe g.ColorEditFlags) {
 	}
 }
 
-func ButtonColorMaker() *g.RowWidget {
-	start_ul := imgui.CursorPos()
+func buttonColorMaker() *g.RowWidget {
+	startUl := imgui.CursorPos()
 	sz := imgui.Vec2{}
 
 	return g.Row(g.Custom(func() {
@@ -124,7 +135,7 @@ func ButtonColorMaker() *g.RowWidget {
 			if i%2 == 0 {
 				col := g.ToVec4Color(defaultColors[i])
 				if imgui.ColorButtonV(fmt.Sprintf("%d##cur_color%d", i, i), col, 0, imgui.Vec2{X: 0, Y: 0}) {
-					current_color = defaultColors[i]
+					currentColor = defaultColors[i]
 				}
 
 				sz = imgui.ItemRectSize()
@@ -132,36 +143,36 @@ func ButtonColorMaker() *g.RowWidget {
 			}
 		}
 
-		col := g.ToVec4Color(current_color)
-		if imgui.ColorButtonV(fmt.Sprintf("##CHOSENcur_color%d", current_color), col, 0, sz.Mul(2.0)) {
-			pickerRefColor = current_color
+		col := g.ToVec4Color(currentColor)
+		if imgui.ColorButtonV(fmt.Sprintf("##CHOSENcur_color%d", currentColor), col, 0, sz.Mul(2.0)) {
+			pickerRefColor = currentColor
 
 			imgui.OpenPopupStr("Custom Color")
 		}
 
-		colorPopup(&current_color, g.ColorEditFlagsNoAlpha)
+		colorPopup(&currentColor, g.ColorEditFlagsNoAlpha)
 		imgui.SameLine()
 
 		if imgui.ImageButton("##pen_tool", penButtonImg.Texture().ID(), sz.Mul(1.7)) {
-			current_tool = 0
+			currentTool = 0
 		}
 
 		imgui.SameLine()
 
 		if imgui.ImageButton("##fill_tool", fillButtonImg.Texture().ID(), sz.Mul(1.7)) {
-			current_tool = 1
+			currentTool = 1
 		}
 
 		imgui.SameLine()
 
 		if imgui.ImageButton("##undo_tool", undoButtonImg.Texture().ID(), sz.Mul(1.7)) {
-			UndoCanvas()
+			undoCanvas()
 		}
 
 		imgui.SameLine()
 
 		if imgui.ImageButton("##clear_tool", clearButtonImg.Texture().ID(), sz.Mul(1.7)) {
-			ClearCanvas()
+			_ = clearCanvas()
 		}
 
 		imgui.SameLine()
@@ -170,20 +181,20 @@ func ButtonColorMaker() *g.RowWidget {
 		imgui.ImageButton("##save_tool", saveButtonImg.Texture().ID(), sz.Mul(1.7))
 
 		if imgui.ImageButton("##brush_tool", brushButtonImg.Texture().ID(), sz.Mul(0.9)) {
-			brush_size = 12.0
+			brushSize = 12.0
 		}
 
 		imgui.SameLine()
 		imgui.PushItemWidth(225.0)
-		imgui.SliderFloat("##Brush Size", &brush_size, float32(0.1), float32(72.0))
+		imgui.SliderFloat("##Brush Size", &brushSize, float32(0.1), float32(72.0))
 		imgui.PopItemWidth()
-		imgui.SetCursorPos(start_ul)
+		imgui.SetCursorPos(startUl)
 
 		for i := range defaultColors {
 			if i%2 != 0 {
 				col := g.ToVec4Color(defaultColors[i])
 				if imgui.ColorButtonV(fmt.Sprintf("%d##cur_color%d", i, i), col, 0, imgui.Vec2{X: 0, Y: 0}) {
-					current_color = defaultColors[i]
+					currentColor = defaultColors[i]
 				}
 
 				imgui.SameLineV(0, 0)

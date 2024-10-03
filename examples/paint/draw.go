@@ -57,9 +57,9 @@ func drawCircle(img *image.RGBA, cx, cy int, radius float32, c color.Color) {
 	}
 }
 
-// floodfill fills an area of an image with a given color starting at point (x, y).
+// Floodfill fills an area of an image with a given color starting at point (x, y).
 // The fill continues for all adjacent pixels of the same starting color.
-func Floodfill(input *image.RGBA, c color.Color, x int, y int) {
+func Floodfill(input *image.RGBA, c color.Color, x, y int) {
 	// Get the color of the starting pixel
 	startColor := input.At(x, y)
 
@@ -94,10 +94,7 @@ func Floodfill(input *image.RGBA, c color.Color, x int, y int) {
 		input.Set(px, py, c)
 
 		// Add the neighboring pixels to the queue
-		queue = append(queue, image.Point{X: px + 1, Y: py})
-		queue = append(queue, image.Point{X: px - 1, Y: py})
-		queue = append(queue, image.Point{X: px, Y: py + 1})
-		queue = append(queue, image.Point{X: px, Y: py - 1})
+		queue = append(queue, image.Point{X: px + 1, Y: py}, image.Point{X: px - 1, Y: py}, image.Point{X: px, Y: py + 1}, image.Point{X: px, Y: py - 1})
 	}
 }
 

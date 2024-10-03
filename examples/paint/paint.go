@@ -1,3 +1,4 @@
+// Package main demonstrate use of advanced image object via paint clone
 package main
 
 import (
@@ -6,21 +7,19 @@ import (
 	_ "image/png"
 
 	"github.com/AllenDang/cimgui-go/imgui"
+
 	g "github.com/AllenDang/giu"
 )
 
 var (
-	imageScaleX = float32(1.0)
-	imageScaleY = float32(1.0)
-	linkedScale = true
-	showWindow  = true
-	wnd         *g.MasterWindow
+	showWindow = true
+	wnd        *g.MasterWindow
 )
 
 const (
-	WINDOW_W  = 1280
-	WINDOW_H  = 720
-	TOOLBAR_H = 100
+	windowWidth   = 1280
+	windowHeight  = 720
+	toolbarHeight = 100
 )
 
 func loop() {
@@ -29,8 +28,8 @@ func loop() {
 	}
 
 	g.PushColorWindowBg(color.RGBA{30, 30, 30, 255})
-	g.Window("GIU Paint").IsOpen(&showWindow).Pos(10, 30).Size(WINDOW_W, WINDOW_H).Flags(g.WindowFlagsNoResize).Layout(
-		ShowToolbar(),
+	g.Window("GIU Paint").IsOpen(&showWindow).Pos(10, 30).Size(windowWidth, windowHeight).Flags(g.WindowFlagsNoResize).Layout(
+		showToolbar(),
 		g.Separator(),
 		CanvasRow(),
 	)
