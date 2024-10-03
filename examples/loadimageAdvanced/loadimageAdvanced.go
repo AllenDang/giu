@@ -1,3 +1,4 @@
+// Package main provides examples of loading and presenting images in advanced ways
 package main
 
 import (
@@ -9,6 +10,7 @@ import (
 	"time"
 
 	"github.com/AllenDang/cimgui-go/imgui"
+
 	g "github.com/AllenDang/giu"
 )
 
@@ -22,13 +24,13 @@ var (
 )
 
 func loop() {
-	var start_pos image.Point
+	var startPos image.Point
 
 	g.SingleWindow().Layout(
 		g.Custom(func() {
-			start_pos = g.GetCursorScreenPos()
+			startPos = g.GetCursorScreenPos()
 		}),
-		g.Label("Display wich has size of contentAvaiable (stretch)"),
+		g.Label("Display which has size of contentAvaiable (stretch)"),
 		fromfile.ToImageWidget().OnClick(func() {
 			fmt.Println("contentAvailable image was clicked")
 		}).Size(-1, -1),
@@ -55,13 +57,13 @@ func loop() {
 		g.Custom(func() {
 			size := fromurl.GetSurfaceSize()
 			sonicOffset := image.Point{int(sonicOffsetX), int(sonicOffsetY)}
-			pos_with_offset := start_pos.Add(sonicOffset)
-			computed_posX := (float32(pos_with_offset.X)) + imgui.ScrollX()
-			computed_posY := (float32(pos_with_offset.Y)) + imgui.ScrollY()
+			posWithOffset := startPos.Add(sonicOffset)
+			computedPosX := (float32(posWithOffset.X)) + imgui.ScrollX()
+			computedPosY := (float32(posWithOffset.Y)) + imgui.ScrollY()
 			scale := imgui.Vec2{X: 0.10, Y: 0.10}
-			p_min := imgui.Vec2{X: computed_posX, Y: computed_posY}
-			p_max := imgui.Vec2{X: computed_posX + float32(size.X)*scale.X, Y: computed_posY + float32(size.Y)*scale.Y}
-			imgui.ForegroundDrawListViewportPtr().AddImage(fromurl.Texture().ID(), p_min, p_max)
+			pMin := imgui.Vec2{X: computedPosX, Y: computedPosY}
+			pMax := imgui.Vec2{X: computedPosX + float32(size.X)*scale.X, Y: computedPosY + float32(size.Y)*scale.Y}
+			imgui.ForegroundDrawListViewportPtr().AddImage(fromurl.Texture().ID(), pMin, pMax)
 		}),
 		g.Separator(),
 		g.Label("For more advanced image examples (async/statefull/dynamic) check the asyncimage example!"),
@@ -76,9 +78,9 @@ func main() {
 		log.Fatalf("Cannot loadIamge fallback.png")
 	}
 
-	fromfile.SetSurfaceFromFile("gopher.png", false)
-	fromrgba.SetSurfaceFromRGBA(rgba, false)
-	fromurl.SetSurfaceFromURL("https://static.wikia.nocookie.net/smashbros/images/0/0e/Art_Sonic_TSR.png/revision/latest?cb=20200210122913&path-prefix=fr", time.Second*5, false)
+	_ = fromfile.SetSurfaceFromFile("gopher.png", false)
+	_ = fromrgba.SetSurfaceFromRGBA(rgba, false)
+	_ = fromurl.SetSurfaceFromURL("https://static.wikia.nocookie.net/smashbros/images/0/0e/Art_Sonic_TSR.png/revision/latest?cb=20200210122913&path-prefix=fr", time.Second*5, false)
 
 	wnd := g.NewMasterWindow("Load Image", 1280, 720, 0)
 	wnd.Run(loop)
