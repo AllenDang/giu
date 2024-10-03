@@ -24,6 +24,7 @@ type ImageWidget struct {
 	texture                *Texture
 	width                  float32
 	height                 float32
+	scale                  imgui.Vec2
 	uv0, uv1               imgui.Vec2
 	tintColor, borderColor color.Color
 	onClick                func()
@@ -35,6 +36,7 @@ func Image(texture *Texture) *ImageWidget {
 		texture:     texture,
 		width:       0,
 		height:      0,
+		scale:       imgui.Vec2{X: 1, Y: 1},
 		uv0:         imgui.Vec2{X: 0, Y: 0},
 		uv1:         imgui.Vec2{X: 1, Y: 1},
 		tintColor:   color.RGBA{255, 255, 255, 255},
@@ -74,6 +76,14 @@ func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 	return i
 }
 
+// Scale multiply dimensions after size.
+func (i *ImageWidget) Scale(scaleX, scaleY float32) *ImageWidget {
+	// Size image with DPI scaling
+	i.scale = imgui.Vec2{X: scaleX, Y: scaleY}
+	
+	return i
+}
+
 // Build implements Widget interface.
 func (i *ImageWidget) Build() {
 	if i.width == 0 && i.height == 0 {
@@ -96,6 +106,9 @@ func (i *ImageWidget) Build() {
 		size.Y = rect.Y
 	}
 
+	size.X *= i.scale.X
+	size.Y *= i.scale.Y
+
 	if i.texture == nil || i.texture.tex == nil {
 		Dummy(size.X, size.Y).Build()
 		return
@@ -107,7 +120,7 @@ func (i *ImageWidget) Build() {
 		mousePos := GetMousePos()
 
 		if cursorPos.X <= mousePos.X && cursorPos.Y <= mousePos.Y &&
-			cursorPos.X+int(i.width) >= mousePos.X && cursorPos.Y+int(i.height) >= mousePos.Y {
+			cursorPos.X+int(size.X) >= mousePos.X && cursorPos.Y+int(size.Y) >= mousePos.Y {
 			i.onClick()
 		}
 	}
