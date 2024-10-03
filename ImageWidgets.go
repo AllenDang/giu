@@ -80,7 +80,7 @@ func (i *ImageWidget) Size(width, height float32) *ImageWidget {
 func (i *ImageWidget) Scale(scaleX, scaleY float32) *ImageWidget {
 	// Size image with DPI scaling
 	i.scale = imgui.Vec2{X: scaleX, Y: scaleY}
-	
+
 	return i
 }
 
