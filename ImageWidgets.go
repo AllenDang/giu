@@ -179,6 +179,7 @@ func (i *ImageWithRgbaWidget) Build() {
 		var imgState *imageState
 		if imgState = GetState[imageState](Context, i.id); imgState == nil || !reflect.DeepEqual(i.rgba, imgState.img) {
 			imgState = &imageState{}
+			imgState.img = i.rgba
 			SetState(Context, i.id, imgState)
 
 			NewTextureFromRgba(i.rgba, func(tex *Texture) {
