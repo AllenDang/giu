@@ -23,6 +23,7 @@ var (
 
 func loop() {
 	var start_pos image.Point
+
 	g.SingleWindow().Layout(
 		g.Custom(func() {
 			start_pos = g.GetCursorScreenPos()
@@ -69,10 +70,12 @@ func loop() {
 
 func main() {
 	var err error
+
 	rgba, err = g.LoadImage("./fallback.png")
 	if err != nil {
 		log.Fatalf("Cannot loadIamge fallback.png")
 	}
+
 	fromfile.SetSurfaceFromFile("gopher.png", false)
 	fromrgba.SetSurfaceFromRGBA(rgba, false)
 	fromurl.SetSurfaceFromURL("https://static.wikia.nocookie.net/smashbros/images/0/0e/Art_Sonic_TSR.png/revision/latest?cb=20200210122913&path-prefix=fr", time.Second*5, false)

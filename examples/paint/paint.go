@@ -43,6 +43,7 @@ func noOSDecoratedWindowsConfig() g.MasterWindowFlags {
 	io.SetConfigViewportsNoAutoMerge(true)
 	io.SetConfigViewportsNoDefaultParent(true)
 	io.SetConfigWindowsMoveFromTitleBarOnly(true)
+
 	return g.MasterWindowFlagsHidden | g.MasterWindowFlagsTransparent | g.MasterWindowFlagsFrameless
 }
 

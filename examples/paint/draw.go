@@ -11,14 +11,17 @@ func DrawLine(x1, y1, x2, y2 int, c color.Color, linewidth float32, img *image.R
 	// Use Bresenham's line algorithm to get all points along the line
 	dx := math.Abs(float64(x2 - x1))
 	dy := math.Abs(float64(y2 - y1))
+
 	sx := -1
 	if x1 < x2 {
 		sx = 1
 	}
+
 	sy := -1
 	if y1 < y2 {
 		sy = 1
 	}
+
 	err := dx - dy
 
 	for {
@@ -28,11 +31,13 @@ func DrawLine(x1, y1, x2, y2 int, c color.Color, linewidth float32, img *image.R
 		if x1 == x2 && y1 == y2 {
 			break
 		}
+
 		e2 := 2 * err
 		if e2 > -dy {
 			err -= dy
 			x1 += sx
 		}
+
 		if e2 < dx {
 			err += dx
 			y1 += sy
@@ -100,5 +105,6 @@ func Floodfill(input *image.RGBA, c color.Color, x int, y int) {
 func colorsEqual(c1, c2 color.Color) bool {
 	r1, g1, b1, a1 := c1.RGBA()
 	r2, g2, b2, a2 := c2.RGBA()
+
 	return r1 == r2 && g1 == g2 && b1 == b2 && a1 == a2
 }

@@ -25,6 +25,7 @@ var (
 func FlushDrawCommands(c *Canvas) {
 	bcopy := append(buffer)
 	go c.AppendDrawCommands(&bcopy)
+
 	buffer = nil
 	buffer = []DrawCommand{}
 }
@@ -55,19 +56,25 @@ func (c *Canvas) Compute() {
 	if !c.inited {
 		Floodfill(c.Image, color.RGBA{255, 255, 254, 255}, 1, 1)
 		Floodfill(c.Image, color.RGBA{255, 255, 255, 255}, 2, 2)
+
 		err := c.PushImageToBackend(false)
 		if err != nil {
 			return
 		}
+
 		c.inited = true
+
 		return
 	}
+
 	if len(c.DrawCommands) < 1 {
 		return
 	}
+
 	if len(c.DrawCommands) <= c.LastComputedLen {
 		return
 	}
+
 	draws := c.GetDrawCommands(c.LastComputedLen)
 	for _, r := range draws {
 		switch r.Tool {
@@ -80,6 +87,7 @@ func (c *Canvas) Compute() {
 		default:
 		}
 	}
+
 	_ = c.PushImageToBackend(false)
 	c.LastComputedLen = len(c.DrawCommands)
 }
@@ -99,19 +107,24 @@ func UndoCanvas() {
 
 func ClearCanvas() error {
 	var err error
+
 	canvas.Backend.ForceRelease()
 	canvas, err = NewCanvas(canvasDetectedHeight)
+
 	return err
 }
 
 func NewCanvas(height float32) (*Canvas, error) {
 	backend := &g.ReflectiveBoundTexture{}
 	image := defaultSurface(height)
+
 	err := backend.SetSurfaceFromRGBA(image, false)
 	if err != nil {
 		return nil, err
 	}
+
 	c := &Canvas{Image: image, Backend: backend}
+
 	return c, nil
 }
 
@@ -123,6 +136,7 @@ func FittingCanvasSize16By9(height float32) image.Point {
 func defaultSurface(height float32) *image.RGBA {
 	p := FittingCanvasSize16By9(height)
 	surface, _ := g.UniformLoader(p.X, p.Y, color.RGBA{255, 255, 255, 255}).ServeRGBA()
+
 	return surface
 }
 
@@ -161,35 +175,49 @@ func computeCanvasBounds() {
 
 func CanvasWidget() g.Widget {
 	canvas.Compute()
+
 	return g.Custom(func() {
 		if was_drawing && !g.IsMouseDown(g.MouseButtonLeft) {
 			was_drawing = false
+
 			FlushDrawCommands(canvas)
+
 			lastTo = image.Point{0, 0}
 		}
+
 		scr := g.GetCursorScreenPos()
+
 		canvas.Backend.ToImageWidget().Build()
+
 		if g.IsItemHovered() {
 			mousepos := g.GetMousePos()
 			if mousepos.X >= scr.X && mousepos.X <= scr.X+int(canvasComputedWidth) && mousepos.Y >= scr.Y && mousepos.Y <= scr.Y+int(canvasDetectedHeight) {
 				inpos := image.Point{mousepos.X - scr.X, mousepos.Y - scr.Y}
+
 				if imgui.IsMouseClickedBool(imgui.MouseButtonLeft) {
 					was_drawing = true
+
 					canvas.UndoIndexes = append(canvas.UndoIndexes, len(canvas.DrawCommands))
 					lastTo = image.Point{0, 0}
+
 					buffer = append(buffer, DrawCommand{Tool: current_tool, Color: current_color, BrushSize: brush_size, From: inpos, To: inpos})
 					lastTo = inpos
+
 					FlushDrawCommands(canvas)
 				}
+
 				if g.IsMouseDown(g.MouseButtonLeft) && was_drawing {
 					delta := imgui.CurrentIO().MouseDelta()
 					dx := int(delta.X)
 					dy := int(delta.Y)
+
 					if dx == 0 || dy == 0 {
 						FlushDrawCommands(canvas)
 					}
+
 					buffer = append(buffer, DrawCommand{Tool: current_tool, Color: current_color, BrushSize: brush_size, From: lastTo, To: inpos})
 					lastTo = inpos
+
 					if len(buffer) >= 8 {
 						FlushDrawCommands(canvas)
 					}
@@ -203,14 +231,19 @@ func CanvasRow() g.Widget {
 	return g.Custom(func() {
 		if !canvasInited {
 			computeCanvasBounds()
+
 			var err error
+
 			canvas, err = NewCanvas(canvasDetectedHeight)
 			if err != nil {
 				return
 			}
+
 			canvasInited = true
+
 			return
 		}
+
 		g.Row(
 			g.Dummy(canvasMarginComputedWidth, canvasDetectedHeight),
 			CanvasWidget(),
