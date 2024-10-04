@@ -85,11 +85,12 @@ func Test_invalidState(t *testing.T) {
 		SetState(ctx, i, s)
 	}
 
-	ctx.invalidAllState()
+	// SetState set "valid=true" so we simulate a first end of frame before tests
+	ctx.SetDirty()
 
 	_ = GetState[teststate](ctx, state2ID)
 
-	ctx.cleanState()
+	ctx.SetDirty()
 
 	assert.NotNil(t, GetState[teststate](ctx, state2ID),
 		"although state has been accessed during the frame, it has ben deleted by invalidAllState/cleanState")
