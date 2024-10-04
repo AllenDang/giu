@@ -109,21 +109,28 @@ func (c *Canvas) Compute() {
 		return
 	}
 
-	c.appendMu.Lock()
+	var draws []DrawCommand
 
-	// Return if there are no draw commands to process
-	if len(c.DrawCommands) < 1 {
+	if func() bool {
+		c.appendMu.Lock()
+		defer c.appendMu.Unlock()
+
+		// Return if there are no draw commands to process
+		if len(c.DrawCommands) < 1 {
+			return true
+		}
+
+		// Return if all draw commands have already been processed
+		if len(c.DrawCommands) <= c.LastComputedLen {
+			return true
+		}
+
+		// Get the new draw commands that need to be processed
+		draws = c.getDrawCommands(c.LastComputedLen)
+		return false
+	}() {
 		return
 	}
-
-	// Return if all draw commands have already been processed
-	if len(c.DrawCommands) <= c.LastComputedLen {
-		return
-	}
-
-	// Get the new draw commands that need to be processed
-	draws := c.getDrawCommands(c.LastComputedLen)
-	c.appendMu.Unlock()
 
 	for _, r := range draws {
 		switch r.Tool {
