@@ -6,6 +6,7 @@ import (
 	"image/color"
 	"image/draw"
 	"image/png"
+	"io/fs"
 	"log"
 	"os"
 	"path/filepath"
@@ -24,6 +25,16 @@ func (i ID) String() string {
 	return string(i)
 }
 
+// PNGToRgba loads image file interface and assume caller takes care of interface proper closing.
+func PNGToRgba(file fs.File) (*image.RGBA, error) {
+	img, err := png.Decode(file)
+	if err != nil {
+		return nil, fmt.Errorf("LoadImage: error decoding png image: %w", err)
+	}
+
+	return ImageToRgba(img), nil
+}
+
 // LoadImage loads image from file and returns *image.RGBA.
 func LoadImage(imgPath string) (*image.RGBA, error) {
 	imgFile, err := os.Open(filepath.Clean(imgPath))
@@ -37,12 +48,7 @@ func LoadImage(imgPath string) (*image.RGBA, error) {
 		}
 	}()
 
-	img, err := png.Decode(imgFile)
-	if err != nil {
-		return nil, fmt.Errorf("LoadImage: error decoding png image: %w", err)
-	}
-
-	return ImageToRgba(img), nil
+	return PNGToRgba(imgFile)
 }
 
 // ImageToRgba converts image.Image to *image.RGBA.
