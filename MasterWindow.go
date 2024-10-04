@@ -200,7 +200,6 @@ func (w *MasterWindow) sizeChange(_, _ int) {
 }
 
 func (w *MasterWindow) beforeRender() {
-	Context.invalidAllState()
 	Context.FontAtlas.rebuildFontAtlas()
 
 	// process texture load requests
@@ -214,7 +213,6 @@ func (w *MasterWindow) beforeRender() {
 }
 
 func (w *MasterWindow) afterRender() {
-	Context.cleanState()
 }
 
 func (w *MasterWindow) beforeDestroy() {
@@ -223,6 +221,9 @@ func (w *MasterWindow) beforeDestroy() {
 }
 
 func (w *MasterWindow) render() {
+	Context.cleanStates()
+	defer Context.SetDirty()
+
 	fin := w.setTheme()
 	defer fin()
 

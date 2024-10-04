@@ -14,12 +14,12 @@ import (
 // It returns an unique value each time it is called.
 func GenAutoID(id string) ID {
 	idx, ok := Context.widgetIndex[id]
-	if !ok {
-		Context.widgetIndex[id] = 0
-		return ID(id)
+
+	if ok {
+		idx++
 	}
 
-	Context.widgetIndex[id]++
+	Context.widgetIndex[id] = idx
 
 	return ID(fmt.Sprintf("%s##%d", id, idx))
 }
@@ -55,6 +55,10 @@ type GIUContext struct {
 
 	// Indicate whether current application is running
 	isAlive bool
+
+	// when dirty is true, flushStates must be called before any GetState use
+	// when it is false, calling flushStates is noop
+	dirty bool
 
 	// States will used by custom widget to store data
 	state sync.Map
@@ -100,30 +104,32 @@ func (c *GIUContext) IO() *imgui.IO {
 	return imgui.CurrentIO()
 }
 
-// invalidAllState should be called before rendering.
-// it ensures all states are marked as invalid for that moment.
-func (c *GIUContext) invalidAllState() {
-	c.state.Range(func(_, v any) bool {
-		if s, ok := v.(*state); ok {
-			c.m.Lock()
-			s.valid = false
-			c.m.Unlock()
-		}
-
-		return true
-	})
+// SetDirty permits MasterWindow defering setting dirty states after it's render().
+func (c *GIUContext) SetDirty() {
+	c.dirty = true
 }
 
-// cleanState removes all states that were not marked as valid during rendering.
-// should be called after rendering.
-func (c *GIUContext) cleanState() {
+// cleanStates removes all states that were not marked as valid during rendering,
+// then reset said flag before new usage
+// should always be called before first Get/Set state use in renderloop
+// since afterRender() and beforeRender() are not waranted to run (see glfw_window_refresh_callback)
+// we call it at the very start of our render()
+// but just in case something happened, we also use the "dirty" flag to enforce (or avoid) flushing
+// on critical path.
+func (c *GIUContext) cleanStates() {
+	if !c.dirty {
+		return
+	}
+
 	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
 			c.m.Lock()
 			valid := s.valid
 			c.m.Unlock()
 
-			if !valid {
+			if valid {
+				s.valid = false
+			} else {
 				c.state.Delete(k)
 				s.data.Dispose()
 			}
@@ -132,8 +138,8 @@ func (c *GIUContext) cleanState() {
 		return true
 	})
 
-	// Reset widgetIndex
 	c.widgetIndex = make(map[string]int)
+	c.dirty = false
 }
 
 // Backend returns the imgui.backend used by the context.
@@ -143,16 +149,20 @@ func (c *GIUContext) Backend() backend.Backend[glfwbackend.GLFWWindowFlags] {
 
 // SetState is a generic version of Context.SetState.
 func SetState[T any, PT genericDisposable[T]](c *GIUContext, id ID, data PT) {
+	c.cleanStates()
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
 // SetState stores data in context by id.
 func (c *GIUContext) SetState(id ID, data Disposable) {
+	c.cleanStates()
 	c.state.Store(id, &state{valid: true, data: data})
 }
 
 // GetState is a generic version of Context.GetState.
 func GetState[T any, PT genericDisposable[T]](c *GIUContext, id ID) PT {
+	c.cleanStates()
+
 	if s, ok := c.load(id); ok {
 		c.m.Lock()
 		s.valid = true
@@ -169,6 +179,8 @@ func GetState[T any, PT genericDisposable[T]](c *GIUContext, id ID) PT {
 
 // GetState returns previously stored state by id.
 func (c *GIUContext) GetState(id ID) any {
+	c.cleanStates()
+
 	if s, ok := c.load(id); ok {
 		c.m.Lock()
 		s.valid = true
