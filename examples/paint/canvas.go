@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"image"
 	"image/color"
+	"sync"
 
 	"github.com/AllenDang/cimgui-go/imgui"
 
@@ -57,11 +58,13 @@ type Canvas struct {
 
 	// inited is a boolean flag indicating whether the canvas has been initialized.
 	inited bool
+
+	appendMu sync.Mutex
 }
 
-// GetDrawCommands returns a slice of drawCommand starting from the specified index.
+// getDrawCommands returns a slice of drawCommand starting from the specified index.
 // It allows retrieval of draw commands that have been added since a given point in time.
-func (c *Canvas) GetDrawCommands(sinceIndex int) []DrawCommand {
+func (c *Canvas) getDrawCommands(sinceIndex int) []DrawCommand {
 	return c.DrawCommands[sinceIndex:]
 }
 
@@ -79,6 +82,8 @@ func (c *Canvas) PushImageToBackend(commit bool) error {
 // AppendDrawCommands adds a slice of drawCommand to the canvas's existing draw commands.
 // It appends the provided commands to the DrawCommands slice.
 func (c *Canvas) AppendDrawCommands(cmds *[]DrawCommand) {
+	c.appendMu.Lock()
+	defer c.appendMu.Unlock()
 	c.DrawCommands = append(c.DrawCommands, *cmds...)
 }
 
@@ -104,18 +109,29 @@ func (c *Canvas) Compute() {
 		return
 	}
 
-	// Return if there are no draw commands to process
-	if len(c.DrawCommands) < 1 {
+	var draws []DrawCommand
+
+	if func() bool {
+		c.appendMu.Lock()
+		defer c.appendMu.Unlock()
+
+		// Return if there are no draw commands to process
+		if len(c.DrawCommands) < 1 {
+			return true
+		}
+
+		// Return if all draw commands have already been processed
+		if len(c.DrawCommands) <= c.LastComputedLen {
+			return true
+		}
+
+		// Get the new draw commands that need to be processed
+		draws = c.getDrawCommands(c.LastComputedLen)
+		return false
+	}() {
 		return
 	}
 
-	// Return if all draw commands have already been processed
-	if len(c.DrawCommands) <= c.LastComputedLen {
-		return
-	}
-
-	// Get the new draw commands that need to be processed
-	draws := c.GetDrawCommands(c.LastComputedLen)
 	for _, r := range draws {
 		switch r.Tool {
 		case 0:

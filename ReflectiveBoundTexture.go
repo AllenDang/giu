@@ -7,6 +7,7 @@ import (
 	"image/color"
 	"sync"
 
+	"github.com/AllenDang/cimgui-go/backend"
 	"github.com/AllenDang/cimgui-go/imgui"
 )
 
@@ -193,10 +194,16 @@ func (i *ReflectiveBoundTexture) unbind() {
 }
 
 // bind creates a new texture from the RGBA surface and assigns it to the ReflectiveBoundTexture.
+// note it bypasses normal texture management up to cimgui-go to avoid double free from finalizers.
 func (i *ReflectiveBoundTexture) bind() {
-	NewTextureFromRgba(i.Surface, func(tex *Texture) {
-		i.tex = tex
-	})
+	img := ImageToRgba(i.Surface)
+	i.tex = &Texture{
+		&backend.Texture{
+			ID:     backend.TextureManager(Context.backend).CreateTextureRgba(img, img.Bounds().Dx(), img.Bounds().Dy()),
+			Width:  img.Bounds().Dx(),
+			Height: img.Bounds().Dy(),
+		},
+	}
 }
 
 // GetSurfaceWidth returns the width of the RGBA surface.
