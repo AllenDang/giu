@@ -111,6 +111,10 @@ const (
 	// WindowFlagsNoNav combines WindowFlagsNoNavInputs and WindowFlagsNoNavFocus.
 	WindowFlagsNoNav WindowFlags = WindowFlags(imgui.WindowFlagsNoNav)
 	// WindowFlagsNoDecoration combines WindowFlagsNoTitleBar, WindowFlagsNoResize, WindowFlagsNoScrollbar and
+
+	// WindowFlagsNoDocking Disable docking of this window
+	WindowFlagsNoDocking WindowFlags = WindowFlags(imgui.WindowFlagsNoDocking)
+	
 	// WindowFlagsNoCollapse.
 	WindowFlagsNoDecoration WindowFlags = WindowFlags(imgui.WindowFlagsNoDecoration)
 	// WindowFlagsNoInputs combines WindowFlagsNoMouseInputs, WindowFlagsNoNavInputs and WindowFlagsNoNavFocus.
