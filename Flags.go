@@ -113,7 +113,7 @@ const (
 
 	// WindowFlagsNoDocking Disable docking of this window.
 	WindowFlagsNoDocking WindowFlags = WindowFlags(imgui.WindowFlagsNoDocking)
-	
+
 	// WindowFlagsNoDecoration combines WindowFlagsNoTitleBar, WindowFlagsNoResize, WindowFlagsNoScrollbar and
 	// WindowFlagsNoCollapse.
 	WindowFlagsNoDecoration WindowFlags = WindowFlags(imgui.WindowFlagsNoDecoration)
