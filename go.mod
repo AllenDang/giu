@@ -5,7 +5,7 @@ go 1.22.0
 toolchain go1.23.1
 
 require (
-	github.com/AllenDang/cimgui-go v1.0.2
+	github.com/AllenDang/cimgui-go v1.0.3-0.20241020193711-34d1e6ef587b
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
 	github.com/mazznoer/csscolorparser v0.1.5

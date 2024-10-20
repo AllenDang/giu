@@ -67,6 +67,7 @@ type GIUContext struct {
 	FontAtlas    *FontAtlas
 
 	textureLoadingQueue *queue.Queue
+	textureFreeingQueue *queue.Queue
 
 	cssStylesheet cssStylesheet
 
@@ -80,6 +81,7 @@ func CreateContext(b backend.Backend[glfwbackend.GLFWWindowFlags]) *GIUContext {
 		backend:             b,
 		FontAtlas:           newFontAtlas(),
 		textureLoadingQueue: queue.New(),
+		textureFreeingQueue: queue.New(),
 		m:                   &sync.Mutex{},
 		widgetIndex:         make(map[string]int),
 	}

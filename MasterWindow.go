@@ -210,6 +210,15 @@ func (w *MasterWindow) beforeRender() {
 			NewTextureFromRgba(request.img, request.cb)
 		}
 	}
+
+	// process texture free requests
+	if Context.textureFreeingQueue != nil && Context.textureFreeingQueue.Length() > 0 {
+		for Context.textureFreeingQueue.Length() > 0 {
+			request, ok := Context.textureFreeingQueue.Remove().(textureFreeRequest)
+			Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
+			request.tex.tex.Release()
+		}
+	}
 }
 
 func (w *MasterWindow) afterRender() {
