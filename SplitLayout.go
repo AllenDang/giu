@@ -101,7 +101,7 @@ func (s *SplitLayoutWidget) Build() {
 
 		layout = Layout{
 			Row(
-				s.buildChild(*s.sashPos, 0, s.layout1),
+				s.buildChild(*s.sashPos, Auto, s.layout1),
 				Splitter(DirectionVertical, &(splitLayoutState.delta)).Size(s.originItemSpacingX, 0),
 				s.buildChild(Auto, Auto, s.layout2),
 			),
