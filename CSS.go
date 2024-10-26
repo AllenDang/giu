@@ -55,11 +55,7 @@ func ParseCSSStyleSheet(data []byte) error {
 
 		for styleVarName, styleVarValue := range style {
 			// convert style variable name to giu style variable name
-			var styleVarID StyleVarID
-
-			err := panicToErr(func() {
-				styleVarID = StyleVarIDFromString(styleVarName)
-			})
+			styleVarID, err := StyleVarIDString(styleVarName)
 
 			if err == nil {
 				// the style is StyleVarID - set it
@@ -94,11 +90,7 @@ func ParseCSSStyleSheet(data []byte) error {
 				continue
 			}
 
-			var styleColorID StyleColorID
-
-			err = panicToErr(func() {
-				styleColorID = StyleColorIDFromString(styleVarName)
-			})
+			styleColorID, err := StyleColorIDString(styleVarName)
 			if err != nil {
 				return ErrCSSParse{What: "style variable ID", Value: styleVarName}
 			}
@@ -115,19 +107,6 @@ func ParseCSSStyleSheet(data []byte) error {
 	}
 
 	return nil
-}
-
-func panicToErr(f func()) (err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			//nolint:goerr113 // Not worth wrapping
-			err = fmt.Errorf("%v", r)
-		}
-	}()
-
-	f()
-
-	return err
 }
 
 // cssStylesheet is a map tag:StyleSetter.

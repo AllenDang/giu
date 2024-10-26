@@ -2,6 +2,7 @@ package giu
 
 import (
 	"image"
+	"runtime"
 
 	"github.com/AllenDang/cimgui-go/backend"
 	"github.com/AllenDang/cimgui-go/imgui"
@@ -18,6 +19,10 @@ type textureLoadRequest struct {
 	cb  func(*Texture)
 }
 
+type textureFreeRequest struct {
+	tex *Texture
+}
+
 // EnqueueNewTextureFromRgba adds loading texture request to loading queue
 // it allows us to run this method in main loop
 // NOTE: remember to call it after NewMasterWindow!
@@ -29,9 +34,15 @@ func EnqueueNewTextureFromRgba(rgba image.Image, loadCb func(t *Texture)) {
 // NewTextureFromRgba creates a new texture from image.Image and, when it is done, calls loadCallback(loadedTexture).
 func NewTextureFromRgba(rgba image.Image, loadCallback func(*Texture)) {
 	tex := backend.NewTextureFromRgba(ImageToRgba(rgba))
-	loadCallback(&Texture{
+	giuTex := &Texture{
 		tex,
+	}
+
+	runtime.SetFinalizer(giuTex, func(tex *Texture) {
+		Context.textureFreeingQueue.Add(textureFreeRequest{tex})
 	})
+
+	loadCallback(giuTex)
 }
 
 // ToTexture converts backend.Texture to Texture.
@@ -45,5 +56,5 @@ func (t *Texture) ID() imgui.TextureID {
 		return t.tex.ID
 	}
 
-	return imgui.TextureID{}
+	return 0
 }
