@@ -109,19 +109,6 @@ func ParseCSSStyleSheet(data []byte) error {
 	return nil
 }
 
-func panicToErr(f func()) (err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			//nolint:goerr113 // Not worth wrapping
-			err = fmt.Errorf("%v", r)
-		}
-	}()
-
-	f()
-
-	return err
-}
-
 // cssStylesheet is a map tag:StyleSetter.
 type cssStylesheet map[string]*StyleSetter
 
