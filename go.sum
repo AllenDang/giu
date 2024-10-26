@@ -1,7 +1,5 @@
-github.com/AllenDang/cimgui-go v1.0.2 h1:2OsJbarAYSpOVzXZWjPtCV5XTAJG9MiIDMcMtMvD7N8=
-github.com/AllenDang/cimgui-go v1.0.2/go.mod h1:+4aKJCU428991n2MDe/8W7ndFq+NNk5A3fpaRIcjg+w=
-github.com/AllenDang/cimgui-go v1.0.3-0.20241020193711-34d1e6ef587b h1:uRRW8UZhbdFBQI6hPhJg4qIu8UFxG5AOF8diuwCeS5Q=
-github.com/AllenDang/cimgui-go v1.0.3-0.20241020193711-34d1e6ef587b/go.mod h1:aY20nGDN5w+zaGAmRV24bKI/OYVmEptB0qlr5z/0OoI=
+github.com/AllenDang/cimgui-go v1.0.4-0.20241026200445-990a0e771992 h1:gLSKrpQ89PEJQ9t2EzTcblz7qsAQvLoCjDLdt5s7RFI=
+github.com/AllenDang/cimgui-go v1.0.4-0.20241026200445-990a0e771992/go.mod h1:aY20nGDN5w+zaGAmRV24bKI/OYVmEptB0qlr5z/0OoI=
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8 h1:dKZMqib/yUDoCFigmz2agG8geZ/e3iRq304/KJXqKyw=
 github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8/go.mod h1:b4uuDd0s6KRIPa84cEEchdQ9ICh7K0OryZHbSzMca9k=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
