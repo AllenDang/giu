@@ -183,7 +183,7 @@ func (w *MasterWindow) setTheme() (fin func()) {
 	imgui.PushStyleColorVec4(imgui.ColPlotHistogramHovered, imgui.Vec4{X: 1.00, Y: 0.60, Z: 0.00, W: 1.00})
 	imgui.PushStyleColorVec4(imgui.ColTextSelectedBg, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 0.35})
 	imgui.PushStyleColorVec4(imgui.ColDragDropTarget, imgui.Vec4{X: 1.00, Y: 1.00, Z: 0.00, W: 0.90})
-	imgui.PushStyleColorVec4(imgui.ColNavHighlight, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 1.00})
+	imgui.PushStyleColorVec4(imgui.ColNavWindowingHighlight, imgui.Vec4{X: 0.26, Y: 0.59, Z: 0.98, W: 1.00})
 	imgui.PushStyleColorVec4(imgui.ColNavWindowingHighlight, imgui.Vec4{X: 1.00, Y: 1.00, Z: 1.00, W: 0.70})
 	imgui.PushStyleColorVec4(imgui.ColTableHeaderBg, imgui.Vec4{X: 0.12, Y: 0.20, Z: 0.28, W: 1.00})
 	imgui.PushStyleColorVec4(imgui.ColTableBorderStrong, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00})
