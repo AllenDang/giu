@@ -7,6 +7,7 @@ import (
 	"io/fs"
 
 	"github.com/AllenDang/cimgui-go/imgui"
+	"github.com/AllenDang/cimgui-go/utils"
 
 	g "github.com/AllenDang/giu"
 )
@@ -112,7 +113,7 @@ func colorPopup(ce *color.RGBA, fe g.ColorEditFlags) {
 			g.Context.FontAtlas.RegisterString("##COLOR_POPUP##me"),
 			&col,
 			imgui.ColorEditFlags(fe),
-			refCol,
+			utils.SliceToPtr(refCol),
 		) {
 			*ce = g.Vec4ToRGBA(imgui.Vec4{
 				X: col[0],
