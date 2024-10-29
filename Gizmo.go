@@ -6,9 +6,46 @@ import (
 	"github.com/AllenDang/cimgui-go/utils"
 )
 
+// GizmoOperation specifies the operation of Gizmo (used by manipulate).
 type GizmoOperation int
 
+// Possible Operations
+const (
+	OperationTranslateX GizmoOperation = GizmoOperation(imguizmo.TRANSLATEX)
+	OperationTranslateY GizmoOperation = GizmoOperation(imguizmo.TRANSLATEY)
+	OperationTranslateZ GizmoOperation = GizmoOperation(imguizmo.TRANSLATEZ)
+	OperationTranslate  GizmoOperation = GizmoOperation(imguizmo.TRANSLATE)
+
+	OperationRotateX GizmoOperation = GizmoOperation(imguizmo.ROTATEX)
+	OperationRotateY GizmoOperation = GizmoOperation(imguizmo.ROTATEY)
+	OperationRotateZ GizmoOperation = GizmoOperation(imguizmo.ROTATEZ)
+	OperationRotate  GizmoOperation = GizmoOperation(imguizmo.ROTATE)
+
+	OperationScaleX GizmoOperation = GizmoOperation(imguizmo.SCALEX)
+	OperationScaleY GizmoOperation = GizmoOperation(imguizmo.SCALEY)
+	OperationScaleZ GizmoOperation = GizmoOperation(imguizmo.SCALEZ)
+	OperationScale  GizmoOperation = GizmoOperation(imguizmo.SCALE)
+
+	OperationScaleXU GizmoOperation = GizmoOperation(imguizmo.SCALEXU)
+	OperationScaleYU GizmoOperation = GizmoOperation(imguizmo.SCALEYU)
+	OperationScaleZU GizmoOperation = GizmoOperation(imguizmo.SCALEZU)
+	OperationScaleU  GizmoOperation = GizmoOperation(imguizmo.SCALEU)
+
+	OperationBounds GizmoOperation = GizmoOperation(imguizmo.BOUNDS)
+
+	OperationRotateScreen GizmoOperation = GizmoOperation(imguizmo.ROTATESCREEN)
+
+	OperationUniversal GizmoOperation = GizmoOperation(imguizmo.UNIVERSAL)
+)
+
+// GizmoMode specifies the mode of Gizmo (used by manipulate).
 type GizmoMode int
+
+// values are not explained in source code
+const (
+	ModeLocal GizmoMode = GizmoMode(imguizmo.LOCAL)
+	ModeWorld GizmoMode = GizmoMode(imguizmo.WORLD)
+)
 
 // GizmoI should be implemented by every sub-element of GizmoWidget.
 type GizmoI interface {
@@ -22,7 +59,6 @@ var _ Widget = &GizmoWidget{}
 // This structure provides an "area" where you can put Gizmos (see (*GizmoWidget).Gizmos).
 // If you wnat to have more understanding about what is going on here, read this:
 // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/ (DISCLAIMER: giu authors are not responsible if you go mad or something!)
-// TODO: Manipulate mode and operation
 // TODO: ViewManipulate
 // TODO: ProjectionMatrix edition (see https://github.com/jbowtie/glm-go)
 type GizmoWidget struct {
