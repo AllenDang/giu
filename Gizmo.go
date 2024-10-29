@@ -6,6 +6,7 @@ import (
 	"github.com/AllenDang/cimgui-go/imgui"
 	"github.com/AllenDang/cimgui-go/imguizmo"
 	"github.com/AllenDang/cimgui-go/utils"
+	glm "github.com/gucio321/glm-go"
 )
 
 // GizmoOperation specifies the operation of Gizmo (used by manipulate).
@@ -51,7 +52,7 @@ const (
 
 // GizmoI should be implemented by every sub-element of GizmoWidget.
 type GizmoI interface {
-	Gizmo(view, projection *HumanReadableMatrix)
+	Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix)
 }
 
 var _ Widget = &GizmoWidget{}
@@ -61,14 +62,14 @@ var _ Widget = &GizmoWidget{}
 // This structure provides an "area" where you can put Gizmos (see (*GizmoWidget).Gizmos).
 // If you wnat to have more understanding about what is going on here, read this:
 // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/ (DISCLAIMER: giu authors are not responsible if you go mad or something!)
-// TODO: ProjectionMatrix edition (see https://github.com/jbowtie/glm-go)
 type GizmoWidget struct {
-	gizmos           []GizmoI
-	view, projection *HumanReadableMatrix
+	gizmos     []GizmoI
+	view       *HumanReadableMatrix
+	projection *ProjectionMatrix
 }
 
 // Gizmo creates a new GizmoWidget.
-func Gizmo(view, projection *HumanReadableMatrix) *GizmoWidget {
+func Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix) *GizmoWidget {
 	return &GizmoWidget{
 		gizmos:     []GizmoI{},
 		view:       view,
@@ -133,7 +134,7 @@ func (g *GridGizmo) Thickness(t float32) *GridGizmo {
 }
 
 // Gizmo implements GizmoI interface.
-func (g *GridGizmo) Gizmo(view, projection *HumanReadableMatrix) {
+func (g *GridGizmo) Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix) {
 	imguizmo.DrawGrid(
 		view.Matrix(),
 		projection.Matrix(),
@@ -141,6 +142,8 @@ func (g *GridGizmo) Gizmo(view, projection *HumanReadableMatrix) {
 		g.thickness,
 	)
 }
+
+var _ GizmoI = &CubeGizmo{}
 
 // CubeGizmo draws a 3D cube in the gizmo area.
 // View and Projection matrices are provided by GizmoWidget.
@@ -163,7 +166,7 @@ func (c *CubeGizmo) Manipulate() *CubeGizmo {
 }
 
 // Gizmo implements GizmoI interface.
-func (c *CubeGizmo) Gizmo(view, projection *HumanReadableMatrix) {
+func (c *CubeGizmo) Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix) {
 	imguizmo.DrawCubes(
 		view.Matrix(),
 		projection.Matrix(),
@@ -175,6 +178,8 @@ func (c *CubeGizmo) Gizmo(view, projection *HumanReadableMatrix) {
 		Manipulate(c.matrix).Gizmo(view, projection)
 	}
 }
+
+var _ GizmoI = &ManipulateGizmo{}
 
 // ManipulateGizmo is a gizmo that allows you to "visually manipulate a matrix".
 // It can be attached to another Gizmo (e.g. CubeGizmo) and will allow to move/rotate/scale it.
@@ -195,7 +200,7 @@ func Manipulate(matrix *HumanReadableMatrix) *ManipulateGizmo {
 }
 
 // Gizmo implements GizmoI interface.
-func (m *ManipulateGizmo) Gizmo(view, projection *HumanReadableMatrix) {
+func (m *ManipulateGizmo) Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix) {
 	imguizmo.ManipulateV(
 		view.Matrix(),
 		projection.Matrix(),
@@ -207,6 +212,8 @@ func (m *ManipulateGizmo) Gizmo(view, projection *HumanReadableMatrix) {
 		nil, // localBounds idk what is this
 		nil) // boundsSnap idk what is this
 }
+
+var _ GizmoI = &ViewManipulateGizmo{}
 
 type ViewManipulateGizmo struct {
 	position imgui.Vec2
@@ -239,7 +246,7 @@ func (v *ViewManipulateGizmo) Color(c color.Color) *ViewManipulateGizmo {
 }
 
 // Gizmo implements GizmoI interface.
-func (v *ViewManipulateGizmo) Gizmo(view, projection *HumanReadableMatrix) {
+func (v *ViewManipulateGizmo) Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix) {
 	imguizmo.ViewManipulateFloat(
 		view.Matrix(),
 		1,
@@ -381,4 +388,68 @@ func (m *HumanReadableMatrix) MatrixSlice() []float32 {
 	}
 
 	return m.matrix
+}
+
+// ref: https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/#the-projection-matrix
+type ProjectionMatrix struct {
+	// The vertical Field of View, in radians: the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
+	// This value is in radians!
+	fov float32
+	// Aspect Ratio. Depends on the size of your window. Notice that 4/3 == 800/600 == 1280/960, sounds familiar?
+	aspect float32
+	// Near clipping plane. Keep as big as possible, or you'll get precision issues.
+	nearClipping float32
+	// Far clipping plane. Keep as little as possible.
+	farClipping float32
+
+	dirty  bool
+	matrix []float32
+}
+
+func NewProjectionMatrix() *ProjectionMatrix {
+	return &ProjectionMatrix{
+		fov:          Deg2Rad(45),
+		aspect:       3.0 / 4.0,
+		nearClipping: 0.1,
+		farClipping:  100.0,
+		dirty:        true,
+		matrix:       make([]float32, 16),
+	}
+}
+
+func (p *ProjectionMatrix) FOV(fov float32) *ProjectionMatrix {
+	p.fov = fov
+	p.dirty = true
+	return p
+}
+
+func (p *ProjectionMatrix) Aspect(aspect float32) *ProjectionMatrix {
+	p.aspect = aspect
+	p.dirty = true
+	return p
+}
+
+func (p *ProjectionMatrix) NearClipping(near float32) *ProjectionMatrix {
+	p.nearClipping = near
+	p.dirty = true
+	return p
+}
+
+func (p *ProjectionMatrix) FarClipping(far float32) *ProjectionMatrix {
+	p.farClipping = far
+	p.dirty = true
+	return p
+}
+
+func (p *ProjectionMatrix) Matrix() *float32 {
+	if p.dirty {
+		p.Compile()
+	}
+
+	return utils.SliceToPtr(p.matrix)
+}
+
+func (p *ProjectionMatrix) Compile() {
+	p.matrix = glm.MatrixPerspective(p.fov, p.aspect, p.nearClipping, p.farClipping)
+	p.dirty = false
 }
