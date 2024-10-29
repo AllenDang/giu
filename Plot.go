@@ -4,6 +4,7 @@ import (
 	"image"
 
 	"github.com/AllenDang/cimgui-go/implot"
+	"github.com/AllenDang/cimgui-go/utils"
 )
 
 type (
@@ -238,7 +239,7 @@ func (p *PlotCanvasWidget) Build() {
 		if len(p.xTicksValue) > 0 {
 			implot.PlotSetupAxisTicksdoublePtrV(
 				implot.AxisX1,
-				&p.xTicksValue,
+				utils.SliceToPtr(p.xTicksValue),
 				int32(len(p.xTicksValue)),
 				p.xTicksLabel,
 				p.xTicksShowDefault,
@@ -248,7 +249,7 @@ func (p *PlotCanvasWidget) Build() {
 		if len(p.yTicksValue) > 0 {
 			implot.PlotSetupAxisTicksdoublePtrV(
 				implot.AxisY1,
-				&p.yTicksValue,
+				utils.SliceToPtr(p.yTicksValue),
 				int32(len(p.yTicksValue)),
 				p.yTicksLabel,
 				p.yTicksShowDefault,
@@ -340,7 +341,7 @@ func (p *BarPlot) Offset(offset int) *BarPlot {
 func (p *BarPlot) Plot() {
 	implot.PlotPlotBarsdoublePtrIntV(
 		p.title,
-		&p.data,
+		utils.SliceToPtr(p.data),
 		int32(len(p.data)),
 		p.width,
 		p.shift,
@@ -392,7 +393,7 @@ func (p *BarHPlot) Offset(offset int) *BarHPlot {
 func (p *BarHPlot) Plot() {
 	implot.PlotPlotBarsdoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.title),
-		&p.data,
+		utils.SliceToPtr(p.data),
 		int32(len(p.data)),
 		p.height,
 		p.shift,
@@ -454,7 +455,7 @@ func (p *LinePlot) Plot() {
 
 	implot.PlotPlotLinedoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.title),
-		&p.values,
+		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
 		p.xScale,
 		p.x0,
@@ -499,8 +500,8 @@ func (p *LineXYPlot) Plot() {
 	implot.PlotSetAxis(implot.PlotAxisEnum(p.yAxis))
 	implot.PlotPlotLinedoublePtrdoublePtrV(
 		Context.FontAtlas.RegisterString(p.title),
-		&p.xs,
-		&p.ys,
+		utils.SliceToPtr(p.xs),
+		utils.SliceToPtr(p.ys),
 		int32(len(p.xs)),
 		0, // flags
 		int32(p.offset),
@@ -560,7 +561,7 @@ func (p *PieChartPlot) Plot() {
 
 	implot.PlotPlotPieChartdoublePtrStrV(
 		Context.FontAtlas.RegisterStringSlice(p.labels),
-		&p.values,
+		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
 		p.x,
 		p.y,
@@ -612,7 +613,7 @@ func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
 func (p *ScatterPlot) Plot() {
 	implot.PlotPlotScatterdoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.label),
-		&p.values,
+		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
 		p.xscale,
 		p.x0,
@@ -649,8 +650,8 @@ func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
 func (p *ScatterXYPlot) Plot() {
 	implot.PlotPlotScatterdoublePtrdoublePtrV(
 		Context.FontAtlas.RegisterString(p.label),
-		&p.xs,
-		&p.ys,
+		utils.SliceToPtr(p.xs),
+		utils.SliceToPtr(p.ys),
 		int32(len(p.xs)),
 		0, // TODO: implement
 		int32(p.offset),
