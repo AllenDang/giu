@@ -1,6 +1,8 @@
 package giu
 
 import (
+	"image/color"
+
 	"github.com/AllenDang/cimgui-go/imgui"
 	"github.com/AllenDang/cimgui-go/imguizmo"
 	"github.com/AllenDang/cimgui-go/utils"
@@ -59,7 +61,6 @@ var _ Widget = &GizmoWidget{}
 // This structure provides an "area" where you can put Gizmos (see (*GizmoWidget).Gizmos).
 // If you wnat to have more understanding about what is going on here, read this:
 // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/ (DISCLAIMER: giu authors are not responsible if you go mad or something!)
-// TODO: ViewManipulate
 // TODO: ProjectionMatrix edition (see https://github.com/jbowtie/glm-go)
 type GizmoWidget struct {
 	gizmos           []GizmoI
@@ -205,6 +206,47 @@ func (m *ManipulateGizmo) Gizmo(view, projection *HumanReadableMatrix) {
 		nil, // snap idk what is this
 		nil, // localBounds idk what is this
 		nil) // boundsSnap idk what is this
+}
+
+type ViewManipulateGizmo struct {
+	position imgui.Vec2
+	size     imgui.Vec2
+	color    uint32
+}
+
+func ViewManipulate() *ViewManipulateGizmo {
+	return &ViewManipulateGizmo{
+		position: imgui.Vec2{128, 128},
+		size:     imgui.Vec2{128, 128},
+	}
+}
+
+// Position sets the position of the gizmo.
+func (v *ViewManipulateGizmo) Position(x, y float32) *ViewManipulateGizmo {
+	v.position = imgui.Vec2{x, y}
+	return v
+}
+
+// Size sets the size of the gizmo.
+func (v *ViewManipulateGizmo) Size(x, y float32) *ViewManipulateGizmo {
+	v.size = imgui.Vec2{x, y}
+	return v
+}
+
+func (v *ViewManipulateGizmo) Color(c color.Color) *ViewManipulateGizmo {
+	v.color = ColorToUint(c)
+	return v
+}
+
+// Gizmo implements GizmoI interface.
+func (v *ViewManipulateGizmo) Gizmo(view, projection *HumanReadableMatrix) {
+	imguizmo.ViewManipulateFloat(
+		view.Matrix(),
+		1,
+		v.position,
+		v.size,
+		v.color,
+	)
 }
 
 // [Gizmo helpers]
