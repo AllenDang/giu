@@ -146,7 +146,7 @@ func (c *CustomWidget) Plot() {
 	c.Build()
 }
 
-func (c *CustomWidget) Gizmo() {
+func (c *CustomWidget) Gizmo(_, _ *HumanReadableMatrix) {
 	c.Build()
 }
 

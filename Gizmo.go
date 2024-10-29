@@ -1,10 +1,14 @@
 package giu
 
-import "github.com/AllenDang/cimgui-go/imguizmo"
+import (
+	"github.com/AllenDang/cimgui-go/imgui"
+	"github.com/AllenDang/cimgui-go/imguizmo"
+	"github.com/AllenDang/cimgui-go/utils"
+)
 
 // GizmoI should be implemented by every sub-element of GizmoWidget.
 type GizmoI interface {
-	Gizmo()
+	Gizmo(view, projection *HumanReadableMatrix)
 }
 
 var _ Widget = &GizmoWidget{}
@@ -13,13 +17,16 @@ var _ Widget = &GizmoWidget{}
 // It is designed just like PlotWidget.
 // This structure provides an "area" where you can put Gizmos (see (*GizmoWidget).Gizmos).
 type GizmoWidget struct {
-	gizmos []GizmoI
+	gizmos           []GizmoI
+	view, projection *HumanReadableMatrix
 }
 
 // Gizmo creates a new GizmoWidget.
-func Gizmo() *GizmoWidget {
+func Gizmo(view, projection *HumanReadableMatrix) *GizmoWidget {
 	return &GizmoWidget{
-		gizmos: []GizmoI{},
+		gizmos:     []GizmoI{},
+		view:       view,
+		projection: projection,
 	}
 }
 
@@ -30,17 +37,202 @@ func (g *GizmoWidget) Gizmos(gizmos ...GizmoI) *GizmoWidget {
 
 func (g *GizmoWidget) build() {
 	for _, gizmo := range g.gizmos {
-		gizmo.Gizmo()
+		gizmo.Gizmo(g.view, g.projection)
 	}
 }
 
 // Build implements Widget interface.
 func (g *GizmoWidget) Build() {
 	imguizmo.SetDrawlist()
+	displaySize := imgui.CurrentIO().DisplaySize()
+	imguizmo.SetRect(0, 0, displaySize.X, displaySize.Y)
 	g.build()
 }
 
 // Global works like Build() but does not attach the gizmo to the current window.
 func (g *GizmoWidget) Global() {
 	g.build()
+}
+
+// [Gizmos]
+
+var _ GizmoI = &GridGizmo{}
+
+// GridGizmo draws a grid in the gizmo area.
+type GridGizmo struct {
+	// default to Identity
+	matrix    *HumanReadableMatrix
+	thickness float32
+}
+
+func Grid() *GridGizmo {
+	return &GridGizmo{
+		matrix:    IdentityMatrix(),
+		thickness: 10,
+	}
+}
+
+func (g *GridGizmo) Gizmo(view, projection *HumanReadableMatrix) {
+	imguizmo.DrawGrid(
+		view.Matrix(),
+		projection.Matrix(),
+		g.matrix.Matrix(),
+		g.thickness,
+	)
+}
+
+// CubeGizmo draws a 3D cube in the gizmo area.
+// View and Projection matrices are provided by GizmoWidget.
+type CubeGizmo struct {
+	matrix *HumanReadableMatrix
+}
+
+func Cube(matrix *HumanReadableMatrix) *CubeGizmo {
+	return &CubeGizmo{
+		matrix: matrix,
+	}
+}
+
+// Gizmo implements GizmoI interface.
+func (c *CubeGizmo) Gizmo(view, projection *HumanReadableMatrix) {
+	imguizmo.DrawCubes(
+		view.Matrix(),
+		projection.Matrix(),
+		c.matrix.Matrix(),
+		1,
+	)
+}
+
+// [Gizmo helpers]
+
+// HumanReadableMatrix is a suitable thing here.
+// It makes it even possible to use gizmos.
+// Recommended use is presented in examples/gizmo
+// NOTE: You are supposed to allocate this with NewHumanReadableMatrix (do not use zero value)!!!
+type HumanReadableMatrix struct {
+	transform []float32 // supposed len is 3
+	rotation  []float32 // supposed len is 3
+	scale     []float32 // supposed len is 3
+	matrix    []float32 // supposed len is 16
+	dirty     bool
+}
+
+func NewHumanReadableMatrix() *HumanReadableMatrix {
+	return &HumanReadableMatrix{
+		transform: make([]float32, 3),
+		rotation:  make([]float32, 3),
+		scale:     make([]float32, 3),
+		matrix:    make([]float32, 16),
+		dirty:     true,
+	}
+}
+
+func IdentityMatrix() *HumanReadableMatrix {
+	r := NewHumanReadableMatrix()
+	r.matrix = []float32{
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1,
+	}
+
+	r.Decompile()
+	r.dirty = false
+
+	return r
+}
+
+func (m *HumanReadableMatrix) Transform(x, y, z float32) *HumanReadableMatrix {
+	m.transform[0] = x
+	m.transform[1] = y
+	m.transform[2] = z
+	m.dirty = true
+	return m
+}
+
+func (m *HumanReadableMatrix) Rotation(x, y, z float32) *HumanReadableMatrix {
+	m.rotation[0] = x
+	m.rotation[1] = y
+	m.rotation[2] = z
+	m.dirty = true
+	return m
+}
+
+func (m *HumanReadableMatrix) Scale(x, y, z float32) *HumanReadableMatrix {
+	m.scale[0] = x
+	m.scale[1] = y
+	m.scale[2] = z
+	m.dirty = true
+	return m
+}
+
+func (m *HumanReadableMatrix) SetMatrix(f []float32) *HumanReadableMatrix {
+	m.matrix = f
+	m.Decompile()
+	m.dirty = false
+	return m
+}
+
+// Compile updates m.Matrix
+// NOTE: this supposes matrix was allocated correctly!
+func (m *HumanReadableMatrix) Compile() {
+	imguizmo.RecomposeMatrixFromComponents(
+		utils.SliceToPtr(m.transform),
+		utils.SliceToPtr(m.rotation),
+		utils.SliceToPtr(m.scale),
+		utils.SliceToPtr(m.matrix),
+	)
+
+	m.dirty = false
+}
+
+func (m *HumanReadableMatrix) Decompile() {
+	imguizmo.DecomposeMatrixToComponents(
+		utils.SliceToPtr(m.matrix),
+		utils.SliceToPtr(m.transform),
+		utils.SliceToPtr(m.rotation),
+		utils.SliceToPtr(m.scale),
+	)
+}
+
+func (m *HumanReadableMatrix) GetTransform() []float32 {
+	if m.dirty {
+		m.Compile()
+	}
+
+	return m.transform
+}
+
+func (m *HumanReadableMatrix) GetRotation() []float32 {
+	if m.dirty {
+		m.Compile()
+	}
+
+	return m.rotation
+}
+
+func (m *HumanReadableMatrix) GetScale() []float32 {
+	if m.dirty {
+		m.Compile()
+	}
+
+	return m.scale
+}
+
+// Matrix returns current matrix compatible with ImGuizmo (pointer to 4x4m).
+// It recompiles as necessary.
+func (m *HumanReadableMatrix) Matrix() *float32 {
+	if m.dirty {
+		m.Compile()
+	}
+
+	return utils.SliceToPtr(m.matrix)
+}
+
+func (m *HumanReadableMatrix) MatrixSlice() []float32 {
+	if m.dirty {
+		m.Compile()
+	}
+
+	return m.matrix
 }
