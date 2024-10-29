@@ -17,12 +17,11 @@ type GizmoI interface {
 
 var _ Widget = &GizmoWidget{}
 
-// GizmoWidget implement ImGuizmo features.
+// GizmoWidget implements ImGuizmo features.
 // It is designed just like PlotWidget.
 // This structure provides an "area" where you can put Gizmos (see (*GizmoWidget).Gizmos).
 // If you wnat to have more understanding about what is going on here, read this:
-// https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/ (DISCLAIMER: giu authors are not responsible if you get mad or something!)
-// TODO: grid thickness
+// https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/ (DISCLAIMER: giu authors are not responsible if you go mad or something!)
 // TODO: Manipulate mode and operation
 // TODO: ViewManipulate
 // TODO: ProjectionMatrix edition (see https://github.com/jbowtie/glm-go)
@@ -84,6 +83,12 @@ func Grid() *GridGizmo {
 		matrix:    IdentityMatrix(),
 		thickness: 10,
 	}
+}
+
+// Thickness sets a thickness of grid lines.
+func (g *GridGizmo) Thickness(t float32) *GridGizmo {
+	g.thickness = t
+	return g
 }
 
 // Gizmo implements GizmoI interface.
