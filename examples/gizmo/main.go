@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"image/color"
 
 	"github.com/AllenDang/cimgui-go/imguizmo"
 	"github.com/AllenDang/giu"
@@ -38,20 +38,15 @@ var (
 func gizmos() []giu.GizmoI {
 	return []giu.GizmoI{
 		giu.Grid(),
-		giu.Cube(cube), //.Manipulate(),
-		giu.Manipulate(cube),
-		giu.Custom(func() {
-			fmt.Println(cube)
-			/*
-				imguizmo.ViewManipulateFloat(
-					view.Matrix(),
-					1,
-					imgui.Vec2{128, 128},
-					imgui.Vec2{128, 128},
-					0x01010101,
-				)
-			*/
-		}),
+		giu.Cube(cube).Manipulate(),
+		giu.ViewManipulate().Color(
+			color.RGBA{
+				R: 45,
+				G: 15,
+				B: 121,
+				A: 255,
+			},
+		),
 	}
 }
 
