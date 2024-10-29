@@ -6,6 +6,10 @@ import (
 	"github.com/AllenDang/cimgui-go/utils"
 )
 
+type GizmoOperation int
+
+type GizmoMode int
+
 // GizmoI should be implemented by every sub-element of GizmoWidget.
 type GizmoI interface {
 	Gizmo(view, projection *HumanReadableMatrix)
@@ -84,13 +88,20 @@ func (g *GridGizmo) Gizmo(view, projection *HumanReadableMatrix) {
 // CubeGizmo draws a 3D cube in the gizmo area.
 // View and Projection matrices are provided by GizmoWidget.
 type CubeGizmo struct {
-	matrix *HumanReadableMatrix
+	matrix     *HumanReadableMatrix
+	manipulate bool
 }
 
 func Cube(matrix *HumanReadableMatrix) *CubeGizmo {
 	return &CubeGizmo{
 		matrix: matrix,
 	}
+}
+
+// Manipulate adds ManipulateGizmo to the CubeGizmo.
+func (c *CubeGizmo) Manipulate() *CubeGizmo {
+	c.manipulate = true
+	return c
 }
 
 // Gizmo implements GizmoI interface.
@@ -101,6 +112,39 @@ func (c *CubeGizmo) Gizmo(view, projection *HumanReadableMatrix) {
 		c.matrix.Matrix(),
 		1,
 	)
+
+	if c.manipulate {
+		Manipulate(c.matrix).Gizmo(view, projection)
+	}
+}
+
+type ManipulateGizmo struct {
+	matrix    *HumanReadableMatrix
+	operation GizmoOperation
+	mode      GizmoMode
+}
+
+// Manipulate creates a new ManipulateGizmo.
+func Manipulate(matrix *HumanReadableMatrix) *ManipulateGizmo {
+	return &ManipulateGizmo{
+		matrix:    matrix,
+		mode:      GizmoMode(imguizmo.LOCAL),
+		operation: GizmoOperation(imguizmo.TRANSLATE),
+	}
+}
+
+// Gizmo implements GizmoI interface.
+func (m *ManipulateGizmo) Gizmo(view, projection *HumanReadableMatrix) {
+	imguizmo.ManipulateV(
+		view.Matrix(),
+		projection.Matrix(),
+		imguizmo.OPERATION(m.operation),
+		imguizmo.MODE(m.mode),
+		m.matrix.Matrix(),
+		nil, // this is deltaMatrix (Can't see usecase for now)
+		nil, // snap idk what is this
+		nil, // localBounds idk what is this
+		nil) // boundsSnap idk what is this
 }
 
 // [Gizmo helpers]
