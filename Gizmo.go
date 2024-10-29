@@ -20,6 +20,12 @@ var _ Widget = &GizmoWidget{}
 // GizmoWidget implement ImGuizmo features.
 // It is designed just like PlotWidget.
 // This structure provides an "area" where you can put Gizmos (see (*GizmoWidget).Gizmos).
+// If you wnat to have more understanding about what is going on here, read this:
+// https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/ (DISCLAIMER: giu authors are not responsible if you get mad or something!)
+// TODO: grid thickness
+// TODO: Manipulate mode and operation
+// TODO: ViewManipulate
+// TODO: ProjectionMatrix edition (see https://github.com/jbowtie/glm-go)
 type GizmoWidget struct {
 	gizmos           []GizmoI
 	view, projection *HumanReadableMatrix
@@ -34,11 +40,14 @@ func Gizmo(view, projection *HumanReadableMatrix) *GizmoWidget {
 	}
 }
 
+// Gizmos adds GizmoI elements to the GizmoWidget area.
 func (g *GizmoWidget) Gizmos(gizmos ...GizmoI) *GizmoWidget {
 	g.gizmos = append(g.gizmos, gizmos...)
 	return g
 }
 
+// build is a local build function.
+// Just to separate Global() and Build() methods.
 func (g *GizmoWidget) build() {
 	for _, gizmo := range g.gizmos {
 		gizmo.Gizmo(g.view, g.projection)
@@ -69,6 +78,7 @@ type GridGizmo struct {
 	thickness float32
 }
 
+// Grid creates a new GridGizmo.
 func Grid() *GridGizmo {
 	return &GridGizmo{
 		matrix:    IdentityMatrix(),
@@ -76,6 +86,7 @@ func Grid() *GridGizmo {
 	}
 }
 
+// Gizmo implements GizmoI interface.
 func (g *GridGizmo) Gizmo(view, projection *HumanReadableMatrix) {
 	imguizmo.DrawGrid(
 		view.Matrix(),
@@ -92,6 +103,7 @@ type CubeGizmo struct {
 	manipulate bool
 }
 
+// Cube creates a new CubeGizmo.
 func Cube(matrix *HumanReadableMatrix) *CubeGizmo {
 	return &CubeGizmo{
 		matrix: matrix,
@@ -118,6 +130,9 @@ func (c *CubeGizmo) Gizmo(view, projection *HumanReadableMatrix) {
 	}
 }
 
+// ManipulateGizmo is a gizmo that allows you to "visually manipulate a matrix".
+// It can be attached to another Gizmo (e.g. CubeGizmo) and will allow to move/rotate/scale it.
+// See (*CubeGizmo).Manipulate() method.
 type ManipulateGizmo struct {
 	matrix    *HumanReadableMatrix
 	operation GizmoOperation
