@@ -13,12 +13,9 @@ var (
 		Rotation(10, 5, 0).
 		Scale(1, 1, 1)
 
-	projection = giu.NewHumanReadableMatrix().SetMatrix([]float32{
-		2.3787, 0, 0, 0,
-		0, 3.1716, 0, 0,
-		0, 0, -1.0002, -1,
-		0, 0, -0.2, 0,
-	})
+	projection = giu.NewProjectionMatrix().
+			FOV(giu.Deg2Rad(30)).
+			Aspect(1280.0 / 720.0)
 
 	cube = giu.NewHumanReadableMatrix().
 		Transform(0.5, 0.5, 0.5).
