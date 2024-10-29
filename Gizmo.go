@@ -56,13 +56,17 @@ func (g *GizmoWidget) build() {
 // Build implements Widget interface.
 func (g *GizmoWidget) Build() {
 	imguizmo.SetDrawlist()
-	displaySize := imgui.CurrentIO().DisplaySize()
-	imguizmo.SetRect(0, 0, displaySize.X, displaySize.Y)
+	displaySize := imgui.ContentRegionAvail()
+	pos0 := imgui.CursorScreenPos()
+	imguizmo.SetRect(pos0.X, pos0.Y, displaySize.X, displaySize.Y)
 	g.build()
 }
 
 // Global works like Build() but does not attach the gizmo to the current window.
 func (g *GizmoWidget) Global() {
+	displaySize := imgui.CurrentIO().DisplaySize()
+	pos0 := imgui.MainViewport().Pos()
+	imguizmo.SetRect(pos0.X, pos0.Y, displaySize.X, displaySize.Y)
 	g.build()
 }
 
