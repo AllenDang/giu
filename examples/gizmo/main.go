@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/AllenDang/cimgui-go/imguizmo"
 	"github.com/AllenDang/giu"
 )
@@ -36,21 +38,10 @@ var (
 func gizmos() []giu.GizmoI {
 	return []giu.GizmoI{
 		giu.Grid(),
-		giu.Cube(cube),
+		giu.Cube(cube), //.Manipulate(),
+		giu.Manipulate(cube),
 		giu.Custom(func() {
-			/*
-				imguizmo.ManipulateV(
-					//&(View[0]),
-					view.Matrix(),
-					projection.Matrix(),
-					imguizmo.OPERATION(zmoOP),
-					imguizmo.MODE(zmoMODE),
-					cube.Matrix(),
-					nil, nil,
-					nil,
-					nil)
-			*/
-
+			fmt.Println(cube)
 			/*
 				imguizmo.ViewManipulateFloat(
 					view.Matrix(),
@@ -69,9 +60,7 @@ func loop() {
 
 	giu.Window("Gizmo demo").Layout(
 		giu.Gizmo(view, projection).Gizmos(
-			giu.Custom(func() {
-				// fmt.Println("Hello world from window gizmos")
-			}),
+			gizmos()...,
 		),
 	)
 }
