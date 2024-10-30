@@ -1,6 +1,9 @@
 package giu
 
-import "github.com/AllenDang/cimgui-go/imgui"
+import (
+	"github.com/AllenDang/cimgui-go/imgui"
+	"github.com/AllenDang/cimgui-go/implot"
+)
 
 // Here are the style IDs for styling imgui apps.
 // For details about each of attributes read comment above them.
@@ -8,6 +11,8 @@ import "github.com/AllenDang/cimgui-go/imgui"
 // go-generate String() andStringToEnum methods
 //go:generate go run github.com/dmarkham/enumer@latest -linecomment -type=StyleColorID .
 //go:generate go run github.com/dmarkham/enumer@latest -linecomment -type=StyleVarID .
+//go:generate go run github.com/dmarkham/enumer@latest -linecomment -type=StylePlotColorID .
+//go:generate go run github.com/dmarkham/enumer@latest -linecomment -type=StylePlotVarID .
 
 // StyleColorID identifies a color in the UI style.
 type StyleColorID imgui.Col
@@ -153,6 +158,96 @@ func (i StyleVarID) IsVec2() bool {
 		StyleVarItemInnerSpacing:    true,
 		StyleVarButtonTextAlign:     true,
 		StyleVarSelectableTextAlign: true,
+	}
+
+	result, ok := lookup[i]
+
+	return result && ok
+}
+
+// StylePlotColorID represents an ID of plot color.
+type StylePlotColorID int
+
+// List of plot color IDs.
+const (
+	StylePlotColorLine          StylePlotColorID = StylePlotColorID(implot.PlotColLine)          // plot-line
+	StylePlotColorFill          StylePlotColorID = StylePlotColorID(implot.PlotColFill)          // plot-fill
+	StylePlotColorMarkerOutline StylePlotColorID = StylePlotColorID(implot.PlotColMarkerOutline) // plot-marker-outline
+	StylePlotColorMarkerFill    StylePlotColorID = StylePlotColorID(implot.PlotColMarkerFill)    // plot-Marker-Fill
+	StylePlotColorErrorBar      StylePlotColorID = StylePlotColorID(implot.PlotColErrorBar)      // plot-error-bar
+	StylePlotColorFrameBg       StylePlotColorID = StylePlotColorID(implot.PlotColFrameBg)       // plot-frame-bg
+	StylePlotColorPlotBg        StylePlotColorID = StylePlotColorID(implot.PlotColPlotBg)        // plot-plot-bg
+	StylePlotColorPlotBorder    StylePlotColorID = StylePlotColorID(implot.PlotColPlotBorder)    // plot-plot-border
+	StylePlotColorLegendBg      StylePlotColorID = StylePlotColorID(implot.PlotColLegendBg)      // plot-legend-bg
+	StylePlotColorLegendBorder  StylePlotColorID = StylePlotColorID(implot.PlotColLegendBorder)  // plot-legend-border
+	StylePlotColorLegendText    StylePlotColorID = StylePlotColorID(implot.PlotColLegendText)    // plot-legend-text
+	StylePlotColorTitleText     StylePlotColorID = StylePlotColorID(implot.PlotColTitleText)     // plot-title-text
+	StylePlotColorInlayText     StylePlotColorID = StylePlotColorID(implot.PlotColInlayText)     // plot-inlay-text
+	StylePlotColorAxisText      StylePlotColorID = StylePlotColorID(implot.PlotColAxisText)      // plot-axis-text
+	StylePlotColorAxisGrid      StylePlotColorID = StylePlotColorID(implot.PlotColAxisGrid)      // plot-axis-grid
+	StylePlotColorAxisTick      StylePlotColorID = StylePlotColorID(implot.PlotColAxisTick)      // plot-axis-tick
+	StylePlotColorAxisBg        StylePlotColorID = StylePlotColorID(implot.PlotColAxisBg)        // plot-axis-bg
+	StylePlotColorAxisBgHovered StylePlotColorID = StylePlotColorID(implot.PlotColAxisBgHovered) // plot-axis-bg-hovered
+	StylePlotColorAxisBgActive  StylePlotColorID = StylePlotColorID(implot.PlotColAxisBgActive)  // plot-axis-bg-active
+	StylePlotColorSelection     StylePlotColorID = StylePlotColorID(implot.PlotColSelection)     // plot-selection
+	StylePlotColorCrosshairs    StylePlotColorID = StylePlotColorID(implot.PlotColCrosshairs)    // plot-crosshairs
+)
+
+// StylePlotVarID represents an ID of plot style variable.
+type StylePlotVarID imgui.StyleVar
+
+// List of plot style variable IDs.
+const (
+	StylePlotVarLineWeight         StylePlotVarID = StylePlotVarID(implot.PlotStyleVarLineWeight)         // plot-line-weight
+	StylePlotVarMarker             StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMarker)             // plot-marker
+	StylePlotVarMarkerSize         StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMarkerSize)         // plot-marker-size
+	StylePlotVarMarkerWeight       StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMarkerWeight)       // plot-marker-weight
+	StylePlotVarFillAlpha          StylePlotVarID = StylePlotVarID(implot.PlotStyleVarFillAlpha)          // plot-fill-alpha
+	StylePlotVarErrorBarSize       StylePlotVarID = StylePlotVarID(implot.PlotStyleVarErrorBarSize)       // plot-error-bar-size
+	StylePlotVarErrorBarWeight     StylePlotVarID = StylePlotVarID(implot.PlotStyleVarErrorBarWeight)     // plot-error-bar-weight
+	StylePlotVarDigitalBitHeight   StylePlotVarID = StylePlotVarID(implot.PlotStyleVarDigitalBitHeight)   // plot-digital-bit-height
+	StylePlotVarDigitalBitGap      StylePlotVarID = StylePlotVarID(implot.PlotStyleVarDigitalBitGap)      // plot-digital-bit-gap
+	StylePlotVarPlotBorderSize     StylePlotVarID = StylePlotVarID(implot.PlotStyleVarPlotBorderSize)     // plot-border-size
+	StylePlotVarMinorAlpha         StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMinorAlpha)         // plot-minor-alpha
+	StylePlotVarMajorTickLen       StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMajorTickLen)       // plot-major-tick-len
+	StylePlotVarMinorTickLen       StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMinorTickLen)       // plot-minor-tick-len
+	StylePlotVarMajorTickSize      StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMajorTickSize)      // plot-major-tick-size
+	StylePlotVarMinorTickSize      StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMinorTickSize)      // plot-minor-tick-size
+	StylePlotVarMajorGridSize      StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMajorGridSize)      // plot-major-grid-size
+	StylePlotVarMinorGridSize      StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMinorGridSize)      // plot-minor-grid-size
+	StylePlotVarPlotPadding        StylePlotVarID = StylePlotVarID(implot.PlotStyleVarPlotPadding)        // plot-padding
+	StylePlotVarLabelPadding       StylePlotVarID = StylePlotVarID(implot.PlotStyleVarLabelPadding)       // plot-label-padding
+	StylePlotVarLegendPadding      StylePlotVarID = StylePlotVarID(implot.PlotStyleVarLegendPadding)      // plot-legend-padding
+	StylePlotVarLegendInnerPadding StylePlotVarID = StylePlotVarID(implot.PlotStyleVarLegendInnerPadding) // plot-legend-inner-padding
+	StylePlotVarLegendSpacing      StylePlotVarID = StylePlotVarID(implot.PlotStyleVarLegendSpacing)      // plot-legend-spacing
+	StylePlotVarMousePosPadding    StylePlotVarID = StylePlotVarID(implot.PlotStyleVarMousePosPadding)    // plot-mouse-pos-padding
+	StylePlotVarAnnotationPadding  StylePlotVarID = StylePlotVarID(implot.PlotStyleVarAnnotationPadding)  // plot-annotation-padding
+	StylePlotVarFitPadding         StylePlotVarID = StylePlotVarID(implot.PlotStyleVarFitPadding)         // plot-fit-padding
+	StylePlotVarPlotDefaultSize    StylePlotVarID = StylePlotVarID(implot.PlotStyleVarPlotDefaultSize)    // plot-default-size
+	StylePlotVarPlotMinSize        StylePlotVarID = StylePlotVarID(implot.PlotStyleVarPlotMinSize)        // plot-min-size
+	StylePlotVarCOUNT              StylePlotVarID = StylePlotVarID(implot.PlotStyleVarCOUNT)
+)
+
+// IsVec2 returns true if the style plot var id should be processed as imgui.Vec2
+// if not, it is interpreted as float32.
+func (i StylePlotVarID) IsVec2() bool {
+	lookup := map[StylePlotVarID]bool{
+		StylePlotVarMajorTickLen:       true,
+		StylePlotVarMinorTickLen:       true,
+		StylePlotVarMajorTickSize:      true,
+		StylePlotVarMinorTickSize:      true,
+		StylePlotVarMajorGridSize:      true,
+		StylePlotVarMinorGridSize:      true,
+		StylePlotVarPlotPadding:        true,
+		StylePlotVarLabelPadding:       true,
+		StylePlotVarLegendPadding:      true,
+		StylePlotVarLegendInnerPadding: true,
+		StylePlotVarLegendSpacing:      true,
+		StylePlotVarMousePosPadding:    true,
+		StylePlotVarAnnotationPadding:  true,
+		StylePlotVarFitPadding:         true,
+		StylePlotVarPlotDefaultSize:    true,
+		StylePlotVarPlotMinSize:        true,
 	}
 
 	result, ok := lookup[i]
