@@ -136,9 +136,9 @@ func (g *GridGizmo) Thickness(t float32) *GridGizmo {
 // Gizmo implements GizmoI interface.
 func (g *GridGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) {
 	imguizmo.DrawGrid(
-		view.Matrix(),
-		projection.Matrix(),
-		g.matrix.Matrix(),
+		view.getMatrix(),
+		projection.getMatrix(),
+		g.matrix.getMatrix(),
 		g.thickness,
 	)
 }
@@ -168,9 +168,9 @@ func (c *CubeGizmo) Manipulate() *CubeGizmo {
 // Gizmo implements GizmoI interface.
 func (c *CubeGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) {
 	imguizmo.DrawCubes(
-		view.Matrix(),
-		projection.Matrix(),
-		c.matrix.Matrix(),
+		view.getMatrix(),
+		projection.getMatrix(),
+		c.matrix.getMatrix(),
 		1,
 	)
 
@@ -202,11 +202,11 @@ func Manipulate(matrix *ViewMatrix) *ManipulateGizmo {
 // Gizmo implements GizmoI interface.
 func (m *ManipulateGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) {
 	imguizmo.ManipulateV(
-		view.Matrix(),
-		projection.Matrix(),
+		view.getMatrix(),
+		projection.getMatrix(),
 		imguizmo.OPERATION(m.operation),
 		imguizmo.MODE(m.mode),
-		m.matrix.Matrix(),
+		m.matrix.getMatrix(),
 		nil, // this is deltaMatrix (Can't see usecase for now)
 		nil, // snap idk what is this
 		nil, // localBounds idk what is this
@@ -215,12 +215,14 @@ func (m *ManipulateGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) 
 
 var _ GizmoI = &ViewManipulateGizmo{}
 
+// ViewManipulateGizmo is a gizmo that allows you to manipulate world rotation visualy.
 type ViewManipulateGizmo struct {
 	position imgui.Vec2
 	size     imgui.Vec2
 	color    uint32
 }
 
+// ViewManipulate creates a new ViewManipulateGizmo.
 func ViewManipulate() *ViewManipulateGizmo {
 	return &ViewManipulateGizmo{
 		position: imgui.Vec2{128, 128},
@@ -240,6 +242,7 @@ func (v *ViewManipulateGizmo) Size(x, y float32) *ViewManipulateGizmo {
 	return v
 }
 
+// Color sets the color of the gizmo.
 func (v *ViewManipulateGizmo) Color(c color.Color) *ViewManipulateGizmo {
 	v.color = ColorToUint(c)
 	return v
@@ -248,7 +251,7 @@ func (v *ViewManipulateGizmo) Color(c color.Color) *ViewManipulateGizmo {
 // Gizmo implements GizmoI interface.
 func (v *ViewManipulateGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) {
 	imguizmo.ViewManipulateFloat(
-		view.Matrix(),
+		view.getMatrix(),
 		1,
 		v.position,
 		v.size,
@@ -258,9 +261,10 @@ func (v *ViewManipulateGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatr
 
 // [Gizmo helpers]
 
-// ViewMatrix is a suitable thing here.
-// It makes it even possible to use gizmos.
-// Recommended use is presented in examples/gizmo
+// ViewMatrix allows to generate a "view" matrix:
+// - position
+// - rotation
+// - scale
 // NOTE: You are supposed to allocate this with NewViewMatrix (do not use zero value)!!!
 type ViewMatrix struct {
 	transform []float32 // supposed len is 3
@@ -270,6 +274,7 @@ type ViewMatrix struct {
 	dirty     bool
 }
 
+// NewViewMatrix creates a new ViewMatrix.
 func NewViewMatrix() *ViewMatrix {
 	return &ViewMatrix{
 		transform: make([]float32, 3),
@@ -280,6 +285,7 @@ func NewViewMatrix() *ViewMatrix {
 	}
 }
 
+// IdentityMatrix creates a new ViewMatrix with identity matrix.
 func IdentityMatrix() *ViewMatrix {
 	r := NewViewMatrix()
 	r.matrix = []float32{
@@ -289,12 +295,13 @@ func IdentityMatrix() *ViewMatrix {
 		0, 0, 0, 1,
 	}
 
-	r.Decompile()
+	r.decompile()
 	r.dirty = false
 
 	return r
 }
 
+// Transorm sets the position of the matrix.
 func (m *ViewMatrix) Transform(x, y, z float32) *ViewMatrix {
 	m.transform[0] = x
 	m.transform[1] = y
@@ -303,6 +310,7 @@ func (m *ViewMatrix) Transform(x, y, z float32) *ViewMatrix {
 	return m
 }
 
+// Rotation sets the rotation of the matrix.
 func (m *ViewMatrix) Rotation(x, y, z float32) *ViewMatrix {
 	m.rotation[0] = x
 	m.rotation[1] = y
@@ -311,6 +319,7 @@ func (m *ViewMatrix) Rotation(x, y, z float32) *ViewMatrix {
 	return m
 }
 
+// Scale sets the scale of the matrix.
 func (m *ViewMatrix) Scale(x, y, z float32) *ViewMatrix {
 	m.scale[0] = x
 	m.scale[1] = y
@@ -319,16 +328,19 @@ func (m *ViewMatrix) Scale(x, y, z float32) *ViewMatrix {
 	return m
 }
 
+// SetMatrix allows you to set the matrix directly.
+// NOTE: f is supposed to be 16 elements long.
+// NOTE: it is not recommended - use components functions
 func (m *ViewMatrix) SetMatrix(f []float32) *ViewMatrix {
 	m.matrix = f
-	m.Decompile()
+	m.decompile()
 	m.dirty = false
 	return m
 }
 
-// Compile updates m.Matrix
+// Compile updates m.matrix
 // NOTE: this supposes matrix was allocated correctly!
-func (m *ViewMatrix) Compile() {
+func (m *ViewMatrix) compile() {
 	imguizmo.RecomposeMatrixFromComponents(
 		utils.SliceToPtr(m.transform),
 		utils.SliceToPtr(m.rotation),
@@ -339,7 +351,8 @@ func (m *ViewMatrix) Compile() {
 	m.dirty = false
 }
 
-func (m *ViewMatrix) Decompile() {
+// decompile updates m.transform, m.rotation, m.scale from m.matrix
+func (m *ViewMatrix) decompile() {
 	imguizmo.DecomposeMatrixToComponents(
 		utils.SliceToPtr(m.matrix),
 		utils.SliceToPtr(m.transform),
@@ -348,35 +361,11 @@ func (m *ViewMatrix) Decompile() {
 	)
 }
 
-func (m *ViewMatrix) GetTransform() []float32 {
-	if m.dirty {
-		m.Compile()
-	}
-
-	return m.transform
-}
-
-func (m *ViewMatrix) GetRotation() []float32 {
-	if m.dirty {
-		m.Compile()
-	}
-
-	return m.rotation
-}
-
-func (m *ViewMatrix) GetScale() []float32 {
-	if m.dirty {
-		m.Compile()
-	}
-
-	return m.scale
-}
-
-// Matrix returns current matrix compatible with ImGuizmo (pointer to 4x4m).
+// matrix returns current matrix compatible with ImGuizmo (pointer to 4x4m).
 // It recompiles as necessary.
-func (m *ViewMatrix) Matrix() *float32 {
+func (m *ViewMatrix) getMatrix() *float32 {
 	if m.dirty {
-		m.Compile()
+		m.compile()
 	}
 
 	return utils.SliceToPtr(m.matrix)
@@ -384,16 +373,17 @@ func (m *ViewMatrix) Matrix() *float32 {
 
 func (m *ViewMatrix) MatrixSlice() []float32 {
 	if m.dirty {
-		m.Compile()
+		m.compile()
 	}
 
 	return m.matrix
 }
 
+// ProjectionMatrix represents a matrix for Gizmo projection.
 // ref: https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/#the-projection-matrix
 type ProjectionMatrix struct {
 	// The vertical Field of View, in radians: the amount of "zoom". Think "camera lens". Usually between 90° (extra wide) and 30° (quite zoomed in)
-	// This value is in radians!
+	// This value is in radians! See Deg2Rad.
 	fov float32
 	// Aspect Ratio. Depends on the size of your window. Notice that 4/3 == 800/600 == 1280/960, sounds familiar?
 	aspect float32
@@ -406,6 +396,7 @@ type ProjectionMatrix struct {
 	matrix []float32
 }
 
+// NewProjectionMatrix creates a new ProjectionMatrix.
 func NewProjectionMatrix() *ProjectionMatrix {
 	return &ProjectionMatrix{
 		fov:          Deg2Rad(45),
@@ -417,39 +408,45 @@ func NewProjectionMatrix() *ProjectionMatrix {
 	}
 }
 
+// FOV sets the Field of View.
 func (p *ProjectionMatrix) FOV(fov float32) *ProjectionMatrix {
 	p.fov = fov
 	p.dirty = true
 	return p
 }
 
+// Aspect sets the Aspect Ratio.
 func (p *ProjectionMatrix) Aspect(aspect float32) *ProjectionMatrix {
 	p.aspect = aspect
 	p.dirty = true
 	return p
 }
 
+// NearClipping sets the Near Clipping plane.
 func (p *ProjectionMatrix) NearClipping(near float32) *ProjectionMatrix {
 	p.nearClipping = near
 	p.dirty = true
 	return p
 }
 
+// FarClipping sets the Far Clipping plane.
 func (p *ProjectionMatrix) FarClipping(far float32) *ProjectionMatrix {
 	p.farClipping = far
 	p.dirty = true
 	return p
 }
 
-func (p *ProjectionMatrix) Matrix() *float32 {
+// getMatrix returns the matrix compatible with ImGuizmo (pointer to 4x4m).
+func (p *ProjectionMatrix) getMatrix() *float32 {
 	if p.dirty {
-		p.Compile()
+		p.compile()
 	}
 
 	return utils.SliceToPtr(p.matrix)
 }
 
-func (p *ProjectionMatrix) Compile() {
+// compile updates p.matrix.
+func (p *ProjectionMatrix) compile() {
 	p.matrix = glm.MatrixPerspective(p.fov, p.aspect, p.nearClipping, p.farClipping)
 	p.dirty = false
 }
