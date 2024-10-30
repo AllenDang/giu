@@ -1,6 +1,8 @@
 main {
         background-color: blue;
         frame-padding: 80, 20;
+        plot-line: red;
+        plot-line-weight: 5;
 }
 
 label {

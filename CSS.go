@@ -91,16 +91,64 @@ func ParseCSSStyleSheet(data []byte) error {
 			}
 
 			styleColorID, err := StyleColorIDString(styleVarName)
-			if err != nil {
-				return ErrCSSParse{What: "style variable ID", Value: styleVarName}
+			if err == nil {
+				col, err := csscolorparser.Parse(styleVarValue)
+				if err != nil {
+					return ErrCSSParse{What: "color", Value: styleVarValue, Detail: err}
+				}
+
+				setter.SetColor(styleColorID, col)
+
+				continue
 			}
 
-			col, err := csscolorparser.Parse(styleVarValue)
-			if err != nil {
-				return ErrCSSParse{What: "color", Value: styleVarValue, Detail: err}
+			stylePlotVarID, err := StylePlotVarIDString(styleVarName)
+			if err == nil {
+				// the style is StyleVarID - set it
+				f, err2 := strconv.ParseFloat(styleVarValue, 32)
+				if err2 == nil {
+					setter.SetPlotStyleFloat(stylePlotVarID, float32(f))
+
+					continue
+				}
+
+				// so maybe it is a vec2 value:
+				// var-name: x, y;
+				styleVarValue = strings.ReplaceAll(styleVarValue, " ", "")
+				vec2 := strings.Split(styleVarValue, ",")
+
+				if len(vec2) != 2 {
+					return ErrCSSParse{What: "value (not float or vec2)", Value: styleVarValue}
+				}
+
+				x, err2 := strconv.ParseFloat(vec2[0], 32)
+				if err2 != nil {
+					return ErrCSSParse{What: "value (not float)", Value: vec2[0], Detail: err2}
+				}
+
+				y, err2 := strconv.ParseFloat(vec2[1], 32)
+				if err2 != nil {
+					return ErrCSSParse{What: "value (not float)", Value: vec2[1], Detail: err2}
+				}
+
+				setter.SetPlotStyle(stylePlotVarID, float32(x), float32(y))
+
+				continue
 			}
 
-			setter.SetColor(styleColorID, col)
+			stylePlotColorID, err := StylePlotColorIDString(styleVarName)
+			if err == nil {
+				col, err := csscolorparser.Parse(styleVarValue)
+				if err != nil {
+					return ErrCSSParse{What: "color", Value: styleVarValue, Detail: err}
+				}
+
+				setter.SetPlotColor(stylePlotColorID, col)
+
+				continue
+			}
+
+			return ErrCSSParse{What: "style variable name", Value: styleVarName}
 		}
 
 		Context.cssStylesheet[string(rule)] = setter

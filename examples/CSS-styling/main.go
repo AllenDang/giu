@@ -19,6 +19,9 @@ func loop() {
 		giu.CSSTag("label").To(
 			giu.Label("I'ma  normal label"),
 		),
+		giu.Plot("styled plot").Plots(
+			giu.Line("Plot 1", []float64{0, 1, 2, 3, 4, 5}),
+		),
 	)
 }
 
