@@ -46,7 +46,7 @@ func loop() {
 		Layout(
 			giu.Gizmo(view, projection).Gizmos(
 				gizmos()...,
-			),
+			).Disabled(true),
 		)
 }
 
