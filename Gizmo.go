@@ -63,21 +63,23 @@ var _ Widget = &GizmoWidget{}
 // If you wnat to have more understanding about what is going on here, read this:
 // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/ (DISCLAIMER: giu authors are not responsible if you go mad or something!)
 type GizmoWidget struct {
-	gizmos     []GizmoI
-	view       *ViewMatrix
-	projection *ProjectionMatrix
-	id         ID
-	disabled   bool
+	gizmos       []GizmoI
+	view         *ViewMatrix
+	projection   *ProjectionMatrix
+	id           ID
+	disabled     bool
+	orthographic bool
 }
 
 // Gizmo creates a new GizmoWidget.
 func Gizmo(view *ViewMatrix, projection *ProjectionMatrix) *GizmoWidget {
 	return &GizmoWidget{
-		gizmos:     []GizmoI{},
-		view:       view,
-		projection: projection,
-		id:         GenAutoID("gizmo"),
-		disabled:   false,
+		gizmos:       []GizmoI{},
+		view:         view,
+		projection:   projection,
+		id:           GenAutoID("gizmo"),
+		disabled:     false,
+		orthographic: false,
 	}
 }
 
@@ -93,6 +95,12 @@ func (g *GizmoWidget) Disabled(b bool) *GizmoWidget {
 	return g
 }
 
+// Orthographic sets the projection matrix to orthographic.
+func (g *GizmoWidget) Orthographic(b bool) *GizmoWidget {
+	g.orthographic = b
+	return g
+}
+
 // Gizmos adds GizmoI elements to the GizmoWidget area.
 func (g *GizmoWidget) Gizmos(gizmos ...GizmoI) *GizmoWidget {
 	g.gizmos = append(g.gizmos, gizmos...)
@@ -104,6 +112,7 @@ func (g *GizmoWidget) Gizmos(gizmos ...GizmoI) *GizmoWidget {
 func (g *GizmoWidget) build() {
 	imguizmo.PushIDStr(string(g.id))
 	imguizmo.Enable(!g.disabled)
+	imguizmo.SetOrthographic(g.orthographic)
 
 	for _, gizmo := range g.gizmos {
 		gizmo.Gizmo(g.view, g.projection)
