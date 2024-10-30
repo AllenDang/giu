@@ -20,8 +20,6 @@ var (
 		Transform(0.5, 0.5, 0.5).
 		Rotation(0, 0, 0).
 		Scale(1, 2, 1)
-
-	Bounds = []float32{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}
 )
 
 func gizmos() []giu.GizmoI {
@@ -42,11 +40,14 @@ func gizmos() []giu.GizmoI {
 func loop() {
 	giu.Gizmo(view, projection).Gizmos(gizmos()...).Global()
 
-	giu.Window("Gizmo demo").Layout(
-		giu.Gizmo(view, projection).Gizmos(
-			gizmos()...,
-		),
-	)
+	giu.Window("Gizmo demo").
+		Size(300, 300).
+		Pos(50, 300).
+		Layout(
+			giu.Gizmo(view, projection).Gizmos(
+				gizmos()...,
+			),
+		)
 }
 
 func main() {
