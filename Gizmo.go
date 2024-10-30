@@ -163,6 +163,12 @@ func (g *GridGizmo) Thickness(t float32) *GridGizmo {
 	return g
 }
 
+// Matrix allows to set grid matrix. Default to IdentityMatrix.
+func (g *GridGizmo) Matrix(matrix *ViewMatrix) *GridGizmo {
+	g.matrix = matrix
+	return g
+}
+
 // Gizmo implements GizmoI interface.
 func (g *GridGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) {
 	imguizmo.DrawGrid(
