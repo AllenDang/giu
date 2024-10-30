@@ -89,7 +89,7 @@ func (g *GizmoWidget) ID(id ID) *GizmoWidget {
 	return g
 }
 
-// Disable disables the GizmoWidget.
+// Disabled sets GizmoWidget's disabled state.
 func (g *GizmoWidget) Disabled(b bool) *GizmoWidget {
 	g.disabled = b
 	return g
@@ -124,8 +124,10 @@ func (g *GizmoWidget) build() {
 // Build implements Widget interface.
 func (g *GizmoWidget) Build() {
 	imguizmo.SetDrawlist()
+
 	displaySize := imgui.ContentRegionAvail()
 	pos0 := imgui.CursorScreenPos()
+
 	imguizmo.SetRect(pos0.X, pos0.Y, displaySize.X, displaySize.Y)
 	g.build()
 }
@@ -261,31 +263,34 @@ type ViewManipulateGizmo struct {
 // ViewManipulate creates a new ViewManipulateGizmo.
 func ViewManipulate() *ViewManipulateGizmo {
 	return &ViewManipulateGizmo{
-		position: imgui.Vec2{128, 128},
-		size:     imgui.Vec2{128, 128},
+		position: imgui.Vec2{X: 128, Y: 128},
+		size:     imgui.Vec2{X: 128, Y: 128},
 	}
 }
 
 // Position sets the position of the gizmo.
 func (v *ViewManipulateGizmo) Position(x, y float32) *ViewManipulateGizmo {
-	v.position = imgui.Vec2{x, y}
+	v.position = imgui.Vec2{X: x, Y: y}
+
 	return v
 }
 
 // Size sets the size of the gizmo.
 func (v *ViewManipulateGizmo) Size(x, y float32) *ViewManipulateGizmo {
-	v.size = imgui.Vec2{x, y}
+	v.size = imgui.Vec2{X: x, Y: y}
+
 	return v
 }
 
 // Color sets the color of the gizmo.
 func (v *ViewManipulateGizmo) Color(c color.Color) *ViewManipulateGizmo {
 	v.color = ColorToUint(c)
+
 	return v
 }
 
 // Gizmo implements GizmoI interface.
-func (v *ViewManipulateGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) {
+func (v *ViewManipulateGizmo) Gizmo(view *ViewMatrix, _ *ProjectionMatrix) {
 	imguizmo.ViewManipulateFloat(
 		view.getMatrix(),
 		1,
@@ -337,12 +342,13 @@ func IdentityMatrix() *ViewMatrix {
 	return r
 }
 
-// Transorm sets the position of the matrix.
+// Transform sets the position of the matrix.
 func (m *ViewMatrix) Transform(x, y, z float32) *ViewMatrix {
 	m.transform[0] = x
 	m.transform[1] = y
 	m.transform[2] = z
 	m.dirty = true
+
 	return m
 }
 
@@ -352,6 +358,7 @@ func (m *ViewMatrix) Rotation(x, y, z float32) *ViewMatrix {
 	m.rotation[1] = y
 	m.rotation[2] = z
 	m.dirty = true
+
 	return m
 }
 
@@ -361,6 +368,7 @@ func (m *ViewMatrix) Scale(x, y, z float32) *ViewMatrix {
 	m.scale[1] = y
 	m.scale[2] = z
 	m.dirty = true
+
 	return m
 }
 
@@ -371,10 +379,11 @@ func (m *ViewMatrix) SetMatrix(f []float32) *ViewMatrix {
 	m.matrix = f
 	m.decompile()
 	m.dirty = false
+
 	return m
 }
 
-// Copies returns a copy of the matrix.
+// Copy copies returns a copy of the matrix.
 // Useful e.g. in exaples/ to duplicate the matrix.
 func (m *ViewMatrix) Copy() *ViewMatrix {
 	return NewViewMatrix().
@@ -416,6 +425,7 @@ func (m *ViewMatrix) getMatrix() *float32 {
 	return utils.SliceToPtr(m.matrix)
 }
 
+// MatrixSlice returns ViewMatrix as a slice (for debugging purposes).
 func (m *ViewMatrix) MatrixSlice() []float32 {
 	if m.dirty {
 		m.compile()
@@ -457,6 +467,7 @@ func NewProjectionMatrix() *ProjectionMatrix {
 func (p *ProjectionMatrix) FOV(fov float32) *ProjectionMatrix {
 	p.fov = fov
 	p.dirty = true
+
 	return p
 }
 
@@ -464,6 +475,7 @@ func (p *ProjectionMatrix) FOV(fov float32) *ProjectionMatrix {
 func (p *ProjectionMatrix) Aspect(aspect float32) *ProjectionMatrix {
 	p.aspect = aspect
 	p.dirty = true
+
 	return p
 }
 
@@ -471,6 +483,7 @@ func (p *ProjectionMatrix) Aspect(aspect float32) *ProjectionMatrix {
 func (p *ProjectionMatrix) NearClipping(near float32) *ProjectionMatrix {
 	p.nearClipping = near
 	p.dirty = true
+
 	return p
 }
 
@@ -478,6 +491,7 @@ func (p *ProjectionMatrix) NearClipping(near float32) *ProjectionMatrix {
 func (p *ProjectionMatrix) FarClipping(far float32) *ProjectionMatrix {
 	p.farClipping = far
 	p.dirty = true
+
 	return p
 }
 

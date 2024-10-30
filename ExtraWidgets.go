@@ -146,6 +146,7 @@ func (c *CustomWidget) Plot() {
 	c.Build()
 }
 
+// Gizmo implements GizmoI interface.
 func (c *CustomWidget) Gizmo(_ *ViewMatrix, _ *ProjectionMatrix) {
 	c.Build()
 }
