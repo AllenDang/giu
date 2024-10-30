@@ -67,6 +67,7 @@ type GizmoWidget struct {
 	view       *ViewMatrix
 	projection *ProjectionMatrix
 	id         ID
+	disabled   bool
 }
 
 // Gizmo creates a new GizmoWidget.
@@ -76,12 +77,19 @@ func Gizmo(view *ViewMatrix, projection *ProjectionMatrix) *GizmoWidget {
 		view:       view,
 		projection: projection,
 		id:         GenAutoID("gizmo"),
+		disabled:   false,
 	}
 }
 
 // ID sets the ID of the GizmoWidget. (useful if you use multiple gizmo widgets. It is set by AutoID anyway)
 func (g *GizmoWidget) ID(id ID) *GizmoWidget {
 	g.id = id
+	return g
+}
+
+// Disable disables the GizmoWidget.
+func (g *GizmoWidget) Disabled(b bool) *GizmoWidget {
+	g.disabled = b
 	return g
 }
 
@@ -95,6 +103,7 @@ func (g *GizmoWidget) Gizmos(gizmos ...GizmoI) *GizmoWidget {
 // Just to separate Global() and Build() methods.
 func (g *GizmoWidget) build() {
 	imguizmo.PushIDStr(string(g.id))
+	imguizmo.Enable(!g.disabled)
 
 	for _, gizmo := range g.gizmos {
 		gizmo.Gizmo(g.view, g.projection)
