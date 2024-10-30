@@ -12,7 +12,7 @@ import (
 // GizmoOperation specifies the operation of Gizmo (used by manipulate).
 type GizmoOperation int
 
-// Possible Operations
+// Possible Operations.
 const (
 	OperationTranslateX GizmoOperation = GizmoOperation(imguizmo.TRANSLATEX)
 	OperationTranslateY GizmoOperation = GizmoOperation(imguizmo.TRANSLATEY)
@@ -44,7 +44,7 @@ const (
 // GizmoMode specifies the mode of Gizmo (used by manipulate).
 type GizmoMode int
 
-// values are not explained in source code
+// values are not explained in source code.
 const (
 	ModeLocal GizmoMode = GizmoMode(imguizmo.LOCAL)
 	ModeWorld GizmoMode = GizmoMode(imguizmo.WORLD)
@@ -60,7 +60,7 @@ var _ Widget = &GizmoWidget{}
 // GizmoWidget implements ImGuizmo features.
 // It is designed just like PlotWidget.
 // This structure provides an "area" where you can put Gizmos (see (*GizmoWidget).Gizmos).
-// If you wnat to have more understanding about what is going on here, read this:
+// If you want to have more understanding about what is going on here, read this:
 // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/ (DISCLAIMER: giu authors are not responsible if you go mad or something!)
 type GizmoWidget struct {
 	gizmos       []GizmoI
@@ -83,7 +83,7 @@ func Gizmo(view *ViewMatrix, projection *ProjectionMatrix) *GizmoWidget {
 	}
 }
 
-// ID sets the ID of the GizmoWidget. (useful if you use multiple gizmo widgets. It is set by AutoID anyway)
+// ID sets the ID of the GizmoWidget. (useful if you use multiple gizmo widgets. It is set by AutoID anyway).
 func (g *GizmoWidget) ID(id ID) *GizmoWidget {
 	g.id = id
 	return g
@@ -366,7 +366,7 @@ func (m *ViewMatrix) Scale(x, y, z float32) *ViewMatrix {
 
 // SetMatrix allows you to set the matrix directly.
 // NOTE: f is supposed to be 16 elements long.
-// NOTE: it is not recommended - use components functions
+// NOTE: it is not recommended - use components functions.
 func (m *ViewMatrix) SetMatrix(f []float32) *ViewMatrix {
 	m.matrix = f
 	m.decompile()
@@ -396,7 +396,7 @@ func (m *ViewMatrix) compile() {
 	m.dirty = false
 }
 
-// decompile updates m.transform, m.rotation, m.scale from m.matrix
+// decompile updates m.transform, m.rotation, m.scale from m.matrix.
 func (m *ViewMatrix) decompile() {
 	imguizmo.DecomposeMatrixToComponents(
 		utils.SliceToPtr(m.matrix),
