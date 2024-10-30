@@ -40,6 +40,8 @@ func (e ErrCSSParse) Error() string {
 }
 
 // ParseCSSStyleSheet parses CSS stylesheet and stores the rules in giu context.
+//
+//nolint:gocognit // no
 func ParseCSSStyleSheet(data []byte) error {
 	// css does not support windows formatting
 	// https://github.com/AllenDang/giu/issues/842
@@ -58,53 +60,91 @@ func ParseCSSStyleSheet(data []byte) error {
 			styleVarID, err := StyleVarIDString(styleVarName)
 
 			if err == nil {
-				// the style is StyleVarID - set it
-				f, err2 := strconv.ParseFloat(styleVarValue, 32)
-				if err2 == nil {
-					setter.SetStyleFloat(styleVarID, float32(f))
-
-					continue
+				if err := parseStyleVar(styleVarValue, func(v float32) {
+					setter.SetStyleFloat(styleVarID, v)
+				}, func(x, y float32) {
+					setter.SetStyle(styleVarID, x, y)
+				}); err != nil {
+					return err
 				}
-
-				// so maybe it is a vec2 value:
-				// var-name: x, y;
-				styleVarValue = strings.ReplaceAll(styleVarValue, " ", "")
-				vec2 := strings.Split(styleVarValue, ",")
-
-				if len(vec2) != 2 {
-					return ErrCSSParse{What: "value (not float or vec2)", Value: styleVarValue}
-				}
-
-				x, err2 := strconv.ParseFloat(vec2[0], 32)
-				if err2 != nil {
-					return ErrCSSParse{What: "value (not float)", Value: vec2[0], Detail: err2}
-				}
-
-				y, err2 := strconv.ParseFloat(vec2[1], 32)
-				if err2 != nil {
-					return ErrCSSParse{What: "value (not float)", Value: vec2[1], Detail: err2}
-				}
-
-				setter.SetStyle(styleVarID, float32(x), float32(y))
 
 				continue
 			}
 
 			styleColorID, err := StyleColorIDString(styleVarName)
-			if err != nil {
-				return ErrCSSParse{What: "style variable ID", Value: styleVarName}
+			if err == nil {
+				col, err := csscolorparser.Parse(styleVarValue)
+				if err != nil {
+					return ErrCSSParse{What: "color", Value: styleVarValue, Detail: err}
+				}
+
+				setter.SetColor(styleColorID, col)
+
+				continue
 			}
 
-			col, err := csscolorparser.Parse(styleVarValue)
-			if err != nil {
-				return ErrCSSParse{What: "color", Value: styleVarValue, Detail: err}
+			stylePlotVarID, err := StylePlotVarIDString(styleVarName)
+			if err == nil {
+				if err := parseStyleVar(styleVarValue, func(v float32) {
+					setter.SetPlotStyleFloat(stylePlotVarID, v)
+				}, func(x, y float32) {
+					setter.SetPlotStyle(stylePlotVarID, x, y)
+				}); err != nil {
+					return err
+				}
+
+				continue
 			}
 
-			setter.SetColor(styleColorID, col)
+			stylePlotColorID, err := StylePlotColorIDString(styleVarName)
+			if err == nil {
+				col, err := csscolorparser.Parse(styleVarValue)
+				if err != nil {
+					return ErrCSSParse{What: "color", Value: styleVarValue, Detail: err}
+				}
+
+				setter.SetPlotColor(stylePlotColorID, col)
+
+				continue
+			}
+
+			return ErrCSSParse{What: "style variable name", Value: styleVarName}
 		}
 
 		Context.cssStylesheet[string(rule)] = setter
 	}
+
+	return nil
+}
+
+func parseStyleVar(styleVarValue string, setFloat func(v float32), setVec2 func(x, y float32)) error {
+	// the style is StyleVarID - set it
+	f, err2 := strconv.ParseFloat(styleVarValue, 32)
+	if err2 == nil {
+		setFloat(float32(f))
+		return nil
+	}
+
+	// so maybe it is a vec2 value:
+	// var-name: x, y;
+	styleVarValue = strings.ReplaceAll(styleVarValue, " ", "")
+	vec2 := strings.Split(styleVarValue, ",")
+
+	if len(vec2) != 2 {
+		return ErrCSSParse{What: "value (not float or vec2)", Value: styleVarValue}
+	}
+
+	x, err2 := strconv.ParseFloat(vec2[0], 32)
+	if err2 != nil {
+		return ErrCSSParse{What: "value (not float)", Value: vec2[0], Detail: err2}
+	}
+
+	y, err2 := strconv.ParseFloat(vec2[1], 32)
+	if err2 != nil {
+		return ErrCSSParse{What: "value (not float)", Value: vec2[1], Detail: err2}
+	}
+
+	setVec2(float32(x), float32(y))
 
 	return nil
 }

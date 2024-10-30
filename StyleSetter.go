@@ -4,6 +4,7 @@ import (
 	"image/color"
 
 	"github.com/AllenDang/cimgui-go/imgui"
+	"github.com/AllenDang/cimgui-go/implot"
 )
 
 var _ Widget = &StyleSetter{}
@@ -11,11 +12,15 @@ var _ Widget = &StyleSetter{}
 // StyleSetter is a user-friendly way to manage imgui styles.
 // For style IDs see StyleIDs.go, for detailed instruction of using styles, see Styles.go.
 type StyleSetter struct {
-	colors   map[StyleColorID]color.Color
-	styles   map[StyleVarID]any
-	font     *FontInfo
-	disabled bool
-	layout   Layout
+	colors     map[StyleColorID]color.Color
+	styles     map[StyleVarID]any
+	plotColors map[StylePlotColorID]color.Color
+	plotStyles map[StylePlotVarID]any
+	font       *FontInfo
+	disabled   bool
+
+	layout Layout
+	plots  []PlotWidget
 
 	// set by imgui.PushFont inside ss.Push() method
 	isFontPushed bool
@@ -25,7 +30,9 @@ type StyleSetter struct {
 func Style() *StyleSetter {
 	var ss StyleSetter
 	ss.colors = make(map[StyleColorID]color.Color)
+	ss.plotColors = make(map[StylePlotColorID]color.Color)
 	ss.styles = make(map[StyleVarID]any)
+	ss.plotStyles = make(map[StylePlotVarID]any)
 
 	return &ss
 }
@@ -47,6 +54,26 @@ func (ss *StyleSetter) SetStyle(varID StyleVarID, width, height float32) *StyleS
 // StyleVarID's comments.
 func (ss *StyleSetter) SetStyleFloat(varID StyleVarID, value float32) *StyleSetter {
 	ss.styles[varID] = value
+	return ss
+}
+
+// SetPlotColor sets colorID's color.
+func (ss *StyleSetter) SetPlotColor(colorID StylePlotColorID, col color.Color) *StyleSetter {
+	ss.plotColors[colorID] = col
+	return ss
+}
+
+// SetPlotStyle sets stylePlotVarID to width and height.
+func (ss *StyleSetter) SetPlotStyle(varID StylePlotVarID, width, height float32) *StyleSetter {
+	ss.plotStyles[varID] = imgui.Vec2{X: width, Y: height}
+	return ss
+}
+
+// SetPlotStyleFloat sets StylePlotVarID to float value.
+// NOTE: for float typed values see above in comments over
+// StyleVarID's comments.
+func (ss *StyleSetter) SetPlotStyleFloat(varID StylePlotVarID, value float32) *StyleSetter {
+	ss.plotStyles[varID] = value
 	return ss
 }
 
@@ -81,6 +108,12 @@ func (ss *StyleSetter) SetDisabled(d bool) *StyleSetter {
 // To allows to specify a layout, StyleSetter should apply style for.
 func (ss *StyleSetter) To(widgets ...Widget) *StyleSetter {
 	ss.layout = widgets
+	return ss
+}
+
+// Plots allows to set plots to apply style for.
+func (ss *StyleSetter) Plots(widgets ...PlotWidget) *StyleSetter {
+	ss.plots = widgets
 	return ss
 }
 
@@ -131,13 +164,28 @@ func (ss *StyleSetter) Range(rangeFunc func(w Widget)) {
 
 // Build implements Widget.
 func (ss *StyleSetter) Build() {
-	if ss.layout == nil || len(ss.layout) == -1 {
+	if len(ss.layout) == 0 {
 		return
 	}
 
 	ss.Push()
 
 	ss.layout.Build()
+
+	ss.Pop()
+}
+
+// Plot implements PlotWidget.
+func (ss *StyleSetter) Plot() {
+	if len(ss.plots) == 0 {
+		return
+	}
+
+	ss.Push()
+
+	for _, plot := range ss.plots {
+		plot.Plot()
+	}
 
 	ss.Pop()
 }
@@ -153,29 +201,27 @@ func (ss *StyleSetter) Push() {
 		imgui.PushStyleColorVec4(imgui.Col(k), ToVec4Color(v))
 	}
 
+	// Push plot colors
+	for k, v := range ss.plotColors {
+		implot.PlotPushStyleColorVec4(implot.PlotCol(k), ToVec4Color(v))
+	}
+
 	// push style vars
 	for k, v := range ss.styles {
-		if k.IsVec2() {
-			var value imgui.Vec2
-			switch typed := v.(type) {
-			case imgui.Vec2:
-				value = typed
-			case float32:
-				value = imgui.Vec2{X: typed, Y: typed}
-			}
-
-			imgui.PushStyleVarVec2(imgui.StyleVar(k), value)
-		} else {
-			var value float32
-			switch typed := v.(type) {
-			case float32:
-				value = typed
-			case imgui.Vec2:
-				value = typed.X
-			}
-
+		pushVarID(k.IsVec2(), v, func(value float32) {
 			imgui.PushStyleVarFloat(imgui.StyleVar(k), value)
-		}
+		}, func(value imgui.Vec2) {
+			imgui.PushStyleVarVec2(imgui.StyleVar(k), value)
+		})
+	}
+
+	// Push plot colors
+	for k, v := range ss.plotStyles {
+		pushVarID(k.IsVec2(), v, func(value float32) {
+			implot.PlotPushStyleVarFloat(implot.PlotStyleVar(k), value)
+		}, func(value imgui.Vec2) {
+			implot.PlotPushStyleVarVec2(implot.PlotStyleVar(k), value)
+		})
 	}
 
 	// push font
@@ -199,5 +245,31 @@ func (ss *StyleSetter) Pop() {
 	}
 
 	imgui.PopStyleColorV(int32(len(ss.colors)))
+	implot.PlotPopStyleColorV(int32(len(ss.plotColors)))
 	imgui.PopStyleVarV(int32(len(ss.styles)))
+	implot.PlotPopStyleVarV(int32(len(ss.plotStyles)))
+}
+
+func pushVarID(isVec2 bool, v any, pushFloat func(float32), pushVec2 func(imgui.Vec2)) {
+	if isVec2 {
+		var value imgui.Vec2
+		switch typed := v.(type) {
+		case imgui.Vec2:
+			value = typed
+		case float32:
+			value = imgui.Vec2{X: typed, Y: typed}
+		}
+
+		pushVec2(value)
+	} else {
+		var value float32
+		switch typed := v.(type) {
+		case float32:
+			value = typed
+		case imgui.Vec2:
+			value = typed.X
+		}
+
+		pushFloat(value)
+	}
 }
