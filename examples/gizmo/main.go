@@ -3,7 +3,6 @@ package main
 import (
 	"image/color"
 
-	"github.com/AllenDang/cimgui-go/imguizmo"
 	"github.com/AllenDang/giu"
 )
 
@@ -22,14 +21,7 @@ var (
 		Rotation(0, 0, 0).
 		Scale(1, 2, 1)
 
-	zmoOP   = int32(imguizmo.TRANSLATE)
-	zmoMODE = int32(imguizmo.LOCAL)
-
 	Bounds = []float32{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}
-
-	// GizmoControls can be enabled in editor and allows mouse control over gizmo
-	GizmoControls bool
-	UsingGizmo    bool
 )
 
 func gizmos() []giu.GizmoI {
