@@ -267,3 +267,8 @@ func UintToColor(col uint32) *color.RGBA {
 		A: a,
 	}
 }
+
+// Deg2Rad converts degrees to radians.
+func Deg2Rad(deg float32) float32 {
+	return deg * 0.01745329252 // deg * 2pi / 360
+}

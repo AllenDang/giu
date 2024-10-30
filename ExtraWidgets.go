@@ -112,7 +112,11 @@ func (h *SplitterWidget) Build() {
 	canvas.AddRectFilled(pt.Add(ptMin), pt.Add(ptMax), c, 0, 0)
 }
 
-var _ Widget = &CustomWidget{}
+var (
+	_ Widget     = &CustomWidget{}
+	_ PlotWidget = &CustomWidget{}
+	_ GizmoI     = &CustomWidget{}
+)
 
 // CustomWidget allows you to do whatever you want.
 // This includes:
@@ -139,6 +143,11 @@ func (c *CustomWidget) Build() {
 
 // Plot implements Plot interface.
 func (c *CustomWidget) Plot() {
+	c.Build()
+}
+
+// Gizmo implements GizmoI interface.
+func (c *CustomWidget) Gizmo(_ *ViewMatrix, _ *ProjectionMatrix) {
 	c.Build()
 }
 

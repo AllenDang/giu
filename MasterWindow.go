@@ -9,6 +9,7 @@ import (
 	"github.com/AllenDang/cimgui-go/backend"
 	"github.com/AllenDang/cimgui-go/backend/glfwbackend"
 	"github.com/AllenDang/cimgui-go/imgui"
+	"github.com/AllenDang/cimgui-go/imguizmo"
 	"github.com/AllenDang/cimgui-go/imnodes"
 	"github.com/AllenDang/cimgui-go/implot"
 	"golang.org/x/image/colornames"
@@ -230,6 +231,8 @@ func (w *MasterWindow) beforeDestroy() {
 }
 
 func (w *MasterWindow) render() {
+	imguizmo.BeginFrame()
+
 	Context.cleanStates()
 	defer Context.SetDirty()
 

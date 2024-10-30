@@ -1,8 +1,6 @@
 module github.com/AllenDang/giu
 
-go 1.22.0
-
-toolchain go1.23.1
+go 1.23.2
 
 require (
 	github.com/AllenDang/cimgui-go v1.1.0
@@ -20,6 +18,7 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/gucio321/glm-go v0.0.0-20241029220517-e1b5a3e011c8 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.design/x/mainthread v0.3.0 // indirect
