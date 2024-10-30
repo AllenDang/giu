@@ -7,8 +7,9 @@ import (
 	"math/rand"
 	"time"
 
-	g "github.com/AllenDang/giu"
 	"golang.org/x/image/colornames"
+
+	g "github.com/AllenDang/giu"
 )
 
 var (
