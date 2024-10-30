@@ -8,6 +8,7 @@ import (
 	"time"
 
 	g "github.com/AllenDang/giu"
+	"golang.org/x/image/colornames"
 )
 
 var (
@@ -38,14 +39,17 @@ func loop() {
 			g.ScatterXY("Time Scatter 时间散点图", timeDataX, timeScatterY),
 		),
 		g.Row(
-			g.Plot("Plot Bars").
-				Size(500, 250).
-				AxisLimits(0, 10, -1.2, 1.2, g.ConditionOnce).
-				Plots(
-					g.Bar("Plot Bar 柱状图", bardata),
-					g.Bar("Plot Bar2", bardata2).Shift(0.2),
-					g.BarH("Plot Bar H 水平柱状图", bardata3),
-				),
+			g.Style().To(
+				g.Plot("Plot Bars").
+					Size(500, 250).
+					AxisLimits(0, 10, -1.2, 1.2, g.ConditionOnce).
+					Plots(
+						g.Bar("Plot Bar 柱状图", bardata),
+						g.Bar("Plot Bar2", bardata2).Shift(0.2),
+						g.BarH("Plot Bar H 水平柱状图", bardata3),
+					),
+			).SetPlotColor(g.StylePlotColorAxisBg, colornames.Cyan).
+				SetPlotStyleFloat(g.StylePlotVarMajorGridSize, 5),
 			g.Plot("Pie Chart").
 				Flags(g.PlotFlagsEqual).
 				Size(250, 250).
@@ -53,7 +57,10 @@ func loop() {
 				YAxeFlags(g.PlotAxisFlagsNoDecorations, 0, 0).
 				AxisLimits(0, 1, 0, 1, g.ConditionAlways).
 				Plots(
-					g.PieChart([]string{"Part 1 图例1", "Part 2", "Part 3"}, []float64{0.22, 0.38, 0.4}, 0.5, 0.5, 0.45),
+					// StyleSetter works also for plots
+					g.Style().Plots(
+						g.PieChart([]string{"Part 1 图例1", "Part 2", "Part 3"}, []float64{0.22, 0.38, 0.4}, 0.5, 0.5, 0.45),
+					).SetPlotColor(g.StylePlotColorPlotBg, colornames.Pink),
 				),
 		),
 	)
