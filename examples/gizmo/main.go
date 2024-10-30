@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	view = giu.NewHumanReadableMatrix().
+	view = giu.NewViewMatrix().
 		Transform(0, 0, -7).
 		Rotation(10, 5, 0).
 		Scale(1, 1, 1)
@@ -17,10 +17,10 @@ var (
 			FOV(giu.Deg2Rad(30)).
 			Aspect(1280.0 / 720.0)
 
-	cube = giu.NewHumanReadableMatrix().
+	cube = giu.NewViewMatrix().
 		Transform(0.5, 0.5, 0.5).
 		Rotation(0, 0, 0).
-		Scale(1, 1, 1)
+		Scale(1, 2, 1)
 
 	zmoOP   = int32(imguizmo.TRANSLATE)
 	zmoMODE = int32(imguizmo.LOCAL)
