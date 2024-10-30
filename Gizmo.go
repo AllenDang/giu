@@ -52,7 +52,7 @@ const (
 
 // GizmoI should be implemented by every sub-element of GizmoWidget.
 type GizmoI interface {
-	Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix)
+	Gizmo(view *ViewMatrix, projection *ProjectionMatrix)
 }
 
 var _ Widget = &GizmoWidget{}
@@ -64,12 +64,12 @@ var _ Widget = &GizmoWidget{}
 // https://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/ (DISCLAIMER: giu authors are not responsible if you go mad or something!)
 type GizmoWidget struct {
 	gizmos     []GizmoI
-	view       *HumanReadableMatrix
+	view       *ViewMatrix
 	projection *ProjectionMatrix
 }
 
 // Gizmo creates a new GizmoWidget.
-func Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix) *GizmoWidget {
+func Gizmo(view *ViewMatrix, projection *ProjectionMatrix) *GizmoWidget {
 	return &GizmoWidget{
 		gizmos:     []GizmoI{},
 		view:       view,
@@ -115,7 +115,7 @@ var _ GizmoI = &GridGizmo{}
 // GridGizmo draws a grid in the gizmo area.
 type GridGizmo struct {
 	// default to Identity
-	matrix    *HumanReadableMatrix
+	matrix    *ViewMatrix
 	thickness float32
 }
 
@@ -134,7 +134,7 @@ func (g *GridGizmo) Thickness(t float32) *GridGizmo {
 }
 
 // Gizmo implements GizmoI interface.
-func (g *GridGizmo) Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix) {
+func (g *GridGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) {
 	imguizmo.DrawGrid(
 		view.Matrix(),
 		projection.Matrix(),
@@ -148,12 +148,12 @@ var _ GizmoI = &CubeGizmo{}
 // CubeGizmo draws a 3D cube in the gizmo area.
 // View and Projection matrices are provided by GizmoWidget.
 type CubeGizmo struct {
-	matrix     *HumanReadableMatrix
+	matrix     *ViewMatrix
 	manipulate bool
 }
 
 // Cube creates a new CubeGizmo.
-func Cube(matrix *HumanReadableMatrix) *CubeGizmo {
+func Cube(matrix *ViewMatrix) *CubeGizmo {
 	return &CubeGizmo{
 		matrix: matrix,
 	}
@@ -166,7 +166,7 @@ func (c *CubeGizmo) Manipulate() *CubeGizmo {
 }
 
 // Gizmo implements GizmoI interface.
-func (c *CubeGizmo) Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix) {
+func (c *CubeGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) {
 	imguizmo.DrawCubes(
 		view.Matrix(),
 		projection.Matrix(),
@@ -185,13 +185,13 @@ var _ GizmoI = &ManipulateGizmo{}
 // It can be attached to another Gizmo (e.g. CubeGizmo) and will allow to move/rotate/scale it.
 // See (*CubeGizmo).Manipulate() method.
 type ManipulateGizmo struct {
-	matrix    *HumanReadableMatrix
+	matrix    *ViewMatrix
 	operation GizmoOperation
 	mode      GizmoMode
 }
 
 // Manipulate creates a new ManipulateGizmo.
-func Manipulate(matrix *HumanReadableMatrix) *ManipulateGizmo {
+func Manipulate(matrix *ViewMatrix) *ManipulateGizmo {
 	return &ManipulateGizmo{
 		matrix:    matrix,
 		mode:      GizmoMode(imguizmo.LOCAL),
@@ -200,7 +200,7 @@ func Manipulate(matrix *HumanReadableMatrix) *ManipulateGizmo {
 }
 
 // Gizmo implements GizmoI interface.
-func (m *ManipulateGizmo) Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix) {
+func (m *ManipulateGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) {
 	imguizmo.ManipulateV(
 		view.Matrix(),
 		projection.Matrix(),
@@ -246,7 +246,7 @@ func (v *ViewManipulateGizmo) Color(c color.Color) *ViewManipulateGizmo {
 }
 
 // Gizmo implements GizmoI interface.
-func (v *ViewManipulateGizmo) Gizmo(view *HumanReadableMatrix, projection *ProjectionMatrix) {
+func (v *ViewManipulateGizmo) Gizmo(view *ViewMatrix, projection *ProjectionMatrix) {
 	imguizmo.ViewManipulateFloat(
 		view.Matrix(),
 		1,
@@ -258,11 +258,11 @@ func (v *ViewManipulateGizmo) Gizmo(view *HumanReadableMatrix, projection *Proje
 
 // [Gizmo helpers]
 
-// HumanReadableMatrix is a suitable thing here.
+// ViewMatrix is a suitable thing here.
 // It makes it even possible to use gizmos.
 // Recommended use is presented in examples/gizmo
-// NOTE: You are supposed to allocate this with NewHumanReadableMatrix (do not use zero value)!!!
-type HumanReadableMatrix struct {
+// NOTE: You are supposed to allocate this with NewViewMatrix (do not use zero value)!!!
+type ViewMatrix struct {
 	transform []float32 // supposed len is 3
 	rotation  []float32 // supposed len is 3
 	scale     []float32 // supposed len is 3
@@ -270,8 +270,8 @@ type HumanReadableMatrix struct {
 	dirty     bool
 }
 
-func NewHumanReadableMatrix() *HumanReadableMatrix {
-	return &HumanReadableMatrix{
+func NewViewMatrix() *ViewMatrix {
+	return &ViewMatrix{
 		transform: make([]float32, 3),
 		rotation:  make([]float32, 3),
 		scale:     make([]float32, 3),
@@ -280,8 +280,8 @@ func NewHumanReadableMatrix() *HumanReadableMatrix {
 	}
 }
 
-func IdentityMatrix() *HumanReadableMatrix {
-	r := NewHumanReadableMatrix()
+func IdentityMatrix() *ViewMatrix {
+	r := NewViewMatrix()
 	r.matrix = []float32{
 		1, 0, 0, 0,
 		0, 1, 0, 0,
@@ -295,7 +295,7 @@ func IdentityMatrix() *HumanReadableMatrix {
 	return r
 }
 
-func (m *HumanReadableMatrix) Transform(x, y, z float32) *HumanReadableMatrix {
+func (m *ViewMatrix) Transform(x, y, z float32) *ViewMatrix {
 	m.transform[0] = x
 	m.transform[1] = y
 	m.transform[2] = z
@@ -303,7 +303,7 @@ func (m *HumanReadableMatrix) Transform(x, y, z float32) *HumanReadableMatrix {
 	return m
 }
 
-func (m *HumanReadableMatrix) Rotation(x, y, z float32) *HumanReadableMatrix {
+func (m *ViewMatrix) Rotation(x, y, z float32) *ViewMatrix {
 	m.rotation[0] = x
 	m.rotation[1] = y
 	m.rotation[2] = z
@@ -311,7 +311,7 @@ func (m *HumanReadableMatrix) Rotation(x, y, z float32) *HumanReadableMatrix {
 	return m
 }
 
-func (m *HumanReadableMatrix) Scale(x, y, z float32) *HumanReadableMatrix {
+func (m *ViewMatrix) Scale(x, y, z float32) *ViewMatrix {
 	m.scale[0] = x
 	m.scale[1] = y
 	m.scale[2] = z
@@ -319,7 +319,7 @@ func (m *HumanReadableMatrix) Scale(x, y, z float32) *HumanReadableMatrix {
 	return m
 }
 
-func (m *HumanReadableMatrix) SetMatrix(f []float32) *HumanReadableMatrix {
+func (m *ViewMatrix) SetMatrix(f []float32) *ViewMatrix {
 	m.matrix = f
 	m.Decompile()
 	m.dirty = false
@@ -328,7 +328,7 @@ func (m *HumanReadableMatrix) SetMatrix(f []float32) *HumanReadableMatrix {
 
 // Compile updates m.Matrix
 // NOTE: this supposes matrix was allocated correctly!
-func (m *HumanReadableMatrix) Compile() {
+func (m *ViewMatrix) Compile() {
 	imguizmo.RecomposeMatrixFromComponents(
 		utils.SliceToPtr(m.transform),
 		utils.SliceToPtr(m.rotation),
@@ -339,7 +339,7 @@ func (m *HumanReadableMatrix) Compile() {
 	m.dirty = false
 }
 
-func (m *HumanReadableMatrix) Decompile() {
+func (m *ViewMatrix) Decompile() {
 	imguizmo.DecomposeMatrixToComponents(
 		utils.SliceToPtr(m.matrix),
 		utils.SliceToPtr(m.transform),
@@ -348,7 +348,7 @@ func (m *HumanReadableMatrix) Decompile() {
 	)
 }
 
-func (m *HumanReadableMatrix) GetTransform() []float32 {
+func (m *ViewMatrix) GetTransform() []float32 {
 	if m.dirty {
 		m.Compile()
 	}
@@ -356,7 +356,7 @@ func (m *HumanReadableMatrix) GetTransform() []float32 {
 	return m.transform
 }
 
-func (m *HumanReadableMatrix) GetRotation() []float32 {
+func (m *ViewMatrix) GetRotation() []float32 {
 	if m.dirty {
 		m.Compile()
 	}
@@ -364,7 +364,7 @@ func (m *HumanReadableMatrix) GetRotation() []float32 {
 	return m.rotation
 }
 
-func (m *HumanReadableMatrix) GetScale() []float32 {
+func (m *ViewMatrix) GetScale() []float32 {
 	if m.dirty {
 		m.Compile()
 	}
@@ -374,7 +374,7 @@ func (m *HumanReadableMatrix) GetScale() []float32 {
 
 // Matrix returns current matrix compatible with ImGuizmo (pointer to 4x4m).
 // It recompiles as necessary.
-func (m *HumanReadableMatrix) Matrix() *float32 {
+func (m *ViewMatrix) Matrix() *float32 {
 	if m.dirty {
 		m.Compile()
 	}
@@ -382,7 +382,7 @@ func (m *HumanReadableMatrix) Matrix() *float32 {
 	return utils.SliceToPtr(m.matrix)
 }
 
-func (m *HumanReadableMatrix) MatrixSlice() []float32 {
+func (m *ViewMatrix) MatrixSlice() []float32 {
 	if m.dirty {
 		m.Compile()
 	}
