@@ -66,6 +66,7 @@ type GizmoWidget struct {
 	gizmos     []GizmoI
 	view       *ViewMatrix
 	projection *ProjectionMatrix
+	id         ID
 }
 
 // Gizmo creates a new GizmoWidget.
@@ -74,7 +75,14 @@ func Gizmo(view *ViewMatrix, projection *ProjectionMatrix) *GizmoWidget {
 		gizmos:     []GizmoI{},
 		view:       view,
 		projection: projection,
+		id:         GenAutoID("gizmo"),
 	}
+}
+
+// ID sets the ID of the GizmoWidget. (useful if you use multiple gizmo widgets. It is set by AutoID anyway)
+func (g *GizmoWidget) ID(id ID) *GizmoWidget {
+	g.id = id
+	return g
 }
 
 // Gizmos adds GizmoI elements to the GizmoWidget area.
@@ -86,9 +94,13 @@ func (g *GizmoWidget) Gizmos(gizmos ...GizmoI) *GizmoWidget {
 // build is a local build function.
 // Just to separate Global() and Build() methods.
 func (g *GizmoWidget) build() {
+	imguizmo.PushIDStr(string(g.id))
+
 	for _, gizmo := range g.gizmos {
 		gizmo.Gizmo(g.view, g.projection)
 	}
+
+	imguizmo.PopID()
 }
 
 // Build implements Widget interface.
@@ -338,6 +350,15 @@ func (m *ViewMatrix) SetMatrix(f []float32) *ViewMatrix {
 	return m
 }
 
+// Copies returns a copy of the matrix.
+// Useful e.g. in exaples/ to duplicate the matrix.
+func (m *ViewMatrix) Copy() *ViewMatrix {
+	return NewViewMatrix().
+		Transform(m.transform[0], m.transform[1], m.transform[2]).
+		Rotation(m.rotation[0], m.rotation[1], m.rotation[2]).
+		Scale(m.scale[0], m.scale[1], m.scale[2])
+}
+
 // Compile updates m.matrix
 // NOTE: this supposes matrix was allocated correctly!
 func (m *ViewMatrix) compile() {
@@ -434,6 +455,15 @@ func (p *ProjectionMatrix) FarClipping(far float32) *ProjectionMatrix {
 	p.farClipping = far
 	p.dirty = true
 	return p
+}
+
+// Copy returns a copy of the matrix.
+func (p *ProjectionMatrix) Copy() *ProjectionMatrix {
+	return NewProjectionMatrix().
+		FOV(p.fov).
+		Aspect(p.aspect).
+		NearClipping(p.nearClipping).
+		FarClipping(p.farClipping)
 }
 
 // getMatrix returns the matrix compatible with ImGuizmo (pointer to 4x4m).
