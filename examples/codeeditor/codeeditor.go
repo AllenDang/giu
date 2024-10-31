@@ -1,4 +1,3 @@
-//nolint:wsl,gocritic,staticcheck // this is disabled now.
 package main
 
 import (

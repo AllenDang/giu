@@ -2,7 +2,8 @@
 package giu
 
 import (
-	"fmt"
+	cte "github.com/AllenDang/cimgui-go/ImGuiColorTextEdit"
+	"github.com/AllenDang/cimgui-go/imgui"
 )
 
 // LanguageDefinition represents code editor's language definition.
@@ -10,16 +11,23 @@ type LanguageDefinition byte
 
 // language definitions:.
 const (
-	LanguageDefinitionSQL LanguageDefinition = iota
-	LanguageDefinitionCPP
-	LanguageDefinitionLua
-	LanguageDefinitionC
+	LanguageDefinitionNone        LanguageDefinition = LanguageDefinition(cte.None)
+	LanguageDefinitionCPP         LanguageDefinition = LanguageDefinition(cte.Cpp)
+	LanguageDefinitionC           LanguageDefinition = LanguageDefinition(cte.C)
+	LanguageDefinitionCs          LanguageDefinition = LanguageDefinition(cte.Cs)
+	LanguageDefinitionPython      LanguageDefinition = LanguageDefinition(cte.Python)
+	LanguageDefinitionLua         LanguageDefinition = LanguageDefinition(cte.Lua)
+	LanguageDefinitionJSON        LanguageDefinition = LanguageDefinition(cte.Json)
+	LanguageDefinitionSQL         LanguageDefinition = LanguageDefinition(cte.Sql)
+	LanguageDefinitionAngelScript LanguageDefinition = LanguageDefinition(cte.AngelScript)
+	LanguageDefinitionGlsl        LanguageDefinition = LanguageDefinition(cte.Glsl)
+	LanguageDefinitionHlsl        LanguageDefinition = LanguageDefinition(cte.Hlsl)
 )
 
 var _ Disposable = &codeEditorState{}
 
 type codeEditorState struct {
-	// editor imgui.TextEditor
+	editor *cte.TextEditor
 }
 
 // Dispose implements Disposable interface.
@@ -40,8 +48,6 @@ type CodeEditorWidget struct {
 
 // CodeEditor creates new code editor widget.
 func CodeEditor() *CodeEditorWidget {
-	panic("Code Editor is not implemented yet!")
-
 	return &CodeEditorWidget{
 		title: GenAutoID("##CodeEditor"),
 	}
@@ -49,7 +55,6 @@ func CodeEditor() *CodeEditorWidget {
 
 // ID allows to manually set editor's ID.
 // It isn't necessary to use it in a normal conditions.
-
 func (ce *CodeEditorWidget) ID(id ID) *CodeEditorWidget {
 	ce.title = id
 	return ce
@@ -57,33 +62,20 @@ func (ce *CodeEditorWidget) ID(id ID) *CodeEditorWidget {
 
 // ShowWhitespaces sets if whitespace is shown in code editor.
 func (ce *CodeEditorWidget) ShowWhitespaces(s bool) *CodeEditorWidget {
-	// ce.getState().editor.SetShowWhitespaces(s)
+	ce.getState().editor.SetShowWhitespacesEnabled(s)
 	return ce
 }
 
 // TabSize sets editor's tab size.
 func (ce *CodeEditorWidget) TabSize(size int) *CodeEditorWidget {
-	// ce.getState().editor.SetTabSize(size)
+	ce.getState().editor.SetTabSize(int32(size))
 	return ce
 }
 
 // LanguageDefinition sets code editor language definition.
-
 func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
-	// s := ce.getState()
-	lookup := map[LanguageDefinition]func(){
-		// LanguageDefinitionSQL: s.editor.SetLanguageDefinitionSQL,
-		// LanguageDefinitionCPP: s.editor.SetLanguageDefinitionCPP,
-		// LanguageDefinitionLua: s.editor.SetLanguageDefinitionLua,
-		// LanguageDefinitionC:   s.editor.SetLanguageDefinitionC,
-	}
-
-	setter, correctDefinition := lookup[definition]
-	if !correctDefinition {
-		panic(fmt.Sprintf("giu/CodeEditor.go: unknown language definition %d", definition))
-	}
-
-	setter()
+	s := ce.getState()
+	s.editor.SetLanguageDefinition(cte.LanguageDefinitionId(definition))
 
 	return ce
 }
@@ -206,19 +198,19 @@ func (ce *CodeEditorWidget) Delete() {
 
 // Build implements Widget interface.
 func (ce *CodeEditorWidget) Build() {
-	// s := ce.getState()
+	s := ce.getState()
 
 	// register text in font atlas
-	// Context.FontAtlas.RegisterString(s.editor.GetText())
+	Context.FontAtlas.RegisterString(s.editor.Text())
 
 	// build editor
-	// s.editor.Render(ce.title, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)
+	s.editor.RenderV(string(ce.title), false, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)
 }
 
 func (ce *CodeEditorWidget) getState() (state *codeEditorState) {
 	if state = GetState[codeEditorState](Context, ce.title); state == nil {
 		state = &codeEditorState{
-			// editor: imgui.NewTextEditor(),
+			editor: cte.NewTextEditor(),
 		}
 
 		SetState(Context, ce.title, state)
