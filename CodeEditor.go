@@ -82,7 +82,7 @@ func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *C
 
 // Text sets editor's text.
 func (ce *CodeEditorWidget) Text(str string) *CodeEditorWidget {
-	// ce.getState().editor.SetText(str)
+	ce.getState().editor.SetText(str)
 	return ce
 }
 
@@ -94,6 +94,7 @@ func (ce *CodeEditorWidget) Text(str string) *CodeEditorWidget {
 
 // HandleKeyboardInputs sets if editor should handle keyboard input.
 func (ce *CodeEditorWidget) HandleKeyboardInputs(b bool) *CodeEditorWidget {
+	panic("not implemented")
 	// ce.getState().editor.SetHandleKeyboardInputs(b)
 	return ce
 }
@@ -112,7 +113,7 @@ func (ce *CodeEditorWidget) Border(border bool) *CodeEditorWidget {
 
 // HasSelection returns true if some text is selected.
 func (ce *CodeEditorWidget) HasSelection() bool {
-	// return ce.getState().editor.HasSelection()
+	return ce.getState().editor.AnyCursorHasSelection()
 	return false
 }
 
@@ -124,12 +125,12 @@ func (ce *CodeEditorWidget) GetSelectedText() string {
 
 // GetText returns whole text from editor.
 func (ce *CodeEditorWidget) GetText() string {
-	//	return ce.getState().editor.GetText()
-	return ""
+	return ce.getState().editor.Text()
 }
 
 // GetCurrentLineText returns current line.
 func (ce *CodeEditorWidget) GetCurrentLineText() string {
+	panic("not implemented")
 	//	return ce.getState().editor.GetCurrentLineText()
 	return ""
 }
@@ -137,34 +138,40 @@ func (ce *CodeEditorWidget) GetCurrentLineText() string {
 // GetCursorPos returns cursor position.
 // (in characters).
 func (ce *CodeEditorWidget) GetCursorPos() (x, y int) {
-	//	return ce.getState().editor.GetCursorPos()
-	return 0, 0
+	var px, py int32
+	ce.getState().editor.CursorPosition(&px, &py)
+	return int(px), int(py)
 }
 
 // GetSelectionStart returns star pos of selection.
 func (ce *CodeEditorWidget) GetSelectionStart() (x, y int) {
+	panic("not implemented")
 	//	return ce.getState().editor.GetSelectionStart()
 	return 0, 0
 }
 
 // InsertText inserts the `text`.
 func (ce *CodeEditorWidget) InsertText(text string) {
+	panic("not implemented")
 	//	ce.getState().editor.InsertText(text)
 }
 
 // GetWordUnderCursor returns the word under the cursor.
 func (ce *CodeEditorWidget) GetWordUnderCursor() string {
+	panic("not implemented")
 	//	return ce.getState().editor.GetWordUnderCursor()
 	return ""
 }
 
 // SelectWordUnderCursor selects the word under cursor.
 func (ce *CodeEditorWidget) SelectWordUnderCursor() {
+	panic("not implemented")
 	// ce.getState().editor.SelectWordUnderCursor()
 }
 
 // IsTextChanged returns true if the editable text was changed in the frame.
 func (ce *CodeEditorWidget) IsTextChanged() bool {
+	panic("not implemented")
 	//	return ce.getState().editor.IsTextChanged()
 	return false
 }
@@ -172,27 +179,29 @@ func (ce *CodeEditorWidget) IsTextChanged() bool {
 // GetScreenCursorPos returns cursor position on the screen.
 // (in pixels).
 func (ce *CodeEditorWidget) GetScreenCursorPos() (x, y int) {
+	panic("not implemented")
 	//	return ce.getState().editor.GetScreenCursorPos()
 	return 0, 0
 }
 
 // Copy copies selection.
 func (ce *CodeEditorWidget) Copy() {
-	// ce.getState().editor.Copy()
+	ce.getState().editor.Copy()
 }
 
 // Cut cuts selection.
 func (ce *CodeEditorWidget) Cut() {
-	// ce.getState().editor.Cut()
+	ce.getState().editor.Cut()
 }
 
 // Paste does the same as Ctrl+V.
 func (ce *CodeEditorWidget) Paste() {
-	// ce.getState().editor.Paste()
+	ce.getState().editor.Paste()
 }
 
 // Delete deletes the selection.
 func (ce *CodeEditorWidget) Delete() {
+	panic("not implemented")
 	// ce.getState().editor.Delete()
 }
 
