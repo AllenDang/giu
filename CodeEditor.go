@@ -32,7 +32,7 @@ type codeEditorState struct {
 
 // Dispose implements Disposable interface.
 func (s *codeEditorState) Dispose() {
-	// noop
+	c.editor.Destroy()
 }
 
 // static check if code editor implements Widget interface.
