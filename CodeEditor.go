@@ -114,7 +114,6 @@ func (ce *CodeEditorWidget) Border(border bool) *CodeEditorWidget {
 // HasSelection returns true if some text is selected.
 func (ce *CodeEditorWidget) HasSelection() bool {
 	return ce.getState().editor.AnyCursorHasSelection()
-	return false
 }
 
 // GetSelectedText returns selected text.
