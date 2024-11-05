@@ -1,4 +1,4 @@
-//nolint:wsl,gocritic,staticcheck // this is disabled now.
+// Package main demonstrates how to use the Code Editor widget.
 package main
 
 import (
@@ -32,12 +32,12 @@ func loop() {
 			giu.Button("Set Text").OnClick(func() {
 				editor.Text("Set text")
 			}),
+			//nolint:gocritic,wsl // this should be here for documentation and as a reminder.
 			giu.Button("Set Error Marker").OnClick(func() {
 				panic("implement me!")
 				// errMarkers.Clear()
 				// errMarkers.Insert(1, "Error message")
 				// fmt.Println("ErrMarkers Size:", errMarkers.Size())
-
 				// editor.ErrorMarkers(errMarkers)
 			}),
 		),
@@ -48,6 +48,7 @@ func loop() {
 func main() {
 	wnd := giu.NewMasterWindow("Code Editor", 800, 600, 0)
 
+	//nolint:gocritic // should be here for doc
 	// errMarkers = imgui.NewErrorMarkers()
 
 	editor = giu.CodeEditor().
