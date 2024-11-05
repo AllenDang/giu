@@ -32,7 +32,7 @@ type codeEditorState struct {
 
 // Dispose implements Disposable interface.
 func (s *codeEditorState) Dispose() {
-	c.editor.Destroy()
+	s.editor.Destroy()
 }
 
 // static check if code editor implements Widget interface.
@@ -119,6 +119,7 @@ func (ce *CodeEditorWidget) HasSelection() bool {
 
 // GetSelectedText returns selected text.
 func (ce *CodeEditorWidget) GetSelectedText() string {
+	panic("not implemented")
 	// return ce.getState().editor.GetSelectedText()
 	return ""
 }
