@@ -471,47 +471,47 @@ const (
 	SliderFlagsInvalidMask = SliderFlags(imgui.SliderFlagsInvalidMask)
 )
 
-// PlotFlags represents implot.PlotFlags.
-type PlotFlags implot.PlotFlags
+// PlotFlags represents implot.Flags.
+type PlotFlags implot.Flags
 
 // plot flags.
 const (
-	PlotFlagsNone        = PlotFlags(implot.PlotFlagsNone)
-	PlotFlagsNoTitle     = PlotFlags(implot.PlotFlagsNoTitle)
-	PlotFlagsNoLegend    = PlotFlags(implot.PlotFlagsNoLegend)
-	PlotFlagsNoMenus     = PlotFlags(implot.PlotFlagsNoMenus)
-	PlotFlagsNoBoxSelect = PlotFlags(implot.PlotFlagsNoBoxSelect)
-	// 	PlotFlagsNoMousePos  = PlotFlags(implot.PlotFlagsNoMousePos)
-	// 	PlotFlagsNoHighlight = PlotFlags(implot.PlotFlagsNoHighlight)
-	// PlotFlagsNoChild = PlotFlags(implot.PlotFlagsNoChild).
-	PlotFlagsEqual = PlotFlags(implot.PlotFlagsEqual)
-	// 	PlotFlagsYAxis2      = PlotFlags(implot.PlotFlagsYAxis2)
-	// 	PlotFlagsYAxis3      = PlotFlags(implot.PlotFlagsYAxis3)
-	// 	PlotFlagsQuery       = PlotFlags(implot.PlotFlagsQuery)
-	PlotFlagsCrosshairs = PlotFlags(implot.PlotFlagsCrosshairs)
-	// 	PlotFlagsAntiAliased = PlotFlags(implot.PlotFlagsAntiAliased)
-	PlotFlagsCanvasOnly = PlotFlags(implot.PlotFlagsCanvasOnly)
+	PlotFlagsNone        = PlotFlags(implot.FlagsNone)
+	PlotFlagsNoTitle     = PlotFlags(implot.FlagsNoTitle)
+	PlotFlagsNoLegend    = PlotFlags(implot.FlagsNoLegend)
+	PlotFlagsNoMenus     = PlotFlags(implot.FlagsNoMenus)
+	PlotFlagsNoBoxSelect = PlotFlags(implot.FlagsNoBoxSelect)
+	// 	PlotFlagsNoMousePos  = PlotFlags(implot.FlagsNoMousePos)
+	// 	PlotFlagsNoHighlight = PlotFlags(implot.FlagsNoHighlight)
+	// PlotFlagsNoChild = PlotFlags(implot.FlagsNoChild).
+	PlotFlagsEqual = PlotFlags(implot.FlagsEqual)
+	// 	PlotFlagsYAxis2      = PlotFlags(implot.FlagsYAxis2)
+	// 	PlotFlagsYAxis3      = PlotFlags(implot.FlagsYAxis3)
+	// 	PlotFlagsQuery       = PlotFlags(implot.FlagsQuery)
+	PlotFlagsCrosshairs = PlotFlags(implot.FlagsCrosshairs)
+	// 	PlotFlagsAntiAliased = PlotFlags(implot.FlagsAntiAliased)
+	PlotFlagsCanvasOnly = PlotFlags(implot.FlagsCanvasOnly)
 )
 
-// PlotAxisFlags represents implot.PlotAxisFlags.
-type PlotAxisFlags implot.PlotAxisFlags
+// PlotAxisFlags represents implot.AxisFlags.
+type PlotAxisFlags implot.AxisFlags
 
 // plot axis flags.
 const (
-	PlotAxisFlagsNone         PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsNone)
-	PlotAxisFlagsNoLabel      PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsNoLabel)
-	PlotAxisFlagsNoGridLines  PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsNoGridLines)
-	PlotAxisFlagsNoTickMarks  PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsNoTickMarks)
-	PlotAxisFlagsNoTickLabels PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsNoTickLabels)
-	PlotAxisFlagsForeground   PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsForeground)
-	//	PlotAxisFlagsLogScale      PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsLogScale)
-	//	PlotAxisFlagsTime          PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsTime)
-	PlotAxisFlagsInvert        PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsInvert)
-	PlotAxisFlagsNoInitialFit  PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsNoInitialFit)
-	PlotAxisFlagsAutoFit       PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsAutoFit)
-	PlotAxisFlagsRangeFit      PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsRangeFit)
-	PlotAxisFlagsLockMin       PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsLockMin)
-	PlotAxisFlagsLockMax       PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsLockMax)
-	PlotAxisFlagsLock          PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsLock)
-	PlotAxisFlagsNoDecorations PlotAxisFlags = PlotAxisFlags(implot.PlotAxisFlagsNoDecorations)
+	PlotAxisFlagsNone         PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNone)
+	PlotAxisFlagsNoLabel      PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoLabel)
+	PlotAxisFlagsNoGridLines  PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoGridLines)
+	PlotAxisFlagsNoTickMarks  PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoTickMarks)
+	PlotAxisFlagsNoTickLabels PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoTickLabels)
+	PlotAxisFlagsForeground   PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsForeground)
+	//	PlotAxisFlagsLogScale      PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLogScale)
+	//	PlotAxisFlagsTime          PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsTime)
+	PlotAxisFlagsInvert        PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsInvert)
+	PlotAxisFlagsNoInitialFit  PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoInitialFit)
+	PlotAxisFlagsAutoFit       PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsAutoFit)
+	PlotAxisFlagsRangeFit      PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsRangeFit)
+	PlotAxisFlagsLockMin       PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLockMin)
+	PlotAxisFlagsLockMax       PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLockMax)
+	PlotAxisFlagsLock          PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLock)
+	PlotAxisFlagsNoDecorations PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoDecorations)
 )

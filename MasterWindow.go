@@ -83,8 +83,8 @@ type MasterWindow struct {
 func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *MasterWindow {
 	imGuiContext := imgui.CreateContext()
 
-	implot.PlotCreateContext()
-	imnodes.ImNodesCreateContext()
+	implot.CreateContext()
+	imnodes.CreateContext()
 
 	io := imgui.CurrentIO()
 
@@ -226,8 +226,8 @@ func (w *MasterWindow) afterRender() {
 }
 
 func (w *MasterWindow) beforeDestroy() {
-	implot.PlotDestroyContext()
-	imnodes.ImNodesDestroyContext()
+	implot.DestroyContext()
+	imnodes.DestroyContext()
 }
 
 func (w *MasterWindow) render() {
