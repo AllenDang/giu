@@ -9,9 +9,9 @@ import (
 
 type (
 	// PlotXAxis allows to chose X axis.
-	PlotXAxis = implot.PlotAxisEnum
+	PlotXAxis = implot.AxisEnum
 	// PlotYAxis allows to chose Y axis.
-	PlotYAxis = implot.PlotAxisEnum
+	PlotYAxis = implot.AxisEnum
 )
 
 // Available axes.
@@ -218,26 +218,26 @@ func (p *PlotCanvasWidget) Build() {
 		return
 	}
 
-	if implot.PlotBeginPlotV(
+	if implot.BeginPlotV(
 		Context.FontAtlas.RegisterString(p.title),
 		ToVec2(image.Pt(p.width, p.height)),
-		implot.PlotFlags(p.flags),
+		implot.Flags(p.flags),
 	) {
-		implot.PlotSetupAxisLimitsV(
+		implot.SetupAxisLimitsV(
 			implot.AxisX1,
 			p.xMin,
 			p.xMax,
-			implot.PlotCond(p.axisLimitCondition),
+			implot.Cond(p.axisLimitCondition),
 		)
-		implot.PlotSetupAxisLimitsV(
+		implot.SetupAxisLimitsV(
 			implot.AxisY1,
 			p.yMin,
 			p.yMax,
-			implot.PlotCond(p.axisLimitCondition),
+			implot.Cond(p.axisLimitCondition),
 		)
 
 		if len(p.xTicksValue) > 0 {
-			implot.PlotSetupAxisTicksdoublePtrV(
+			implot.SetupAxisTicksdoublePtrV(
 				implot.AxisX1,
 				utils.SliceToPtr(p.xTicksValue),
 				int32(len(p.xTicksValue)),
@@ -247,7 +247,7 @@ func (p *PlotCanvasWidget) Build() {
 		}
 
 		if len(p.yTicksValue) > 0 {
-			implot.PlotSetupAxisTicksdoublePtrV(
+			implot.SetupAxisTicksdoublePtrV(
 				implot.AxisY1,
 				utils.SliceToPtr(p.yTicksValue),
 				int32(len(p.yTicksValue)),
@@ -256,31 +256,31 @@ func (p *PlotCanvasWidget) Build() {
 			)
 		}
 
-		implot.PlotSetupAxisV(
+		implot.SetupAxisV(
 			implot.AxisX1,
 			Context.FontAtlas.RegisterString(p.xLabel),
-			implot.PlotAxisFlags(p.xFlags),
+			implot.AxisFlags(p.xFlags),
 		)
 
-		implot.PlotSetupAxisV(
+		implot.SetupAxisV(
 			implot.AxisY1,
 			Context.FontAtlas.RegisterString(p.yLabel),
-			implot.PlotAxisFlags(p.yFlags),
+			implot.AxisFlags(p.yFlags),
 		)
 
 		if p.y2Label != "" {
-			implot.PlotSetupAxisV(
+			implot.SetupAxisV(
 				implot.AxisY2,
 				Context.FontAtlas.RegisterString(p.y2Label),
-				implot.PlotAxisFlags(p.y2Flags),
+				implot.AxisFlags(p.y2Flags),
 			)
 		}
 
 		if p.y3Label != "" {
-			implot.PlotSetupAxisV(
+			implot.SetupAxisV(
 				implot.AxisY3,
 				Context.FontAtlas.RegisterString(p.y3Label),
-				implot.PlotAxisFlags(p.y3Flags),
+				implot.AxisFlags(p.y3Flags),
 			)
 		}
 
@@ -288,14 +288,14 @@ func (p *PlotCanvasWidget) Build() {
 			plot.Plot()
 		}
 
-		implot.PlotEndPlot()
+		implot.EndPlot()
 	}
 }
 
 // SwitchPlotAxes switches plot axes.
 func SwitchPlotAxes(x PlotXAxis, y PlotYAxis) PlotWidget {
 	return Custom(func() {
-		implot.PlotSetAxes(x, y)
+		implot.SetAxes(x, y)
 	})
 }
 
@@ -339,7 +339,7 @@ func (p *BarPlot) Offset(offset int) *BarPlot {
 
 // Plot implements Plot interface.
 func (p *BarPlot) Plot() {
-	implot.PlotPlotBarsdoublePtrIntV(
+	implot.PlotBarsdoublePtrIntV(
 		p.title,
 		utils.SliceToPtr(p.data),
 		int32(len(p.data)),
@@ -391,13 +391,13 @@ func (p *BarHPlot) Offset(offset int) *BarHPlot {
 
 // Plot implements plot interface.
 func (p *BarHPlot) Plot() {
-	implot.PlotPlotBarsdoublePtrIntV(
+	implot.PlotBarsdoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.title),
 		utils.SliceToPtr(p.data),
 		int32(len(p.data)),
 		p.height,
 		p.shift,
-		implot.PlotBarsFlagsHorizontal,
+		implot.BarsFlagsHorizontal,
 		int32(p.offset),
 		0,
 	)
@@ -449,11 +449,11 @@ func (p *LinePlot) Offset(offset int) *LinePlot {
 
 // Plot implements Plot interface.
 func (p *LinePlot) Plot() {
-	implot.PlotSetAxis(
-		implot.PlotAxisEnum(p.yAxis),
+	implot.SetAxis(
+		implot.AxisEnum(p.yAxis),
 	)
 
-	implot.PlotPlotLinedoublePtrIntV(
+	implot.PlotLinedoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.title),
 		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
@@ -497,8 +497,8 @@ func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
 
 // Plot implements Plot interface.
 func (p *LineXYPlot) Plot() {
-	implot.PlotSetAxis(implot.PlotAxisEnum(p.yAxis))
-	implot.PlotPlotLinedoublePtrdoublePtrV(
+	implot.SetAxis(implot.AxisEnum(p.yAxis))
+	implot.PlotLinedoublePtrdoublePtrV(
 		Context.FontAtlas.RegisterString(p.title),
 		utils.SliceToPtr(p.xs),
 		utils.SliceToPtr(p.ys),
@@ -554,12 +554,12 @@ func (p *PieChartPlot) Angle0(a float64) *PieChartPlot {
 
 // Plot implements Plot interface.
 func (p *PieChartPlot) Plot() {
-	var flags implot.PlotPieChartFlags
+	var flags implot.PieChartFlags
 	if p.normalize {
-		flags |= implot.PlotPieChartFlagsNormalize
+		flags |= implot.PieChartFlagsNormalize
 	}
 
-	implot.PlotPlotPieChartdoublePtrStrV(
+	implot.PlotPieChartdoublePtrStrV(
 		Context.FontAtlas.RegisterStringSlice(p.labels),
 		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
@@ -611,7 +611,7 @@ func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
 
 // Plot implements Plot interface.
 func (p *ScatterPlot) Plot() {
-	implot.PlotPlotScatterdoublePtrIntV(
+	implot.PlotScatterdoublePtrIntV(
 		Context.FontAtlas.RegisterString(p.label),
 		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
@@ -648,7 +648,7 @@ func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
 
 // Plot implements Plot interface.
 func (p *ScatterXYPlot) Plot() {
-	implot.PlotPlotScatterdoublePtrdoublePtrV(
+	implot.PlotScatterdoublePtrdoublePtrV(
 		Context.FontAtlas.RegisterString(p.label),
 		utils.SliceToPtr(p.xs),
 		utils.SliceToPtr(p.ys),

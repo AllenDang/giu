@@ -203,7 +203,7 @@ func (ss *StyleSetter) Push() {
 
 	// Push plot colors
 	for k, v := range ss.plotColors {
-		implot.PlotPushStyleColorVec4(implot.PlotCol(k), ToVec4Color(v))
+		implot.PushStyleColorVec4(implot.Col(k), ToVec4Color(v))
 	}
 
 	// push style vars
@@ -218,9 +218,9 @@ func (ss *StyleSetter) Push() {
 	// Push plot colors
 	for k, v := range ss.plotStyles {
 		pushVarID(k.IsVec2(), v, func(value float32) {
-			implot.PlotPushStyleVarFloat(implot.PlotStyleVar(k), value)
+			implot.PushStyleVarFloat(implot.StyleVar(k), value)
 		}, func(value imgui.Vec2) {
-			implot.PlotPushStyleVarVec2(implot.PlotStyleVar(k), value)
+			implot.PushStyleVarVec2(implot.StyleVar(k), value)
 		})
 	}
 
@@ -245,9 +245,9 @@ func (ss *StyleSetter) Pop() {
 	}
 
 	imgui.PopStyleColorV(int32(len(ss.colors)))
-	implot.PlotPopStyleColorV(int32(len(ss.plotColors)))
+	implot.PopStyleColorV(int32(len(ss.plotColors)))
 	imgui.PopStyleVarV(int32(len(ss.styles)))
-	implot.PlotPopStyleVarV(int32(len(ss.plotStyles)))
+	implot.PopStyleVarV(int32(len(ss.plotStyles)))
 }
 
 func pushVarID(isVec2 bool, v any, pushFloat func(float32), pushVec2 func(imgui.Vec2)) {
