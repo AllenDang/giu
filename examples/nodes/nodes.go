@@ -1,11 +1,26 @@
 package main
 
-import "github.com/AllenDang/giu"
+import (
+	"github.com/AllenDang/giu"
+)
 
 func loop() {
 	giu.SingleWindow().Layout(
 		giu.Label("hehehe"),
-		giu.NodeEditor(),
+		giu.NodeEditor().Nodes(
+			giu.Node(
+				giu.Label("Main content"),
+			).Output(
+				giu.Label("Output attribute"),
+			),
+			giu.Node(
+				giu.Label("Main content"),
+			).TitleBar(
+				giu.Label("This is a title bar"),
+			).Input(
+				giu.Label("Iput attribute"),
+			),
+		),
 	)
 }
 
