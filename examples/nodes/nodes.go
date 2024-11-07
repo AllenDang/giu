@@ -8,12 +8,15 @@ func loop() {
 	giu.SingleWindow().Layout(
 		giu.Label("hehehe"),
 		giu.NodeEditor().Nodes(
-			giu.Node(
-				giu.Label("Main content"),
-			).Output(
+			giu.Node().
+				Static(
+					giu.Label("Main content"),
+				).Output(
 				giu.Label("Output attribute"),
+			).Input(
+				giu.Label("Input attribute"),
 			),
-			giu.Node(
+			giu.Node().Static(
 				giu.Label("Main content"),
 			).TitleBar(
 				giu.Label("This is a title bar"),

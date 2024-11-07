@@ -1,6 +1,8 @@
 package giu
 
 import (
+	"fmt"
+
 	"github.com/AllenDang/cimgui-go/imnodes"
 )
 
@@ -30,6 +32,20 @@ func (n *NodeEditorWidget) getState() *nodeEditorState {
 	SetState[nodeEditorState](Context, n.id, state)
 
 	return state
+}
+
+type NodeElementType int
+
+const (
+	NodeElementInput NodeElementType = iota
+	NodeElementOutput
+	NodeElementBody
+	NodeElementTitleBar
+)
+
+type nodeElement struct {
+	elementType NodeElementType
+	layout      Layout
 }
 
 type NodeEditorWidget struct {
@@ -84,66 +100,67 @@ func (n *NodeEditorWidget) Build() {
 }
 
 type NodeWidget struct {
-	titleBar Layout
-	layout   Layout
-	input    Layout
-	output   Layout
+	elements []nodeElement
 }
 
-func Node(staticLayout ...Widget) *NodeWidget {
-	return &NodeWidget{
-		layout: Layout(staticLayout),
-	}
+func Node() *NodeWidget {
+	return &NodeWidget{}
+}
+
+func (n *NodeWidget) Static(widgets ...Widget) *NodeWidget {
+	n.elements = append(n.elements, nodeElement{NodeElementBody, Layout(widgets)})
+
+	return n
 }
 
 func (n *NodeWidget) TitleBar(widgets ...Widget) *NodeWidget {
-	n.titleBar = Layout(widgets)
+	for i := range n.elements {
+		if n.elements[i].elementType != NodeElementTitleBar {
+			n.elements = append(n.elements[:i], append([]nodeElement{{NodeElementTitleBar, Layout(widgets)}}, n.elements[i:]...)...)
+		}
+	}
 
 	return n
 }
 
 func (n *NodeWidget) Input(widgets ...Widget) *NodeWidget {
-	n.input = Layout(widgets)
+	n.elements = append(n.elements, nodeElement{NodeElementInput, Layout(widgets)})
 
 	return n
 }
 
 func (n *NodeWidget) Output(widgets ...Widget) *NodeWidget {
-	n.output = Layout(widgets)
+	n.elements = append(n.elements, nodeElement{NodeElementOutput, Layout(widgets)})
 
 	return n
 }
 
 func (n *NodeWidget) BuildNode(idCounter *int32) {
-	Assert(n.layout != nil && len(n.layout) > 0, "NodeWidget", "BuildNode", "Node layout is required")
+	fMap := map[NodeElementType]struct {
+		begin func(int32)
+		end   func()
+	}{
+		NodeElementInput:    {imnodes.BeginInputAttribute, imnodes.EndInputAttribute},
+		NodeElementOutput:   {imnodes.BeginOutputAttribute, imnodes.EndOutputAttribute},
+		NodeElementBody:     {imnodes.BeginStaticAttribute, imnodes.EndStaticAttribute},
+		NodeElementTitleBar: {func(int32) { imnodes.BeginNodeTitleBar() }, imnodes.EndNodeTitleBar},
+	}
+
+	// Assert(n.layout != nil && len(n.layout) > 0, "NodeWidget", "BuildNode", "Node layout is required")
 	imnodes.BeginNode(*idCounter)
 	*idCounter++
 
-	if n.titleBar != nil {
-		imnodes.BeginNodeTitleBar()
-		n.titleBar.Build()
-		imnodes.EndNodeTitleBar()
-	}
-
-	if n.input != nil {
-		imnodes.PushAttributeFlag(imnodes.AttributeFlagsEnableLinkDetachWithDragClick)
-		imnodes.BeginInputAttribute(*idCounter)
-		*idCounter++
-		n.input.Build()
-		imnodes.EndInputAttribute()
-		imnodes.PopAttributeFlag()
-	}
-
-	imnodes.BeginStaticAttribute(*idCounter)
-	*idCounter++
-	n.layout.Build()
-	imnodes.EndStaticAttribute()
-
-	if n.output != nil {
-		imnodes.BeginOutputAttribute(*idCounter)
-		*idCounter++
-		n.output.Build()
-		imnodes.EndOutputAttribute()
+	for _, element := range n.elements {
+		if element.layout != nil {
+			f, ok := fMap[element.elementType]
+			if !ok {
+				panic(fmt.Sprintf("NodeWidget:BuildNode: Unknown node element type", element.elementType))
+			}
+			f.begin(*idCounter)
+			*idCounter++
+			element.layout.Build()
+			f.end()
+		}
 	}
 
 	imnodes.EndNode()
