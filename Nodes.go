@@ -19,6 +19,7 @@ func newNodeEditorState() *nodeEditorState {
 	}
 }
 
+// Dispose implements Disposable interface.
 func (n *nodeEditorState) Dispose() {
 	imnodes.EditorContextFree(n.context)
 }
@@ -34,18 +35,25 @@ func (n *NodeEditorWidget) getState() *nodeEditorState {
 	return state
 }
 
+// NodeElementType represents a type of node element.
 type NodeElementType int
 
 const (
+	// NodeElementInput describes a lyout associated with an input "point".
 	NodeElementInput NodeElementType = iota
+	// NodeElementOutput describes a lyout associated with an output "point".
 	NodeElementOutput
+	// NodeElementBody describes just a plain layout.
 	NodeElementBody
+	// NodeElementTitleBar should be rendered before any other element.
+	// It describes a layout of a node title bar.
 	NodeElementTitleBar
 )
 
 type nodeElement struct {
 	elementType NodeElementType
 	layout      Layout
+	id          int32
 }
 
 type NodeEditorWidget struct {
@@ -63,6 +71,7 @@ func NodeEditor() *NodeEditorWidget {
 
 func (n *NodeEditorWidget) Nodes(nodes ...*NodeWidget) *NodeEditorWidget {
 	n.nodes = nodes
+
 	return n
 }
 
@@ -131,6 +140,14 @@ func (n *NodeWidget) Input(widgets ...Widget) *NodeWidget {
 
 func (n *NodeWidget) Output(widgets ...Widget) *NodeWidget {
 	n.elements = append(n.elements, nodeElement{NodeElementOutput, Layout(widgets)})
+
+	return n
+}
+
+// ElementID allows you to manually specify an ID for the last added element.
+// Appliable only for NodeElementInput and NodeElementOutput.
+func (n *NodeWidget) ElementID(id int32) *NodeWidget {
+	n.elements[len(n.elements)-1].id = id
 
 	return n
 }
