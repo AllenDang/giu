@@ -43,7 +43,7 @@ func (m *MarkdownWidget) newState() *markdownState {
 			return existing
 		}
 
-		result := loadImage(link)
+		result := mdLoadImage(link)
 		m.getState().images[link] = result
 		return result
 	})
@@ -120,7 +120,7 @@ func (m *MarkdownWidget) Build() {
 	)
 }
 
-func loadImage(path string) immarkdown.MarkdownImageData {
+func mdLoadImage(path string) immarkdown.MarkdownImageData {
 	var (
 		img *image.RGBA
 		err error
@@ -137,7 +137,7 @@ func loadImage(path string) immarkdown.MarkdownImageData {
 
 		defer func() {
 			closeErr := resp.Body.Close()
-			Assert((closeErr == nil), "MarkdownWidget", "loadImage", "Could not close http request!")
+			Assert((closeErr == nil), "MarkdownWidget", "mdLoadImage", "Could not close http request!")
 		}()
 
 		rgba, _, imgErr := image.Decode(resp.Body)
