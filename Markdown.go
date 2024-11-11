@@ -3,16 +3,19 @@ package giu
 
 import (
 	"image"
+	"image/color"
 	"net/http"
 	"strings"
 	"time"
 
+	"github.com/AllenDang/cimgui-go/backend"
 	"github.com/AllenDang/cimgui-go/imgui"
 	"github.com/AllenDang/cimgui-go/immarkdown"
 )
 
 type markdownState struct {
-	cfg immarkdown.MarkdownConfig
+	cfg    immarkdown.MarkdownConfig
+	images map[string]immarkdown.MarkdownImageData
 }
 
 func (m *markdownState) Dispose() {
@@ -30,11 +33,26 @@ func (m *MarkdownWidget) getState() *markdownState {
 }
 
 func (m *MarkdownWidget) newState() *markdownState {
-	cfg := immarkdown.NewMarkdownConfigEmpty()
-	fmtCb := immarkdown.MarkdownFormalCallback(mdFormatCallback)
+	cfg := immarkdown.NewEmptyMarkdownConfig()
+	fmtCb := immarkdown.MarkdownFormalCallback(immarkdown.DefaultMarkdownFormatCallback)
 	cfg.SetFormatCallback(&fmtCb)
+
+	imgCb := immarkdown.MarkdownImageCallback(func(data immarkdown.MarkdownLinkCallbackData) immarkdown.MarkdownImageData {
+		link := data.Link()[:data.LinkLength()] // this is because imgui_markdown returns the whole text starting on link and returns link length (for some reason)
+		if existing, ok := m.getState().images[link]; ok {
+			return existing
+		}
+
+		result := loadImage(link)
+		m.getState().images[link] = result
+		return result
+	})
+
+	cfg.SetImageCallback(&imgCb)
+
 	return &markdownState{
-		cfg: *cfg,
+		cfg:    *cfg,
+		images: make(map[string]immarkdown.MarkdownImageData),
 	}
 }
 
@@ -45,7 +63,7 @@ type MarkdownWidget struct {
 	md      string
 	id      ID
 	linkCb  func(url string)
-	headers []immarkdown.MarkdownHeadingFormat
+	headers [3]immarkdown.MarkdownHeadingFormat
 }
 
 // Markdown creates new markdown widget.
@@ -53,6 +71,12 @@ func Markdown(md string) *MarkdownWidget {
 	return &MarkdownWidget{
 		md:     md,
 		linkCb: OpenURL,
+		id:     GenAutoID("MarkdownWidget"),
+		headers: [3]immarkdown.MarkdownHeadingFormat{
+			*immarkdown.NewEmptyMarkdownHeadingFormat(),
+			*immarkdown.NewEmptyMarkdownHeadingFormat(),
+			*immarkdown.NewEmptyMarkdownHeadingFormat(),
+		},
 	}
 }
 
@@ -64,17 +88,14 @@ func (m *MarkdownWidget) OnLink(cb func(url string)) *MarkdownWidget {
 
 // Header sets header formatting
 // NOTE: level (counting from 0!) is header level. (for instance, header `# H1` will have level 0).
+// NOTE: since cimgui-go there are only 3 levels (so level < 3 here). This will panic if level >= 3!
+// TODO: it actually doesn't work.
 func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *MarkdownWidget {
-	// ensure if header data are at least as long as level
-	if m.headers == nil {
-		m.headers = make([]immarkdown.MarkdownHeadingFormat, level)
-	}
+	// ensure level is in range
+	Assert(level < 3, "MarkdownWidget", "Header", "Header level must be less than 3!")
 
-	if level <= len(m.headers) {
-		m.headers = append(m.headers, make([]immarkdown.MarkdownHeadingFormat, len(m.headers)-level+1)...)
-	}
+	m.headers[level] = *immarkdown.NewEmptyMarkdownHeadingFormat()
 
-	m.headers[level] = *immarkdown.NewMarkdownHeadingFormatEmpty()
 	if font != nil {
 		if f, ok := Context.FontAtlas.extraFontMap[font.String()]; ok {
 			m.headers[level].SetFont(f)
@@ -82,6 +103,9 @@ func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *Mark
 	}
 
 	m.headers[level].SetSeparator(separator)
+
+	state := m.getState()
+	state.cfg.SetHeadingFormats(&m.headers)
 
 	return m
 }
@@ -94,7 +118,6 @@ func (m *MarkdownWidget) Build() {
 		uint64(len(m.md)),
 		state.cfg,
 	)
-	// m.linkCb, loadImage, m.headers)
 }
 
 func loadImage(path string) immarkdown.MarkdownImageData {
@@ -106,11 +129,10 @@ func loadImage(path string) immarkdown.MarkdownImageData {
 	switch {
 	case strings.HasPrefix(path, "http://") || strings.HasPrefix(path, "https://"):
 		// Load image from url
-
 		client := &http.Client{Timeout: 5 * time.Second}
 		resp, respErr := client.Get(path)
 		if respErr != nil {
-			return *immarkdown.NewMarkdownImageDataEmpty()
+			return *immarkdown.NewEmptyMarkdownImageData()
 		}
 
 		defer func() {
@@ -120,58 +142,37 @@ func loadImage(path string) immarkdown.MarkdownImageData {
 
 		rgba, _, imgErr := image.Decode(resp.Body)
 		if imgErr != nil {
-			return *immarkdown.NewMarkdownImageDataEmpty()
+			return *immarkdown.NewEmptyMarkdownImageData()
 		}
 
 		img = ImageToRgba(rgba)
 	default:
 		img, err = LoadImage(path)
 		if err != nil {
-			return *immarkdown.NewMarkdownImageDataEmpty()
+			return *immarkdown.NewEmptyMarkdownImageData()
 		}
 	}
 
 	size := img.Bounds()
 
 	// if current workaround is save
-	/*
-		tex := &Texture{}
-		NewTextureFromRgba(img, func(t *Texture) {
-			fmt.Println("creating texture")
-			tex.id = t.id
-		})
-	*/
-
 	var id imgui.TextureID
 
-	mainthreadCallPlatform(func() {
-		// TODO: actually load this hehe
-		/*
-			var err error
-			id, err = Context.renderer.LoadImage(img)
-			if err != nil {
-				return
-			}
-		*/
-	})
+	id = backend.NewTextureFromRgba(img).ID
 
-	result := immarkdown.NewMarkdownImageDataEmpty()
+	result := immarkdown.NewEmptyMarkdownImageData()
 	result.SetUsertextureid(id)
-	//		Scale:     true,
 	result.SetSize(imgui.Vec2{
 		X: float32(size.Dx()),
 		Y: float32(size.Dy()),
 	})
-	//		UseLinkCallback: true,
-	//		default values
-	//
-	// Uv0:         ToVec2(image.Point{0, 0}),
-	// Uv1:         ToVec2(image.Point{1, 1}),
-	// TintColor:   ToVec4Color(color.RGBA{255, 255, 255, 255}),
-	// BorderColor: ToVec4Color(color.RGBA{0, 0, 0, 0}),
-	return *result
-}
+	result.SetUseLinkCallback(true)
+	result.SetUv0(ToVec2(image.Point{0, 0}))
+	result.SetUv1(ToVec2(image.Point{1, 1}))
+	result.SetTintcol(ToVec4Color(color.RGBA{255, 255, 255, 255}))
+	result.SetBordercol(ToVec4Color(color.RGBA{0, 0, 0, 0}))
 
-func mdFormatCallback(f immarkdown.MarkdownFormatInfo, start bool) {
-	// noop
+	result.SetIsValid(true)
+
+	return *result
 }
