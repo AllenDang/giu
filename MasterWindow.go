@@ -10,6 +10,7 @@ import (
 	"github.com/AllenDang/cimgui-go/backend/glfwbackend"
 	"github.com/AllenDang/cimgui-go/imgui"
 	"github.com/AllenDang/cimgui-go/imguizmo"
+	"github.com/AllenDang/cimgui-go/immarkdown"
 	"github.com/AllenDang/cimgui-go/imnodes"
 	"github.com/AllenDang/cimgui-go/implot"
 	"golang.org/x/image/colornames"
@@ -201,6 +202,10 @@ func (w *MasterWindow) sizeChange(_, _ int) {
 }
 
 func (w *MasterWindow) beforeRender() {
+	// Clean callbacks
+	// see https://github.com/AllenDang/cimgui-go?tab=readme-ov-file#callbacks
+	immarkdown.ClearMarkdownLinkCallbackPool()
+
 	Context.FontAtlas.rebuildFontAtlas()
 
 	// process texture load requests

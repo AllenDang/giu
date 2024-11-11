@@ -62,27 +62,34 @@ func (m *MarkdownWidget) newState() *markdownState {
 type MarkdownWidget struct {
 	md      string
 	id      ID
-	linkCb  func(url string)
 	headers [3]immarkdown.MarkdownHeadingFormat
 }
 
 // Markdown creates new markdown widget.
 func Markdown(md string) *MarkdownWidget {
-	return &MarkdownWidget{
-		md:     md,
-		linkCb: OpenURL,
-		id:     GenAutoID("MarkdownWidget"),
+	return (&MarkdownWidget{
+		md: md,
+		id: GenAutoID("MarkdownWidget"),
 		headers: [3]immarkdown.MarkdownHeadingFormat{
 			*immarkdown.NewEmptyMarkdownHeadingFormat(),
 			*immarkdown.NewEmptyMarkdownHeadingFormat(),
 			*immarkdown.NewEmptyMarkdownHeadingFormat(),
 		},
-	}
+	}).OnLink(OpenURL)
 }
 
 // OnLink sets another than default link callback.
+// NOTE: due to cimgui-go's limitation https://github.com/AllenDang/cimgui-go?tab=readme-ov-file#callbacks
+// we clear MarkdownLinkCallback pool every frame. No further action from you should be required (just feel informed).
+// ref (*MasterWindow).beforeRender
 func (m *MarkdownWidget) OnLink(cb func(url string)) *MarkdownWidget {
-	m.linkCb = cb
+	igCb := immarkdown.MarkdownLinkCallback(func(data immarkdown.MarkdownLinkCallbackData) {
+		link := data.Link()[:data.LinkLength()]
+		cb(link)
+	})
+
+	m.getState().cfg.SetLinkCallback(&igCb)
+
 	return m
 }
 
