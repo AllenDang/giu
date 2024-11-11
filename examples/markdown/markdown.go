@@ -67,7 +67,7 @@ func loop() {
 					giu.InputTextMultiline(&markdown).Size(availableW, availableH).Build()
 				}),
 			},
-			giu.Markdown(&markdown).
+			giu.Markdown(markdown).
 				Header(0, (giu.Context.FontAtlas.GetDefaultFonts())[0].SetSize(28), true).
 				Header(1, (giu.Context.FontAtlas.GetDefaultFonts())[0].SetSize(26), false).
 				Header(2, nil, true),
