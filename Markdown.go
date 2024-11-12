@@ -1,4 +1,3 @@
-//nolint:gocritic,govet,wsl,revive // this file is TODO. We don't want commentedOutCode lint issues here.
 package giu
 
 import (
@@ -22,6 +21,15 @@ func (m *markdownState) Dispose() {
 	// noop
 }
 
+// MarkdownWidget implements DearImGui markdown extension
+// https://github.com/juliettef/imgui_markdown
+// It is like LabelWidget but with md formatting.
+type MarkdownWidget struct {
+	md      string
+	id      ID
+	headers [3]immarkdown.MarkdownHeadingFormat
+}
+
 func (m *MarkdownWidget) getState() *markdownState {
 	if s := GetState[markdownState](Context, m.id); s != nil {
 		return s
@@ -29,12 +37,16 @@ func (m *MarkdownWidget) getState() *markdownState {
 
 	newState := m.newState()
 	SetState[markdownState](Context, m.id, newState)
+
 	return newState
 }
 
 func (m *MarkdownWidget) newState() *markdownState {
 	cfg := immarkdown.NewEmptyMarkdownConfig()
-	fmtCb := immarkdown.MarkdownFormalCallback(immarkdown.DefaultMarkdownFormatCallback)
+	fmtCb := immarkdown.MarkdownFormalCallback(func(data *immarkdown.MarkdownFormatInfo, start bool) {
+		immarkdown.DefaultMarkdownFormatCallback(*data, start)
+	})
+
 	cfg.SetFormatCallback(&fmtCb)
 
 	imgCb := immarkdown.MarkdownImageCallback(func(data immarkdown.MarkdownLinkCallbackData) immarkdown.MarkdownImageData {
@@ -45,6 +57,7 @@ func (m *MarkdownWidget) newState() *markdownState {
 
 		result := mdLoadImage(link)
 		m.getState().images[link] = result
+
 		return result
 	})
 
@@ -54,15 +67,6 @@ func (m *MarkdownWidget) newState() *markdownState {
 		cfg:    *cfg,
 		images: make(map[string]immarkdown.MarkdownImageData),
 	}
-}
-
-// MarkdownWidget implements DearImGui markdown extension
-// https://github.com/juliettef/imgui_markdown
-// It is like LabelWidget but with md formatting.
-type MarkdownWidget struct {
-	md      string
-	id      ID
-	headers [3]immarkdown.MarkdownHeadingFormat
 }
 
 // Markdown creates new markdown widget.
@@ -81,7 +85,7 @@ func Markdown(md string) *MarkdownWidget {
 // OnLink sets another than default link callback.
 // NOTE: due to cimgui-go's limitation https://github.com/AllenDang/cimgui-go?tab=readme-ov-file#callbacks
 // we clear MarkdownLinkCallback pool every frame. No further action from you should be required (just feel informed).
-// ref (*MasterWindow).beforeRender
+// ref (*MasterWindow).beforeRender.
 func (m *MarkdownWidget) OnLink(cb func(url string)) *MarkdownWidget {
 	igCb := immarkdown.MarkdownLinkCallback(func(data immarkdown.MarkdownLinkCallbackData) {
 		link := data.Link()[:data.LinkLength()]
@@ -137,6 +141,7 @@ func mdLoadImage(path string) immarkdown.MarkdownImageData {
 	case strings.HasPrefix(path, "http://") || strings.HasPrefix(path, "https://"):
 		// Load image from url
 		client := &http.Client{Timeout: 5 * time.Second}
+
 		resp, respErr := client.Get(path)
 		if respErr != nil {
 			return *immarkdown.NewEmptyMarkdownImageData()
@@ -161,11 +166,7 @@ func mdLoadImage(path string) immarkdown.MarkdownImageData {
 	}
 
 	size := img.Bounds()
-
-	// if current workaround is save
-	var id imgui.TextureID
-
-	id = backend.NewTextureFromRgba(img).ID
+	id := backend.NewTextureFromRgba(img).ID
 
 	result := immarkdown.NewEmptyMarkdownImageData()
 	result.SetUsertextureid(id)
