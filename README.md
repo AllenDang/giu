@@ -144,8 +144,6 @@ go get github.com/AllenDang/giu
 2. Add the binaries folder of mingw to the path (usually is _\mingw64\bin_).
 3. go get github.com/AllenDang/giu
 
-Or, install [TDM-GCC](https://jmeubank.github.io/tdm-gcc/).
-
 ### Linux
 
 First you need to install the required dependencies:
