@@ -4,6 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/AllenDang/giu)](https://goreportcard.com/report/github.com/AllenDang/giu)
 ![Build Status](https://github.com/AllenDang/giu/actions/workflows/build.yml/badge.svg)
 [![Go Reference](https://pkg.go.dev/badge/github.com/AllenDang/giu.svg)](https://pkg.go.dev/github.com/AllenDang/giu)
+[![Discord Shield](https://discord.com/api/guilds/1306199225616306248/widget.png?style=shield)](https://discord.gg/Tt7eq6YKQS)
 
 A rapid cross-platform GUI framework for Go based on [Dear ImGui](https://github.com/ocornut/imgui) and the great Go binding [imgui-go](https://github.com/inkyblackness/imgui-go).
 
