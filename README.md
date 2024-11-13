@@ -4,6 +4,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/AllenDang/giu)](https://goreportcard.com/report/github.com/AllenDang/giu)
 ![Build Status](https://github.com/AllenDang/giu/actions/workflows/build.yml/badge.svg)
 [![Go Reference](https://pkg.go.dev/badge/github.com/AllenDang/giu.svg)](https://pkg.go.dev/github.com/AllenDang/giu)
+[![Discord Shield](https://discord.com/api/guilds/1306199225616306248/widget.png?style=shield)](https://discord.gg/Tt7eq6YKQS)
 
 A rapid cross-platform GUI framework for Go based on [Dear ImGui](https://github.com/ocornut/imgui) and the great Go binding [imgui-go](https://github.com/inkyblackness/imgui-go).
 
@@ -57,32 +58,32 @@ Compared to other Dear ImGui golang bindings, giu has the following features:
 package main
 
 import (
- "fmt"
+        "fmt"
 
- g "github.com/AllenDang/giu"
+        g "github.com/AllenDang/giu"
 )
 
 func onClickMe() {
- fmt.Println("Hello world!")
+        fmt.Println("Hello world!")
 }
 
 func onImSoCute() {
- fmt.Println("Im sooooooo cute!!")
+        fmt.Println("Im sooooooo cute!!")
 }
 
 func loop() {
- g.SingleWindow().Layout(
-  g.Label("Hello world from giu"),
-  g.Row(
-   g.Button("Click Me").OnClick(onClickMe),
-   g.Button("I'm so cute").OnClick(onImSoCute),
-  ),
- )
+        g.SingleWindow().Layout(
+                g.Label("Hello world from giu"),
+                g.Row(
+                        g.Button("Click Me").OnClick(onClickMe),
+                        g.Button("I'm so cute").OnClick(onImSoCute),
+                ),
+        )
 }
 
 func main() {
- wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable)
- wnd.Run(loop)
+        wnd := g.NewMasterWindow("Hello world", 400, 200, g.MasterWindowFlagsNotResizable)
+        wnd.Run(loop)
 }
 ```
 
@@ -217,10 +218,6 @@ GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64
 rm YourExeName.syso
 rm YourExeName.rc
 ```
-
-## Documentation
-
-Check [Wiki](https://github.com/AllenDang/giu/wiki)
 
 ## Contribution
 
