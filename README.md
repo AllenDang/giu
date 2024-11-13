@@ -218,10 +218,6 @@ rm YourExeName.syso
 rm YourExeName.rc
 ```
 
-## Documentation
-
-Check [Wiki](https://github.com/AllenDang/giu/wiki)
-
 ## Contribution
 
 All kinds of pull requests (document, demo, screenshots, code, etc.) are more than welcome!
