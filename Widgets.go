@@ -205,6 +205,30 @@ func Combo(label, previewValue string, items []string, selected *int32) *ComboWi
 	}
 }
 
+// ID sets the interval id of combo. (overrides label).
+func (c *ComboWidget) ID(id ID) *ComboWidget {
+	c.label = id
+	return c
+}
+
+// Flags allows to set combo flags (see Flags.go).
+func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
+	c.flags = flags
+	return c
+}
+
+// Size sets combo's width.
+func (c *ComboWidget) Size(width float32) *ComboWidget {
+	c.width = width
+	return c
+}
+
+// OnChange sets callback when combo value gets changed.
+func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
+	c.onChange = onChange
+	return c
+}
+
 // Build implements Widget interface.
 func (c *ComboWidget) Build() {
 	if c.width > 0 {
@@ -224,24 +248,6 @@ func (c *ComboWidget) Build() {
 
 		imgui.EndCombo()
 	}
-}
-
-// Flags allows to set combo flags (see Flags.go).
-func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
-	c.flags = flags
-	return c
-}
-
-// Size sets combo's width.
-func (c *ComboWidget) Size(width float32) *ComboWidget {
-	c.width = width
-	return c
-}
-
-// OnChange sets callback when combo value gets changed.
-func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
-	c.onChange = onChange
-	return c
 }
 
 var _ Widget = &ContextMenuWidget{}
