@@ -367,6 +367,12 @@ func Checkbox(text string, selected *bool) *CheckboxWidget {
 	}
 }
 
+// ID sets widget's id (overrides text).
+func (c *CheckboxWidget) ID(id ID) *CheckboxWidget {
+	c.text = id
+	return c
+}
+
 // OnChange adds callback called when checkbox's state was changed.
 func (c *CheckboxWidget) OnChange(onChange func()) *CheckboxWidget {
 	c.onChange = onChange
