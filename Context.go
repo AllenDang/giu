@@ -13,13 +13,17 @@ import (
 // GenAutoID automatically generates widget's ID.
 // It returns an unique value each time it is called.
 func GenAutoID(id string) ID {
-	idx, ok := Context.widgetIndex[id]
+	idx := int(0)
+	idxAny, ok := Context.widgetIndex.Load(id)
 
 	if ok {
+		idx, ok = idxAny.(int)
+		Assert(ok, "Context", "GenAutoID", "unexpected type of widgetIndex value: expected int, instead found %T", idxAny)
+
 		idx++
 	}
 
-	Context.widgetIndex[id] = idx
+	Context.widgetIndex.Store(id, idx)
 
 	return ID(fmt.Sprintf("%s##%d", id, idx))
 }
@@ -51,7 +55,7 @@ type GIUContext struct {
 
 	isRunning bool
 
-	widgetIndex map[string]int
+	widgetIndex sync.Map
 
 	// Indicate whether current application is running
 	isAlive bool
@@ -83,7 +87,6 @@ func CreateContext(b backend.Backend[glfwbackend.GLFWWindowFlags]) *GIUContext {
 		textureLoadingQueue: queue.New(),
 		textureFreeingQueue: queue.New(),
 		m:                   &sync.Mutex{},
-		widgetIndex:         make(map[string]int),
 	}
 
 	// Create font
@@ -140,7 +143,7 @@ func (c *GIUContext) cleanStates() {
 		return true
 	})
 
-	c.widgetIndex = make(map[string]int)
+	c.widgetIndex.Clear()
 	c.dirty = false
 }
 
