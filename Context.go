@@ -17,7 +17,9 @@ func GenAutoID(id string) ID {
 	idxAny, ok := Context.widgetIndex.Load(id)
 
 	if ok {
-		idx = idxAny.(int)
+		idx, ok = idxAny.(int)
+		Assert(ok, "Context", "GenAutoID", "unexpected type of widgetIndex value: expected int, instead found %T", idxAny)
+
 		idx++
 	}
 
