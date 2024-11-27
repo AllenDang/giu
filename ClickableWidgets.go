@@ -507,7 +507,8 @@ type TreeNodeWidget struct {
 	label        string
 	flags        TreeNodeFlags
 	layout       Layout
-	eventHandler func()
+	event        func()
+	eventHandler *EventHandler
 }
 
 // TreeNode creates a new tree node widget.
@@ -531,10 +532,16 @@ func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
 	return t
 }
 
-// Event create TreeNode with eventHandler
+// Event create TreeNode with event handling function.
 // You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler.
-// Deprecated: Use EventHandler instead!
+// Deprecated: Use (*TreeNodeWidget).EventHandler instead!
 func (t *TreeNodeWidget) Event(handler func()) *TreeNodeWidget {
+	t.event = handler
+	return t
+}
+
+// EventHandler allows to set *EventHandler instance for the actual TreeNode.
+func (t *TreeNodeWidget) EventHandler(handler *EventHandler) *TreeNodeWidget {
 	t.eventHandler = handler
 	return t
 }
@@ -549,8 +556,12 @@ func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
 func (t *TreeNodeWidget) Build() {
 	open := imgui.TreeNodeExStrV(t.label, imgui.TreeNodeFlags(t.flags))
 
+	if t.event != nil {
+		t.event()
+	}
+
 	if t.eventHandler != nil {
-		t.eventHandler()
+		t.eventHandler.Build()
 	}
 
 	if open {
