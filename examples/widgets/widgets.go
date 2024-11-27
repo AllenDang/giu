@@ -6,7 +6,6 @@ import (
 	"image/color"
 	"time"
 
-	"github.com/AllenDang/giu"
 	g "github.com/AllenDang/giu"
 )
 
@@ -180,11 +179,11 @@ func loop() {
 				g.TreeNode("TreeNode with event handler").Layout(
 					g.Selectable("Selectable 1").OnClick(func() { fmt.Println(1) }),
 					g.Selectable("Selectable 2").OnClick(func() { fmt.Println(2) }),
-				).EventHandler(giu.Event().OnClick(giu.MouseButtonLeft, func() {
+				).EventHandler(g.Event().OnClick(g.MouseButtonLeft, func() {
 					fmt.Println("Clicked")
-				}).OnDClick(giu.MouseButtonLeft, func() {
+				}).OnDClick(g.MouseButtonLeft, func() {
 					fmt.Println("Double-Clicked")
-				}).OnClick(giu.MouseButtonRight, func() {
+				}).OnClick(g.MouseButtonRight, func() {
 					fmt.Println("Right-Clicked")
 				})),
 			),
