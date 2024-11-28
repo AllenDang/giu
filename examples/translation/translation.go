@@ -1,3 +1,4 @@
+// Package main shows using of translations in giu.
 package main
 
 import "github.com/AllenDang/giu"
@@ -15,14 +16,16 @@ var (
 		},
 	}
 
-	languageCodes       = []string{"en", "pl", "de"}
-	currentLang   int32 = 0
+	languageCodes = []string{"en", "pl", "de"}
+	currentLang   int32
 )
 
 func loop() {
 	giu.SingleWindow().Layout(
 		giu.Combo("Select language", languageCodes[currentLang], languageCodes, &currentLang).OnChange(func() {
-			giu.Context.Translator.SetLanguage(languageCodes[currentLang])
+			if err := giu.Context.Translator.SetLanguage(languageCodes[currentLang]); err != nil {
+				panic(err)
+			}
 		}),
 		giu.Label("Hello world!"),
 	)
@@ -36,7 +39,9 @@ func main() {
 		translator.AddLanguage(k, v)
 	}
 
-	translator.SetLanguage(languageCodes[currentLang])
+	if err := translator.SetLanguage(languageCodes[currentLang]); err != nil {
+		panic(err)
+	}
 
 	giu.Context.SetTranslator(translator)
 

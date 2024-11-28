@@ -16,7 +16,7 @@ type Translator interface {
 // This will raise a panic if t is nil.
 // Note that using translator will change labels of widgets,
 // so this might affect internal imgui's state.
-// See also Context.RegisterString
+// See also Context.RegisterString.
 func (c *GIUContext) SetTranslator(t Translator) {
 	Assert(t != nil, "Context", "SetTranslator", "Translator must not be nil.")
 	c.Translator = t
@@ -25,13 +25,15 @@ func (c *GIUContext) SetTranslator(t Translator) {
 var _ Translator = &EmptyTranslator{}
 
 // EmptyTranslator is the default one (to save resources).
-// It does nothing
+// It does nothing.
 type EmptyTranslator struct{}
 
+// Translate implements Translator interface.
 func (t *EmptyTranslator) Translate(s string) string {
 	return s
 }
 
+// SetLanguage implements Translator interface.
 func (t *EmptyTranslator) SetLanguage(_ string) error {
 	return nil
 }
@@ -70,7 +72,7 @@ func (t *BasicTranslator) Translate(s string) string {
 		return ""
 	}
 
-	Assert(t.currentLanguage != "", "BasicTranslator", "Translate", "Current language is not set, so ther is no sense in using BasicTranslator.")
+	Assert(t.currentLanguage != "", "BasicTranslator", "Translate", "Current language is not set, so there is no sense in using BasicTranslator.")
 	locale, ok := t.source[t.currentLanguage]
 	Assert(ok, "BasicTranslator", "Translate", "There is no language tag %s known by the translator. Did you add it?", t.currentLanguage)
 

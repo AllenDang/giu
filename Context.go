@@ -120,7 +120,7 @@ func (c *GIUContext) SetDirty() {
 // It does the following:
 // - adds a string to the FontAtlas
 // - translates the string with the Translator set in the context
-// Not all widgets will use this. Text with user-defined input (e.g. InputText will still use FontAtlas.RegisterString)
+// Not all widgets will use this. Text with user-defined input (e.g. InputText will still use FontAtlas.RegisterString).
 func (c *GIUContext) PrepareString(str string) string {
 	str = c.Translator.Translate(str)
 	return c.FontAtlas.RegisterString(str)
