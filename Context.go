@@ -69,6 +69,7 @@ type GIUContext struct {
 
 	InputHandler InputHandler
 	FontAtlas    *FontAtlas
+	Translator   Translator
 
 	textureLoadingQueue *queue.Queue
 	textureFreeingQueue *queue.Queue
@@ -87,6 +88,7 @@ func CreateContext(b backend.Backend[glfwbackend.GLFWWindowFlags]) *GIUContext {
 		textureLoadingQueue: queue.New(),
 		textureFreeingQueue: queue.New(),
 		m:                   &sync.Mutex{},
+		Translator:          &EmptyTranslator{},
 	}
 
 	// Create font
@@ -112,6 +114,16 @@ func (c *GIUContext) IO() *imgui.IO {
 // SetDirty permits MasterWindow defering setting dirty states after it's render().
 func (c *GIUContext) SetDirty() {
 	c.dirty = true
+}
+
+// PrepareString prepares string to be displayed by imgui.
+// It does the following:
+// - adds a string to the FontAtlas
+// - translates the string with the Translator set in the context
+// Not all widgets will use this. Text with user-defined input (e.g. InputText will still use FontAtlas.RegisterString)
+func (c *GIUContext) PrepareString(str string) string {
+	str = c.Translator.Translate(str)
+	return c.FontAtlas.RegisterString(str)
 }
 
 // cleanStates removes all states that were not marked as valid during rendering,

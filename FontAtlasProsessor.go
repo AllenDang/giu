@@ -218,6 +218,7 @@ func (a *FontAtlas) registerDefaultFonts(fontInfos []FontInfo) {
 
 // RegisterString register string to font atlas builder.
 // Note only register strings that will be displayed on the UI.
+// This also calls translator before registering the string.
 func (a *FontAtlas) RegisterString(str string) string {
 	for _, s := range str {
 		if _, ok := a.stringMap.Load(s); !ok {

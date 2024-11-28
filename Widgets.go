@@ -149,7 +149,7 @@ func ComboCustom(label, previewValue string) *ComboCustomWidget {
 
 // Layout add combo's layout.
 func (cc *ComboCustomWidget) Layout(widgets ...Widget) *ComboCustomWidget {
-	cc.layout = Layout(widgets)
+	cc.layout = widgets
 	return cc
 }
 
@@ -172,7 +172,7 @@ func (cc *ComboCustomWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginComboV(Context.FontAtlas.RegisterString(cc.label.String()), cc.previewValue, imgui.ComboFlags(cc.flags)) {
+	if imgui.BeginComboV(Context.PrepareString(cc.label.String()), cc.previewValue, imgui.ComboFlags(cc.flags)) {
 		cc.layout.Build()
 		imgui.EndCombo()
 	}
@@ -236,9 +236,9 @@ func (c *ComboWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
-	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label.String()), c.previewValue, imgui.ComboFlags(c.flags)) {
+	if imgui.BeginComboV(Context.PrepareString(c.label.String()), c.previewValue, imgui.ComboFlags(c.flags)) {
 		for i, item := range c.items {
-			if imgui.SelectableBool(fmt.Sprintf("%s##%d", item, i)) {
+			if imgui.SelectableBool(fmt.Sprintf("%s##%d", Context.PrepareString(item), i)) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
 					c.onChange()
@@ -332,7 +332,7 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
-	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, 0)
+	imgui.DragIntV(Context.PrepareString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, 0)
 }
 
 var _ Widget = &ColumnWidget{}
@@ -376,7 +376,7 @@ func MainMenuBar() *MainMenuBarWidget {
 
 // Layout sets layout of the menu bar. (See MenuWidget).
 func (m *MainMenuBarWidget) Layout(widgets ...Widget) *MainMenuBarWidget {
-	m.layout = Layout(widgets)
+	m.layout = widgets
 	return m
 }
 
@@ -471,7 +471,7 @@ func (m *MenuItemWidget) OnClick(onClick func()) *MenuItemWidget {
 
 // Build implements Widget interface.
 func (m *MenuItemWidget) Build() {
-	if imgui.MenuItemBoolV(Context.FontAtlas.RegisterString(m.label.String()), m.shortcut, m.selected, m.enabled) && m.onClick != nil {
+	if imgui.MenuItemBoolV(Context.PrepareString(m.label.String()), m.shortcut, m.selected, m.enabled) && m.onClick != nil {
 		m.onClick()
 	}
 }
@@ -514,7 +514,7 @@ func (m *MenuWidget) Layout(widgets ...Widget) *MenuWidget {
 
 // Build implements Widget interface.
 func (m *MenuWidget) Build() {
-	if imgui.BeginMenuV(Context.FontAtlas.RegisterString(m.label.String()), m.enabled) {
+	if imgui.BeginMenuV(Context.PrepareString(m.label.String()), m.enabled) {
 		m.layout.Build()
 		imgui.EndMenu()
 	}
@@ -621,7 +621,7 @@ type TabItemWidget struct {
 // TabItem creates new TabItem.
 func TabItem(label string) *TabItemWidget {
 	return &TabItemWidget{
-		label:  Context.FontAtlas.RegisterString(label),
+		label:  label,
 		open:   nil,
 		flags:  0,
 		layout: nil,
@@ -650,13 +650,16 @@ func (t *TabItemWidget) Flags(flags TabItemFlags) *TabItemWidget {
 
 // Layout is a layout displayed when item is opened.
 func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
-	t.layout = Layout(widgets)
+	t.layout = widgets
 	return t
 }
 
 // BuildTabItem executes tab item build steps.
 func (t *TabItemWidget) BuildTabItem() {
-	if imgui.BeginTabItemV(t.label, t.open, imgui.TabItemFlags(t.flags)) {
+	if imgui.BeginTabItemV(
+		Context.PrepareString(t.label),
+		t.open, imgui.TabItemFlags(t.flags),
+	) {
 		t.layout.Build()
 		imgui.EndTabItem()
 	}
@@ -734,7 +737,7 @@ func Tooltipf(format string, args ...any) *TooltipWidget {
 
 // Layout sets a custom layout of tooltip.
 func (t *TooltipWidget) Layout(widgets ...Widget) *TooltipWidget {
-	t.layout = Layout(widgets)
+	t.layout = widgets
 	return t
 }
 
@@ -766,7 +769,7 @@ func (t *TooltipWidget) buildTooltip() {
 			t.layout.Build()
 			imgui.EndTooltip()
 		} else {
-			imgui.SetTooltip(t.tip)
+			imgui.SetTooltip(Context.PrepareString(t.tip))
 		}
 	}
 }
@@ -839,7 +842,7 @@ func (ce *ColorEditWidget) Build() {
 	}
 
 	if imgui.ColorEdit4V(
-		Context.FontAtlas.RegisterString(ce.label.String()),
+		Context.PrepareString(ce.label.String()),
 		&col,
 		imgui.ColorEditFlags(ce.flags),
 	) {
