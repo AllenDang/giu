@@ -225,6 +225,7 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 	}
 }
 
+// ID allows to manually set widget's id.
 func (b *ImageButtonWidget) ID(id ID) *ImageButtonWidget {
 	b.id = id
 	return b
