@@ -238,6 +238,7 @@ func (b *ImageButtonWidget) Build() {
 	}
 
 	imgui.PushIDStr(b.id.String())
+
 	if imgui.ImageButtonV(
 		fmt.Sprintf("%v", b.texture.tex.ID),
 		b.texture.tex.ID,
