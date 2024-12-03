@@ -206,6 +206,7 @@ type ImageButtonWidget struct {
 	bgColor      color.Color
 	tintColor    color.Color
 	onClick      func()
+	id           ID
 }
 
 // ImageButton  constructs image button widget.
@@ -220,7 +221,14 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 		bgColor:      colornames.Black,
 		tintColor:    colornames.White,
 		onClick:      nil,
+		id:           GenAutoID("ImageButton"),
 	}
+}
+
+// ID allows to manually set widget's id.
+func (b *ImageButtonWidget) ID(id ID) *ImageButtonWidget {
+	b.id = id
+	return b
 }
 
 // Build implements Widget interface.
@@ -228,6 +236,8 @@ func (b *ImageButtonWidget) Build() {
 	if b.texture == nil || b.texture.tex == nil {
 		return
 	}
+
+	imgui.PushIDStr(b.id.String())
 
 	if imgui.ImageButtonV(
 		fmt.Sprintf("%v", b.texture.tex.ID),
@@ -239,6 +249,8 @@ func (b *ImageButtonWidget) Build() {
 	) && b.onClick != nil {
 		b.onClick()
 	}
+
+	imgui.PopID()
 }
 
 // Size sets BUTTONS size.
