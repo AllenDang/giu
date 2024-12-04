@@ -128,7 +128,6 @@ func (s *SplitLayoutWidget) Build() {
 
 	switch s.direction {
 	case DirectionHorizontal:
-		_, availableH := GetAvailableRegion()
 		if sashPos >= availableH {
 			sashPos = availableH
 		}
@@ -141,7 +140,6 @@ func (s *SplitLayoutWidget) Build() {
 			),
 		}
 	case DirectionVertical:
-		availableW, _ := GetAvailableRegion()
 		if sashPos >= availableW {
 			sashPos = availableW
 		}
