@@ -96,6 +96,7 @@ func (s *SplitLayoutWidget) Build() {
 	var layout Layout
 
 	var sashPos float32
+
 	switch s.splitRefType {
 	case SplitRefLeft:
 		sashPos = *s.sashPos
@@ -157,7 +158,10 @@ func (s *SplitLayoutWidget) Build() {
 	layout.Build()
 	PopStyle()
 
-	// reencode sashPos
+	s.encodeSashPos(sashPos, availableW, availableH)
+}
+
+func (s *SplitLayoutWidget) encodeSashPos(sashPos, availableW, availableH float32) {
 	switch s.splitRefType {
 	case SplitRefLeft:
 		*s.sashPos = sashPos
