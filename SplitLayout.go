@@ -16,6 +16,18 @@ const (
 	DirectionVertical
 )
 
+// SplitRefType describes how sashPos argument to the SplitLayout should be interpreted.
+type SplitRefType byte
+
+const (
+	// SplitRefLeft is the default. Splitter placed counting from left/top layout's edge.
+	SplitRefLeft SplitRefType = iota
+	// SplitRefRight splitter placed counting from right/bottom layout's edge.
+	SplitRefRight
+	// SplitRefProc sashPos will be clamped in range [0, 1]. Then the position is considered a percent of GetAvailableRegion.
+	SplitRefProc
+)
+
 var _ Disposable = &splitLayoutState{}
 
 type splitLayoutState struct {
@@ -40,6 +52,7 @@ type SplitLayoutWidget struct {
 	originFramePaddingY float32
 	sashPos             *float32
 	border              bool
+	splitRefType        SplitRefType
 }
 
 // SplitLayout creates split layout widget.
@@ -66,42 +79,75 @@ func (s *SplitLayoutWidget) ID(id ID) *SplitLayoutWidget {
 	return s
 }
 
+// SplitRefType allows to set how sashPos should be interpreted.
+// Default is counting from left/top layout's edge in px.
+func (s *SplitLayoutWidget) SplitRefType(refType SplitRefType) *SplitLayoutWidget {
+	s.splitRefType = refType
+	return s
+}
+
 // Build implements widget interface.
 func (s *SplitLayoutWidget) Build() {
 	splitLayoutState := s.getState()
 	s.originItemSpacingX, s.originItemSpacingY = GetItemInnerSpacing()
 	s.originFramePaddingX, s.originFramePaddingY = GetFramePadding()
+	availableW, availableH := GetAvailableRegion()
 
 	var layout Layout
 
-	*s.sashPos += splitLayoutState.delta
-	if *s.sashPos < 1 {
-		*s.sashPos = 1
+	var sashPos float32
+
+	switch s.splitRefType {
+	case SplitRefLeft:
+		sashPos = *s.sashPos
+	case SplitRefRight:
+		switch s.direction {
+		case DirectionHorizontal:
+			sashPos = availableH - *s.sashPos
+		case DirectionVertical:
+			sashPos = availableW - *s.sashPos
+		}
+	case SplitRefProc:
+		if *s.sashPos < 0 {
+			*s.sashPos = 0
+		} else if *s.sashPos > 1 {
+			*s.sashPos = 1
+		}
+
+		switch s.direction {
+		case DirectionHorizontal:
+			sashPos = availableH * *s.sashPos
+		case DirectionVertical:
+			sashPos = availableW * *s.sashPos
+		}
+	}
+
+	sashPos += splitLayoutState.delta
+	if sashPos < 1 {
+		sashPos = 1
 	}
 
 	switch s.direction {
 	case DirectionHorizontal:
-		_, availableH := GetAvailableRegion()
-		if *s.sashPos >= availableH {
-			*s.sashPos = availableH
+		if sashPos >= availableH {
+			sashPos = availableH
 		}
 
 		layout = Layout{
 			Column(
-				s.buildChild(Auto, *s.sashPos, s.layout1),
+				s.buildChild(Auto, sashPos, s.layout1),
 				Splitter(DirectionHorizontal, &(splitLayoutState.delta)).Size(0, s.originItemSpacingY),
 				s.buildChild(Auto, Auto, s.layout2),
 			),
 		}
 	case DirectionVertical:
-		availableW, _ := GetAvailableRegion()
-		if *s.sashPos >= availableW {
-			*s.sashPos = availableW
+		if sashPos >= availableW {
+			sashPos = availableW
 		}
 
 		layout = Layout{
 			Row(
-				s.buildChild(*s.sashPos, Auto, s.layout1),
+				s.buildChild(sashPos, Auto, s.layout1),
 				Splitter(DirectionVertical, &(splitLayoutState.delta)).Size(s.originItemSpacingX, 0),
 				s.buildChild(Auto, Auto, s.layout2),
 			),
@@ -111,6 +157,29 @@ func (s *SplitLayoutWidget) Build() {
 	PushItemSpacing(0, 0)
 	layout.Build()
 	PopStyle()
+
+	s.encodeSashPos(sashPos, availableW, availableH)
+}
+
+func (s *SplitLayoutWidget) encodeSashPos(sashPos, availableW, availableH float32) {
+	switch s.splitRefType {
+	case SplitRefLeft:
+		*s.sashPos = sashPos
+	case SplitRefRight:
+		switch s.direction {
+		case DirectionHorizontal:
+			*s.sashPos = availableH - sashPos
+		case DirectionVertical:
+			*s.sashPos = availableW - sashPos
+		}
+	case SplitRefProc:
+		switch s.direction {
+		case DirectionHorizontal:
+			*s.sashPos = sashPos / availableH
+		case DirectionVertical:
+			*s.sashPos = sashPos / availableW
+		}
+	}
 }
 
 func (s *SplitLayoutWidget) restoreItemSpacing(layout Widget) Layout {
