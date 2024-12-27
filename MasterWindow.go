@@ -342,8 +342,8 @@ func (w *MasterWindow) SetSize(x, y int) {
 // Mac OS X: Selecting Quit from the application menu will trigger the close
 // callback for all windows.
 func (w *MasterWindow) SetCloseCallback(cb func() bool) {
-	w.backend.SetCloseCallback(func(b backend.Backend[glfwbackend.GLFWWindowFlags]) {
-		b.SetShouldClose(cb())
+	w.backend.SetCloseCallback(func() {
+		w.backend.SetShouldClose(cb())
 	})
 }
 
