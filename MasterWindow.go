@@ -100,6 +100,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	currentBackend.SetBeforeRenderHook(mw.beforeRender)
 	currentBackend.SetAfterRenderHook(mw.afterRender)
 	currentBackend.SetBeforeDestroyContextHook(mw.beforeDestroy)
+
 	for f := MasterWindowFlagsNotResizable; f <= MasterWindowFlagsHidden; f <<= 1 {
 		if f&flags != 0 {
 			currentBackend.SetWindowFlags(f, 0) // 0 because it is not used anyway (flag values are determined by giu
