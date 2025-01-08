@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/AllenDang/cimgui-go/backend"
-	"github.com/AllenDang/cimgui-go/backend/glfwbackend"
 	"github.com/AllenDang/cimgui-go/imgui"
 	"gopkg.in/eapache/queue.v1"
 )
@@ -51,7 +49,7 @@ type state struct {
 //
 //nolint:revive // I WANT TO CALL THIS GIUContext!
 type GIUContext struct {
-	backend backend.Backend[glfwbackend.GLFWWindowFlags]
+	backend GIUBackend
 
 	isRunning bool
 
@@ -79,7 +77,7 @@ type GIUContext struct {
 }
 
 // CreateContext creates a new giu context.
-func CreateContext(b backend.Backend[glfwbackend.GLFWWindowFlags]) *GIUContext {
+func CreateContext(b GIUBackend) *GIUContext {
 	result := GIUContext{
 		cssStylesheet:       make(cssStylesheet),
 		backend:             b,
@@ -148,7 +146,7 @@ func (c *GIUContext) cleanStates() {
 }
 
 // Backend returns the imgui.backend used by the context.
-func (c *GIUContext) Backend() backend.Backend[glfwbackend.GLFWWindowFlags] {
+func (c *GIUContext) Backend() GIUBackend {
 	return c.backend
 }
 
