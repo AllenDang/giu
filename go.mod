@@ -3,7 +3,7 @@ module github.com/AllenDang/giu
 go 1.23.3
 
 require (
-	github.com/AllenDang/cimgui-go v1.2.1-0.20241217145553-3c6fe4a1233f
+	github.com/AllenDang/cimgui-go v1.3.0
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
 	github.com/gucio321/glm-go v0.0.0-20241029220517-e1b5a3e011c8
@@ -13,7 +13,7 @@ require (
 	github.com/sahilm/fuzzy v0.1.1
 	github.com/stretchr/testify v1.10.0
 	golang.design/x/hotkey v0.4.1
-	golang.org/x/image v0.22.0
+	golang.org/x/image v0.23.0
 	gopkg.in/eapache/queue.v1 v1.1.0
 )
 
