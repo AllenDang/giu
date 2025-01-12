@@ -15,7 +15,7 @@ var (
 	isMovingFrame = false
 )
 
-func FramelessMovableWidget(widget g.Widget) *g.CustomWidget {
+func framelessMovableWidget(widget g.Widget) *g.CustomWidget {
 	return g.Custom(func() {
 		if isMovingFrame && !g.IsMouseDown(g.MouseButtonLeft) {
 			isMovingFrame = false
@@ -34,6 +34,7 @@ func FramelessMovableWidget(widget g.Widget) *g.CustomWidget {
 			delta := imgui.CurrentIO().MouseDelta()
 			dx := int(delta.X)
 			dy := int(delta.Y)
+
 			if dx != 0 || dy != 0 {
 				ox, oy := wnd.GetPos()
 				wnd.SetPos(ox+dx, oy+dy)
@@ -47,7 +48,7 @@ func loop() {
 	g.PushColorWindowBg(color.RGBA{50, 50, 70, 130})
 	g.PushColorFrameBg(color.RGBA{30, 30, 60, 110})
 	g.SingleWindow().Layout(
-		FramelessMovableWidget(
+		framelessMovableWidget(
 			g.Label("Maintain Left-click on me to move the frameless window !"),
 		),
 		g.Custom(func() {
