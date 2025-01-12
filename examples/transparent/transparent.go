@@ -21,12 +21,15 @@ func FramelessMovableWidget(widget g.Widget) *g.CustomWidget {
 			isMovingFrame = false
 			return
 		}
+
 		widget.Build()
+
 		if g.IsItemHovered() {
 			if g.IsMouseDown(g.MouseButtonLeft) {
 				isMovingFrame = true
 			}
 		}
+
 		if isMovingFrame {
 			delta := imgui.CurrentIO().MouseDelta()
 			dx := int(delta.X)
