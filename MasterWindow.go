@@ -36,25 +36,6 @@ const (
 )
 
 // parseAndApply converts MasterWindowFlags to appropriate glfwbackend.GLFWWindowFlags.
-func (m MasterWindowFlags) parseAndApply(b backend.Backend[glfwbackend.GLFWWindowFlags]) {
-	data := map[MasterWindowFlags]struct {
-		f     glfwbackend.GLFWWindowFlags
-		value int // value isn't always true (sometimes false). Also WindowHint takes int not bool
-	}{
-		MasterWindowFlagsNotResizable: {glfwbackend.GLFWWindowFlagsResizable, 0},
-		MasterWindowFlagsMaximized:    {glfwbackend.GLFWWindowFlagsMaximized, 1},
-		MasterWindowFlagsFloating:     {glfwbackend.GLFWWindowFlagsFloating, 1},
-		MasterWindowFlagsFrameless:    {glfwbackend.GLFWWindowFlagsDecorated, 0},
-		MasterWindowFlagsTransparent:  {glfwbackend.GLFWWindowFlagsTransparent, 1},
-		MasterWindowFlagsHidden:       {glfwbackend.GLFWWindowFlagsVisible, 0},
-	}
-
-	for flag, d := range data {
-		if m&flag != 0 {
-			b.SetWindowFlags(d.f, d.value)
-		}
-	}
-}
 
 // TODO(gucio321) implement this in cimgui-go
 // DontCare could be used as an argument to (*MasterWindow).SetSizeLimits.
@@ -63,7 +44,9 @@ func (m MasterWindowFlags) parseAndApply(b backend.Backend[glfwbackend.GLFWWindo
 // MasterWindow represents a glfw master window
 // It is a base for a windows (see Window.go).
 type MasterWindow struct {
-	backend backend.Backend[glfwbackend.GLFWWindowFlags]
+	// generally Context should be used instead but as I don't like global
+	// variables, I prefer to keep a pointer here and refer it as possible.
+	ctx *GIUContext
 
 	width      int
 	height     int
@@ -96,7 +79,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	// Disable imgui.ini
 	io.SetIniFilename("")
 
-	currentBackend, err := backend.CreateBackend(glfwbackend.NewGLFWBackend())
+	currentBackend, err := backend.CreateBackend(NewGLFWBackend())
 	if err != nil && !errors.Is(err, backend.CExposerError) {
 		panic(err)
 	}
@@ -111,18 +94,24 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		title:      title,
 		io:         io,
 		context:    imGuiContext,
-		backend:    currentBackend,
+		ctx:        Context,
 	}
 
 	currentBackend.SetBeforeRenderHook(mw.beforeRender)
 	currentBackend.SetAfterRenderHook(mw.afterRender)
 	currentBackend.SetBeforeDestroyContextHook(mw.beforeDestroy)
-	flags.parseAndApply(currentBackend)
+
+	for f := MasterWindowFlagsNotResizable; f <= MasterWindowFlagsHidden; f <<= 1 {
+		if f&flags != 0 {
+			currentBackend.SetWindowFlags(f, 0) // 0 because it is not used anyway (flag values are determined by giu
+		}
+	}
+
 	currentBackend.CreateWindow(title, width, height)
 
 	mw.SetInputHandler(newInputHandler())
 
-	mw.backend.SetSizeChangeCallback(mw.sizeChange)
+	mw.ctx.backend.SetSizeChangeCallback(mw.sizeChange)
 
 	mw.SetBgColor(colornames.Black)
 
@@ -279,8 +268,8 @@ func (w *MasterWindow) Run(loopFunc func()) {
 
 // GetSize return size of master window.
 func (w *MasterWindow) GetSize() (width, height int) {
-	if w.backend != nil {
-		w, h := w.backend.DisplaySize()
+	if w.ctx.backend != nil {
+		w, h := w.ctx.backend.DisplaySize()
 		return int(w), int(h)
 	}
 
@@ -299,20 +288,20 @@ func (w *MasterWindow) SetBgColor(bgColor color.Color) {
 		W: float32(a) / mask,
 	}
 
-	w.backend.SetBgColor(w.clearColor)
+	w.ctx.backend.SetBgColor(w.clearColor)
 }
 
 // SetTargetFPS sets target FPS of master window.
 // Default for GLFW is 30.
 func (w *MasterWindow) SetTargetFPS(fps uint) {
-	w.backend.SetTargetFPS(fps)
+	w.ctx.backend.SetTargetFPS(fps)
 }
 
 // GetPos return position of master window.
 func (w *MasterWindow) GetPos() (x, y int) {
 	var xResult, yResult int32
-	if w.backend != nil {
-		xResult, yResult = w.backend.GetWindowPos()
+	if w.ctx.backend != nil {
+		xResult, yResult = w.ctx.backend.GetWindowPos()
 	}
 
 	return int(xResult), int(yResult)
@@ -320,15 +309,15 @@ func (w *MasterWindow) GetPos() (x, y int) {
 
 // SetPos sets position of master window.
 func (w *MasterWindow) SetPos(x, y int) {
-	if w.backend != nil {
-		w.backend.SetWindowPos(x, y)
+	if w.ctx.backend != nil {
+		w.ctx.backend.SetWindowPos(x, y)
 	}
 }
 
 // SetSize sets size of master window.
 func (w *MasterWindow) SetSize(x, y int) {
-	if w.backend != nil {
-		w.backend.SetWindowSize(x, y)
+	if w.ctx.backend != nil {
+		w.ctx.backend.SetWindowSize(x, y)
 	}
 }
 
@@ -342,14 +331,14 @@ func (w *MasterWindow) SetSize(x, y int) {
 // Mac OS X: Selecting Quit from the application menu will trigger the close
 // callback for all windows.
 func (w *MasterWindow) SetCloseCallback(cb func() bool) {
-	w.backend.SetCloseCallback(func() {
-		w.backend.SetShouldClose(cb())
+	w.ctx.backend.SetCloseCallback(func() {
+		w.ctx.backend.SetShouldClose(cb())
 	})
 }
 
 // SetDropCallback sets callback when file was dropped into the window.
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
-	w.backend.SetDropCallback(cb)
+	w.ctx.backend.SetDropCallback(cb)
 }
 
 // RegisterKeyboardShortcuts registers a global - master window - keyboard shortcuts.
@@ -379,7 +368,7 @@ func (w *MasterWindow) RegisterKeyboardShortcuts(s ...WindowShortcut) *MasterWin
 // The desired image sizes varies depending on platform and system settings. The selected
 // images will be rescaled as needed. Good sizes include 16x16, 32x32 and 48x48.
 func (w *MasterWindow) SetIcon(icons ...image.Image) {
-	w.backend.SetIcons(icons...)
+	w.ctx.backend.SetIcons(icons...)
 }
 
 // SetSizeLimits sets the size limits of the client area of the specified window.
@@ -389,22 +378,22 @@ func (w *MasterWindow) SetIcon(icons ...image.Image) {
 // To specify only a minimum size or only a maximum one, set the other pair to giu.DontCare.
 // To disable size limits for a window, set them all to giu.DontCare.
 func (w *MasterWindow) SetSizeLimits(minw, minh, maxw, maxh int) {
-	w.backend.SetWindowSizeLimits(minw, minh, maxw, maxh)
+	w.ctx.backend.SetWindowSizeLimits(minw, minh, maxw, maxh)
 }
 
 // SetTitle updates master window's title.
 func (w *MasterWindow) SetTitle(title string) {
-	w.backend.SetWindowTitle(title)
+	w.ctx.backend.SetWindowTitle(title)
 }
 
 // Close will safely close the master window.
 func (w *MasterWindow) Close() {
-	w.SetShouldClose(true)
+	w.ctx.backend.SetShouldClose(true)
 }
 
 // SetShouldClose sets whether master window should be closed.
 func (w *MasterWindow) SetShouldClose(v bool) {
-	w.backend.SetShouldClose(v)
+	w.ctx.backend.SetShouldClose(v)
 }
 
 // SetInputHandler allows to change default input handler.
@@ -412,7 +401,7 @@ func (w *MasterWindow) SetShouldClose(v bool) {
 func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 	Context.InputHandler = handler
 
-	w.backend.SetKeyCallback(func(key, _, action, modifier int) {
+	w.ctx.backend.SetKeyCallback(func(key, _, action, modifier int) {
 		k, m, a := keyFromGLFWKey(glfwbackend.GLFWKey(key)), Modifier(modifier), Action(action)
 		handler.Handle(k, m, a)
 
