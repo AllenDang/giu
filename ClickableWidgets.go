@@ -162,8 +162,8 @@ type InvisibleButtonWidget struct {
 func InvisibleButton() *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
 		id:      GenAutoID("InvisibleButton"),
-		width:   0,
-		height:  0,
+		width:   Auto,
+		height:  Auto,
 		onClick: nil,
 	}
 }
