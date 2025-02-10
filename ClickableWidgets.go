@@ -162,8 +162,8 @@ type InvisibleButtonWidget struct {
 func InvisibleButton() *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
 		id:      GenAutoID("InvisibleButton"),
-		width:   0,
-		height:  0,
+		width:   Auto,
+		height:  Auto,
 		onClick: nil,
 	}
 }
@@ -206,6 +206,7 @@ type ImageButtonWidget struct {
 	bgColor      color.Color
 	tintColor    color.Color
 	onClick      func()
+	id           ID
 }
 
 // ImageButton  constructs image button widget.
@@ -220,7 +221,14 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 		bgColor:      colornames.Black,
 		tintColor:    colornames.White,
 		onClick:      nil,
+		id:           GenAutoID("ImageButton"),
 	}
+}
+
+// ID allows to manually set widget's id.
+func (b *ImageButtonWidget) ID(id ID) *ImageButtonWidget {
+	b.id = id
+	return b
 }
 
 // Build implements Widget interface.
@@ -228,6 +236,8 @@ func (b *ImageButtonWidget) Build() {
 	if b.texture == nil || b.texture.tex == nil {
 		return
 	}
+
+	imgui.PushIDStr(b.id.String())
 
 	if imgui.ImageButtonV(
 		fmt.Sprintf("%v", b.texture.tex.ID),
@@ -239,6 +249,8 @@ func (b *ImageButtonWidget) Build() {
 	) && b.onClick != nil {
 		b.onClick()
 	}
+
+	imgui.PopID()
 }
 
 // Size sets BUTTONS size.
@@ -365,6 +377,12 @@ func Checkbox(text string, selected *bool) *CheckboxWidget {
 		selected: selected,
 		onChange: nil,
 	}
+}
+
+// ID sets widget's id (overrides text).
+func (c *CheckboxWidget) ID(id ID) *CheckboxWidget {
+	c.text = id
+	return c
 }
 
 // OnChange adds callback called when checkbox's state was changed.
@@ -501,7 +519,8 @@ type TreeNodeWidget struct {
 	label        string
 	flags        TreeNodeFlags
 	layout       Layout
-	eventHandler func()
+	event        func()
+	eventHandler *EventHandler
 }
 
 // TreeNode creates a new tree node widget.
@@ -525,10 +544,16 @@ func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
 	return t
 }
 
-// Event create TreeNode with eventHandler
+// Event create TreeNode with event handling function.
 // You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler.
-// Deprecated: Use EventHandler instead!
+// Deprecated: Use (*TreeNodeWidget).EventHandler instead!
 func (t *TreeNodeWidget) Event(handler func()) *TreeNodeWidget {
+	t.event = handler
+	return t
+}
+
+// EventHandler allows to set *EventHandler instance for the actual TreeNode.
+func (t *TreeNodeWidget) EventHandler(handler *EventHandler) *TreeNodeWidget {
 	t.eventHandler = handler
 	return t
 }
@@ -543,8 +568,12 @@ func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
 func (t *TreeNodeWidget) Build() {
 	open := imgui.TreeNodeExStrV(t.label, imgui.TreeNodeFlags(t.flags))
 
+	if t.event != nil {
+		t.event()
+	}
+
 	if t.eventHandler != nil {
-		t.eventHandler()
+		t.eventHandler.Build()
 	}
 
 	if open {
