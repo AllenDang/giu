@@ -38,7 +38,7 @@ func loop() {
 		g.Plot("Plot Time Axe 时间线").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).Plots(
 			g.LineXY("Time Line 时间线", timeDataX, timeDataY),
 			g.ScatterXY("Time Scatter 时间散点图", timeDataX, timeScatterY),
-		),
+		).XScale(g.PlotScaleTime),
 		g.Row(
 			g.Style().To(
 				g.Plot("Plot Bars").
