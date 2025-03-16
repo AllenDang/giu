@@ -55,6 +55,7 @@ type PlotCanvasWidget struct {
 	height                           int
 	flags                            PlotFlags
 	xFlags, yFlags, y2Flags, y3Flags PlotAxisFlags
+	xScale, yScale, y2Scale, y3Scale PlotScale
 	y2Label                          string
 	y3Label                          string
 	xMin, xMax, yMin, yMax           float64
@@ -80,6 +81,10 @@ func Plot(title string) *PlotCanvasWidget {
 		yFlags:             PlotAxisFlagsNone,
 		y2Flags:            PlotAxisFlagsNoGridLines,
 		y3Flags:            PlotAxisFlagsNoGridLines,
+		xScale:             PlotScaleLinear,
+		yScale:             PlotScaleLinear,
+		y2Scale:            PlotScaleLinear,
+		y3Scale:            PlotScaleLinear,
 		y2Label:            "",
 		y3Label:            "",
 		xMin:               0,
@@ -198,6 +203,30 @@ func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags PlotAxisFlags) *Pl
 	return p
 }
 
+// XScale sets the plot x axis scale
+func (p *PlotCanvasWidget) XScale(scale PlotScale) *PlotCanvasWidget {
+	p.xScale = scale
+	return p
+}
+
+// YScale sets the plot y axis scale
+func (p *PlotCanvasWidget) YScale(scale PlotScale) *PlotCanvasWidget {
+	p.yScale = scale
+	return p
+}
+
+// Y2Scale sets the plot y2 axis scale
+func (p *PlotCanvasWidget) Y2Scale(scale PlotScale) *PlotCanvasWidget {
+	p.y2Scale = scale
+	return p
+}
+
+// Y3Scale sets the plot y3 axis scale
+func (p *PlotCanvasWidget) Y3Scale(scale PlotScale) *PlotCanvasWidget {
+	p.y3Scale = scale
+	return p
+}
+
 // Plots adds plots to plot canvas.
 func (p *PlotCanvasWidget) Plots(plots ...PlotWidget) *PlotCanvasWidget {
 	p.plots = plots
@@ -223,6 +252,29 @@ func (p *PlotCanvasWidget) Build() {
 		ToVec2(image.Pt(p.width, p.height)),
 		implot.Flags(p.flags),
 	) {
+		implot.SetupAxisScalePlotScale(
+			implot.AxisX1,
+			implot.Scale(p.xScale),
+		)
+		implot.SetupAxisScalePlotScale(
+			implot.AxisY1,
+			implot.Scale(p.yScale),
+		)
+
+		if p.y2Label != "" {
+			implot.SetupAxisScalePlotScale(
+				implot.AxisY2,
+				implot.Scale(p.y2Scale),
+			)
+		}
+
+		if p.y3Label != "" {
+			implot.SetupAxisScalePlotScale(
+				implot.AxisY3,
+				implot.Scale(p.y3Scale),
+			)
+		}
+
 		implot.SetupAxisLimitsV(
 			implot.AxisX1,
 			p.xMin,
