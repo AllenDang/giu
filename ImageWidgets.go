@@ -125,7 +125,7 @@ func (i *ImageWidget) Build() {
 		}
 	}
 
-	imgui.ImageV(i.texture.tex.ID, size, i.uv0, i.uv1, ToVec4Color(i.tintColor), ToVec4Color(i.borderColor))
+	imgui.ImageWithBgV(i.texture.tex.ID, size, i.uv0, i.uv1, ToVec4Color(i.borderColor), ToVec4Color(i.tintColor))
 }
 
 type imageState struct {

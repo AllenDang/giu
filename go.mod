@@ -1,12 +1,15 @@
 module github.com/AllenDang/giu
 
-go 1.23.3
+go 1.24.0
+
+toolchain go1.24.1
 
 require (
-	github.com/AllenDang/cimgui-go v1.3.0
+	github.com/AllenDang/cimgui-go v1.3.1
 	github.com/AllenDang/go-findfont v0.0.0-20200702051237-9f180485aeb8
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
 	github.com/gucio321/glm-go v0.0.0-20241029220517-e1b5a3e011c8
+	github.com/juliettef/IconFontCppHeaders v0.0.0-20250310113834-3eac3a08c436
 	github.com/mazznoer/csscolorparser v0.1.5
 	github.com/napsy/go-css v0.0.0-20221107082635-4ed403047a64
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8

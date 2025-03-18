@@ -159,7 +159,7 @@ func (i *ReflectiveBoundTexture) ImguiImageV(width, height float32, options Imgu
 		size.Y = rect.Y
 	}
 
-	imgui.ImageV(i.Texture().ID(), size, options.Uv0, options.Uv1, options.TintCol, options.BorderCol)
+	imgui.ImageWithBgV(i.Texture().ID(), size, options.Uv0, options.Uv1, options.BorderCol, options.TintCol)
 }
 
 // ImguiImageButtonV renders the ReflectiveBoundTexture as an image button in ImGui with additional options.
