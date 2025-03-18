@@ -247,10 +247,12 @@ func (c *ComboWidget) Build() {
 		var filter *imgui.TextFilter
 		if c.filter {
 			filter = imgui.NewEmptyTextFilter()
+
 			if imgui.IsWindowAppearing() {
 				imgui.SetKeyboardFocusHere()
 				filter.Clear()
 			}
+
 			filter.DrawV("##Filter", -1)
 		}
 
@@ -258,6 +260,7 @@ func (c *ComboWidget) Build() {
 			if c.filter && !filter.PassFilter(item) {
 				continue
 			}
+
 			if imgui.SelectableBool(fmt.Sprintf("%s##%d", item, i)) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
