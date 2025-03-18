@@ -515,3 +515,13 @@ const (
 	PlotAxisFlagsLock          PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLock)
 	PlotAxisFlagsNoDecorations PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoDecorations)
 )
+
+// PlotScale represents implot.Scale
+type PlotScale implot.Scale
+
+const (
+	PlotScaleLinear PlotScale = PlotScale(implot.ScaleLinear)
+	PlotScaleTime   PlotScale = PlotScale(implot.ScaleTime)
+	PlotScaleLog10  PlotScale = PlotScale(implot.ScaleLog10)
+	PlotScaleSymLog PlotScale = PlotScale(implot.ScaleSymLog)
+)
