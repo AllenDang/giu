@@ -189,6 +189,7 @@ type ComboWidget struct {
 	selected     *int32
 	width        float32
 	flags        ComboFlags
+	filter       bool
 	onChange     func()
 }
 
@@ -229,6 +230,12 @@ func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 	return c
 }
 
+// Filter sets if the combo should filter.
+func (c *ComboWidget) Filter(filter bool) *ComboWidget {
+	c.filter = filter
+	return c
+}
+
 // Build implements Widget interface.
 func (c *ComboWidget) Build() {
 	if c.width > 0 {
@@ -237,7 +244,20 @@ func (c *ComboWidget) Build() {
 	}
 
 	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label.String()), c.previewValue, imgui.ComboFlags(c.flags)) {
+		var filter *imgui.TextFilter
+		if c.filter {
+			filter = imgui.NewEmptyTextFilter()
+			if imgui.IsWindowAppearing() {
+				imgui.SetKeyboardFocusHere()
+				filter.Clear()
+			}
+			filter.DrawV("##Filter", -1)
+		}
+
 		for i, item := range c.items {
+			if c.filter && !filter.PassFilter(item) {
+				continue
+			}
 			if imgui.SelectableBool(fmt.Sprintf("%s##%d", item, i)) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
