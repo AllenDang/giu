@@ -516,7 +516,7 @@ const (
 	PlotAxisFlagsNoDecorations PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoDecorations)
 )
 
-// PlotScale represents implot.Scale
+// PlotScale represents implot.Scale.
 type PlotScale implot.Scale
 
 const (

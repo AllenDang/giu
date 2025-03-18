@@ -203,25 +203,25 @@ func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags PlotAxisFlags) *Pl
 	return p
 }
 
-// XScale sets the plot x axis scale
+// XScale sets the plot x axis scale.
 func (p *PlotCanvasWidget) XScale(scale PlotScale) *PlotCanvasWidget {
 	p.xScale = scale
 	return p
 }
 
-// YScale sets the plot y axis scale
+// YScale sets the plot y axis scale.
 func (p *PlotCanvasWidget) YScale(scale PlotScale) *PlotCanvasWidget {
 	p.yScale = scale
 	return p
 }
 
-// Y2Scale sets the plot y2 axis scale
+// Y2Scale sets the plot y2 axis scale.
 func (p *PlotCanvasWidget) Y2Scale(scale PlotScale) *PlotCanvasWidget {
 	p.y2Scale = scale
 	return p
 }
 
-// Y3Scale sets the plot y3 axis scale
+// Y3Scale sets the plot y3 axis scale.
 func (p *PlotCanvasWidget) Y3Scale(scale PlotScale) *PlotCanvasWidget {
 	p.y3Scale = scale
 	return p
