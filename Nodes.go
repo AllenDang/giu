@@ -53,19 +53,23 @@ const (
 type nodeElement struct {
 	elementType NodeElementType
 	layout      Layout
-	id          int32
+	id          string
 }
 
 type NodeEditorWidget struct {
-	nodes     []*NodeWidget
-	idCounter int32
-	id        ID
+	nodes       []*NodeWidget
+	idCounter   int32
+	inputAlias  map[int32]string
+	outputAlias map[int32]string
+	id          ID
 }
 
 func NodeEditor() *NodeEditorWidget {
 	return &NodeEditorWidget{
-		idCounter: 0,
-		id:        GenAutoID("NodeEditor"),
+		idCounter:   0,
+		inputAlias:  make(map[int32]string),
+		outputAlias: make(map[int32]string),
+		id:          GenAutoID("NodeEditor"),
 	}
 }
 
@@ -82,11 +86,15 @@ func (n *NodeEditorWidget) Build() {
 
 	imnodes.BeginNodeEditor()
 	for _, node := range n.nodes {
-		node.BuildNode(&n.idCounter)
+		node.BuildNode(n)
 	}
 
 	for _, link := range state.links {
-		imnodes.Link(link.linkID, link.startID, link.endID)
+		id := n.idCounter
+		n.idCounter++
+		start := n.inputAlias[link.startID]
+		end := n.outputAlias[link.endID]
+		imnodes.Link(id, start, end)
 	}
 
 	imnodes.EndNodeEditor()
@@ -117,7 +125,7 @@ func Node() *NodeWidget {
 }
 
 func (n *NodeWidget) Static(widgets ...Widget) *NodeWidget {
-	n.elements = append(n.elements, nodeElement{NodeElementBody, Layout(widgets)})
+	n.elements = append(n.elements, nodeElement{NodeElementBody, Layout(widgets), ""})
 
 	return n
 }
@@ -125,21 +133,21 @@ func (n *NodeWidget) Static(widgets ...Widget) *NodeWidget {
 func (n *NodeWidget) TitleBar(widgets ...Widget) *NodeWidget {
 	for i := range n.elements {
 		if n.elements[i].elementType != NodeElementTitleBar {
-			n.elements = append(n.elements[:i], append([]nodeElement{{NodeElementTitleBar, Layout(widgets)}}, n.elements[i:]...)...)
+			n.elements = append(n.elements[:i], append([]nodeElement{{NodeElementTitleBar, Layout(widgets), ""}}, n.elements[i:]...)...)
 		}
 	}
 
 	return n
 }
 
-func (n *NodeWidget) Input(widgets ...Widget) *NodeWidget {
-	n.elements = append(n.elements, nodeElement{NodeElementInput, Layout(widgets)})
+func (n *NodeWidget) Input(id string, widgets ...Widget) *NodeWidget {
+	n.elements = append(n.elements, nodeElement{NodeElementInput, Layout(widgets), id})
 
 	return n
 }
 
-func (n *NodeWidget) Output(widgets ...Widget) *NodeWidget {
-	n.elements = append(n.elements, nodeElement{NodeElementOutput, Layout(widgets)})
+func (n *NodeWidget) Output(id string, widgets ...Widget) *NodeWidget {
+	n.elements = append(n.elements, nodeElement{NodeElementOutput, Layout(widgets), id})
 
 	return n
 }
@@ -147,25 +155,31 @@ func (n *NodeWidget) Output(widgets ...Widget) *NodeWidget {
 // ElementID allows you to manually specify an ID for the last added element.
 // Appliable only for NodeElementInput and NodeElementOutput.
 func (n *NodeWidget) ElementID(id int32) *NodeWidget {
-	n.elements[len(n.elements)-1].id = id
+	// n.elements[len(n.elements)-1].id = id
 
 	return n
 }
 
-func (n *NodeWidget) BuildNode(idCounter *int32) {
+func (n *NodeWidget) BuildNode(s *NodeEditorWidget) {
 	fMap := map[NodeElementType]struct {
-		begin func(int32)
+		begin func(int32, string)
 		end   func()
 	}{
-		NodeElementInput:    {imnodes.BeginInputAttribute, imnodes.EndInputAttribute},
-		NodeElementOutput:   {imnodes.BeginOutputAttribute, imnodes.EndOutputAttribute},
-		NodeElementBody:     {imnodes.BeginStaticAttribute, imnodes.EndStaticAttribute},
-		NodeElementTitleBar: {func(int32) { imnodes.BeginNodeTitleBar() }, imnodes.EndNodeTitleBar},
+		NodeElementInput: {func(id int32, alias string) {
+			imnodes.BeginInputAttribute(id)
+			s.inputAlias[s.idCounter] = alias
+		}, imnodes.EndInputAttribute},
+		NodeElementOutput: {func(id int32, alias string) {
+			imnodes.BeginOutputAttribute(id)
+			s.outputAlias[s.idCounter] = alias
+		}, imnodes.EndOutputAttribute},
+		NodeElementBody:     {func(id int32, _ string) { imnodes.BeginStaticAttribute(id) }, imnodes.EndStaticAttribute},
+		NodeElementTitleBar: {func(int32, string) { imnodes.BeginNodeTitleBar() }, imnodes.EndNodeTitleBar},
 	}
 
 	// Assert(n.layout != nil && len(n.layout) > 0, "NodeWidget", "BuildNode", "Node layout is required")
-	imnodes.BeginNode(*idCounter)
-	*idCounter++
+	imnodes.BeginNode(s.idCounter)
+	s.idCounter++
 
 	for _, element := range n.elements {
 		if element.layout != nil {
@@ -173,8 +187,8 @@ func (n *NodeWidget) BuildNode(idCounter *int32) {
 			if !ok {
 				panic(fmt.Sprintf("NodeWidget:BuildNode: Unknown node element type", element.elementType))
 			}
-			f.begin(*idCounter)
-			*idCounter++
+			f.begin(s.idCounter, element.id)
+			s.idCounter++
 			element.layout.Build()
 			f.end()
 		}
@@ -189,10 +203,9 @@ type LinkWidget struct {
 	endID   int32
 }
 
-func Link(linkID, startID, endID int32) *LinkWidget {
+func Link(startID, endID string) *LinkWidget {
 	return &LinkWidget{
 		startID: startID,
 		endID:   endID,
-		linkID:  linkID,
 	}
 }

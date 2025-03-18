@@ -12,8 +12,10 @@ func loop() {
 				Static(
 					giu.Label("Main content"),
 				).Output(
+				"out",
 				giu.Label("Output attribute"),
 			).Input(
+				"in",
 				giu.Label("Input attribute"),
 			),
 			giu.Node().Static(
@@ -21,6 +23,7 @@ func loop() {
 			).TitleBar(
 				giu.Label("This is a title bar"),
 			).Input(
+				"in2",
 				giu.Label("Iput attribute"),
 			),
 		),
