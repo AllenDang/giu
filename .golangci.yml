@@ -69,15 +69,11 @@ linters-settings:
       - opinionated
       - performance
       - style
-    disabled-checks:
+    disabled-checks: []
   gocyclo:
     min-complexity: 15
   goimports:
     local-prefixes: github.com/AllenDang/giu
-  govet:
-    shadow: true
-  maligned:
-    suggest-new: true
   misspell:
     locale: US
 
@@ -86,7 +82,7 @@ run:
 
 issues:
   exclude-dirs-use-default: false
-  skip-dirs:
+  exclude-dirs:
     - .github
     - build
     - web
