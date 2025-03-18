@@ -48,13 +48,14 @@ type MasterWindow struct {
 	// variables, I prefer to keep a pointer here and refer it as possible.
 	ctx *GIUContext
 
-	width      int
-	height     int
-	clearColor imgui.Vec4
-	title      string
-	context    *imgui.Context
-	io         *imgui.IO
-	updateFunc func()
+	width       int
+	height      int
+	clearColor  imgui.Vec4
+	title       string
+	context     *imgui.Context
+	io          *imgui.IO
+	updateFunc  func()
+	styleSetter *StyleSetter
 
 	// possibility to expend InputHandler's stuff
 	// See SetAdditionalInputHandler
@@ -124,7 +125,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	return mw
 }
 
-func (w *MasterWindow) setTheme() (fin func()) {
+func (w *MasterWindow) defaultTheme() (fin func()) {
 	imgui.PushStyleVarFloat(imgui.StyleVarWindowRounding, 2)
 	imgui.PushStyleVarFloat(imgui.StyleVarFrameRounding, 4)
 	imgui.PushStyleVarFloat(imgui.StyleVarGrabRounding, 4)
@@ -184,6 +185,14 @@ func (w *MasterWindow) setTheme() (fin func()) {
 		imgui.PopStyleColorV(49)
 		imgui.PopStyleVarV(4)
 	}
+}
+
+func (w *MasterWindow) setTheme() (fin func()) {
+	if w.styleSetter == nil {
+		return w.defaultTheme()
+	}
+	w.styleSetter.Push()
+	return w.styleSetter.Pop
 }
 
 func (w *MasterWindow) sizeChange(_, _ int) {
@@ -274,6 +283,11 @@ func (w *MasterWindow) GetSize() (width, height int) {
 	}
 
 	return w.width, w.height
+}
+
+// SetStyle sets the style for the master window. Default is set by passing nil.
+func (w *MasterWindow) SetStyle(ss *StyleSetter) {
+	w.styleSetter = ss
 }
 
 // SetBgColor sets background color of master window.
