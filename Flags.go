@@ -331,7 +331,7 @@ const (
 	//              // ColorEdit, ColorPicker: show vertical alpha bar/gradient in picker.
 	ColorEditFlagsAlphaBar ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaBar)
 	//              // ColorEdit, ColorPicker, ColorButton: display preview as a transparent color over a checkerboard, instead of opaque.
-	ColorEditFlagsAlphaPreview ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaPreview)
+	ColorEditFlagsAlphaPreview ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaPreviewHalf)
 	//              // ColorEdit, ColorPicker, ColorButton: display half opaque / half checkerboard, instead of opaque.
 	ColorEditFlagsAlphaPreviewHalf ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaPreviewHalf)
 	//              // (WIP) ColorEdit: Currently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use ImGuiColorEditFlags_Float flag as well).
