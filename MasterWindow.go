@@ -191,7 +191,9 @@ func (w *MasterWindow) setTheme() (fin func()) {
 	if w.styleSetter == nil {
 		return w.defaultTheme()
 	}
+
 	w.styleSetter.Push()
+
 	return w.styleSetter.Pop
 }
 
