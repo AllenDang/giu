@@ -520,8 +520,12 @@ const (
 type PlotScale implot.Scale
 
 const (
+	// PlotScaleLinear is a default linear scale.
 	PlotScaleLinear PlotScale = PlotScale(implot.ScaleLinear)
-	PlotScaleTime   PlotScale = PlotScale(implot.ScaleTime)
-	PlotScaleLog10  PlotScale = PlotScale(implot.ScaleLog10)
+	// PlotScaleTime is a date/time scale.
+	PlotScaleTime PlotScale = PlotScale(implot.ScaleTime)
+	// PlotScaleLog10 is a base 10 logarithm.
+	PlotScaleLog10 PlotScale = PlotScale(implot.ScaleLog10)
+	// PlotScaleSymLog is a symmetric log scale.
 	PlotScaleSymLog PlotScale = PlotScale(implot.ScaleSymLog)
 )
