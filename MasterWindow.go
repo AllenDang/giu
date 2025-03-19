@@ -126,6 +126,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	return mw
 }
 
+// DefaultTheme generates a default GIU theme's StyleSetter.
 func DefaultTheme() *StyleSetter {
 	return Style().
 		SetStyleFloat(StyleVarWindowRounding, 2).
@@ -283,7 +284,7 @@ func (w *MasterWindow) GetSize() (width, height int) {
 	return w.width, w.height
 }
 
-// SetStyle sets the style for the master window. Default is set by passing nil.
+// SetStyle sets the style for the master window. Default is DefaultTheme().
 func (w *MasterWindow) SetStyle(ss *StyleSetter) {
 	w.theme = ss
 }
