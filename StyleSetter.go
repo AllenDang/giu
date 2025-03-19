@@ -44,34 +44,37 @@ func Style() *StyleSetter {
 // NOTE: true is preffered over false for disabled field.
 // NOTE: layout field will be reset.
 func (ss *StyleSetter) Add(other *StyleSetter) *StyleSetter {
-	result := ss
+	if other == nil {
+		return ss
+	}
+
 	for k, v := range other.colors {
-		result.colors[k] = v
+		ss.colors[k] = v
 	}
 
 	for k, v := range other.styles {
-		result.styles[k] = v
+		ss.styles[k] = v
 	}
 
 	for k, v := range other.plotColors {
-		result.plotColors[k] = v
+		ss.plotColors[k] = v
 	}
 
 	for k, v := range other.plotStyles {
-		result.plotStyles[k] = v
+		ss.plotStyles[k] = v
 	}
 
 	if other.font != nil {
-		result.font = other.font
+		ss.font = other.font
 	}
 
 	if other.disabled {
-		result.disabled = true
+		ss.disabled = true
 	}
 
-	result.layout = nil
+	ss.layout = nil
 
-	return result
+	return ss
 }
 
 // SetColor sets colorID's color.
