@@ -48,14 +48,14 @@ type MasterWindow struct {
 	// variables, I prefer to keep a pointer here and refer it as possible.
 	ctx *GIUContext
 
-	width       int
-	height      int
-	clearColor  imgui.Vec4
-	title       string
-	context     *imgui.Context
-	io          *imgui.IO
-	updateFunc  func()
-	styleSetter *StyleSetter
+	width      int
+	height     int
+	clearColor imgui.Vec4
+	title      string
+	context    *imgui.Context
+	io         *imgui.IO
+	updateFunc func()
+	theme      *StyleSetter
 
 	// possibility to expend InputHandler's stuff
 	// See SetAdditionalInputHandler
@@ -89,14 +89,14 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	Context = CreateContext(currentBackend)
 
 	mw := &MasterWindow{
-		clearColor:  imgui.Vec4{X: 0, Y: 0, Z: 0, W: 1},
-		width:       width,
-		height:      height,
-		title:       title,
-		io:          io,
-		context:     imGuiContext,
-		ctx:         Context,
-		styleSetter: DefaultTheme(),
+		clearColor: imgui.Vec4{X: 0, Y: 0, Z: 0, W: 1},
+		width:      width,
+		height:     height,
+		title:      title,
+		io:         io,
+		context:    imGuiContext,
+		ctx:        Context,
+		theme:      DefaultTheme(),
 	}
 
 	currentBackend.SetBeforeRenderHook(mw.beforeRender)
@@ -184,13 +184,13 @@ func DefaultTheme() *StyleSetter {
 }
 
 func (w *MasterWindow) setTheme() (fin func()) {
-	if w.styleSetter == nil {
+	if w.theme == nil {
 		return func() {}
 	}
 
-	w.styleSetter.Push()
+	w.theme.Push()
 
-	return w.styleSetter.Pop
+	return w.theme.Pop
 }
 
 func (w *MasterWindow) sizeChange(_, _ int) {
@@ -285,7 +285,7 @@ func (w *MasterWindow) GetSize() (width, height int) {
 
 // SetStyle sets the style for the master window. Default is set by passing nil.
 func (w *MasterWindow) SetStyle(ss *StyleSetter) {
-	w.styleSetter = ss
+	w.theme = ss
 }
 
 // SetBgColor sets background color of master window.
