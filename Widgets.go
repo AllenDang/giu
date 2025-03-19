@@ -3,6 +3,7 @@ package giu
 import (
 	"fmt"
 	"image/color"
+	"math"
 
 	"github.com/AllenDang/cimgui-go/imgui"
 )
@@ -189,6 +190,9 @@ type ComboWidget struct {
 	selected     *int32
 	width        float32
 	flags        ComboFlags
+	filter       bool
+	filterWidget *imgui.TextFilter
+	filterLabel  ID
 	onChange     func()
 }
 
@@ -201,6 +205,9 @@ func Combo(label, previewValue string, items []string, selected *int32) *ComboWi
 		selected:     selected,
 		flags:        0,
 		width:        0,
+		filter:       false,
+		filterWidget: imgui.NewEmptyTextFilter(),
+		filterLabel:  GenAutoID(""),
 		onChange:     nil,
 	}
 }
@@ -229,6 +236,12 @@ func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 	return c
 }
 
+// Filter sets if the combo should filter.
+func (c *ComboWidget) Filter(filter bool) *ComboWidget {
+	c.filter = filter
+	return c
+}
+
 // Build implements Widget interface.
 func (c *ComboWidget) Build() {
 	if c.width > 0 {
@@ -237,7 +250,20 @@ func (c *ComboWidget) Build() {
 	}
 
 	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label.String()), c.previewValue, imgui.ComboFlags(c.flags)) {
+		if c.filter {
+			if imgui.IsWindowAppearing() {
+				imgui.SetKeyboardFocusHere()
+				c.filterWidget.Clear()
+			}
+
+			c.filterWidget.DrawV(Context.FontAtlas.RegisterString(c.filterLabel.String()), -math.SmallestNonzeroFloat32)
+		}
+
 		for i, item := range c.items {
+			if c.filter && !c.filterWidget.PassFilter(item) {
+				continue
+			}
+
 			if imgui.SelectableBool(fmt.Sprintf("%s##%d", item, i)) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
