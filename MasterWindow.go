@@ -89,13 +89,14 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	Context = CreateContext(currentBackend)
 
 	mw := &MasterWindow{
-		clearColor: imgui.Vec4{X: 0, Y: 0, Z: 0, W: 1},
-		width:      width,
-		height:     height,
-		title:      title,
-		io:         io,
-		context:    imGuiContext,
-		ctx:        Context,
+		clearColor:  imgui.Vec4{X: 0, Y: 0, Z: 0, W: 1},
+		width:       width,
+		height:      height,
+		title:       title,
+		io:          io,
+		context:     imGuiContext,
+		ctx:         Context,
+		styleSetter: (&MasterWindow{}).defaultTheme(),
 	}
 
 	currentBackend.SetBeforeRenderHook(mw.beforeRender)
@@ -125,8 +126,8 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	return mw
 }
 
-func (w *MasterWindow) defaultTheme() (fin func()) {
-	s := Style().
+func (w *MasterWindow) defaultTheme() *StyleSetter {
+	return Style().
 		SetStyleFloat(StyleVarWindowRounding, 2).
 		SetStyleFloat(StyleVarFrameRounding, 4).
 		SetStyleFloat(StyleVarGrabRounding, 4).
@@ -180,17 +181,11 @@ func (w *MasterWindow) defaultTheme() (fin func()) {
 		SetColorVec4(StyleColorTableHeaderBg, imgui.Vec4{X: 0.12, Y: 0.20, Z: 0.28, W: 1.00}).
 		SetColorVec4(StyleColorTableBorderStrong, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 1.00}).
 		SetColorVec4(StyleColorTableBorderLight, imgui.Vec4{X: 0.20, Y: 0.25, Z: 0.29, W: 0.70})
-
-	s.Push()
-
-	return func() {
-		s.Pop()
-	}
 }
 
 func (w *MasterWindow) setTheme() (fin func()) {
 	if w.styleSetter == nil {
-		return w.defaultTheme()
+		return func() {}
 	}
 
 	w.styleSetter.Push()
