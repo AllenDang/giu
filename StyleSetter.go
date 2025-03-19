@@ -37,6 +37,44 @@ func Style() *StyleSetter {
 	return &ss
 }
 
+// Add merges two StyleSetters.
+// It does not modify neither "ss" nor "other" StyleSetters.
+// Add puts other "on top" of ss, meaning, "other" is applied after "ss".
+// e.g. if both StyleSetters set imgui.StyleVarAlpha, the value from "other" will be used.
+// NOTE: font value "nil" is treated as "not set" and will not be changed if declared by other.
+// NOTE: true is preffered over false for disabled field.
+// NOTE: layout field will be reset.
+func (ss *StyleSetter) Add(other *StyleSetter) *StyleSetter {
+	result := *ss
+	for k, v := range other.colors {
+		result.colors[k] = v
+	}
+
+	for k, v := range other.styles {
+		result.styles[k] = v
+	}
+
+	for k, v := range other.plotColors {
+		result.plotColors[k] = v
+	}
+
+	for k, v := range other.plotStyles {
+		result.plotStyles[k] = v
+	}
+
+	if other.font != nil {
+		result.font = other.font
+	}
+
+	if other.disabled {
+		result.disabled = true
+	}
+
+	result.layout = nil
+
+	return &result
+}
+
 // SetColor sets colorID's color.
 func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.Color) *StyleSetter {
 	ss.colors[colorID] = col
