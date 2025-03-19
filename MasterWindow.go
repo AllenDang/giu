@@ -96,7 +96,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		io:          io,
 		context:     imGuiContext,
 		ctx:         Context,
-		styleSetter: (&MasterWindow{}).defaultTheme(),
+		styleSetter: DefaultTheme(),
 	}
 
 	currentBackend.SetBeforeRenderHook(mw.beforeRender)
@@ -126,7 +126,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	return mw
 }
 
-func (w *MasterWindow) defaultTheme() *StyleSetter {
+func DefaultTheme() *StyleSetter {
 	return Style().
 		SetStyleFloat(StyleVarWindowRounding, 2).
 		SetStyleFloat(StyleVarFrameRounding, 4).
