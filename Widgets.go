@@ -3,6 +3,7 @@ package giu
 import (
 	"fmt"
 	"image/color"
+	"math"
 
 	"github.com/AllenDang/cimgui-go/imgui"
 )
@@ -190,6 +191,8 @@ type ComboWidget struct {
 	width        float32
 	flags        ComboFlags
 	filter       bool
+	filterWidget *imgui.TextFilter
+	filterLabel  ID
 	onChange     func()
 }
 
@@ -202,6 +205,9 @@ func Combo(label, previewValue string, items []string, selected *int32) *ComboWi
 		selected:     selected,
 		flags:        0,
 		width:        0,
+		filter:       false,
+		filterWidget: imgui.NewEmptyTextFilter(),
+		filterLabel:  GenAutoID(""),
 		onChange:     nil,
 	}
 }
@@ -244,20 +250,17 @@ func (c *ComboWidget) Build() {
 	}
 
 	if imgui.BeginComboV(Context.FontAtlas.RegisterString(c.label.String()), c.previewValue, imgui.ComboFlags(c.flags)) {
-		var filter *imgui.TextFilter
 		if c.filter {
-			filter = imgui.NewEmptyTextFilter()
-
 			if imgui.IsWindowAppearing() {
 				imgui.SetKeyboardFocusHere()
-				filter.Clear()
+				c.filterWidget.Clear()
 			}
 
-			filter.DrawV("##Filter", -1)
+			c.filterWidget.DrawV(Context.FontAtlas.RegisterString(c.filterLabel.String()), -math.SmallestNonzeroFloat32)
 		}
 
 		for i, item := range c.items {
-			if c.filter && !filter.PassFilter(item) {
+			if c.filter && !c.filterWidget.PassFilter(item) {
 				continue
 			}
 
