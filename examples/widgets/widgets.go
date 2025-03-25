@@ -161,7 +161,9 @@ func loop() {
 			g.TabItem("Multiline Input").Layout(
 				g.Label("This is first tab with a multiline input text field"),
 				g.InputTextMultiline(&multiline).Size(g.Auto, g.Auto),
-			),
+			).EventHandler(g.Event().OnClick(g.MouseButtonLeft, func() {
+				fmt.Println("MultipleInput tab clicked!")
+			})),
 			g.TabItem("Tree").Layout(
 				g.TreeNode("TreeNode1").Flags(g.TreeNodeFlagsCollapsingHeader|g.TreeNodeFlagsDefaultOpen).Layout(
 					g.Custom(func() {
