@@ -355,7 +355,7 @@ func (b *ImageButtonWithRgbaWidget) Build() {
 			SetState(Context, b.id, &imageState{texture: tex})
 		})
 	} else {
-		b.ImageButtonWidget.texture = state.texture
+		b.texture = state.texture
 	}
 
 	b.ImageButtonWidget.Build()
