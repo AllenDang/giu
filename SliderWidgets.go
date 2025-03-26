@@ -254,6 +254,7 @@ type DragIntWidget struct {
 	maxValue int32
 	format   string
 	onChange func()
+	flags    SliderFlags
 }
 
 // DragInt creates new DragIntWidget.
@@ -280,6 +281,12 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 	return d
 }
 
+// Flags allows to set flags (in form of SliderFlags) for the Drag Int widget.
+func (d *DragIntWidget) Flags(f SliderFlags) *DragIntWidget {
+	d.flags = f
+	return d
+}
+
 // OnChange sets callback that will be executed when value is changed.
 func (d *DragIntWidget) OnChange(onChange func()) *DragIntWidget {
 	d.onChange = onChange
@@ -288,7 +295,7 @@ func (d *DragIntWidget) OnChange(onChange func()) *DragIntWidget {
 
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
-	if imgui.DragIntV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, 0) && d.onChange != nil {
+	if imgui.DragIntV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, imgui.SliderFlags(d.flags)) && d.onChange != nil {
 		d.onChange()
 	}
 }
