@@ -259,15 +259,34 @@ type DragIntWidget struct {
 }
 
 // DragInt creates new DragIntWidget.
-func DragInt(label string, value *int32, minValue, maxValue int32) *DragIntWidget {
+func DragInt(value *int32, minValue, maxValue int32) *DragIntWidget {
 	return &DragIntWidget{
-		label:    GenAutoID(label),
+		label:    GenAutoID("##DragInt"),
 		value:    value,
 		speed:    1.0,
 		minValue: minValue,
 		maxValue: maxValue,
 		format:   "%d",
 	}
+}
+
+// Label allows to set widgets label.
+// IMPORTANT: label uses AutoID mechanism so your label should not be unique.
+func (d *DragIntWidget) Label(label string) *DragIntWidget {
+	d.label = GenAutoID(label)
+	return d
+}
+
+// Labelf sets formatted label.
+func (d *DragIntWidget) Labelf(format string, args ...any) *DragIntWidget {
+	return d.Label(fmt.Sprintf(format, args...))
+}
+
+// ID manually sets widget id.
+// This must be unique - use Label if you can.
+func (d *DragIntWidget) ID(id ID) *DragIntWidget {
+	d.label = id
+	return d
 }
 
 // Speed sets speed of the dragging.
