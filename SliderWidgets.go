@@ -245,6 +245,8 @@ func (sf *SliderFloatWidget) Build() {
 	}
 }
 
+var _ Widget = &DragIntWidget{}
+
 // DragIntWidget is a widget similar to SliderWidget, does not have a "conventional slider".
 // Instead, you can just drag the value left/right to change it.
 type DragIntWidget struct {
@@ -259,13 +261,13 @@ type DragIntWidget struct {
 }
 
 // DragInt creates new DragIntWidget.
-func DragInt(value *int32, minValue, maxValue int32) *DragIntWidget {
+func DragInt(value *int32) *DragIntWidget {
 	return &DragIntWidget{
 		label:    GenAutoID("##DragInt"),
 		value:    value,
 		speed:    1.0,
-		minValue: minValue,
-		maxValue: maxValue,
+		minValue: 0,
+		maxValue: 0,
 		format:   "%d",
 	}
 }
@@ -292,6 +294,18 @@ func (d *DragIntWidget) ID(id ID) *DragIntWidget {
 // Speed sets speed of the dragging.
 func (d *DragIntWidget) Speed(speed float32) *DragIntWidget {
 	d.speed = speed
+	return d
+}
+
+// MinValue sets minimum value of the drag.
+func (d *DragIntWidget) MinValue(minValue int32) *DragIntWidget {
+	d.minValue = minValue
+	return d
+}
+
+// MaxValue sets maximum value of the drag.
+func (d *DragIntWidget) MaxValue(maxValue int32) *DragIntWidget {
+	d.maxValue = maxValue
 	return d
 }
 
