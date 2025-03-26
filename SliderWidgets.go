@@ -245,7 +245,8 @@ func (sf *SliderFloatWidget) Build() {
 	}
 }
 
-// DragIntWidget is a widget that allows to drag an integer value.
+// DragIntWidget is a widget similar to SliderWidget, does not have a "conventional slider".
+// Instead, you can just drag the value left/right to change it.
 type DragIntWidget struct {
 	label    ID
 	value    *int32
