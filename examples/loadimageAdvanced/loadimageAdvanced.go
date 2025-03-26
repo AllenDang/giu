@@ -52,8 +52,8 @@ func loop() {
 
 		g.Separator(),
 		g.Label("Advanced Drawing manipulation"),
-		g.DragInt("Sonic Offset X", &sonicOffsetX, 0, 1280),
-		g.DragInt("Sonic Offset Y", &sonicOffsetY, 0, 720),
+		g.DragInt(&sonicOffsetX).Label("Sonic Offset X").MinValue(0).MaxValue(1280),
+		g.DragInt(&sonicOffsetY).Label("Sonic Offset Y").MinValue(0).MaxValue(720),
 		g.Custom(func() {
 			size := fromurl.GetSurfaceSize()
 			sonicOffset := image.Point{int(sonicOffsetX), int(sonicOffsetY)}
