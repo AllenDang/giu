@@ -304,6 +304,7 @@ type DragIntWidget struct {
 	minValue int32
 	maxValue int32
 	format   string
+	onChange func()
 }
 
 // DragInt creates new DragIntWidget.
@@ -330,9 +331,17 @@ func (d *DragIntWidget) Format(format string) *DragIntWidget {
 	return d
 }
 
+// OnChange sets callback that will be executed when value is changed.
+func (d *DragIntWidget) OnChange(onChange func()) *DragIntWidget {
+	d.onChange = onChange
+	return d
+}
+
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
-	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, 0)
+	if imgui.DragIntV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, 0) && d.onChange != nil {
+		d.onChange()
+	}
 }
 
 var _ Widget = &ColumnWidget{}
