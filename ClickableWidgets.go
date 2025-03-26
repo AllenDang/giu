@@ -584,3 +584,42 @@ func (t *TreeNodeWidget) Build() {
 		}
 	}
 }
+
+var _ Widget = &LinkWidget{}
+
+// LinkWidget is a clickable text fragment.
+type LinkWidget struct {
+	text    ID
+	onClick func()
+}
+
+// Link constructs link widget.
+func Link(text string) *LinkWidget {
+	return &LinkWidget{
+		text: GenAutoID(text),
+	}
+}
+
+// Labelf allows to add formatted link.
+func Linkf(format string, args ...any) *LinkWidget {
+	return Link(fmt.Sprintf(format, args...))
+}
+
+// ID allows to manually set widget's id (in this case - text). Baypasses GenAutoID mechanism in cae this is needed.
+func (l *LinkWidget) ID(id ID) *LinkWidget {
+	l.text = id
+	return l
+}
+
+// OnClick sets click callback.
+func (l *LinkWidget) OnClick(onClick func()) *LinkWidget {
+	l.onClick = onClick
+	return l
+}
+
+// Build implements Widget interface.
+func (l *LinkWidget) Build() {
+	if imgui.TextLink(Context.FontAtlas.RegisterString(l.text.String())) && l.onClick != nil {
+		l.onClick()
+	}
+}
