@@ -104,7 +104,11 @@ func loop() {
 		),
 
 		g.ProgressBar(0.8).Size(g.Auto, 0).Overlay("Progress"),
-		g.DragInt("DragInt", &dragInt, 0, 100),
+		g.DragInt(&dragInt).
+			Label("DragInt").
+			MinValue(0).
+			MaxValue(100).
+			OnChange(func() { fmt.Println(dragInt) }),
 		g.SliderInt(&dragInt, 0, 100).Label("Slider"),
 
 		g.Label("Vertical sliders"),

@@ -294,8 +294,6 @@ func (c *ContextMenuWidget) Build() {
 	}
 }
 
-var _ Widget = &DragIntWidget{}
-
 var _ Widget = &ColumnWidget{}
 
 // ColumnWidget will place all widgets one by one vertically.
