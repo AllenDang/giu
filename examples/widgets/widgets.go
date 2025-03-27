@@ -59,6 +59,7 @@ func loop() {
 		),
 		g.Label("One line label"),
 		g.Label("Auto wrapped label with very long line...............................................this line should be wrapped.").Wrapped(true),
+		g.Link("I'm a link! Click me!").OnClick(func() { fmt.Println("Link clicked a") }),
 		g.Label("right/left click me"),
 		g.Event().
 			OnClick(g.MouseButtonLeft, func() { fmt.Println("I was left-clicked") }).
