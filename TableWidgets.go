@@ -6,7 +6,7 @@ import (
 	"github.com/AllenDang/cimgui-go/imgui"
 )
 
-// SortDirection tells how the data are sorted (ascending/descending)
+// SortDirection tells how the data are sorted (ascending/descending).
 type SortDirection byte
 
 // Possible sort directions.
@@ -222,6 +222,7 @@ func (t *TableWidget) handleSort() {
 			cs := specs.Specs() // this in fact is []TableColumnSortSpecs but should be also (*TableColumnSortSpecs)
 			colIdx := cs.ColumnIndex()
 			sortDir := cs.SortDirection()
+
 			if col := t.columns[colIdx]; col.sortFn != nil {
 				col.sortFn(SortDirection(sortDir))
 			}
