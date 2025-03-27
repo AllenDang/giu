@@ -6,6 +6,15 @@ import (
 	"github.com/AllenDang/cimgui-go/imgui"
 )
 
+// SortDirection tells how the data are sorted (ascending/descending).
+type SortDirection byte
+
+// Possible sort directions.
+const (
+	SortAscending  SortDirection = 1
+	SortDescending SortDirection = 2
+)
+
 // TableRowWidget represents a row in a table.
 type TableRowWidget struct {
 	flags        TableRowFlags
@@ -71,6 +80,7 @@ type TableColumnWidget struct {
 	flags              TableColumnFlags
 	innerWidthOrWeight float32
 	userID             uint32
+	sortFn             func(SortDirection)
 }
 
 // TableColumn creates a new TableColumnWidget.
@@ -98,6 +108,12 @@ func (c *TableColumnWidget) InnerWidthOrWeight(w float32) *TableColumnWidget {
 // UserID sets the user id of the column.
 func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
 	c.userID = id
+	return c
+}
+
+// Sort allows you to set Sort function for that column. I talso could be used to detect click event.
+func (c *TableColumnWidget) Sort(s func(SortDirection)) *TableColumnWidget {
+	c.sortFn = s
 	return c
 }
 
@@ -199,6 +215,23 @@ func (t *TableWidget) Flags(flags TableFlags) *TableWidget {
 	return t
 }
 
+func (t *TableWidget) handleSort() {
+	if specs := imgui.TableGetSortSpecs(); specs != nil {
+		if specs.SpecsDirty() {
+			// Evil bithack - we assume that array==pointer, so specs.Specs() points to the first element of that array.
+			cs := specs.Specs() // this in fact is []TableColumnSortSpecs but should be also (*TableColumnSortSpecs)
+			colIdx := cs.ColumnIndex()
+			sortDir := cs.SortDirection()
+
+			if col := t.columns[colIdx]; col.sortFn != nil {
+				col.sortFn(SortDirection(sortDir))
+			}
+
+			specs.SetSpecsDirty(false)
+		}
+	}
+}
+
 // Build implements Widget interface.
 func (t *TableWidget) Build() {
 	colCount := len(t.columns)
@@ -224,6 +257,8 @@ func (t *TableWidget) Build() {
 			if !t.noHeader {
 				imgui.TableHeadersRow()
 			}
+
+			t.handleSort()
 		}
 
 		if t.fastMode {
