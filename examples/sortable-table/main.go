@@ -41,6 +41,8 @@ func loop() {
 
 func main() {
 	wnd := giu.NewMasterWindow("Table sorting", 640, 480, 0)
+
 	rebuildColumns()
+
 	wnd.Run(loop)
 }
