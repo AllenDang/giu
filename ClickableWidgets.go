@@ -600,7 +600,7 @@ func Link(text string) *LinkWidget {
 	}
 }
 
-// Labelf allows to add formatted link.
+// Linkf allows to add formatted link.
 func Linkf(format string, args ...any) *LinkWidget {
 	return Link(fmt.Sprintf(format, args...))
 }
