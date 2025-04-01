@@ -215,6 +215,22 @@ func (t *TableWidget) Flags(flags TableFlags) *TableWidget {
 	return t
 }
 
+// helper function to find out number of columns in the table.
+func (t *TableWidget) colCount() int {
+	colCount := len(t.columns)
+
+	if colCount == 0 {
+		if len(t.rows) > 0 {
+			return len(t.rows[0].layout)
+		}
+
+		// No rows or columns, pass a single column to BeginTable
+		return 1
+	}
+
+	return colCount
+}
+
 func (t *TableWidget) handleSort() {
 	if specs := imgui.TableGetSortSpecs(); specs != nil {
 		if specs.SpecsDirty() {
@@ -234,17 +250,7 @@ func (t *TableWidget) handleSort() {
 
 // Build implements Widget interface.
 func (t *TableWidget) Build() {
-	colCount := len(t.columns)
-	if colCount == 0 {
-		if len(t.rows) > 0 {
-			colCount = len(t.rows[0].layout)
-		} else {
-			// No rows or columns, pass a single column to BeginTable
-			colCount = 1
-		}
-	}
-
-	if imgui.BeginTableV(t.id.String(), int32(colCount), imgui.TableFlags(t.flags), t.size, float32(t.innerWidth)) {
+	if imgui.BeginTableV(t.id.String(), int32(t.colCount()), imgui.TableFlags(t.flags), t.size, float32(t.innerWidth)) {
 		if t.freezeColumn >= 0 && t.freezeRow >= 0 {
 			imgui.TableSetupScrollFreeze(int32(t.freezeColumn), int32(t.freezeRow))
 		}
