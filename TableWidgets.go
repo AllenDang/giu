@@ -258,7 +258,9 @@ func (t *TableWidget) Build() {
 				imgui.TableHeadersRow()
 			}
 
-			t.handleSort()
+			if t.flags&TableFlags(imgui.TableFlagsSortable) != 0 {
+				t.handleSort()
+			}
 		}
 
 		if t.fastMode {
