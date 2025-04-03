@@ -241,10 +241,7 @@ func (w *MasterWindow) render() {
 	fin := w.setTheme()
 	defer fin()
 
-	mainStylesheet := Style()
-	if s, found := Context.cssStylesheet["main"]; found {
-		mainStylesheet = s
-	}
+	mainStylesheet := Context.cssStylesheet.GetTag(MainTag)
 
 	mainStylesheet.Push()
 	w.updateFunc()
