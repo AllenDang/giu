@@ -294,47 +294,6 @@ func (c *ContextMenuWidget) Build() {
 	}
 }
 
-var _ Widget = &DragIntWidget{}
-
-// DragIntWidget is a widget that allows to drag an integer value.
-type DragIntWidget struct {
-	label    ID
-	value    *int32
-	speed    float32
-	minValue int32
-	maxValue int32
-	format   string
-}
-
-// DragInt creates new DragIntWidget.
-func DragInt(label string, value *int32, minValue, maxValue int32) *DragIntWidget {
-	return &DragIntWidget{
-		label:    GenAutoID(label),
-		value:    value,
-		speed:    1.0,
-		minValue: minValue,
-		maxValue: maxValue,
-		format:   "%d",
-	}
-}
-
-// Speed sets speed of the dragging.
-func (d *DragIntWidget) Speed(speed float32) *DragIntWidget {
-	d.speed = speed
-	return d
-}
-
-// Format sets format of the value.
-func (d *DragIntWidget) Format(format string) *DragIntWidget {
-	d.format = format
-	return d
-}
-
-// Build implements Widget interface.
-func (d *DragIntWidget) Build() {
-	imgui.DragIntV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, 0)
-}
-
 var _ Widget = &ColumnWidget{}
 
 // ColumnWidget will place all widgets one by one vertically.
@@ -612,10 +571,11 @@ func (d *DummyWidget) Build() {
 
 // TabItemWidget is an item in TabBarWidget.
 type TabItemWidget struct {
-	label  string
-	open   *bool
-	flags  TabItemFlags
-	layout Layout
+	label        string
+	open         *bool
+	flags        TabItemFlags
+	layout       Layout
+	eventHandler *EventHandler
 }
 
 // TabItem creates new TabItem.
@@ -648,6 +608,12 @@ func (t *TabItemWidget) Flags(flags TabItemFlags) *TabItemWidget {
 	return t
 }
 
+// EventHandler allows to attach a custym EventHandler to the tab item in order to detect events on it.
+func (t *TabItemWidget) EventHandler(handler *EventHandler) *TabItemWidget {
+	t.eventHandler = handler
+	return t
+}
+
 // Layout is a layout displayed when item is opened.
 func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 	t.layout = Layout(widgets)
@@ -656,7 +622,13 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 
 // BuildTabItem executes tab item build steps.
 func (t *TabItemWidget) BuildTabItem() {
-	if imgui.BeginTabItemV(t.label, t.open, imgui.TabItemFlags(t.flags)) {
+	start := imgui.BeginTabItemV(t.label, t.open, imgui.TabItemFlags(t.flags))
+
+	if t.eventHandler != nil {
+		t.eventHandler.Build()
+	}
+
+	if start {
 		t.layout.Build()
 		imgui.EndTabItem()
 	}

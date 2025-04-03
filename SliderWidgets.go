@@ -244,3 +244,180 @@ func (sf *SliderFloatWidget) Build() {
 		sf.onChange()
 	}
 }
+
+var _ Widget = &DragIntWidget{}
+
+// DragIntWidget is a widget similar to SliderWidget, does not have a "conventional slider".
+// Instead, you can just drag the value left/right to change it.
+type DragIntWidget struct {
+	label    ID
+	value    *int32
+	speed    float32
+	minValue int32
+	maxValue int32
+	format   string
+	onChange func()
+	flags    SliderFlags
+}
+
+// DragInt creates new DragIntWidget.
+func DragInt(value *int32) *DragIntWidget {
+	return &DragIntWidget{
+		label:    GenAutoID("##DragInt"),
+		value:    value,
+		speed:    1.0,
+		minValue: 0,
+		maxValue: 0,
+		format:   "%d",
+	}
+}
+
+// Label allows to set widgets label.
+// IMPORTANT: label uses AutoID mechanism so your label should not be unique.
+func (d *DragIntWidget) Label(label string) *DragIntWidget {
+	d.label = GenAutoID(label)
+	return d
+}
+
+// Labelf sets formatted label.
+func (d *DragIntWidget) Labelf(format string, args ...any) *DragIntWidget {
+	return d.Label(fmt.Sprintf(format, args...))
+}
+
+// ID manually sets widget id.
+// This must be unique - use Label if you can.
+func (d *DragIntWidget) ID(id ID) *DragIntWidget {
+	d.label = id
+	return d
+}
+
+// Speed sets speed of the dragging.
+func (d *DragIntWidget) Speed(speed float32) *DragIntWidget {
+	d.speed = speed
+	return d
+}
+
+// MinValue sets minimum value of the drag.
+func (d *DragIntWidget) MinValue(minValue int32) *DragIntWidget {
+	d.minValue = minValue
+	return d
+}
+
+// MaxValue sets maximum value of the drag.
+func (d *DragIntWidget) MaxValue(maxValue int32) *DragIntWidget {
+	d.maxValue = maxValue
+	return d
+}
+
+// Format sets format of the value.
+func (d *DragIntWidget) Format(format string) *DragIntWidget {
+	d.format = format
+	return d
+}
+
+// Flags allows to set flags (in form of SliderFlags) for the Drag Int widget.
+func (d *DragIntWidget) Flags(f SliderFlags) *DragIntWidget {
+	d.flags = f
+	return d
+}
+
+// OnChange sets callback that will be executed when value is changed.
+func (d *DragIntWidget) OnChange(onChange func()) *DragIntWidget {
+	d.onChange = onChange
+	return d
+}
+
+// Build implements Widget interface.
+func (d *DragIntWidget) Build() {
+	if imgui.DragIntV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, imgui.SliderFlags(d.flags)) && d.onChange != nil {
+		d.onChange()
+	}
+}
+
+var _ Widget = &DragFloatWidget{}
+
+// DragFloatWidget is like DragIntWidget but for float32 values.
+type DragFloatWidget struct {
+	label    ID
+	value    *float32
+	speed    float32
+	minValue float32
+	maxValue float32
+	format   string
+	onChange func()
+	flags    SliderFlags
+}
+
+// DragFloat creates new DragFloatWidget.
+func DragFloat(value *float32) *DragFloatWidget {
+	return &DragFloatWidget{
+		label:    GenAutoID("##DragFloat"),
+		value:    value,
+		speed:    1.0,
+		minValue: 0,
+		maxValue: 0,
+		format:   "%d",
+	}
+}
+
+// Label allows to set widgets label.
+// IMPORTANT: label uses AutoID mechanism so your label should not be unique.
+func (d *DragFloatWidget) Label(label string) *DragFloatWidget {
+	d.label = GenAutoID(label)
+	return d
+}
+
+// Labelf sets formatted label.
+func (d *DragFloatWidget) Labelf(format string, args ...any) *DragFloatWidget {
+	return d.Label(fmt.Sprintf(format, args...))
+}
+
+// ID manually sets widget id.
+// This must be unique - use Label if you can.
+func (d *DragFloatWidget) ID(id ID) *DragFloatWidget {
+	d.label = id
+	return d
+}
+
+// Speed sets speed of the dragging.
+func (d *DragFloatWidget) Speed(speed float32) *DragFloatWidget {
+	d.speed = speed
+	return d
+}
+
+// MinValue sets minimum value of the drag.
+func (d *DragFloatWidget) MinValue(minValue float32) *DragFloatWidget {
+	d.minValue = minValue
+	return d
+}
+
+// MaxValue sets maximum value of the drag.
+func (d *DragFloatWidget) MaxValue(maxValue float32) *DragFloatWidget {
+	d.maxValue = maxValue
+	return d
+}
+
+// Format sets format of the value.
+func (d *DragFloatWidget) Format(format string) *DragFloatWidget {
+	d.format = format
+	return d
+}
+
+// Flags allows to set flags (in form of SliderFlags) for the Drag Int widget.
+func (d *DragFloatWidget) Flags(f SliderFlags) *DragFloatWidget {
+	d.flags = f
+	return d
+}
+
+// OnChange sets callback that will be executed when value is changed.
+func (d *DragFloatWidget) OnChange(onChange func()) *DragFloatWidget {
+	d.onChange = onChange
+	return d
+}
+
+// Build implements Widget interface.
+func (d *DragFloatWidget) Build() {
+	if imgui.DragFloatV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, imgui.SliderFlags(d.flags)) && d.onChange != nil {
+		d.onChange()
+	}
+}

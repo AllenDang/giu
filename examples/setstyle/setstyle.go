@@ -31,5 +31,11 @@ func loop() {
 
 func main() {
 	wnd := g.NewMasterWindow("Set Style", 400, 200, g.MasterWindowFlagsNotResizable)
+
+	// Setting a style for the entire window
+	style := g.Style()
+	style.SetColor(g.StyleColorWindowBg, color.RGBA{0x55, 0x55, 0x55, 255})
+	wnd.SetStyle(style)
+
 	wnd.Run(loop)
 }
