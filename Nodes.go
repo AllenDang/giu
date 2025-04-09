@@ -59,16 +59,16 @@ type nodeElement struct {
 type NodeEditorWidget struct {
 	nodes       []*NodeWidget
 	idCounter   int32
-	inputAlias  map[int32]string
-	outputAlias map[int32]string
+	inputAlias  map[string]int32
+	outputAlias map[string]int32
 	id          ID
 }
 
 func NodeEditor() *NodeEditorWidget {
 	return &NodeEditorWidget{
 		idCounter:   0,
-		inputAlias:  make(map[int32]string),
-		outputAlias: make(map[int32]string),
+		inputAlias:  make(map[string]int32),
+		outputAlias: make(map[string]int32),
 		id:          GenAutoID("NodeEditor"),
 	}
 }
@@ -199,8 +199,8 @@ func (n *NodeWidget) BuildNode(s *NodeEditorWidget) {
 
 type LinkWidget struct {
 	linkID  int32
-	startID int32
-	endID   int32
+	startID string
+	endID   string
 }
 
 func Link(startID, endID string) *LinkWidget {
