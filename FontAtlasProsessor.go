@@ -225,8 +225,8 @@ func (a *FontAtlas) registerDefaultFonts(fontInfos []FontInfo) {
 	}
 }
 
-// RegisterString register string to font atlas builder.
-// Note only register strings that will be displayed on the UI.
+// RegisterString is mainly used by widgets to register strings.
+// It could be disabled by AutoRegisterStrings.
 func (a *FontAtlas) RegisterString(str string) string {
 	if !a.autoRegisterStrings {
 		return str
@@ -235,6 +235,8 @@ func (a *FontAtlas) RegisterString(str string) string {
 	return a.PreRegisterString(str)
 }
 
+// PreRegisterString register string to font atlas builder.
+// Note only register strings that will be displayed on the UI.
 func (a *FontAtlas) PreRegisterString(str string) string {
 	for _, s := range str {
 		if _, ok := a.stringMap.Load(s); !ok {
