@@ -62,12 +62,14 @@ type FontAtlas struct {
 	extraFonts             []FontInfo
 	extraFontMap           map[string]*imgui.Font
 	fontSize               float32
+	autoRegisterStrings    bool
 }
 
 func newFontAtlas() *FontAtlas {
 	result := FontAtlas{
-		extraFontMap: make(map[string]*imgui.Font),
-		fontSize:     defaultFontSize,
+		extraFontMap:        make(map[string]*imgui.Font),
+		fontSize:            defaultFontSize,
+		autoRegisterStrings: true,
 	}
 
 	// Pre register numbers
@@ -123,6 +125,13 @@ func newFontAtlas() *FontAtlas {
 	}
 
 	return &result
+}
+
+// AutoRegisterStrings if enabled, all strings visible in the UI will be automatically registered and the font atlas will be rebuilt accordingly.
+// Generally it is recommended to keep this on as long as you are not using some giant strings (e.g. 23k lines in CodeEditor).
+// If you disable this, make sure to use PreRegisterString to register all runes you need (all calls to RegisterString* will be ignored!).
+func (a *FontAtlas) AutoRegisterStrings(b bool) {
+	a.autoRegisterStrings = b
 }
 
 // SetDefaultFontSize sets the default font size. Invoke this before MasterWindow.NewMasterWindow(..).
@@ -216,9 +225,19 @@ func (a *FontAtlas) registerDefaultFonts(fontInfos []FontInfo) {
 	}
 }
 
-// RegisterString register string to font atlas builder.
-// Note only register strings that will be displayed on the UI.
+// RegisterString is mainly used by widgets to register strings.
+// It could be disabled by AutoRegisterStrings.
 func (a *FontAtlas) RegisterString(str string) string {
+	if !a.autoRegisterStrings {
+		return str
+	}
+
+	return a.PreRegisterString(str)
+}
+
+// PreRegisterString register string to font atlas builder.
+// Note only register strings that will be displayed on the UI.
+func (a *FontAtlas) PreRegisterString(str string) string {
 	for _, s := range str {
 		if _, ok := a.stringMap.Load(s); !ok {
 			a.stringMap.Store(s, false)
