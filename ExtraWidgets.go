@@ -229,6 +229,24 @@ func RangeBuilder[S ~[]T, T any](id string, values S, builder func(int, T) Widge
 	return layout
 }
 
+func MapRangeBuilder[S map[T]U, T comparable, U any](id string, values S, builder func(T, U) Widget) Layout {
+	var layout Layout
+
+	layout = append(layout, Custom(func() { imgui.PushIDStr(id) }))
+
+	if len(values) > 0 && builder != nil {
+		for i, v := range values {
+			valueRef := v
+			widget := builder(i, valueRef)
+			layout = append(layout, widget)
+		}
+	}
+
+	layout = append(layout, Custom(func() { imgui.PopID() }))
+
+	return layout
+}
+
 type listBoxState struct {
 	selectedIndex int32
 }
