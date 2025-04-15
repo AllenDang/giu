@@ -229,6 +229,7 @@ func RangeBuilder[S ~[]T, T any](id string, values S, builder func(int, T) Widge
 	return layout
 }
 
+// MapRangeBuilder batch creates widgets with data from the given map, according to the given function. and renders only those which are visible.
 func MapRangeBuilder[S map[T]U, T comparable, U any](id string, values S, builder func(T, U) Widget) Layout {
 	var layout Layout
 
