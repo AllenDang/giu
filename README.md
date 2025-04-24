@@ -184,6 +184,15 @@ Fedora/Red Hat/CentOS
 sudo dnf install libX11-devel libXcursor-devel libXrandr-devel libXinerama-devel libXi-devel libGL-devel libXxf86vm-devel
 ```
 
+<tr>
+<td>
+Arch Linux
+<td>
+
+```bash
+sudo pacman -Sy glfw
+```
+
 </table>
 
 you may also need to install C/C++ compiler (like g++) if it isn't already installed. Follow go compiler prompts.
@@ -202,33 +211,51 @@ GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc CXX=aarch64-linux
 
 ## Deploying
 
-### Build MacOS version on MacOS
+### MacOS -> MacOS
 
 ```sh
 go build -ldflags "-s -w" .
 ```
 
-### Build Windows version on Windows
+### Windows -> Windows
 
 ```sh
 go build -ldflags "-s -w -H=windowsgui -extldflags=-static" .
 ```
 
-### Build Windows version on MacOS/Linux
+### MacOS/Linux -> Windows
 
-1. Install mingw-64.
+#### Install mingw-64.
 
-on Mac:
+<table>
+<tr>
+<td>
+Mac
+<td>
 
 ```sh
 brew install mingw-w64
 ```
 
-on Linux:
+<tr><td>
+Fedora/RHEL/CentOS
+<td>
 
 ```sh
 sudo dnf install mingw64-gcc mingw64-gcc-c++ mingw64-winpthreads-static
 ```
+
+<tr>
+<td>
+Arch Linux
+
+<td>
+
+```bash
+pacman -Sy mingw-w64-gcc
+```
+
+</table>
 
 2. Prepare and embed the application icon into the executable and build.
 
