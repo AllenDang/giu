@@ -158,21 +158,33 @@ go get github.com/AllenDang/giu
 
 1. Install mingw [download here](https://github.com/brechtsanders/winlibs_mingw/releases/latest). Thanks @alchem1ster!
 2. Add the binaries folder of mingw to the path (usually is _\mingw64\bin_).
-3. go get github.com/AllenDang/giu
+3. `go get github.com/AllenDang/giu` in your project
 
 ### Linux
 
 First you need to install the required dependencies:
 
+<table>
+
+<tr>
+<td>
+Debian/Ubuntu
+<td>
+
 ```bash
 sudo apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libglx-dev libgl1-mesa-dev libxxf86vm-dev
 ```
 
-on Red Hat based distributions:
+<tr>
+<td>
+Fedora/Red Hat/CentOS
+<td>
 
 ```bash
 sudo dnf install libX11-devel libXcursor-devel libXrandr-devel libXinerama-devel libXi-devel libGL-devel libXxf86vm-devel
 ```
+
+</table>
 
 you may also need to install C/C++ compiler (like g++) if it isn't already installed. Follow go compiler prompts.
 
