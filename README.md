@@ -1,12 +1,11 @@
 # giu
 
-<!--[![Join the chat at https://gitter.im/AllenDang-giu/community](https://badges.gitter.im/AllenDang-giu/community.svg)](https://gitter.im/AllenDang-giu/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)-->
 [![Go Report Card](https://goreportcard.com/badge/github.com/AllenDang/giu)](https://goreportcard.com/report/github.com/AllenDang/giu)
 ![Build Status](https://github.com/AllenDang/giu/actions/workflows/build.yml/badge.svg)
 [![Go Reference](https://pkg.go.dev/badge/github.com/AllenDang/giu.svg)](https://pkg.go.dev/github.com/AllenDang/giu)
 [![Discord Shield](https://discord.com/api/guilds/1306199225616306248/widget.png?style=shield)](https://discord.gg/Tt7eq6YKQS)
 
-A rapid cross-platform GUI framework for Go based on [Dear ImGui](https://github.com/ocornut/imgui) and the great Go binding [imgui-go](https://github.com/inkyblackness/imgui-go).
+A rapid cross-platform GUI framework for Go based on [Dear ImGui](https://github.com/ocornut/imgui) and the great Go binding [cimgui-go](https://github.com/inkyblackness/cimgui-go).
 
 Any contribution (features, widgets, tutorials, documents, etc...) is appreciated!
 
@@ -29,11 +28,15 @@ or just take a look at comments in code.
 ## Supported Platforms
 
 giu is built upon GLFW v3.3, so ideally giu could support all platforms that GLFW v3.3 supports.
+It is also restricted by cimgui-go (which at the moment builds only for linux, windows and mac).
 
 - Windows (Windows 10 x64 and Windows 11 x64)
 - macOS (macOS v10.15 and macOS Big Sur)
 - Linux (thanks remeh for testing it)
 - Raspberry Pi 3B (thanks sndvaps for testing it)
+
+> [!note]
+> Because giu relays on C++ code, you need to have C/C++ compiler set up.
 
 ## Features
 
@@ -48,9 +51,20 @@ Compared to other Dear ImGui golang bindings, giu has the following features:
 - Drop in usage; no need to implement render and platform.
 - OS clipboard support.
 
+<table border=0>
+<tr><td>
+
 ![Screenshot](https://github.com/AllenDang/giu/raw/master/examples/imguidemo/screenshot.png)
+
+<td>
+
 ![Screenshot1](https://github.com/AllenDang/giu/blob/master/screenshots/SqlPower.png)
+
+<td>
+
 ![Screenshot2](https://github.com/AllenDang/giu/blob/master/screenshots/Chart.png)
+
+</table>
 
 ## Hello world
 
