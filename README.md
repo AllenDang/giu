@@ -105,7 +105,7 @@ Here is the result:
 
 ![Helloworld](https://github.com/AllenDang/giu/raw/master/examples/helloworld/helloworld.png)
 
-## Quick introduction
+<details><summary><h2>Quick introduction</h2></summary>
 
 ### What is immediate mode GUI?
 
@@ -140,6 +140,8 @@ A `Child` is like a panel in other GUI frameworks - it can have a background col
 ### Widgets
 
 Check `examples/widgets` for all kinds of widgets.
+
+</details>
 
 ## Install
 
