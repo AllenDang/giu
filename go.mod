@@ -10,7 +10,7 @@ require (
 	github.com/faiface/mainthread v0.0.0-20171120011319-8b78f0a41ae3
 	github.com/gucio321/glm-go v0.0.0-20241029220517-e1b5a3e011c8
 	github.com/mazznoer/csscolorparser v0.1.5
-	github.com/napsy/go-css v0.0.0-20221107082635-4ed403047a64
+	github.com/napsy/go-css v0.0.0-20250508132236-8278eaa6e93f
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/sahilm/fuzzy v0.1.1
 	github.com/stretchr/testify v1.10.0
