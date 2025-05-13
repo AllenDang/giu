@@ -71,7 +71,7 @@ type GIUContext struct {
 	textureLoadingQueue *queue.Queue
 	textureFreeingQueue *queue.Queue
 
-	cssStylesheet cssStylesheet
+	cssStylesheet *CSSStylesheet
 
 	m *sync.Mutex
 }
@@ -79,7 +79,7 @@ type GIUContext struct {
 // CreateContext creates a new giu context.
 func CreateContext(b GIUBackend) *GIUContext {
 	result := GIUContext{
-		cssStylesheet:       make(cssStylesheet),
+		cssStylesheet:       CSS(),
 		backend:             b,
 		FontAtlas:           newFontAtlas(),
 		textureLoadingQueue: queue.New(),
@@ -110,6 +110,13 @@ func (c *GIUContext) IO() *imgui.IO {
 // SetDirty permits MasterWindow defering setting dirty states after it's render().
 func (c *GIUContext) SetDirty() {
 	c.dirty = true
+}
+
+// SetCSSStylesheet sets the "main" stylesheet for the context.
+// Setting it gives you 2 benefits:
+// - MasterWindow uses MainTag of this for its default theme.
+func (c *GIUContext) SetCSSStylesheet(css *CSSStylesheet) {
+	c.cssStylesheet = css
 }
 
 // cleanStates removes all states that were not marked as valid during rendering,
