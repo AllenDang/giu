@@ -99,7 +99,7 @@ func (n *NodeEditorWidget) Build() {
 
 	imnodes.EndNodeEditor()
 
-	potentialNewLink := Link(state.linksCounter, 0, 0)
+	potentialNewLink := NodeLink(state.linksCounter, 0, 0)
 	if imnodes.IsLinkCreatedBoolPtr(&potentialNewLink.startID, &potentialNewLink.endID) {
 		state.links = append(state.links, potentialNewLink)
 		state.linksCounter++
@@ -197,14 +197,14 @@ func (n *NodeWidget) BuildNode(s *NodeEditorWidget) {
 	imnodes.EndNode()
 }
 
-type LinkWidget struct {
+type NodeLinkWidget struct {
 	linkID  int32
 	startID string
 	endID   string
 }
 
-func Link(startID, endID string) *LinkWidget {
-	return &LinkWidget{
+func NodeLink(startID, endID string) *LinkWidget {
+	return &NodeLinkWidget{
 		startID: startID,
 		endID:   endID,
 	}
