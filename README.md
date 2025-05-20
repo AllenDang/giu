@@ -1,12 +1,11 @@
 # giu
 
-<!--[![Join the chat at https://gitter.im/AllenDang-giu/community](https://badges.gitter.im/AllenDang-giu/community.svg)](https://gitter.im/AllenDang-giu/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)-->
 [![Go Report Card](https://goreportcard.com/badge/github.com/AllenDang/giu)](https://goreportcard.com/report/github.com/AllenDang/giu)
 ![Build Status](https://github.com/AllenDang/giu/actions/workflows/build.yml/badge.svg)
 [![Go Reference](https://pkg.go.dev/badge/github.com/AllenDang/giu.svg)](https://pkg.go.dev/github.com/AllenDang/giu)
 [![Discord Shield](https://discord.com/api/guilds/1306199225616306248/widget.png?style=shield)](https://discord.gg/Tt7eq6YKQS)
 
-A rapid cross-platform GUI framework for Go based on [Dear ImGui](https://github.com/ocornut/imgui) and the great Go binding [imgui-go](https://github.com/inkyblackness/imgui-go).
+A rapid cross-platform GUI framework for Go based on [Dear ImGui](https://github.com/ocornut/imgui) and the great Go binding [cimgui-go](https://github.com/inkyblackness/cimgui-go).
 
 Any contribution (features, widgets, tutorials, documents, etc...) is appreciated!
 
@@ -29,11 +28,15 @@ or just take a look at comments in code.
 ## Supported Platforms
 
 giu is built upon GLFW v3.3, so ideally giu could support all platforms that GLFW v3.3 supports.
+It is also restricted by cimgui-go (which at the moment builds only for linux, windows and mac).
 
 - Windows (Windows 10 x64 and Windows 11 x64)
 - macOS (macOS v10.15 and macOS Big Sur)
 - Linux (thanks remeh for testing it)
 - Raspberry Pi 3B (thanks sndvaps for testing it)
+
+> [!note]
+> Because giu relays on C++ code, you need to have C/C++ compiler set up.
 
 ## Features
 
@@ -48,9 +51,20 @@ Compared to other Dear ImGui golang bindings, giu has the following features:
 - Drop in usage; no need to implement render and platform.
 - OS clipboard support.
 
+<table border=0>
+<tr><td>
+
 ![Screenshot](https://github.com/AllenDang/giu/raw/master/examples/imguidemo/screenshot.png)
+
+<td>
+
 ![Screenshot1](https://github.com/AllenDang/giu/blob/master/screenshots/SqlPower.png)
+
+<td>
+
 ![Screenshot2](https://github.com/AllenDang/giu/blob/master/screenshots/Chart.png)
+
+</table>
 
 ## Hello world
 
@@ -91,7 +105,7 @@ Here is the result:
 
 ![Helloworld](https://github.com/AllenDang/giu/raw/master/examples/helloworld/helloworld.png)
 
-## Quick introduction
+<details><summary><h2>Quick introduction</h2></summary>
 
 ### What is immediate mode GUI?
 
@@ -127,6 +141,8 @@ A `Child` is like a panel in other GUI frameworks - it can have a background col
 
 Check `examples/widgets` for all kinds of widgets.
 
+</details>
+
 ## Install
 
 The backend of giu depends on OpenGL 3.3, make sure your environment supports it (as far as I know, some Virtual Machines like VirtualBox doesn't support it).
@@ -142,21 +158,42 @@ go get github.com/AllenDang/giu
 
 1. Install mingw [download here](https://github.com/brechtsanders/winlibs_mingw/releases/latest). Thanks @alchem1ster!
 2. Add the binaries folder of mingw to the path (usually is _\mingw64\bin_).
-3. go get github.com/AllenDang/giu
+3. `go get github.com/AllenDang/giu` in your project
 
 ### Linux
 
 First you need to install the required dependencies:
 
+<table>
+
+<tr>
+<td>
+Debian/Ubuntu
+<td>
+
 ```bash
 sudo apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libglx-dev libgl1-mesa-dev libxxf86vm-dev
 ```
 
-on Red Hat based distributions:
+<tr>
+<td>
+Fedora/Red Hat/CentOS
+<td>
 
 ```bash
 sudo dnf install libX11-devel libXcursor-devel libXrandr-devel libXinerama-devel libXi-devel libGL-devel libXxf86vm-devel
 ```
+
+<tr>
+<td>
+Arch Linux
+<td>
+
+```bash
+sudo pacman -Sy glfw
+```
+
+</table>
 
 you may also need to install C/C++ compiler (like g++) if it isn't already installed. Follow go compiler prompts.
 
@@ -174,33 +211,51 @@ GOOS=linux GOARCH=arm64 CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc CXX=aarch64-linux
 
 ## Deploying
 
-### Build MacOS version on MacOS
+### MacOS -> MacOS
 
 ```sh
 go build -ldflags "-s -w" .
 ```
 
-### Build Windows version on Windows
+### Windows -> Windows
 
 ```sh
 go build -ldflags "-s -w -H=windowsgui -extldflags=-static" .
 ```
 
-### Build Windows version on MacOS/Linux
+### MacOS/Linux -> Windows
 
-1. Install mingw-64.
+#### Install mingw-64.
 
-on Mac:
+<table>
+<tr>
+<td>
+Mac
+<td>
 
 ```sh
 brew install mingw-w64
 ```
 
-on Linux:
+<tr><td>
+Fedora/RHEL/CentOS
+<td>
 
 ```sh
 sudo dnf install mingw64-gcc mingw64-gcc-c++ mingw64-winpthreads-static
 ```
+
+<tr>
+<td>
+Arch Linux
+
+<td>
+
+```bash
+pacman -Sy mingw-w64-gcc
+```
+
+</table>
 
 2. Prepare and embed the application icon into the executable and build.
 

@@ -612,10 +612,11 @@ func (d *DummyWidget) Build() {
 
 // TabItemWidget is an item in TabBarWidget.
 type TabItemWidget struct {
-	label  string
-	open   *bool
-	flags  TabItemFlags
-	layout Layout
+	label        string
+	open         *bool
+	flags        TabItemFlags
+	layout       Layout
+	eventHandler *EventHandler
 }
 
 // TabItem creates new TabItem.
@@ -648,6 +649,12 @@ func (t *TabItemWidget) Flags(flags TabItemFlags) *TabItemWidget {
 	return t
 }
 
+// EventHandler allows to attach a custym EventHandler to the tab item in order to detect events on it.
+func (t *TabItemWidget) EventHandler(handler *EventHandler) *TabItemWidget {
+	t.eventHandler = handler
+	return t
+}
+
 // Layout is a layout displayed when item is opened.
 func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 	t.layout = widgets
@@ -656,10 +663,16 @@ func (t *TabItemWidget) Layout(widgets ...Widget) *TabItemWidget {
 
 // BuildTabItem executes tab item build steps.
 func (t *TabItemWidget) BuildTabItem() {
-	if imgui.BeginTabItemV(
+	start := imgui.BeginTabItemV(
 		Context.PrepareString(t.label),
 		t.open, imgui.TabItemFlags(t.flags),
-	) {
+	)
+
+	if t.eventHandler != nil {
+		t.eventHandler.Build()
+	}
+
+	if start {
 		t.layout.Build()
 		imgui.EndTabItem()
 	}

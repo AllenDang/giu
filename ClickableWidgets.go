@@ -162,8 +162,8 @@ type InvisibleButtonWidget struct {
 func InvisibleButton() *InvisibleButtonWidget {
 	return &InvisibleButtonWidget{
 		id:      GenAutoID("InvisibleButton"),
-		width:   0,
-		height:  0,
+		width:   Auto,
+		height:  Auto,
 		onClick: nil,
 	}
 }
@@ -206,6 +206,7 @@ type ImageButtonWidget struct {
 	bgColor      color.Color
 	tintColor    color.Color
 	onClick      func()
+	id           ID
 }
 
 // ImageButton  constructs image button widget.
@@ -220,7 +221,14 @@ func ImageButton(texture *Texture) *ImageButtonWidget {
 		bgColor:      colornames.Black,
 		tintColor:    colornames.White,
 		onClick:      nil,
+		id:           GenAutoID("ImageButton"),
 	}
+}
+
+// ID allows to manually set widget's id.
+func (b *ImageButtonWidget) ID(id ID) *ImageButtonWidget {
+	b.id = id
+	return b
 }
 
 // Build implements Widget interface.
@@ -228,6 +236,8 @@ func (b *ImageButtonWidget) Build() {
 	if b.texture == nil || b.texture.tex == nil {
 		return
 	}
+
+	imgui.PushIDStr(b.id.String())
 
 	if imgui.ImageButtonV(
 		fmt.Sprintf("%v", b.texture.tex.ID),
@@ -239,6 +249,8 @@ func (b *ImageButtonWidget) Build() {
 	) && b.onClick != nil {
 		b.onClick()
 	}
+
+	imgui.PopID()
 }
 
 // Size sets BUTTONS size.
@@ -343,7 +355,7 @@ func (b *ImageButtonWithRgbaWidget) Build() {
 			SetState(Context, b.id, &imageState{texture: tex})
 		})
 	} else {
-		b.ImageButtonWidget.texture = state.texture
+		b.texture = state.texture
 	}
 
 	b.ImageButtonWidget.Build()
@@ -570,5 +582,44 @@ func (t *TreeNodeWidget) Build() {
 		if (imgui.TreeNodeFlags(t.flags) & imgui.TreeNodeFlagsNoTreePushOnOpen) == 0 {
 			imgui.TreePop()
 		}
+	}
+}
+
+var _ Widget = &LinkWidget{}
+
+// LinkWidget is a clickable text fragment.
+type LinkWidget struct {
+	text    ID
+	onClick func()
+}
+
+// Link constructs link widget.
+func Link(text string) *LinkWidget {
+	return &LinkWidget{
+		text: GenAutoID(text),
+	}
+}
+
+// Linkf allows to add formatted link.
+func Linkf(format string, args ...any) *LinkWidget {
+	return Link(fmt.Sprintf(format, args...))
+}
+
+// ID allows to manually set widget's id (in this case - text). Baypasses GenAutoID mechanism in cae this is needed.
+func (l *LinkWidget) ID(id ID) *LinkWidget {
+	l.text = id
+	return l
+}
+
+// OnClick sets click callback.
+func (l *LinkWidget) OnClick(onClick func()) *LinkWidget {
+	l.onClick = onClick
+	return l
+}
+
+// Build implements Widget interface.
+func (l *LinkWidget) Build() {
+	if imgui.TextLink(Context.FontAtlas.RegisterString(l.text.String())) && l.onClick != nil {
+		l.onClick()
 	}
 }

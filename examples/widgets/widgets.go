@@ -59,6 +59,7 @@ func loop() {
 		),
 		g.Label("One line label"),
 		g.Label("Auto wrapped label with very long line...............................................this line should be wrapped.").Wrapped(true),
+		g.Link("I'm a link! Click me!").OnClick(func() { fmt.Println("Link clicked a") }),
 		g.Label("right/left click me"),
 		g.Event().
 			OnClick(g.MouseButtonLeft, func() { fmt.Println("I was left-clicked") }).
@@ -104,7 +105,11 @@ func loop() {
 		),
 
 		g.ProgressBar(0.8).Size(g.Auto, 0).Overlay("Progress"),
-		g.DragInt("DragInt", &dragInt, 0, 100),
+		g.DragInt(&dragInt).
+			Label("DragInt").
+			MinValue(0).
+			MaxValue(100).
+			OnChange(func() { fmt.Println(dragInt) }),
 		g.SliderInt(&dragInt, 0, 100).Label("Slider"),
 
 		g.Label("Vertical sliders"),
@@ -161,7 +166,9 @@ func loop() {
 			g.TabItem("Multiline Input").Layout(
 				g.Label("This is first tab with a multiline input text field"),
 				g.InputTextMultiline(&multiline).Size(g.Auto, g.Auto),
-			),
+			).EventHandler(g.Event().OnClick(g.MouseButtonLeft, func() {
+				fmt.Println("MultipleInput tab clicked!")
+			})),
 			g.TabItem("Tree").Layout(
 				g.TreeNode("TreeNode1").Flags(g.TreeNodeFlagsCollapsingHeader|g.TreeNodeFlagsDefaultOpen).Layout(
 					g.Custom(func() {

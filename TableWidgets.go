@@ -6,6 +6,15 @@ import (
 	"github.com/AllenDang/cimgui-go/imgui"
 )
 
+// SortDirection tells how the data are sorted (ascending/descending).
+type SortDirection byte
+
+// Possible sort directions.
+const (
+	SortAscending  SortDirection = 1
+	SortDescending SortDirection = 2
+)
+
 // TableRowWidget represents a row in a table.
 type TableRowWidget struct {
 	flags        TableRowFlags
@@ -71,6 +80,7 @@ type TableColumnWidget struct {
 	flags              TableColumnFlags
 	innerWidthOrWeight float32
 	userID             uint32
+	sortFn             func(SortDirection)
 }
 
 // TableColumn creates a new TableColumnWidget.
@@ -98,6 +108,12 @@ func (c *TableColumnWidget) InnerWidthOrWeight(w float32) *TableColumnWidget {
 // UserID sets the user id of the column.
 func (c *TableColumnWidget) UserID(id uint32) *TableColumnWidget {
 	c.userID = id
+	return c
+}
+
+// Sort allows you to set Sort function for that column. I talso could be used to detect click event.
+func (c *TableColumnWidget) Sort(s func(SortDirection)) *TableColumnWidget {
+	c.sortFn = s
 	return c
 }
 
@@ -199,19 +215,42 @@ func (t *TableWidget) Flags(flags TableFlags) *TableWidget {
 	return t
 }
 
-// Build implements Widget interface.
-func (t *TableWidget) Build() {
+// helper function to find out number of columns in the table.
+func (t *TableWidget) colCount() int {
 	colCount := len(t.columns)
+
 	if colCount == 0 {
 		if len(t.rows) > 0 {
-			colCount = len(t.rows[0].layout)
-		} else {
-			// No rows or columns, pass a single column to BeginTable
-			colCount = 1
+			return len(t.rows[0].layout)
 		}
+
+		// No rows or columns, pass a single column to BeginTable
+		return 1
 	}
 
-	if imgui.BeginTableV(t.id.String(), int32(colCount), imgui.TableFlags(t.flags), t.size, float32(t.innerWidth)) {
+	return colCount
+}
+
+func (t *TableWidget) handleSort() {
+	if specs := imgui.TableGetSortSpecs(); specs != nil {
+		if specs.SpecsDirty() {
+			// Evil bithack - we assume that array==pointer, so specs.Specs() points to the first element of that array.
+			cs := specs.Specs() // this in fact is []TableColumnSortSpecs but should be also (*TableColumnSortSpecs)
+			colIdx := cs.ColumnIndex()
+			sortDir := cs.SortDirection()
+
+			if col := t.columns[colIdx]; col.sortFn != nil {
+				col.sortFn(SortDirection(sortDir))
+			}
+
+			specs.SetSpecsDirty(false)
+		}
+	}
+}
+
+// Build implements Widget interface.
+func (t *TableWidget) Build() {
+	if imgui.BeginTableV(t.id.String(), int32(t.colCount()), imgui.TableFlags(t.flags), t.size, float32(t.innerWidth)) {
 		if t.freezeColumn >= 0 && t.freezeRow >= 0 {
 			imgui.TableSetupScrollFreeze(int32(t.freezeColumn), int32(t.freezeRow))
 		}
@@ -223,6 +262,10 @@ func (t *TableWidget) Build() {
 
 			if !t.noHeader {
 				imgui.TableHeadersRow()
+			}
+
+			if t.flags&TableFlags(imgui.TableFlagsSortable) != 0 {
+				t.handleSort()
 			}
 		}
 

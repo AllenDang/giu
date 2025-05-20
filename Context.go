@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/AllenDang/cimgui-go/backend"
-	"github.com/AllenDang/cimgui-go/backend/glfwbackend"
 	"github.com/AllenDang/cimgui-go/imgui"
 	"gopkg.in/eapache/queue.v1"
 )
@@ -51,7 +49,7 @@ type state struct {
 //
 //nolint:revive // I WANT TO CALL THIS GIUContext!
 type GIUContext struct {
-	backend backend.Backend[glfwbackend.GLFWWindowFlags]
+	backend GIUBackend
 
 	isRunning bool
 
@@ -74,15 +72,15 @@ type GIUContext struct {
 	textureLoadingQueue *queue.Queue
 	textureFreeingQueue *queue.Queue
 
-	cssStylesheet cssStylesheet
+	cssStylesheet *CSSStylesheet
 
 	m *sync.Mutex
 }
 
 // CreateContext creates a new giu context.
-func CreateContext(b backend.Backend[glfwbackend.GLFWWindowFlags]) *GIUContext {
+func CreateContext(b GIUBackend) *GIUContext {
 	result := GIUContext{
-		cssStylesheet:       make(cssStylesheet),
+		cssStylesheet:       CSS(),
 		backend:             b,
 		FontAtlas:           newFontAtlas(),
 		textureLoadingQueue: queue.New(),
@@ -126,6 +124,13 @@ func (c *GIUContext) PrepareString(str string) string {
 	return c.FontAtlas.RegisterString(str)
 }
 
+// SetCSSStylesheet sets the "main" stylesheet for the context.
+// Setting it gives you 2 benefits:
+// - MasterWindow uses MainTag of this for its default theme.
+func (c *GIUContext) SetCSSStylesheet(css *CSSStylesheet) {
+	c.cssStylesheet = css
+}
+
 // cleanStates removes all states that were not marked as valid during rendering,
 // then reset said flag before new usage
 // should always be called before first Get/Set state use in renderloop
@@ -160,7 +165,7 @@ func (c *GIUContext) cleanStates() {
 }
 
 // Backend returns the imgui.backend used by the context.
-func (c *GIUContext) Backend() backend.Backend[glfwbackend.GLFWWindowFlags] {
+func (c *GIUContext) Backend() GIUBackend {
 	return c.backend
 }
 

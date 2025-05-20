@@ -12,7 +12,7 @@ var _ Widget = &StyleSetter{}
 // StyleSetter is a user-friendly way to manage imgui styles.
 // For style IDs see StyleIDs.go, for detailed instruction of using styles, see Styles.go.
 type StyleSetter struct {
-	colors     map[StyleColorID]color.Color
+	colors     map[StyleColorID]imgui.Vec4
 	styles     map[StyleVarID]any
 	plotColors map[StylePlotColorID]color.Color
 	plotStyles map[StylePlotVarID]any
@@ -29,7 +29,7 @@ type StyleSetter struct {
 // Style initializes a style setter (see examples/setstyle).
 func Style() *StyleSetter {
 	var ss StyleSetter
-	ss.colors = make(map[StyleColorID]color.Color)
+	ss.colors = make(map[StyleColorID]imgui.Vec4)
 	ss.plotColors = make(map[StylePlotColorID]color.Color)
 	ss.styles = make(map[StyleVarID]any)
 	ss.plotStyles = make(map[StylePlotVarID]any)
@@ -37,8 +37,56 @@ func Style() *StyleSetter {
 	return &ss
 }
 
+// Add merges two StyleSetters.
+// Add puts other "on top" of ss, meaning, "other" is applied after "ss".
+// e.g. if both StyleSetters set imgui.StyleVarAlpha, the value from "other" will be used.
+// NOTE: font value "nil" is treated as "not set" and will not be changed if declared by other.
+// NOTE: true is preffered over false for disabled field.
+// NOTE: layout field will be reset.
+func (ss *StyleSetter) Add(other *StyleSetter) *StyleSetter {
+	if other == nil {
+		return ss
+	}
+
+	for k, v := range other.colors {
+		ss.colors[k] = v
+	}
+
+	for k, v := range other.styles {
+		ss.styles[k] = v
+	}
+
+	for k, v := range other.plotColors {
+		ss.plotColors[k] = v
+	}
+
+	for k, v := range other.plotStyles {
+		ss.plotStyles[k] = v
+	}
+
+	if other.font != nil {
+		ss.font = other.font
+	}
+
+	if other.disabled {
+		ss.disabled = true
+	}
+
+	ss.layout = nil
+
+	return ss
+}
+
 // SetColor sets colorID's color.
 func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.Color) *StyleSetter {
+	ss.colors[colorID] = ToVec4Color(col)
+	return ss
+}
+
+// SetColorVec4 is a lower-level function to set colors.
+// It omits color conversion for e.g. better performance/compatibility.
+// Historically was introduced to easily convert DefaulutTheme from using imgui api to StyleSetter.
+func (ss *StyleSetter) SetColorVec4(colorID StyleColorID, col imgui.Vec4) *StyleSetter {
 	ss.colors[colorID] = col
 	return ss
 }
@@ -198,7 +246,7 @@ func (ss *StyleSetter) Plot() {
 func (ss *StyleSetter) Push() {
 	// Push colors
 	for k, v := range ss.colors {
-		imgui.PushStyleColorVec4(imgui.Col(k), ToVec4Color(v))
+		imgui.PushStyleColorVec4(imgui.Col(k), v)
 	}
 
 	// Push plot colors

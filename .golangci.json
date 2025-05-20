@@ -1,0 +1,106 @@
+{
+  "formatters": {
+    "enable": [
+      "gofmt",
+      "gofumpt",
+      "goimports"
+    ],
+    "exclusions": {
+      "generated": "lax",
+      "paths": [
+        ".github",
+        "build",
+        "web"
+      ]
+    },
+    "settings": {
+      "goimports": {
+        "local-prefixes": [
+          "github.com/AllenDang/giu"
+        ]
+      }
+    }
+  },
+  "issues": {
+    "max-same-issues": 0
+  },
+  "linters": {
+    "default": "none",
+    "enable": [
+      "asciicheck",
+      "bodyclose",
+      "copyloopvar",
+      "dogsled",
+      "dupl",
+      "err113",
+      "errcheck",
+      "errorlint",
+      "forcetypeassert",
+      "gocognit",
+      "goconst",
+      "gocritic",
+      "gocyclo",
+      "godot",
+      "goheader",
+      "goprintffuncname",
+      "govet",
+      "importas",
+      "ineffassign",
+      "makezero",
+      "misspell",
+      "nakedret",
+      "nilerr",
+      "nolintlint",
+      "prealloc",
+      "predeclared",
+      "promlinter",
+      "reassign",
+      "revive",
+      "rowserrcheck",
+      "staticcheck",
+      "tagliatelle",
+      "testifylint",
+      "unconvert",
+      "unparam",
+      "unused",
+      "usestdlibvars",
+      "wastedassign",
+      "whitespace",
+      "wrapcheck",
+      "wsl"
+    ],
+    "exclusions": {
+      "generated": "lax",
+      "paths": [
+        ".github",
+        "build",
+        "web"
+      ]
+    },
+    "settings": {
+      "dupl": {
+        "threshold": 100
+      },
+      "goconst": {
+        "min-len": 2,
+        "min-occurrences": 2
+      },
+      "gocritic": {
+        "enabled-tags": [
+          "diagnostic",
+          "experimental",
+          "opinionated",
+          "performance",
+          "style"
+        ]
+      },
+      "gocyclo": {
+        "min-complexity": 15
+      },
+      "misspell": {
+        "locale": "US"
+      }
+    }
+  },
+  "version": "2"
+}

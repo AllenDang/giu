@@ -331,7 +331,7 @@ const (
 	//              // ColorEdit, ColorPicker: show vertical alpha bar/gradient in picker.
 	ColorEditFlagsAlphaBar ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaBar)
 	//              // ColorEdit, ColorPicker, ColorButton: display preview as a transparent color over a checkerboard, instead of opaque.
-	ColorEditFlagsAlphaPreview ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaPreview)
+	ColorEditFlagsAlphaPreview ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaPreviewHalf)
 	//              // ColorEdit, ColorPicker, ColorButton: display half opaque / half checkerboard, instead of opaque.
 	ColorEditFlagsAlphaPreviewHalf ColorEditFlags = ColorEditFlags(imgui.ColorEditFlagsAlphaPreviewHalf)
 	//              // (WIP) ColorEdit: Currently only disable 0.0f..1.0f limits in RGBA edition (note: you probably want to use ImGuiColorEditFlags_Float flag as well).
@@ -514,4 +514,18 @@ const (
 	PlotAxisFlagsLockMax       PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLockMax)
 	PlotAxisFlagsLock          PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLock)
 	PlotAxisFlagsNoDecorations PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoDecorations)
+)
+
+// PlotScale represents implot.Scale.
+type PlotScale implot.Scale
+
+const (
+	// PlotScaleLinear is a default linear scale.
+	PlotScaleLinear PlotScale = PlotScale(implot.ScaleLinear)
+	// PlotScaleTime is a date/time scale.
+	PlotScaleTime PlotScale = PlotScale(implot.ScaleTime)
+	// PlotScaleLog10 is a base 10 logarithm.
+	PlotScaleLog10 PlotScale = PlotScale(implot.ScaleLog10)
+	// PlotScaleSymLog is a symmetric log scale.
+	PlotScaleSymLog PlotScale = PlotScale(implot.ScaleSymLog)
 )
