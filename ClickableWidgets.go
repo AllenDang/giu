@@ -69,7 +69,7 @@ func (b *ButtonWidget) Build() {
 		defer imgui.EndDisabled()
 	}
 
-	if imgui.ButtonV(Context.FontAtlas.RegisterString(b.id.String()), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.ButtonV(Context.PrepareString(b.id.String()), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -141,7 +141,7 @@ func (b *SmallButtonWidget) OnClick(onClick func()) *SmallButtonWidget {
 
 // Build implements Widget interface.
 func (b *SmallButtonWidget) Build() {
-	if imgui.SmallButton(Context.FontAtlas.RegisterString(b.id.String())) && b.onClick != nil {
+	if imgui.SmallButton(Context.PrepareString(b.id.String())) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -393,7 +393,7 @@ func (c *CheckboxWidget) OnChange(onChange func()) *CheckboxWidget {
 
 // Build implements Widget interface.
 func (c *CheckboxWidget) Build() {
-	if imgui.Checkbox(Context.FontAtlas.RegisterString(c.text.String()), c.selected) && c.onChange != nil {
+	if imgui.Checkbox(Context.PrepareString(c.text.String()), c.selected) && c.onChange != nil {
 		c.onChange()
 	}
 }
@@ -426,7 +426,7 @@ func (r *RadioButtonWidget) OnChange(onChange func()) *RadioButtonWidget {
 
 // Build implements Widget interface.
 func (r *RadioButtonWidget) Build() {
-	if imgui.RadioButtonBool(Context.FontAtlas.RegisterString(r.text.String()), r.active) && r.onChange != nil {
+	if imgui.RadioButtonBool(Context.PrepareString(r.text.String()), r.active) && r.onChange != nil {
 		r.onChange()
 	}
 }
@@ -501,7 +501,7 @@ func (s *SelectableWidget) Build() {
 		s.flags |= SelectableFlagsAllowDoubleClick
 	}
 
-	if imgui.SelectableBoolV(Context.FontAtlas.RegisterString(s.label.String()), s.selected, imgui.SelectableFlags(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
+	if imgui.SelectableBoolV(Context.PrepareString(s.label.String()), s.selected, imgui.SelectableFlags(s.flags), imgui.Vec2{X: s.width, Y: s.height}) && s.onClick != nil {
 		s.onClick()
 	}
 
@@ -526,7 +526,7 @@ type TreeNodeWidget struct {
 // TreeNode creates a new tree node widget.
 func TreeNode(label string) *TreeNodeWidget {
 	return &TreeNodeWidget{
-		label:        Context.FontAtlas.RegisterString(label),
+		label:        label,
 		flags:        0,
 		layout:       nil,
 		eventHandler: nil,
@@ -566,7 +566,7 @@ func (t *TreeNodeWidget) Layout(widgets ...Widget) *TreeNodeWidget {
 
 // Build implements Widget interface.
 func (t *TreeNodeWidget) Build() {
-	open := imgui.TreeNodeExStrV(t.label, imgui.TreeNodeFlags(t.flags))
+	open := imgui.TreeNodeExStrV(Context.PrepareString(t.label), imgui.TreeNodeFlags(t.flags))
 
 	if t.event != nil {
 		t.event()

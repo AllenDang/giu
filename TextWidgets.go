@@ -132,7 +132,7 @@ type BulletTextWidget struct {
 // BulletText creates bulletTextWidget.
 func BulletText(text string) *BulletTextWidget {
 	return &BulletTextWidget{
-		text: Context.FontAtlas.RegisterString(text),
+		text: Context.PrepareString(text),
 	}
 }
 
@@ -526,7 +526,7 @@ type LabelWidget struct {
 // Label constructs label widget.
 func Label(label string) *LabelWidget {
 	return &LabelWidget{
-		label:   Context.FontAtlas.RegisterString(label),
+		label:   Context.PrepareString(label),
 		wrapped: false,
 	}
 }
