@@ -240,7 +240,7 @@ func (sf *SliderFloatWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.SliderFloatV(Context.FontAtlas.RegisterString(sf.label.String()), sf.value, sf.minValue, sf.maxValue, sf.format, 1.0) && sf.onChange != nil {
+	if imgui.SliderFloatV(Context.PrepareString(sf.label.String()), sf.value, sf.minValue, sf.maxValue, sf.format, 1.0) && sf.onChange != nil {
 		sf.onChange()
 	}
 }
@@ -329,7 +329,7 @@ func (d *DragIntWidget) OnChange(onChange func()) *DragIntWidget {
 
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
-	if imgui.DragIntV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, imgui.SliderFlags(d.flags)) && d.onChange != nil {
+	if imgui.DragIntV(Context.PrepareString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, imgui.SliderFlags(d.flags)) && d.onChange != nil {
 		d.onChange()
 	}
 }

@@ -294,47 +294,6 @@ func (c *ContextMenuWidget) Build() {
 	}
 }
 
-var _ Widget = &DragIntWidget{}
-
-// DragIntWidget is a widget that allows to drag an integer value.
-type DragIntWidget struct {
-	label    ID
-	value    *int32
-	speed    float32
-	minValue int32
-	maxValue int32
-	format   string
-}
-
-// DragInt creates new DragIntWidget.
-func DragInt(label string, value *int32, minValue, maxValue int32) *DragIntWidget {
-	return &DragIntWidget{
-		label:    GenAutoID(label),
-		value:    value,
-		speed:    1.0,
-		minValue: minValue,
-		maxValue: maxValue,
-		format:   "%d",
-	}
-}
-
-// Speed sets speed of the dragging.
-func (d *DragIntWidget) Speed(speed float32) *DragIntWidget {
-	d.speed = speed
-	return d
-}
-
-// Format sets format of the value.
-func (d *DragIntWidget) Format(format string) *DragIntWidget {
-	d.format = format
-	return d
-}
-
-// Build implements Widget interface.
-func (d *DragIntWidget) Build() {
-	imgui.DragIntV(Context.PrepareString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, 0)
-}
-
 var _ Widget = &ColumnWidget{}
 
 // ColumnWidget will place all widgets one by one vertically.
