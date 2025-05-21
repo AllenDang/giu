@@ -310,16 +310,21 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			}
 
 			// Scale font size with DPI scale factor
-			scaleFont(&fontInfo)
+			scaledSize := scaleFont(fontInfo)
 
 			if len(fontInfo.fontByte) == 0 {
-				fonts.AddFontFromFileTTFV(fontInfo.fontPath, fontInfo.size, fontConfig, ranges.Data())
+				fonts.AddFontFromFileTTFV(
+					fontInfo.fontPath,
+					scaledSize,
+					fontConfig,
+					ranges.Data(),
+				)
 			} else {
 				fontConfig.SetFontDataOwnedByAtlas(false)
 				fonts.AddFontFromMemoryTTFV(
 					uintptr(unsafe.Pointer(utils.SliceToPtr(fontInfo.fontByte))),
 					int32(len(fontInfo.fontByte)),
-					fontInfo.size,
+					scaledSize,
 					fontConfig,
 					ranges.Data(),
 				)
@@ -337,14 +342,14 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	// Add extra fonts
 	for _, fontInfo := range a.extraFonts {
 		// Scale font size with DPI scale factor
-		scaleFont(&fontInfo)
+		scaledSize := scaleFont(fontInfo)
 
 		// Store imgui.Font for PushFont
 		var f *imgui.Font
 		if len(fontInfo.fontByte) == 0 {
 			f = fonts.AddFontFromFileTTFV(
 				fontInfo.fontPath,
-				fontInfo.size,
+				scaledSize,
 				imgui.NewFontConfig(),
 				ranges.Data(),
 			)
@@ -354,7 +359,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			f = fonts.AddFontFromMemoryTTFV(
 				uintptr(unsafe.Pointer(utils.SliceToPtr(fontInfo.fontByte))),
 				int32(len(fontInfo.fontByte)),
-				fontInfo.size,
+				scaledSize,
 				fontConfig,
 				ranges.Data(),
 			)
@@ -371,7 +376,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	a.shouldRebuildFontAtlas = false
 }
 
-func scaleFont(fontInfo *FontInfo) {
+func scaleFont(fontInfo FontInfo) (newSize float32) {
 	xScale, _ := Context.backend.ContentScale()
-	fontInfo.size *= xScale
+	return fontInfo.size * xScale
 }
