@@ -3,6 +3,7 @@ package giu
 import (
 	"fmt"
 	"image/color"
+	"math"
 
 	"github.com/AllenDang/cimgui-go/imgui"
 )
@@ -178,6 +179,16 @@ func (cc *ComboCustomWidget) Build() {
 	}
 }
 
+var _ Disposable = &comboFilterState{}
+
+type comboFilterState struct {
+	filter *imgui.TextFilter
+}
+
+func (c *comboFilterState) Dispose() {
+	// noop
+}
+
 var _ Widget = &ComboWidget{}
 
 // ComboWidget is a wrapper of ComboCustomWidget.
@@ -189,6 +200,8 @@ type ComboWidget struct {
 	selected     *int32
 	width        float32
 	flags        ComboFlags
+	filter       bool
+	filterLabel  ID
 	onChange     func()
 }
 
@@ -201,6 +214,8 @@ func Combo(label, previewValue string, items []string, selected *int32) *ComboWi
 		selected:     selected,
 		flags:        0,
 		width:        0,
+		filter:       false,
+		filterLabel:  GenAutoID("##Filter"),
 		onChange:     nil,
 	}
 }
@@ -214,6 +229,12 @@ func (c *ComboWidget) ID(id ID) *ComboWidget {
 // Flags allows to set combo flags (see Flags.go).
 func (c *ComboWidget) Flags(flags ComboFlags) *ComboWidget {
 	c.flags = flags
+	return c
+}
+
+// Filter enables/disables the combo filter.
+func (c *ComboWidget) Filter(filter bool) *ComboWidget {
+	c.filter = filter
 	return c
 }
 
@@ -236,8 +257,27 @@ func (c *ComboWidget) Build() {
 		defer imgui.PopItemWidth()
 	}
 
+	var state *comboFilterState
+	if c.filter {
+		if state = GetState[comboFilterState](Context, c.label); state == nil {
+			state = &comboFilterState{filter: imgui.NewEmptyTextFilter()}
+			SetState(Context, c.label, state)
+		}
+	}
+
 	if imgui.BeginComboV(Context.PrepareString(c.label.String()), c.previewValue, imgui.ComboFlags(c.flags)) {
+		if imgui.IsWindowAppearing() {
+			imgui.SetKeyboardFocusHere()
+			state.filter.Clear()
+		}
+
+		state.filter.DrawV(Context.PrepareString(c.filterLabel.String()), -math.SmallestNonzeroFloat32)
+
 		for i, item := range c.items {
+			if c.filter && !state.filter.PassFilter(item) {
+				continue
+			}
+
 			if imgui.SelectableBool(fmt.Sprintf("%s##%d", Context.PrepareString(item), i)) {
 				*c.selected = int32(i)
 				if c.onChange != nil {
