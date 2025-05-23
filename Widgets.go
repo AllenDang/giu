@@ -266,12 +266,14 @@ func (c *ComboWidget) Build() {
 	}
 
 	if imgui.BeginComboV(Context.PrepareString(c.label.String()), c.previewValue, imgui.ComboFlags(c.flags)) {
-		if imgui.IsWindowAppearing() {
-			imgui.SetKeyboardFocusHere()
-			state.filter.Clear()
-		}
+		if c.filter {
+			if imgui.IsWindowAppearing() {
+				imgui.SetKeyboardFocusHere()
+				state.filter.Clear()
+			}
 
-		state.filter.DrawV(Context.PrepareString(c.filterLabel.String()), -math.SmallestNonzeroFloat32)
+			state.filter.DrawV(Context.PrepareString(c.filterLabel.String()), -math.SmallestNonzeroFloat32)
+		}
 
 		for i, item := range c.items {
 			if c.filter && !state.filter.PassFilter(item) {
