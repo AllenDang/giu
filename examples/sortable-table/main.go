@@ -22,7 +22,7 @@ func rebuildColumns() {
 
 func loop() {
 	giu.SingleWindow().Layout(
-		giu.Table().Flags(giu.TableFlagsSortable).Columns(
+		giu.Table().Flags(giu.TableFlagsSortable|giu.TableFlagsResizable).Columns(
 			giu.TableColumn("Col 1").Sort(func(s giu.SortDirection) {
 				fmt.Println("sorting col 1", s)
 				switch s {
@@ -41,6 +41,7 @@ func loop() {
 
 func main() {
 	wnd := giu.NewMasterWindow("Table sorting", 640, 480, 0)
+	wnd.SetUserFile("giu.ini")
 
 	rebuildColumns()
 
