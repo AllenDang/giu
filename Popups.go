@@ -1,19 +1,46 @@
 package giu
 
 import (
+	"fmt"
+
 	"github.com/AllenDang/cimgui-go/imgui"
 )
 
 // OpenPopup opens a popup with specified id.
-// NOTE: you need to build this popup first (see Pop(Modal)Widget).
 func OpenPopup(name string) {
-	imgui.OpenPopupStr(name)
+	SetState[popupState](Context, popupStateID(name), &popupState{open: true})
 }
 
 // CloseCurrentPopup closes currently opened popup.
 // If no popups opened, no action will be taken.
 func CloseCurrentPopup() {
 	imgui.CloseCurrentPopup()
+}
+
+func popupStateID(name string) ID {
+	return ID(fmt.Sprintf("%s##state", name))
+}
+
+func applyPopupState(name string) {
+	var state *popupState
+	if state = GetState[popupState](Context, popupStateID(name)); state == nil {
+		state = &popupState{open: false}
+	}
+
+	if state.open {
+		imgui.OpenPopupStr(name)
+		SetState[popupState](Context, popupStateID(name), &popupState{open: false})
+	}
+}
+
+var _ Disposable = &popupState{}
+
+type popupState struct {
+	open bool
+}
+
+func (s *popupState) Dispose() {
+	// noop
 }
 
 var _ Widget = &PopupWidget{}
@@ -49,6 +76,8 @@ func (p *PopupWidget) Layout(widgets ...Widget) *PopupWidget {
 
 // Build implements Widget interface.
 func (p *PopupWidget) Build() {
+	applyPopupState(p.name)
+
 	if imgui.BeginPopupV(p.name, imgui.WindowFlags(p.flags)) {
 		p.layout.Build()
 		imgui.EndPopup()
@@ -98,6 +127,8 @@ func (p *PopupModalWidget) Layout(widgets ...Widget) *PopupModalWidget {
 
 // Build implements Widget interface.
 func (p *PopupModalWidget) Build() {
+	applyPopupState(p.name)
+
 	if imgui.BeginPopupModalV(p.name, p.open, imgui.WindowFlags(p.flags)) {
 		p.layout.Build()
 		imgui.EndPopup()
