@@ -21,3 +21,6 @@
 vendor/
 
 /cmd/gmdeploy/gmdeploy
+
+# User file (imgui.ini equivalent)
+/giu.ini

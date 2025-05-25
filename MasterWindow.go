@@ -77,9 +77,6 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 	// TODO: removed io.SetConfigFlags(imgui.BackendFlagsRendererHasVtxOffset)
 	io.SetBackendFlags(imgui.BackendFlagsRendererHasVtxOffset)
 
-	// Disable imgui.ini
-	io.SetIniFilename("")
-
 	currentBackend, err := backend.CreateBackend(NewGLFWBackend())
 	if err != nil && !errors.Is(err, backend.CExposerError) {
 		panic(err)
@@ -98,6 +95,9 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 		ctx:        Context,
 		theme:      DefaultTheme(),
 	}
+
+	// Disable imgui.ini
+	mw.SetUserFile("")
 
 	currentBackend.SetBeforeRenderHook(mw.beforeRender)
 	currentBackend.SetAfterRenderHook(mw.afterRender)
@@ -425,4 +425,11 @@ func (w *MasterWindow) SetInputHandler(handler InputHandler) {
 // See examples/issue-501.
 func (w *MasterWindow) SetAdditionalInputHandlerCallback(cb InputHandlerHandleCallback) {
 	w.additionalInputCallback = cb
+}
+
+// SetUserFile sets the path to the .ini file which saves the user preferences (e.g. subwindow positions, table column widths, etc.).
+// Provide an empty string to disable it. This is the default.
+// See examples/sortable-table.
+func (w *MasterWindow) SetUserFile(path string) {
+	w.io.SetIniFilename(path)
 }
