@@ -229,6 +229,12 @@ go build -ldflags "-s -w -H=windowsgui -extldflags=-static" .
 
 > [!warning]
 > You must use mingw32-w64 version **v12.0.0 or later**!
+>
+> Otherwise you'll get
+> ```console
+> undefined reference to `__imp_isblank'
+> ```
+>
 > <details><summary>Explaination</summary>
 > 
 > From https://www.mingw-w64.org/changelog/:
