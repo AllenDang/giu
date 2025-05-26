@@ -16,8 +16,8 @@ const (
 	_StyleColorIDLowerName_2 = "plot-lines-colorplot-lines-hovered-colorplot-histogram-colorplot-histogram-hovered-colortable-header-background-colortable-border-strong-colortable-border-light-colortable-row-background-colortable-row-alternate-background-color"
 	_StyleColorIDName_3      = "text-selected-background-colordrag-drop-target-color"
 	_StyleColorIDLowerName_3 = "text-selected-background-colordrag-drop-target-color"
-	_StyleColorIDName_4      = "navigation-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
-	_StyleColorIDLowerName_4 = "navigation-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
+	_StyleColorIDName_4      = "windowing-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
+	_StyleColorIDLowerName_4 = "windowing-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
 )
 
 var (
@@ -25,7 +25,7 @@ var (
 	_StyleColorIDIndex_1 = [...]uint8{0, 19, 45}
 	_StyleColorIDIndex_2 = [...]uint8{0, 16, 40, 60, 88, 117, 142, 166, 192, 228}
 	_StyleColorIDIndex_3 = [...]uint8{0, 30, 52}
-	_StyleColorIDIndex_4 = [...]uint8{0, 26, 56, 89}
+	_StyleColorIDIndex_4 = [...]uint8{0, 25, 55, 88}
 )
 
 func (i StyleColorID) String() string {
@@ -102,12 +102,12 @@ func _StyleColorIDNoOp() {
 	_ = x[StyleColorTableRowBgAlt-(50)]
 	_ = x[StyleColorTextSelectedBg-(52)]
 	_ = x[StyleColorDragDropTarget-(53)]
-	_ = x[StyleColorNavHighlight-(55)]
+	_ = x[StyleColorNavWindowingHighlight-(55)]
 	_ = x[StyleColorNavWindowingDimBg-(56)]
 	_ = x[StyleColorModalWindowDimBg-(57)]
 }
 
-var _StyleColorIDValues = []StyleColorID{StyleColorText, StyleColorTextDisabled, StyleColorWindowBg, StyleColorChildBg, StyleColorPopupBg, StyleColorBorder, StyleColorBorderShadow, StyleColorFrameBg, StyleColorFrameBgHovered, StyleColorFrameBgActive, StyleColorTitleBg, StyleColorTitleBgActive, StyleColorTitleBgCollapsed, StyleColorMenuBarBg, StyleColorScrollbarBg, StyleColorScrollbarGrab, StyleColorScrollbarGrabHovered, StyleColorScrollbarGrabActive, StyleColorCheckMark, StyleColorSliderGrab, StyleColorSliderGrabActive, StyleColorButton, StyleColorButtonHovered, StyleColorButtonActive, StyleColorHeader, StyleColorHeaderHovered, StyleColorHeaderActive, StyleColorSeparator, StyleColorSeparatorHovered, StyleColorSeparatorActive, StyleColorResizeGrip, StyleColorResizeGripHovered, StyleColorResizeGripActive, StyleColorTabHovered, StyleColorTab, StyleColorTabActive, StyleColorTabUnfocused, StyleColorTabUnfocusedActive, StyleColorPlotLines, StyleColorPlotLinesHovered, StyleColorPlotHistogram, StyleColorPlotHistogramHovered, StyleColorTableHeaderBg, StyleColorTableBorderStrong, StyleColorTableBorderLight, StyleColorTableRowBg, StyleColorTableRowBgAlt, StyleColorTextSelectedBg, StyleColorDragDropTarget, StyleColorNavHighlight, StyleColorNavWindowingDimBg, StyleColorModalWindowDimBg}
+var _StyleColorIDValues = []StyleColorID{StyleColorText, StyleColorTextDisabled, StyleColorWindowBg, StyleColorChildBg, StyleColorPopupBg, StyleColorBorder, StyleColorBorderShadow, StyleColorFrameBg, StyleColorFrameBgHovered, StyleColorFrameBgActive, StyleColorTitleBg, StyleColorTitleBgActive, StyleColorTitleBgCollapsed, StyleColorMenuBarBg, StyleColorScrollbarBg, StyleColorScrollbarGrab, StyleColorScrollbarGrabHovered, StyleColorScrollbarGrabActive, StyleColorCheckMark, StyleColorSliderGrab, StyleColorSliderGrabActive, StyleColorButton, StyleColorButtonHovered, StyleColorButtonActive, StyleColorHeader, StyleColorHeaderHovered, StyleColorHeaderActive, StyleColorSeparator, StyleColorSeparatorHovered, StyleColorSeparatorActive, StyleColorResizeGrip, StyleColorResizeGripHovered, StyleColorResizeGripActive, StyleColorTabHovered, StyleColorTab, StyleColorTabActive, StyleColorTabUnfocused, StyleColorTabUnfocusedActive, StyleColorPlotLines, StyleColorPlotLinesHovered, StyleColorPlotHistogram, StyleColorPlotHistogramHovered, StyleColorTableHeaderBg, StyleColorTableBorderStrong, StyleColorTableBorderLight, StyleColorTableRowBg, StyleColorTableRowBgAlt, StyleColorTextSelectedBg, StyleColorDragDropTarget, StyleColorNavWindowingHighlight, StyleColorNavWindowingDimBg, StyleColorModalWindowDimBg}
 
 var _StyleColorIDNameToValueMap = map[string]StyleColorID{
 	_StyleColorIDName_0[0:5]:          StyleColorText,
@@ -208,12 +208,12 @@ var _StyleColorIDNameToValueMap = map[string]StyleColorID{
 	_StyleColorIDLowerName_3[0:30]:    StyleColorTextSelectedBg,
 	_StyleColorIDName_3[30:52]:        StyleColorDragDropTarget,
 	_StyleColorIDLowerName_3[30:52]:   StyleColorDragDropTarget,
-	_StyleColorIDName_4[0:26]:         StyleColorNavHighlight,
-	_StyleColorIDLowerName_4[0:26]:    StyleColorNavHighlight,
-	_StyleColorIDName_4[26:56]:        StyleColorNavWindowingDimBg,
-	_StyleColorIDLowerName_4[26:56]:   StyleColorNavWindowingDimBg,
-	_StyleColorIDName_4[56:89]:        StyleColorModalWindowDimBg,
-	_StyleColorIDLowerName_4[56:89]:   StyleColorModalWindowDimBg,
+	_StyleColorIDName_4[0:25]:         StyleColorNavWindowingHighlight,
+	_StyleColorIDLowerName_4[0:25]:    StyleColorNavWindowingHighlight,
+	_StyleColorIDName_4[25:55]:        StyleColorNavWindowingDimBg,
+	_StyleColorIDLowerName_4[25:55]:   StyleColorNavWindowingDimBg,
+	_StyleColorIDName_4[55:88]:        StyleColorModalWindowDimBg,
+	_StyleColorIDLowerName_4[55:88]:   StyleColorModalWindowDimBg,
 }
 
 var _StyleColorIDNames = []string{
@@ -266,9 +266,9 @@ var _StyleColorIDNames = []string{
 	_StyleColorIDName_2[192:228],
 	_StyleColorIDName_3[0:30],
 	_StyleColorIDName_3[30:52],
-	_StyleColorIDName_4[0:26],
-	_StyleColorIDName_4[26:56],
-	_StyleColorIDName_4[56:89],
+	_StyleColorIDName_4[0:25],
+	_StyleColorIDName_4[25:55],
+	_StyleColorIDName_4[55:88],
 }
 
 // StyleColorIDString retrieves an enum value from the enum constants string name.
