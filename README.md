@@ -227,6 +227,30 @@ go build -ldflags "-s -w -H=windowsgui -extldflags=-static" .
 
 #### Install mingw-64.
 
+> [!warning]
+> You must use mingw32-w64 version **v12.0.0 or later**!
+>
+> Otherwise you'll get
+> ```console
+> undefined reference to `__imp_isblank'
+> ```
+>
+> <details><summary>Explaination</summary>
+> 
+> From https://www.mingw-w64.org/changelog/:
+> 
+> > Important: UCRT is now the default CRT runtime instead of MSVCRT, check the mingw-w64-doc/howto-build/ucrt-vs-msvcrt.txt document for details. Both header set and CRT must be configured and built with the same settings consistently for proper functionality. Switching runtimes requires all libraries to be rebuilt, including GCC.
+> 
+> Currently, it is tested, that the following linux distros ship with the right version:
+> - Fedora (>= 42)
+> - Arch Linux
+> 
+> Generally if you have gcc 14+, it should work fine.
+> 
+> More details and discussion in [#992](https://github.com/AllenDang/giu/issues/992).
+> 
+> </details>
+
 <table>
 <tr>
 <td>
