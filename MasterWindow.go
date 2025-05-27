@@ -286,6 +286,11 @@ func (w *MasterWindow) SetStyle(ss *StyleSetter) {
 	w.theme = ss
 }
 
+// GetStyle returns the style for the master window.
+func (w *MasterWindow) GetStyle() *StyleSetter {
+	return w.theme.Add(Context.cssStylesheet.GetTag(MainTag))
+}
+
 // SetBgColor sets background color of master window.
 func (w *MasterWindow) SetBgColor(bgColor color.Color) {
 	const mask = 0xffff
