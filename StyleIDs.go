@@ -70,7 +70,6 @@ const (
 	StyleColorTableRowBgAlt         StyleColorID = StyleColorID(imgui.ColTableRowBgAlt)         // table-row-alternate-background-color
 	StyleColorTextSelectedBg        StyleColorID = StyleColorID(imgui.ColTextSelectedBg)        // text-selected-background-color
 	StyleColorDragDropTarget        StyleColorID = StyleColorID(imgui.ColDragDropTarget)        // drag-drop-target-color
-	StyleColorNavHighlight          StyleColorID = StyleColorID(imgui.ColNavWindowingHighlight) // navigation-highlight-color
 	StyleColorNavWindowingHighlight StyleColorID = StyleColorID(imgui.ColNavWindowingHighlight) // windowing-highlight-color
 	StyleColorNavWindowingDimBg     StyleColorID = StyleColorID(imgui.ColNavWindowingDimBg)     // windowing-dim-background-color
 	StyleColorModalWindowDimBg      StyleColorID = StyleColorID(imgui.ColModalWindowDimBg)      // modal-window-dim-background-color
