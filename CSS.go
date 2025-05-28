@@ -230,6 +230,11 @@ func (c *CSSTagWidget) Stylesheet(stylesheet *CSSStylesheet) *CSSTagWidget {
 	return c
 }
 
+// GetStyle returns the style for the tag.
+func (c *CSSTagWidget) GetStyle() *StyleSetter {
+	return c.stylesheet.GetTag(c.tag)
+}
+
 // To specifies a layout to which the style will be applied.
 func (c *CSSTagWidget) To(layout ...Widget) *CSSTagWidget {
 	c.layout = layout
@@ -241,5 +246,5 @@ func (c *CSSTagWidget) Build() {
 	// get style from context.
 	// if it doesn't exist Assert.
 	Assert(c.stylesheet.HasTag(c.tag), "CSSTagWidget", "Build", "CSS stylesheet doesn't contain tag: %s", c.tag)
-	c.stylesheet.GetTag(c.tag).To(c.layout).Build()
+	c.GetStyle().To(c.layout).Build()
 }

@@ -83,6 +83,11 @@ func (ss *StyleSetter) SetColor(colorID StyleColorID, col color.Color) *StyleSet
 	return ss
 }
 
+// GetColor returns the colorID's color.
+func (ss *StyleSetter) GetColor(colorID StyleColorID) color.Color {
+	return Vec4ToRGBA(ss.colors[colorID])
+}
+
 // SetColorVec4 is a lower-level function to set colors.
 // It omits color conversion for e.g. better performance/compatibility.
 // Historically was introduced to easily convert DefaulutTheme from using imgui api to StyleSetter.
@@ -97,6 +102,16 @@ func (ss *StyleSetter) SetStyle(varID StyleVarID, width, height float32) *StyleS
 	return ss
 }
 
+// GetStyle returns the width and height of StyleVarID.
+func (ss *StyleSetter) GetStyle(varID StyleVarID) (width, height float32) {
+	vec, ok := ss.styles[varID].(imgui.Vec2)
+	if ok {
+		width, height = vec.X, vec.Y
+	}
+
+	return
+}
+
 // SetStyleFloat sets styleVarID to float value.
 // NOTE: for float typed values see above in comments over
 // StyleVarID's comments.
@@ -105,16 +120,41 @@ func (ss *StyleSetter) SetStyleFloat(varID StyleVarID, value float32) *StyleSett
 	return ss
 }
 
+// GetStyleFloat returns the float value of StyleVarID.
+func (ss *StyleSetter) GetStyleFloat(varID StyleVarID) float32 {
+	value, ok := ss.styles[varID].(float32)
+	if !ok {
+		value = 0
+	}
+
+	return value
+}
+
 // SetPlotColor sets colorID's color.
 func (ss *StyleSetter) SetPlotColor(colorID StylePlotColorID, col color.Color) *StyleSetter {
 	ss.plotColors[colorID] = col
 	return ss
 }
 
-// SetPlotStyle sets stylePlotVarID to width and height.
+// GetPlotColor returns colorID's color.
+func (ss *StyleSetter) GetPlotColor(colorID StylePlotColorID) color.Color {
+	return ss.plotColors[colorID]
+}
+
+// SetPlotStyle sets StylePlotVarID to width and height.
 func (ss *StyleSetter) SetPlotStyle(varID StylePlotVarID, width, height float32) *StyleSetter {
 	ss.plotStyles[varID] = imgui.Vec2{X: width, Y: height}
 	return ss
+}
+
+// GetPlotStyle returns the width and height of StylePlotVarID.
+func (ss *StyleSetter) GetPlotStyle(varID StylePlotVarID) (width, height float32) {
+	vec, ok := ss.plotStyles[varID].(imgui.Vec2)
+	if ok {
+		width, height = vec.X, vec.Y
+	}
+
+	return
 }
 
 // SetPlotStyleFloat sets StylePlotVarID to float value.
@@ -123,6 +163,16 @@ func (ss *StyleSetter) SetPlotStyle(varID StylePlotVarID, width, height float32)
 func (ss *StyleSetter) SetPlotStyleFloat(varID StylePlotVarID, value float32) *StyleSetter {
 	ss.plotStyles[varID] = value
 	return ss
+}
+
+// GetPlotStyleFloat returns the float value of StylePlotVarID.
+func (ss *StyleSetter) GetPlotStyleFloat(varID StylePlotVarID) float32 {
+	value, ok := ss.plotStyles[varID].(float32)
+	if !ok {
+		value = 0
+	}
+
+	return value
 }
 
 // SetFont sets font.
