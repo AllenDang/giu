@@ -39,25 +39,24 @@ body:
     attributes:
       label: To Reproduce
       description: What should we do to reproduce the behavior?
-      placeholder: Steps which allows to reproduce the behavior
-      value: |
+      placeholder: |
         1. Run my demo
         2. will see the crash...
     validations:
       required: true
-  - type: dropdown
+  - type: input
     id: version
     attributes:
       label: Version
       description: What version of giu are you running?
-      options:
-        - master
-        - (latest, which?)
-        - v0.10.0
-        - v0.9.0
-        - v0.8.1
+      placeholder: e.g. v0.14.1, e79933c8e3e77e6e2ae417130d8f46fb4bd6a946
     validations:
       required: true
+  - type: markdown
+    attributes:
+      value: |
+        To extract giu version information, run `git rev-parse HEAD` in giu directory,
+        or find line starting with `github.com/AllenDang/giu` in your `go.mod` file.
   - type: input
     id: os
     attributes:
