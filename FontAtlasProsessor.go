@@ -15,6 +15,7 @@ import (
 
 const (
 	preRegisterString = " \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+	darwin            = "darwin"
 	windows           = "windows"
 	defaultFontSize   = 14
 )
@@ -77,7 +78,7 @@ func newFontAtlas() *FontAtlas {
 
 	// Pre-register fonts
 	switch runtime.GOOS {
-	case "darwin":
+	case darwin:
 		// English font
 		result.registerDefaultFont("Menlo", result.fontSize)
 		// Chinese font
@@ -377,6 +378,11 @@ func (a *FontAtlas) rebuildFontAtlas() {
 }
 
 func scaleFont(fontInfo FontInfo) (newSize float32) {
+	if runtime.GOOS == darwin {
+		return fontInfo.size // don't increase the font size; otherwise font gets mistakenly extra 2x on HiDPI displays
+	}
+
 	xScale, _ := Context.backend.ContentScale()
+
 	return fontInfo.size * xScale
 }
