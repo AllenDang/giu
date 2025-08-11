@@ -379,10 +379,10 @@ func (a *FontAtlas) rebuildFontAtlas() {
 
 func scaleFont(fontInfo FontInfo) (newSize float32) {
 	if runtime.GOOS == darwin {
-		// don't increase the font size; otherwise font gets mistakenly extra 2x on HiDPI displays
-		return fontInfo.size
+		return fontInfo.size // don't increase the font size; otherwise font gets mistakenly extra 2x on HiDPI displays
 	}
 
 	xScale, _ := Context.backend.ContentScale()
+
 	return fontInfo.size * xScale
 }
