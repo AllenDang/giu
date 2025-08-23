@@ -205,23 +205,25 @@ func (w *MasterWindow) beforeRender() {
 
 	Context.FontAtlas.rebuildFontAtlas()
 
-	// process texture load requests
-	if Context.textureLoadingQueue != nil && Context.textureLoadingQueue.Length() > 0 {
-		for Context.textureLoadingQueue.Length() > 0 {
-			request, ok := Context.textureLoadingQueue.Remove().(textureLoadRequest)
-			Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
-			NewTextureFromRgba(request.img, request.cb)
+	Context.WithLock(func() {
+		// process texture load requests
+		if Context.textureLoadingQueue != nil && Context.textureLoadingQueue.Length() > 0 {
+			for Context.textureLoadingQueue.Length() > 0 {
+				request, ok := Context.textureLoadingQueue.Remove().(textureLoadRequest)
+				Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
+				NewTextureFromRgba(request.img, request.cb)
+			}
 		}
-	}
 
-	// process texture free requests
-	if Context.textureFreeingQueue != nil && Context.textureFreeingQueue.Length() > 0 {
-		for Context.textureFreeingQueue.Length() > 0 {
-			request, ok := Context.textureFreeingQueue.Remove().(textureFreeRequest)
-			Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
-			request.tex.tex.Release()
+		// process texture free requests
+		if Context.textureFreeingQueue != nil && Context.textureFreeingQueue.Length() > 0 {
+			for Context.textureFreeingQueue.Length() > 0 {
+				request, ok := Context.textureFreeingQueue.Remove().(textureFreeRequest)
+				Assert(ok, "MasterWindow", "Run", "processing texture requests: wrong type of texture request")
+				request.tex.tex.Release()
+			}
 		}
-	}
+	})
 }
 
 func (w *MasterWindow) afterRender() {
