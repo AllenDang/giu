@@ -70,6 +70,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 	implot.CreateContext()
 	imnodes.CreateContext()
+	imnodes.StyleColorsDark()
 
 	io := imgui.CurrentIO()
 
