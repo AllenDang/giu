@@ -13,9 +13,9 @@ require (
 	github.com/napsy/go-css v1.0.0
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/sahilm/fuzzy v0.1.1
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 	golang.design/x/hotkey v0.4.1
-	golang.org/x/image v0.30.0
+	golang.org/x/image v0.31.0
 	gopkg.in/eapache/queue.v1 v1.1.0
 )
 
