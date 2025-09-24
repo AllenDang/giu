@@ -51,7 +51,7 @@ func ToTexture(texture *backend.Texture) *Texture {
 }
 
 // ID returns imgui.TextureID of the texture.
-func (t *Texture) ID() imgui.TextureID {
+func (t *Texture) ID() imgui.TextureRef {
 	if t.tex != nil {
 		return t.tex.ID
 	}
