@@ -56,5 +56,5 @@ func (t *Texture) ID() imgui.TextureRef {
 		return t.tex.ID
 	}
 
-	return 0
+	return *imgui.NewTextureRefNil()
 }

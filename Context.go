@@ -93,10 +93,6 @@ func CreateContext(b GIUBackend) *GIUContext {
 	if len(result.FontAtlas.defaultFonts) == 0 {
 		fonts := result.IO().Fonts()
 		fonts.AddFontDefault()
-		fontTextureImg, w, h, _ := fonts.GetTextureDataAsRGBA32()
-		tex := result.backend.CreateTexture(fontTextureImg, int(w), int(h))
-		fonts.SetTexID(tex)
-		fonts.SetTexReady(true)
 	} else {
 		result.FontAtlas.shouldRebuildFontAtlas = true
 	}
