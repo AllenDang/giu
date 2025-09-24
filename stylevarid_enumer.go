@@ -8,34 +8,40 @@ import (
 )
 
 const (
-	_StyleVarIDName_0      = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-minValue-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacingStyleVarCellPaddingscrollbar-sizescrollbar-roundinggrab-minValue-sizegrab-rounding"
-	_StyleVarIDLowerName_0 = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-minvalue-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacingstylevarcellpaddingscrollbar-sizescrollbar-roundinggrab-minvalue-sizegrab-rounding"
-	_StyleVarIDName_1      = "tab-rounding"
-	_StyleVarIDLowerName_1 = "tab-rounding"
-	_StyleVarIDName_2      = "StyleVarTabBarBorderSize"
-	_StyleVarIDLowerName_2 = "stylevartabbarbordersize"
-	_StyleVarIDName_3      = "button-text-alignselectable-text-alignStyleVarSeparatorTextBorderSizeStyleVarSeparatorTextAlignStyleVarSeparatorTextPaddingStyleVarDockingSeparatorSize"
-	_StyleVarIDLowerName_3 = "button-text-alignselectable-text-alignstylevarseparatortextbordersizestylevarseparatortextalignstylevarseparatortextpaddingstylevardockingseparatorsize"
+	_StyleVarIDName_0      = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-minValue-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacingStyleVarCellPaddingscrollbar-sizescrollbar-rounding"
+	_StyleVarIDLowerName_0 = "alphadisabled-alphawindow-paddingwindow-roundingwindow-border-sizewindow-minvalue-sizewindow-title-alignchild-roundingchild-border-sizepopup-roundingpopup-border-sizeframe-paddingframe-roundingframe-border-sizeitem-spacingitem-inner-spacingindent-spacingstylevarcellpaddingscrollbar-sizescrollbar-rounding"
+	_StyleVarIDName_1      = "grab-minValue-sizegrab-rounding"
+	_StyleVarIDLowerName_1 = "grab-minvalue-sizegrab-rounding"
+	_StyleVarIDName_2      = "tab-rounding"
+	_StyleVarIDLowerName_2 = "tab-rounding"
+	_StyleVarIDName_3      = "StyleVarTabBarBorderSize"
+	_StyleVarIDLowerName_3 = "stylevartabbarbordersize"
+	_StyleVarIDName_4      = "button-text-alignselectable-text-alignStyleVarSeparatorTextBorderSizeStyleVarSeparatorTextAlignStyleVarSeparatorTextPaddingStyleVarDockingSeparatorSize"
+	_StyleVarIDLowerName_4 = "button-text-alignselectable-text-alignstylevarseparatortextbordersizestylevarseparatortextalignstylevarseparatortextpaddingstylevardockingseparatorsize"
 )
 
 var (
-	_StyleVarIDIndex_0 = [...]uint16{0, 5, 19, 33, 48, 66, 86, 104, 118, 135, 149, 166, 179, 193, 210, 222, 240, 254, 273, 287, 305, 323, 336}
-	_StyleVarIDIndex_1 = [...]uint8{0, 12}
-	_StyleVarIDIndex_2 = [...]uint8{0, 24}
-	_StyleVarIDIndex_3 = [...]uint8{0, 17, 38, 69, 95, 123, 151}
+	_StyleVarIDIndex_0 = [...]uint16{0, 5, 19, 33, 48, 66, 86, 104, 118, 135, 149, 166, 179, 193, 210, 222, 240, 254, 273, 287, 305}
+	_StyleVarIDIndex_1 = [...]uint8{0, 18, 31}
+	_StyleVarIDIndex_2 = [...]uint8{0, 12}
+	_StyleVarIDIndex_3 = [...]uint8{0, 24}
+	_StyleVarIDIndex_4 = [...]uint8{0, 17, 38, 69, 95, 123, 151}
 )
 
 func (i StyleVarID) String() string {
 	switch {
-	case 0 <= i && i <= 21:
+	case 0 <= i && i <= 19:
 		return _StyleVarIDName_0[_StyleVarIDIndex_0[i]:_StyleVarIDIndex_0[i+1]]
-	case i == 23:
-		return _StyleVarIDName_1
-	case i == 25:
+	case 21 <= i && i <= 22:
+		i -= 21
+		return _StyleVarIDName_1[_StyleVarIDIndex_1[i]:_StyleVarIDIndex_1[i+1]]
+	case i == 24:
 		return _StyleVarIDName_2
-	case 29 <= i && i <= 34:
-		i -= 29
-		return _StyleVarIDName_3[_StyleVarIDIndex_3[i]:_StyleVarIDIndex_3[i+1]]
+	case i == 28:
+		return _StyleVarIDName_3
+	case 34 <= i && i <= 39:
+		i -= 34
+		return _StyleVarIDName_4[_StyleVarIDIndex_4[i]:_StyleVarIDIndex_4[i+1]]
 	default:
 		return fmt.Sprintf("StyleVarID(%d)", i)
 	}
@@ -65,16 +71,16 @@ func _StyleVarIDNoOp() {
 	_ = x[StyleVarCellPadding-(17)]
 	_ = x[StyleVarScrollbarSize-(18)]
 	_ = x[StyleVarScrollbarRounding-(19)]
-	_ = x[StyleVarGrabMinSize-(20)]
-	_ = x[StyleVarGrabRounding-(21)]
-	_ = x[StyleVarTabRounding-(23)]
-	_ = x[StyleVarTabBarBorderSize-(25)]
-	_ = x[StyleVarButtonTextAlign-(29)]
-	_ = x[StyleVarSelectableTextAlign-(30)]
-	_ = x[StyleVarSeparatorTextBorderSize-(31)]
-	_ = x[StyleVarSeparatorTextAlign-(32)]
-	_ = x[StyleVarSeparatorTextPadding-(33)]
-	_ = x[StyleVarDockingSeparatorSize-(34)]
+	_ = x[StyleVarGrabMinSize-(21)]
+	_ = x[StyleVarGrabRounding-(22)]
+	_ = x[StyleVarTabRounding-(24)]
+	_ = x[StyleVarTabBarBorderSize-(28)]
+	_ = x[StyleVarButtonTextAlign-(34)]
+	_ = x[StyleVarSelectableTextAlign-(35)]
+	_ = x[StyleVarSeparatorTextBorderSize-(36)]
+	_ = x[StyleVarSeparatorTextAlign-(37)]
+	_ = x[StyleVarSeparatorTextPadding-(38)]
+	_ = x[StyleVarDockingSeparatorSize-(39)]
 }
 
 var _StyleVarIDValues = []StyleVarID{StyleVarAlpha, StyleVarDisabledAlpha, StyleVarWindowPadding, StyleVarWindowRounding, StyleVarWindowBorderSize, StyleVarWindowMinSize, StyleVarWindowTitleAlign, StyleVarChildRounding, StyleVarChildBorderSize, StyleVarPopupRounding, StyleVarPopupBorderSize, StyleVarFramePadding, StyleVarFrameRounding, StyleVarFrameBorderSize, StyleVarItemSpacing, StyleVarItemInnerSpacing, StyleVarIndentSpacing, StyleVarCellPadding, StyleVarScrollbarSize, StyleVarScrollbarRounding, StyleVarGrabMinSize, StyleVarGrabRounding, StyleVarTabRounding, StyleVarTabBarBorderSize, StyleVarButtonTextAlign, StyleVarSelectableTextAlign, StyleVarSeparatorTextBorderSize, StyleVarSeparatorTextAlign, StyleVarSeparatorTextPadding, StyleVarDockingSeparatorSize}
@@ -120,26 +126,26 @@ var _StyleVarIDNameToValueMap = map[string]StyleVarID{
 	_StyleVarIDLowerName_0[273:287]: StyleVarScrollbarSize,
 	_StyleVarIDName_0[287:305]:      StyleVarScrollbarRounding,
 	_StyleVarIDLowerName_0[287:305]: StyleVarScrollbarRounding,
-	_StyleVarIDName_0[305:323]:      StyleVarGrabMinSize,
-	_StyleVarIDLowerName_0[305:323]: StyleVarGrabMinSize,
-	_StyleVarIDName_0[323:336]:      StyleVarGrabRounding,
-	_StyleVarIDLowerName_0[323:336]: StyleVarGrabRounding,
-	_StyleVarIDName_1[0:12]:         StyleVarTabRounding,
-	_StyleVarIDLowerName_1[0:12]:    StyleVarTabRounding,
-	_StyleVarIDName_2[0:24]:         StyleVarTabBarBorderSize,
-	_StyleVarIDLowerName_2[0:24]:    StyleVarTabBarBorderSize,
-	_StyleVarIDName_3[0:17]:         StyleVarButtonTextAlign,
-	_StyleVarIDLowerName_3[0:17]:    StyleVarButtonTextAlign,
-	_StyleVarIDName_3[17:38]:        StyleVarSelectableTextAlign,
-	_StyleVarIDLowerName_3[17:38]:   StyleVarSelectableTextAlign,
-	_StyleVarIDName_3[38:69]:        StyleVarSeparatorTextBorderSize,
-	_StyleVarIDLowerName_3[38:69]:   StyleVarSeparatorTextBorderSize,
-	_StyleVarIDName_3[69:95]:        StyleVarSeparatorTextAlign,
-	_StyleVarIDLowerName_3[69:95]:   StyleVarSeparatorTextAlign,
-	_StyleVarIDName_3[95:123]:       StyleVarSeparatorTextPadding,
-	_StyleVarIDLowerName_3[95:123]:  StyleVarSeparatorTextPadding,
-	_StyleVarIDName_3[123:151]:      StyleVarDockingSeparatorSize,
-	_StyleVarIDLowerName_3[123:151]: StyleVarDockingSeparatorSize,
+	_StyleVarIDName_1[0:18]:         StyleVarGrabMinSize,
+	_StyleVarIDLowerName_1[0:18]:    StyleVarGrabMinSize,
+	_StyleVarIDName_1[18:31]:        StyleVarGrabRounding,
+	_StyleVarIDLowerName_1[18:31]:   StyleVarGrabRounding,
+	_StyleVarIDName_2[0:12]:         StyleVarTabRounding,
+	_StyleVarIDLowerName_2[0:12]:    StyleVarTabRounding,
+	_StyleVarIDName_3[0:24]:         StyleVarTabBarBorderSize,
+	_StyleVarIDLowerName_3[0:24]:    StyleVarTabBarBorderSize,
+	_StyleVarIDName_4[0:17]:         StyleVarButtonTextAlign,
+	_StyleVarIDLowerName_4[0:17]:    StyleVarButtonTextAlign,
+	_StyleVarIDName_4[17:38]:        StyleVarSelectableTextAlign,
+	_StyleVarIDLowerName_4[17:38]:   StyleVarSelectableTextAlign,
+	_StyleVarIDName_4[38:69]:        StyleVarSeparatorTextBorderSize,
+	_StyleVarIDLowerName_4[38:69]:   StyleVarSeparatorTextBorderSize,
+	_StyleVarIDName_4[69:95]:        StyleVarSeparatorTextAlign,
+	_StyleVarIDLowerName_4[69:95]:   StyleVarSeparatorTextAlign,
+	_StyleVarIDName_4[95:123]:       StyleVarSeparatorTextPadding,
+	_StyleVarIDLowerName_4[95:123]:  StyleVarSeparatorTextPadding,
+	_StyleVarIDName_4[123:151]:      StyleVarDockingSeparatorSize,
+	_StyleVarIDLowerName_4[123:151]: StyleVarDockingSeparatorSize,
 }
 
 var _StyleVarIDNames = []string{
@@ -163,16 +169,16 @@ var _StyleVarIDNames = []string{
 	_StyleVarIDName_0[254:273],
 	_StyleVarIDName_0[273:287],
 	_StyleVarIDName_0[287:305],
-	_StyleVarIDName_0[305:323],
-	_StyleVarIDName_0[323:336],
-	_StyleVarIDName_1[0:12],
-	_StyleVarIDName_2[0:24],
-	_StyleVarIDName_3[0:17],
-	_StyleVarIDName_3[17:38],
-	_StyleVarIDName_3[38:69],
-	_StyleVarIDName_3[69:95],
-	_StyleVarIDName_3[95:123],
-	_StyleVarIDName_3[123:151],
+	_StyleVarIDName_1[0:18],
+	_StyleVarIDName_1[18:31],
+	_StyleVarIDName_2[0:12],
+	_StyleVarIDName_3[0:24],
+	_StyleVarIDName_4[0:17],
+	_StyleVarIDName_4[17:38],
+	_StyleVarIDName_4[38:69],
+	_StyleVarIDName_4[69:95],
+	_StyleVarIDName_4[95:123],
+	_StyleVarIDName_4[123:151],
 }
 
 // StyleVarIDString retrieves an enum value from the enum constants string name.
