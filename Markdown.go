@@ -169,7 +169,7 @@ func mdLoadImage(path string) immarkdown.MarkdownImageData {
 	id := backend.NewTextureFromRgba(img).ID
 
 	result := immarkdown.NewEmptyMarkdownImageData()
-	result.SetUsertextureid(id)
+	result.SetUsertextureid(id.TexID())
 	result.SetSize(imgui.Vec2{
 		X: float32(size.Dx()),
 		Y: float32(size.Dy()),

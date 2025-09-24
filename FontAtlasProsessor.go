@@ -369,11 +369,6 @@ func (a *FontAtlas) rebuildFontAtlas() {
 		a.extraFontMap[fontInfo.String()] = f
 	}
 
-	fontTextureImg, w, h, _ := fonts.GetTextureDataAsRGBA32()
-	tex := Context.backend.CreateTexture(fontTextureImg, int(w), int(h))
-	fonts.SetTexID(tex)
-	fonts.SetTexReady(true)
-
 	a.shouldRebuildFontAtlas = false
 }
 
