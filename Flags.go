@@ -206,7 +206,7 @@ const (
 	// TabBarFlagsNoTooltip Disable tooltips when hovering a tab.
 	TabBarFlagsNoTooltip = TabBarFlags(imgui.TabBarFlagsNoTooltip)
 	// TabBarFlagsFittingPolicyResizeDown Resize tabs when they don't fit.
-	TabBarFlagsFittingPolicyResizeDown = TabBarFlags(imgui.TabBarFlagsFittingPolicyResizeDown)
+	TabBarFlagsFittingPolicyResizeDown = TabBarFlags(imgui.TabBarFlagsFittingPolicyShrink)
 	// TabBarFlagsFittingPolicyScroll Add scroll buttons when tabs don't fit.
 	TabBarFlagsFittingPolicyScroll = TabBarFlags(imgui.TabBarFlagsFittingPolicyScroll)
 	// TabBarFlagsFittingPolicyMask combines
@@ -258,7 +258,7 @@ const (
 	TreeNodeFlagsSpanFullWidth = TreeNodeFlags(imgui.TreeNodeFlagsSpanFullWidth)
 	// TreeNodeFlagsNavLeftJumpsBackHere (WIP) Nav: left direction may move to this TreeNode() from any of its child
 	// (items submitted between TreeNode and TreePop).
-	TreeNodeFlagsNavLeftJumpsBackHere = TreeNodeFlags(imgui.TreeNodeFlagsNavLeftJumpsBackHere)
+	TreeNodeFlagsNavLeftJumpsBackHere = TreeNodeFlags(imgui.TreeNodeFlagsNavLeftJumpsToParent)
 	// TreeNodeFlagsCollapsingHeader combines TreeNodeFlagsFramed and TreeNodeFlagsNoAutoOpenOnLog.
 	TreeNodeFlagsCollapsingHeader = TreeNodeFlags(imgui.TreeNodeFlagsCollapsingHeader)
 )
