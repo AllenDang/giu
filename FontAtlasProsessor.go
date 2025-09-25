@@ -25,18 +25,11 @@ type FontInfo struct {
 	fontName string
 	fontPath string
 	fontByte []byte
-	size     float32
 }
 
 // String returns a string representation of the FontInfo. It is intended to be unique for each FontInfo.
 func (f *FontInfo) String() string {
-	return fmt.Sprintf("%s:%.2f", f.fontName, f.size)
-}
-
-// SetSize sets the font size for the current font.
-func (f *FontInfo) SetSize(size float32) *FontInfo {
-	f.size = size
-	return f
+	return fmt.Sprintf("%s", f.fontName)
 }
 
 // FontAtlas is a mechanism to automatically manage fonts in giu.
@@ -51,16 +44,16 @@ type FontAtlas struct {
 	defaultFonts           []FontInfo
 	extraFonts             []FontInfo
 	extraFontMap           map[string]*imgui.Font
-	fontSize               float32
 	autoRegisterStrings    bool
 }
 
 func newFontAtlas() *FontAtlas {
 	result := FontAtlas{
 		extraFontMap:        make(map[string]*imgui.Font),
-		fontSize:            defaultFontSize,
 		autoRegisterStrings: true,
 	}
+
+	result.SetDefaultFontSize(defaultFontSize)
 
 	// Pre register numbers
 	result.RegisterString(preRegisterString)
@@ -69,47 +62,42 @@ func newFontAtlas() *FontAtlas {
 	switch runtime.GOOS {
 	case darwin:
 		// English font
-		result.registerDefaultFont("Menlo", result.fontSize)
+		result.registerDefaultFont("Menlo")
 		// Chinese font
-		result.registerDefaultFont("STHeiti", result.fontSize-1)
+		result.registerDefaultFont("STHeiti")
 		// Jananese font
-		result.registerDefaultFont("ヒラギノ角ゴシック W0", result.fontSize+3)
+		result.registerDefaultFont("ヒラギノ角ゴシック W0")
 		// Korean font
-		result.registerDefaultFont("AppleSDGothicNeo", result.fontSize+2)
+		result.registerDefaultFont("AppleSDGothicNeo")
 	case windows:
 		// English font
-		result.registerDefaultFont("Calibri", result.fontSize+2)
+		result.registerDefaultFont("Calibri")
 		// Chinese font
-		result.registerDefaultFont("MSYH", result.fontSize+2)
+		result.registerDefaultFont("MSYH")
 		// Japanese font
-		result.registerDefaultFont("MSGOTHIC", result.fontSize+2)
+		result.registerDefaultFont("MSGOTHIC")
 		// Korean font
-		result.registerDefaultFont("MALGUNSL", result.fontSize+2)
+		result.registerDefaultFont("MALGUNSL")
 	case "linux":
 		// English fonts
 		result.registerDefaultFonts([]FontInfo{
 			{
 				fontName: "FreeSans.ttf",
-				size:     result.fontSize + 1,
 			},
 			{
 				fontName: "FiraCode-Medium",
-				size:     result.fontSize + 1,
 			},
 			{
 				fontName: "sans",
-				size:     result.fontSize + 1,
 			},
 		})
 		// Chinese fonts
 		result.registerDefaultFonts([]FontInfo{
 			{
 				fontName: "wqy-microhei",
-				size:     result.fontSize + 1,
 			},
 			{
 				fontName: "SourceHanSansCN",
-				size:     result.fontSize + 3,
 			},
 		})
 	}
@@ -124,29 +112,29 @@ func (a *FontAtlas) AutoRegisterStrings(b bool) {
 	a.autoRegisterStrings = b
 }
 
-// SetDefaultFontSize sets the default font size. Invoke this before MasterWindow.NewMasterWindow(..).
+// SetDefaultFontSize sets the default font size.
 func (a *FontAtlas) SetDefaultFontSize(size float32) {
-	a.fontSize = size
+	// imgui.CurrentContext().SetFontSizeBase(size)
+	imgui.CurrentStyle().SetFontSizeBase(size)
 }
 
 // SetDefaultFont changes default font.
-func (a *FontAtlas) SetDefaultFont(fontName string, size float32) {
+func (a *FontAtlas) SetDefaultFont(fontName string) {
 	fontPath, err := findfont.Find(fontName)
 	if err != nil {
 		log.Fatalf("Cannot find font %s", fontName)
 		return
 	}
 
-	fontInfo := FontInfo{fontName: fontName, fontPath: fontPath, size: size}
+	fontInfo := FontInfo{fontName: fontName, fontPath: fontPath}
 	a.defaultFonts = append([]FontInfo{fontInfo}, a.defaultFonts...)
 }
 
 // SetDefaultFontFromBytes changes default font by bytes of the font file.
-func (a *FontAtlas) SetDefaultFontFromBytes(fontBytes []byte, size float32) {
+func (a *FontAtlas) SetDefaultFontFromBytes(fontBytes []byte) {
 	a.defaultFonts = append([]FontInfo{
 		{
 			fontByte: fontBytes,
-			size:     size,
 		},
 	}, a.defaultFonts...)
 }
@@ -158,7 +146,7 @@ func (a *FontAtlas) GetDefaultFonts() []FontInfo {
 
 // AddFont adds font by name, if the font is found, return *FontInfo, otherwise return nil.
 // To use added font, use giu.Style().SetFont(...).
-func (a *FontAtlas) AddFont(fontName string, size float32) *FontInfo {
+func (a *FontAtlas) AddFont(fontName string) *FontInfo {
 	fontPath, err := findfont.Find(fontName)
 	if err != nil {
 		fmt.Printf("[Warning]Cannot find font %s at system, related text will not be rendered.\n", fontName)
@@ -168,7 +156,6 @@ func (a *FontAtlas) AddFont(fontName string, size float32) *FontInfo {
 	fi := FontInfo{
 		fontName: fontName,
 		fontPath: fontPath,
-		size:     size,
 	}
 
 	a.extraFonts = append(a.extraFonts, fi)
@@ -177,11 +164,10 @@ func (a *FontAtlas) AddFont(fontName string, size float32) *FontInfo {
 }
 
 // AddFontFromBytes does similar to AddFont, but using data from memory.
-func (a *FontAtlas) AddFontFromBytes(fontName string, fontBytes []byte, size float32) *FontInfo {
+func (a *FontAtlas) AddFontFromBytes(fontName string, fontBytes []byte) *FontInfo {
 	fi := FontInfo{
 		fontName: fontName,
 		fontByte: fontBytes,
-		size:     size,
 	}
 
 	a.extraFonts = append(a.extraFonts, fi)
@@ -189,13 +175,13 @@ func (a *FontAtlas) AddFontFromBytes(fontName string, fontBytes []byte, size flo
 	return &fi
 }
 
-func (a *FontAtlas) registerDefaultFont(fontName string, size float32) {
+func (a *FontAtlas) registerDefaultFont(fontName string) {
 	fontPath, err := findfont.Find(fontName)
 	if err != nil {
 		return
 	}
 
-	fontInfo := FontInfo{fontName: fontName, fontPath: fontPath, size: size}
+	fontInfo := FontInfo{fontName: fontName, fontPath: fontPath}
 	a.defaultFonts = append(a.defaultFonts, fontInfo)
 }
 
@@ -205,7 +191,7 @@ func (a *FontAtlas) registerDefaultFonts(fontInfos []FontInfo) {
 	for _, fi := range fontInfos {
 		fontPath, err := findfont.Find(fi.fontName)
 		if err == nil {
-			firstFoundFont = &FontInfo{fontName: fi.fontName, fontPath: fontPath, size: fi.size}
+			firstFoundFont = &FontInfo{fontName: fi.fontName, fontPath: fontPath}
 			break
 		}
 	}
@@ -299,13 +285,10 @@ func (a *FontAtlas) rebuildFontAtlas() {
 				fontConfig.SetMergeMode(true)
 			}
 
-			// Scale font size with DPI scale factor
-			scaledSize := scaleFont(fontInfo)
-
 			if len(fontInfo.fontByte) == 0 {
 				fonts.AddFontFromFileTTFV(
 					fontInfo.fontPath,
-					scaledSize,
+					0,
 					fontConfig,
 					ranges.Data(),
 				)
@@ -314,7 +297,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 				fonts.AddFontFromMemoryTTFV(
 					uintptr(unsafe.Pointer(utils.SliceToPtr(fontInfo.fontByte))),
 					int32(len(fontInfo.fontByte)),
-					scaledSize,
+					0,
 					fontConfig,
 					ranges.Data(),
 				)
@@ -331,15 +314,12 @@ func (a *FontAtlas) rebuildFontAtlas() {
 
 	// Add extra fonts
 	for _, fontInfo := range a.extraFonts {
-		// Scale font size with DPI scale factor
-		scaledSize := scaleFont(fontInfo)
-
 		// Store imgui.Font for PushFont
 		var f *imgui.Font
 		if len(fontInfo.fontByte) == 0 {
 			f = fonts.AddFontFromFileTTFV(
 				fontInfo.fontPath,
-				scaledSize,
+				0,
 				imgui.NewFontConfig(),
 				ranges.Data(),
 			)
@@ -349,7 +329,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 			f = fonts.AddFontFromMemoryTTFV(
 				uintptr(unsafe.Pointer(utils.SliceToPtr(fontInfo.fontByte))),
 				int32(len(fontInfo.fontByte)),
-				scaledSize,
+				0,
 				fontConfig,
 				ranges.Data(),
 			)
@@ -359,14 +339,4 @@ func (a *FontAtlas) rebuildFontAtlas() {
 	}
 
 	a.shouldRebuildFontAtlas = false
-}
-
-func scaleFont(fontInfo FontInfo) (newSize float32) {
-	if runtime.GOOS == darwin {
-		return fontInfo.size // don't increase the font size; otherwise font gets mistakenly extra 2x on HiDPI displays
-	}
-
-	xScale, _ := Context.backend.ContentScale()
-
-	return fontInfo.size * xScale
 }
