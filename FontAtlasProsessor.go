@@ -33,21 +33,10 @@ func (f *FontInfo) String() string {
 	return fmt.Sprintf("%s:%.2f", f.fontName, f.size)
 }
 
-// SetSize sets the font size.
+// SetSize sets the font size for the current font.
 func (f *FontInfo) SetSize(size float32) *FontInfo {
-	result := *f
-	result.size = size
-
-	for _, i := range Context.FontAtlas.extraFonts {
-		if i.String() == result.String() {
-			return &result
-		}
-	}
-
-	Context.FontAtlas.extraFonts = append(Context.FontAtlas.extraFonts, result)
-	Context.FontAtlas.shouldRebuildFontAtlas = true
-
-	return &result
+	f.size = size
+	return f
 }
 
 // FontAtlas is a mechanism to automatically manage fonts in giu.
