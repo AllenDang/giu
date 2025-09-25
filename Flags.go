@@ -52,6 +52,8 @@ const (
 	InputTextFlagsNoUndoRedo = InputTextFlags(imgui.InputTextFlagsNoUndoRedo)
 	// InputTextFlagsCharsScientific allows 0123456789.+-*/eE (Scientific notation input).
 	InputTextFlagsCharsScientific = InputTextFlags(imgui.InputTextFlagsCharsScientific)
+	// InputTextMultine(): word-wrap lines that are too long.
+	InputTextFlagsWordWrap = InputTextFlags(imgui.InputTextFlagsWordWrap)
 )
 
 // WindowFlags represents a window flags (see (*WindowWidget).Flags.
