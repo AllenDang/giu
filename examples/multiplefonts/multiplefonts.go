@@ -6,19 +6,19 @@ import (
 )
 
 var (
-	bigFont *g.FontInfo
+	anotherFont *g.FontInfo
 
 	content = "Hello world from giu!\n你好啊世界！"
 )
 
 func loop() {
 	g.SingleWindow().Layout(
-		g.Label("Title line").Font(bigFont),
+		g.Label("Title line").Font(anotherFont),
 		g.Label("Content line"),
 
 		g.Label("Change font for other widgets"),
 
-		g.Style().SetFont(bigFont).To(
+		g.Style().SetFont(anotherFont).SetFontSize(28).To(
 			g.Button("Button with big font"),
 		),
 
@@ -36,10 +36,10 @@ func main() {
 	wnd := g.NewMasterWindow("Multiple fonts", 600, 400, g.MasterWindowFlagsNotResizable)
 
 	// Change the default font
-	g.Context.FontAtlas.SetDefaultFont("Arial.ttf", 12)
+	g.Context.FontAtlas.SetDefaultFont("Arial.ttf")
 
 	// Add a new font and manually set it when needed
-	bigFont = g.Context.FontAtlas.AddFont("Menlo.ttc", 24)
+	anotherFont = g.Context.FontAtlas.AddFont("Menlo.ttc")
 
 	wnd.Run(loop)
 }
