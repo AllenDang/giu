@@ -92,7 +92,7 @@ func (c *CSSStylesheet) GetTag(tag string) (result *StyleSetter) {
 		return Style()
 	}
 
-	return
+	return result
 }
 
 // Parse parses CSS stylesheet and stores the rules in the receiver.

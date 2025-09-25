@@ -4,7 +4,6 @@ import (
 	"errors"
 	"image"
 	"image/color"
-	"runtime"
 
 	"github.com/AllenDang/cimgui-go/backend"
 	"github.com/AllenDang/cimgui-go/backend/glfwbackend"
@@ -117,11 +116,7 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 	mw.SetBgColor(colornames.Black)
 
-	// Scale DPI in windows
-	if runtime.GOOS == "windows" {
-		xScale, _ := Context.backend.ContentScale()
-		imgui.CurrentStyle().ScaleAllSizes(xScale)
-	}
+	mw.SetScale(0) // set content scale
 
 	return mw
 }
@@ -437,4 +432,17 @@ func (w *MasterWindow) SetAdditionalInputHandlerCallback(cb InputHandlerHandleCa
 // See examples/sortable-table.
 func (w *MasterWindow) SetUserFile(path string) {
 	w.io.SetIniFilename(path)
+}
+
+// SetScale is executed internally by NewMasterWindow with the default content scale factor.
+// You can call it if you relly want.
+// If 0 passed, ContentScale will be re-applied.
+func (w *MasterWindow) SetScale(scale float32) {
+	if scale == 0 {
+		scale, _ = Context.backend.ContentScale()
+	}
+
+	s := imgui.CurrentStyle()
+	s.ScaleAllSizes(scale)
+	s.SetFontScaleDpi(scale)
 }

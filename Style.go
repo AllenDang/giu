@@ -53,6 +53,19 @@ func PushFont(font *FontInfo) bool {
 	return false
 }
 
+// PushFontSize sets font size for the current font.
+// NOTE: PopFont has to be called
+// NOTE: you can use (*StyleSetter).SetFontSize instead.
+func PushFontSize(size float32) bool {
+	if size <= 0 {
+		return false
+	}
+
+	imgui.PushFont(imgui.CurrentFont(), size)
+
+	return true
+}
+
 // PopFont pops the font (should be called after PushFont).
 func PopFont() {
 	imgui.PopFont()
