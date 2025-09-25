@@ -114,7 +114,6 @@ func (a *FontAtlas) AutoRegisterStrings(b bool) {
 
 // SetDefaultFontSize sets the default font size.
 func (a *FontAtlas) SetDefaultFontSize(size float32) {
-	// imgui.CurrentContext().SetFontSizeBase(size)
 	imgui.CurrentStyle().SetFontSizeBase(size)
 }
 
