@@ -53,6 +53,15 @@ func PushFont(font *FontInfo) bool {
 	return false
 }
 
+func PushFontSize(size float32) bool {
+	if size <= 0 {
+		return false
+	}
+
+	imgui.PushFont(imgui.CurrentFont(), size)
+	return true
+}
+
 // PopFont pops the font (should be called after PushFont).
 func PopFont() {
 	imgui.PopFont()

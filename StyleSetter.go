@@ -17,6 +17,7 @@ type StyleSetter struct {
 	plotColors map[StylePlotColorID]color.Color
 	plotStyles map[StylePlotVarID]any
 	font       *FontInfo
+	fontSize   float32
 	disabled   bool
 
 	layout Layout
@@ -185,14 +186,8 @@ func (ss *StyleSetter) SetFont(font *FontInfo) *StyleSetter {
 // NOTE: Be aware, that StyleSetter needs to add a new font to font atlas for
 // each font's size.
 func (ss *StyleSetter) SetFontSize(size float32) *StyleSetter {
-	var font FontInfo
-	if ss.font != nil {
-		font = *ss.font
-	} else {
-		font = Context.FontAtlas.defaultFonts[0]
-	}
-
-	ss.font = font.SetSize(size)
+	Assert(size > 0, "StyleSetter", "SetFontSize", "font size must be positive")
+	ss.fontSize = size
 
 	return ss
 }
@@ -327,6 +322,10 @@ func (ss *StyleSetter) Push() {
 		ss.isFontPushed = PushFont(ss.font)
 	}
 
+	if ss.fontSize != 0 {
+		PushFontSize(ss.fontSize)
+	}
+
 	if ss.disabled {
 		imgui.BeginDisabled()
 	}
@@ -334,6 +333,10 @@ func (ss *StyleSetter) Push() {
 
 // Pop allows to manually pop the whole StyleSetter (use after Push!)
 func (ss *StyleSetter) Pop() {
+	if ss.fontSize != 0 {
+		imgui.PopFont()
+	}
+
 	if ss.isFontPushed {
 		imgui.PopFont()
 	}
