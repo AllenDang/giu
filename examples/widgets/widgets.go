@@ -166,7 +166,7 @@ func loop() {
 		g.TabBar().TabItems(
 			g.TabItem("Multiline Input").Layout(
 				g.Label("This is first tab with a multiline input text field"),
-				g.InputTextMultiline(&multiline).Size(g.Auto, g.Auto),
+				g.InputTextMultiline(&multiline).Size(g.Auto, g.Auto).Flags(g.InputTextFlagsWordWrap),
 			).EventHandler(g.Event().OnClick(g.MouseButtonLeft, func() {
 				fmt.Println("MultipleInput tab clicked!")
 			})),
