@@ -64,8 +64,8 @@ func loop() {
 				}),
 			},
 			giu.Markdown(markdown).
-				Header(0, (giu.Context.FontAtlas.GetDefaultFonts())[0].SetSize(28), true).
-				Header(1, (giu.Context.FontAtlas.GetDefaultFonts())[0].SetSize(26), false).
+				Header(0, nil, true).
+				Header(1, nil, false).
 				Header(2, nil, true),
 		),
 	)
