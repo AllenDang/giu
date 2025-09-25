@@ -101,7 +101,7 @@ func (m *MarkdownWidget) OnLink(cb func(url string)) *MarkdownWidget {
 // NOTE: level (counting from 0!) is header level. (for instance, header `# H1` will have level 0).
 // NOTE: since cimgui-go there are only 3 levels (so level < 3 here). This will panic if level >= 3!
 // TODO: it actually doesn't work.
-func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *MarkdownWidget {
+func (m *MarkdownWidget) Header(level int, font *FontInfo, fontSize float32, separator bool) *MarkdownWidget {
 	// ensure level is in range
 	Assert(level < 3, "MarkdownWidget", "Header", "Header level must be less than 3!")
 
@@ -111,6 +111,10 @@ func (m *MarkdownWidget) Header(level int, font *FontInfo, separator bool) *Mark
 		if f, ok := Context.FontAtlas.extraFontMap[font.String()]; ok {
 			m.headers[level].SetFont(f)
 		}
+	}
+
+	if fontSize > 0 {
+		m.headers[level].SetFontSize(fontSize)
 	}
 
 	m.headers[level].SetSeparator(separator)
