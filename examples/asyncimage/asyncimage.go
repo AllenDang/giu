@@ -105,8 +105,8 @@ func shouldReturnPanel() g.Widget {
 				dynamicImage.SetFSRoot(inputRootfs)
 
 				dynamicImageURL = "file:///files/sonic.png"
-				err := dynamicImage.ResetState()
 
+				err := dynamicImage.ResetState()
 				if err == nil {
 					_ = dynamicImage.SetSurfaceFromURL(dynamicImageURL, time.Second*5, false)
 				}

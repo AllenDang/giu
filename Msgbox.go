@@ -121,8 +121,10 @@ func PrepareMsgbox() Layout {
 			}
 
 			state.m.Lock()
+
 			if state.open {
 				OpenPopup(msgboxID.String())
+
 				state.open = false
 			}
 

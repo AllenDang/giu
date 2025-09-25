@@ -140,6 +140,7 @@ func (ce *CodeEditorWidget) GetCurrentLineText() string {
 func (ce *CodeEditorWidget) GetCursorPos() (x, y int) {
 	var px, py int32
 	ce.getState().editor.CursorPosition(&px, &py)
+
 	return int(px), int(py)
 }
 

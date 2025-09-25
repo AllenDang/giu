@@ -30,6 +30,7 @@ type StyleSetter struct {
 // Style initializes a style setter (see examples/setstyle).
 func Style() *StyleSetter {
 	var ss StyleSetter
+
 	ss.colors = make(map[StyleColorID]imgui.Vec4)
 	ss.plotColors = make(map[StylePlotColorID]color.Color)
 	ss.styles = make(map[StyleVarID]any)

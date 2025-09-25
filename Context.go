@@ -142,7 +142,9 @@ func (c *GIUContext) cleanStates() {
 	c.state.Range(func(k, v any) bool {
 		if s, ok := v.(*state); ok {
 			c.m.Lock()
+
 			valid := s.valid
+
 			c.m.Unlock()
 
 			if valid {
@@ -183,7 +185,9 @@ func GetState[T any, PT genericDisposable[T]](c *GIUContext, id ID) PT {
 
 	if s, ok := c.load(id); ok {
 		c.m.Lock()
+
 		s.valid = true
+
 		c.m.Unlock()
 
 		data, isOk := s.data.(PT)
@@ -201,7 +205,9 @@ func (c *GIUContext) GetState(id ID) any {
 
 	if s, ok := c.load(id); ok {
 		c.m.Lock()
+
 		s.valid = true
+
 		c.m.Unlock()
 
 		return s.data

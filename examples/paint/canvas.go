@@ -27,6 +27,7 @@ var (
 
 func flushDrawCommands(c *Canvas) {
 	var bcopy []DrawCommand
+
 	bcopy = append(bcopy, buffer...)
 
 	go c.AppendDrawCommands(&bcopy)
@@ -84,6 +85,7 @@ func (c *Canvas) PushImageToBackend(commit bool) error {
 func (c *Canvas) AppendDrawCommands(cmds *[]DrawCommand) {
 	c.appendMu.Lock()
 	defer c.appendMu.Unlock()
+
 	c.DrawCommands = append(c.DrawCommands, *cmds...)
 }
 

@@ -115,7 +115,6 @@ func (c *CSSStylesheet) Parse(data []byte) error {
 		for styleVarName, styleVarValue := range style {
 			// convert style variable name to giu style variable name
 			styleVarID, err := StyleVarIDString(styleVarName)
-
 			if err == nil {
 				if err := parseStyleVar(styleVarValue, func(v float32) {
 					setter.SetStyleFloat(styleVarID, v)
