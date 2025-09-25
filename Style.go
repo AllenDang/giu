@@ -46,7 +46,7 @@ func PushFont(font *FontInfo) bool {
 	}
 
 	if f, ok := Context.FontAtlas.extraFontMap[font.String()]; ok {
-		imgui.PushFont(f, 0)
+		imgui.PushFont(f, font.Size)
 		return true
 	}
 
