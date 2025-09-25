@@ -110,7 +110,7 @@ func (ss *StyleSetter) GetStyle(varID StyleVarID) (width, height float32) {
 		width, height = vec.X, vec.Y
 	}
 
-	return
+	return width, height
 }
 
 // SetStyleFloat sets styleVarID to float value.
@@ -155,7 +155,7 @@ func (ss *StyleSetter) GetPlotStyle(varID StylePlotVarID) (width, height float32
 		width, height = vec.X, vec.Y
 	}
 
-	return
+	return width, height
 }
 
 // SetPlotStyleFloat sets StylePlotVarID to float value.

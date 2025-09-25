@@ -30,7 +30,7 @@ type FontInfo struct {
 
 // String returns a string representation of the FontInfo. It is intended to be unique for each FontInfo.
 func (f *FontInfo) String() string {
-	return fmt.Sprintf("%s", f.fontName)
+	return f.fontName
 }
 
 // FontAtlas is a mechanism to automatically manage fonts in giu.

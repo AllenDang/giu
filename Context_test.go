@@ -21,6 +21,7 @@ func (t *teststate2) Dispose() {
 
 func Test_SetGetState(t *testing.T) {
 	imgui.CreateContext()
+
 	tests := []struct {
 		id   ID
 		data *teststate
