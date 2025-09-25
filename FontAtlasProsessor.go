@@ -17,7 +17,8 @@ const (
 	preRegisterString = " \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
 	darwin            = "darwin"
 	windows           = "windows"
-	defaultFontSize   = 14
+	// DefaultFontSize is the default font size used in giu.
+	DefaultFontSize = 14
 )
 
 // FontInfo represents a giu implementation of imgui font.
@@ -53,7 +54,7 @@ func newFontAtlas() *FontAtlas {
 		autoRegisterStrings: true,
 	}
 
-	result.SetDefaultFontSize(defaultFontSize)
+	result.SetDefaultFontSize(DefaultFontSize)
 
 	// Pre register numbers
 	result.RegisterString(preRegisterString)
