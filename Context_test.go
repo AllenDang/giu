@@ -3,6 +3,7 @@ package giu
 import (
 	"testing"
 
+	"github.com/AllenDang/cimgui-go/imgui"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,6 +20,7 @@ func (t *teststate2) Dispose() {
 }
 
 func Test_SetGetState(t *testing.T) {
+	imgui.CreateContext()
 	tests := []struct {
 		id   ID
 		data *teststate
