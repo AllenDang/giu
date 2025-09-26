@@ -256,6 +256,7 @@ func (i *ReflectiveBoundTexture) ForceRelease() {
 	i.Surface = nil
 
 	var u uint32
+
 	i.lastSum = u
 }
 

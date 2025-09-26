@@ -67,7 +67,7 @@
       "wastedassign",
       "whitespace",
       "wrapcheck",
-      "wsl"
+      "wsl_v5"
     ],
     "exclusions": {
       "generated": "lax",
@@ -99,6 +99,11 @@
       },
       "misspell": {
         "locale": "US"
+      },
+      "wsl_v5": {
+        "allow-first-in-block": true,
+        "allow-whole-block": false,
+        "branch-max-lines": 2
       }
     }
   },

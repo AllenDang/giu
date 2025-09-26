@@ -25,6 +25,7 @@ func loop() {
 		giu.Table().Flags(giu.TableFlagsSortable|giu.TableFlagsResizable).Columns(
 			giu.TableColumn("Col 1").Sort(func(s giu.SortDirection) {
 				fmt.Println("sorting col 1", s)
+
 				switch s {
 				case giu.SortAscending:
 					sort.Strings(data)

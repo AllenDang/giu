@@ -22,6 +22,7 @@ func (ps *progressIndicatorState) update() {
 
 	for {
 		ps.m.Lock()
+
 		if ps.stop {
 			ps.m.Unlock()
 			break
