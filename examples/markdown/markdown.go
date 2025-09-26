@@ -64,9 +64,9 @@ func loop() {
 				}),
 			},
 			giu.Markdown(markdown).
-				Header(0, nil, true).
-				Header(1, nil, false).
-				Header(2, nil, true),
+				Header(0, nil, 40, true).
+				Header(1, nil, 32, false).
+				Header(2, nil, 24, true),
 		),
 	)
 }
