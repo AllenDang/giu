@@ -290,7 +290,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 					fontInfo.fontPath,
 					0,
 					fontConfig,
-					ranges.Data(),
+					nil,
 				)
 			} else {
 				fontConfig.SetFontDataOwnedByAtlas(false)
@@ -299,7 +299,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 					int32(len(fontInfo.fontByte)),
 					0,
 					fontConfig,
-					ranges.Data(),
+					nil,
 				)
 			}
 		}
@@ -321,7 +321,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 				fontInfo.fontPath,
 				0,
 				imgui.NewFontConfig(),
-				ranges.Data(),
+				nil,
 			)
 		} else {
 			fontConfig := imgui.NewFontConfig()
@@ -331,7 +331,7 @@ func (a *FontAtlas) rebuildFontAtlas() {
 				int32(len(fontInfo.fontByte)),
 				0,
 				fontConfig,
-				ranges.Data(),
+				nil,
 			)
 		}
 
