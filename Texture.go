@@ -28,7 +28,9 @@ type textureFreeRequest struct {
 // NOTE: remember to call it after NewMasterWindow!
 func EnqueueNewTextureFromRgba(rgba image.Image, loadCb func(t *Texture)) {
 	Assert((Context.textureLoadingQueue != nil), "", "EnqueueNewTextureFromRgba", "you need to call EnqueueNewTextureFromRgba after giu.NewMasterWindow call!")
-	Context.textureLoadingQueue.Add(textureLoadRequest{rgba, loadCb})
+	Context.WithLock(func() {
+		Context.textureLoadingQueue.Add(textureLoadRequest{rgba, loadCb})
+	})
 }
 
 // NewTextureFromRgba creates a new texture from image.Image and, when it is done, calls loadCallback(loadedTexture).
@@ -39,7 +41,9 @@ func NewTextureFromRgba(rgba image.Image, loadCallback func(*Texture)) {
 	}
 
 	runtime.SetFinalizer(giuTex, func(tex *Texture) {
-		Context.textureFreeingQueue.Add(textureFreeRequest{tex})
+		Context.WithLock(func() {
+			Context.textureFreeingQueue.Add(textureFreeRequest{tex})
+		})
 	})
 
 	loadCallback(giuTex)
