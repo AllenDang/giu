@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"runtime"
-	"strings"
 	"sync"
 	"unsafe"
 
@@ -14,9 +13,8 @@ import (
 )
 
 const (
-	preRegisterString = " \"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
-	darwin            = "darwin"
-	windows           = "windows"
+	darwin  = "darwin"
+	windows = "windows"
 	// DefaultFontSize is the default font size used in giu.
 	DefaultFontSize = 14
 )
@@ -55,9 +53,6 @@ func newFontAtlas() *FontAtlas {
 	}
 
 	result.SetDefaultFontSize(DefaultFontSize)
-
-	// Pre register numbers
-	result.RegisterString(preRegisterString)
 
 	// Pre-register fonts
 	switch runtime.GOOS {
@@ -249,30 +244,6 @@ func (a *FontAtlas) rebuildFontAtlas() {
 
 	fonts := Context.IO().Fonts()
 	fonts.Clear()
-
-	var sb strings.Builder
-
-	a.stringMap.Range(func(k, _ any) bool {
-		a.stringMap.Store(k, true)
-
-		if ks, ok := k.(rune); ok {
-			sb.WriteRune(ks)
-		}
-
-		return true
-	})
-
-	ranges := imgui.NewGlyphRange()
-	builder := imgui.NewFontGlyphRangesBuilder()
-
-	// Because we pre-registered numbers, so default string map's length should greater then 11.
-	if sb.Len() > len(preRegisterString) {
-		builder.AddText(sb.String())
-	} else {
-		builder.AddRanges(fonts.GlyphRangesDefault())
-	}
-
-	builder.BuildRanges(ranges)
 
 	if len(a.defaultFonts) > 0 {
 		fontConfig := imgui.NewFontConfig()
