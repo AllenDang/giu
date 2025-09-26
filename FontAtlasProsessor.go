@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"runtime"
-	"sync"
 	"unsafe"
 
 	"github.com/AllenDang/cimgui-go/imgui"
@@ -39,17 +38,14 @@ func (f *FontInfo) String() string {
 // ExtraFont = font that can be set and then it'll be used for rendering things.
 type FontAtlas struct {
 	shouldRebuildFontAtlas bool
-	stringMap              sync.Map // key is rune, value indicates whether it's a new rune.
 	defaultFonts           []FontInfo
 	extraFonts             []FontInfo
 	extraFontMap           map[string]*imgui.Font
-	autoRegisterStrings    bool
 }
 
 func newFontAtlas() *FontAtlas {
 	result := FontAtlas{
-		extraFontMap:        make(map[string]*imgui.Font),
-		autoRegisterStrings: true,
+		extraFontMap: make(map[string]*imgui.Font),
 	}
 
 	result.SetDefaultFontSize(DefaultFontSize)
@@ -99,13 +95,6 @@ func newFontAtlas() *FontAtlas {
 	}
 
 	return &result
-}
-
-// AutoRegisterStrings if enabled, all strings visible in the UI will be automatically registered and the font atlas will be rebuilt accordingly.
-// Generally it is recommended to keep this on as long as you are not using some giant strings (e.g. 23k lines in CodeEditor).
-// If you disable this, make sure to use PreRegisterString to register all runes you need (all calls to RegisterString* will be ignored!).
-func (a *FontAtlas) AutoRegisterStrings(b bool) {
-	a.autoRegisterStrings = b
 }
 
 // SetDefaultFontSize sets the default font size.
@@ -196,42 +185,25 @@ func (a *FontAtlas) registerDefaultFonts(fontInfos []FontInfo) {
 	}
 }
 
-// RegisterString is mainly used by widgets to register strings.
 // It could be disabled by AutoRegisterStrings.
 func (a *FontAtlas) RegisterString(str string) string {
-	if !a.autoRegisterStrings {
-		return str
-	}
-
-	return a.PreRegisterString(str)
+	return str
 }
 
 // PreRegisterString register string to font atlas builder.
 // NOTE only register strings that will be displayed on the UI.
 func (a *FontAtlas) PreRegisterString(str string) string {
-	for _, s := range str {
-		if _, ok := a.stringMap.Load(s); !ok {
-			a.stringMap.Store(s, false)
-			a.shouldRebuildFontAtlas = true
-		}
-	}
-
 	return str
 }
 
 // RegisterStringPointer registers string pointer to font atlas builder.
 // Note only register strings that will be displayed on the UI.
 func (a *FontAtlas) RegisterStringPointer(str *string) *string {
-	a.RegisterString(*str)
 	return str
 }
 
 // RegisterStringSlice calls RegisterString for each slice element.
 func (a *FontAtlas) RegisterStringSlice(str []string) []string {
-	for _, s := range str {
-		a.RegisterString(s)
-	}
-
 	return str
 }
 
