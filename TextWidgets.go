@@ -87,8 +87,8 @@ func (i *InputTextMultilineWidget) AutoScrollToBottom(b bool) *InputTextMultilin
 // Build implements Widget interface.
 func (i *InputTextMultilineWidget) Build() {
 	if imgui.InputTextMultiline(
-		Context.FontAtlas.RegisterString(i.label.String()),
-		Context.FontAtlas.RegisterStringPointer(i.text),
+		Context.PrepareString(i.label.String()),
+		i.text,
 		imgui.Vec2{
 			X: i.width,
 			Y: i.height,
@@ -188,7 +188,7 @@ func InputText(value *string) *InputTextWidget {
 
 // Label adds label (alternatively you can use it to set widget's id).
 func (i *InputTextWidget) Label(label string) *InputTextWidget {
-	i.label = GenAutoID(Context.FontAtlas.RegisterString(label))
+	i.label = GenAutoID(Context.PrepareString(label))
 	return i
 }
 
@@ -212,7 +212,7 @@ func (i *InputTextWidget) AutoComplete(candidates []string) *InputTextWidget {
 
 // Hint sets hint text.
 func (i *InputTextWidget) Hint(hint string) *InputTextWidget {
-	i.hint = Context.FontAtlas.RegisterString(hint)
+	i.hint = Context.PrepareString(hint)
 	return i
 }
 
@@ -255,7 +255,7 @@ func (i *InputTextWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	isChanged := imgui.InputTextWithHint(i.label.String(), i.hint, Context.FontAtlas.RegisterStringPointer(i.value), imgui.InputTextFlags(i.flags), i.cb)
+	isChanged := imgui.InputTextWithHint(i.label.String(), i.hint, i.value, imgui.InputTextFlags(i.flags), i.cb)
 
 	if isChanged && i.onChange != nil {
 		i.onChange()
@@ -351,7 +351,7 @@ func InputInt(value *int32) *InputIntWidget {
 
 // Label sets label (id).
 func (i *InputIntWidget) Label(label string) *InputIntWidget {
-	i.label = GenAutoID(Context.FontAtlas.RegisterString(label))
+	i.label = GenAutoID(Context.PrepareString(label))
 	return i
 }
 
@@ -443,7 +443,7 @@ func InputFloat(value *float32) *InputFloatWidget {
 
 // Label sets label of input field.
 func (i *InputFloatWidget) Label(label string) *InputFloatWidget {
-	i.label = GenAutoID(Context.FontAtlas.RegisterString(label))
+	i.label = GenAutoID(Context.PrepareString(label))
 	return i
 }
 

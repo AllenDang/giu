@@ -188,7 +188,7 @@ func (b *InvisibleButtonWidget) ID(id ID) *InvisibleButtonWidget {
 
 // Build implements Widget interface.
 func (b *InvisibleButtonWidget) Build() {
-	if imgui.InvisibleButton(Context.FontAtlas.RegisterString(b.id.String()), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
+	if imgui.InvisibleButton(b.id.String(), imgui.Vec2{X: b.width, Y: b.height}) && b.onClick != nil {
 		b.onClick()
 	}
 }
@@ -619,7 +619,7 @@ func (l *LinkWidget) OnClick(onClick func()) *LinkWidget {
 
 // Build implements Widget interface.
 func (l *LinkWidget) Build() {
-	if imgui.TextLink(Context.FontAtlas.RegisterString(l.text.String())) && l.onClick != nil {
+	if imgui.TextLink(Context.PrepareString(l.text.String())) && l.onClick != nil {
 		l.onClick()
 	}
 }

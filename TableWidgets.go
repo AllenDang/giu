@@ -86,7 +86,7 @@ type TableColumnWidget struct {
 // TableColumn creates a new TableColumnWidget.
 func TableColumn(label string) *TableColumnWidget {
 	return &TableColumnWidget{
-		label:              Context.FontAtlas.RegisterString(label),
+		label:              Context.PrepareString(label),
 		flags:              0,
 		innerWidthOrWeight: 0,
 		userID:             0,
@@ -328,10 +328,10 @@ func (ttr *TreeTableRowWidget) BuildTreeTableRow() {
 
 	open := false
 	if len(ttr.children) > 0 {
-		open = imgui.TreeNodeExStrV(Context.FontAtlas.RegisterString(ttr.label.String()), imgui.TreeNodeFlags(ttr.flags))
+		open = imgui.TreeNodeExStrV(Context.PrepareString(ttr.label.String()), imgui.TreeNodeFlags(ttr.flags))
 	} else {
 		ttr.flags |= TreeNodeFlagsLeaf | TreeNodeFlagsNoTreePushOnOpen
-		imgui.TreeNodeExStrV(Context.FontAtlas.RegisterString(ttr.label.String()), imgui.TreeNodeFlags(ttr.flags))
+		imgui.TreeNodeExStrV(Context.PrepareString(ttr.label.String()), imgui.TreeNodeFlags(ttr.flags))
 	}
 
 	for _, w := range ttr.layout {

@@ -185,28 +185,6 @@ func (a *FontAtlas) registerDefaultFonts(fontInfos []FontInfo) {
 	}
 }
 
-// It could be disabled by AutoRegisterStrings.
-func (a *FontAtlas) RegisterString(str string) string {
-	return str
-}
-
-// PreRegisterString register string to font atlas builder.
-// NOTE only register strings that will be displayed on the UI.
-func (a *FontAtlas) PreRegisterString(str string) string {
-	return str
-}
-
-// RegisterStringPointer registers string pointer to font atlas builder.
-// Note only register strings that will be displayed on the UI.
-func (a *FontAtlas) RegisterStringPointer(str *string) *string {
-	return str
-}
-
-// RegisterStringSlice calls RegisterString for each slice element.
-func (a *FontAtlas) RegisterStringSlice(str []string) []string {
-	return str
-}
-
 // Rebuild font atlas when necessary.
 // The whole magic happens here.
 func (a *FontAtlas) rebuildFontAtlas() {

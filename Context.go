@@ -111,13 +111,28 @@ func (c *GIUContext) SetDirty() {
 }
 
 // PrepareString prepares string to be displayed by imgui.
-// It does the following:
-// - adds a string to the FontAtlas
+// It does the following (exactly one at the moment):
 // - translates the string with the Translator set in the context
+//
+//	  NOTE: content of the following items is NOT translated:
+//	* CodeEditor
+//	* Popup Labels (it is important to know their EXACT value)
+//	* everything that is a pointer
+//
 // Not all widgets will use this. Text with user-defined input (e.g. InputText will still use FontAtlas.RegisterString).
 func (c *GIUContext) PrepareString(str string) string {
-	str = c.Translator.Translate(str)
-	return c.FontAtlas.RegisterString(str)
+	return c.Translator.Translate(str)
+}
+
+// PrepareStringSlice is a version of PrepareString that works on slices.
+func (c *GIUContext) PrepareStringSlice(strs []string) []string {
+	result := make([]string, len(strs))
+
+	for i, s := range strs {
+		result[i] = c.PrepareString(s)
+	}
+
+	return result
 }
 
 // SetCSSStylesheet sets the "main" stylesheet for the context.

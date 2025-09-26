@@ -78,7 +78,7 @@ func (s *SliderIntWidget) Build() {
 		defer PopItemWidth()
 	}
 
-	if imgui.SliderIntV(Context.FontAtlas.RegisterString(s.label.String()), s.value, s.minValue, s.maxValue, s.format, 0) && s.onChange != nil {
+	if imgui.SliderIntV(Context.PrepareString(s.label.String()), s.value, s.minValue, s.maxValue, s.format, 0) && s.onChange != nil {
 		s.onChange()
 	}
 }
@@ -156,7 +156,7 @@ func (vs *VSliderIntWidget) ID(id ID) *VSliderIntWidget {
 // Build implements Widget interface.
 func (vs *VSliderIntWidget) Build() {
 	if imgui.VSliderIntV(
-		Context.FontAtlas.RegisterString(vs.label.String()),
+		Context.PrepareString(vs.label.String()),
 		imgui.Vec2{X: vs.width, Y: vs.height},
 		vs.value,
 		vs.minValue,
@@ -217,7 +217,7 @@ func (sf *SliderFloatWidget) Size(width float32) *SliderFloatWidget {
 
 // Label sets slider's label (id).
 func (sf *SliderFloatWidget) Label(label string) *SliderFloatWidget {
-	sf.label = GenAutoID(Context.FontAtlas.RegisterString(label))
+	sf.label = GenAutoID(Context.PrepareString(label))
 	return sf
 }
 
@@ -417,7 +417,7 @@ func (d *DragFloatWidget) OnChange(onChange func()) *DragFloatWidget {
 
 // Build implements Widget interface.
 func (d *DragFloatWidget) Build() {
-	if imgui.DragFloatV(Context.FontAtlas.RegisterString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, imgui.SliderFlags(d.flags)) && d.onChange != nil {
+	if imgui.DragFloatV(Context.PrepareString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, imgui.SliderFlags(d.flags)) && d.onChange != nil {
 		d.onChange()
 	}
 }

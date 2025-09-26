@@ -56,7 +56,7 @@ type PopupWidget struct {
 // Popup creates new popup widget.
 func Popup(name string) *PopupWidget {
 	return &PopupWidget{
-		name:   Context.FontAtlas.RegisterString(name),
+		name:   name,
 		flags:  0,
 		layout: nil,
 	}
@@ -98,7 +98,7 @@ type PopupModalWidget struct {
 // PopupModal creates new popup modal widget.
 func PopupModal(name string) *PopupModalWidget {
 	return &PopupModalWidget{
-		name:   Context.FontAtlas.RegisterString(name),
+		name:   name,
 		open:   nil,
 		flags:  WindowFlagsNoResize,
 		layout: nil,

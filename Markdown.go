@@ -129,7 +129,7 @@ func (m *MarkdownWidget) Header(level int, font *FontInfo, fontSize float32, sep
 func (m *MarkdownWidget) Build() {
 	state := m.getState()
 	immarkdown.Markdown(
-		Context.FontAtlas.RegisterString(m.md),
+		Context.PrepareString(m.md),
 		uint64(len(m.md)),
 		state.cfg,
 	)

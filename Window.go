@@ -143,7 +143,7 @@ func (w *WindowWidget) Layout(widgets ...Widget) {
 		}),
 	)
 
-	showed := imgui.BeginV(Context.FontAtlas.RegisterString(w.title), w.open, imgui.WindowFlags(w.flags))
+	showed := imgui.BeginV(Context.PrepareString(w.title), w.open, imgui.WindowFlags(w.flags))
 
 	if showed {
 		Layout(widgets).Build()
