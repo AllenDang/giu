@@ -141,7 +141,7 @@ type ComboCustomWidget struct {
 func ComboCustom(label, previewValue string) *ComboCustomWidget {
 	return &ComboCustomWidget{
 		label:        GenAutoID(label),
-		previewValue: Context.FontAtlas.RegisterString(previewValue),
+		previewValue: Context.PrepareString(previewValue),
 		width:        0,
 		flags:        0,
 		layout:       nil,
@@ -209,8 +209,8 @@ type ComboWidget struct {
 func Combo(label, previewValue string, items []string, selected *int32) *ComboWidget {
 	return &ComboWidget{
 		label:        GenAutoID(label),
-		previewValue: Context.FontAtlas.RegisterString(previewValue),
-		items:        Context.FontAtlas.RegisterStringSlice(items),
+		previewValue: Context.PrepareString(previewValue),
+		items:        Context.PrepareStringSlice(items),
 		selected:     selected,
 		flags:        0,
 		width:        0,
@@ -550,7 +550,7 @@ func (p *ProgressBarWidget) Size(width, height float32) *ProgressBarWidget {
 
 // Overlay sets custom overlay displayed on the bar.
 func (p *ProgressBarWidget) Overlay(overlay string) *ProgressBarWidget {
-	p.overlay = Context.FontAtlas.RegisterString(overlay)
+	p.overlay = Context.PrepareString(overlay)
 	return p
 }
 
@@ -739,7 +739,7 @@ type TooltipWidget struct {
 // NOTE: you can set the empty label and use Layout() method.
 func Tooltip(tip string) *TooltipWidget {
 	return &TooltipWidget{
-		tip:    Context.FontAtlas.RegisterString(tip),
+		tip:    Context.PrepareString(tip),
 		layout: nil,
 	}
 }

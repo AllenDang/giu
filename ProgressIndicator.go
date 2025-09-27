@@ -117,7 +117,7 @@ func (p *ProgressIndicatorWidget) Build() {
 
 				// Draw text
 				if p.label != "" {
-					labelWidth, _ := CalcTextSize(Context.FontAtlas.RegisterString(p.label))
+					labelWidth, _ := CalcTextSize(Context.PrepareString(p.label))
 					labelPos := centerPt.Add(image.Pt(-1*int(labelWidth/2), int(p.radius+p.radius/5+8)))
 					canvas.AddText(labelPos, rgba, p.label)
 				}

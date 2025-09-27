@@ -248,7 +248,7 @@ func (p *PlotCanvasWidget) Build() {
 	}
 
 	if implot.BeginPlotV(
-		Context.FontAtlas.RegisterString(p.title),
+		Context.PrepareString(p.title),
 		ToVec2(image.Pt(p.width, p.height)),
 		implot.Flags(p.flags),
 	) {
@@ -310,20 +310,20 @@ func (p *PlotCanvasWidget) Build() {
 
 		implot.SetupAxisV(
 			implot.AxisX1,
-			Context.FontAtlas.RegisterString(p.xLabel),
+			Context.PrepareString(p.xLabel),
 			implot.AxisFlags(p.xFlags),
 		)
 
 		implot.SetupAxisV(
 			implot.AxisY1,
-			Context.FontAtlas.RegisterString(p.yLabel),
+			Context.PrepareString(p.yLabel),
 			implot.AxisFlags(p.yFlags),
 		)
 
 		if p.y2Label != "" {
 			implot.SetupAxisV(
 				implot.AxisY2,
-				Context.FontAtlas.RegisterString(p.y2Label),
+				Context.PrepareString(p.y2Label),
 				implot.AxisFlags(p.y2Flags),
 			)
 		}
@@ -331,7 +331,7 @@ func (p *PlotCanvasWidget) Build() {
 		if p.y3Label != "" {
 			implot.SetupAxisV(
 				implot.AxisY3,
-				Context.FontAtlas.RegisterString(p.y3Label),
+				Context.PrepareString(p.y3Label),
 				implot.AxisFlags(p.y3Flags),
 			)
 		}
@@ -444,7 +444,7 @@ func (p *BarHPlot) Offset(offset int) *BarHPlot {
 // Plot implements plot interface.
 func (p *BarHPlot) Plot() {
 	implot.PlotBarsdoublePtrIntV(
-		Context.FontAtlas.RegisterString(p.title),
+		Context.PrepareString(p.title),
 		utils.SliceToPtr(p.data),
 		int32(len(p.data)),
 		p.height,
@@ -506,7 +506,7 @@ func (p *LinePlot) Plot() {
 	)
 
 	implot.PlotLinedoublePtrIntV(
-		Context.FontAtlas.RegisterString(p.title),
+		Context.PrepareString(p.title),
 		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
 		p.xScale,
@@ -551,7 +551,7 @@ func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
 func (p *LineXYPlot) Plot() {
 	implot.SetAxis(implot.AxisEnum(p.yAxis))
 	implot.PlotLinedoublePtrdoublePtrV(
-		Context.FontAtlas.RegisterString(p.title),
+		Context.PrepareString(p.title),
 		utils.SliceToPtr(p.xs),
 		utils.SliceToPtr(p.ys),
 		int32(len(p.xs)),
@@ -612,7 +612,7 @@ func (p *PieChartPlot) Plot() {
 	}
 
 	implot.PlotPieChartdoublePtrStrV(
-		Context.FontAtlas.RegisterStringSlice(p.labels),
+		Context.PrepareStringSlice(p.labels),
 		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
 		p.x,
@@ -664,7 +664,7 @@ func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
 // Plot implements Plot interface.
 func (p *ScatterPlot) Plot() {
 	implot.PlotScatterdoublePtrIntV(
-		Context.FontAtlas.RegisterString(p.label),
+		Context.PrepareString(p.label),
 		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
 		p.xscale,
@@ -701,7 +701,7 @@ func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
 // Plot implements Plot interface.
 func (p *ScatterXYPlot) Plot() {
 	implot.PlotScatterdoublePtrdoublePtrV(
-		Context.FontAtlas.RegisterString(p.label),
+		Context.PrepareString(p.label),
 		utils.SliceToPtr(p.xs),
 		utils.SliceToPtr(p.ys),
 		int32(len(p.xs)),

@@ -110,7 +110,7 @@ func colorPopup(ce *color.RGBA, fe g.ColorEditFlags) {
 		refCol := pcol
 
 		if imgui.ColorPicker4V(
-			g.Context.FontAtlas.RegisterString("##COLOR_POPUP##me"),
+			"##COLOR_POPUP##me",
 			&col,
 			imgui.ColorEditFlags(fe),
 			utils.SliceToPtr(refCol),
