@@ -3,6 +3,8 @@ package giu
 import "github.com/AllenDang/cimgui-go/imgui"
 
 // DefaultTheme generates a default GIU theme's StyleSetter.
+//
+//nolint:dupl // This is something like "data file", so I'd prefer to keep it as simple as possible.
 func DefaultTheme() *StyleSetter {
 	return Style().
 		SetStyleFloat(StyleVarWindowRounding, 2).
@@ -61,6 +63,8 @@ func DefaultTheme() *StyleSetter {
 }
 
 // LightTheme generates a default GIU theme's StyleSetter.
+//
+//nolint:dupl // This is something like "data file", so I'd prefer to keep it as simple as possible.
 func LightTheme() *StyleSetter {
 	return Style().
 		SetStyleFloat(StyleVarWindowRounding, 2).
