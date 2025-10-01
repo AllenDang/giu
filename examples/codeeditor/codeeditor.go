@@ -7,7 +7,11 @@ import (
 	"github.com/AllenDang/giu"
 )
 
-var editor *giu.CodeEditorWidget
+var (
+	editor         *giu.CodeEditorWidget
+	palettes       = []string{"Dark", "Light", "Mariana", "Retro Blue"}
+	currentPalette int32
+)
 
 // errMarkers imgui.ErrorMarkers
 
@@ -39,6 +43,9 @@ func loop() {
 				// errMarkers.Insert(1, "Error message")
 				// fmt.Println("ErrMarkers Size:", errMarkers.Size())
 				// editor.ErrorMarkers(errMarkers)
+			}),
+			giu.Combo("Palette", palettes[currentPalette], palettes, &currentPalette).OnChange(func() {
+				editor.Palette(giu.CodeEditorPalette(currentPalette))
 			}),
 		),
 		editor,
