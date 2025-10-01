@@ -24,7 +24,7 @@ const (
 	LanguageDefinitionHlsl        LanguageDefinition = LanguageDefinition(cte.Hlsl)
 )
 
-// CodeEditorPalette represents a colors palette to use with the code editor
+// CodeEditorPalette represents a colors palette to use with the code editor.
 type CodeEditorPalette byte
 
 const (

@@ -9,8 +9,8 @@ import (
 
 var (
 	editor         *giu.CodeEditorWidget
-	palettes             = []string{"Dark", "Light", "Mariana", "Retro Blue"}
-	currentPalette int32 = 0
+	palettes       = []string{"Dark", "Light", "Mariana", "Retro Blue"}
+	currentPalette int32
 )
 
 // errMarkers imgui.ErrorMarkers
