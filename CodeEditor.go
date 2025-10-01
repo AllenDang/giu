@@ -24,6 +24,16 @@ const (
 	LanguageDefinitionHlsl        LanguageDefinition = LanguageDefinition(cte.Hlsl)
 )
 
+// CodeEditorPalette represents a colors palette to use with the code editor
+type CodeEditorPalette byte
+
+const (
+	PaletteDark      CodeEditorPalette = CodeEditorPalette(cte.Dark)
+	PaletteLight     CodeEditorPalette = CodeEditorPalette(cte.Light)
+	PaletteMariana   CodeEditorPalette = CodeEditorPalette(cte.Mariana)
+	PaletteRetroBlue CodeEditorPalette = CodeEditorPalette(cte.RetroBlue)
+)
+
 var _ Disposable = &codeEditorState{}
 
 type codeEditorState struct {
@@ -57,6 +67,11 @@ func CodeEditor() *CodeEditorWidget {
 // It isn't necessary to use it in a normal conditions.
 func (ce *CodeEditorWidget) ID(id ID) *CodeEditorWidget {
 	ce.title = id
+	return ce
+}
+
+func (ce *CodeEditorWidget) Palette(palette CodeEditorPalette) *CodeEditorWidget {
+	ce.getState().editor.SetPalette(cte.PaletteId(palette))
 	return ce
 }
 
