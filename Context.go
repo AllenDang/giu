@@ -231,6 +231,12 @@ func (c *GIUContext) GetState(id ID) any {
 	return nil
 }
 
+func (c *GIUContext) WithLock(fn func()) {
+	c.m.Lock()
+	defer c.m.Unlock()
+	fn()
+}
+
 func (c *GIUContext) load(id any) (*state, bool) {
 	if v, ok := c.state.Load(id); ok {
 		if s, ok := v.(*state); ok {
