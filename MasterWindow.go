@@ -112,8 +112,6 @@ func NewMasterWindow(title string, width, height int, flags MasterWindowFlags) *
 
 	mw.SetInputHandler(newInputHandler())
 
-	mw.ctx.backend.SetSizeChangeCallback(mw.sizeChange)
-
 	mw.SetBgColor(colornames.Black)
 
 	mw.SetScale(0) // set content scale
@@ -129,10 +127,6 @@ func (w *MasterWindow) setTheme() (fin func()) {
 	w.theme.Push()
 
 	return w.theme.Pop
-}
-
-func (w *MasterWindow) sizeChange(_, _ int) {
-	// noop
 }
 
 func (w *MasterWindow) beforeRender() {
@@ -291,6 +285,11 @@ func (w *MasterWindow) SetCloseCallback(cb func() bool) {
 // SetDropCallback sets callback when file was dropped into the window.
 func (w *MasterWindow) SetDropCallback(cb func([]string)) {
 	w.ctx.backend.SetDropCallback(cb)
+}
+
+// SetSizeChangeCallback sets callback when the window is resized.
+func (w *MasterWindow) SetSizeChangeCallback(cb func(w, h int)) {
+	w.ctx.backend.SetSizeChangeCallback(cb)
 }
 
 // RegisterKeyboardShortcuts registers a global - master window - keyboard shortcuts.
