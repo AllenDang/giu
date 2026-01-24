@@ -171,6 +171,7 @@ type InputTextWidget struct {
 	flags      InputTextFlags
 	cb         imgui.InputTextCallback
 	onChange   func()
+	focus      bool
 }
 
 // InputText creates new input text widget.
@@ -183,6 +184,7 @@ func InputText(value *string) *InputTextWidget {
 		flags:    0,
 		cb:       nil,
 		onChange: nil,
+		focus:    false,
 	}
 }
 
@@ -240,6 +242,12 @@ func (i *InputTextWidget) OnChange(onChange func()) *InputTextWidget {
 	return i
 }
 
+// Focus sets if the field should have keyboard focus.
+func (i *InputTextWidget) Focus(focus bool) *InputTextWidget {
+	i.focus = focus
+	return i
+}
+
 // Build implements Widget interface.
 func (i *InputTextWidget) Build() {
 	// Get state
@@ -255,6 +263,10 @@ func (i *InputTextWidget) Build() {
 		defer PopItemWidth()
 	}
 
+	if i.focus {
+		imgui.SetKeyboardFocusHere()
+	}
+	
 	isChanged := imgui.InputTextWithHint(i.label.String(), i.hint, i.value, imgui.InputTextFlags(i.flags), i.cb)
 
 	if isChanged && i.onChange != nil {
