@@ -266,7 +266,7 @@ func (i *InputTextWidget) Build() {
 	if i.focus {
 		imgui.SetKeyboardFocusHere()
 	}
-	
+
 	isChanged := imgui.InputTextWithHint(i.label.String(), i.hint, i.value, imgui.InputTextFlags(i.flags), i.cb)
 
 	if isChanged && i.onChange != nil {
