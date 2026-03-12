@@ -1,8 +1,6 @@
 module github.com/AllenDang/giu
 
-go 1.24.0
-
-toolchain go1.24.1
+go 1.25.0
 
 require (
 	github.com/AllenDang/cimgui-go v1.4.1-0.20250925204649-371379776ff5
@@ -15,7 +13,7 @@ require (
 	github.com/sahilm/fuzzy v0.1.1
 	github.com/stretchr/testify v1.11.1
 	golang.design/x/hotkey v0.4.1
-	golang.org/x/image v0.36.0
+	golang.org/x/image v0.37.0
 	gopkg.in/eapache/queue.v1 v1.1.0
 )
 
