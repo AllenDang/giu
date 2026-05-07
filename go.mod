@@ -10,7 +10,7 @@ require (
 	github.com/mazznoer/csscolorparser v0.1.8
 	github.com/napsy/go-css v1.0.0
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
-	github.com/sahilm/fuzzy v0.1.1
+	github.com/sahilm/fuzzy v0.1.2
 	github.com/stretchr/testify v1.11.1
 	golang.design/x/hotkey v0.4.1
 	golang.org/x/image v0.39.0
@@ -19,7 +19,6 @@ require (
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	golang.design/x/mainthread v0.3.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect
