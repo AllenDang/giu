@@ -385,13 +385,13 @@ func (p *BarPlot) Shift(shift float64) *BarPlot {
 
 // Offset sets bar's offset.
 func (p *BarPlot) Offset(offset int) *BarPlot {
-	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
+	p.spec.SetProperty(PlotPropertyOffset, int(offset))
 	return p
 }
 
 // Plot implements Plot interface.
 func (p *BarPlot) Plot() {
-	p.spec.SetProperty(PlotPropertyStride, int32(8))
+	p.spec.SetProperty(PlotPropertyStride, int(8))
 	implot.PlotBarsdoublePtrIntV(
 		p.title,
 		utils.SliceToPtr(p.data),
@@ -436,13 +436,13 @@ func (p *BarHPlot) Shift(shift float64) *BarHPlot {
 
 // Offset sets offset.
 func (p *BarHPlot) Offset(offset int) *BarHPlot {
-	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
+	p.spec.SetProperty(PlotPropertyOffset, int(offset))
 	return p
 }
 
 // Plot implements plot interface.
 func (p *BarHPlot) Plot() {
-	p.spec.SetProperty(PlotPropertyFlags, int32(implot.BarsFlagsHorizontal))
+	p.spec.SetProperty(PlotPropertyFlags, int(implot.BarsFlagsHorizontal))
 	implot.PlotBarsdoublePtrIntV(
 		Context.PrepareString(p.title),
 		utils.SliceToPtr(p.data),
@@ -493,7 +493,7 @@ func (p *LinePlot) X0(x0 float64) *LinePlot {
 
 // Offset sets chart offset.
 func (p *LinePlot) Offset(offset int) *LinePlot {
-	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
+	p.spec.SetProperty(PlotPropertyOffset, int(offset))
 	return p
 }
 
@@ -503,7 +503,7 @@ func (p *LinePlot) Plot() {
 		implot.AxisEnum(p.yAxis),
 	)
 
-	p.spec.SetProperty(PlotPropertyStride, int32(8))
+	p.spec.SetProperty(PlotPropertyStride, int(8))
 
 	implot.PlotLinedoublePtrIntV(
 		Context.PrepareString(p.title),
@@ -541,14 +541,14 @@ func (p *LineXYPlot) SetPlotYAxis(yAxis ImPlotYAxis) *LineXYPlot {
 
 // Offset sets chart's offset.
 func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
-	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
+	p.spec.SetProperty(PlotPropertyOffset, int(offset))
 	return p
 }
 
 // Plot implements Plot interface.
 func (p *LineXYPlot) Plot() {
 	implot.SetAxis(implot.AxisEnum(p.yAxis))
-	p.spec.SetProperty(PlotPropertyStride, int32(8))
+	p.spec.SetProperty(PlotPropertyStride, int(8))
 	implot.PlotLinedoublePtrdoublePtrV(
 		Context.PrepareString(p.title),
 		utils.SliceToPtr(p.xs),
@@ -610,7 +610,7 @@ func (p *PieChartPlot) Plot() {
 		flags |= implot.PieChartFlagsNormalize
 	}
 
-	p.spec.SetProperty(PlotPropertyFlags, int32(flags))
+	p.spec.SetProperty(PlotPropertyFlags, int(flags))
 	implot.PlotPieChartdoublePtrStrV(
 		Context.PrepareStringSlice(p.labels),
 		utils.SliceToPtr(p.values),
@@ -657,13 +657,13 @@ func (p *ScatterPlot) X0(x float64) *ScatterPlot {
 
 // Offset sets chart offset.
 func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
-	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
+	p.spec.SetProperty(PlotPropertyOffset, int(offset))
 	return p
 }
 
 // Plot implements Plot interface.
 func (p *ScatterPlot) Plot() {
-	p.spec.SetProperty(PlotPropertyStride, int32(8))
+	p.spec.SetProperty(PlotPropertyStride, int(8))
 	implot.PlotScatterdoublePtrIntV(
 		Context.PrepareString(p.label),
 		utils.SliceToPtr(p.values),
@@ -693,13 +693,13 @@ func ScatterXY(label string, xs, ys []float64) *ScatterXYPlot {
 
 // Offset sets chart offset.
 func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
-	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
+	p.spec.SetProperty(PlotPropertyOffset, int(offset))
 	return p
 }
 
 // Plot implements Plot interface.
 func (p *ScatterXYPlot) Plot() {
-	p.spec.SetProperty(PlotPropertyStride, int32(8))
+	p.spec.SetProperty(PlotPropertyStride, int(8))
 	implot.PlotScatterdoublePtrdoublePtrV(
 		Context.PrepareString(p.label),
 		utils.SliceToPtr(p.xs),
