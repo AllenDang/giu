@@ -169,27 +169,24 @@ type StylePlotColorID int
 
 // List of plot color IDs.
 const (
-	StylePlotColorLine          StylePlotColorID = StylePlotColorID(implot.ColLine)          // plot-line
-	StylePlotColorFill          StylePlotColorID = StylePlotColorID(implot.ColFill)          // plot-fill
-	StylePlotColorMarkerOutline StylePlotColorID = StylePlotColorID(implot.ColMarkerOutline) // plot-marker-outline
-	StylePlotColorMarkerFill    StylePlotColorID = StylePlotColorID(implot.ColMarkerFill)    // plot-Marker-Fill
-	StylePlotColorErrorBar      StylePlotColorID = StylePlotColorID(implot.ColErrorBar)      // plot-error-bar
-	StylePlotColorFrameBg       StylePlotColorID = StylePlotColorID(implot.ColFrameBg)       // plot-frame-bg
-	StylePlotColorPlotBg        StylePlotColorID = StylePlotColorID(implot.ColPlotBg)        // plot-plot-bg
-	StylePlotColorPlotBorder    StylePlotColorID = StylePlotColorID(implot.ColPlotBorder)    // plot-plot-border
-	StylePlotColorLegendBg      StylePlotColorID = StylePlotColorID(implot.ColLegendBg)      // plot-legend-bg
-	StylePlotColorLegendBorder  StylePlotColorID = StylePlotColorID(implot.ColLegendBorder)  // plot-legend-border
-	StylePlotColorLegendText    StylePlotColorID = StylePlotColorID(implot.ColLegendText)    // plot-legend-text
-	StylePlotColorTitleText     StylePlotColorID = StylePlotColorID(implot.ColTitleText)     // plot-title-text
-	StylePlotColorInlayText     StylePlotColorID = StylePlotColorID(implot.ColInlayText)     // plot-inlay-text
+	StylePlotColorFrameBg      StylePlotColorID = StylePlotColorID(implot.ColFrameBg)      // plot-frame-bg
+	StylePlotColorPlotBg       StylePlotColorID = StylePlotColorID(implot.ColPlotBg)       // plot-plot-bg
+	StylePlotColorPlotBorder   StylePlotColorID = StylePlotColorID(implot.ColPlotBorder)   // plot-plot-border
+	StylePlotColorLegendBg     StylePlotColorID = StylePlotColorID(implot.ColLegendBg)     // plot-legend-bg
+	StylePlotColorLegendBorder StylePlotColorID = StylePlotColorID(implot.ColLegendBorder) // plot-legend-border
+	StylePlotColorLegendText   StylePlotColorID = StylePlotColorID(implot.ColLegendText)   // plot-legend-text
+	StylePlotColorTitleText    StylePlotColorID = StylePlotColorID(implot.ColTitleText)    // plot-title-text
+	StylePlotColorInlayText    StylePlotColorID = StylePlotColorID(implot.ColInlayText)    // plot-inlay-text
+
 	StylePlotColorAxisText      StylePlotColorID = StylePlotColorID(implot.ColAxisText)      // plot-axis-text
 	StylePlotColorAxisGrid      StylePlotColorID = StylePlotColorID(implot.ColAxisGrid)      // plot-axis-grid
 	StylePlotColorAxisTick      StylePlotColorID = StylePlotColorID(implot.ColAxisTick)      // plot-axis-tick
 	StylePlotColorAxisBg        StylePlotColorID = StylePlotColorID(implot.ColAxisBg)        // plot-axis-bg
 	StylePlotColorAxisBgHovered StylePlotColorID = StylePlotColorID(implot.ColAxisBgHovered) // plot-axis-bg-hovered
 	StylePlotColorAxisBgActive  StylePlotColorID = StylePlotColorID(implot.ColAxisBgActive)  // plot-axis-bg-active
-	StylePlotColorSelection     StylePlotColorID = StylePlotColorID(implot.ColSelection)     // plot-selection
-	StylePlotColorCrosshairs    StylePlotColorID = StylePlotColorID(implot.ColCrosshairs)    // plot-crosshairs
+
+	StylePlotColorSelection  StylePlotColorID = StylePlotColorID(implot.ColSelection)  // plot-selection
+	StylePlotColorCrosshairs StylePlotColorID = StylePlotColorID(implot.ColCrosshairs) // plot-crosshairs
 )
 
 // StylePlotVarID represents an ID of plot style variable.
@@ -197,15 +194,6 @@ type StylePlotVarID imgui.StyleVar
 
 // List of plot style variable IDs.
 const (
-	StylePlotVarLineWeight         StylePlotVarID = StylePlotVarID(implot.StyleVarLineWeight)         // plot-line-weight
-	StylePlotVarMarker             StylePlotVarID = StylePlotVarID(implot.StyleVarMarker)             // plot-marker
-	StylePlotVarMarkerSize         StylePlotVarID = StylePlotVarID(implot.StyleVarMarkerSize)         // plot-marker-size
-	StylePlotVarMarkerWeight       StylePlotVarID = StylePlotVarID(implot.StyleVarMarkerWeight)       // plot-marker-weight
-	StylePlotVarFillAlpha          StylePlotVarID = StylePlotVarID(implot.StyleVarFillAlpha)          // plot-fill-alpha
-	StylePlotVarErrorBarSize       StylePlotVarID = StylePlotVarID(implot.StyleVarErrorBarSize)       // plot-error-bar-size
-	StylePlotVarErrorBarWeight     StylePlotVarID = StylePlotVarID(implot.StyleVarErrorBarWeight)     // plot-error-bar-weight
-	StylePlotVarDigitalBitHeight   StylePlotVarID = StylePlotVarID(implot.StyleVarDigitalBitHeight)   // plot-digital-bit-height
-	StylePlotVarDigitalBitGap      StylePlotVarID = StylePlotVarID(implot.StyleVarDigitalBitGap)      // plot-digital-bit-gap
 	StylePlotVarPlotBorderSize     StylePlotVarID = StylePlotVarID(implot.StyleVarPlotBorderSize)     // plot-border-size
 	StylePlotVarMinorAlpha         StylePlotVarID = StylePlotVarID(implot.StyleVarMinorAlpha)         // plot-minor-alpha
 	StylePlotVarMajorTickLen       StylePlotVarID = StylePlotVarID(implot.StyleVarMajorTickLen)       // plot-major-tick-len
