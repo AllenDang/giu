@@ -19,8 +19,9 @@ const _SurfaceState_name = "SurfaceStateNoneSurfaceStateLoadingSurfaceStateFailu
 var _SurfaceState_index = [...]uint8{0, 16, 35, 54, 73}
 
 func (i SurfaceState) String() string {
-	if i < 0 || i >= SurfaceState(len(_SurfaceState_index)-1) {
+	idx := int(i) - 0
+	if i < 0 || idx >= len(_SurfaceState_index)-1 {
 		return "SurfaceState(" + strconv.FormatInt(int64(i), 10) + ")"
 	}
-	return _SurfaceState_name[_SurfaceState_index[i]:_SurfaceState_index[i+1]]
+	return _SurfaceState_name[_SurfaceState_index[idx]:_SurfaceState_index[idx+1]]
 }

@@ -353,21 +353,21 @@ func SwitchPlotAxes(x PlotXAxis, y PlotYAxis) PlotWidget {
 
 // BarPlot adds bar plot (column chart) to the canvas.
 type BarPlot struct {
-	title  string
-	data   []float64
-	width  float64
-	shift  float64
-	offset int
+	title string
+	data  []float64
+	width float64
+	shift float64
+	spec  *PlotSpec
 }
 
 // Bar adds plot bars to the canvas.
 func Bar(title string, data []float64) *BarPlot {
 	return &BarPlot{
-		title:  title,
-		data:   data,
-		width:  0.2,
-		shift:  0,
-		offset: 0,
+		title: title,
+		data:  data,
+		width: 0.2,
+		shift: 0,
+		spec:  NewPlotSpec(),
 	}
 }
 
@@ -385,21 +385,20 @@ func (p *BarPlot) Shift(shift float64) *BarPlot {
 
 // Offset sets bar's offset.
 func (p *BarPlot) Offset(offset int) *BarPlot {
-	p.offset = offset
+	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
 	return p
 }
 
 // Plot implements Plot interface.
 func (p *BarPlot) Plot() {
+	p.spec.SetProperty(PlotPropertyStride, int32(8))
 	implot.PlotBarsdoublePtrIntV(
 		p.title,
 		utils.SliceToPtr(p.data),
 		int32(len(p.data)),
 		p.width,
 		p.shift,
-		0, // TODO: implement
-		int32(p.offset),
-		8, // in fact this is sizeof(double) = 8
+		*p.spec.GetSpec(),
 	)
 }
 
@@ -409,7 +408,7 @@ type BarHPlot struct {
 	data   []float64
 	height float64
 	shift  float64
-	offset int
+	spec   *PlotSpec
 }
 
 // BarH adds plot bars on y axis.
@@ -419,7 +418,7 @@ func BarH(title string, data []float64) *BarHPlot {
 		data:   data,
 		height: 0.2,
 		shift:  0,
-		offset: 0,
+		spec:   NewPlotSpec(),
 	}
 }
 
@@ -437,21 +436,20 @@ func (p *BarHPlot) Shift(shift float64) *BarHPlot {
 
 // Offset sets offset.
 func (p *BarHPlot) Offset(offset int) *BarHPlot {
-	p.offset = offset
+	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
 	return p
 }
 
 // Plot implements plot interface.
 func (p *BarHPlot) Plot() {
+	p.spec.SetProperty(PlotPropertyFlags, int32(implot.BarsFlagsHorizontal))
 	implot.PlotBarsdoublePtrIntV(
 		Context.PrepareString(p.title),
 		utils.SliceToPtr(p.data),
 		int32(len(p.data)),
 		p.height,
 		p.shift,
-		implot.BarsFlagsHorizontal,
-		int32(p.offset),
-		0,
+		*p.spec.GetSpec(),
 	)
 }
 
@@ -460,8 +458,8 @@ type LinePlot struct {
 	title      string
 	values     []float64
 	xScale, x0 float64
-	offset     int
 	yAxis      ImPlotYAxis
+	spec       *PlotSpec
 }
 
 // Line adds a new plot line to the canvas.
@@ -471,7 +469,7 @@ func Line(title string, values []float64) *LinePlot {
 		values: values,
 		xScale: 1,
 		x0:     0,
-		offset: 0,
+		spec:   NewPlotSpec(),
 	}
 }
 
@@ -495,7 +493,7 @@ func (p *LinePlot) X0(x0 float64) *LinePlot {
 
 // Offset sets chart offset.
 func (p *LinePlot) Offset(offset int) *LinePlot {
-	p.offset = offset
+	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
 	return p
 }
 
@@ -505,15 +503,15 @@ func (p *LinePlot) Plot() {
 		implot.AxisEnum(p.yAxis),
 	)
 
+	p.spec.SetProperty(PlotPropertyStride, int32(8))
+
 	implot.PlotLinedoublePtrIntV(
 		Context.PrepareString(p.title),
 		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
 		p.xScale,
 		p.x0,
-		0, // flags
-		int32(p.offset),
-		8, // in fact this is sizeof(double) = 8
+		*p.spec.GetSpec(),
 	)
 }
 
@@ -521,17 +519,17 @@ func (p *LinePlot) Plot() {
 type LineXYPlot struct {
 	title  string
 	xs, ys []float64
-	offset int
 	yAxis  ImPlotYAxis
+	spec   *PlotSpec
 }
 
 // LineXY adds XY plot line to canvas.
 func LineXY(title string, xvalues, yvalues []float64) *LineXYPlot {
 	return &LineXYPlot{
-		title:  title,
-		xs:     xvalues,
-		ys:     yvalues,
-		offset: 0,
+		title: title,
+		xs:    xvalues,
+		ys:    yvalues,
+		spec:  NewPlotSpec(),
 	}
 }
 
@@ -543,21 +541,20 @@ func (p *LineXYPlot) SetPlotYAxis(yAxis ImPlotYAxis) *LineXYPlot {
 
 // Offset sets chart's offset.
 func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
-	p.offset = offset
+	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
 	return p
 }
 
 // Plot implements Plot interface.
 func (p *LineXYPlot) Plot() {
 	implot.SetAxis(implot.AxisEnum(p.yAxis))
+	p.spec.SetProperty(PlotPropertyStride, int32(8))
 	implot.PlotLinedoublePtrdoublePtrV(
 		Context.PrepareString(p.title),
 		utils.SliceToPtr(p.xs),
 		utils.SliceToPtr(p.ys),
 		int32(len(p.xs)),
-		0, // flags
-		int32(p.offset),
-		8, // in fact this is sizeof(double) = 8
+		*p.spec.GetSpec(),
 	)
 }
 
@@ -570,6 +567,7 @@ type PieChartPlot struct {
 	normalize    bool
 	labelFormat  string
 	angle0       float64
+	spec         *PlotSpec
 }
 
 // PieChart adds pie chart to the canvas.
@@ -583,6 +581,7 @@ func PieChart(labels []string, values []float64, x, y, radius float64) *PieChart
 		normalize:   false,
 		labelFormat: "%.1f",
 		angle0:      90,
+		spec:        NewPlotSpec(),
 	}
 }
 
@@ -611,6 +610,7 @@ func (p *PieChartPlot) Plot() {
 		flags |= implot.PieChartFlagsNormalize
 	}
 
+	p.spec.SetProperty(PlotPropertyFlags, int32(flags))
 	implot.PlotPieChartdoublePtrStrV(
 		Context.PrepareStringSlice(p.labels),
 		utils.SliceToPtr(p.values),
@@ -620,7 +620,7 @@ func (p *PieChartPlot) Plot() {
 		p.radius,
 		p.labelFormat,
 		p.angle0,
-		flags,
+		*p.spec.GetSpec(),
 	)
 }
 
@@ -629,7 +629,7 @@ type ScatterPlot struct {
 	label      string
 	values     []float64
 	xscale, x0 float64
-	offset     int
+	spec       *PlotSpec
 }
 
 // Scatter adds scatter plot to the canvas.
@@ -639,7 +639,7 @@ func Scatter(label string, values []float64) *ScatterPlot {
 		values: values,
 		xscale: 1,
 		x0:     0,
-		offset: 0,
+		spec:   NewPlotSpec(),
 	}
 }
 
@@ -657,21 +657,20 @@ func (p *ScatterPlot) X0(x float64) *ScatterPlot {
 
 // Offset sets chart offset.
 func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
-	p.offset = offset
+	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
 	return p
 }
 
 // Plot implements Plot interface.
 func (p *ScatterPlot) Plot() {
+	p.spec.SetProperty(PlotPropertyStride, int32(8))
 	implot.PlotScatterdoublePtrIntV(
 		Context.PrepareString(p.label),
 		utils.SliceToPtr(p.values),
 		int32(len(p.values)),
 		p.xscale,
 		p.x0,
-		0, // TODO: implement flags
-		int32(p.offset),
-		8, // in fact this is sizeof(double) = 8
+		*p.spec.GetSpec(),
 	)
 }
 
@@ -679,34 +678,33 @@ func (p *ScatterPlot) Plot() {
 type ScatterXYPlot struct {
 	label  string
 	xs, ys []float64
-	offset int
+	spec   *PlotSpec
 }
 
 // ScatterXY adds scatter plot with x and y values.
 func ScatterXY(label string, xs, ys []float64) *ScatterXYPlot {
 	return &ScatterXYPlot{
-		label:  label,
-		xs:     xs,
-		ys:     ys,
-		offset: 0,
+		label: label,
+		xs:    xs,
+		ys:    ys,
+		spec:  NewPlotSpec(),
 	}
 }
 
 // Offset sets chart offset.
 func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
-	p.offset = offset
+	p.spec.SetProperty(PlotPropertyOffset, int32(offset))
 	return p
 }
 
 // Plot implements Plot interface.
 func (p *ScatterXYPlot) Plot() {
+	p.spec.SetProperty(PlotPropertyStride, int32(8))
 	implot.PlotScatterdoublePtrdoublePtrV(
 		Context.PrepareString(p.label),
 		utils.SliceToPtr(p.xs),
 		utils.SliceToPtr(p.ys),
 		int32(len(p.xs)),
-		0, // TODO: implement
-		int32(p.offset),
-		8, // in fact this is sizeof(double) = 8
+		*p.spec.GetSpec(),
 	)
 }
