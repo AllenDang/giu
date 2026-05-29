@@ -7,143 +7,117 @@ import (
 	"strings"
 )
 
-const _StylePlotVarIDName = "plot-line-weightplot-markerplot-marker-sizeplot-marker-weightplot-fill-alphaplot-error-bar-sizeplot-error-bar-weightplot-digital-bit-heightplot-digital-bit-gapplot-border-sizeplot-minor-alphaplot-major-tick-lenplot-minor-tick-lenplot-major-tick-sizeplot-minor-tick-sizeplot-major-grid-sizeplot-minor-grid-sizeplot-paddingplot-label-paddingplot-legend-paddingplot-legend-inner-paddingplot-legend-spacingplot-mouse-pos-paddingplot-annotation-paddingplot-fit-paddingplot-default-sizeplot-min-sizeStylePlotVarCOUNT"
+const (
+	_StylePlotVarIDName_0      = "plot-default-sizeplot-min-sizeplot-border-sizeplot-minor-alphaplot-major-tick-lenplot-minor-tick-lenplot-major-tick-sizeplot-minor-tick-sizeplot-major-grid-sizeplot-minor-grid-sizeplot-paddingplot-label-paddingplot-legend-paddingplot-legend-inner-paddingplot-legend-spacingplot-mouse-pos-paddingplot-annotation-paddingplot-fit-padding"
+	_StylePlotVarIDLowerName_0 = "plot-default-sizeplot-min-sizeplot-border-sizeplot-minor-alphaplot-major-tick-lenplot-minor-tick-lenplot-major-tick-sizeplot-minor-tick-sizeplot-major-grid-sizeplot-minor-grid-sizeplot-paddingplot-label-paddingplot-legend-paddingplot-legend-inner-paddingplot-legend-spacingplot-mouse-pos-paddingplot-annotation-paddingplot-fit-padding"
+	_StylePlotVarIDName_1      = "StylePlotVarCOUNT"
+	_StylePlotVarIDLowerName_1 = "styleplotvarcount"
+)
 
-var _StylePlotVarIDIndex = [...]uint16{0, 16, 27, 43, 61, 76, 95, 116, 139, 159, 175, 191, 210, 229, 249, 269, 289, 309, 321, 339, 358, 383, 402, 424, 447, 463, 480, 493, 510}
-
-const _StylePlotVarIDLowerName = "plot-line-weightplot-markerplot-marker-sizeplot-marker-weightplot-fill-alphaplot-error-bar-sizeplot-error-bar-weightplot-digital-bit-heightplot-digital-bit-gapplot-border-sizeplot-minor-alphaplot-major-tick-lenplot-minor-tick-lenplot-major-tick-sizeplot-minor-tick-sizeplot-major-grid-sizeplot-minor-grid-sizeplot-paddingplot-label-paddingplot-legend-paddingplot-legend-inner-paddingplot-legend-spacingplot-mouse-pos-paddingplot-annotation-paddingplot-fit-paddingplot-default-sizeplot-min-sizestyleplotvarcount"
+var (
+	_StylePlotVarIDIndex_0 = [...]uint16{0, 17, 30, 46, 62, 81, 100, 120, 140, 160, 180, 192, 210, 229, 254, 273, 295, 318, 334}
+	_StylePlotVarIDIndex_1 = [...]uint8{0, 17}
+)
 
 func (i StylePlotVarID) String() string {
-	if i < 0 || i >= StylePlotVarID(len(_StylePlotVarIDIndex)-1) {
+	switch {
+	case 0 <= i && i <= 17:
+		return _StylePlotVarIDName_0[_StylePlotVarIDIndex_0[i]:_StylePlotVarIDIndex_0[i+1]]
+	case i == 20:
+		return _StylePlotVarIDName_1
+	default:
 		return fmt.Sprintf("StylePlotVarID(%d)", i)
 	}
-	return _StylePlotVarIDName[_StylePlotVarIDIndex[i]:_StylePlotVarIDIndex[i+1]]
 }
 
 // An "invalid array index" compiler error signifies that the constant values have changed.
 // Re-run the stringer command to generate them again.
 func _StylePlotVarIDNoOp() {
 	var x [1]struct{}
-	_ = x[StylePlotVarLineWeight-(0)]
-	_ = x[StylePlotVarMarker-(1)]
-	_ = x[StylePlotVarMarkerSize-(2)]
-	_ = x[StylePlotVarMarkerWeight-(3)]
-	_ = x[StylePlotVarFillAlpha-(4)]
-	_ = x[StylePlotVarErrorBarSize-(5)]
-	_ = x[StylePlotVarErrorBarWeight-(6)]
-	_ = x[StylePlotVarDigitalBitHeight-(7)]
-	_ = x[StylePlotVarDigitalBitGap-(8)]
-	_ = x[StylePlotVarPlotBorderSize-(9)]
-	_ = x[StylePlotVarMinorAlpha-(10)]
-	_ = x[StylePlotVarMajorTickLen-(11)]
-	_ = x[StylePlotVarMinorTickLen-(12)]
-	_ = x[StylePlotVarMajorTickSize-(13)]
-	_ = x[StylePlotVarMinorTickSize-(14)]
-	_ = x[StylePlotVarMajorGridSize-(15)]
-	_ = x[StylePlotVarMinorGridSize-(16)]
-	_ = x[StylePlotVarPlotPadding-(17)]
-	_ = x[StylePlotVarLabelPadding-(18)]
-	_ = x[StylePlotVarLegendPadding-(19)]
-	_ = x[StylePlotVarLegendInnerPadding-(20)]
-	_ = x[StylePlotVarLegendSpacing-(21)]
-	_ = x[StylePlotVarMousePosPadding-(22)]
-	_ = x[StylePlotVarAnnotationPadding-(23)]
-	_ = x[StylePlotVarFitPadding-(24)]
-	_ = x[StylePlotVarPlotDefaultSize-(25)]
-	_ = x[StylePlotVarPlotMinSize-(26)]
-	_ = x[StylePlotVarCOUNT-(27)]
+	_ = x[StylePlotVarPlotDefaultSize-(0)]
+	_ = x[StylePlotVarPlotMinSize-(1)]
+	_ = x[StylePlotVarPlotBorderSize-(2)]
+	_ = x[StylePlotVarMinorAlpha-(3)]
+	_ = x[StylePlotVarMajorTickLen-(4)]
+	_ = x[StylePlotVarMinorTickLen-(5)]
+	_ = x[StylePlotVarMajorTickSize-(6)]
+	_ = x[StylePlotVarMinorTickSize-(7)]
+	_ = x[StylePlotVarMajorGridSize-(8)]
+	_ = x[StylePlotVarMinorGridSize-(9)]
+	_ = x[StylePlotVarPlotPadding-(10)]
+	_ = x[StylePlotVarLabelPadding-(11)]
+	_ = x[StylePlotVarLegendPadding-(12)]
+	_ = x[StylePlotVarLegendInnerPadding-(13)]
+	_ = x[StylePlotVarLegendSpacing-(14)]
+	_ = x[StylePlotVarMousePosPadding-(15)]
+	_ = x[StylePlotVarAnnotationPadding-(16)]
+	_ = x[StylePlotVarFitPadding-(17)]
+	_ = x[StylePlotVarCOUNT-(20)]
 }
 
-var _StylePlotVarIDValues = []StylePlotVarID{StylePlotVarLineWeight, StylePlotVarMarker, StylePlotVarMarkerSize, StylePlotVarMarkerWeight, StylePlotVarFillAlpha, StylePlotVarErrorBarSize, StylePlotVarErrorBarWeight, StylePlotVarDigitalBitHeight, StylePlotVarDigitalBitGap, StylePlotVarPlotBorderSize, StylePlotVarMinorAlpha, StylePlotVarMajorTickLen, StylePlotVarMinorTickLen, StylePlotVarMajorTickSize, StylePlotVarMinorTickSize, StylePlotVarMajorGridSize, StylePlotVarMinorGridSize, StylePlotVarPlotPadding, StylePlotVarLabelPadding, StylePlotVarLegendPadding, StylePlotVarLegendInnerPadding, StylePlotVarLegendSpacing, StylePlotVarMousePosPadding, StylePlotVarAnnotationPadding, StylePlotVarFitPadding, StylePlotVarPlotDefaultSize, StylePlotVarPlotMinSize, StylePlotVarCOUNT}
+var _StylePlotVarIDValues = []StylePlotVarID{StylePlotVarPlotDefaultSize, StylePlotVarPlotMinSize, StylePlotVarPlotBorderSize, StylePlotVarMinorAlpha, StylePlotVarMajorTickLen, StylePlotVarMinorTickLen, StylePlotVarMajorTickSize, StylePlotVarMinorTickSize, StylePlotVarMajorGridSize, StylePlotVarMinorGridSize, StylePlotVarPlotPadding, StylePlotVarLabelPadding, StylePlotVarLegendPadding, StylePlotVarLegendInnerPadding, StylePlotVarLegendSpacing, StylePlotVarMousePosPadding, StylePlotVarAnnotationPadding, StylePlotVarFitPadding, StylePlotVarCOUNT}
 
 var _StylePlotVarIDNameToValueMap = map[string]StylePlotVarID{
-	_StylePlotVarIDName[0:16]:         StylePlotVarLineWeight,
-	_StylePlotVarIDLowerName[0:16]:    StylePlotVarLineWeight,
-	_StylePlotVarIDName[16:27]:        StylePlotVarMarker,
-	_StylePlotVarIDLowerName[16:27]:   StylePlotVarMarker,
-	_StylePlotVarIDName[27:43]:        StylePlotVarMarkerSize,
-	_StylePlotVarIDLowerName[27:43]:   StylePlotVarMarkerSize,
-	_StylePlotVarIDName[43:61]:        StylePlotVarMarkerWeight,
-	_StylePlotVarIDLowerName[43:61]:   StylePlotVarMarkerWeight,
-	_StylePlotVarIDName[61:76]:        StylePlotVarFillAlpha,
-	_StylePlotVarIDLowerName[61:76]:   StylePlotVarFillAlpha,
-	_StylePlotVarIDName[76:95]:        StylePlotVarErrorBarSize,
-	_StylePlotVarIDLowerName[76:95]:   StylePlotVarErrorBarSize,
-	_StylePlotVarIDName[95:116]:       StylePlotVarErrorBarWeight,
-	_StylePlotVarIDLowerName[95:116]:  StylePlotVarErrorBarWeight,
-	_StylePlotVarIDName[116:139]:      StylePlotVarDigitalBitHeight,
-	_StylePlotVarIDLowerName[116:139]: StylePlotVarDigitalBitHeight,
-	_StylePlotVarIDName[139:159]:      StylePlotVarDigitalBitGap,
-	_StylePlotVarIDLowerName[139:159]: StylePlotVarDigitalBitGap,
-	_StylePlotVarIDName[159:175]:      StylePlotVarPlotBorderSize,
-	_StylePlotVarIDLowerName[159:175]: StylePlotVarPlotBorderSize,
-	_StylePlotVarIDName[175:191]:      StylePlotVarMinorAlpha,
-	_StylePlotVarIDLowerName[175:191]: StylePlotVarMinorAlpha,
-	_StylePlotVarIDName[191:210]:      StylePlotVarMajorTickLen,
-	_StylePlotVarIDLowerName[191:210]: StylePlotVarMajorTickLen,
-	_StylePlotVarIDName[210:229]:      StylePlotVarMinorTickLen,
-	_StylePlotVarIDLowerName[210:229]: StylePlotVarMinorTickLen,
-	_StylePlotVarIDName[229:249]:      StylePlotVarMajorTickSize,
-	_StylePlotVarIDLowerName[229:249]: StylePlotVarMajorTickSize,
-	_StylePlotVarIDName[249:269]:      StylePlotVarMinorTickSize,
-	_StylePlotVarIDLowerName[249:269]: StylePlotVarMinorTickSize,
-	_StylePlotVarIDName[269:289]:      StylePlotVarMajorGridSize,
-	_StylePlotVarIDLowerName[269:289]: StylePlotVarMajorGridSize,
-	_StylePlotVarIDName[289:309]:      StylePlotVarMinorGridSize,
-	_StylePlotVarIDLowerName[289:309]: StylePlotVarMinorGridSize,
-	_StylePlotVarIDName[309:321]:      StylePlotVarPlotPadding,
-	_StylePlotVarIDLowerName[309:321]: StylePlotVarPlotPadding,
-	_StylePlotVarIDName[321:339]:      StylePlotVarLabelPadding,
-	_StylePlotVarIDLowerName[321:339]: StylePlotVarLabelPadding,
-	_StylePlotVarIDName[339:358]:      StylePlotVarLegendPadding,
-	_StylePlotVarIDLowerName[339:358]: StylePlotVarLegendPadding,
-	_StylePlotVarIDName[358:383]:      StylePlotVarLegendInnerPadding,
-	_StylePlotVarIDLowerName[358:383]: StylePlotVarLegendInnerPadding,
-	_StylePlotVarIDName[383:402]:      StylePlotVarLegendSpacing,
-	_StylePlotVarIDLowerName[383:402]: StylePlotVarLegendSpacing,
-	_StylePlotVarIDName[402:424]:      StylePlotVarMousePosPadding,
-	_StylePlotVarIDLowerName[402:424]: StylePlotVarMousePosPadding,
-	_StylePlotVarIDName[424:447]:      StylePlotVarAnnotationPadding,
-	_StylePlotVarIDLowerName[424:447]: StylePlotVarAnnotationPadding,
-	_StylePlotVarIDName[447:463]:      StylePlotVarFitPadding,
-	_StylePlotVarIDLowerName[447:463]: StylePlotVarFitPadding,
-	_StylePlotVarIDName[463:480]:      StylePlotVarPlotDefaultSize,
-	_StylePlotVarIDLowerName[463:480]: StylePlotVarPlotDefaultSize,
-	_StylePlotVarIDName[480:493]:      StylePlotVarPlotMinSize,
-	_StylePlotVarIDLowerName[480:493]: StylePlotVarPlotMinSize,
-	_StylePlotVarIDName[493:510]:      StylePlotVarCOUNT,
-	_StylePlotVarIDLowerName[493:510]: StylePlotVarCOUNT,
+	_StylePlotVarIDName_0[0:17]:         StylePlotVarPlotDefaultSize,
+	_StylePlotVarIDLowerName_0[0:17]:    StylePlotVarPlotDefaultSize,
+	_StylePlotVarIDName_0[17:30]:        StylePlotVarPlotMinSize,
+	_StylePlotVarIDLowerName_0[17:30]:   StylePlotVarPlotMinSize,
+	_StylePlotVarIDName_0[30:46]:        StylePlotVarPlotBorderSize,
+	_StylePlotVarIDLowerName_0[30:46]:   StylePlotVarPlotBorderSize,
+	_StylePlotVarIDName_0[46:62]:        StylePlotVarMinorAlpha,
+	_StylePlotVarIDLowerName_0[46:62]:   StylePlotVarMinorAlpha,
+	_StylePlotVarIDName_0[62:81]:        StylePlotVarMajorTickLen,
+	_StylePlotVarIDLowerName_0[62:81]:   StylePlotVarMajorTickLen,
+	_StylePlotVarIDName_0[81:100]:       StylePlotVarMinorTickLen,
+	_StylePlotVarIDLowerName_0[81:100]:  StylePlotVarMinorTickLen,
+	_StylePlotVarIDName_0[100:120]:      StylePlotVarMajorTickSize,
+	_StylePlotVarIDLowerName_0[100:120]: StylePlotVarMajorTickSize,
+	_StylePlotVarIDName_0[120:140]:      StylePlotVarMinorTickSize,
+	_StylePlotVarIDLowerName_0[120:140]: StylePlotVarMinorTickSize,
+	_StylePlotVarIDName_0[140:160]:      StylePlotVarMajorGridSize,
+	_StylePlotVarIDLowerName_0[140:160]: StylePlotVarMajorGridSize,
+	_StylePlotVarIDName_0[160:180]:      StylePlotVarMinorGridSize,
+	_StylePlotVarIDLowerName_0[160:180]: StylePlotVarMinorGridSize,
+	_StylePlotVarIDName_0[180:192]:      StylePlotVarPlotPadding,
+	_StylePlotVarIDLowerName_0[180:192]: StylePlotVarPlotPadding,
+	_StylePlotVarIDName_0[192:210]:      StylePlotVarLabelPadding,
+	_StylePlotVarIDLowerName_0[192:210]: StylePlotVarLabelPadding,
+	_StylePlotVarIDName_0[210:229]:      StylePlotVarLegendPadding,
+	_StylePlotVarIDLowerName_0[210:229]: StylePlotVarLegendPadding,
+	_StylePlotVarIDName_0[229:254]:      StylePlotVarLegendInnerPadding,
+	_StylePlotVarIDLowerName_0[229:254]: StylePlotVarLegendInnerPadding,
+	_StylePlotVarIDName_0[254:273]:      StylePlotVarLegendSpacing,
+	_StylePlotVarIDLowerName_0[254:273]: StylePlotVarLegendSpacing,
+	_StylePlotVarIDName_0[273:295]:      StylePlotVarMousePosPadding,
+	_StylePlotVarIDLowerName_0[273:295]: StylePlotVarMousePosPadding,
+	_StylePlotVarIDName_0[295:318]:      StylePlotVarAnnotationPadding,
+	_StylePlotVarIDLowerName_0[295:318]: StylePlotVarAnnotationPadding,
+	_StylePlotVarIDName_0[318:334]:      StylePlotVarFitPadding,
+	_StylePlotVarIDLowerName_0[318:334]: StylePlotVarFitPadding,
+	_StylePlotVarIDName_1[0:17]:         StylePlotVarCOUNT,
+	_StylePlotVarIDLowerName_1[0:17]:    StylePlotVarCOUNT,
 }
 
 var _StylePlotVarIDNames = []string{
-	_StylePlotVarIDName[0:16],
-	_StylePlotVarIDName[16:27],
-	_StylePlotVarIDName[27:43],
-	_StylePlotVarIDName[43:61],
-	_StylePlotVarIDName[61:76],
-	_StylePlotVarIDName[76:95],
-	_StylePlotVarIDName[95:116],
-	_StylePlotVarIDName[116:139],
-	_StylePlotVarIDName[139:159],
-	_StylePlotVarIDName[159:175],
-	_StylePlotVarIDName[175:191],
-	_StylePlotVarIDName[191:210],
-	_StylePlotVarIDName[210:229],
-	_StylePlotVarIDName[229:249],
-	_StylePlotVarIDName[249:269],
-	_StylePlotVarIDName[269:289],
-	_StylePlotVarIDName[289:309],
-	_StylePlotVarIDName[309:321],
-	_StylePlotVarIDName[321:339],
-	_StylePlotVarIDName[339:358],
-	_StylePlotVarIDName[358:383],
-	_StylePlotVarIDName[383:402],
-	_StylePlotVarIDName[402:424],
-	_StylePlotVarIDName[424:447],
-	_StylePlotVarIDName[447:463],
-	_StylePlotVarIDName[463:480],
-	_StylePlotVarIDName[480:493],
-	_StylePlotVarIDName[493:510],
+	_StylePlotVarIDName_0[0:17],
+	_StylePlotVarIDName_0[17:30],
+	_StylePlotVarIDName_0[30:46],
+	_StylePlotVarIDName_0[46:62],
+	_StylePlotVarIDName_0[62:81],
+	_StylePlotVarIDName_0[81:100],
+	_StylePlotVarIDName_0[100:120],
+	_StylePlotVarIDName_0[120:140],
+	_StylePlotVarIDName_0[140:160],
+	_StylePlotVarIDName_0[160:180],
+	_StylePlotVarIDName_0[180:192],
+	_StylePlotVarIDName_0[192:210],
+	_StylePlotVarIDName_0[210:229],
+	_StylePlotVarIDName_0[229:254],
+	_StylePlotVarIDName_0[254:273],
+	_StylePlotVarIDName_0[273:295],
+	_StylePlotVarIDName_0[295:318],
+	_StylePlotVarIDName_0[318:334],
+	_StylePlotVarIDName_1[0:17],
 }
 
 // StylePlotVarIDString retrieves an enum value from the enum constants string name.

@@ -51,8 +51,8 @@ func (i StyleColorID) String() string {
 		return _StyleColorIDName_4
 	case i == 55:
 		return _StyleColorIDName_5
-	case 57 <= i && i <= 59:
-		i -= 57
+	case 59 <= i && i <= 61:
+		i -= 59
 		return _StyleColorIDName_6[_StyleColorIDIndex_6[i]:_StyleColorIDIndex_6[i+1]]
 	default:
 		return fmt.Sprintf("StyleColorID(%d)", i)
@@ -112,9 +112,9 @@ func _StyleColorIDNoOp() {
 	_ = x[StyleColorTableRowBgAlt-(51)]
 	_ = x[StyleColorTextSelectedBg-(53)]
 	_ = x[StyleColorDragDropTarget-(55)]
-	_ = x[StyleColorNavWindowingHighlight-(57)]
-	_ = x[StyleColorNavWindowingDimBg-(58)]
-	_ = x[StyleColorModalWindowDimBg-(59)]
+	_ = x[StyleColorNavWindowingHighlight-(59)]
+	_ = x[StyleColorNavWindowingDimBg-(60)]
+	_ = x[StyleColorModalWindowDimBg-(61)]
 }
 
 var _StyleColorIDValues = []StyleColorID{StyleColorText, StyleColorTextDisabled, StyleColorWindowBg, StyleColorChildBg, StyleColorPopupBg, StyleColorBorder, StyleColorBorderShadow, StyleColorFrameBg, StyleColorFrameBgHovered, StyleColorFrameBgActive, StyleColorTitleBg, StyleColorTitleBgActive, StyleColorTitleBgCollapsed, StyleColorMenuBarBg, StyleColorScrollbarBg, StyleColorScrollbarGrab, StyleColorScrollbarGrabHovered, StyleColorScrollbarGrabActive, StyleColorCheckMark, StyleColorSliderGrab, StyleColorSliderGrabActive, StyleColorButton, StyleColorButtonHovered, StyleColorButtonActive, StyleColorHeader, StyleColorHeaderHovered, StyleColorHeaderActive, StyleColorSeparator, StyleColorSeparatorHovered, StyleColorSeparatorActive, StyleColorResizeGrip, StyleColorResizeGripHovered, StyleColorResizeGripActive, StyleColorTabHovered, StyleColorTab, StyleColorTabActive, StyleColorTabUnfocused, StyleColorTabUnfocusedActive, StyleColorPlotLines, StyleColorPlotLinesHovered, StyleColorPlotHistogram, StyleColorPlotHistogramHovered, StyleColorTableHeaderBg, StyleColorTableBorderStrong, StyleColorTableBorderLight, StyleColorTableRowBg, StyleColorTableRowBgAlt, StyleColorTextSelectedBg, StyleColorDragDropTarget, StyleColorNavWindowingHighlight, StyleColorNavWindowingDimBg, StyleColorModalWindowDimBg}

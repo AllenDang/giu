@@ -26,7 +26,7 @@ var (
 )
 
 func flushDrawCommands(c *Canvas) {
-	var bcopy []DrawCommand
+	bcopy := make([]DrawCommand, 0, len(buffer))
 
 	bcopy = append(bcopy, buffer...)
 
@@ -129,6 +129,7 @@ func (c *Canvas) Compute() {
 
 		// Get the new draw commands that need to be processed
 		draws = c.getDrawCommands(c.LastComputedLen)
+
 		return false
 	}() {
 		return

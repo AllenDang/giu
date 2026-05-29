@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-const _StylePlotColorIDName = "plot-lineplot-fillplot-marker-outlineplot-Marker-Fillplot-error-barplot-frame-bgplot-plot-bgplot-plot-borderplot-legend-bgplot-legend-borderplot-legend-textplot-title-textplot-inlay-textplot-axis-textplot-axis-gridplot-axis-tickplot-axis-bgplot-axis-bg-hoveredplot-axis-bg-activeplot-selectionplot-crosshairs"
+const _StylePlotColorIDName = "plot-frame-bgplot-plot-bgplot-plot-borderplot-legend-bgplot-legend-borderplot-legend-textplot-title-textplot-inlay-textplot-axis-textplot-axis-gridplot-axis-tickplot-axis-bgplot-axis-bg-hoveredplot-axis-bg-activeplot-selectionplot-crosshairs"
 
-var _StylePlotColorIDIndex = [...]uint16{0, 9, 18, 37, 53, 67, 80, 92, 108, 122, 140, 156, 171, 186, 200, 214, 228, 240, 260, 279, 293, 308}
+var _StylePlotColorIDIndex = [...]uint8{0, 13, 25, 41, 55, 73, 89, 104, 119, 133, 147, 161, 173, 193, 212, 226, 241}
 
-const _StylePlotColorIDLowerName = "plot-lineplot-fillplot-marker-outlineplot-marker-fillplot-error-barplot-frame-bgplot-plot-bgplot-plot-borderplot-legend-bgplot-legend-borderplot-legend-textplot-title-textplot-inlay-textplot-axis-textplot-axis-gridplot-axis-tickplot-axis-bgplot-axis-bg-hoveredplot-axis-bg-activeplot-selectionplot-crosshairs"
+const _StylePlotColorIDLowerName = "plot-frame-bgplot-plot-bgplot-plot-borderplot-legend-bgplot-legend-borderplot-legend-textplot-title-textplot-inlay-textplot-axis-textplot-axis-gridplot-axis-tickplot-axis-bgplot-axis-bg-hoveredplot-axis-bg-activeplot-selectionplot-crosshairs"
 
 func (i StylePlotColorID) String() string {
 	if i < 0 || i >= StylePlotColorID(len(_StylePlotColorIDIndex)-1) {
@@ -24,98 +24,78 @@ func (i StylePlotColorID) String() string {
 // Re-run the stringer command to generate them again.
 func _StylePlotColorIDNoOp() {
 	var x [1]struct{}
-	_ = x[StylePlotColorLine-(0)]
-	_ = x[StylePlotColorFill-(1)]
-	_ = x[StylePlotColorMarkerOutline-(2)]
-	_ = x[StylePlotColorMarkerFill-(3)]
-	_ = x[StylePlotColorErrorBar-(4)]
-	_ = x[StylePlotColorFrameBg-(5)]
-	_ = x[StylePlotColorPlotBg-(6)]
-	_ = x[StylePlotColorPlotBorder-(7)]
-	_ = x[StylePlotColorLegendBg-(8)]
-	_ = x[StylePlotColorLegendBorder-(9)]
-	_ = x[StylePlotColorLegendText-(10)]
-	_ = x[StylePlotColorTitleText-(11)]
-	_ = x[StylePlotColorInlayText-(12)]
-	_ = x[StylePlotColorAxisText-(13)]
-	_ = x[StylePlotColorAxisGrid-(14)]
-	_ = x[StylePlotColorAxisTick-(15)]
-	_ = x[StylePlotColorAxisBg-(16)]
-	_ = x[StylePlotColorAxisBgHovered-(17)]
-	_ = x[StylePlotColorAxisBgActive-(18)]
-	_ = x[StylePlotColorSelection-(19)]
-	_ = x[StylePlotColorCrosshairs-(20)]
+	_ = x[StylePlotColorFrameBg-(0)]
+	_ = x[StylePlotColorPlotBg-(1)]
+	_ = x[StylePlotColorPlotBorder-(2)]
+	_ = x[StylePlotColorLegendBg-(3)]
+	_ = x[StylePlotColorLegendBorder-(4)]
+	_ = x[StylePlotColorLegendText-(5)]
+	_ = x[StylePlotColorTitleText-(6)]
+	_ = x[StylePlotColorInlayText-(7)]
+	_ = x[StylePlotColorAxisText-(8)]
+	_ = x[StylePlotColorAxisGrid-(9)]
+	_ = x[StylePlotColorAxisTick-(10)]
+	_ = x[StylePlotColorAxisBg-(11)]
+	_ = x[StylePlotColorAxisBgHovered-(12)]
+	_ = x[StylePlotColorAxisBgActive-(13)]
+	_ = x[StylePlotColorSelection-(14)]
+	_ = x[StylePlotColorCrosshairs-(15)]
 }
 
-var _StylePlotColorIDValues = []StylePlotColorID{StylePlotColorLine, StylePlotColorFill, StylePlotColorMarkerOutline, StylePlotColorMarkerFill, StylePlotColorErrorBar, StylePlotColorFrameBg, StylePlotColorPlotBg, StylePlotColorPlotBorder, StylePlotColorLegendBg, StylePlotColorLegendBorder, StylePlotColorLegendText, StylePlotColorTitleText, StylePlotColorInlayText, StylePlotColorAxisText, StylePlotColorAxisGrid, StylePlotColorAxisTick, StylePlotColorAxisBg, StylePlotColorAxisBgHovered, StylePlotColorAxisBgActive, StylePlotColorSelection, StylePlotColorCrosshairs}
+var _StylePlotColorIDValues = []StylePlotColorID{StylePlotColorFrameBg, StylePlotColorPlotBg, StylePlotColorPlotBorder, StylePlotColorLegendBg, StylePlotColorLegendBorder, StylePlotColorLegendText, StylePlotColorTitleText, StylePlotColorInlayText, StylePlotColorAxisText, StylePlotColorAxisGrid, StylePlotColorAxisTick, StylePlotColorAxisBg, StylePlotColorAxisBgHovered, StylePlotColorAxisBgActive, StylePlotColorSelection, StylePlotColorCrosshairs}
 
 var _StylePlotColorIDNameToValueMap = map[string]StylePlotColorID{
-	_StylePlotColorIDName[0:9]:          StylePlotColorLine,
-	_StylePlotColorIDLowerName[0:9]:     StylePlotColorLine,
-	_StylePlotColorIDName[9:18]:         StylePlotColorFill,
-	_StylePlotColorIDLowerName[9:18]:    StylePlotColorFill,
-	_StylePlotColorIDName[18:37]:        StylePlotColorMarkerOutline,
-	_StylePlotColorIDLowerName[18:37]:   StylePlotColorMarkerOutline,
-	_StylePlotColorIDName[37:53]:        StylePlotColorMarkerFill,
-	_StylePlotColorIDLowerName[37:53]:   StylePlotColorMarkerFill,
-	_StylePlotColorIDName[53:67]:        StylePlotColorErrorBar,
-	_StylePlotColorIDLowerName[53:67]:   StylePlotColorErrorBar,
-	_StylePlotColorIDName[67:80]:        StylePlotColorFrameBg,
-	_StylePlotColorIDLowerName[67:80]:   StylePlotColorFrameBg,
-	_StylePlotColorIDName[80:92]:        StylePlotColorPlotBg,
-	_StylePlotColorIDLowerName[80:92]:   StylePlotColorPlotBg,
-	_StylePlotColorIDName[92:108]:       StylePlotColorPlotBorder,
-	_StylePlotColorIDLowerName[92:108]:  StylePlotColorPlotBorder,
-	_StylePlotColorIDName[108:122]:      StylePlotColorLegendBg,
-	_StylePlotColorIDLowerName[108:122]: StylePlotColorLegendBg,
-	_StylePlotColorIDName[122:140]:      StylePlotColorLegendBorder,
-	_StylePlotColorIDLowerName[122:140]: StylePlotColorLegendBorder,
-	_StylePlotColorIDName[140:156]:      StylePlotColorLegendText,
-	_StylePlotColorIDLowerName[140:156]: StylePlotColorLegendText,
-	_StylePlotColorIDName[156:171]:      StylePlotColorTitleText,
-	_StylePlotColorIDLowerName[156:171]: StylePlotColorTitleText,
-	_StylePlotColorIDName[171:186]:      StylePlotColorInlayText,
-	_StylePlotColorIDLowerName[171:186]: StylePlotColorInlayText,
-	_StylePlotColorIDName[186:200]:      StylePlotColorAxisText,
-	_StylePlotColorIDLowerName[186:200]: StylePlotColorAxisText,
-	_StylePlotColorIDName[200:214]:      StylePlotColorAxisGrid,
-	_StylePlotColorIDLowerName[200:214]: StylePlotColorAxisGrid,
-	_StylePlotColorIDName[214:228]:      StylePlotColorAxisTick,
-	_StylePlotColorIDLowerName[214:228]: StylePlotColorAxisTick,
-	_StylePlotColorIDName[228:240]:      StylePlotColorAxisBg,
-	_StylePlotColorIDLowerName[228:240]: StylePlotColorAxisBg,
-	_StylePlotColorIDName[240:260]:      StylePlotColorAxisBgHovered,
-	_StylePlotColorIDLowerName[240:260]: StylePlotColorAxisBgHovered,
-	_StylePlotColorIDName[260:279]:      StylePlotColorAxisBgActive,
-	_StylePlotColorIDLowerName[260:279]: StylePlotColorAxisBgActive,
-	_StylePlotColorIDName[279:293]:      StylePlotColorSelection,
-	_StylePlotColorIDLowerName[279:293]: StylePlotColorSelection,
-	_StylePlotColorIDName[293:308]:      StylePlotColorCrosshairs,
-	_StylePlotColorIDLowerName[293:308]: StylePlotColorCrosshairs,
+	_StylePlotColorIDName[0:13]:         StylePlotColorFrameBg,
+	_StylePlotColorIDLowerName[0:13]:    StylePlotColorFrameBg,
+	_StylePlotColorIDName[13:25]:        StylePlotColorPlotBg,
+	_StylePlotColorIDLowerName[13:25]:   StylePlotColorPlotBg,
+	_StylePlotColorIDName[25:41]:        StylePlotColorPlotBorder,
+	_StylePlotColorIDLowerName[25:41]:   StylePlotColorPlotBorder,
+	_StylePlotColorIDName[41:55]:        StylePlotColorLegendBg,
+	_StylePlotColorIDLowerName[41:55]:   StylePlotColorLegendBg,
+	_StylePlotColorIDName[55:73]:        StylePlotColorLegendBorder,
+	_StylePlotColorIDLowerName[55:73]:   StylePlotColorLegendBorder,
+	_StylePlotColorIDName[73:89]:        StylePlotColorLegendText,
+	_StylePlotColorIDLowerName[73:89]:   StylePlotColorLegendText,
+	_StylePlotColorIDName[89:104]:       StylePlotColorTitleText,
+	_StylePlotColorIDLowerName[89:104]:  StylePlotColorTitleText,
+	_StylePlotColorIDName[104:119]:      StylePlotColorInlayText,
+	_StylePlotColorIDLowerName[104:119]: StylePlotColorInlayText,
+	_StylePlotColorIDName[119:133]:      StylePlotColorAxisText,
+	_StylePlotColorIDLowerName[119:133]: StylePlotColorAxisText,
+	_StylePlotColorIDName[133:147]:      StylePlotColorAxisGrid,
+	_StylePlotColorIDLowerName[133:147]: StylePlotColorAxisGrid,
+	_StylePlotColorIDName[147:161]:      StylePlotColorAxisTick,
+	_StylePlotColorIDLowerName[147:161]: StylePlotColorAxisTick,
+	_StylePlotColorIDName[161:173]:      StylePlotColorAxisBg,
+	_StylePlotColorIDLowerName[161:173]: StylePlotColorAxisBg,
+	_StylePlotColorIDName[173:193]:      StylePlotColorAxisBgHovered,
+	_StylePlotColorIDLowerName[173:193]: StylePlotColorAxisBgHovered,
+	_StylePlotColorIDName[193:212]:      StylePlotColorAxisBgActive,
+	_StylePlotColorIDLowerName[193:212]: StylePlotColorAxisBgActive,
+	_StylePlotColorIDName[212:226]:      StylePlotColorSelection,
+	_StylePlotColorIDLowerName[212:226]: StylePlotColorSelection,
+	_StylePlotColorIDName[226:241]:      StylePlotColorCrosshairs,
+	_StylePlotColorIDLowerName[226:241]: StylePlotColorCrosshairs,
 }
 
 var _StylePlotColorIDNames = []string{
-	_StylePlotColorIDName[0:9],
-	_StylePlotColorIDName[9:18],
-	_StylePlotColorIDName[18:37],
-	_StylePlotColorIDName[37:53],
-	_StylePlotColorIDName[53:67],
-	_StylePlotColorIDName[67:80],
-	_StylePlotColorIDName[80:92],
-	_StylePlotColorIDName[92:108],
-	_StylePlotColorIDName[108:122],
-	_StylePlotColorIDName[122:140],
-	_StylePlotColorIDName[140:156],
-	_StylePlotColorIDName[156:171],
-	_StylePlotColorIDName[171:186],
-	_StylePlotColorIDName[186:200],
-	_StylePlotColorIDName[200:214],
-	_StylePlotColorIDName[214:228],
-	_StylePlotColorIDName[228:240],
-	_StylePlotColorIDName[240:260],
-	_StylePlotColorIDName[260:279],
-	_StylePlotColorIDName[279:293],
-	_StylePlotColorIDName[293:308],
+	_StylePlotColorIDName[0:13],
+	_StylePlotColorIDName[13:25],
+	_StylePlotColorIDName[25:41],
+	_StylePlotColorIDName[41:55],
+	_StylePlotColorIDName[55:73],
+	_StylePlotColorIDName[73:89],
+	_StylePlotColorIDName[89:104],
+	_StylePlotColorIDName[104:119],
+	_StylePlotColorIDName[119:133],
+	_StylePlotColorIDName[133:147],
+	_StylePlotColorIDName[147:161],
+	_StylePlotColorIDName[161:173],
+	_StylePlotColorIDName[173:193],
+	_StylePlotColorIDName[193:212],
+	_StylePlotColorIDName[212:226],
+	_StylePlotColorIDName[226:241],
 }
 
 // StylePlotColorIDString retrieves an enum value from the enum constants string name.

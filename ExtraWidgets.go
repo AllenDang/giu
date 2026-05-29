@@ -88,12 +88,12 @@ func (h *SplitterWidget) Build() {
 	if imgui.IsItemActive() {
 		switch h.direction {
 		case DirectionHorizontal:
-			*(h.delta) = imgui.CurrentIO().MouseDelta().Y
+			*h.delta = imgui.CurrentIO().MouseDelta().Y
 		case DirectionVertical:
-			*(h.delta) = imgui.CurrentIO().MouseDelta().X
+			*h.delta = imgui.CurrentIO().MouseDelta().X
 		}
 	} else {
-		*(h.delta) = 0
+		*h.delta = 0
 	}
 
 	if imgui.IsItemHovered() {
@@ -375,7 +375,7 @@ func (l *ListBoxWidget) Build() {
 					}
 
 					// Build context menus
-					var menus Layout
+					menus := make(Layout, 0, len(l.menus))
 					for _, m := range l.menus {
 						index := i
 						menu := m
@@ -498,6 +498,7 @@ func (d *DatePickerWidget) Build() {
 	}
 
 	imgui.PushIDStr(d.id.String())
+
 	defer imgui.PopID()
 
 	if d.width > 0 {
@@ -631,7 +632,8 @@ func (d *DatePickerWidget) calendarField(day int) Widget {
 			*d.date = time.Date(
 				d.date.Year(), d.date.Month(), day,
 				0, 0, 0, 0,
-				d.date.Location())
+				d.date.Location(),
+			)
 			d.onChange()
 		}).Build()
 
