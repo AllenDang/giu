@@ -230,9 +230,9 @@ func (p *PlotCanvasWidget) YFlags(yFlags PlotAxisFlags, axes ...PlotYAxis) *Plot
 			case AxisY1:
 				p.yFlags = yFlags
 			case AxisY2:
-				p.y2Flags = y2Flags
+				p.y2Flags = yFlags
 			case AxisY3:
-				p.y3Flags = y3Flags
+				p.y3Flags = yFlags
 			}
 		}
 	}
@@ -247,20 +247,21 @@ func (p *PlotCanvasWidget) XScale(scale PlotScale) *PlotCanvasWidget {
 }
 
 // YScale sets the plot y axis scale.
-func (p *PlotCanvasWidget) YScale(scale PlotScale) *PlotCanvasWidget {
-	p.yScale = scale
-	return p
-}
-
-// Y2Scale sets the plot y2 axis scale.
-func (p *PlotCanvasWidget) Y2Scale(scale PlotScale) *PlotCanvasWidget {
-	p.y2Scale = scale
-	return p
-}
-
-// Y3Scale sets the plot y3 axis scale.
-func (p *PlotCanvasWidget) Y3Scale(scale PlotScale) *PlotCanvasWidget {
-	p.y3Scale = scale
+func (p *PlotCanvasWidget) YScale(scale PlotScale, axes ...PlotYAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
+		p.yScale = scale
+	} else {
+		for _, axis := range axes {
+			switch axis {
+			case AxisY1:
+				p.yScale = scale
+			case AxisY2:
+				p.y2Scale = scale
+			case AxisY3:
+				p.y3Scale = scale
+			}
+		}
+	}
 	return p
 }
 
