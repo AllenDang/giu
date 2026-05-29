@@ -270,10 +270,10 @@ type FocusedFlags imgui.FocusedFlags
 
 // focused flags list.
 const (
-	FocusedFlagsNone             = (imgui.FocusedFlagsNone)
-	FocusedFlagsChildWindows     = (imgui.FocusedFlagsChildWindows)   // Return true if any children of the window is focused
-	FocusedFlagsRootWindow       = (imgui.FocusedFlagsRootWindow)     // Test from root window (top most parent of the current hierarchy)
-	FocusedFlagsAnyWindow        = (imgui.FocusedFlagsAnyWindow)      // Return true if any window is focused. Important: If you are trying to tell how to dispatch your low-level inputs do NOT use this. Use 'io.WantCaptureMouse' instead! Please read the FAQ!
+	FocusedFlagsNone             = imgui.FocusedFlagsNone
+	FocusedFlagsChildWindows     = imgui.FocusedFlagsChildWindows     // Return true if any children of the window is focused
+	FocusedFlagsRootWindow       = imgui.FocusedFlagsRootWindow       // Test from root window (top most parent of the current hierarchy)
+	FocusedFlagsAnyWindow        = imgui.FocusedFlagsAnyWindow        // Return true if any window is focused. Important: If you are trying to tell how to dispatch your low-level inputs do NOT use this. Use 'io.WantCaptureMouse' instead! Please read the FAQ!
 	FocusedFlagsNoPopupHierarchy = imgui.FocusedFlagsNoPopupHierarchy // Do not consider popup hierarchy (do not treat popup emitter as parent of popup) (when used with ChildWindows or RootWindow)
 	// FocusedFlagsDockHierarchy               = 1 << 4   // Consider docking hierarchy (treat dockspace host as parent of docked window) (when used with ChildWindows or RootWindow).
 	FocusedFlagsRootAndChildWindows = imgui.FocusedFlagsRootAndChildWindows
@@ -484,7 +484,6 @@ const (
 	PlotFlagsNoMenus     = PlotFlags(implot.FlagsNoMenus)
 	PlotFlagsNoBoxSelect = PlotFlags(implot.FlagsNoBoxSelect)
 	// 	PlotFlagsNoMousePos  = PlotFlags(implot.FlagsNoMousePos)
-	// 	PlotFlagsNoHighlight = PlotFlags(implot.FlagsNoHighlight)
 	// PlotFlagsNoChild = PlotFlags(implot.FlagsNoChild).
 	PlotFlagsEqual = PlotFlags(implot.FlagsEqual)
 	// 	PlotFlagsYAxis2      = PlotFlags(implot.FlagsYAxis2)
@@ -500,22 +499,43 @@ type PlotAxisFlags implot.AxisFlags
 
 // plot axis flags.
 const (
-	PlotAxisFlagsNone         PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNone)
-	PlotAxisFlagsNoLabel      PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoLabel)
-	PlotAxisFlagsNoGridLines  PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoGridLines)
-	PlotAxisFlagsNoTickMarks  PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoTickMarks)
+	PlotAxisFlagsNone PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNone)
+	// the axis label will not be displayed (axis labels are also hidden if the supplied string name is nullptr).
+	PlotAxisFlagsNoLabel PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoLabel)
+	// no grid lines will be displayed.
+	PlotAxisFlagsNoGridLines PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoGridLines)
+	// no tick marks will be displayed.
+	PlotAxisFlagsNoTickMarks PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoTickMarks)
+	// no text labels will be displayed.
 	PlotAxisFlagsNoTickLabels PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoTickLabels)
-	PlotAxisFlagsForeground   PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsForeground)
-	//	PlotAxisFlagsLogScale      PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLogScale)
-	//	PlotAxisFlagsTime          PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsTime)
-	PlotAxisFlagsInvert        PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsInvert)
-	PlotAxisFlagsNoInitialFit  PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoInitialFit)
-	PlotAxisFlagsAutoFit       PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsAutoFit)
-	PlotAxisFlagsRangeFit      PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsRangeFit)
-	PlotAxisFlagsLockMin       PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLockMin)
-	PlotAxisFlagsLockMax       PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLockMax)
+	// axis will not be initially fit to data extents on the first rendered frame.
+	PlotAxisFlagsNoInitialFit PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoInitialFit)
+	// the user will not be able to open context menus with right-click.
+	PlotAxisFlagsNoMenus PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoMenus)
+	// the user will not be able to switch the axis side by dragging it.
+	PlotAxisFlagsNoSideSwitch PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoSideSwitch)
+	// the axis will not have its background highlighted when hovered or held.
+	PlotAxisFlagsNoHighlight PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoHighlight)
+	// axis ticks and labels will be rendered on the conventionally opposite side (i.e, right or top).
+	PlotAxisFlagsOpposite PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsOpposite)
+	// grid lines will be displayed in the foreground (i.e. on top of data) instead of the background.
+	PlotAxisFlagsForeground PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsForeground)
+	// the axis will be inverted.
+	PlotAxisFlagsInvert PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsInvert)
+	// axis will be auto-fitting to data extents.
+	PlotAxisFlagsAutoFit PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsAutoFit)
+	// axis will only fit points if the point is in the visible range of the **orthogonal** axis.
+	PlotAxisFlagsRangeFit PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsRangeFit)
+	// panning in a locked or constrained state will cause the axis to stretch if possible.
+	PlotAxisFlagsPanStretch PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsPanStretch)
+	// the axis minimum value will be locked when panning/zooming.
+	PlotAxisFlagsLockMin PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLockMin)
+	// the axis maximum value will be locked when panning/zooming.
+	PlotAxisFlagsLockMax PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLockMax)
+	// Lock min and max.
 	PlotAxisFlagsLock          PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsLock)
 	PlotAxisFlagsNoDecorations PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsNoDecorations)
+	PlotAxisFlagsDefault       PlotAxisFlags = PlotAxisFlags(implot.AxisFlagsAuxDefault)
 )
 
 // PlotScale represents implot.Scale.

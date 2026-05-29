@@ -98,38 +98,64 @@ func Plot(title string) *PlotCanvasWidget {
 	}
 }
 
-// SetXAxisLabel sets x axis label.
-func (p *PlotCanvasWidget) SetXAxisLabel(axis PlotXAxis, label string) *PlotCanvasWidget {
-	switch axis {
-	case AxisX1:
+// XLabel sets label for each x axis. If none specified, it will default to AxisX1.
+func (p *PlotCanvasWidget) XLabel(label string, axes ...PlotXAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
 		p.xLabel = label
-	case AxisX2:
-		p.y2Label = label
-	case AxisX3:
-		p.y3Label = label
+	} else {
+		for _, axis := range axes {
+			switch axis {
+			case AxisX1:
+				p.xLabel = label
+			case AxisX2:
+				panic("TODO: X2Axis not implemented in giu yet.")
+			case AxisX3:
+				panic("TODO: X3Axis not implemented in giu yet.")
+			}
+		}
 	}
 
 	return p
 }
 
-// SetYAxisLabel sets y axis label.
-func (p *PlotCanvasWidget) SetYAxisLabel(axis PlotYAxis, label string) *PlotCanvasWidget {
-	switch axis {
-	case AxisY1:
+// YLabel sets label for each y axis. If none specified, it will default to AxisY1.
+func (p *PlotCanvasWidget) YLabel(label string, axes ...PlotYAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
 		p.yLabel = label
-	case AxisY2:
-		p.y2Label = label
-	case AxisY3:
-		p.y3Label = label
+	} else {
+		for _, axis := range axes {
+			switch axis {
+			case AxisY1:
+				p.yLabel = label
+			case AxisY2:
+				p.y2Label = label
+			case AxisY3:
+				p.y3Label = label
+			}
+		}
 	}
 
 	return p
 }
 
-// AxisLimits sets X and Y axis limits.
-func (p *PlotCanvasWidget) AxisLimits(xmin, xmax, ymin, ymax float64, cond ExecCondition) *PlotCanvasWidget {
+// Limits sets X and Y axis limits.
+func (p *PlotCanvasWidget) Limits(xmin, xmax, ymin, ymax float64, cond ExecCondition) *PlotCanvasWidget {
+	return p.XLimits(xmin, xmax, cond).YLimits(ymin, ymax, cond)
+}
+
+// XLimits allows to set X axis limits.
+// NOTE: cond is shared between X and Y axis.
+func (p *PlotCanvasWidget) XLimits(xmin, xmax float64, cond ExecCondition) *PlotCanvasWidget {
 	p.xMin = xmin
 	p.xMax = xmax
+	p.axisLimitCondition = cond
+
+	return p
+}
+
+// YLimits allows to set Y axis limits.
+// NOTE: cond is shared between X and Y axis.
+func (p *PlotCanvasWidget) YLimits(ymin, ymax float64, cond ExecCondition) *PlotCanvasWidget {
 	p.yMin = ymin
 	p.yMax = ymax
 	p.axisLimitCondition = cond
@@ -188,17 +214,28 @@ func (p *PlotCanvasWidget) Flags(flags PlotFlags) *PlotCanvasWidget {
 	return p
 }
 
-// XAxeFlags sets x axis fags.
-func (p *PlotCanvasWidget) XAxeFlags(flags PlotAxisFlags) *PlotCanvasWidget {
+// XFlags sets x axis fags.
+func (p *PlotCanvasWidget) XFlags(flags PlotAxisFlags) *PlotCanvasWidget {
 	p.xFlags = flags
 	return p
 }
 
-// YAxeFlags sets y axis flags.
-func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags PlotAxisFlags) *PlotCanvasWidget {
-	p.yFlags = yFlags
-	p.y2Flags = y2Flags
-	p.y3Flags = y3Flags
+// YAxeFlags sets y axis flags. You can specify multiple axes to apply those flags. Default is Plot
+func (p *PlotCanvasWidget) YFlags(yFlags PlotAxisFlags, axes ...PlotYAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
+		p.yFlags = yFlags
+	} else {
+		for _, axis := range axes {
+			switch axis {
+			case AxisY1:
+				p.yFlags = yFlags
+			case AxisY2:
+				p.y2Flags = yFlags
+			case AxisY3:
+				p.y3Flags = yFlags
+			}
+		}
+	}
 
 	return p
 }
@@ -210,20 +247,21 @@ func (p *PlotCanvasWidget) XScale(scale PlotScale) *PlotCanvasWidget {
 }
 
 // YScale sets the plot y axis scale.
-func (p *PlotCanvasWidget) YScale(scale PlotScale) *PlotCanvasWidget {
-	p.yScale = scale
-	return p
-}
-
-// Y2Scale sets the plot y2 axis scale.
-func (p *PlotCanvasWidget) Y2Scale(scale PlotScale) *PlotCanvasWidget {
-	p.y2Scale = scale
-	return p
-}
-
-// Y3Scale sets the plot y3 axis scale.
-func (p *PlotCanvasWidget) Y3Scale(scale PlotScale) *PlotCanvasWidget {
-	p.y3Scale = scale
+func (p *PlotCanvasWidget) YScale(scale PlotScale, axes ...PlotYAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
+		p.yScale = scale
+	} else {
+		for _, axis := range axes {
+			switch axis {
+			case AxisY1:
+				p.yScale = scale
+			case AxisY2:
+				p.y2Scale = scale
+			case AxisY3:
+				p.y3Scale = scale
+			}
+		}
+	}
 	return p
 }
 
