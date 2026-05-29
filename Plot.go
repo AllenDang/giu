@@ -120,26 +120,42 @@ func (p *PlotCanvasWidget) XLabel(label string, axes ...PlotXAxis) *PlotCanvasWi
 
 // YLabel sets label for each y axis. If none specified, it will default to AxisY1.
 func (p *PlotCanvasWidget) YLabel(label string, axes ...PlotYAxis) *PlotCanvasWidget {
-	if len(axis) == 0 {
+	if len(axes) == 0 {
 		p.yLabel = label
 	} else {
-		switch axis {
-		case AxisY1:
-			p.yLabel = label
-		case AxisY2:
-			p.y2Label = label
-		case AxisY3:
-			p.y3Label = label
+		for _, axis := range axes {
+			switch axis {
+			case AxisY1:
+				p.yLabel = label
+			case AxisY2:
+				p.y2Label = label
+			case AxisY3:
+				p.y3Label = label
+			}
 		}
 	}
 
 	return p
 }
 
-// AxisLimits sets X and Y axis limits.
-func (p *PlotCanvasWidget) AxisLimits(xmin, xmax, ymin, ymax float64, cond ExecCondition) *PlotCanvasWidget {
+// Limits sets X and Y axis limits.
+func (p *PlotCanvasWidget) Limits(xmin, xmax, ymin, ymax float64, cond ExecCondition) *PlotCanvasWidget {
+	return p.XLimits(xmin, xmax, cond).YLimits(ymin, ymax, cond)
+}
+
+// XLimits allows to set X axis limits.
+// NOTE: cond is shared between X and Y axis.
+func (p *PlotCanvasWidget) XLimits(xmin, xmax float64, cond ExecCondition) *PlotCanvasWidget {
 	p.xMin = xmin
 	p.xMax = xmax
+	p.axisLimitCondition = cond
+
+	return p
+}
+
+// YLimits allows to set Y axis limits.
+// NOTE: cond is shared between X and Y axis.
+func (p *PlotCanvasWidget) YLimits(ymin, ymax float64, cond ExecCondition) *PlotCanvasWidget {
 	p.yMin = ymin
 	p.yMax = ymax
 	p.axisLimitCondition = cond
