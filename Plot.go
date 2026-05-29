@@ -98,8 +98,8 @@ func Plot(title string) *PlotCanvasWidget {
 	}
 }
 
-// SetXAxisLabel sets x axis label.
-func (p *PlotCanvasWidget) SetXAxisLabel(axis PlotXAxis, label string) *PlotCanvasWidget {
+// XLabel sets x axis label.
+func (p *PlotCanvasWidget) XLabel(axis PlotXAxis, label string) *PlotCanvasWidget {
 	switch axis {
 	case AxisX1:
 		p.xLabel = label
