@@ -194,8 +194,8 @@ func (p *PlotCanvasWidget) Flags(flags PlotFlags) *PlotCanvasWidget {
 	return p
 }
 
-// XAxeFlags sets x axis fags.
-func (p *PlotCanvasWidget) XAxeFlags(flags PlotAxisFlags) *PlotCanvasWidget {
+// XFlags sets x axis fags.
+func (p *PlotCanvasWidget) XFlags(flags PlotAxisFlags) *PlotCanvasWidget {
 	p.xFlags = flags
 	return p
 }
