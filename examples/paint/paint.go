@@ -38,6 +38,7 @@ func loop() {
 
 func noOSDecoratedWindowsConfig() g.MasterWindowFlags {
 	imgui.CreateContext()
+
 	io := imgui.CurrentIO()
 	io.SetConfigViewportsNoAutoMerge(true)
 	io.SetConfigViewportsNoDefaultParent(true)

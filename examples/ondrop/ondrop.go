@@ -18,9 +18,9 @@ func loop() {
 }
 
 func onDrop(names []string) {
-	var sb strings.Builder
+	sb := &strings.Builder{}
 	for _, n := range names {
-		sb.WriteString(fmt.Sprintf("%s\n", n))
+		fmt.Fprintf(sb, "%s\n", n)
 	}
 
 	dropInFiles = sb.String()
