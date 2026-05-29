@@ -220,11 +220,22 @@ func (p *PlotCanvasWidget) XFlags(flags PlotAxisFlags) *PlotCanvasWidget {
 	return p
 }
 
-// YAxeFlags sets y axis flags.
-func (p *PlotCanvasWidget) YAxeFlags(yFlags, y2Flags, y3Flags PlotAxisFlags) *PlotCanvasWidget {
-	p.yFlags = yFlags
-	p.y2Flags = y2Flags
-	p.y3Flags = y3Flags
+// YAxeFlags sets y axis flags. You can specify multiple axes to apply those flags. Default is Plot
+func (p *PlotCanvasWidget) YFlags(yFlags PlotAxisFlags, axes ...PlotYAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
+		p.yFlags = yFlags
+	} else {
+		for _, axis := range axes {
+			switch axis {
+			case AxisY1:
+				p.yFlags = yFlags
+			case AxisY2:
+				p.y2Flags = y2Flags
+			case AxisY3:
+				p.y3Flags = y3Flags
+			}
+		}
+	}
 
 	return p
 }
