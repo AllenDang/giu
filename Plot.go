@@ -99,14 +99,20 @@ func Plot(title string) *PlotCanvasWidget {
 }
 
 // XLabel sets x axis label.
-func (p *PlotCanvasWidget) XLabel(axis PlotXAxis, label string) *PlotCanvasWidget {
-	switch axis {
-	case AxisX1:
+func (p *PlotCanvasWidget) XLabel(label string, axes ...PlotXAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
 		p.xLabel = label
-	case AxisX2:
-		p.y2Label = label
-	case AxisX3:
-		p.y3Label = label
+	} else {
+		for _, axis := range axes {
+			switch axis {
+			case AxisX1:
+				p.xLabel = label
+			case AxisX2:
+				panic("TODO: X2Axis not implemented in giu yet.")
+			case AxisX3:
+				panic("TODO: X3Axis not implemented in giu yet.")
+			}
+		}
 	}
 
 	return p
