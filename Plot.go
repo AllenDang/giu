@@ -98,7 +98,7 @@ func Plot(title string) *PlotCanvasWidget {
 	}
 }
 
-// XLabel sets x axis label.
+// XLabel sets label for each x axis. If none specified, it will default to AxisX1.
 func (p *PlotCanvasWidget) XLabel(label string, axes ...PlotXAxis) *PlotCanvasWidget {
 	if len(axes) == 0 {
 		p.xLabel = label
@@ -118,15 +118,19 @@ func (p *PlotCanvasWidget) XLabel(label string, axes ...PlotXAxis) *PlotCanvasWi
 	return p
 }
 
-// SetYAxisLabel sets y axis label.
-func (p *PlotCanvasWidget) SetYAxisLabel(axis PlotYAxis, label string) *PlotCanvasWidget {
-	switch axis {
-	case AxisY1:
+// YLabel sets label for each y axis. If none specified, it will default to AxisY1.
+func (p *PlotCanvasWidget) YLabel(label string, axes ...PlotYAxis) *PlotCanvasWidget {
+	if len(axis) == 0 {
 		p.yLabel = label
-	case AxisY2:
-		p.y2Label = label
-	case AxisY3:
-		p.y3Label = label
+	} else {
+		switch axis {
+		case AxisY1:
+			p.yLabel = label
+		case AxisY2:
+			p.y2Label = label
+		case AxisY3:
+			p.y3Label = label
+		}
 	}
 
 	return p
