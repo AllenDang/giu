@@ -140,6 +140,7 @@ func buttonColorMaker() *g.RowWidget {
 				}
 
 				sz = imgui.ItemRectSize()
+
 				imgui.SameLineV(0, 0)
 			}
 		}
