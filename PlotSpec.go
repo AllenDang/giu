@@ -12,6 +12,7 @@ import (
 // See PlotSpec.
 type PlotProperty byte
 
+// Plot properties. These are used to set various properties of plots on the canvas. See PlotSpec.
 const (
 	PlotPropertyLineColor        PlotProperty = PlotProperty(implot.PropLineColor)
 	PlotPropertyLineColors       PlotProperty = PlotProperty(implot.PropLineColors)
@@ -37,6 +38,7 @@ type PlotSpec struct {
 	spec *implot.Spec
 }
 
+// NewPlotSpec creates a new PlotSpec instance with default values.
 func NewPlotSpec() *PlotSpec {
 	return &PlotSpec{spec: implot.NewSpec()}
 }
@@ -82,6 +84,7 @@ func (ps *PlotSpec) SetProperty(property PlotProperty, value any) *PlotSpec {
 	return ps
 }
 
+// GetSpec returns underlying instance of implot.Spec (to use with implot functions).
 func (ps *PlotSpec) GetSpec() *implot.Spec {
 	return ps.spec
 }
