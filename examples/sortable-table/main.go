@@ -14,7 +14,7 @@ var (
 )
 
 func rebuildColumns() {
-	cols = make([]*giu.TableRowWidget, 0)
+	cols = make([]*giu.TableRowWidget, 0, len(data))
 	for _, d := range data {
 		cols = append(cols, giu.TableRow(giu.Label(d)))
 	}
