@@ -56,25 +56,43 @@ func NewPlotSpec() *PlotSpec {
 func (ps *PlotSpec) SetProperty(property PlotProperty, value any) *PlotSpec {
 	switch value.(type) {
 	case uint16:
-		ps.spec.SetPropU16(implot.Prop(property), value.(uint16))
+		val, ok := value.(uint16)
+		Assert(ok, "PlotSpec", "SetProperty", "value should be of type uint16")
+		ps.spec.SetPropU16(implot.Prop(property), val)
 	case uint32:
-		ps.spec.SetPropU32(implot.Prop(property), value.(uint32))
+		val, ok := value.(uint32)
+		Assert(ok, "PlotSpec", "SetProperty", "value should be of type uint32")
+		ps.spec.SetPropU32(implot.Prop(property), val)
 	case *uint32:
-		ps.spec.SetPropU32Ptr(implot.Prop(property), value.(*uint32))
+		val, ok := value.(*uint32)
+		Assert(ok, "PlotSpec", "SetProperty", "value should be of type *uint32")
+		ps.spec.SetPropU32Ptr(implot.Prop(property), val)
 	case uint64:
-		ps.spec.SetPropU64(implot.Prop(property), value.(uint64))
+		val, ok := value.(uint64)
+		Assert(ok, "PlotSpec", "SetProperty", "value should be of type uint64")
+		ps.spec.SetPropU64(implot.Prop(property), val)
 	case uint8:
-		ps.spec.SetPropU8(implot.Prop(property), value.(uint8))
+		val, ok := value.(uint8)
+		Assert(ok, "PlotSpec", "SetProperty", "value should be of type uint8")
+		ps.spec.SetPropU8(implot.Prop(property), val)
 	case color.Color:
-		ps.spec.SetPropVec4(implot.Prop(property), ToVec4Color(value.(color.Color)))
+		val, ok := value.(color.Color)
+		Assert(ok, "PlotSpec", "SetProperty", "value should be of type color.Color")
+		ps.spec.SetPropVec4(implot.Prop(property), ToVec4Color(val))
 	case float64:
-		ps.spec.SetPropdouble(implot.Prop(property), value.(float64))
+		val, ok := value.(float64)
+		Assert(ok, "PlotSpec", "SetProperty", "value should be of type float64")
+		ps.spec.SetPropdouble(implot.Prop(property), val)
 	case int16:
 		ps.spec.SetPropS16(implot.Prop(property), value.(int16))
 	case int:
-		ps.spec.SetPropS32(implot.Prop(property), value.(int))
+		val, ok := value.(int)
+		Assert(ok, "PlotSpec", "SetProperty", "value should be of type int")
+		ps.spec.SetPropS32(implot.Prop(property), val)
 	case int64:
-		ps.spec.SetPropS64(implot.Prop(property), value.(int64))
+		val, ok := value.(int64)
+		Assert(ok, "PlotSpec", "SetProperty", "value should be of type int64")
+		ps.spec.SetPropS64(implot.Prop(property), val)
 	default:
 		panic("unsupported type")
 	}
