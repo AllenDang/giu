@@ -66,6 +66,7 @@ func (b *ButtonWidget) ID(id ID) *ButtonWidget {
 func (b *ButtonWidget) Build() {
 	if b.disabled {
 		imgui.BeginDisabled()
+
 		defer imgui.EndDisabled()
 	}
 
@@ -546,6 +547,7 @@ func (t *TreeNodeWidget) Flags(flags TreeNodeFlags) *TreeNodeWidget {
 
 // Event create TreeNode with event handling function.
 // You could detect events (e.g. IsItemClicked IsMouseDoubleClicked etc...) and handle them for TreeNode inside eventHandler.
+//
 // Deprecated: Use (*TreeNodeWidget).EventHandler instead!
 func (t *TreeNodeWidget) Event(handler func()) *TreeNodeWidget {
 	t.event = handler

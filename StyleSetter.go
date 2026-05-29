@@ -355,6 +355,7 @@ func (ss *StyleSetter) Pop() {
 func pushVarID(isVec2 bool, v any, pushFloat func(float32), pushVec2 func(imgui.Vec2)) {
 	if isVec2 {
 		var value imgui.Vec2
+
 		switch typed := v.(type) {
 		case imgui.Vec2:
 			value = typed
@@ -365,6 +366,7 @@ func pushVarID(isVec2 bool, v any, pushFloat func(float32), pushVec2 func(imgui.
 		pushVec2(value)
 	} else {
 		var value float32
+
 		switch typed := v.(type) {
 		case float32:
 			value = typed

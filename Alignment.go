@@ -175,6 +175,7 @@ func (a *AlignmentSetter) Build() {
 // https://github.com/AllenDang/giu Any contribution is appreciated!
 func GetWidgetWidth(w Widget) (result float32) {
 	imgui.PushIDStr(string(GenAutoID("GetWidgetWidthMeasurement")))
+
 	defer imgui.PopID()
 
 	// save cursor position before doing anything
