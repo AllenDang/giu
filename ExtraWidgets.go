@@ -498,6 +498,7 @@ func (d *DatePickerWidget) Build() {
 	}
 
 	imgui.PushIDStr(d.id.String())
+
 	defer imgui.PopID()
 
 	if d.width > 0 {

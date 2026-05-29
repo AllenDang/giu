@@ -170,6 +170,7 @@ func (cc *ComboCustomWidget) Size(width float32) *ComboCustomWidget {
 func (cc *ComboCustomWidget) Build() {
 	if cc.width > 0 {
 		imgui.PushItemWidth(cc.width)
+
 		defer imgui.PopItemWidth()
 	}
 
@@ -254,6 +255,7 @@ func (c *ComboWidget) OnChange(onChange func()) *ComboWidget {
 func (c *ComboWidget) Build() {
 	if c.width > 0 {
 		imgui.PushItemWidth(c.width)
+
 		defer imgui.PopItemWidth()
 	}
 

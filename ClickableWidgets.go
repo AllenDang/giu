@@ -66,6 +66,7 @@ func (b *ButtonWidget) ID(id ID) *ButtonWidget {
 func (b *ButtonWidget) Build() {
 	if b.disabled {
 		imgui.BeginDisabled()
+
 		defer imgui.EndDisabled()
 	}
 
