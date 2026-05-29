@@ -385,7 +385,7 @@ func (p *BarPlot) Shift(shift float64) *BarPlot {
 
 // Offset sets bar's offset.
 func (p *BarPlot) Offset(offset int) *BarPlot {
-	p.spec.SetProperty(PlotPropertyOffset, int(offset))
+	p.spec.SetProperty(PlotPropertyOffset, offset)
 	return p
 }
 
@@ -436,7 +436,7 @@ func (p *BarHPlot) Shift(shift float64) *BarHPlot {
 
 // Offset sets offset.
 func (p *BarHPlot) Offset(offset int) *BarHPlot {
-	p.spec.SetProperty(PlotPropertyOffset, int(offset))
+	p.spec.SetProperty(PlotPropertyOffset, offset)
 	return p
 }
 
@@ -493,7 +493,7 @@ func (p *LinePlot) X0(x0 float64) *LinePlot {
 
 // Offset sets chart offset.
 func (p *LinePlot) Offset(offset int) *LinePlot {
-	p.spec.SetProperty(PlotPropertyOffset, int(offset))
+	p.spec.SetProperty(PlotPropertyOffset, offset)
 	return p
 }
 
@@ -541,7 +541,7 @@ func (p *LineXYPlot) SetPlotYAxis(yAxis ImPlotYAxis) *LineXYPlot {
 
 // Offset sets chart's offset.
 func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
-	p.spec.SetProperty(PlotPropertyOffset, int(offset))
+	p.spec.SetProperty(PlotPropertyOffset, offset)
 	return p
 }
 
@@ -657,7 +657,7 @@ func (p *ScatterPlot) X0(x float64) *ScatterPlot {
 
 // Offset sets chart offset.
 func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
-	p.spec.SetProperty(PlotPropertyOffset, int(offset))
+	p.spec.SetProperty(PlotPropertyOffset, offset)
 	return p
 }
 
@@ -693,7 +693,7 @@ func ScatterXY(label string, xs, ys []float64) *ScatterXYPlot {
 
 // Offset sets chart offset.
 func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
-	p.spec.SetProperty(PlotPropertyOffset, int(offset))
+	p.spec.SetProperty(PlotPropertyOffset, offset)
 	return p
 }
 
