@@ -220,7 +220,7 @@ func (p *PlotCanvasWidget) XFlags(flags PlotAxisFlags) *PlotCanvasWidget {
 	return p
 }
 
-// YAxeFlags sets y axis flags. You can specify multiple axes to apply those flags. Default is Plot
+// YFlags sets y axis flags. You can specify multiple axes to apply those flags. Default is Plot.
 func (p *PlotCanvasWidget) YFlags(yFlags PlotAxisFlags, axes ...PlotYAxis) *PlotCanvasWidget {
 	if len(axes) == 0 {
 		p.yFlags = yFlags
@@ -262,6 +262,7 @@ func (p *PlotCanvasWidget) YScale(scale PlotScale, axes ...PlotYAxis) *PlotCanva
 			}
 		}
 	}
+
 	return p
 }
 
