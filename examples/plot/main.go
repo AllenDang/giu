@@ -29,13 +29,13 @@ var (
 
 func loop() {
 	g.SingleWindow().Layout(
-		g.Plot("Plot 基本图表").AxisLimits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(
+		g.Plot("Plot 基本图表").Limits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(
 			g.Line("Plot Line 线图", linedata),
 			g.Line("Plot Line2", linedata2),
 			g.SwitchPlotAxes(g.AxisX1, g.AxisY2),
 			g.Scatter("Scatter 散点图", scatterdata),
-		).SetYAxisLabel(g.AxisY2, "secondary axis"),
-		g.Plot("Plot Time Axe 时间线").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).Plots(
+		).YLabel("secondary axis", g.AxisY2),
+		g.Plot("Plot Time Axe 时间线").Limits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).Plots(
 			g.LineXY("Time Line 时间线", timeDataX, timeDataY),
 			g.ScatterXY("Time Scatter 时间散点图", timeDataX, timeScatterY),
 		).XScale(g.PlotScaleTime),
@@ -43,7 +43,7 @@ func loop() {
 			g.Style().To(
 				g.Plot("Plot Bars").
 					Size(500, 250).
-					AxisLimits(0, 10, -1.2, 1.2, g.ConditionOnce).
+					Limits(0, 10, -1.2, 1.2, g.ConditionOnce).
 					Plots(
 						g.Bar("Plot Bar 柱状图", bardata),
 						g.Bar("Plot Bar2", bardata2).Shift(0.2),
@@ -54,9 +54,9 @@ func loop() {
 			g.Plot("Pie Chart").
 				Flags(g.PlotFlagsEqual).
 				Size(250, 250).
-				XAxeFlags(g.PlotAxisFlagsNoDecorations).
-				YAxeFlags(g.PlotAxisFlagsNoDecorations, 0, 0).
-				AxisLimits(0, 1, 0, 1, g.ConditionAlways).
+				XFlags(g.PlotAxisFlagsNoDecorations).
+				YFlags(g.PlotAxisFlagsNoDecorations, 0, 0).
+				Limits(0, 1, 0, 1, g.ConditionAlways).
 				Plots(
 					// StyleSetter works also for plots
 					g.Style().Plots(
