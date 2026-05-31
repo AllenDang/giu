@@ -301,6 +301,12 @@ func (p *PlotCanvasWidget) Build() {
 		)
 
 		if p.y2Label != "" {
+			implot.SetupAxisV(
+				implot.AxisY2,
+				p.y2Label,
+				implot.AxisFlags(p.y2Flags),
+			)
+
 			implot.SetupAxisScalePlotScale(
 				implot.AxisY2,
 				implot.Scale(p.y2Scale),
@@ -308,6 +314,12 @@ func (p *PlotCanvasWidget) Build() {
 		}
 
 		if p.y3Label != "" {
+			implot.SetupAxisV(
+				implot.AxisY3,
+				p.y3Label,
+				implot.AxisFlags(p.y3Flags),
+			)
+
 			implot.SetupAxisScalePlotScale(
 				implot.AxisY3,
 				implot.Scale(p.y3Scale),
