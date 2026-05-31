@@ -29,7 +29,8 @@ var (
 
 func loop() {
 	g.SingleWindow().Layout(
-		g.Plot("Plot 基本图表").Limits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(
+		g.Plot("Plot 基本图表").Limits(0, 100, -1.2, 1.2, g.ConditionOnce).
+			YLimits(-1.2, 1.2, g.ConditionOnce, g.AxisY1, g.AxisY2).Plots(
 			g.Line("Plot Line 线图", linedata),
 			g.Line("Plot Line2", linedata2),
 			g.SwitchPlotAxes(g.AxisX1, g.AxisY2),
@@ -55,7 +56,7 @@ func loop() {
 				Flags(g.PlotFlagsEqual).
 				Size(250, 250).
 				XFlags(g.PlotAxisFlagsNoDecorations).
-				YFlags(g.PlotAxisFlagsNoDecorations, 0, 0).
+				YFlags(g.PlotAxisFlagsNoDecorations).
 				Limits(0, 1, 0, 1, g.ConditionAlways).
 				Plots(
 					// StyleSetter works also for plots
