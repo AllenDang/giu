@@ -92,16 +92,11 @@ func (pac *PlotAxisConfig) LimitCond(c ExecCondition) *PlotAxisConfig {
 
 // PlotCanvasWidget represents a giu plot widget.
 type PlotCanvasWidget struct {
-	title      string
-	xLabel     string
-	width      int
-	height     int
-	flags      PlotFlags
-	yAxes      map[PlotYAxis]*PlotAxisConfig
-	xMin, xMax float64
-
-	xFlags PlotAxisFlags
-	xScale PlotScale
+	title  string
+	width  int
+	height int
+	flags  PlotFlags
+	axes   map[implot.AxisEnum]*PlotAxisConfig
 
 	axisLimitCondition       ExecCondition
 	xTicksValue, yTicksValue []float64
@@ -114,22 +109,20 @@ type PlotCanvasWidget struct {
 
 // Plot adds creates a new plot widget.
 func Plot(title string) *PlotCanvasWidget {
-	yAxes := make(map[PlotYAxis]*PlotAxisConfig)
-	yAxes[AxisY1] = (&PlotAxisConfig{}).Enable().Flags(PlotAxisFlagsNone)
-	yAxes[AxisY2] = (&PlotAxisConfig{}).Flags(PlotAxisFlagsNoGridLines)
-	yAxes[AxisY3] = (&PlotAxisConfig{}).Flags(PlotAxisFlagsNoGridLines)
+	axes := make(map[PlotYAxis]*PlotAxisConfig)
+	axes[AxisY1] = (&PlotAxisConfig{}).Enable().Flags(PlotAxisFlagsNone)
+	axes[AxisY2] = (&PlotAxisConfig{}).Flags(PlotAxisFlagsNoGridLines)
+	axes[AxisY3] = (&PlotAxisConfig{}).Flags(PlotAxisFlagsNoGridLines)
+	axes[AxisX1] = (&PlotAxisConfig{}).Enable().Flags(PlotAxisFlagsNone).Min(0).Max(10)
+	axes[AxisX2] = (&PlotAxisConfig{}).Flags(PlotAxisFlagsNone)
+	axes[AxisX3] = (&PlotAxisConfig{}).Flags(PlotAxisFlagsNone)
 	return &PlotCanvasWidget{
 		title: title,
 
-		yAxes:              yAxes,
-		xLabel:             "",
+		axes:               axes,
 		width:              -1,
 		height:             0,
 		flags:              PlotFlagsNone,
-		xFlags:             PlotAxisFlagsNone,
-		xScale:             PlotScaleLinear,
-		xMin:               0,
-		xMax:               10,
 		xTicksShowDefault:  true,
 		yTicksShowDefault:  true,
 		yTicksYAxis:        0,
@@ -140,18 +133,11 @@ func Plot(title string) *PlotCanvasWidget {
 // XLabel sets label for each x axis. If none specified, it will default to AxisX1.
 func (p *PlotCanvasWidget) XLabel(label string, axes ...PlotXAxis) *PlotCanvasWidget {
 	if len(axes) == 0 {
-		p.xLabel = label
-	} else {
-		for _, axis := range axes {
-			switch axis {
-			case AxisX1:
-				p.xLabel = label
-			case AxisX2:
-				panic("TODO: X2Axis not implemented in giu yet.")
-			case AxisX3:
-				panic("TODO: X3Axis not implemented in giu yet.")
-			}
-		}
+		axes = append(axes, AxisX1)
+	}
+
+	for _, axis := range axes {
+		p.axes[axis].Enable().Label(label)
 	}
 
 	return p
@@ -164,23 +150,26 @@ func (p *PlotCanvasWidget) YLabel(label string, axes ...PlotYAxis) *PlotCanvasWi
 	}
 
 	for _, axis := range axes {
-		p.yAxes[axis].Enable().Label(label)
+		p.axes[axis].Enable().Label(label)
 	}
 
 	return p
 }
 
-// Limits sets X and Y axis limits.
+// Limits sets X and Y axis limits for the default axis (AxisX1 and AxisY1).
 func (p *PlotCanvasWidget) Limits(xmin, xmax, ymin, ymax float64, cond ExecCondition) *PlotCanvasWidget {
 	return p.XLimits(xmin, xmax, cond).YLimits(ymin, ymax, cond)
 }
 
 // XLimits allows to set X axis limits.
-// NOTE: cond is shared between X and Y axis.
-func (p *PlotCanvasWidget) XLimits(xmin, xmax float64, cond ExecCondition) *PlotCanvasWidget {
-	p.xMin = xmin
-	p.xMax = xmax
-	p.axisLimitCondition = cond
+func (p *PlotCanvasWidget) XLimits(xmin, xmax float64, cond ExecCondition, axes ...PlotXAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
+		axes = append(axes, AxisX1)
+	}
+
+	for _, axis := range axes {
+		p.axes[axis].Enable().Min(xmin).Max(xmax).LimitCond(cond)
+	}
 
 	return p
 }
@@ -192,7 +181,7 @@ func (p *PlotCanvasWidget) YLimits(ymin, ymax float64, cond ExecCondition, axes 
 	}
 
 	for _, axis := range axes {
-		p.yAxes[axis].Enable().Min(ymin).Max(ymax).LimitCond(cond)
+		p.axes[axis].Enable().Min(ymin).Max(ymax).LimitCond(cond)
 	}
 
 	return p
@@ -250,8 +239,14 @@ func (p *PlotCanvasWidget) Flags(flags PlotFlags) *PlotCanvasWidget {
 }
 
 // XFlags sets x axis fags.
-func (p *PlotCanvasWidget) XFlags(flags PlotAxisFlags) *PlotCanvasWidget {
-	p.xFlags = flags
+func (p *PlotCanvasWidget) XFlags(flags PlotAxisFlags, axes ...PlotXAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
+		axes = append(axes, AxisX1)
+	}
+	for _, axis := range axes {
+		p.axes[axis].Enable().Flags(flags)
+	}
+
 	return p
 }
 
@@ -261,15 +256,22 @@ func (p *PlotCanvasWidget) YFlags(yFlags PlotAxisFlags, axes ...PlotYAxis) *Plot
 		axes = append(axes, AxisY1)
 	}
 	for _, axis := range axes {
-		p.yAxes[axis].Enable().Flags(yFlags)
+		p.axes[axis].Enable().Flags(yFlags)
 	}
 
 	return p
 }
 
 // XScale sets the plot x axis scale.
-func (p *PlotCanvasWidget) XScale(scale PlotScale) *PlotCanvasWidget {
-	p.xScale = scale
+func (p *PlotCanvasWidget) XScale(scale PlotScale, axes ...PlotXAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
+		axes = append(axes, AxisX1)
+	}
+
+	for _, axis := range axes {
+		p.axes[axis].Enable().Scale(scale)
+	}
+
 	return p
 }
 
@@ -280,7 +282,7 @@ func (p *PlotCanvasWidget) YScale(scale PlotScale, axes ...PlotYAxis) *PlotCanva
 	}
 
 	for _, axis := range axes {
-		p.yAxes[axis].Enable().Scale(scale)
+		p.axes[axis].Enable().Scale(scale)
 	}
 
 	return p
@@ -312,7 +314,7 @@ func (p *PlotCanvasWidget) Build() {
 		implot.Flags(p.flags),
 	) {
 		// set up y axes
-		for axis, cfg := range p.yAxes {
+		for axis, cfg := range p.axes {
 			if !cfg.enabled {
 				continue
 			}
@@ -325,28 +327,16 @@ func (p *PlotCanvasWidget) Build() {
 
 			implot.SetupAxisScalePlotScale(
 				axis,
-				implot.Scale(p.yAxes[axis].scale),
+				implot.Scale(p.axes[axis].scale),
 			)
 
 			implot.SetupAxisLimitsV(
 				axis,
-				p.yAxes[axis].limitMin,
-				p.yAxes[axis].limitMax,
-				implot.Cond(p.yAxes[axis].limitCond),
+				p.axes[axis].limitMin,
+				p.axes[axis].limitMax,
+				implot.Cond(p.axes[axis].limitCond),
 			)
 		}
-
-		implot.SetupAxisScalePlotScale(
-			implot.AxisX1,
-			implot.Scale(p.xScale),
-		)
-
-		implot.SetupAxisLimitsV(
-			implot.AxisX1,
-			p.xMin,
-			p.xMax,
-			implot.Cond(p.axisLimitCondition),
-		)
 
 		if len(p.xTicksValue) > 0 {
 			implot.SetupAxisTicksdoublePtrV(
@@ -367,12 +357,6 @@ func (p *PlotCanvasWidget) Build() {
 				p.yTicksShowDefault,
 			)
 		}
-
-		implot.SetupAxisV(
-			implot.AxisX1,
-			Context.PrepareString(p.xLabel),
-			implot.AxisFlags(p.xFlags),
-		)
 
 		for _, plot := range p.plots {
 			plot.Plot()
