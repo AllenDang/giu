@@ -46,6 +46,7 @@ type PlotTicker struct {
 	Label    string
 }
 
+// PlotAxisConfig represents plot axis properties. It is used internally in PlotCanvasWidget to manage axis settings.
 type PlotAxisConfig struct {
 	enabled            bool
 	label              string
@@ -55,36 +56,43 @@ type PlotAxisConfig struct {
 	limitCond          ExecCondition
 }
 
+// Enable enables axis. If ont set, the axis will not be set up in implot.
 func (pac *PlotAxisConfig) Enable() *PlotAxisConfig {
 	pac.enabled = true
 	return pac
 }
 
+// Label sets axis label.
 func (pac *PlotAxisConfig) Label(l string) *PlotAxisConfig {
 	pac.label = l
 	return pac
 }
 
+// Scale sets axis scale.
 func (pac *PlotAxisConfig) Scale(s PlotScale) *PlotAxisConfig {
 	pac.scale = s
 	return pac
 }
 
+// Flags sets axis flags.
 func (pac *PlotAxisConfig) Flags(f PlotAxisFlags) *PlotAxisConfig {
 	pac.flags = f
 	return pac
 }
 
+// Min sets axis minimum limit.
 func (pac *PlotAxisConfig) Min(m float64) *PlotAxisConfig {
 	pac.limitMin = m
 	return pac
 }
 
+// Max sets axis maximum limit.
 func (pac *PlotAxisConfig) Max(m float64) *PlotAxisConfig {
 	pac.limitMax = m
 	return pac
 }
 
+// LimitCond sets condition for axis limits. Default is ConditionOnce, which means that limits will be applied only once. You can set it to ConditionAlways to apply limits every frame.
 func (pac *PlotAxisConfig) LimitCond(c ExecCondition) *PlotAxisConfig {
 	pac.limitCond = c
 	return pac
@@ -116,6 +124,7 @@ func Plot(title string) *PlotCanvasWidget {
 	axes[AxisX1] = (&PlotAxisConfig{}).Enable().Flags(PlotAxisFlagsNone).Min(0).Max(10)
 	axes[AxisX2] = (&PlotAxisConfig{}).Flags(PlotAxisFlagsNone)
 	axes[AxisX3] = (&PlotAxisConfig{}).Flags(PlotAxisFlagsNone)
+
 	return &PlotCanvasWidget{
 		title: title,
 
@@ -243,6 +252,7 @@ func (p *PlotCanvasWidget) XFlags(flags PlotAxisFlags, axes ...PlotXAxis) *PlotC
 	if len(axes) == 0 {
 		axes = append(axes, AxisX1)
 	}
+
 	for _, axis := range axes {
 		p.axes[axis].Enable().Flags(flags)
 	}
@@ -255,6 +265,7 @@ func (p *PlotCanvasWidget) YFlags(yFlags PlotAxisFlags, axes ...PlotYAxis) *Plot
 	if len(axes) == 0 {
 		axes = append(axes, AxisY1)
 	}
+
 	for _, axis := range axes {
 		p.axes[axis].Enable().Flags(yFlags)
 	}
