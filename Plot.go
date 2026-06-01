@@ -54,6 +54,12 @@ type PlotAxisConfig struct {
 	flags              PlotAxisFlags
 	limitMin, limitMax float64
 	limitCond          ExecCondition
+
+	ticks struct {
+		value       []float64
+		label       []string
+		showDefault bool
+	}
 }
 
 // Enable enables axis. If ont set, the axis will not be set up in implot.
@@ -98,6 +104,28 @@ func (pac *PlotAxisConfig) LimitCond(c ExecCondition) *PlotAxisConfig {
 	return pac
 }
 
+// Ticks sets axis ticks.
+func (pac *PlotAxisConfig) Ticks(ticks []PlotTicker, showDefault bool) *PlotAxisConfig {
+	length := len(ticks)
+	if length == 0 {
+		return pac
+	}
+
+	values := make([]float64, length)
+	labels := make([]string, length)
+
+	for i, t := range ticks {
+		values[i] = t.Position
+		labels[i] = t.Label
+	}
+
+	pac.ticks.value = values
+	pac.ticks.label = labels
+	pac.ticks.showDefault = showDefault
+
+	return pac
+}
+
 // PlotCanvasWidget represents a giu plot widget.
 type PlotCanvasWidget struct {
 	title  string
@@ -106,13 +134,7 @@ type PlotCanvasWidget struct {
 	flags  PlotFlags
 	axes   map[implot.AxisEnum]*PlotAxisConfig
 
-	axisLimitCondition       ExecCondition
-	xTicksValue, yTicksValue []float64
-	xTicksLabel, yTicksLabel []string
-	xTicksShowDefault        bool
-	yTicksShowDefault        bool
-	yTicksYAxis              ImPlotYAxis
-	plots                    []PlotWidget
+	plots []PlotWidget
 }
 
 // Plot adds creates a new plot widget.
@@ -128,14 +150,10 @@ func Plot(title string) *PlotCanvasWidget {
 	return &PlotCanvasWidget{
 		title: title,
 
-		axes:               axes,
-		width:              -1,
-		height:             0,
-		flags:              PlotFlagsNone,
-		xTicksShowDefault:  true,
-		yTicksShowDefault:  true,
-		yTicksYAxis:        0,
-		axisLimitCondition: ConditionOnce,
+		axes:   axes,
+		width:  -1,
+		height: 0,
+		flags:  PlotFlagsNone,
 	}
 }
 
@@ -197,46 +215,27 @@ func (p *PlotCanvasWidget) YLimits(ymin, ymax float64, cond ExecCondition, axes 
 }
 
 // XTicks sets x axis ticks.
-func (p *PlotCanvasWidget) XTicks(ticks []PlotTicker, showDefault bool) *PlotCanvasWidget {
-	length := len(ticks)
-	if length == 0 {
-		return p
+func (p *PlotCanvasWidget) XTicks(ticks []PlotTicker, showDefault bool, axes ...PlotXAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
+		axes = append(axes, AxisX1)
 	}
 
-	values := make([]float64, length)
-	labels := make([]string, length)
-
-	for i, t := range ticks {
-		values[i] = t.Position
-		labels[i] = t.Label
+	for _, axis := range axes {
+		p.axes[axis].Enable().Ticks(ticks, showDefault)
 	}
-
-	p.xTicksValue = values
-	p.xTicksLabel = labels
-	p.xTicksShowDefault = showDefault
 
 	return p
 }
 
 // YTicks sets y axis ticks.
-func (p *PlotCanvasWidget) YTicks(ticks []PlotTicker, showDefault bool, yAxis ImPlotYAxis) *PlotCanvasWidget {
-	length := len(ticks)
-	if length == 0 {
-		return p
+func (p *PlotCanvasWidget) YTicks(ticks []PlotTicker, showDefault bool, axes ...PlotYAxis) *PlotCanvasWidget {
+	if len(axes) == 0 {
+		axes = append(axes, AxisY1)
 	}
 
-	values := make([]float64, length)
-	labels := make([]string, length)
-
-	for i, t := range ticks {
-		values[i] = t.Position
-		labels[i] = t.Label
+	for _, axis := range axes {
+		p.axes[axis].Enable().Ticks(ticks, showDefault)
 	}
-
-	p.yTicksValue = values
-	p.yTicksLabel = labels
-	p.yTicksShowDefault = showDefault
-	p.yTicksYAxis = yAxis
 
 	return p
 }
@@ -338,35 +337,25 @@ func (p *PlotCanvasWidget) Build() {
 
 			implot.SetupAxisScalePlotScale(
 				axis,
-				implot.Scale(p.axes[axis].scale),
+				implot.Scale(cfg.scale),
 			)
 
 			implot.SetupAxisLimitsV(
 				axis,
-				p.axes[axis].limitMin,
-				p.axes[axis].limitMax,
-				implot.Cond(p.axes[axis].limitCond),
+				cfg.limitMin,
+				cfg.limitMax,
+				implot.Cond(cfg.limitCond),
 			)
-		}
 
-		if len(p.xTicksValue) > 0 {
-			implot.SetupAxisTicksdoublePtrV(
-				implot.AxisX1,
-				utils.SliceToPtr(p.xTicksValue),
-				int32(len(p.xTicksValue)),
-				p.xTicksLabel,
-				p.xTicksShowDefault,
-			)
-		}
-
-		if len(p.yTicksValue) > 0 {
-			implot.SetupAxisTicksdoublePtrV(
-				implot.AxisY1,
-				utils.SliceToPtr(p.yTicksValue),
-				int32(len(p.yTicksValue)),
-				p.yTicksLabel,
-				p.yTicksShowDefault,
-			)
+			if l := len(cfg.ticks.value); l > 0 {
+				implot.SetupAxisTicksdoublePtrV(
+					axis,
+					utils.SliceToPtr(cfg.ticks.value),
+					int32(l),
+					cfg.ticks.label,
+					cfg.ticks.showDefault,
+				)
+			}
 		}
 
 		for _, plot := range p.plots {
