@@ -318,7 +318,8 @@ func (c *ContextMenuWidget) Layout(widgets ...Widget) *ContextMenuWidget {
 	return c
 }
 
-// MouseButton sets mouse button that will trigger the context menu.
+// Flags sets popup flags, especially the mouse button that will trigger the context menu.
+// See PopupFlags for more details.
 func (c *ContextMenuWidget) Flags(f PopupFlags) *ContextMenuWidget {
 	c.flags = f
 	return c
