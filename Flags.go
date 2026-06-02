@@ -270,10 +270,10 @@ type FocusedFlags imgui.FocusedFlags
 
 // focused flags list.
 const (
-	FocusedFlagsNone             = (imgui.FocusedFlagsNone)
-	FocusedFlagsChildWindows     = (imgui.FocusedFlagsChildWindows)   // Return true if any children of the window is focused
-	FocusedFlagsRootWindow       = (imgui.FocusedFlagsRootWindow)     // Test from root window (top most parent of the current hierarchy)
-	FocusedFlagsAnyWindow        = (imgui.FocusedFlagsAnyWindow)      // Return true if any window is focused. Important: If you are trying to tell how to dispatch your low-level inputs do NOT use this. Use 'io.WantCaptureMouse' instead! Please read the FAQ!
+	FocusedFlagsNone             = imgui.FocusedFlagsNone
+	FocusedFlagsChildWindows     = imgui.FocusedFlagsChildWindows     // Return true if any children of the window is focused
+	FocusedFlagsRootWindow       = imgui.FocusedFlagsRootWindow       // Test from root window (top most parent of the current hierarchy)
+	FocusedFlagsAnyWindow        = imgui.FocusedFlagsAnyWindow        // Return true if any window is focused. Important: If you are trying to tell how to dispatch your low-level inputs do NOT use this. Use 'io.WantCaptureMouse' instead! Please read the FAQ!
 	FocusedFlagsNoPopupHierarchy = imgui.FocusedFlagsNoPopupHierarchy // Do not consider popup hierarchy (do not treat popup emitter as parent of popup) (when used with ChildWindows or RootWindow)
 	// FocusedFlagsDockHierarchy               = 1 << 4   // Consider docking hierarchy (treat dockspace host as parent of docked window) (when used with ChildWindows or RootWindow).
 	FocusedFlagsRootAndChildWindows = imgui.FocusedFlagsRootAndChildWindows
@@ -530,4 +530,29 @@ const (
 	PlotScaleLog10 PlotScale = PlotScale(implot.ScaleLog10)
 	// PlotScaleSymLog is a symmetric log scale.
 	PlotScaleSymLog PlotScale = PlotScale(implot.ScaleSymLog)
+)
+
+// PopupFlags represents a flags for Popup, PopupModal and ContextMenu.
+type PopupFlags imgui.PopupFlags
+
+// A list of popup flags.
+const (
+	PopupFlagsNone PopupFlags = PopupFlags(imgui.PopupFlagsNone)
+	// For BeginPopupContext*(): open on Left Mouse release. Only one button allowed!
+	PopupFlagsMouseButtonLeft PopupFlags = PopupFlags(imgui.PopupFlagsMouseButtonLeft)
+	// For BeginPopupContext*(): open on Right Mouse release. Only one button allowed! (default).
+	PopupFlagsMouseButtonRight PopupFlags = PopupFlags(imgui.PopupFlagsMouseButtonRight)
+	// For BeginPopupContext*(): open on Middle Mouse release. Only one button allowed!
+	PopupFlagsMouseButtonMiddle PopupFlags = PopupFlags(imgui.PopupFlagsMouseButtonMiddle)
+	// For OpenPopup*(), BeginPopupContext*(): don't reopen same popup if already open (won't reposition, won't reinitialize navigation).
+	PopupFlagsNoReopen PopupFlags = PopupFlags(imgui.PopupFlagsNoReopen)
+	// For OpenPopup*(), BeginPopupContext*(): don't open if there's already a popup at the same level of the popup stack.
+	PopupFlagsNoOpenOverExistingPopup PopupFlags = PopupFlags(imgui.PopupFlagsNoOpenOverExistingPopup)
+	// For BeginPopupContextWindow(): don't return true when hovering items, only when hovering empty space.
+	PopupFlagsNoOpenOverItems PopupFlags = PopupFlags(imgui.PopupFlagsNoOpenOverItems)
+	// For IsPopupOpen(): ignore the ImGuiID parameter and test for any popup.
+	PopupFlagsAnyPopupID PopupFlags = PopupFlags(imgui.PopupFlagsAnyPopupId)
+	// For IsPopupOpen(): search/test at any level of the popup stack (default test in the current level).
+	PopupFlagsAnyPopupLevel PopupFlags = PopupFlags(imgui.PopupFlagsAnyPopupLevel)
+	PopupFlagsAnyPopup      PopupFlags = PopupFlags(imgui.PopupFlagsAnyPopup)
 )
