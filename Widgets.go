@@ -298,17 +298,17 @@ var _ Widget = &ContextMenuWidget{}
 
 // ContextMenuWidget is a context menu on another widget. (e.g. right-click menu on button).
 type ContextMenuWidget struct {
-	id          ID
-	mouseButton MouseButton
-	layout      Layout
+	id     ID
+	flags  PopupFlags
+	layout Layout
 }
 
 // ContextMenu creates new ContextMenuWidget.
 func ContextMenu() *ContextMenuWidget {
 	return &ContextMenuWidget{
-		mouseButton: MouseButtonRight,
-		layout:      nil,
-		id:          GenAutoID("ContextMenu"),
+		flags:  PopupFlagsMouseButtonRight,
+		layout: nil,
+		id:     GenAutoID("ContextMenu"),
 	}
 }
 
@@ -319,8 +319,8 @@ func (c *ContextMenuWidget) Layout(widgets ...Widget) *ContextMenuWidget {
 }
 
 // MouseButton sets mouse button that will trigger the context menu.
-func (c *ContextMenuWidget) MouseButton(mouseButton MouseButton) *ContextMenuWidget {
-	c.mouseButton = mouseButton
+func (c *ContextMenuWidget) Flags(f PopupFlags) *ContextMenuWidget {
+	c.flags = f
 	return c
 }
 
@@ -332,7 +332,7 @@ func (c *ContextMenuWidget) ID(id ID) *ContextMenuWidget {
 
 // Build implements Widget interface.
 func (c *ContextMenuWidget) Build() {
-	if imgui.BeginPopupContextItemV(c.id.String(), imgui.PopupFlags(c.mouseButton)) {
+	if imgui.BeginPopupContextItemV(c.id.String(), imgui.PopupFlags(c.flags)) {
 		c.layout.Build()
 		imgui.EndPopup()
 	}
