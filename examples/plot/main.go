@@ -29,38 +29,39 @@ var (
 
 func loop() {
 	g.SingleWindow().Layout(
-		g.Plot("Plot 基本图表").AxisLimits(0, 100, -1.2, 1.2, g.ConditionOnce).XTicks(lineTicks, false).Plots(
-			g.Line("Plot Line 线图", linedata),
-			g.Line("Plot Line2", linedata2),
+		g.Plot("Plot").Limits(0, 100, -1.2, 1.2, g.ConditionOnce).
+			YLimits(-1.2, 1.2, g.ConditionOnce, g.AxisY1, g.AxisY2).Plots(
+			g.Line("Line Plot", linedata),
+			g.Line("Line Plot 2", linedata2),
 			g.SwitchPlotAxes(g.AxisX1, g.AxisY2),
-			g.Scatter("Scatter 散点图", scatterdata),
-		).SetYAxisLabel(g.AxisY2, "secondary axis"),
-		g.Plot("Plot Time Axe 时间线").AxisLimits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).Plots(
-			g.LineXY("Time Line 时间线", timeDataX, timeDataY),
-			g.ScatterXY("Time Scatter 时间散点图", timeDataX, timeScatterY),
+			g.Scatter("Scatter", scatterdata),
+		).YLabel("secondary axis", g.AxisY2),
+		g.Plot("Plot (Time Scale on X Axis)").Limits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).Plots(
+			g.LineXY("Time Line", timeDataX, timeDataY),
+			g.ScatterXY("Time Scatter", timeDataX, timeScatterY),
 		).XScale(g.PlotScaleTime),
 		g.Row(
 			g.Style().To(
 				g.Plot("Plot Bars").
 					Size(500, 250).
-					AxisLimits(0, 10, -1.2, 1.2, g.ConditionOnce).
+					Limits(0, 10, -1.2, 1.2, g.ConditionOnce).
 					Plots(
-						g.Bar("Plot Bar 柱状图", bardata),
-						g.Bar("Plot Bar2", bardata2).Shift(0.2),
-						g.BarH("Plot Bar H 水平柱状图", bardata3),
+						g.Bar("Plot Bar", bardata),
+						g.Bar("Plot Bar 2", bardata2).Shift(0.2),
+						g.BarH("Plot Bar H", bardata3),
 					),
 			).SetPlotColor(g.StylePlotColorAxisBg, colornames.Cyan).
 				SetPlotStyleFloat(g.StylePlotVarMajorGridSize, 5),
 			g.Plot("Pie Chart").
 				Flags(g.PlotFlagsEqual).
 				Size(250, 250).
-				XAxeFlags(g.PlotAxisFlagsNoDecorations).
-				YAxeFlags(g.PlotAxisFlagsNoDecorations, 0, 0).
-				AxisLimits(0, 1, 0, 1, g.ConditionAlways).
+				XFlags(g.PlotAxisFlagsNoDecorations).
+				YFlags(g.PlotAxisFlagsNoDecorations).
+				Limits(0, 1, 0, 1, g.ConditionAlways).
 				Plots(
 					// StyleSetter works also for plots
 					g.Style().Plots(
-						g.PieChart([]string{"Part 1 图例1", "Part 2", "Part 3"}, []float64{0.22, 0.38, 0.4}, 0.5, 0.5, 0.45),
+						g.PieChart([]string{"Part 1", "Part 2", "Part 3"}, []float64{0.22, 0.38, 0.4}, 0.5, 0.5, 0.45),
 					).SetPlotColor(g.StylePlotColorPlotBg, colornames.Pink),
 				),
 		),
