@@ -12,7 +12,7 @@ require (
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/sahilm/fuzzy v0.1.3
 	github.com/stretchr/testify v1.11.1
-	golang.design/x/hotkey v0.4.1
+	golang.design/x/hotkey v0.6.1
 	golang.org/x/image v0.42.0
 	gopkg.in/eapache/queue.v1 v1.1.0
 )
