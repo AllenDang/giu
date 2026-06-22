@@ -201,7 +201,7 @@ func (p *PlotCanvasWidget) XLim(xmin, xmax float64, cond ExecCondition, axes ...
 	return p
 }
 
-// YLimits allows to set Y axis limits.
+// YLim allows to set Y axis limits.
 func (p *PlotCanvasWidget) YLim(ymin, ymax float64, cond ExecCondition, axes ...PlotYAxis) *PlotCanvasWidget {
 	if len(axes) == 0 {
 		axes = append(axes, AxisY1)
