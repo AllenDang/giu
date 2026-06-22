@@ -29,14 +29,14 @@ var (
 
 func loop() {
 	g.SingleWindow().Layout(
-		g.Plot("Plot").Limits(0, 100, -1.2, 1.2, g.ConditionOnce).
-			YLimits(-1.2, 1.2, g.ConditionOnce, g.AxisY1, g.AxisY2).Plots(
+		g.Plot("Plot").Lim(0, 100, -1.2, 1.2, g.ConditionOnce).
+			YLim(-1.2, 1.2, g.ConditionOnce, g.AxisY1, g.AxisY2).Plots(
 			g.Line("Line Plot", linedata),
 			g.Line("Line Plot 2", linedata2),
 			g.SwitchPlotAxes(g.AxisX1, g.AxisY2),
 			g.Scatter("Scatter", scatterdata),
 		).YLabel("secondary axis", g.AxisY2),
-		g.Plot("Plot (Time Scale on X Axis)").Limits(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).Plots(
+		g.Plot("Plot (Time Scale on X Axis)").Lim(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).Plots(
 			g.LineXY("Time Line", timeDataX, timeDataY),
 			g.ScatterXY("Time Scatter", timeDataX, timeScatterY),
 		).XScale(g.PlotScaleTime),
@@ -44,7 +44,7 @@ func loop() {
 			g.Style().To(
 				g.Plot("Plot Bars").
 					Size(500, 250).
-					Limits(0, 10, -1.2, 1.2, g.ConditionOnce).
+					Lim(0, 10, -1.2, 1.2, g.ConditionOnce).
 					Plots(
 						g.Bar("Plot Bar", bardata),
 						g.Bar("Plot Bar 2", bardata2).Shift(0.2),
@@ -57,7 +57,7 @@ func loop() {
 				Size(250, 250).
 				XFlags(g.PlotAxisFlagsNoDecorations).
 				YFlags(g.PlotAxisFlagsNoDecorations).
-				Limits(0, 1, 0, 1, g.ConditionAlways).
+				Lim(0, 1, 0, 1, g.ConditionAlways).
 				Plots(
 					// StyleSetter works also for plots
 					g.Style().Plots(
