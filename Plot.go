@@ -183,13 +183,13 @@ func (p *PlotCanvasWidget) YLabel(label string, axes ...PlotYAxis) *PlotCanvasWi
 	return p
 }
 
-// Limits sets X and Y axis limits for the default axis (AxisX1 and AxisY1).
-func (p *PlotCanvasWidget) Limits(xmin, xmax, ymin, ymax float64, cond ExecCondition) *PlotCanvasWidget {
-	return p.XLimits(xmin, xmax, cond).YLimits(ymin, ymax, cond)
+// Lim sets X and Y axis limits for the default axis (AxisX1 and AxisY1).
+func (p *PlotCanvasWidget) Lim(xmin, xmax, ymin, ymax float64, cond ExecCondition) *PlotCanvasWidget {
+	return p.XLim(xmin, xmax, cond).YLim(ymin, ymax, cond)
 }
 
-// XLimits allows to set X axis limits.
-func (p *PlotCanvasWidget) XLimits(xmin, xmax float64, cond ExecCondition, axes ...PlotXAxis) *PlotCanvasWidget {
+// XLim allows to set X axis limits.
+func (p *PlotCanvasWidget) XLim(xmin, xmax float64, cond ExecCondition, axes ...PlotXAxis) *PlotCanvasWidget {
 	if len(axes) == 0 {
 		axes = append(axes, AxisX1)
 	}
@@ -201,8 +201,8 @@ func (p *PlotCanvasWidget) XLimits(xmin, xmax float64, cond ExecCondition, axes 
 	return p
 }
 
-// YLimits allows to set Y axis limits.
-func (p *PlotCanvasWidget) YLimits(ymin, ymax float64, cond ExecCondition, axes ...PlotYAxis) *PlotCanvasWidget {
+// YLim allows to set Y axis limits.
+func (p *PlotCanvasWidget) YLim(ymin, ymax float64, cond ExecCondition, axes ...PlotYAxis) *PlotCanvasWidget {
 	if len(axes) == 0 {
 		axes = append(axes, AxisY1)
 	}
