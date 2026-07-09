@@ -105,7 +105,7 @@ func (c *ChildWidget) Layout(widgets ...Widget) *ChildWidget {
 	return c
 }
 
-// ID sets the interval id of child widgets.
+// ID sets the internal id of child widgets.
 func (c *ChildWidget) ID(id ID) *ChildWidget {
 	c.id = id
 	return c
@@ -221,7 +221,7 @@ func Combo(label, previewValue string, items []string, selected *int32) *ComboWi
 	}
 }
 
-// ID sets the interval id of combo. (overrides label).
+// ID sets the internal id of combo. (overrides label).
 func (c *ComboWidget) ID(id ID) *ComboWidget {
 	c.label = id
 	return c
@@ -325,7 +325,7 @@ func (c *ContextMenuWidget) Flags(f PopupFlags) *ContextMenuWidget {
 	return c
 }
 
-// ID sets the interval id of context menu.
+// ID sets the internal id of context menu.
 func (c *ContextMenuWidget) ID(id ID) *ContextMenuWidget {
 	c.id = id
 	return c
@@ -818,12 +818,24 @@ type ColorEditWidget struct {
 }
 
 // ColorEdit creates new ColorEditWidget.
-func ColorEdit(label string, c *color.RGBA) *ColorEditWidget {
+func ColorEdit(c *color.RGBA) *ColorEditWidget {
 	return &ColorEditWidget{
-		label: GenAutoID(label),
+		label: GenAutoID("##ColorEdit"),
 		color: c,
 		// flags: ColorEditFlagsNone,
 	}
+}
+
+// Label sets label of the color editor.
+func (ce *ColorEditWidget) Label(label string) *ColorEditWidget {
+	ce.label = GenAutoID(label)
+	return ce
+}
+
+// ID manually sets widget's ID (no GenAutoID will be called).
+func (ce *ColorEditWidget) ID(id ID) *ColorEditWidget {
+	ce.label = id
+	return ce
 }
 
 // OnChange sets callback that will be executed when color is changed.
