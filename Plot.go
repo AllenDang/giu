@@ -389,7 +389,8 @@ func Bar(title string, data []float64) *BarPlot {
 		data:  data,
 		width: 0.2,
 		shift: 0,
-		spec:  NewPlotSpec(),
+		spec: NewPlotSpec().
+			SetProperty(PlotPropertyStride, int(8)),
 	}
 }
 
@@ -411,9 +412,14 @@ func (p *BarPlot) Offset(offset int) *BarPlot {
 	return p
 }
 
+// SetProperty sets plot properties. For more details see PlotSpec.
+func (p *BarPlot) SetProperty(key PlotProperty, value interface{}) *BarPlot {
+	p.spec.SetProperty(key, value)
+	return p
+}
+
 // Plot implements Plot interface.
 func (p *BarPlot) Plot() {
-	p.spec.SetProperty(PlotPropertyStride, int(8))
 	implot.PlotBarsdoublePtrIntV(
 		p.title,
 		utils.SliceToPtr(p.data),
@@ -440,7 +446,8 @@ func BarH(title string, data []float64) *BarHPlot {
 		data:   data,
 		height: 0.2,
 		shift:  0,
-		spec:   NewPlotSpec(),
+		spec: NewPlotSpec().
+			SetProperty(PlotPropertyFlags, int(implot.BarsFlagsHorizontal)),
 	}
 }
 
@@ -462,9 +469,14 @@ func (p *BarHPlot) Offset(offset int) *BarHPlot {
 	return p
 }
 
+// SetProperty sets plot properties. For more details see PlotSpec.
+func (p *BarHPlot) SetProperty(key PlotProperty, value interface{}) *BarHPlot {
+	p.spec.SetProperty(key, value)
+	return p
+}
+
 // Plot implements plot interface.
 func (p *BarHPlot) Plot() {
-	p.spec.SetProperty(PlotPropertyFlags, int(implot.BarsFlagsHorizontal))
 	implot.PlotBarsdoublePtrIntV(
 		Context.PrepareString(p.title),
 		utils.SliceToPtr(p.data),
@@ -491,7 +503,8 @@ func Line(title string, values []float64) *LinePlot {
 		values: values,
 		xScale: 1,
 		x0:     0,
-		spec:   NewPlotSpec(),
+		spec: NewPlotSpec().
+			SetProperty(PlotPropertyStride, int(8)),
 	}
 }
 
@@ -519,13 +532,17 @@ func (p *LinePlot) Offset(offset int) *LinePlot {
 	return p
 }
 
+// SetProperty sets plot properties. For more details see PlotSpec.
+func (p *LinePlot) SetProperty(key PlotProperty, value interface{}) *LinePlot {
+	p.spec.SetProperty(key, value)
+	return p
+}
+
 // Plot implements Plot interface.
 func (p *LinePlot) Plot() {
 	implot.SetAxis(
 		implot.AxisEnum(p.yAxis),
 	)
-
-	p.spec.SetProperty(PlotPropertyStride, int(8))
 
 	implot.PlotLinedoublePtrIntV(
 		Context.PrepareString(p.title),
@@ -551,7 +568,8 @@ func LineXY(title string, xvalues, yvalues []float64) *LineXYPlot {
 		title: title,
 		xs:    xvalues,
 		ys:    yvalues,
-		spec:  NewPlotSpec(),
+		spec: NewPlotSpec().
+			SetProperty(PlotPropertyStride, int(8)),
 	}
 }
 
@@ -567,10 +585,15 @@ func (p *LineXYPlot) Offset(offset int) *LineXYPlot {
 	return p
 }
 
+// SetProperty sets plot properties. For more details see PlotSpec.
+func (p *LineXYPlot) SetProperty(key PlotProperty, value interface{}) *LineXYPlot {
+	p.spec.SetProperty(key, value)
+	return p
+}
+
 // Plot implements Plot interface.
 func (p *LineXYPlot) Plot() {
 	implot.SetAxis(implot.AxisEnum(p.yAxis))
-	p.spec.SetProperty(PlotPropertyStride, int(8))
 	implot.PlotLinedoublePtrdoublePtrV(
 		Context.PrepareString(p.title),
 		utils.SliceToPtr(p.xs),
@@ -608,6 +631,7 @@ func PieChart(labels []string, values []float64, x, y, radius float64) *PieChart
 }
 
 // Normalize sets normalize flag.
+// NOTE/FIXME: This will override the value set by SetProperty(PlotPropertyFlags, ...).
 func (p *PieChartPlot) Normalize(n bool) *PieChartPlot {
 	p.normalize = n
 	return p
@@ -622,6 +646,12 @@ func (p *PieChartPlot) LabelFormat(fmtStr string) *PieChartPlot {
 // Angle0 sets start angle.
 func (p *PieChartPlot) Angle0(a float64) *PieChartPlot {
 	p.angle0 = a
+	return p
+}
+
+// SetProperty sets plot properties. For more details see PlotSpec.
+func (p *PieChartPlot) SetProperty(key PlotProperty, value interface{}) *PieChartPlot {
+	p.spec.SetProperty(key, value)
 	return p
 }
 
@@ -661,7 +691,8 @@ func Scatter(label string, values []float64) *ScatterPlot {
 		values: values,
 		xscale: 1,
 		x0:     0,
-		spec:   NewPlotSpec(),
+		spec: NewPlotSpec().
+			SetProperty(PlotPropertyStride, int(8)),
 	}
 }
 
@@ -683,9 +714,14 @@ func (p *ScatterPlot) Offset(offset int) *ScatterPlot {
 	return p
 }
 
+// SetProperty sets plot properties. For more details see PlotSpec.
+func (p *ScatterPlot) SetProperty(key PlotProperty, value interface{}) *ScatterPlot {
+	p.spec.SetProperty(key, value)
+	return p
+}
+
 // Plot implements Plot interface.
 func (p *ScatterPlot) Plot() {
-	p.spec.SetProperty(PlotPropertyStride, int(8))
 	implot.PlotScatterdoublePtrIntV(
 		Context.PrepareString(p.label),
 		utils.SliceToPtr(p.values),
@@ -709,7 +745,8 @@ func ScatterXY(label string, xs, ys []float64) *ScatterXYPlot {
 		label: label,
 		xs:    xs,
 		ys:    ys,
-		spec:  NewPlotSpec(),
+		spec: NewPlotSpec().
+			SetProperty(PlotPropertyStride, int(8)),
 	}
 }
 
@@ -719,9 +756,14 @@ func (p *ScatterXYPlot) Offset(offset int) *ScatterXYPlot {
 	return p
 }
 
+// SetProperty sets plot properties. For more details see PlotSpec.
+func (p *ScatterXYPlot) SetProperty(key PlotProperty, value interface{}) *ScatterXYPlot {
+	p.spec.SetProperty(key, value)
+	return p
+}
+
 // Plot implements Plot interface.
 func (p *ScatterXYPlot) Plot() {
-	p.spec.SetProperty(PlotPropertyStride, int(8))
 	implot.PlotScatterdoublePtrdoublePtrV(
 		Context.PrepareString(p.label),
 		utils.SliceToPtr(p.xs),
