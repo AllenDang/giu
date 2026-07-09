@@ -37,7 +37,7 @@ func loop() {
 			g.Scatter("Scatter", scatterdata),
 		).YLabel("secondary axis", g.AxisY2),
 		g.Plot("Plot (Time Scale on X Axis)").Lim(timeDataMin, timeDataMax, 0, 1, g.ConditionOnce).Plots(
-			g.LineXY("Time Line", timeDataX, timeDataY),
+			g.LineXY("Time Line", timeDataX, timeDataY).SetProperty(g.PlotPropertyLineWeight, 4),
 			g.ScatterXY("Time Scatter", timeDataX, timeScatterY),
 		).XScale(g.PlotScaleTime),
 		g.Row(
