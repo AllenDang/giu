@@ -122,7 +122,8 @@ func loop() {
 		g.Combo("Combo", items[itemSelected], items, &itemSelected).OnChange(comboChanged),
 		g.Combo("Combo (w/ filter)", items[itemSelected], items, &itemSelected).OnChange(comboChanged).Filter(true),
 
-		g.ColorEdit("<- Click the black square. I'm changing a color for you##colorChanger", col).
+		g.ColorEdit(col).
+			Label("<- Click the black square. I'm changing a color for you##colorChanger").
 			Size(100).
 			Flags(g.ColorEditFlagsDisplayHex).
 			OnChange(func() {
