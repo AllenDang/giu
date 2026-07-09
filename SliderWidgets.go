@@ -258,6 +258,7 @@ type DragIntWidget struct {
 	format   string
 	onChange func()
 	flags    SliderFlags
+	width    float32
 }
 
 // DragInt creates new DragIntWidget.
@@ -327,8 +328,20 @@ func (d *DragIntWidget) OnChange(onChange func()) *DragIntWidget {
 	return d
 }
 
+// Size sets slider's width.
+func (d *DragIntWidget) Size(width float32) *DragIntWidget {
+	d.width = width
+	return d
+}
+
 // Build implements Widget interface.
 func (d *DragIntWidget) Build() {
+	if d.width != 0 {
+		PushItemWidth(d.width)
+
+		defer PopItemWidth()
+	}
+
 	if imgui.DragIntV(Context.PrepareString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, imgui.SliderFlags(d.flags)) && d.onChange != nil {
 		d.onChange()
 	}
@@ -346,6 +359,7 @@ type DragFloatWidget struct {
 	format   string
 	onChange func()
 	flags    SliderFlags
+	width    float32
 }
 
 // DragFloat creates new DragFloatWidget.
@@ -415,8 +429,20 @@ func (d *DragFloatWidget) OnChange(onChange func()) *DragFloatWidget {
 	return d
 }
 
+// Size sets slider's width.
+func (d *DragFloatWidget) Size(width float32) *DragFloatWidget {
+	d.width = width
+	return d
+}
+
 // Build implements Widget interface.
 func (d *DragFloatWidget) Build() {
+	if d.width != 0 {
+		PushItemWidth(d.width)
+
+		defer PopItemWidth()
+	}
+
 	if imgui.DragFloatV(Context.PrepareString(d.label.String()), d.value, d.speed, d.minValue, d.maxValue, d.format, imgui.SliderFlags(d.flags)) && d.onChange != nil {
 		d.onChange()
 	}
