@@ -42,11 +42,11 @@ func (i StyleVarID) String() string {
 		return _StyleVarIDName_2
 	case i == 29:
 		return _StyleVarIDName_3
-	case 35 <= i && i <= 36:
-		i -= 35
-		return _StyleVarIDName_4[_StyleVarIDIndex_4[i]:_StyleVarIDIndex_4[i+1]]
-	case 38 <= i && i <= 41:
+	case 38 <= i && i <= 39:
 		i -= 38
+		return _StyleVarIDName_4[_StyleVarIDIndex_4[i]:_StyleVarIDIndex_4[i+1]]
+	case 41 <= i && i <= 44:
+		i -= 41
 		return _StyleVarIDName_5[_StyleVarIDIndex_5[i]:_StyleVarIDIndex_5[i+1]]
 	default:
 		return fmt.Sprintf("StyleVarID(%d)", i)
@@ -81,12 +81,12 @@ func _StyleVarIDNoOp() {
 	_ = x[StyleVarGrabRounding-(22)]
 	_ = x[StyleVarTabRounding-(25)]
 	_ = x[StyleVarTabBarBorderSize-(29)]
-	_ = x[StyleVarButtonTextAlign-(35)]
-	_ = x[StyleVarSelectableTextAlign-(36)]
-	_ = x[StyleVarSeparatorTextBorderSize-(38)]
-	_ = x[StyleVarSeparatorTextAlign-(39)]
-	_ = x[StyleVarSeparatorTextPadding-(40)]
-	_ = x[StyleVarDockingSeparatorSize-(41)]
+	_ = x[StyleVarButtonTextAlign-(38)]
+	_ = x[StyleVarSelectableTextAlign-(39)]
+	_ = x[StyleVarSeparatorTextBorderSize-(41)]
+	_ = x[StyleVarSeparatorTextAlign-(42)]
+	_ = x[StyleVarSeparatorTextPadding-(43)]
+	_ = x[StyleVarDockingSeparatorSize-(44)]
 }
 
 var _StyleVarIDValues = []StyleVarID{StyleVarAlpha, StyleVarDisabledAlpha, StyleVarWindowPadding, StyleVarWindowRounding, StyleVarWindowBorderSize, StyleVarWindowMinSize, StyleVarWindowTitleAlign, StyleVarChildRounding, StyleVarChildBorderSize, StyleVarPopupRounding, StyleVarPopupBorderSize, StyleVarFramePadding, StyleVarFrameRounding, StyleVarFrameBorderSize, StyleVarItemSpacing, StyleVarItemInnerSpacing, StyleVarIndentSpacing, StyleVarCellPadding, StyleVarScrollbarSize, StyleVarScrollbarRounding, StyleVarGrabMinSize, StyleVarGrabRounding, StyleVarTabRounding, StyleVarTabBarBorderSize, StyleVarButtonTextAlign, StyleVarSelectableTextAlign, StyleVarSeparatorTextBorderSize, StyleVarSeparatorTextAlign, StyleVarSeparatorTextPadding, StyleVarDockingSeparatorSize}
