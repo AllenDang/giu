@@ -11,28 +11,64 @@ type LanguageDefinition byte
 
 // language definitions:.
 const (
-	LanguageDefinitionNone        LanguageDefinition = LanguageDefinition(cte.None)
-	LanguageDefinitionCPP         LanguageDefinition = LanguageDefinition(cte.Cpp)
-	LanguageDefinitionC           LanguageDefinition = LanguageDefinition(cte.C)
-	LanguageDefinitionCs          LanguageDefinition = LanguageDefinition(cte.Cs)
-	LanguageDefinitionPython      LanguageDefinition = LanguageDefinition(cte.Python)
-	LanguageDefinitionLua         LanguageDefinition = LanguageDefinition(cte.Lua)
-	LanguageDefinitionJSON        LanguageDefinition = LanguageDefinition(cte.Json)
-	LanguageDefinitionSQL         LanguageDefinition = LanguageDefinition(cte.Sql)
-	LanguageDefinitionAngelScript LanguageDefinition = LanguageDefinition(cte.AngelScript)
-	LanguageDefinitionGlsl        LanguageDefinition = LanguageDefinition(cte.Glsl)
-	LanguageDefinitionHlsl        LanguageDefinition = LanguageDefinition(cte.Hlsl)
+	LanguageDefinitionNone LanguageDefinition = iota
+	LanguageDefinitionAngelScript
+	LanguageDefinitionC
+	LanguageDefinitionCPP
+	LanguageDefinitionCs
+	LanguageDefinitionGlsl
+	LanguageDefinitionHlsl
+	LanguageDefinitionJSON
+	LanguageDefinitionLua
+	LanguageDefinitionMarkdown
+	LanguageDefinitionPython
+	LanguageDefinitionSQL
 )
+
+func (l *LanguageDefinition) toCTE() *cte.Language {
+	mm := map[LanguageDefinition]func() *cte.Language{
+		LanguageDefinitionNone:        nil,
+		LanguageDefinitionAngelScript: cte.LanguageAngelScript,
+		LanguageDefinitionC:           cte.LanguageC,
+		LanguageDefinitionCPP:         cte.LanguageCpp,
+		LanguageDefinitionGlsl:        cte.LanguageGlsl,
+		LanguageDefinitionHlsl:        cte.LanguageHlsl,
+		LanguageDefinitionJSON:        cte.LanguageJson,
+		LanguageDefinitionLua:         cte.LanguageLua,
+		LanguageDefinitionMarkdown:    cte.LanguageMarkdown,
+		LanguageDefinitionPython:      cte.LanguagePython,
+		LanguageDefinitionSQL:         cte.LanguageSql,
+	}
+
+	if l, ok := mm[*l]; ok {
+		return l()
+	}
+
+	return nil
+}
 
 // CodeEditorPalette represents a colors palette to use with the code editor.
 type CodeEditorPalette byte
 
 const (
-	PaletteDark      CodeEditorPalette = CodeEditorPalette(cte.Dark)
-	PaletteLight     CodeEditorPalette = CodeEditorPalette(cte.Light)
-	PaletteMariana   CodeEditorPalette = CodeEditorPalette(cte.Mariana)
-	PaletteRetroBlue CodeEditorPalette = CodeEditorPalette(cte.RetroBlue)
+	PaletteDefault CodeEditorPalette = iota
+	PaletteDark
+	PaletteLight
 )
+
+func (p *CodeEditorPalette) toCTE() *cte.Palette {
+	mm := map[CodeEditorPalette]func() *cte.Palette{
+		PaletteDefault: cte.TextEditorGetDefaultPalette,
+		PaletteDark:    cte.TextEditorGetDarkPalette,
+		PaletteLight:   cte.TextEditorGetLightPalette,
+	}
+
+	if p, ok := mm[*p]; ok {
+		return p()
+	}
+
+	return nil
+}
 
 var _ Disposable = &codeEditorState{}
 
@@ -71,7 +107,7 @@ func (ce *CodeEditorWidget) ID(id ID) *CodeEditorWidget {
 }
 
 func (ce *CodeEditorWidget) Palette(palette CodeEditorPalette) *CodeEditorWidget {
-	ce.getState().editor.SetPalette(cte.PaletteId(palette))
+	ce.getState().editor.SetPalette(palette.toCTE())
 	return ce
 }
 
@@ -83,14 +119,14 @@ func (ce *CodeEditorWidget) ShowWhitespaces(s bool) *CodeEditorWidget {
 
 // TabSize sets editor's tab size.
 func (ce *CodeEditorWidget) TabSize(size int) *CodeEditorWidget {
-	ce.getState().editor.SetTabSize(int32(size))
+	ce.getState().editor.SetTabSize(uint64(size))
 	return ce
 }
 
 // LanguageDefinition sets code editor language definition.
 func (ce *CodeEditorWidget) LanguageDefinition(definition LanguageDefinition) *CodeEditorWidget {
 	s := ce.getState()
-	s.editor.SetLanguageDefinition(cte.LanguageDefinitionId(definition))
+	s.editor.SetLanguage(definition.toCTE())
 
 	return ce
 }
@@ -153,10 +189,10 @@ func (ce *CodeEditorWidget) GetCurrentLineText() string {
 // GetCursorPos returns cursor position.
 // (in characters).
 func (ce *CodeEditorWidget) GetCursorPos() (x, y int) {
-	var px, py int32
-	ce.getState().editor.CursorPosition(&px, &py)
-
-	return int(px), int(py)
+	result := ce.getState().editor.CursorPosition(0)
+	x = int(result.Index())
+	y = int(result.Line())
+	return x, y
 }
 
 // GetSelectionStart returns star pos of selection.
@@ -226,7 +262,13 @@ func (ce *CodeEditorWidget) Build() {
 	s := ce.getState()
 
 	// build editor
-	s.editor.RenderV(string(ce.title), false, imgui.Vec2{X: ce.width, Y: ce.height}, ce.border)
+	// TODO: add support for window and child flags
+	s.editor.RenderV(string(ce.title), imgui.Vec2{X: ce.width, Y: ce.height}, func() imgui.ChildFlags {
+		if ce.border {
+			return imgui.ChildFlagsBorders
+		}
+		return 0
+	}(), 0)
 }
 
 func (ce *CodeEditorWidget) getState() (state *codeEditorState) {
