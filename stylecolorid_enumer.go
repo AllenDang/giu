@@ -8,52 +8,58 @@ import (
 )
 
 const (
-	_StyleColorIDName_0      = "colordisabled-colorbackground-colorchild-background-colorpopup-background-colorborder-colorborder-shadow-colorframe-background-colorframe-background-hovered-colorframe-background-active-colortitle-background-colortitle-background-active-colortitle-background-collapsed-colormenu-bar-background-colorscrollbar-background-colorscrollbar-grab-colorscrollbar-grab-hovered-colorscrollbar-grab-active-colorcheckmark-colorslider-grab-colorslider-grab-active-colorbutton-colorbutton-hovered-colorbutton-active-colorheader-colorheader-hovered-colorheader-active-colorseparator-colorseparator-hovered-colorseparator-active-colorresize-grip-colorresize-grip-hovered-colorresize-grip-active-color"
-	_StyleColorIDLowerName_0 = "colordisabled-colorbackground-colorchild-background-colorpopup-background-colorborder-colorborder-shadow-colorframe-background-colorframe-background-hovered-colorframe-background-active-colortitle-background-colortitle-background-active-colortitle-background-collapsed-colormenu-bar-background-colorscrollbar-background-colorscrollbar-grab-colorscrollbar-grab-hovered-colorscrollbar-grab-active-colorcheckmark-colorslider-grab-colorslider-grab-active-colorbutton-colorbutton-hovered-colorbutton-active-colorheader-colorheader-hovered-colorheader-active-colorseparator-colorseparator-hovered-colorseparator-active-colorresize-grip-colorresize-grip-hovered-colorresize-grip-active-color"
-	_StyleColorIDName_1      = "tab-hovered-colortab-colortab-active-color"
-	_StyleColorIDLowerName_1 = "tab-hovered-colortab-colortab-active-color"
-	_StyleColorIDName_2      = "tab-unfocused-colortab-unfocused-active-color"
-	_StyleColorIDLowerName_2 = "tab-unfocused-colortab-unfocused-active-color"
-	_StyleColorIDName_3      = "plot-lines-colorplot-lines-hovered-colorplot-histogram-colorplot-histogram-hovered-colortable-header-background-colortable-border-strong-colortable-border-light-colortable-row-background-colortable-row-alternate-background-color"
-	_StyleColorIDLowerName_3 = "plot-lines-colorplot-lines-hovered-colorplot-histogram-colorplot-histogram-hovered-colortable-header-background-colortable-border-strong-colortable-border-light-colortable-row-background-colortable-row-alternate-background-color"
-	_StyleColorIDName_4      = "text-selected-background-color"
-	_StyleColorIDLowerName_4 = "text-selected-background-color"
-	_StyleColorIDName_5      = "drag-drop-target-color"
-	_StyleColorIDLowerName_5 = "drag-drop-target-color"
-	_StyleColorIDName_6      = "windowing-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
-	_StyleColorIDLowerName_6 = "windowing-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
+	_StyleColorIDName_0      = "colordisabled-colorbackground-colorchild-background-colorpopup-background-colorborder-colorborder-shadow-colorframe-background-colorframe-background-hovered-colorframe-background-active-colortitle-background-colortitle-background-active-colortitle-background-collapsed-colormenu-bar-background-colorscrollbar-background-colorscrollbar-grab-colorscrollbar-grab-hovered-colorscrollbar-grab-active-colorcheckmark-color"
+	_StyleColorIDLowerName_0 = "colordisabled-colorbackground-colorchild-background-colorpopup-background-colorborder-colorborder-shadow-colorframe-background-colorframe-background-hovered-colorframe-background-active-colortitle-background-colortitle-background-active-colortitle-background-collapsed-colormenu-bar-background-colorscrollbar-background-colorscrollbar-grab-colorscrollbar-grab-hovered-colorscrollbar-grab-active-colorcheckmark-color"
+	_StyleColorIDName_1      = "slider-grab-colorslider-grab-active-colorbutton-colorbutton-hovered-colorbutton-active-colorheader-colorheader-hovered-colorheader-active-colorseparator-colorseparator-hovered-colorseparator-active-colorresize-grip-colorresize-grip-hovered-colorresize-grip-active-color"
+	_StyleColorIDLowerName_1 = "slider-grab-colorslider-grab-active-colorbutton-colorbutton-hovered-colorbutton-active-colorheader-colorheader-hovered-colorheader-active-colorseparator-colorseparator-hovered-colorseparator-active-colorresize-grip-colorresize-grip-hovered-colorresize-grip-active-color"
+	_StyleColorIDName_2      = "tab-hovered-colortab-colortab-active-color"
+	_StyleColorIDLowerName_2 = "tab-hovered-colortab-colortab-active-color"
+	_StyleColorIDName_3      = "tab-unfocused-colortab-unfocused-active-color"
+	_StyleColorIDLowerName_3 = "tab-unfocused-colortab-unfocused-active-color"
+	_StyleColorIDName_4      = "plot-lines-colorplot-lines-hovered-colorplot-histogram-colorplot-histogram-hovered-colortable-header-background-colortable-border-strong-colortable-border-light-colortable-row-background-colortable-row-alternate-background-color"
+	_StyleColorIDLowerName_4 = "plot-lines-colorplot-lines-hovered-colorplot-histogram-colorplot-histogram-hovered-colortable-header-background-colortable-border-strong-colortable-border-light-colortable-row-background-colortable-row-alternate-background-color"
+	_StyleColorIDName_5      = "text-selected-background-color"
+	_StyleColorIDLowerName_5 = "text-selected-background-color"
+	_StyleColorIDName_6      = "drag-drop-target-color"
+	_StyleColorIDLowerName_6 = "drag-drop-target-color"
+	_StyleColorIDName_7      = "windowing-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
+	_StyleColorIDLowerName_7 = "windowing-highlight-colorwindowing-dim-background-colormodal-window-dim-background-color"
 )
 
 var (
-	_StyleColorIDIndex_0 = [...]uint16{0, 5, 19, 35, 57, 79, 91, 110, 132, 162, 191, 213, 242, 274, 299, 325, 345, 373, 400, 415, 432, 456, 468, 488, 507, 519, 539, 558, 573, 596, 618, 635, 660, 684}
-	_StyleColorIDIndex_1 = [...]uint8{0, 17, 26, 42}
-	_StyleColorIDIndex_2 = [...]uint8{0, 19, 45}
-	_StyleColorIDIndex_3 = [...]uint8{0, 16, 40, 60, 88, 117, 142, 166, 192, 228}
-	_StyleColorIDIndex_4 = [...]uint8{0, 30}
-	_StyleColorIDIndex_5 = [...]uint8{0, 22}
-	_StyleColorIDIndex_6 = [...]uint8{0, 25, 55, 88}
+	_StyleColorIDIndex_0 = [...]uint16{0, 5, 19, 35, 57, 79, 91, 110, 132, 162, 191, 213, 242, 274, 299, 325, 345, 373, 400, 415}
+	_StyleColorIDIndex_1 = [...]uint16{0, 17, 41, 53, 73, 92, 104, 124, 143, 158, 181, 203, 220, 245, 269}
+	_StyleColorIDIndex_2 = [...]uint8{0, 17, 26, 42}
+	_StyleColorIDIndex_3 = [...]uint8{0, 19, 45}
+	_StyleColorIDIndex_4 = [...]uint8{0, 16, 40, 60, 88, 117, 142, 166, 192, 228}
+	_StyleColorIDIndex_5 = [...]uint8{0, 30}
+	_StyleColorIDIndex_6 = [...]uint8{0, 22}
+	_StyleColorIDIndex_7 = [...]uint8{0, 25, 55, 88}
 )
 
 func (i StyleColorID) String() string {
 	switch {
-	case 0 <= i && i <= 32:
+	case 0 <= i && i <= 18:
 		return _StyleColorIDName_0[_StyleColorIDIndex_0[i]:_StyleColorIDIndex_0[i+1]]
-	case 34 <= i && i <= 36:
-		i -= 34
+	case 20 <= i && i <= 33:
+		i -= 20
 		return _StyleColorIDName_1[_StyleColorIDIndex_1[i]:_StyleColorIDIndex_1[i+1]]
-	case 38 <= i && i <= 39:
-		i -= 38
+	case 35 <= i && i <= 37:
+		i -= 35
 		return _StyleColorIDName_2[_StyleColorIDIndex_2[i]:_StyleColorIDIndex_2[i+1]]
-	case 43 <= i && i <= 51:
-		i -= 43
+	case 39 <= i && i <= 40:
+		i -= 39
 		return _StyleColorIDName_3[_StyleColorIDIndex_3[i]:_StyleColorIDIndex_3[i+1]]
-	case i == 53:
-		return _StyleColorIDName_4
-	case i == 55:
+	case 44 <= i && i <= 52:
+		i -= 44
+		return _StyleColorIDName_4[_StyleColorIDIndex_4[i]:_StyleColorIDIndex_4[i+1]]
+	case i == 54:
 		return _StyleColorIDName_5
-	case 59 <= i && i <= 61:
-		i -= 59
-		return _StyleColorIDName_6[_StyleColorIDIndex_6[i]:_StyleColorIDIndex_6[i+1]]
+	case i == 56:
+		return _StyleColorIDName_6
+	case 60 <= i && i <= 62:
+		i -= 60
+		return _StyleColorIDName_7[_StyleColorIDIndex_7[i]:_StyleColorIDIndex_7[i+1]]
 	default:
 		return fmt.Sprintf("StyleColorID(%d)", i)
 	}
@@ -82,39 +88,39 @@ func _StyleColorIDNoOp() {
 	_ = x[StyleColorScrollbarGrabHovered-(16)]
 	_ = x[StyleColorScrollbarGrabActive-(17)]
 	_ = x[StyleColorCheckMark-(18)]
-	_ = x[StyleColorSliderGrab-(19)]
-	_ = x[StyleColorSliderGrabActive-(20)]
-	_ = x[StyleColorButton-(21)]
-	_ = x[StyleColorButtonHovered-(22)]
-	_ = x[StyleColorButtonActive-(23)]
-	_ = x[StyleColorHeader-(24)]
-	_ = x[StyleColorHeaderHovered-(25)]
-	_ = x[StyleColorHeaderActive-(26)]
-	_ = x[StyleColorSeparator-(27)]
-	_ = x[StyleColorSeparatorHovered-(28)]
-	_ = x[StyleColorSeparatorActive-(29)]
-	_ = x[StyleColorResizeGrip-(30)]
-	_ = x[StyleColorResizeGripHovered-(31)]
-	_ = x[StyleColorResizeGripActive-(32)]
-	_ = x[StyleColorTabHovered-(34)]
-	_ = x[StyleColorTab-(35)]
-	_ = x[StyleColorTabActive-(36)]
-	_ = x[StyleColorTabUnfocused-(38)]
-	_ = x[StyleColorTabUnfocusedActive-(39)]
-	_ = x[StyleColorPlotLines-(43)]
-	_ = x[StyleColorPlotLinesHovered-(44)]
-	_ = x[StyleColorPlotHistogram-(45)]
-	_ = x[StyleColorPlotHistogramHovered-(46)]
-	_ = x[StyleColorTableHeaderBg-(47)]
-	_ = x[StyleColorTableBorderStrong-(48)]
-	_ = x[StyleColorTableBorderLight-(49)]
-	_ = x[StyleColorTableRowBg-(50)]
-	_ = x[StyleColorTableRowBgAlt-(51)]
-	_ = x[StyleColorTextSelectedBg-(53)]
-	_ = x[StyleColorDragDropTarget-(55)]
-	_ = x[StyleColorNavWindowingHighlight-(59)]
-	_ = x[StyleColorNavWindowingDimBg-(60)]
-	_ = x[StyleColorModalWindowDimBg-(61)]
+	_ = x[StyleColorSliderGrab-(20)]
+	_ = x[StyleColorSliderGrabActive-(21)]
+	_ = x[StyleColorButton-(22)]
+	_ = x[StyleColorButtonHovered-(23)]
+	_ = x[StyleColorButtonActive-(24)]
+	_ = x[StyleColorHeader-(25)]
+	_ = x[StyleColorHeaderHovered-(26)]
+	_ = x[StyleColorHeaderActive-(27)]
+	_ = x[StyleColorSeparator-(28)]
+	_ = x[StyleColorSeparatorHovered-(29)]
+	_ = x[StyleColorSeparatorActive-(30)]
+	_ = x[StyleColorResizeGrip-(31)]
+	_ = x[StyleColorResizeGripHovered-(32)]
+	_ = x[StyleColorResizeGripActive-(33)]
+	_ = x[StyleColorTabHovered-(35)]
+	_ = x[StyleColorTab-(36)]
+	_ = x[StyleColorTabActive-(37)]
+	_ = x[StyleColorTabUnfocused-(39)]
+	_ = x[StyleColorTabUnfocusedActive-(40)]
+	_ = x[StyleColorPlotLines-(44)]
+	_ = x[StyleColorPlotLinesHovered-(45)]
+	_ = x[StyleColorPlotHistogram-(46)]
+	_ = x[StyleColorPlotHistogramHovered-(47)]
+	_ = x[StyleColorTableHeaderBg-(48)]
+	_ = x[StyleColorTableBorderStrong-(49)]
+	_ = x[StyleColorTableBorderLight-(50)]
+	_ = x[StyleColorTableRowBg-(51)]
+	_ = x[StyleColorTableRowBgAlt-(52)]
+	_ = x[StyleColorTextSelectedBg-(54)]
+	_ = x[StyleColorDragDropTarget-(56)]
+	_ = x[StyleColorNavWindowingHighlight-(60)]
+	_ = x[StyleColorNavWindowingDimBg-(61)]
+	_ = x[StyleColorModalWindowDimBg-(62)]
 }
 
 var _StyleColorIDValues = []StyleColorID{StyleColorText, StyleColorTextDisabled, StyleColorWindowBg, StyleColorChildBg, StyleColorPopupBg, StyleColorBorder, StyleColorBorderShadow, StyleColorFrameBg, StyleColorFrameBgHovered, StyleColorFrameBgActive, StyleColorTitleBg, StyleColorTitleBgActive, StyleColorTitleBgCollapsed, StyleColorMenuBarBg, StyleColorScrollbarBg, StyleColorScrollbarGrab, StyleColorScrollbarGrabHovered, StyleColorScrollbarGrabActive, StyleColorCheckMark, StyleColorSliderGrab, StyleColorSliderGrabActive, StyleColorButton, StyleColorButtonHovered, StyleColorButtonActive, StyleColorHeader, StyleColorHeaderHovered, StyleColorHeaderActive, StyleColorSeparator, StyleColorSeparatorHovered, StyleColorSeparatorActive, StyleColorResizeGrip, StyleColorResizeGripHovered, StyleColorResizeGripActive, StyleColorTabHovered, StyleColorTab, StyleColorTabActive, StyleColorTabUnfocused, StyleColorTabUnfocusedActive, StyleColorPlotLines, StyleColorPlotLinesHovered, StyleColorPlotHistogram, StyleColorPlotHistogramHovered, StyleColorTableHeaderBg, StyleColorTableBorderStrong, StyleColorTableBorderLight, StyleColorTableRowBg, StyleColorTableRowBgAlt, StyleColorTextSelectedBg, StyleColorDragDropTarget, StyleColorNavWindowingHighlight, StyleColorNavWindowingDimBg, StyleColorModalWindowDimBg}
@@ -158,72 +164,72 @@ var _StyleColorIDNameToValueMap = map[string]StyleColorID{
 	_StyleColorIDLowerName_0[373:400]: StyleColorScrollbarGrabActive,
 	_StyleColorIDName_0[400:415]:      StyleColorCheckMark,
 	_StyleColorIDLowerName_0[400:415]: StyleColorCheckMark,
-	_StyleColorIDName_0[415:432]:      StyleColorSliderGrab,
-	_StyleColorIDLowerName_0[415:432]: StyleColorSliderGrab,
-	_StyleColorIDName_0[432:456]:      StyleColorSliderGrabActive,
-	_StyleColorIDLowerName_0[432:456]: StyleColorSliderGrabActive,
-	_StyleColorIDName_0[456:468]:      StyleColorButton,
-	_StyleColorIDLowerName_0[456:468]: StyleColorButton,
-	_StyleColorIDName_0[468:488]:      StyleColorButtonHovered,
-	_StyleColorIDLowerName_0[468:488]: StyleColorButtonHovered,
-	_StyleColorIDName_0[488:507]:      StyleColorButtonActive,
-	_StyleColorIDLowerName_0[488:507]: StyleColorButtonActive,
-	_StyleColorIDName_0[507:519]:      StyleColorHeader,
-	_StyleColorIDLowerName_0[507:519]: StyleColorHeader,
-	_StyleColorIDName_0[519:539]:      StyleColorHeaderHovered,
-	_StyleColorIDLowerName_0[519:539]: StyleColorHeaderHovered,
-	_StyleColorIDName_0[539:558]:      StyleColorHeaderActive,
-	_StyleColorIDLowerName_0[539:558]: StyleColorHeaderActive,
-	_StyleColorIDName_0[558:573]:      StyleColorSeparator,
-	_StyleColorIDLowerName_0[558:573]: StyleColorSeparator,
-	_StyleColorIDName_0[573:596]:      StyleColorSeparatorHovered,
-	_StyleColorIDLowerName_0[573:596]: StyleColorSeparatorHovered,
-	_StyleColorIDName_0[596:618]:      StyleColorSeparatorActive,
-	_StyleColorIDLowerName_0[596:618]: StyleColorSeparatorActive,
-	_StyleColorIDName_0[618:635]:      StyleColorResizeGrip,
-	_StyleColorIDLowerName_0[618:635]: StyleColorResizeGrip,
-	_StyleColorIDName_0[635:660]:      StyleColorResizeGripHovered,
-	_StyleColorIDLowerName_0[635:660]: StyleColorResizeGripHovered,
-	_StyleColorIDName_0[660:684]:      StyleColorResizeGripActive,
-	_StyleColorIDLowerName_0[660:684]: StyleColorResizeGripActive,
-	_StyleColorIDName_1[0:17]:         StyleColorTabHovered,
-	_StyleColorIDLowerName_1[0:17]:    StyleColorTabHovered,
-	_StyleColorIDName_1[17:26]:        StyleColorTab,
-	_StyleColorIDLowerName_1[17:26]:   StyleColorTab,
-	_StyleColorIDName_1[26:42]:        StyleColorTabActive,
-	_StyleColorIDLowerName_1[26:42]:   StyleColorTabActive,
-	_StyleColorIDName_2[0:19]:         StyleColorTabUnfocused,
-	_StyleColorIDLowerName_2[0:19]:    StyleColorTabUnfocused,
-	_StyleColorIDName_2[19:45]:        StyleColorTabUnfocusedActive,
-	_StyleColorIDLowerName_2[19:45]:   StyleColorTabUnfocusedActive,
-	_StyleColorIDName_3[0:16]:         StyleColorPlotLines,
-	_StyleColorIDLowerName_3[0:16]:    StyleColorPlotLines,
-	_StyleColorIDName_3[16:40]:        StyleColorPlotLinesHovered,
-	_StyleColorIDLowerName_3[16:40]:   StyleColorPlotLinesHovered,
-	_StyleColorIDName_3[40:60]:        StyleColorPlotHistogram,
-	_StyleColorIDLowerName_3[40:60]:   StyleColorPlotHistogram,
-	_StyleColorIDName_3[60:88]:        StyleColorPlotHistogramHovered,
-	_StyleColorIDLowerName_3[60:88]:   StyleColorPlotHistogramHovered,
-	_StyleColorIDName_3[88:117]:       StyleColorTableHeaderBg,
-	_StyleColorIDLowerName_3[88:117]:  StyleColorTableHeaderBg,
-	_StyleColorIDName_3[117:142]:      StyleColorTableBorderStrong,
-	_StyleColorIDLowerName_3[117:142]: StyleColorTableBorderStrong,
-	_StyleColorIDName_3[142:166]:      StyleColorTableBorderLight,
-	_StyleColorIDLowerName_3[142:166]: StyleColorTableBorderLight,
-	_StyleColorIDName_3[166:192]:      StyleColorTableRowBg,
-	_StyleColorIDLowerName_3[166:192]: StyleColorTableRowBg,
-	_StyleColorIDName_3[192:228]:      StyleColorTableRowBgAlt,
-	_StyleColorIDLowerName_3[192:228]: StyleColorTableRowBgAlt,
-	_StyleColorIDName_4[0:30]:         StyleColorTextSelectedBg,
-	_StyleColorIDLowerName_4[0:30]:    StyleColorTextSelectedBg,
-	_StyleColorIDName_5[0:22]:         StyleColorDragDropTarget,
-	_StyleColorIDLowerName_5[0:22]:    StyleColorDragDropTarget,
-	_StyleColorIDName_6[0:25]:         StyleColorNavWindowingHighlight,
-	_StyleColorIDLowerName_6[0:25]:    StyleColorNavWindowingHighlight,
-	_StyleColorIDName_6[25:55]:        StyleColorNavWindowingDimBg,
-	_StyleColorIDLowerName_6[25:55]:   StyleColorNavWindowingDimBg,
-	_StyleColorIDName_6[55:88]:        StyleColorModalWindowDimBg,
-	_StyleColorIDLowerName_6[55:88]:   StyleColorModalWindowDimBg,
+	_StyleColorIDName_1[0:17]:         StyleColorSliderGrab,
+	_StyleColorIDLowerName_1[0:17]:    StyleColorSliderGrab,
+	_StyleColorIDName_1[17:41]:        StyleColorSliderGrabActive,
+	_StyleColorIDLowerName_1[17:41]:   StyleColorSliderGrabActive,
+	_StyleColorIDName_1[41:53]:        StyleColorButton,
+	_StyleColorIDLowerName_1[41:53]:   StyleColorButton,
+	_StyleColorIDName_1[53:73]:        StyleColorButtonHovered,
+	_StyleColorIDLowerName_1[53:73]:   StyleColorButtonHovered,
+	_StyleColorIDName_1[73:92]:        StyleColorButtonActive,
+	_StyleColorIDLowerName_1[73:92]:   StyleColorButtonActive,
+	_StyleColorIDName_1[92:104]:       StyleColorHeader,
+	_StyleColorIDLowerName_1[92:104]:  StyleColorHeader,
+	_StyleColorIDName_1[104:124]:      StyleColorHeaderHovered,
+	_StyleColorIDLowerName_1[104:124]: StyleColorHeaderHovered,
+	_StyleColorIDName_1[124:143]:      StyleColorHeaderActive,
+	_StyleColorIDLowerName_1[124:143]: StyleColorHeaderActive,
+	_StyleColorIDName_1[143:158]:      StyleColorSeparator,
+	_StyleColorIDLowerName_1[143:158]: StyleColorSeparator,
+	_StyleColorIDName_1[158:181]:      StyleColorSeparatorHovered,
+	_StyleColorIDLowerName_1[158:181]: StyleColorSeparatorHovered,
+	_StyleColorIDName_1[181:203]:      StyleColorSeparatorActive,
+	_StyleColorIDLowerName_1[181:203]: StyleColorSeparatorActive,
+	_StyleColorIDName_1[203:220]:      StyleColorResizeGrip,
+	_StyleColorIDLowerName_1[203:220]: StyleColorResizeGrip,
+	_StyleColorIDName_1[220:245]:      StyleColorResizeGripHovered,
+	_StyleColorIDLowerName_1[220:245]: StyleColorResizeGripHovered,
+	_StyleColorIDName_1[245:269]:      StyleColorResizeGripActive,
+	_StyleColorIDLowerName_1[245:269]: StyleColorResizeGripActive,
+	_StyleColorIDName_2[0:17]:         StyleColorTabHovered,
+	_StyleColorIDLowerName_2[0:17]:    StyleColorTabHovered,
+	_StyleColorIDName_2[17:26]:        StyleColorTab,
+	_StyleColorIDLowerName_2[17:26]:   StyleColorTab,
+	_StyleColorIDName_2[26:42]:        StyleColorTabActive,
+	_StyleColorIDLowerName_2[26:42]:   StyleColorTabActive,
+	_StyleColorIDName_3[0:19]:         StyleColorTabUnfocused,
+	_StyleColorIDLowerName_3[0:19]:    StyleColorTabUnfocused,
+	_StyleColorIDName_3[19:45]:        StyleColorTabUnfocusedActive,
+	_StyleColorIDLowerName_3[19:45]:   StyleColorTabUnfocusedActive,
+	_StyleColorIDName_4[0:16]:         StyleColorPlotLines,
+	_StyleColorIDLowerName_4[0:16]:    StyleColorPlotLines,
+	_StyleColorIDName_4[16:40]:        StyleColorPlotLinesHovered,
+	_StyleColorIDLowerName_4[16:40]:   StyleColorPlotLinesHovered,
+	_StyleColorIDName_4[40:60]:        StyleColorPlotHistogram,
+	_StyleColorIDLowerName_4[40:60]:   StyleColorPlotHistogram,
+	_StyleColorIDName_4[60:88]:        StyleColorPlotHistogramHovered,
+	_StyleColorIDLowerName_4[60:88]:   StyleColorPlotHistogramHovered,
+	_StyleColorIDName_4[88:117]:       StyleColorTableHeaderBg,
+	_StyleColorIDLowerName_4[88:117]:  StyleColorTableHeaderBg,
+	_StyleColorIDName_4[117:142]:      StyleColorTableBorderStrong,
+	_StyleColorIDLowerName_4[117:142]: StyleColorTableBorderStrong,
+	_StyleColorIDName_4[142:166]:      StyleColorTableBorderLight,
+	_StyleColorIDLowerName_4[142:166]: StyleColorTableBorderLight,
+	_StyleColorIDName_4[166:192]:      StyleColorTableRowBg,
+	_StyleColorIDLowerName_4[166:192]: StyleColorTableRowBg,
+	_StyleColorIDName_4[192:228]:      StyleColorTableRowBgAlt,
+	_StyleColorIDLowerName_4[192:228]: StyleColorTableRowBgAlt,
+	_StyleColorIDName_5[0:30]:         StyleColorTextSelectedBg,
+	_StyleColorIDLowerName_5[0:30]:    StyleColorTextSelectedBg,
+	_StyleColorIDName_6[0:22]:         StyleColorDragDropTarget,
+	_StyleColorIDLowerName_6[0:22]:    StyleColorDragDropTarget,
+	_StyleColorIDName_7[0:25]:         StyleColorNavWindowingHighlight,
+	_StyleColorIDLowerName_7[0:25]:    StyleColorNavWindowingHighlight,
+	_StyleColorIDName_7[25:55]:        StyleColorNavWindowingDimBg,
+	_StyleColorIDLowerName_7[25:55]:   StyleColorNavWindowingDimBg,
+	_StyleColorIDName_7[55:88]:        StyleColorModalWindowDimBg,
+	_StyleColorIDLowerName_7[55:88]:   StyleColorModalWindowDimBg,
 }
 
 var _StyleColorIDNames = []string{
@@ -246,39 +252,39 @@ var _StyleColorIDNames = []string{
 	_StyleColorIDName_0[345:373],
 	_StyleColorIDName_0[373:400],
 	_StyleColorIDName_0[400:415],
-	_StyleColorIDName_0[415:432],
-	_StyleColorIDName_0[432:456],
-	_StyleColorIDName_0[456:468],
-	_StyleColorIDName_0[468:488],
-	_StyleColorIDName_0[488:507],
-	_StyleColorIDName_0[507:519],
-	_StyleColorIDName_0[519:539],
-	_StyleColorIDName_0[539:558],
-	_StyleColorIDName_0[558:573],
-	_StyleColorIDName_0[573:596],
-	_StyleColorIDName_0[596:618],
-	_StyleColorIDName_0[618:635],
-	_StyleColorIDName_0[635:660],
-	_StyleColorIDName_0[660:684],
 	_StyleColorIDName_1[0:17],
-	_StyleColorIDName_1[17:26],
-	_StyleColorIDName_1[26:42],
-	_StyleColorIDName_2[0:19],
-	_StyleColorIDName_2[19:45],
-	_StyleColorIDName_3[0:16],
-	_StyleColorIDName_3[16:40],
-	_StyleColorIDName_3[40:60],
-	_StyleColorIDName_3[60:88],
-	_StyleColorIDName_3[88:117],
-	_StyleColorIDName_3[117:142],
-	_StyleColorIDName_3[142:166],
-	_StyleColorIDName_3[166:192],
-	_StyleColorIDName_3[192:228],
-	_StyleColorIDName_4[0:30],
-	_StyleColorIDName_5[0:22],
-	_StyleColorIDName_6[0:25],
-	_StyleColorIDName_6[25:55],
-	_StyleColorIDName_6[55:88],
+	_StyleColorIDName_1[17:41],
+	_StyleColorIDName_1[41:53],
+	_StyleColorIDName_1[53:73],
+	_StyleColorIDName_1[73:92],
+	_StyleColorIDName_1[92:104],
+	_StyleColorIDName_1[104:124],
+	_StyleColorIDName_1[124:143],
+	_StyleColorIDName_1[143:158],
+	_StyleColorIDName_1[158:181],
+	_StyleColorIDName_1[181:203],
+	_StyleColorIDName_1[203:220],
+	_StyleColorIDName_1[220:245],
+	_StyleColorIDName_1[245:269],
+	_StyleColorIDName_2[0:17],
+	_StyleColorIDName_2[17:26],
+	_StyleColorIDName_2[26:42],
+	_StyleColorIDName_3[0:19],
+	_StyleColorIDName_3[19:45],
+	_StyleColorIDName_4[0:16],
+	_StyleColorIDName_4[16:40],
+	_StyleColorIDName_4[40:60],
+	_StyleColorIDName_4[60:88],
+	_StyleColorIDName_4[88:117],
+	_StyleColorIDName_4[117:142],
+	_StyleColorIDName_4[142:166],
+	_StyleColorIDName_4[166:192],
+	_StyleColorIDName_4[192:228],
+	_StyleColorIDName_5[0:30],
+	_StyleColorIDName_6[0:22],
+	_StyleColorIDName_7[0:25],
+	_StyleColorIDName_7[25:55],
+	_StyleColorIDName_7[55:88],
 }
 
 // StyleColorIDString retrieves an enum value from the enum constants string name.

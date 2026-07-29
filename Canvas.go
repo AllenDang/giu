@@ -33,7 +33,7 @@ func GetCanvas() *Canvas {
 
 // AddLine draws a line (from p1 to p2).
 func (c *Canvas) AddLine(p1, p2 image.Point, col color.Color, thickness float32) {
-	c.DrawList.AddLineV(ToVec2(p1), ToVec2(p2), ColorToUint(col), thickness)
+	c.DrawList.AddLineArgs(ToVec2(p1), ToVec2(p2), ColorToUint(col), thickness)
 }
 
 // DrawFlags represents imgui.DrawFlags.
@@ -71,7 +71,7 @@ const (
 
 // AddRect draws a rectangle.
 func (c *Canvas) AddRect(pMin, pMax image.Point, col color.Color, rounding float32, roundingCorners DrawFlags, thickness float32) {
-	c.DrawList.AddRectV(ToVec2(pMin), ToVec2(pMax), ColorToUint(col), rounding, imgui.DrawFlags(roundingCorners), thickness)
+	c.DrawList.AddRectV(ToVec2(pMin), ToVec2(pMax), ColorToUint(col), rounding, thickness, imgui.DrawFlags(roundingCorners))
 }
 
 // AddRectFilled draws a rectangle filled with `col`.
@@ -143,7 +143,7 @@ func (c *Canvas) PathFillConvex(col color.Color) {
 
 // PathStroke adds a line between the last point and the provided one.
 func (c *Canvas) PathStroke(col color.Color, flags DrawFlags, thickness float32) {
-	c.DrawList.PathStrokeV(ColorToUint(col), imgui.DrawFlags(flags), thickness)
+	c.DrawList.PathStrokeV(ColorToUint(col), thickness, imgui.DrawFlags(flags))
 }
 
 // PathArcTo adds a cubic bezier curve between the last point and the provided one.

@@ -9,7 +9,7 @@ import (
 
 var (
 	editor         *giu.CodeEditorWidget
-	palettes       = []string{"Dark", "Light", "Mariana", "Retro Blue"}
+	palettes       = []string{"Default", "Dark", "Light"}
 	currentPalette int32
 )
 
