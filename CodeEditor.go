@@ -192,6 +192,7 @@ func (ce *CodeEditorWidget) GetCursorPos() (x, y int) {
 	result := ce.getState().editor.CursorPosition(0)
 	x = int(result.Index())
 	y = int(result.Line())
+
 	return x, y
 }
 
@@ -267,6 +268,7 @@ func (ce *CodeEditorWidget) Build() {
 		if ce.border {
 			return imgui.ChildFlagsBorders
 		}
+
 		return 0
 	}(), 0)
 }
