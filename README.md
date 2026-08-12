@@ -301,4 +301,4 @@ All kinds of pull requests (document, demo, screenshots, code, etc.) are more th
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=AllenDang/giu&type=Date)](https://star-history.com/#AllenDang/giu&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=AllenDang/giu&type=Date)](https://star-history.dera.page/#AllenDang/giu&Date)
