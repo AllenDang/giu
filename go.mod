@@ -11,14 +11,14 @@ require (
 	github.com/napsy/go-css v1.0.0
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/sahilm/fuzzy v0.1.3
-	github.com/stretchr/testify v1.12.0
+	github.com/stretchr/testify v1.12.1
 	golang.design/x/hotkey v0.6.1
 	golang.org/x/image v0.45.0
 	gopkg.in/eapache/queue.v1 v1.1.0
 )
 
 require (
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.design/x/mainthread v0.3.0 // indirect
 	golang.org/x/sys v0.47.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
