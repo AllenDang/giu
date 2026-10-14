@@ -13,12 +13,12 @@ require (
 	github.com/sahilm/fuzzy v0.1.3
 	github.com/stretchr/testify v1.12.1
 	golang.design/x/hotkey v0.6.4
-	golang.org/x/image v0.46.0
+	golang.org/x/image v0.47.0
 	gopkg.in/eapache/queue.v1 v1.1.0
 )
 
 require (
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.design/x/mainthread v0.3.0 // indirect
-	golang.org/x/sys v0.48.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
 )
