@@ -4,7 +4,7 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/AllenDang/giu.svg)](https://pkg.go.dev/github.com/AllenDang/giu)
 [![Discord Shield](https://discord.com/api/guilds/1306199225616306248/widget.png?style=shield)](https://discord.gg/Tt7eq6YKQS)
 
-A rapid cross-platform GUI framework for Go based on [Dear ImGui](https://github.com/ocornut/imgui) and the great Go binding [cimgui-go](https://github.com/inkyblackness/cimgui-go).
+A rapid cross-platform GUI framework for Go based on [Dear ImGui](https://github.com/ocornut/imgui) and the great Go binding [cimgui-go](https://github.com/AllenDang/cimgui-go).
 
 Any contribution (features, widgets, tutorials, documents, etc...) is appreciated!
 
